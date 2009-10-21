@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Flash.Text" xml:space="preserve">
+    <value>Flash:</value>
+  </data>
+  <data name="Image.Text" xml:space="preserve">
+    <value>Image:</value>
+  </data>
+  <data name="MaxFileSize.Text" xml:space="preserve">
+    <value>Max File Size:</value>
+  </data>
+  <data name="None.Text" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="AllDays.Text" xml:space="preserve">
+    <value>All Days</value>
+  </data>
+  <data name="Today.Text" xml:space="preserve">
+    <value>Today</value>
+  </data>
+  <data name="PastThreeDays.Text" xml:space="preserve">
+    <value>Past Three Days</value>
+  </data>
+  <data name="PastWeek.Text" xml:space="preserve">
+    <value>Past Week</value>
+  </data>
+  <data name="PastTwoWeek.Text" xml:space="preserve">
+    <value>Past Two Weeks</value>
+  </data>
+  <data name="PastMonth.Text" xml:space="preserve">
+    <value>Past Month</value>
+  </data>
+  <data name="PastThreeMonth.Text" xml:space="preserve">
+    <value>Past Three Months</value>
+  </data>
+  <data name="PastYear.Text" xml:space="preserve">
+    <value>Past Year</value>
+  </data>
+  <data name="LastVisit.Text" xml:space="preserve">
+    <value>Last Visit</value>
+  </data>
+  <data name="HasContributed.Text" xml:space="preserve">
+    <value>has contributed</value>
+  </data>
+  <data name="ToAll.Text" xml:space="preserve">
+    <value>To All Users</value>
+  </data>
+  <data name="ToAdmin.Text" xml:space="preserve">
+    <value>To Admin Users</value>
+  </data>
+  <data name="DefaultForumGroupName.Text" xml:space="preserve">
+    <value>Discussions</value>
+  </data>
+  <data name="DefaultForumName.Text" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="NoneSpecified.Text" xml:space="preserve">
+    <value>(None Specified)</value>
+  </data>
+  <data name="EmailForumEmail.Text" xml:space="preserve">
+    <value>Forum email :</value>
+  </data>
+  <data name="RatingNoRating.Text" xml:space="preserve">
+    <value>No Rating</value>
+  </data>
+  <data name="RatingHaveRating.Text" xml:space="preserve">
+    <value>{0} out of 10 - based on {1} ratings</value>
+  </data>
+  <data name="ForumTextWrote.Text" xml:space="preserve">
+    <value>wrote</value>
+  </data>
+  <data name="ForumUtilToday.Text" xml:space="preserve">
+    <value>Today @</value>
+  </data>
+  <data name="ForumUtilYesterday.Text" xml:space="preserve">
+    <value>Yesterday @</value>
+  </data>
+  <data name="ForumCount.Text" xml:space="preserve">
+    <value>Forum(s)</value>
+  </data>
+  <data name="subscribe.Text" xml:space="preserve">
+    <value>Subscribe to notifications</value>
+  </data>
+  <data name="Rank_0.Text" xml:space="preserve">
+    <value>No Ranking</value>
+  </data>
+  <data name="Rank_1.Text" xml:space="preserve">
+    <value>1st Level Poster</value>
+  </data>
+  <data name="Rank_2.Text" xml:space="preserve">
+    <value>2nd Level Poster</value>
+  </data>
+  <data name="Rank_3.Text" xml:space="preserve">
+    <value>3rd Level Poster</value>
+  </data>
+  <data name="Rank_4.Text" xml:space="preserve">
+    <value>4th Level Poster</value>
+  </data>
+  <data name="Rank_5.Text" xml:space="preserve">
+    <value>5th Level Poster</value>
+  </data>
+  <data name="AcceptedFileType.Text" xml:space="preserve">
+    <value>Accepted File Extensions</value>
+  </data>
+  <data name="Yesterday.Text" xml:space="preserve">
+    <value>Yesterday</value>
+  </data>
+  <data name="NewPost.Text" xml:space="preserve">
+    <value>New Post</value>
+  </data>
+  <data name="YourPost.Text" xml:space="preserve">
+    <value>Your Post</value>
+  </data>
+  <data name="NoAnonDownloads.Text" xml:space="preserve">
+    <value>Login to download attachment</value>
+  </data>
+  <data name="AggregatedGroupName.Text" xml:space="preserve">
+    <value>Aggregated</value>
+  </data>
+  <data name="AggregatedForumName.Text" xml:space="preserve">
+    <value>All Forums</value>
+  </data>
+  <data name="AggregatedForumDescription.Text" xml:space="preserve">
+    <value>An aggregated view of all public forum threads.</value>
+  </data>
+  <data name="Post Replies.Permission" xml:space="preserve">
+    <value>Reply</value>
+  </data>
+  <data name="Global Moderator.Permission" xml:space="preserve">
+    <value>Global Moderator</value>
+  </data>
+  <data name="Forum Administrator.Permission" xml:space="preserve">
+    <value>Forum Admin</value>
+  </data>
+  <data name="Start Thread.Permission" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="Post Reply.Permission" xml:space="preserve">
+    <value>Reply</value>
+  </data>
+  <data name="Moderator.Permission" xml:space="preserve">
+    <value>Moderate</value>
+  </data>
+  <data name="View.Permission" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="Notifications.Permission" xml:space="preserve">
+    <value>Notify</value>
+  </data>
+  <data name="Answered.Text" xml:space="preserve">
+    <value>Resolved</value>
+  </data>
+  <data name="Unanswered.Text" xml:space="preserve">
+    <value>Unresolved</value>
+  </data>
+  <data name="Informative.Text" xml:space="preserve">
+    <value>Informative</value>
+  </data>
+  <data name="NotSpecified.Text" xml:space="preserve">
+    <value>Not Specified</value>
+  </data>
+  <data name="MarkAnswer.Text" xml:space="preserve">
+    <value>Accept Answer</value>
+  </data>
+  <data name="StatusInfo.Text" xml:space="preserve">
+    <value>Informative</value>
+  </data>
+  <data name="StatusUnanswered.Text" xml:space="preserve">
+    <value>Unresolved</value>
+  </data>
+  <data name="StatusAnswered.Text" xml:space="preserve">
+    <value>Resolved</value>
+  </data>
+  <data name="AlreadyTrackingForum.Text" xml:space="preserve">
+    <value>Already tracking at forum level.</value>
+  </data>
+  <data name="AlreadyTrackingModule.Text" xml:space="preserve">
+    <value>Already tracking this module.</value>
+  </data>
+  <data name="AcceptedAnswer.Text" xml:space="preserve">
+    <value>Accepted Answer</value>
+  </data>
+  <data name="HTML.Text" xml:space="preserve">
+    <value>HTML</value>
+  </data>
+  <data name="Text.Text" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="AllCollapsed.Text" xml:space="preserve">
+    <value>All Collapsed</value>
+  </data>
+  <data name="AllExpanded.Text" xml:space="preserve">
+    <value>All Expanded</value>
+  </data>
+  <data name="AsLastViewed.Text" xml:space="preserve">
+    <value>As Last Viewed</value>
+  </data>
+  <data name="AllGroups.Text" xml:space="preserve">
+    <value>All Groups</value>
+  </data>
+  <data name="MemberList.Text" xml:space="preserve">
+    <value>Member List</value>
+  </data>
+  <data name="DisplayName.Text" xml:space="preserve">
+    <value>Display Name</value>
+  </data>
+  <data name="Username.Text" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="ForumHome.Text" xml:space="preserve">
+    <value>Forum Home</value>
+  </data>
+  <data name="Inbox.Text" xml:space="preserve">
+    <value>Inbox</value>
+  </data>
+  <data name="MyPosts.Text" xml:space="preserve">
+    <value>My Posts</value>
+  </data>
+  <data name="MySettings.Text" xml:space="preserve">
+    <value>My Settings</value>
+  </data>
+  <data name="Search.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Rank_10.Text" xml:space="preserve">
+    <value>10th Level Poster</value>
+  </data>
+  <data name="Rank_6.Text" xml:space="preserve">
+    <value>6th Level Poster</value>
+  </data>
+  <data name="Rank_7.Text" xml:space="preserve">
+    <value>7th Level Poster</value>
+  </data>
+  <data name="Rank_8.Text" xml:space="preserve">
+    <value>8th Level Poster</value>
+  </data>
+  <data name="Rank_9.Text" xml:space="preserve">
+    <value>9th Level Poster</value>
+  </data>
+  <data name="Rate0.Text" xml:space="preserve">
+    <value>Rate This Thread</value>
+  </data>
+  <data name="Rate1.Text" xml:space="preserve">
+    <value>Rating of 1</value>
+  </data>
+  <data name="Rate10.Text" xml:space="preserve">
+    <value>Rating of 10</value>
+  </data>
+  <data name="Rate2.Text" xml:space="preserve">
+    <value>Rating of 2</value>
+  </data>
+  <data name="Rate3.Text" xml:space="preserve">
+    <value>Rating of 3</value>
+  </data>
+  <data name="Rate4.Text" xml:space="preserve">
+    <value>Rating of 4</value>
+  </data>
+  <data name="Rate5.Text" xml:space="preserve">
+    <value>Rating of 5</value>
+  </data>
+  <data name="Rate6.Text" xml:space="preserve">
+    <value>Rating of 6</value>
+  </data>
+  <data name="Rate7.Text" xml:space="preserve">
+    <value>Rating of 7</value>
+  </data>
+  <data name="Rate8.Text" xml:space="preserve">
+    <value>Rating of 8</value>
+  </data>
+  <data name="Rate9.Text" xml:space="preserve">
+    <value>Rating of 9</value>
+  </data>
+  <data name="Add Attachments.Permission" xml:space="preserve">
+    <value>Attach</value>
+  </data>
+  <data name="Lock Thread.Permission" xml:space="preserve">
+    <value>Lock</value>
+  </data>
+  <data name="Pin Thread.Permission" xml:space="preserve">
+    <value>Pin</value>
+  </data>
+  <data name="ModerationQueue.Text" xml:space="preserve">
+    <value>Moderation Queue</value>
+  </data>
+  <data name="NoPostsToModerate.Text" xml:space="preserve">
+    <value>No Posts To Moderate</value>
+  </data>
+  <data name="Administration.Text" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="Moderate.Text" xml:space="preserve">
+    <value>Moderate</value>
+  </data>
+  <data name="HostTemplates.Text" xml:space="preserve">
+    <value>Host Templates</value>
+  </data>
+  <data name="ModeratorPMBlock.Text" xml:space="preserve">
+    <value>Moderator PM Block Email</value>
+  </data>
+  <data name="ModeratorPostAbuse.Text" xml:space="preserve">
+    <value>Moderator Post Abuse Email</value>
+  </data>
+  <data name="ModeratorPostDeleted.Text" xml:space="preserve">
+    <value>Moderator Post Deleted Email</value>
+  </data>
+  <data name="ModeratorPostToModerate.Text" xml:space="preserve">
+    <value>Moderator Post To Moderate Email</value>
+  </data>
+  <data name="ModeratorUserBaned.Text" xml:space="preserve">
+    <value>Moderator User Banned Email</value>
+  </data>
+  <data name="ModeratorWarnUser.Text" xml:space="preserve">
+    <value>Moderator Warn User Email</value>
+  </data>
+  <data name="ModuleTemplates.Text" xml:space="preserve">
+    <value>Module Templates</value>
+  </data>
+  <data name="UserBanedNotice.Text" xml:space="preserve">
+    <value>User Banned Notice Email</value>
+  </data>
+  <data name="UserForumAdded.Text" xml:space="preserve">
+    <value>User Forum Added Email</value>
+  </data>
+  <data name="UserModeratorWarning.Text" xml:space="preserve">
+    <value>User Moderator Warning Email</value>
+  </data>
+  <data name="UserNewThread.Text" xml:space="preserve">
+    <value>User New Thread Email</value>
+  </data>
+  <data name="UserPMReceived.Text" xml:space="preserve">
+    <value>User PM Received Email</value>
+  </data>
+  <data name="UserPostAbuse.Text" xml:space="preserve">
+    <value>User Post Abuse Warning Email</value>
+  </data>
+  <data name="UserPostAdded.Text" xml:space="preserve">
+    <value>User Post Added Email</value>
+  </data>
+  <data name="UserPostApproved.Text" xml:space="preserve">
+    <value>User Post Approved Email</value>
+  </data>
+  <data name="UserPostDeleted.Text" xml:space="preserve">
+    <value>User Post Deleted Email</value>
+  </data>
+  <data name="UserPostEdited.Text" xml:space="preserve">
+    <value>User Post Edited Email</value>
+  </data>
+  <data name="UserPostRejected.Text" xml:space="preserve">
+    <value>User Post Rejected Email</value>
+  </data>
+  <data name="UserThreadMoved.Text" xml:space="preserve">
+    <value>User Thread Moved Email</value>
+  </data>
+  <data name="UserThreadSplit.Text" xml:space="preserve">
+    <value>User Thread Split Email</value>
+  </data>
+  <data name="AdvertisingPost.Text" xml:space="preserve">
+    <value>Post Contains Excessive Advertising</value>
+  </data>
+  <data name="DuplicatePost.Text" xml:space="preserve">
+    <value>Post is Duplicate</value>
+  </data>
+  <data name="OffTopicPost.Text" xml:space="preserve">
+    <value>Post Off Topic</value>
+  </data>
+  <data name="PolicyPost.Text" xml:space="preserve">
+    <value>Post Against Policy</value>
+  </data>
+  <data name="ProfanePost.Text" xml:space="preserve">
+    <value>Post Contains Profanity</value>
+  </data>
+  <data name="SpamPost.Text" xml:space="preserve">
+    <value>Post is Spam</value>
+  </data>
+  <data name="AbuseReports.Text" xml:space="preserve">
+    <value>Reports</value>
+  </data>
+  <data name="Forum.Text" xml:space="preserve">
+    <value>Forum</value>
+  </data>
+  <data name="Aggregate.Text" xml:space="preserve">
+    <value>All Forums</value>
+  </data>
+  <data name="Link.Text" xml:space="preserve">
+    <value>Link Forum</value>
+  </data>
+  <data name="Normal.Text" xml:space="preserve">
+    <value>Normal Forum</value>
+  </data>
+  <data name="Notification.Text" xml:space="preserve">
+    <value>Notification Forum</value>
+  </data>
+  <data name="PrivateModerated.Text" xml:space="preserve">
+    <value>Private Moderated</value>
+  </data>
+  <data name="PrivateModeratedPostRestricted.Text" xml:space="preserve">
+    <value>Private Moderated w/ Post Restrictions</value>
+  </data>
+  <data name="PrivateUnModerated.Text" xml:space="preserve">
+    <value>Private No Moderation</value>
+  </data>
+  <data name="PrivateUnModeratedPostRestricted.Text" xml:space="preserve">
+    <value>Private No Moderation w/ Post Restrictions</value>
+  </data>
+  <data name="PublicModerated.Text" xml:space="preserve">
+    <value>Public Moderated</value>
+  </data>
+  <data name="PublicModeratedPostRestricted.Text" xml:space="preserve">
+    <value>Public Moderated w/ Post Restrictions</value>
+  </data>
+  <data name="PublicUnModerated.Text" xml:space="preserve">
+    <value>Public No Moderation</value>
+  </data>
+  <data name="PublicUnModeratedPostRestricted.Text" xml:space="preserve">
+    <value>Public No Moderation w/ Post Restrictions</value>
+  </data>
+  <data name="Unmoderated.Permission" xml:space="preserve">
+    <value>Unmoderated</value>
+  </data>
+  <data name="User.Text" xml:space="preserve">
+    <value>User:</value>
+  </data>
+  <data name="Poll.Text" xml:space="preserve">
+    <value>Poll</value>
+  </data>
+  <data name="StatusPoll.Text" xml:space="preserve">
+    <value>Poll</value>
+  </data>
+  <data name="TotalVotes.Text" xml:space="preserve">
+    <value>Total Votes:</value>
+  </data>
+  <data name="Votes.Text" xml:space="preserve">
+    <value>Vote(s)</value>
+  </data>
+  <data name="ShowAll.Text" xml:space="preserve">
+    <value>Show With Replies</value>
+  </data>
+  <data name="ShowNoReplies.Text" xml:space="preserve">
+    <value>Show No Replies</value>
+  </data>
+  <data name="Avatar.Text" xml:space="preserve">
+    <value>Avatar</value>
+  </data>
+  <data name="of.Text" xml:space="preserve">
+    <value>of</value>
+  </data>
+  <data name="Page.Text" xml:space="preserve">
+    <value>Page</value>
+  </data>
+  <data name="to.Text" xml:space="preserve">
+    <value>to</value>
+  </data>
+  <data name="DeleteThread.Text" xml:space="preserve">
+    <value>Delete Thread</value>
+  </data>
+  <data name="SubForums.Text" xml:space="preserve">
+    <value>Subforums</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="Hits.Text" xml:space="preserve">
+    <value>Hits</value>
+  </data>
+  <data name="SearchNoResult.Text" xml:space="preserve">
+    <value>Your search returned no results</value>
+  </data>
+  <data name="Results.Text" xml:space="preserve">
+    <value>Results</value>
+  </data>
+  <data name="SearchResult.Text" xml:space="preserve">
+    <value>Your search returned {0} result(s)</value>
+  </data>
+  <data name="In.Text" xml:space="preserve">
+    <value>in</value>
+  </data>
+  <data name="NoUnreadThreads.Text" xml:space="preserve">
+    <value>You have no unread threads!</value>
+  </data>
+  <data name="UnreadThreads.Text" xml:space="preserve">
+    <value>Unread Threads</value>
+  </data>
+  <data name="ViewUnreadThreads.Text" xml:space="preserve">
+    <value>View unread threads</value>
+  </data>
+  <data name="MyStartedThreads.Text" xml:space="preserve">
+    <value>Thread's I have started</value>
+  </data>
+  <data name="MyThreads.Text" xml:space="preserve">
+    <value>My Threads</value>
+  </data>
+  <data name="12.Text" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="24.Text" xml:space="preserve">
+    <value>24</value>
+  </data>
+  <data name="48.Text" xml:space="preserve">
+    <value>48</value>
+  </data>
+  <data name="6.Text" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="Hours.Text" xml:space="preserve">
+    <value>hours</value>
+  </data>
+  <data name="ViewLatest.Text" xml:space="preserve">
+    <value>View latest</value>
+  </data>
+  <data name="Quote.Text" xml:space="preserve">
+    <value>Quote</value>
+  </data>
+  <data name="ForumTextCode.Text" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="ForumTextQuote.Text" xml:space="preserve">
+    <value>Quote</value>
+  </data>
+  <data name="DownloadAttachment.Text" xml:space="preserve">
+    <value>Download Attachment</value>
+  </data>
+  <data name="ImageTag.Text" xml:space="preserve">
+    <value>[image]</value>
+  </data>
+</root>

@@ -1,0 +1,1 @@
+<%@ Page Language="vb" AutoEventWireup="false" Codebehind="Forum_Rss.aspx.vb" Inherits="DotNetNuke.Modules.Forum.Rss" %>

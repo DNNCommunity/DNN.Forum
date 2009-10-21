@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="NumericValidation.ErrorMessage" xml:space="preserve">
+    <value>Needs to be numeric!</value>
+  </data>
+  <data name="plTrustNewUsers.Text" xml:space="preserve">
+    <value>Trust New Users</value>
+  </data>
+  <data name="plNameDisplay.Help" xml:space="preserve">
+    <value>This is the format the sites users will appear to users of this forum module. </value>
+  </data>
+  <data name="plNameDisplay.Text" xml:space="preserve">
+    <value>Member Name Display</value>
+  </data>
+  <data name="plTrustNewUsers.Help" xml:space="preserve">
+    <value>If checked, all new forum users will be trusted by default. This means they will not require moderation in moderated forums.&lt;br&gt;&lt;b&gt;NOTE&lt;/b&gt;&lt;br&gt;This will not update existing users status. It only affects users who have not visited a forum module per portal install.</value>
+  </data>
+  <data name="plAutoLockTrust.Help" xml:space="preserve">
+    <value>If checked, only administrators and not moderators can change the status of a user's trust level for newly created forum users.&lt;br&gt;&lt;b&gt;NOTE&lt;/b&gt;&lt;br&gt;User trust level locking is controlled on a per users basis.</value>
+  </data>
+  <data name="plAutoLockTrust.Text" xml:space="preserve">
+    <value>Lock New User Trust</value>
+  </data>
+  <data name="plEnableHTMLSignatures.Help" xml:space="preserve">
+    <value>If checked, users will be permitted to use HTML code in their signatures.</value>
+  </data>
+  <data name="plEnableHTMLSignatures.Text" xml:space="preserve">
+    <value>HTML Signatures</value>
+  </data>
+  <data name="plEnableModSigUpdates.Help" xml:space="preserve">
+    <value>If checked, moderators will be able to update users signatures from the user profile area viewable by all users.</value>
+  </data>
+  <data name="plEnableModSigUpdates.Text" xml:space="preserve">
+    <value>Mod Signature Edits</value>
+  </data>
+  <data name="plEnableUserBanning.Help" xml:space="preserve">
+    <value>If checked, administrators and moderators can ban users from posting.</value>
+  </data>
+  <data name="plEnableUserBanning.Text" xml:space="preserve">
+    <value>User Banning</value>
+  </data>
+  <data name="plEnableUserSignatures.Help" xml:space="preserve">
+    <value>If checked, users will be able to add a custom signature to their profile in the forum module. This will display in all posts as well as the users profile.</value>
+  </data>
+  <data name="plEnableUserSignatures.Text" xml:space="preserve">
+    <value>User Signatures</value>
+  </data>
+  <data name="plPostEditWindow.Help" xml:space="preserve">
+    <value>The number of minutes, users are able to edit a previously posted item. (0 minutes for indefinitely)</value>
+  </data>
+  <data name="plPostEditWindow.Text" xml:space="preserve">
+    <value>Post Editing Time</value>
+  </data>
+  <data name="PostEditWindow.ErrorMessage" xml:space="preserve">
+    <value>Value must be between 0 and 60</value>
+  </data>
+  <data name="lblTitle.Text" xml:space="preserve">
+    <value>User Setting Management</value>
+  </data>
+  <data name="lblUpdateDone.Text" xml:space="preserve">
+    <value>Updated Successfully!</value>
+  </data>
+</root>

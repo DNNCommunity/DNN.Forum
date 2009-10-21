@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="chkActive.Text" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="plGroupName.Text" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="plGroupName.Help" xml:space="preserve">
+    <value>The name of the Forum Group.</value>
+  </data>
+  <data name="plForumCreatorName.Text" xml:space="preserve">
+    <value>Created By</value>
+  </data>
+  <data name="plForumCreatorName.Help" xml:space="preserve">
+    <value>The name of the user who created the forum.</value>
+  </data>
+  <data name="plForumName.Text" xml:space="preserve">
+    <value>Forum Name</value>
+  </data>
+  <data name="plForumName.Help" xml:space="preserve">
+    <value>The name of the forum.</value>
+  </data>
+  <data name="plForumDescription.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="plForumDescription.Help" xml:space="preserve">
+    <value>A brief description of the forum.</value>
+  </data>
+  <data name="plForumType.Text" xml:space="preserve">
+    <value>Forum Type</value>
+  </data>
+  <data name="plForumType.Help" xml:space="preserve">
+    <value>The forum type determines how the forum will function.&lt;br&gt;&lt;b&gt;Normal&lt;/b&gt;&lt;br&gt;Normal Forums allow posting, can be private and/or moderated. This is what should normally be chosen.&lt;br&gt;&lt;b&gt;Notification&lt;/b&gt;&lt;br&gt;Notification forums function exactly as normal forums but also send an email to all users in roles assigned in the permissions grid to receive notifications. Users cannot unsubscribe from these notifications, so use with caution.&lt;br&gt;&lt;b&gt;Link&lt;/b&gt;&lt;br&gt;Link forums redirect users to the designated link assigned by the forum link and usually have no posts or threads. It is possible that a previous forum type was used and the forum does contain threads/posts which are no longer accessible via standard navigation when changed to a link forum. See DotNetNuke forums on the ASP.NET site forums for an example. </value>
+  </data>
+  <data name="plPrivate.Help" xml:space="preserve">
+    <value>If checked, the forum is a private forum and access is restricted to only roles given access via roles checked in Forum Role Access Grid.&lt;br&gt;&lt;b&gt;NOTE:&lt;/b&gt; Module level permissions are still applied meaning restrictions are applied in addition to those set at the module level.</value>
+  </data>
+  <data name="chkPrivate.Text" xml:space="preserve">
+    <value>Inherit &lt;b&gt;View&lt;/b&gt; permissions from &lt;b&gt;Module&lt;/b&gt;</value>
+  </data>
+  <data name="plModerated.Text" xml:space="preserve">
+    <value>Forum is Moderated</value>
+  </data>
+  <data name="plModerated.Help" xml:space="preserve">
+    <value>If checked, the forum is moderated and not a free for all.</value>
+  </data>
+  <data name="plModeratorLookup.Text" xml:space="preserve">
+    <value>Individual Moderators</value>
+  </data>
+  <data name="plModeratorLookup.Help" xml:space="preserve">
+    <value>Name of the moderators.</value>
+  </data>
+  <data name="ModuleHelp.Text" xml:space="preserve">
+    <value>&lt;h1&gt;Forum - Manage Forums&lt;/h1&gt;&lt;p&gt;Forum Groups and Forums can be created and edited here.  A Group must contain at least one Forum prior to users being able to post Threads in that Forum and Group.  The Forum must be enabled as well.&lt;/p&gt;&lt;p&gt;Once a Forum is added to a Group, you can click the edit pencil next to the Forum name to configure it's settings.  A Forums settings allow you to control if the Forum is moderated, who is authorized to view the Forum (Users must be a member of an authorized edit role for this module to have the ability to post anywhere using this module.)  The ability to set a module to private so it can only be seen by specific roles is also controlled here.&lt;/p&gt;</value>
+  </data>
+  <data name="ForumHome.Text" xml:space="preserve">
+    <value>Forum Home</value>
+  </data>
+  <data name="ControlTitle_forumedit.Text" xml:space="preserve">
+    <value>Edit Forum</value>
+  </data>
+  <data name="GeneralInformation.Text" xml:space="preserve">
+    <value>General Information</value>
+  </data>
+  <data name="GeneralSettings.Text" xml:space="preserve">
+    <value>General Settings</value>
+  </data>
+  <data name="plEnableForum.Text" xml:space="preserve">
+    <value>Forum is Enabled</value>
+  </data>
+  <data name="plEnableForum.Help" xml:space="preserve">
+    <value>If checked, the forum is open for viewing to all those who can see it and posting for all those who are permitted to post.</value>
+  </data>
+  <data name="lblForumEdit.Text" xml:space="preserve">
+    <value>Edit Forum</value>
+  </data>
+  <data name="plCreatedDate.Text" xml:space="preserve">
+    <value>Date Created</value>
+  </data>
+  <data name="plCreatedDate.Help" xml:space="preserve">
+    <value>The date this forum was created.&lt;br&gt;(Read Only)</value>
+  </data>
+  <data name="plUpdatedDate.Text" xml:space="preserve">
+    <value>Date Updated</value>
+  </data>
+  <data name="plUpdatedDate.Help" xml:space="preserve">
+    <value>The date this forum was last updated.&lt;br&gt;(Read Only)</value>
+  </data>
+  <data name="plCreatedByUser.Text" xml:space="preserve">
+    <value>Created By User</value>
+  </data>
+  <data name="plCreatedByUser.Help" xml:space="preserve">
+    <value>The user who created the forum.&lt;br&gt;(Read Only)</value>
+  </data>
+  <data name="plUpdatedName.Text" xml:space="preserve">
+    <value>Updated By User</value>
+  </data>
+  <data name="plUpdatedName.Help" xml:space="preserve">
+    <value>The user who updated the forum last.&lt;br&gt;(Read Only)</value>
+  </data>
+  <data name="plForumRoleAccess.Text" xml:space="preserve">
+    <value>Forum Role Access</value>
+  </data>
+  <data name="chkPostRestricted.Text" xml:space="preserve">
+    <value>Inherit &lt;b&gt;Posting Restrictions&lt;/b&gt; permissions from &lt;b&gt;Module View&lt;/b&gt;</value>
+  </data>
+  <data name="plPostRestricted.Help" xml:space="preserve">
+    <value>If checked, the ability to start threads and post replies is restricted to only roles given access via roles checked in Forum Role Access Grid.&lt;br&gt;&lt;b&gt;NOTE:&lt;/b&gt; Module level permissions are still applied meaning restrictions are applied in addition to those set at the module level.</value>
+  </data>
+  <data name="plPostRestricted.Text" xml:space="preserve">
+    <value>Restrict Posting</value>
+  </data>
+  <data name="cmdAddModerator.Text" xml:space="preserve">
+    <value>Add Moderator</value>
+  </data>
+  <data name="plAddAssignedMods.Text" xml:space="preserve">
+    <value>Add Assigned Moderators</value>
+  </data>
+  <data name="plAddAssignedMods.Help" xml:space="preserve">
+    <value>This allows you to assign individual users as moderators</value>
+  </data>
+  <data name="plAssignedModerators.Text" xml:space="preserve">
+    <value>Assigned Moderators</value>
+  </data>
+  <data name="plAssignedModerators.Help" xml:space="preserve">
+    <value>These are individual users currently assigned as moderators of this particular forum.</value>
+  </data>
+  <data name="Administration.Text" xml:space="preserve">
+    <value>Forum Admin</value>
+  </data>
+  <data name="cmdAdd.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="PrivateView.Text" xml:space="preserve">
+    <value>View restricted &lt;b&gt;beyond&lt;/b&gt; Module View Permissions.</value>
+  </data>
+  <data name="NoPrivateView.Text" xml:space="preserve">
+    <value>Inherits Module View Permissions</value>
+  </data>
+  <data name="PostRestriction.Text" xml:space="preserve">
+    <value>Start Thread/Reply restricted &lt;b&gt;beyond&lt;/b&gt; Module Start Thread/Reply Permissions.</value>
+  </data>
+  <data name="NoPostRestriction.Text" xml:space="preserve">
+    <value>Inherits Module Start Thread/Reply Permissions</value>
+  </data>
+  <data name="lblPrivateNote.Text" xml:space="preserve">
+    <value>* Additional permissions only apply if View permissions are enabled for the corresponding role.</value>
+  </data>
+  <data name="plRestricted.Help" xml:space="preserve">
+    <value>&lt;b&gt;Restricted Posting&lt;/b&gt;&lt;br&gt;Permissions to start threads and reply to threads are based on the selected checkboxes in the grid when this checkbox s checked. </value>
+  </data>
+  <data name="plEnableForumsRating.Help" xml:space="preserve">
+    <value>If checked, users will be able to give each thread a rating in this forum.</value>
+  </data>
+  <data name="plEnableForumsRating.Text" xml:space="preserve">
+    <value>Enable Thread Ratings</value>
+  </data>
+  <data name="plEnableForumsThreadStatus.Help" xml:space="preserve">
+    <value>If checked, users will have the option to change the status of a thread.</value>
+  </data>
+  <data name="plEnableForumsThreadStatus.Text" xml:space="preserve">
+    <value>Enable Thread Status</value>
+  </data>
+  <data name="plPrivate.Text" xml:space="preserve">
+    <value>Private</value>
+  </data>
+  <data name="plRestricted.Text" xml:space="preserve">
+    <value>Restricted</value>
+  </data>
+  <data name="plForumPermTemplate.Help" xml:space="preserve">
+    <value>Selecting a forum will reload the permissions for the above grid. Permissions will be copied from forum and applied to all permissions related settings for this forum.</value>
+  </data>
+  <data name="plForumPermTemplate.Text" xml:space="preserve">
+    <value>Load Permissions of Forum</value>
+  </data>
+  <data name="plForumLink.Help" xml:space="preserve">
+    <value>The link the forum should point too.&lt;br&gt;&lt;b&gt;NOTE&lt;/b&gt;&lt;br&gt;Include Full Link w/ http://</value>
+  </data>
+  <data name="plForumLink.Text" xml:space="preserve">
+    <value>Forum Link</value>
+  </data>
+  <data name="plForumBehavior.Help" xml:space="preserve">
+    <value>The way the forum will function for users.</value>
+  </data>
+  <data name="plForumBehavior.Text" xml:space="preserve">
+    <value>Forum Behavior</value>
+  </data>
+  <data name="plAllowPolls.Help" xml:space="preserve">
+    <value>If checked, users who have the ability to start a new thread will be able to attach a poll to the thread which all users who can post in the forum can participate in.</value>
+  </data>
+  <data name="plAllowPolls.Text" xml:space="preserve">
+    <value>Enable Polls</value>
+  </data>
+  <data name="cmdBehavior.Text" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="cmdGeneral.Text" xml:space="preserve">
+    <value>General Settings</value>
+  </data>
+  <data name="None.Text" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="plParentForumName.Help" xml:space="preserve">
+    <value>Select a parent forum, if you want to configure this forum as a subforum.</value>
+  </data>
+  <data name="plParentForumName.Text" xml:space="preserve">
+    <value>Parent Forum</value>
+  </data>
+  <data name="EditForum.Text" xml:space="preserve">
+    <value>Edit Forum</value>
+  </data>
+  <data name="cmdEmail.Text" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="plEmailAddress.Help" xml:space="preserve">
+    <value>The email address that will be displayed for all outgoing emails for this particular forum.</value>
+  </data>
+  <data name="plEmailAddress.Text" xml:space="preserve">
+    <value>Forum "From" Email Address</value>
+  </data>
+  <data name="plEmailAuth.Help" xml:space="preserve">
+    <value />
+  </data>
+  <data name="plEmailAuth.Text" xml:space="preserve">
+    <value>Email Authentication</value>
+  </data>
+  <data name="plEmailEnableSSL.Help" xml:space="preserve">
+    <value>If checked, the account will use SSL when connecting.</value>
+  </data>
+  <data name="plEmailEnableSSL.Text" xml:space="preserve">
+    <value>Enable SSL</value>
+  </data>
+  <data name="plEmailFriendlyFrom.Help" xml:space="preserve">
+    <value>The friendly display name used on outgoing emails sent from this forum.</value>
+  </data>
+  <data name="plEmailFriendlyFrom.Text" xml:space="preserve">
+    <value>Email Display Name</value>
+  </data>
+  <data name="plEmailPass.Help" xml:space="preserve">
+    <value>The password used for the email account.</value>
+  </data>
+  <data name="plEmailPass.Text" xml:space="preserve">
+    <value>Email Password</value>
+  </data>
+  <data name="plEmailServer.Help" xml:space="preserve">
+    <value>The email server to connect to.</value>
+  </data>
+  <data name="plEmailServer.Text" xml:space="preserve">
+    <value>Email Server</value>
+  </data>
+  <data name="plEmailUser.Help" xml:space="preserve">
+    <value>The username of the email account (not necessarily the full email address).</value>
+  </data>
+  <data name="plEmailUser.Text" xml:space="preserve">
+    <value>Email User</value>
+  </data>
+  <data name="valEmailAddy.ErrorMessage" xml:space="preserve">
+    <value>A valid email is required</value>
+  </data>
+  <data name="plEmailStatusChange.Help" xml:space="preserve">
+    <value>If checked, users will receive an email notification when a thread's status changes (so long as they enable this in their user profile). </value>
+  </data>
+  <data name="plEmailStatusChange.Text" xml:space="preserve">
+    <value>Email on Status Change</value>
+  </data>
+  <data name="plEnableRSS.Help" xml:space="preserve">
+    <value>If checked, users will be able to view an RSS feed for the specified forum (as long as it isn't Private).</value>
+  </data>
+  <data name="plEnableRSS.Text" xml:space="preserve">
+    <value>Enable RSS Feed</value>
+  </data>
+  <data name="plNotifyByDefault.Help" xml:space="preserve">
+    <value>If checked, users will be subscribed to the forum notifications unless they chose to opt-out (via Notification Tracking).</value>
+  </data>
+  <data name="plNotifyByDefault.Text" xml:space="preserve">
+    <value>Enable Notification by Default</value>
+  </data>
+  <data name="plEmailPort.Help" xml:space="preserve">
+    <value>The port used to retrieve email from your email provider. </value>
+  </data>
+  <data name="plEmailPort.Text" xml:space="preserve">
+    <value>Email Port</value>
+  </data>
+</root>

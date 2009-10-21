@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="plAuthor.Text" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="plAuthor.Help" xml:space="preserve">
+    <value>The original author of the forum post.</value>
+  </data>
+  <data name="plOriginalMessage.Text" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="plOriginalMessage.Help" xml:space="preserve">
+    <value>The message you are replying to.</value>
+  </data>
+  <data name="plSubject.Text" xml:space="preserve">
+    <value>Subject</value>
+  </data>
+  <data name="plSubject.Help" xml:space="preserve">
+    <value>The subject of the forum post.</value>
+  </data>
+  <data name="plMessage.Text" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="plMessage.Help" xml:space="preserve">
+    <value>The body of the forum post.</value>
+  </data>
+  <data name="plAttachments.Text" xml:space="preserve">
+    <value>Attachments</value>
+  </data>
+  <data name="plAttachments.Help" xml:space="preserve">
+    <value>Add an attachment to this blog entry.</value>
+  </data>
+  <data name="plPinned.Text" xml:space="preserve">
+    <value>Pinned</value>
+  </data>
+  <data name="plPinned.Help" xml:space="preserve">
+    <value>Pin the post at the top of the group.</value>
+  </data>
+  <data name="plNotify.Text" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="plNotify.Help" xml:space="preserve">
+    <value>If checked, emails you when the post has a response.</value>
+  </data>
+  <data name="plClose.Text" xml:space="preserve">
+    <value>Locked</value>
+  </data>
+  <data name="plClose.Help" xml:space="preserve">
+    <value>If checked, post does not permit a response.</value>
+  </data>
+  <data name="plPreview.Text" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="plPreview.Help" xml:space="preserve">
+    <value>A preview of what your new post will look like.</value>
+  </data>
+  <data name="lblPreview.Help" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="lblModerate.Text" xml:space="preserve">
+    <value>Since you posted to a moderated forum, a forum administrator must approve your post before it will become visible.  Please be patient as this process may take anywhere from a few minutes to many hours. Note that you will receive an email when your post is approved</value>
+  </data>
+  <data name="Configuration.Text" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="valSubject.Text" xml:space="preserve">
+    <value>* Required</value>
+  </data>
+  <data name="OriginalPost.Text" xml:space="preserve">
+    <value>Original Post</value>
+  </data>
+  <data name="ControlTitle_postedit.Text" xml:space="preserve">
+    <value>Add/Edit Post</value>
+  </data>
+  <data name="cmdPreview.Text" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="ModuleHelp.Text" xml:space="preserve">
+    <value>&lt;h1&gt;Add/Edit Post&lt;/h1&gt;&lt;p&gt;You can add/edit your forum posting here.  You are required to have a subject for each thread.  The insert image and insert smiley will appear as buttons if this option was enabled by the administrator.  From here is where it is determined if the post is pinned and if there are any attachments with it if enabled by site administrator.</value>
+  </data>
+  <data name="lblPreviewHead.Text" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="cmdBackToForum.Text" xml:space="preserve">
+    <value>Return to Forum</value>
+  </data>
+  <data name="plForum.Help" xml:space="preserve">
+    <value>The forum where your message will be posted.</value>
+  </data>
+  <data name="plForum.Text" xml:space="preserve">
+    <value>Forum</value>
+  </data>
+  <data name="SubjectRequired.Text" xml:space="preserve">
+    <value>You Must Provide a Subject For Your Post</value>
+  </data>
+  <data name="ForumRequired.Text" xml:space="preserve">
+    <value>You Must Select a Forum For Your Post</value>
+  </data>
+  <data name="ForumDenied.Text" xml:space="preserve">
+    <value>You Are Not Permitted to Post in the Specified Forum</value>
+  </data>
+  <data name="plThreadStatus.Help" xml:space="preserve">
+    <value>How you want the thread to be identified. Setting a thread as unresolved allows you to later mark a specific post as the answer. This is beneficial in communities where many threads are question related.</value>
+  </data>
+  <data name="plThreadStatus.Text" xml:space="preserve">
+    <value>Thread Status</value>
+  </data>
+  <data name="cmdReturnToEdit.Text" xml:space="preserve">
+    <value>Return To Edit</value>
+  </data>
+  <data name="cmdSubmit.Text" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="cmdAddAnswer.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="plEndDate.Help" xml:space="preserve">
+    <value>The date the poll will no longer allow new votes.&lt;br&gt;&lt;b&gt;NOTE&lt;/b&gt;&lt;br&gt;No value allows the poll to go on forever.</value>
+  </data>
+  <data name="plEndDate.Text" xml:space="preserve">
+    <value>End Date</value>
+  </data>
+  <data name="plQuestion.Help" xml:space="preserve">
+    <value>The topic of the poll.</value>
+  </data>
+  <data name="plQuestion.Text" xml:space="preserve">
+    <value>Question</value>
+  </data>
+  <data name="plShowResults.Help" xml:space="preserve">
+    <value>If checked, users will be able to view results of the poll once they have voted.</value>
+  </data>
+  <data name="plShowResults.Text" xml:space="preserve">
+    <value>Show Users Results</value>
+  </data>
+  <data name="plTakenMessage.Help" xml:space="preserve">
+    <value>The message that will be displayed to users if they have already voted in the poll.</value>
+  </data>
+  <data name="plTakenMessage.Text" xml:space="preserve">
+    <value>Thank You Message</value>
+  </data>
+  <data name="shPoll.Text" xml:space="preserve">
+    <value>Poll</value>
+  </data>
+  <data name="Answer.Header" xml:space="preserve">
+    <value>Answer</value>
+  </data>
+  <data name="cmdCalEndDate.Text" xml:space="preserve">
+    <value>Invoke Calendar</value>
+  </data>
+  <data name="Dn.Header" xml:space="preserve">
+    <value>Down</value>
+  </data>
+  <data name="Up.Header" xml:space="preserve">
+    <value>Up</value>
+  </data>
+  <data name="plAnswers.Help" xml:space="preserve">
+    <value>The answers available as options for the poll.</value>
+  </data>
+  <data name="plAnswers.Text" xml:space="preserve">
+    <value>Answers</value>
+  </data>
+  <data name="Del.Header" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="plNewAnswer.Help" xml:space="preserve">
+    <value>Type an answer into the textbox to the right and click the add button next to it to add an option to your poll.&lt;br&gt;&lt;b&gt;NOTE&lt;/b&gt;&lt;br&gt;All polls must have at least two answers or they will be invalid. Also, if you wish to remove a poll please change the status or delete the answers.</value>
+  </data>
+  <data name="plNewAnswer.Text" xml:space="preserve">
+    <value>Add Answers</value>
+  </data>
+  <data name="lblNoAnswer.Text" xml:space="preserve">
+    <value>Invalid Answer</value>
+  </data>
+  <data name="lblMoreAnswers.Text" xml:space="preserve">
+    <value>Multiple answers required!</value>
+  </data>
+  <data name="DefaultNewPoll.Text" xml:space="preserve">
+    <value>New Poll Subject</value>
+  </data>
+  <data name="DefaultTakenMsg.Text" xml:space="preserve">
+    <value>Thank you for participating!</value>
+  </data>
+  <data name="BodyRequired.Text" xml:space="preserve">
+    <value>Body text for the post is required. </value>
+  </data>
+  <data name="PostEditWindowError.Text" xml:space="preserve">
+    <value>You are only allowed to edit your post within {0} minutes after the post was created. The post is now locked and can only be edited by a forum administrator or moderator.</value>
+  </data>
+  <data name="plEmoticon.Help" xml:space="preserve">
+    <value>You can add emoticons to your post by clicking the individual emoticons. Use the 'Show All' link to get the complete list of available emoticons and their corresponding codes.</value>
+  </data>
+  <data name="plEmoticon.Text" xml:space="preserve">
+    <value>Emoticons</value>
+  </data>
+  <data name="lblPostHeader.Text" xml:space="preserve">
+    <value>Forum Post</value>
+  </data>
+  <data name="lblPostReplyHeader.Text" xml:space="preserve">
+    <value>Replying to</value>
+  </data>
+  <data name="lblPostPollHeader.Text" xml:space="preserve">
+    <value>Poll</value>
+  </data>
+  <data name="ReplyToToolTip.Text" xml:space="preserve">
+    <value>The Author of the post you are replying</value>
+  </data>
+</root>

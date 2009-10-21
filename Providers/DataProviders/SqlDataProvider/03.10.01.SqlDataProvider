@@ -1,0 +1,120 @@
+﻿
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_ModeratorAdd') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Forum_ModeratorAdd
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_ModeratorGet') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Forum_ModeratorGet
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_ModeratorGetByForum') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Forum_ModeratorGetByForum
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_ModeratorUpdate') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Forum_ModeratorUpdate
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_ModeratorUpdate') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Forum_ModeratorUpdate
+GO
+
+/* [Forum_Users] */
+
+ALTER TABLE {databaseOwner}{objectQualifier}Forum_Users ADD
+[EnableModNotification] [bit] NOT NULL CONSTRAINT [DF_{objectQualifier}Forum_Users_EnableModNotification] DEFAULT (1)
+GO
+
+
+/*  Forum_Moderators */
+
+ALTER TABLE {databaseOwner}{objectQualifier}Forum_Moderators DROP
+COLUMN [EmailNotification]
+GO
+
+
+
+/* Forum_ModeratorAdd */
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Forum_ModeratorAdd
+(
+@ForumID int, 
+@UserID int
+)
+
+AS
+
+IF NOT EXISTS(SELECT ForumID FROM {objectQualifier}Forum_Moderators (nolock) WHERE ForumID = @ForumID AND UserID = @UserID)
+
+BEGIN
+	INSERT INTO 
+		{objectQualifier}Forum_Moderators
+		(
+		[ForumID],
+		[UserID],
+		[AssignedDate]					
+		)
+	VALUES 
+		(			
+		@ForumID,
+		@UserID,
+		GetDate()			
+		)	
+	-- new moderator will be trusted
+	UPDATE 
+		{objectQualifier}Forum_Users
+	SET
+		[IsTrusted] = 1
+	WHERE 
+		[UserID] = @UserID	
+END
+GO
+
+
+/* [Forum_ModeratorGet] */
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Forum_ModeratorGet
+(
+	@ForumID int, 
+	@UserID int
+)
+AS
+-- get a moderator
+SELECT 
+	UR.*,		
+	FUR.*,
+	FM.[AssignedDate], 
+	FM.[PostsModerated]
+FROM 
+	{objectQualifier}Forum_Moderators FM (nolock), {objectQualifier}Users UR (nolock), {objectQualifier}Forum_Users FUR (nolock)
+WHERE 
+	UR.[UserID] = FUR.[UserID] AND
+	FUR.[UserID] = FM.[UserID] AND
+	FM.[UserID] = @UserID AND
+	FM.[ForumID] = @ForumID
+GO
+
+
+/* Forum_ModeratorGetByForum */
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Forum_ModeratorGetByForum
+(
+@ForumID int
+)
+AS
+SELECT 
+	UR.*,		
+	FUR.*,
+	FM.[AssignedDate], 
+	FM.[PostsModerated]
+FROM 
+	{objectQualifier}Forum_Moderators FM (nolock), {objectQualifier}Users UR (nolock), {objectQualifier}Forum_Users FUR (nolock)
+WHERE 
+	UR.[UserID] = FUR.[UserID] AND
+	FUR.[UserID] = FM.[UserID] AND	
+	FM.[ForumID] = @ForumID
+GO
+
+
+
+
+

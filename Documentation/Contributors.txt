@@ -1,0 +1,19 @@
+Third Party Acknowledgements
+==============================================================================
+
+
+Tam Tran Minh (http://www.tttcompany.com)
+- Original module author 
+
+Chris Paterra & Bryan Andrews (http://www.apptheory.com)
+- DotNetNuke Core Integration and functionality
+
+Joe Brinkman & Dan Caron
+- Module changes prior to Core integration.
+
+Inspired by Riverview Forums and ASP.NET Forums
+
+Project Team:
+Chris Paterra
+Rob Poretti
+Matthias Schlomann

@@ -1,0 +1,52 @@
+﻿	if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_BlogArchiveGetDate') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}Forum_BlogArchiveGetDate
+	GO
+	
+	if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_BlogGet') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}Forum_BlogGet
+	GO
+	
+	if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_BlogGetAll') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}Forum_BlogGetAll
+	GO
+
+	if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_BlogGetArchive') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}Forum_BlogGetArchive
+	GO
+
+	if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_BlogGetByCategory') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}Forum_BlogGetByCategory
+	GO
+
+	if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_BlogGetByModule') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}Forum_BlogGetByModule
+	GO
+
+	if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_BlogGetBySubCategory') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}Forum_BlogGetBySubCategory
+	GO
+
+	if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_BlogGetCount') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}Forum_BlogGetCount
+	GO
+
+	if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_BlogSearch') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}Forum_BlogSearch
+	GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}Forum_ForumEnableUpdate
+(
+@ForumID int, 
+@Enable bit
+)
+
+AS
+
+UPDATE 
+{objectQualifier}Forum_Forums
+SET
+IsActive = @Enable
+WHERE
+ForumID = @ForumID
+GO
+

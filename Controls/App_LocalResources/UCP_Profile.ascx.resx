@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="plUserName.Text" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="plUserName.Help" xml:space="preserve">
+    <value>User's DNN username.&lt;br&gt;(Read Only)&lt;br&gt;To modify, use the link to edit your Account profile for this site.
+ </value>
+  </data>
+  <data name="plWebsite.Text" xml:space="preserve">
+    <value>Website</value>
+  </data>
+  <data name="plWebsite.Help" xml:space="preserve">
+    <value>User's website address.&lt;br&gt;(Read Only)&lt;br&gt;To modify, use the link to edit your Account profile for this site.</value>
+  </data>
+  <data name="plEmail.Text" xml:space="preserve">
+    <value>Display Email Address</value>
+  </data>
+  <data name="plEmail.Help" xml:space="preserve">
+    <value>If checked, users will be able to view the email address in the user profile screen.</value>
+  </data>
+  <data name="plMSN.Text" xml:space="preserve">
+    <value>MSN</value>
+  </data>
+  <data name="plMSN.Help" xml:space="preserve">
+    <value>MSN IM contact information.</value>
+  </data>
+  <data name="plYahoo.Text" xml:space="preserve">
+    <value>Yahoo</value>
+  </data>
+  <data name="plYahoo.Help" xml:space="preserve">
+    <value>Yahoo IM contact information.</value>
+  </data>
+  <data name="plAIM.Text" xml:space="preserve">
+    <value>AIM</value>
+  </data>
+  <data name="plAIM.Help" xml:space="preserve">
+    <value>AOL IM contact information.</value>
+  </data>
+  <data name="plICQ.Text" xml:space="preserve">
+    <value>ICQ</value>
+  </data>
+  <data name="plICQ.Help" xml:space="preserve">
+    <value>ICQ IM contact information.</value>
+  </data>
+  <data name="plOccupation.Text" xml:space="preserve">
+    <value>Occupation</value>
+  </data>
+  <data name="plOccupation.Help" xml:space="preserve">
+    <value>Your occupation.</value>
+  </data>
+  <data name="plInterests.Text" xml:space="preserve">
+    <value>Interests</value>
+  </data>
+  <data name="plInterests.Help" xml:space="preserve">
+    <value>Your personal interests.</value>
+  </data>
+  <data name="dlSkin.Text" xml:space="preserve">
+    <value>Skin</value>
+  </data>
+  <data name="dlSkin.Help" xml:space="preserve">
+    <value>Your skin preference.</value>
+  </data>
+  <data name="dlCollapseGroups.Text" xml:space="preserve">
+    <value>Group View</value>
+  </data>
+  <data name="dlCollapseGroups.Help" xml:space="preserve">
+    <value>Your preference for how you see groups when you come to the forum.&lt;br&gt;This will determine if groups are expanded/collapsed when you view them.</value>
+  </data>
+  <data name="plOnlineStatus.Text" xml:space="preserve">
+    <value>Display Online Status</value>
+  </data>
+  <data name="plOnlineStatus.Help" xml:space="preserve">
+    <value>Display your forum online status.</value>
+  </data>
+  <data name="plIsTrusted.Text" xml:space="preserve">
+    <value>Trusted User</value>
+  </data>
+  <data name="plIsTrusted.Help" xml:space="preserve">
+    <value>If checked, the users posts will not be moderated.</value>
+  </data>
+  <data name="ModuleHelp.Text" xml:space="preserve">
+    <value>&lt;h1&gt;Forum - User Settings&lt;/h1&gt;&lt;p&gt;You can manage your forum preference details.  This area is broken down into sections.&lt;/p&gt;&lt;p&gt;&lt;li&gt;&lt;b&gt;General Information&lt;/b&gt;&lt;br&gt;These are taken from site user data. All properties in this section are read only except the abililty to toggle on/off the option of showing your email address to other users of these forums.&lt;/li&gt;&lt;br&gt;&lt;li&gt;&lt;b&gt;User Profile&lt;/b&gt;&lt;br&gt;This area holds more personal details about the user.  This is available for users to extend contact information and inform other users a little bit about them.&lt;/li&gt;&lt;br&gt;&lt;li&gt;&lt;b&gt;User Settings&lt;/b&gt;&lt;br&gt;This section allows you to change how you view these forums and a place to add a signature to all your posts.&lt;/li&gt;&lt;br&gt;&lt;li&gt;&lt;b&gt;Tracking/Subscription&lt;/b&gt;&lt;br&gt;This section allows you to change what forums you are subscribed to.  Your What's New options are also controlled here.&lt;/li&gt;&lt;br&gt;&lt;li&gt;&lt;b&gt;Admin Settings&lt;/b&gt;&lt;br&gt;Administrators can change options specific to a user here, such as making them a moderator or attaching an avatar to their profile.&lt;/li&gt;&lt;br&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="plDisplayName.Help" xml:space="preserve">
+    <value>The alias shown to other users of this module. (Either Display Name or Username depending on module settings)</value>
+  </data>
+  <data name="plDisplayName.Text" xml:space="preserve">
+    <value>Site Alias</value>
+  </data>
+  <data name="plIsBanned.Help" xml:space="preserve">
+    <value>If checked, the user is banned from posting.</value>
+  </data>
+  <data name="plIsBanned.Text" xml:space="preserve">
+    <value>User Banned</value>
+  </data>
+  <data name="plLockTrust.Help" xml:space="preserve">
+    <value>If checked, the user's trust status is only changeable via a module administrator.</value>
+  </data>
+  <data name="plLockTrust.Text" xml:space="preserve">
+    <value>Lock Trust</value>
+  </data>
+  <data name="plUserID.Help" xml:space="preserve">
+    <value>The user's unique identifier.</value>
+  </data>
+  <data name="plUserID.Text" xml:space="preserve">
+    <value>UserID</value>
+  </data>
+  <data name="plEnableProfileWeb.Help" xml:space="preserve">
+    <value>If checked, the user's website address will be displayed in all post and profile views within the forum module. </value>
+  </data>
+  <data name="plEnableProfileWeb.Text" xml:space="preserve">
+    <value>Display Website</value>
+  </data>
+  <data name="Title.Text" xml:space="preserve">
+    <value>Edit Profile</value>
+  </data>
+  <data name="lblUpdateDone.Text" xml:space="preserve">
+    <value>Updated Successfully!</value>
+  </data>
+  <data name="plBiography.Help" xml:space="preserve">
+    <value>A little bit about you.</value>
+  </data>
+  <data name="plBiography.Text" xml:space="preserve">
+    <value>Biography</value>
+  </data>
+  <data name="plEnableProfileRegion.Help" xml:space="preserve">
+    <value>If checked, the user's region will be displayed to other users viewing this profile.</value>
+  </data>
+  <data name="plEnableProfileRegion.Text" xml:space="preserve">
+    <value>Enable Region</value>
+  </data>
+  <data name="cmdCalBanDate.Text" xml:space="preserve">
+    <value>Calendar</value>
+  </data>
+  <data name="plLiftBanDate.Help" xml:space="preserve">
+    <value>The date that the user will no longer be banned from posting in the forums for this portal.</value>
+  </data>
+  <data name="plLiftBanDate.Text" xml:space="preserve">
+    <value>Banned Period Ends</value>
+  </data>
+</root>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+
+<project name="DotNetNuke.SubProject" default="go">
+
+		<property name="nant.settings.currentframework" value="net-2.0" />
+		<property name="project.name" value="" />
+		<property name="project.version" value="" />  
+		
+		<property name="project.configuration" value="release" />  
+		
+		<property name="vault.executable" value="c:\program files\sourcegear\vault client\vault.exe"/>
+             
+        <property name="vault.repository" value="DotNetNuke_Core"/>
+        <property name="vault.folderpath" value="DotNetNuke_Core"/>
+        <property name="vault.hosturl" value="source.dotnetnuke.us"/>
+
+       <target name="updateDNN">
+              <ifnot propertyexists="vault.executable">
+                     <fail message="vault.executable property not set, so can't update" />
+              </ifnot>
+              <echo message="Vault Executable at [${vault.executable}]" />
+              <exec basedir="." program="${vault.executable}" commandline="GET $/${vault.folderpath} -host ${vault.hosturl} -username ${vault.username} -password ${vault.password} -repository &quot;${vault.repository}&quot; -destpath ..\..\"/>
+       </target>
+       
+
+       <target name="build">
+       		<solution solutionfile="..\..\Solutions\DotNetNuke.All\DotNetNuke.All.sln" configuration="${project.configuration}">	 
+				<webmap>  				
+					<map url="http://localhost/DotNetNuke/DotNetNuke.vbproj" path="..\..\DotNetNuke.vbproj" />					
+				</webmap> 		
+			</solution>
+			
+			<solution solutionfile="${subproject.solution}" configuration="${project.configuration}">	 
+				<webmap>  				
+					<map url="http://localhost/DotNetNuke/DotNetNuke.vbproj" path="..\..\DotNetNuke.vbproj" />					
+				</webmap> 		
+			</solution>
+       </target>
+
+</project>
