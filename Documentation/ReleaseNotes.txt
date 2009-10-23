@@ -1,16 +1,23 @@
 Forum 4.5.5
 
+ FOR-10459 Decimal/Comma Index Date Issue corrected. XXXXXX
+FOR-10505 Z-Index issue for contorl panels corrected for default core skin.
 FOR-10507 Fixed uninstall issues (added if exists checks).
 FOR-10690 Updated manifest file and module for 5.1.1 core or greater. 
 FOR-10691 Removed IUpgradeable usage for custom permissions, offloaded to .dnn manifest file. 
 FOR-10692 Duplicated PortalSettings Class for scheduled tasks (for when no HttpContext is present)
 FOR-10693 Refactored module so posting is completely abstracted and no longer dependent on HttpContext.
 FOR-10694 Ratings Enable/Disable not saving issue corrected.
+ FOR-10695 Fixed PM SQL Subquery bug. XXXXXX
+ FOR-10696 Fixed Role Avatar caching problem.  XXXXXX
+ FOR-10697 Fixed avatar pool not working properly. XXXXXX
 FOR-10698 Fixed disabling user avatar also disabled system avatar. 
-
-FOR-10700 Fixed Attachment Upload Message Incomplete.  
-FOR-10701 Avatar Pool Button: Not Showing Text Properly.
 FOR-10699 Fixed Posting a reply problem in forums with posting restrictions.
-FOR-10697 Fixed avatar pool not working properly.
-FOR-10696 Fixed Role Avatar caching problem. 
-FOR-10695 Fixed PM SQL Subquery bug. 
+FOR-10700 Fixed Attachment Upload Message Incomplete.  
+ FOR-10701 Avatar Pool Button: Not Showing Text Properly. XXXXXX
+FOR-10770 Umlaut usage (Html Encoding) in Aggregate Subject corrected.
+FOR-10780 Display Name not rendered properly in Post Report corrected.
+FOR-10786 ACP/MCP/UCP Forum Home link moved to bottom center, removed from menu (usability reasons). 
+FOR-10815 Enable Role Avatar spelling errors corrected.
+FOR-10816 Pool Avatar Path spelling errors corrected.
+FOR-10845 Quote Post using single <div> tag corrected.
