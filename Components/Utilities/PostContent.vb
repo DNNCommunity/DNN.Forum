@@ -633,10 +633,8 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 			If objConfig.DisableHTMLPosting = True Then
 				sb.Append("[quote=""" & parentPoster & """]" & mText & "[/quote]")
 			Else
-				sb.Append( _
-						 "<div class=""Quote""><em>" & parentPoster & " " & _
-						 Localization.GetString("ForumTextWrote.Text", objConfig.SharedResourceFile).Trim() & ":</em><br/>" & _
-						 mText & "</div>")
+				sb.Append("<div class=""Quote""><em>" & parentPoster & " " & Localization.GetString("ForumTextWrote.Text", objConfig.SharedResourceFile).Trim() & ":</em><br/>" & mText & "</div>")
+				sb.Append("<div></div>")
 			End If
 
 			mText = sb.ToString()
@@ -752,5 +750,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		End Class
 
 #End Region
+
 	End Class
+
 End Namespace

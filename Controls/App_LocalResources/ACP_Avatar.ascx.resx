@@ -139,7 +139,7 @@
     <value>Enable Avatar Pool</value>
   </data>
   <data name="plEnableRoleAvatar.Help" xml:space="preserve">
-    <value>If checked, you can assign avartars based on roles. The avatars will be placed in the SystemAvatar folder and will share the same size limitations.</value>
+    <value>If checked, you can assign avatars based on roles. The avatars will be placed in the Role Avatar Path folder and will not have size limitations because only forum administrators can upload them.</value>
   </data>
   <data name="plEnableRoleAvatar.Text" xml:space="preserve">
     <value>Enable Role Avatar</value>
@@ -199,7 +199,7 @@
     <value>The pole avatar path is located in the &lt;strong&gt;portal root directory&lt;/strong&gt;.&lt;br&gt;ie. domain.com/Portals/0/</value>
   </data>
   <data name="plUserAvatarPoolPath.Text" xml:space="preserve">
-    <value>Pole Avatar Path</value>
+    <value>Pool Avatar Path</value>
   </data>
   <data name="Update.Text" xml:space="preserve">
     <value>Update</value>

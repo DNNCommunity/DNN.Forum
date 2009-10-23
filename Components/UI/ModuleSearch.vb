@@ -786,9 +786,9 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 
 				If objConfig.FilterSubject Then
-					wr.Write(HttpUtility.HtmlEncode(Utilities.ForumUtils.FormatProhibitedWord(SearchItem.Subject, SearchItem.CreatedDate, PortalID)))
+					wr.Write(Utilities.ForumUtils.FormatProhibitedWord(SearchItem.Subject, SearchItem.CreatedDate, PortalID))
 				Else
-					wr.Write(HttpUtility.HtmlEncode(SearchItem.Subject))
+					wr.Write(SearchItem.Subject)
 				End If
 				wr.RenderEndTag() ' </A>
 

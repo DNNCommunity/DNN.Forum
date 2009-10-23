@@ -774,10 +774,14 @@ Namespace DotNetNuke.Modules.Forum
 					strUrl = "<a href=""" & Link & """>"
 				Else
 					'External Link, add target=blank and nofollow
-					If Link.ToLower.StartsWith("http") = False Then
+					If (Link.ToLower.StartsWith("http") = False) And (Link.ToLower.StartsWith("mailto:") = False) And (Link.ToLower.StartsWith("news:") = False) And (Link.ToLower.StartsWith("ftp:") = False) Then
 						Link = "http://" & Link
 					End If
-					strUrl = "<a href=""" & Link & """ target=""_blank"" rel=""nofollow"">"
+					If Link.ToLower.StartsWith("mailto:") = False Then
+						strUrl = "<a href=""" & Link & """ target=""_blank"" rel=""nofollow"">"
+					Else
+						strUrl = "<a href=""" & Link & """>"
+					End If
 				End If
 
 				'Now for the length of the link name
