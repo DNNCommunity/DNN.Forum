@@ -536,10 +536,6 @@ Namespace DotNetNuke.Modules.Forum
 			SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & _moduleDataPrefix & "UserViewUpdate", UserId, FlatView, ViewDescending)
 		End Sub
 
-		Public Overrides Sub ForumUserViewsUpdate(ByVal UserID As Integer, ByVal ForumID As Integer)
-			SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & _moduleDataPrefix & "ForumUserViewsUpdate", UserID, ForumID)
-		End Sub
-
 #Region "Banning"
 
 		Public Overrides Function GetBannedUsers(ByVal PortalID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
@@ -547,7 +543,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Function
 
 #End Region
-
 
 #Region "Not Implemented"
 

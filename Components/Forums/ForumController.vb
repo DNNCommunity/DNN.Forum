@@ -219,16 +219,6 @@ Namespace DotNetNuke.Modules.Forum
 			ClearCache_ForumGetAll(ParentID, GroupID)
 		End Sub
 
-		''' <summary>
-		''' Updates a user's "Forum Read Status". The read status determines if a forum should show "Has New Posts", which affects the UI.
-		''' </summary>
-		''' <param name="UserID">The UserID to update view status for.</param>
-		''' <param name="ForumID">The ForumID to update the view status for.</param>
-		''' <remarks></remarks>
-		Public Sub ForumUserViewsUpdate(ByVal UserID As Integer, ByVal ForumID As Integer)
-			DotNetNuke.Modules.Forum.DataProvider.Instance().ForumUserViewsUpdate(UserID, ForumID)
-		End Sub
-
 #End Region
 
 #Region "Private Hydration Methods"
