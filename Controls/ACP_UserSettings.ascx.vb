@@ -100,6 +100,10 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			SetVisibleItems()
 		End Sub
 
+		Protected Sub chkEnableExtProfilePage_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkEnableExtProfilePage.CheckedChanged
+
+		End Sub
+
 #End Region
 
 #Region "Private Methods"

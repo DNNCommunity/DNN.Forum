@@ -1,5 +1,10 @@
 <%@ Control language="vb" CodeBehind="ACP_UserSettings.ascx.vb" AutoEventWireup="false" Explicit="true" Inherits="DotNetNuke.Modules.Forum.ACP.UserSettings" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
+<style type="text/css">
+	.style1 {
+		height: 21px;
+	}
+</style>
 <table cellpadding="0" cellspacing="0" width="100%" border="0">
 	<tr>
 		<td class="Forum_UCP_Header">
@@ -81,10 +86,10 @@
 					</td>
 			     </tr>
                     <tr id="rowHideModEdit" runat="server" visible="False">
-                         <td class="Forum_Row_AdminL" width="35%">
+                         <td class="style1" width="35%">
                               <dnn:label id="plHideModEdit" runat="server" Suffix=":" controlname="chkHideModEdit"></dnn:label>
                          </td>
-                         <td align="left" class="Forum_Row_AdminR" valign="middle">
+                         <td align="left" class="style1" valign="middle">
                               <asp:checkbox id="chkHideModEdit" runat="server" CssClass="Forum_NormalTextBox" />
                          </td>
                     </tr>
@@ -96,6 +101,42 @@
 					</td>
 				     <td class="Forum_Row_AdminR" valign="middle" align="left">
 					     <asp:checkbox id="chkEnableUserBanning" runat="server" CssClass="Forum_NormalTextBox" />
+					</td>
+			     </tr>
+			     <tr>
+				     <td class="Forum_Row_AdminL" width="35%">
+				          <span class="Forum_Row_AdminText">
+						     <dnn:label id="plEnableExtProfilePage" runat="server" Suffix=":" 
+							controlname="chkEnableExtProfilePage"></dnn:label>
+					     </span>
+					</td>
+				     <td class="Forum_Row_AdminR" valign="middle" align="left">
+                              <asp:checkbox id="chkEnableExtProfilePage" runat="server" 
+							CssClass="Forum_NormalTextBox" AutoPostBack="True" />
+					</td>
+			     </tr>
+			     <tr id="rowExtProfilePageID" runat="server">
+				     <td class="Forum_Row_AdminL" width="35%">
+				          <span class="Forum_Row_AdminText">
+						     <dnn:label id="plExtProfilePageID" runat="server" Suffix=":" 
+							controlname="ddlExtProfilePageID"></dnn:label>
+					     </span>
+					</td>
+				     <td class="Forum_Row_AdminR" valign="middle" align="left">
+                              <asp:dropdownlist id="ddlExtProfilePageID" runat="server" 
+							cssclass="Forum_NormalTextBox" width="250px" />
+					</td>
+			     </tr>
+			     <tr id="rowExtProfileUserParam" runat="server">
+				     <td class="Forum_Row_AdminL" width="35%">
+				          <span class="Forum_Row_AdminText">
+						     <dnn:label id="plExtProfileUserParam" runat="server" Suffix=":" 
+							controlname="txtExtProfileUserParam"></dnn:label>
+					     </span>
+					</td>
+				     <td class="Forum_Row_AdminR" valign="middle" align="left">
+					     <asp:TextBox id="txtExtProfileUserParam" runat="server" 
+							CssClass="Forum_NormalTextBox" />
 					</td>
 			     </tr>
 		     </table>
