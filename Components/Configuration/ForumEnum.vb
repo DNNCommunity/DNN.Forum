@@ -778,6 +778,7 @@ Namespace DotNetNuke.Modules.Forum
 		None = 0
 		UserAvatar = 1
 		PoolAvatar = 2
+		ProfileAvatar = 3
 	End Enum
 
 	''' <summary>

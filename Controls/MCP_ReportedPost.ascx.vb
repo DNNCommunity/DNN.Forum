@@ -74,7 +74,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 			hl.Text = dataItem.ParentThread.HostForum.Name
 
 			hl = CType(e.Item.FindControl("hlPostAuthor"), HyperLink)
-			hl.NavigateUrl = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, dataItem.UserID)
+			hl.NavigateUrl = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, dataItem.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage)
 			hl.Text = dataItem.Author.SiteAlias
 
 			hl = CType(e.Item.FindControl("lblReportedDate"), HyperLink)
@@ -145,7 +145,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 			End If
 
 			hl = CType(e.Item.FindControl("hlUser"), HyperLink)
-			hl.NavigateUrl = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, dataItem.UserID)
+			hl.NavigateUrl = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, dataItem.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage)
 			hl.Text = dataItem.Author(ModuleId, PortalId).SiteAlias
 
 			hl = CType(e.Item.FindControl("lblReportedDate"), HyperLink)

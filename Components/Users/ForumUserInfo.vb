@@ -221,16 +221,23 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property AvatarComplete() As String
 			Get
-				If _Avatar.Trim(";"c) <> String.Empty Then
-					'[skeel] RETURN!! need to add none here as well, as UserAvatar has not been used before, 
-					'even if it was there - eventually it has to go..
-					If _UserAvatar = UserAvatarType.UserAvatar Or _UserAvatar = UserAvatarType.None Then
-						_AvatarComplete = objConfig.CurrentPortalSettings.HomeDirectory + objConfig.UserAvatarPath + _Avatar.Trim(";"c)
-					ElseIf _UserAvatar = UserAvatarType.PoolAvatar Then
-						_AvatarComplete = objConfig.CurrentPortalSettings.HomeDirectory + objConfig.UserAvatarPoolPath + _Avatar.Trim(";"c)
+				If objConfig.EnableProfileAvatar Then
+					If Not ProfileAvatar.Trim = String.Empty Then
+						_AvatarComplete = objConfig.CurrentPortalSettings.HomeDirectory + objConfig.UserAvatarPath + ProfileAvatar
+					Else
+						_AvatarComplete = String.Empty
+					End If
+				Else
+					If _Avatar.Trim(";"c) <> String.Empty Then
+						'[skeel] RETURN!! need to add none here as well, as UserAvatar has not been used before, 
+						'even if it was there - eventually it has to go..
+						If _UserAvatar = UserAvatarType.UserAvatar Or _UserAvatar = UserAvatarType.None Then
+							_AvatarComplete = objConfig.CurrentPortalSettings.HomeDirectory + objConfig.UserAvatarPath + _Avatar.Trim(";"c)
+						ElseIf _UserAvatar = UserAvatarType.PoolAvatar Then
+							_AvatarComplete = objConfig.CurrentPortalSettings.HomeDirectory + objConfig.UserAvatarPoolPath + _Avatar.Trim(";"c)
+						End If
 					End If
 				End If
-
 				Return _AvatarComplete
 			End Get
 		End Property
@@ -381,6 +388,13 @@ Namespace DotNetNuke.Modules.Forum
 			Set(ByVal Value As String)
 				_Avatar = Value
 			End Set
+		End Property
+
+		Public ReadOnly Property ProfileAvatar() As String
+			Get
+				' we are using profile avatars, lets check for the property value
+				Return Me.Profile.GetPropertyValue(objConfig.AvatarProfilePropName)
+			End Get
 		End Property
 
 		''' <summary>

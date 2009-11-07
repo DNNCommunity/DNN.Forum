@@ -965,6 +965,7 @@
     <Content Include="Controls\UCP_Bookmark.ascx" />
     <Content Include="Controls\UCP_Signature.ascx" />
     <Content Include="Controls\UCP_Tracking.ascx" />
+    <Content Include="Documentation\ReleaseNotes.txt" />
     <Content Include="js\emoticon.js" />
     <Content Include="MCP.ascx" />
     <Content Include="PM_Thread.ascx" />

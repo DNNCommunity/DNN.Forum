@@ -1100,7 +1100,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 			End If
 
 			If objConfig.EnableMemberList And mLoggedOnUserID > 0 Then
-				Actions.Add(ModBase.GetNextActionID, Services.Localization.Localization.GetString("MemberList.Text", ModBase.LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", Utilities.Links.MemberListLink(ModBase.TabId, ModBase.ModuleId), False, SecurityAccessLevel.View, True, False)
+				Actions.Add(ModBase.GetNextActionID, Services.Localization.Localization.GetString("MemberList.Text", ModBase.LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", Utilities.Links.MemberListLink(ModBase.TabId, ModBase.ModuleId, objConfig.EnableExternalDirectory, objConfig.ExternalDirectoryParamName, objConfig.ExternalDirectoryParamValue, objConfig.ExternalDirectoryPage), False, SecurityAccessLevel.View, True, False)
 			End If
 
 			If mLoggedOnUserID > 0 Then

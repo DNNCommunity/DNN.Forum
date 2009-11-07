@@ -397,14 +397,14 @@ Namespace DotNetNuke.Modules.Forum
 
 			hl = CType(e.Item.FindControl("lblAlias"), HyperLink)
 			hl.Text = objFromUser.SiteAlias
-			hl.NavigateUrl = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, objFromUser.UserID)
+			hl.NavigateUrl = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, objFromUser.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage)
 
 			lbl = CType(e.Item.FindControl("lblPMSubject"), Label)
 			lbl.Text = dataItem.Subject
 
 			hl = CType(e.Item.FindControl("hlToUser"), HyperLink)
 			hl.Text = objToUser.SiteAlias
-			hl.NavigateUrl = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, objToUser.UserID)
+			hl.NavigateUrl = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, objToUser.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage)
 
 			lbl = CType(e.Item.FindControl("lblUserJoinedDate"), Label)
 			Dim JoinedDate As DateTime = Utilities.ForumUtils.ConvertTimeZone(objFromUser.UserJoinedDate, ForumConfig)

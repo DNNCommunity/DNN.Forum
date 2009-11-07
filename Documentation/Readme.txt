@@ -19,6 +19,12 @@ Main Notes:
 ** NOTE: Requires Visual Studio 2005 and the web application projects plugin (or vs 2005 SP 1), Visual Studio 2008 (if 2008 Express version, must have SP 1) in order to develop the module. 
 
 CHANGES WHICH ARE COMING AND WILL AFFECT A FUTURE RELEASE (To Do):
+- FOR-10459 - Decimal/Comma Index Date Issue corrected. 
+- FOR-10695 - Fixed PM SQL Subquery bug. 
+- FOR-10696 - Fixed Role Avatar caching problem.  
+- FOR-10697 - Fixed avatar pool not working properly. 
+- FOR-10701 - Avatar Pool Button: Not Showing Text Properly. 
+- FOR-11023 - Added support for external private messaging. 
 - FOR-XXXX - DNN Core versions prior to 5.1 or possibly greater will no longer be supported - next major release
 - FOR-XXXX - Support for Visual Studio 2005 will be dropped - next major release
 - FOR-XXXX - Support for SQL Server 2000 will be dropped

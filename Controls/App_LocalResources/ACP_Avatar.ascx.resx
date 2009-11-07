@@ -204,4 +204,16 @@
   <data name="Update.Text" xml:space="preserve">
     <value>Update</value>
   </data>
+  <data name="plEnableProfileAvatar.Help" xml:space="preserve">
+    <value>If checked, the system looks for avatars uploaded to the user's core profile.</value>
+  </data>
+  <data name="plEnableProfileAvatar.Text" xml:space="preserve">
+    <value>Enable Profile Avatar</value>
+  </data>
+  <data name="plProfileAvatarPropertyName.Help" xml:space="preserve">
+    <value>Select the profile property associated with user avatar's in the core profile. Please note, this should be an ImageControl data type property. </value>
+  </data>
+  <data name="plProfileAvatarPropertyName.Text" xml:space="preserve">
+    <value>Profile Property</value>
+  </data>
 </root>

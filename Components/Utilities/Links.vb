@@ -659,13 +659,19 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <param name="UserId"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Shared Function UserPublicProfileLink(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal UserId As Integer) _
-		 As String
+		Shared Function UserPublicProfileLink(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal UserId As Integer, ByVal IsExternal As Boolean, ByVal UserParam As String, ByVal ExtProfilePageID As Integer) _
+   As String
+
 			Dim url As String
 			Dim params As String()
 
-			params = New String(1) {"mid=" & ModuleID.ToString, "userid=" & UserId.ToString}
-			url = NavigateURL(TabId, ForumPage.PublicProfile.ToString, params)
+			If IsExternal Then
+				params = New String(0) {UserParam + "=" + UserId.ToString}
+				url = NavigateURL(ExtProfilePageID, "", params)
+			Else
+				params = New String(1) {"mid=" & ModuleID.ToString, "userid=" & UserId.ToString}
+				url = NavigateURL(TabId, ForumPage.PublicProfile.ToString, params)
+			End If
 
 			Return url
 		End Function
@@ -677,12 +683,17 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <param name="ModuleID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Shared Function MemberListLink(ByVal TabId As Integer, ByVal ModuleID As Integer) As String
+		Shared Function MemberListLink(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal IsExternal As Boolean, ByVal ParamName As String, ByVal ParamValue As String, ByVal ExtDirectoryPageID As Integer) As String
 			Dim url As String
 			Dim params As String()
 
-			params = New String(0) {"mid=" & ModuleID}
-			url = NavigateURL(TabId, ForumPage.MemberList.ToString, params)
+			If IsExternal Then
+				params = New String(0) {ParamName + "=" + ParamValue}
+				url = NavigateURL(ExtDirectoryPageID, "", params)
+			Else
+				params = New String(0) {"mid=" & ModuleID}
+				url = NavigateURL(TabId, ForumPage.MemberList.ToString, params)
+			End If
 
 			Return url
 		End Function
@@ -946,5 +957,6 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		End Function
 
 #End Region
+
 	End Class
 End Namespace

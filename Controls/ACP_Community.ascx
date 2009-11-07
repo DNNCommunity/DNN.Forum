@@ -36,9 +36,110 @@
 			            </span>
 			        </td>
 		            <td class="Forum_Row_AdminR" valign="middle" align="left">
-			            <asp:checkbox id="chkEnableMemberList" runat="server" CssClass="Forum_NormalTextBox" />
+			            <asp:checkbox id="chkEnableMemberList" runat="server" CssClass="Forum_NormalTextBox" AutoPostBack="true" />
 			        </td>
 	            </tr>
+	            	<tr id="rowEnableExtDirectory" runat="server">
+				<td class="Forum_Row_AdminL" width="35%">
+					<span class="Forum_Row_AdminText">
+						<dnn:label id="plEnableExtDirectory" runat="server" Suffix=":" 
+						controlname="chkEnableExtDirectory"></dnn:label>
+					</span>
+				</td>
+				<td class="Forum_Row_AdminR" valign="middle" align="left">
+						<asp:checkbox id="chkEnableExtDirectory" runat="server" 
+							CssClass="Forum_NormalTextBox" AutoPostBack="True" />
+					</td>
+			  </tr>
+			  <tr id="rowExtDirectoryPageID" runat="server">
+					<td class="Forum_Row_AdminL" width="35%">
+						<span class="Forum_Row_AdminText">
+							<dnn:label id="plExtDirectoryPageID" runat="server" Suffix=":" 
+							controlname="ddlExtDirectoryPageID"></dnn:label>
+						</span>
+					</td>
+					<td class="Forum_Row_AdminR" valign="middle" align="left">
+						<asp:dropdownlist id="ddlExtDirectoryPageID" runat="server" cssclass="Forum_NormalTextBox" DataTextField="TabName" DataValueField="TabId" Width="250px" />
+					</td>
+				</tr>
+			  <tr id="rowExtDirectoryParamName" runat="server">
+					<td class="Forum_Row_AdminL" width="35%">
+						<span class="Forum_Row_AdminText">
+							<dnn:label id="plExtDirectoryParamName" runat="server" Suffix=":" controlname="txtExtDirectoryParamName"></dnn:label>
+						</span>
+					</td>
+					<td class="Forum_Row_AdminR" valign="middle" align="left">
+						<asp:TextBox id="txtExtDirectoryParamName" runat="server" CssClass="Forum_NormalTextBox" />
+					</td>
+				</tr>
+			  <tr id="rowExtDirectoryParamValue" runat="server">
+					<td class="Forum_Row_AdminL" width="35%">
+						<span class="Forum_Row_AdminText">
+							<dnn:label id="plExtDirectoryParamValue" runat="server" Suffix=":" 
+							controlname="txtExtDirectoryParamValue"></dnn:label>
+						</span>
+					</td>
+					<td class="Forum_Row_AdminR" valign="middle" align="left">
+						<asp:TextBox id="txtExtDirectoryParamValue" runat="server" 
+							CssClass="Forum_NormalTextBox" />
+					</td>
+				</tr>
+	            <tr id="rowEnableExtProfile" runat="server">
+			     <td class="Forum_Row_AdminL" width="35%">
+			          <span class="Forum_Row_AdminText">
+					     <dnn:label id="plEnableExtProfilePage" runat="server" Suffix=":" 
+						controlname="chkEnableExtProfilePage"></dnn:label>
+				     </span>
+				</td>
+				<td class="Forum_Row_AdminR" valign="middle" align="left">
+                              <asp:checkbox id="chkEnableExtProfilePage" runat="server" CssClass="Forum_NormalTextBox" AutoPostBack="True" />
+					</td>
+			  </tr>
+			  <tr id="rowExtProfilePageID" runat="server">
+				     <td class="Forum_Row_AdminL" width="35%">
+				          <span class="Forum_Row_AdminText">
+						     <dnn:label id="plExtProfilePageID" runat="server" Suffix=":" 
+							controlname="ddlExtProfilePageID"></dnn:label>
+					     </span>
+					</td>
+				     <td class="Forum_Row_AdminR" valign="middle" align="left">
+                              <asp:dropdownlist id="ddlExtProfilePageID" runat="server" cssclass="Forum_NormalTextBox" DataTextField="TabName" DataValueField="TabId" Width="250px" />
+					</td>
+			     </tr>
+			  <tr id="rowExtProfileUserParam" runat="server">
+				     <td class="Forum_Row_AdminL" width="35%">
+				          <span class="Forum_Row_AdminText">
+						     <dnn:label id="plExtProfileUserParam" runat="server" Suffix=":" controlname="txtExtProfileUserParam"></dnn:label>
+					     </span>
+					</td>
+				     <td class="Forum_Row_AdminR" valign="middle" align="left">
+					     <asp:TextBox id="txtExtProfileUserParam" runat="server" CssClass="Forum_NormalTextBox" />
+					</td>
+			     </tr>
+			   	<tr id="rowExtProfileParamName" runat="server">
+				     <td class="Forum_Row_AdminL" width="35%">
+				          <span class="Forum_Row_AdminText">
+						     <dnn:label id="plExtProfileParamName" runat="server" Suffix=":" controlname="txtExtProfileParamName"></dnn:label>
+					     </span>
+					</td>
+				     <td class="Forum_Row_AdminR" valign="middle" align="left">
+					     <asp:TextBox id="txtExtProfileParamName" runat="server" CssClass="Forum_NormalTextBox" />
+					</td>
+			     </tr>
+			     <tr id="rowExtProfileParamValue" runat="server">
+				     <td class="Forum_Row_AdminL" width="35%">
+				          <span class="Forum_Row_AdminText">
+						     <dnn:label id="plExtProfileParamValue" runat="server" Suffix=":" controlname="txtExtProfileParamValue"></dnn:label>
+					     </span>
+					</td>
+				     <td class="Forum_Row_AdminR" valign="middle" align="left">
+					     <asp:TextBox id="txtExtProfileParamValue" runat="server" CssClass="Forum_NormalTextBox" />
+					</td>
+			     </tr>				
+			  <tr id="rowEnableExtPM" runat="server">
+				<td></td>
+				<td></td>
+			  </tr>
 	            <tr id="rowEmoticonEnable" runat="server">
 		            <td class="Forum_Row_AdminL" width="35%">
 		                <span class="Forum_Row_AdminText">
@@ -60,7 +161,7 @@
 			          <asp:RequiredFieldValidator ID="valEmoticonPath" runat="server" ErrorMessage="*" ControlToValidate="txtEmoticonPath" CssClass="NormalRed" Display="Dynamic"></asp:RequiredFieldValidator>
 		           </td>
 		        </tr>
-		        	<tr id="rowEmoticonMaxFileSize" runat="server">
+		       <tr id="rowEmoticonMaxFileSize" runat="server">
 		           <td class="Forum_Row_AdminL" width="35%">
 			          <span class="Forum_Row_AdminText">
 				         <dnn:label id="plEmoticonMaxFileSize" runat="server" controlname="txtEmoticonMaxFileSize" Suffix=":"></dnn:label>
@@ -75,7 +176,7 @@
 		    <div class="Forum_Row_Admin_Foot" align="center">
 			     <asp:linkbutton cssclass="CommandButton" id="cmdUpdate" runat="server" text="Update" resourcekey="cmdUpdate" />
 			</div>
-			<div align="center">
+		    <div align="center">
 				<asp:Label ID="lblUpdateDone" runat="server" CssClass="NormalRed" Visible="false" resourcekey="lblUpdateDone" />
             </div>
 		</td>

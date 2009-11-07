@@ -19,6 +19,26 @@
 					  <asp:CheckBox ID="chkEnableUserAvatar" runat="server" CssClass="Forum_NormalTextBox" AutoPostBack="true" />
 				   </td>
 				</tr>
+				<tr id="rowEnableProfileAvatar" runat="server">
+					<td class="Forum_Row_AdminL" width="35%">
+						<span class="Forum_Row_AdminText">
+							<dnn:label id="plEnableProfileAvatar" runat="server" controlname="chkEnableProfileAvatar" Suffix=":"></dnn:label>
+						</span>
+					</td>
+					<td class="Forum_Row_AdminR" align="left" width="65%">
+						<asp:CheckBox ID="chkEnableProfileAvatar" runat="server" CssClass="Forum_NormalTextBox" AutoPostBack="true" />
+					</td>
+				</tr>
+				<tr id="rowProfileAvatarPropertyName" runat="server">
+					<td class="Forum_Row_AdminL" width="35%">
+						<span class="Forum_Row_AdminText">
+							<dnn:label id="plProfileAvatarPropertyName" runat="server" controlname="ddlProfileAvatarPropertyName" Suffix=":"></dnn:label>
+						</span>
+					</td>
+					<td class="Forum_Row_AdminR" align="left" width="65%">
+						<asp:DropDownList ID="ddlProfileAvatarPropertyName" runat="server" DataTextField="PropertyName" DataValueField="PropertyName" Width="300px"/>
+					</td>
+				</tr>
 				<tr id="rowUserAvatarPath" runat="server">
 				   <td class="Forum_Row_AdminL" width="35%">
 					  <span class="Forum_Row_AdminText">
@@ -55,7 +75,7 @@
 					  <asp:RequiredFieldValidator ID="valUsrSize" runat="server" ErrorMessage="*" ControlToValidate="txtUserAvatarSizeLimit" CssClass="NormalRed" Display="Dynamic" EnableViewState="false" />
 				   </td>
 				</tr>
-				<tr>
+				<tr id="rowUserAvatarPoolEnable" runat="server">
 				   <td class="Forum_Row_AdminL" width="35%">
 					  <span class="Forum_Row_AdminText">
 						 <dnn:label id="plEnableUserAvatarPool" runat="server" controlname="chkEnableUserAvatarPool" Suffix=":"></dnn:label>

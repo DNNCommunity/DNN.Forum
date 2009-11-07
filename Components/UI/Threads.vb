@@ -580,10 +580,10 @@ Namespace DotNetNuke.Modules.Forum
 			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
 
 			RenderCellBegin(wr, "", "", "100%", "", "", "", "")
-			RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0")
+			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0")
 			RenderRowBegin(wr) '<tr>
 
-			RenderCellBegin(wr, "", "", "100%", "left", "", "", "")
+			RenderCellBegin(wr, "", "", "100%", "right", "", "", "")
 			'Start table to hold module action buttons
 			RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0")
 			RenderRowBegin(wr) '<tr>
@@ -598,7 +598,7 @@ Namespace DotNetNuke.Modules.Forum
 			RenderTableEnd(wr) ' </table>
 
 			RenderCellEnd(wr) ' </td>
-			RenderCellBegin(wr, "", "", "100%", "left", "middle", "", "")
+			RenderCellBegin(wr, "", "", "", "right", "middle", "", "") ' <td>
 
 			RenderTableBegin(wr, 0, 0, "InnerTable") '<table>
 			RenderRowBegin(wr) ' <tr>
@@ -944,7 +944,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						RenderDivBegin(wr, "", "Forum_NormalSmall") ' <div>
 						wr.Write(String.Format("{0}&nbsp;", ForumControl.LocalizedText("by")))
-						url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.StartedByUserID)
+						url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.StartedByUserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage)
 						RenderLinkButton(wr, url, thread.StartedByUser.SiteAlias, "Forum_NormalSmall") ' <a/>
 
 						' correct logic to handle posts per page per user
@@ -1102,7 +1102,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						RenderDivBegin(wr, "", "Forum_LastPostText")	' <div>
 						wr.Write(ForumControl.LocalizedText("by") & " ")
-						url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.LastApprovedUser.UserID)
+						url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.LastApprovedUser.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage)
 						RenderLinkButton(wr, url, thread.LastApprovedUser.SiteAlias, "Forum_LastPostText") ' <a/>
 						RenderDivEnd(wr) ' </div>
 						RenderCellEnd(wr) ' </td>
@@ -1136,16 +1136,16 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Private Sub RenderFooterRow(ByVal wr As HtmlTextWriter)
 			RenderRowBegin(wr) ' <tr>
-			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")	   ' <td><img/></td>
+			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
 
 			'Middle Column
-			RenderCellBegin(wr, "", "", "100%", "", "middle", "", "") ' <td>
+			RenderCellBegin(wr, "", "", "100%", "", "", "", "") ' <td>
 
-			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "middle", "0")	  ' <table>
+			RenderTableBegin(wr, "tblFooterContents", "", "", "100%", "0", "0", "", "", "0")	  ' <table>
 			RenderRowBegin(wr) ' <tr>
-			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "Forum_FooterCapLeft", "") ' <td><img/></td>
+			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "Forum_FooterCapLeft", "") ' <td><img/></td>
 
-			RenderCellBegin(wr, "Forum_Footer", "", "100%", "", "", "", "") ' <td>
+			RenderCellBegin(wr, "Forum_Footer", "", "", "left", "", "", "") ' <td>
 
 			RenderTableBegin(wr, 0, 0, "") ' <table>
 			RenderRowBegin(wr) ' <tr>
@@ -1174,14 +1174,14 @@ Namespace DotNetNuke.Modules.Forum
 			RenderRowEnd(wr) ' </tr>
 			RenderTableEnd(wr) ' </table>
 			RenderCellEnd(wr) ' </td>
-			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "Forum_FooterCapRight", "")	   ' <td><img/></td>
+			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "Forum_FooterCapRight", "")	   ' <td><img/></td>
 
 			'End middle column
 			RenderRowEnd(wr) ' </tr>
 			RenderTableEnd(wr) ' </table>
 			RenderCellEnd(wr) ' </td>
 
-			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
+			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
 			RenderRowEnd(wr) ' </tr>
 		End Sub
 

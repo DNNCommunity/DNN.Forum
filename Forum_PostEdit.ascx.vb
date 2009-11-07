@@ -240,6 +240,7 @@ Namespace DotNetNuke.Modules.Forum
 								End If
 							End If
 
+							txtSubject.Enabled = False
 							chkIsPinned.Enabled = False
 							chkIsClosed.Enabled = False
 					End Select
@@ -378,8 +379,8 @@ Namespace DotNetNuke.Modules.Forum
 						' Store URL Referrer to return to portal
 						ViewState("UrlReferrer") = Request.UrlReferrer.ToString()
 					End If
-					' Set the form focus to the subject textbox(avoid users missing subject)
-					SetFormFocus(txtSubject)
+					'' Set the form focus to the subject textbox(avoid users missing subject)
+					'SetFormFocus(txtSubject)
 				End If
 			Catch exc As Exception
 				ProcessModuleLoadException(Me, exc)
@@ -1175,7 +1176,7 @@ Namespace DotNetNuke.Modules.Forum
 				End With
 
 				hlAuthor.Text = objParentPost.Author.SiteAlias
-				hlAuthor.NavigateUrl = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, objParentPost.UserID)
+				hlAuthor.NavigateUrl = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, objParentPost.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage)
 				hlAuthor.ToolTip = Localization.GetString("ReplyToToolTip", Me.LocalResourceFile)
 
 				If objAction = PostAction.Reply Then

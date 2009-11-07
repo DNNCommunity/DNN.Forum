@@ -124,6 +124,22 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _EnableUsersOnline As Boolean = DefaultEnableUsersOnline
 		Dim _EnablePMSystem As Boolean = True
 		Dim _EnableMemberList As Boolean = True
+		' External Directory
+		Dim _EnableExternalDirectory As Boolean = False
+		Dim _ExternalDirectoryPage As Integer = 0
+		Dim _ExternalDirectoryParamName As String = String.Empty
+		Dim _ExternalDirectoryParamValue As String = String.Empty
+		' External Profile
+		Dim _EnableExternalProfile As Boolean = False
+		Dim _ExternalProfilePage As Integer = 0
+		Dim _ExternalProfileParam As String = String.Empty
+		Dim _ExternalProfileParamName As String = String.Empty
+		Dim _ExternalProfileParamValue As String = String.Empty
+
+		Dim _EnableExternalPM As Boolean = False
+		Dim _ExternalPMPage As Integer = 0
+		Dim _ExternalPMParam As String = String.Empty
+
 		Dim _EnablePostAbuse As Boolean = True
 		Dim _ImageExtension As String = "gif"
 		Dim _DisableHTMLPosting As Boolean = False
@@ -140,6 +156,9 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _MaxAttachmentSize As Integer = 256
 		' User Avatar
 		Dim _EnableUserAvatar As Boolean = True
+		Dim _EnableProfileAvatar As Boolean = False
+		Dim _AvatarProfilePropName As String = String.Empty
+
 		Dim _EnableUserAvatarPool As Boolean = False
 		Dim _UserAvatarPoolPath As String = "Forums/PoolAvatar/"
 		Dim _UserAvatarPath As String = "Forums/UserAvatar/"
@@ -847,6 +866,114 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property EnableMemberList() As Boolean
 			Get
 				Return _EnableMemberList
+			End Get
+		End Property
+
+		''' <summary>
+		''' Gets if the module permits an external member directory.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property EnableExternalDirectory() As Boolean
+			Get
+				Return _EnableExternalDirectory
+			End Get
+		End Property
+
+		''' <summary>
+		''' Gets the external member directory page.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property ExternalDirectoryPage() As Integer
+			Get
+				Return _ExternalDirectoryPage
+			End Get
+		End Property
+
+		''' <summary>
+		''' Gets the URL param name for external member directories.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property ExternalDirectoryParamName() As String
+			Get
+				Return _ExternalDirectoryParamName
+			End Get
+		End Property
+
+		''' <summary>
+		''' Gets the URL param value for external member directories.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property ExternalDirectoryParamValue() As String
+			Get
+				Return _ExternalDirectoryParamValue
+			End Get
+		End Property
+
+		''' <summary>
+		''' Ges if the module supports an external profile page.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property EnableExternalProfile() As Boolean
+			Get
+				Return _EnableExternalProfile
+			End Get
+		End Property
+
+		''' <summary>
+		''' Gets the page to be used for external profiles.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property ExternalProfilePage() As Integer
+			Get
+				Return _ExternalProfilePage
+			End Get
+		End Property
+
+		''' <summary>
+		''' Gets the parameter to be used to represent UserID in external profile pages.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property ExternalProfileParam() As String
+			Get
+				Return _ExternalProfileParam
+			End Get
+		End Property
+
+		''' <summary>
+		''' Gets the settings for external profile URL parameter name.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property ExternalProfileParamName() As String
+			Get
+				Return _ExternalProfileParamName
+			End Get
+		End Property
+
+		''' <summary>
+		''' Gets the setting for external profile URL parameter value.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property ExternalProfileParamValue() As String
+			Get
+				Return _ExternalProfileParamValue
 			End Get
 		End Property
 
@@ -1649,6 +1776,30 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
+		''' Determines if the module should be using profile property avatars.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property EnableProfileAvatar() As Boolean
+			Get
+				Return _EnableProfileAvatar
+			End Get
+		End Property
+
+		''' <summary>
+		''' Gets the profile property name for avatars.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property AvatarProfilePropName() As String
+			Get
+				Return _AvatarProfilePropName
+			End Get
+		End Property
+
+		''' <summary>
 		''' Gets if the user avatar is to only allow selectable items from a 'pool'. 
 		''' </summary>
 		''' <value></value>
@@ -2083,9 +2234,59 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 			End If
 
-			If Not settings("EnableMemberList") Is Nothing Then
-				If Not settings("EnableMemberList").ToString = String.Empty Then
-					_EnableMemberList = CBool(GetValue(settings("EnableMemberList"), CStr(_EnableMemberList)))
+			' Community - External Profile
+			If Not settings("EnableExternalProfile") Is Nothing Then
+				If Not settings("EnableExternalProfile").ToString = String.Empty Then
+					_EnableExternalProfile = CBool(GetValue(settings("EnableExternalProfile"), CStr(_EnableExternalProfile)))
+				End If
+			End If
+
+			If Not settings("ExternalProfilePage") Is Nothing Then
+				If Not settings("ExternalProfilePage").ToString = String.Empty Then
+					_ExternalProfilePage = CInt(GetValue(settings("ExternalProfilePage"), CStr(_ExternalProfilePage)))
+				End If
+			End If
+
+			If Not settings("ExternalProfileParam") Is Nothing Then
+				If Not settings("ExternalProfileParam").ToString = String.Empty Then
+					_ExternalProfileParam = CStr(GetValue(settings("ExternalProfileParam"), CStr(_ExternalProfileParam)))
+				End If
+			End If
+
+			If Not settings("ExternalProfileParamName") Is Nothing Then
+				If Not settings("ExternalProfileParamName").ToString = String.Empty Then
+					_ExternalProfileParamName = CStr(GetValue(settings("ExternalProfileParamName"), CStr(_ExternalProfileParamName)))
+				End If
+			End If
+
+			If Not settings("ExternalProfileParamValue") Is Nothing Then
+				If Not settings("ExternalProfileParamValue").ToString = String.Empty Then
+					_ExternalProfileParamValue = CStr(GetValue(settings("ExternalProfileParamValue"), CStr(_ExternalProfileParamValue)))
+				End If
+			End If
+
+			' Community - External Directory
+			If Not settings("EnableExternalDirectory") Is Nothing Then
+				If Not settings("EnableExternalDirectory").ToString = String.Empty Then
+					_EnableExternalDirectory = CBool(GetValue(settings("EnableExternalDirectory"), CStr(_EnableExternalDirectory)))
+				End If
+			End If
+
+			If Not settings("ExternalDirectoryPage") Is Nothing Then
+				If Not settings("ExternalDirectoryPage").ToString = String.Empty Then
+					_ExternalDirectoryPage = CInt(GetValue(settings("ExternalDirectoryPage"), CStr(_ExternalDirectoryPage)))
+				End If
+			End If
+
+			If Not settings("ExternalDirectoryParamName") Is Nothing Then
+				If Not settings("ExternalDirectoryParamName").ToString = String.Empty Then
+					_ExternalDirectoryParamName = CStr(GetValue(settings("ExternalDirectoryParamName"), CStr(_ExternalDirectoryParamName)))
+				End If
+			End If
+
+			If Not settings("ExternalDirectoryParamValue") Is Nothing Then
+				If Not settings("ExternalDirectoryParamValue").ToString = String.Empty Then
+					_ExternalDirectoryParamValue = CStr(GetValue(settings("ExternalDirectoryParamValue"), CStr(_ExternalDirectoryParamValue)))
 				End If
 			End If
 
@@ -2183,6 +2384,18 @@ Namespace DotNetNuke.Modules.Forum
 			If Not settings("EnableUserAvatar") Is Nothing Then
 				If Not settings("EnableUserAvatar").ToString = String.Empty Then
 					_EnableUserAvatar = CBool(GetValue(settings("EnableUserAvatar"), CStr(_EnableUserAvatar)))
+				End If
+			End If
+
+			If Not settings("EnableProfileAvatar") Is Nothing Then
+				If Not settings("EnableProfileAvatar").ToString = String.Empty Then
+					_EnableProfileAvatar = CBool(GetValue(settings("EnableProfileAvatar"), CStr(_EnableProfileAvatar)))
+				End If
+			End If
+
+			If Not settings("AvatarProfilePropName") Is Nothing Then
+				If Not settings("AvatarProfilePropName").ToString = String.Empty Then
+					_AvatarProfilePropName = CStr(GetValue(settings("AvatarProfilePropName"), CStr(_AvatarProfilePropName)))
 				End If
 			End If
 

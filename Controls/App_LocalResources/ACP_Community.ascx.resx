@@ -189,4 +189,58 @@
   <data name="plEmoticonMaxFileSize.Text" xml:space="preserve">
     <value>Emoticon Max Size</value>
   </data>
+  <data name="plEnableExtDirectory.Help" xml:space="preserve">
+    <value>If checked, users will be navigated to an outside module to view a list of community members.</value>
+  </data>
+  <data name="plEnableExtDirectory.Text" xml:space="preserve">
+    <value>Enable External Directory</value>
+  </data>
+  <data name="plEnableExtProfilePage.Help" xml:space="preserve">
+    <value>If checked, users will be navigated to an outside module to view a user's community profile.</value>
+  </data>
+  <data name="plEnableExtProfilePage.Text" xml:space="preserve">
+    <value>Enable External Profile</value>
+  </data>
+  <data name="plExtDirectoryPageID.Help" xml:space="preserve">
+    <value>The page which houses the directory module.</value>
+  </data>
+  <data name="plExtDirectoryPageID.Text" xml:space="preserve">
+    <value>Directory Page</value>
+  </data>
+  <data name="plExtDirectoryParamName.Help" xml:space="preserve">
+    <value>The URL parameter name that will be passed in combination with the value for external directory pages.</value>
+  </data>
+  <data name="plExtDirectoryParamName.Text" xml:space="preserve">
+    <value>Directory Parameter Name</value>
+  </data>
+  <data name="plExtDirectoryParamValue.Help" xml:space="preserve">
+    <value>The URL parameter value that will be passed in combination with the name for external directory pages.</value>
+  </data>
+  <data name="plExtDirectoryParamValue.Text" xml:space="preserve">
+    <value>Directory Parameter Value</value>
+  </data>
+  <data name="plExtProfilePageID.Help" xml:space="preserve">
+    <value>The page which houses the profile module.</value>
+  </data>
+  <data name="plExtProfilePageID.Text" xml:space="preserve">
+    <value>Profile Page</value>
+  </data>
+  <data name="plExtProfileUserParam.Help" xml:space="preserve">
+    <value>The URL parameter that is assoicated with the UserID necessary for user profiles.</value>
+  </data>
+  <data name="plExtProfileUserParam.Text" xml:space="preserve">
+    <value>Profile User Parameter</value>
+  </data>
+  <data name="plExtProfileParamName.Help" xml:space="preserve">
+    <value>The URL parameter name that will be passed in combination with the value for external profile pages.</value>
+  </data>
+  <data name="plExtProfileParamName.Text" xml:space="preserve">
+    <value>Profile Parameter Name</value>
+  </data>
+  <data name="plExtProfileParamValue.Help" xml:space="preserve">
+    <value>The URL parameter value that will be passed in combination with the name for external profile pages.</value>
+  </data>
+  <data name="plExtProfileParamValue.Text" xml:space="preserve">
+    <value>Profile Parameter Value</value>
+  </data>
 </root>

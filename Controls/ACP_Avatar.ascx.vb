@@ -20,6 +20,8 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Entities.Profile
+
 Namespace DotNetNuke.Modules.Forum.ACP
 
 	''' <summary>
@@ -37,30 +39,24 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </summary>
 		''' <remarks></remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
+			BindProfileProperties()
+
 			chkEnableUserAvatar.Checked = objConfig.EnableUserAvatar
+			EnableUserAvatar(objConfig.EnableUserAvatar)
+			chkEnableProfileAvatar.Checked = objConfig.EnableProfileAvatar
+			EnableProfileAvatar(objConfig.EnableProfileAvatar)
+			ddlProfileAvatarPropertyName.SelectedValue = objConfig.AvatarProfilePropName.ToString()
+
 			txtUserAvatarPath.Text = objConfig.UserAvatarPath
 			txtUserAvatarWidth.Text = objConfig.UserAvatarWidth.ToString()
 			txtUserAvatarHeight.Text = objConfig.UserAvatarHeight.ToString()
 			txtUserAvatarSizeLimit.Text = objConfig.UserAvatarMaxSize.ToString()
-
 			chkEnableUserAvatarPool.Checked = objConfig.EnableUserAvatarPool
 			txtUserAvatarPoolPath.Text = objConfig.UserAvatarPoolPath
-
 			chkEnableSystemAvatar.Checked = objConfig.EnableSystemAvatar
 			txtSystemAvatarPath.Text = objConfig.SystemAvatarPath
-
 			chkEnableRoleAvatar.Checked = objConfig.EnableRoleAvatar
 			txtRoleAvatarPath.Text = objConfig.RoleAvatarPath
-
-			If chkEnableUserAvatar.Checked Then
-				rowUserAvatarDimentions.Visible = True
-				rowUserAvatarPath.Visible = True
-				rowUserAvatarSizeLimit.Visible = True
-			Else
-				rowUserAvatarDimentions.Visible = False
-				rowUserAvatarPath.Visible = False
-				rowUserAvatarSizeLimit.Visible = False
-			End If
 
 			If chkEnableUserAvatarPool.Checked Then
 				rowUserAvatarPoolPath.Visible = True
@@ -119,18 +115,17 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				ctlModule.UpdateModuleSetting(ModuleId, "Type", "Forum")
 
 				ctlModule.UpdateModuleSetting(ModuleId, "EnableUserAvatar", chkEnableUserAvatar.Checked.ToString())
+				ctlModule.UpdateModuleSetting(ModuleId, "EnableProfileAvatar", chkEnableProfileAvatar.Checked.ToString())
+				ctlModule.UpdateModuleSetting(ModuleId, "AvatarProfilePropName", ddlProfileAvatarPropertyName.SelectedValue)
+
 				ctlModule.UpdateModuleSetting(ModuleId, "EnableUserAvatarPool", chkEnableUserAvatarPool.Checked.ToString())
 				ctlModule.UpdateModuleSetting(ModuleId, "UserAvatarPath", txtUserAvatarPath.Text)
 				ctlModule.UpdateModuleSetting(ModuleId, "UserAvatarPoolPath", txtUserAvatarPoolPath.Text)
 				ctlModule.UpdateModuleSetting(ModuleId, "UserAvatarWidth", txtUserAvatarWidth.Text)
 				ctlModule.UpdateModuleSetting(ModuleId, "UserAvatarHeight", txtUserAvatarHeight.Text)
 				ctlModule.UpdateModuleSetting(ModuleId, "UserAvatarMaxSize", txtUserAvatarSizeLimit.Text)
-
 				ctlModule.UpdateModuleSetting(ModuleId, "EnableSystemAvatar", chkEnableSystemAvatar.Checked.ToString())
 				ctlModule.UpdateModuleSetting(ModuleId, "SystemAvatarPath", txtSystemAvatarPath.Text)
-				'ctlModule.UpdateModuleSetting(ModuleId, "SystemAvatarWidth", txtSystemAvatarWidth.Text)
-				'ctlModule.UpdateModuleSetting(ModuleId, "SystemAvatarHeight", txtSystemAvatarHeight.Text)
-
 				ctlModule.UpdateModuleSetting(ModuleId, "EnableRoleAvatar", chkEnableRoleAvatar.Checked.ToString())
 				ctlModule.UpdateModuleSetting(ModuleId, "RoleAvatarPath", txtRoleAvatarPath.Text)
 
@@ -157,15 +152,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <remarks>Changes viewable/editable items when checked/unchecked.
 		''' </remarks>
 		Protected Sub chkEnableUserAvatar_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnableUserAvatar.CheckedChanged
-			If chkEnableUserAvatar.Checked Then
-				rowUserAvatarDimentions.Visible = True
-				rowUserAvatarPath.Visible = True
-				rowUserAvatarSizeLimit.Visible = True
-			Else
-				rowUserAvatarDimentions.Visible = False
-				rowUserAvatarPath.Visible = False
-				rowUserAvatarSizeLimit.Visible = False
-			End If
+			EnableUserAvatar(chkEnableUserAvatar.Checked)
 		End Sub
 
 		''' <summary>
@@ -208,6 +195,65 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			Else
 				rowRoleAvatarPath.Visible = False
 			End If
+		End Sub
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="sender"></param>
+		''' <param name="e"></param>
+		''' <remarks></remarks>
+		Protected Sub chkEnableProfileAvatar_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkEnableProfileAvatar.CheckedChanged
+			EnableProfileAvatar(chkEnableProfileAvatar.Checked)
+		End Sub
+
+#End Region
+
+#Region "Private Methods"
+
+		''' <summary>
+		''' Sets the control up for scenarios where profile avatars are enabled. 
+		''' </summary>
+		''' <param name="Enabled"></param>
+		''' <remarks></remarks>
+		Private Sub EnableProfileAvatar(ByVal Enabled As Boolean)
+			rowProfileAvatarPropertyName.Visible = Enabled
+			rowUserAvatarPath.Visible = Enabled
+			rowUserAvatarSizeLimit.Visible = Not Enabled
+
+			If Enabled Then
+				rowUserAvatarPoolPath.Visible = False
+				chkEnableUserAvatarPool.Checked = False
+				rowUserAvatarPoolEnable.Visible = False
+			Else
+				rowUserAvatarPoolEnable.Visible = True
+			End If
+		End Sub
+
+		''' <summary>
+		''' Binds a list of profile properties avaialble to the portal. 
+		''' </summary>
+		''' <remarks></remarks>
+		Private Sub BindProfileProperties()
+			Dim colProfileProps As New ProfilePropertyDefinitionCollection
+			colProfileProps = ProfileController.GetPropertyDefinitionsByPortal(PortalId)
+
+			ddlProfileAvatarPropertyName.ClearSelection()
+			ddlProfileAvatarPropertyName.DataSource = colProfileProps
+			ddlProfileAvatarPropertyName.DataBind()
+		End Sub
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="Enabled"></param>
+		''' <remarks></remarks>
+		Private Sub EnableUserAvatar(ByVal Enabled As Boolean)
+			rowUserAvatarDimentions.Visible = Enabled
+			rowUserAvatarPath.Visible = Enabled
+			rowUserAvatarSizeLimit.Visible = Enabled
+			rowEnableProfileAvatar.Visible = Enabled
+			rowProfileAvatarPropertyName.Visible = False
 		End Sub
 
 #End Region

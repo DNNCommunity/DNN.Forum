@@ -83,7 +83,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 
 			hl = CType(e.Item.FindControl("hlUser"), HyperLink)
 			hl.Text = dataItem.Author(ModuleId, PortalId).SiteAlias
-			hl.NavigateUrl = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, dataItem.UserID)
+			hl.NavigateUrl = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, dataItem.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage)
 		End Sub
 
 		''' <summary>

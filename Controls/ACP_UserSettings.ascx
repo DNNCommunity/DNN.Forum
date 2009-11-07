@@ -103,42 +103,7 @@
 					     <asp:checkbox id="chkEnableUserBanning" runat="server" CssClass="Forum_NormalTextBox" />
 					</td>
 			     </tr>
-			     <tr>
-				     <td class="Forum_Row_AdminL" width="35%">
-				          <span class="Forum_Row_AdminText">
-						     <dnn:label id="plEnableExtProfilePage" runat="server" Suffix=":" 
-							controlname="chkEnableExtProfilePage"></dnn:label>
-					     </span>
-					</td>
-				     <td class="Forum_Row_AdminR" valign="middle" align="left">
-                              <asp:checkbox id="chkEnableExtProfilePage" runat="server" 
-							CssClass="Forum_NormalTextBox" AutoPostBack="True" />
-					</td>
-			     </tr>
-			     <tr id="rowExtProfilePageID" runat="server">
-				     <td class="Forum_Row_AdminL" width="35%">
-				          <span class="Forum_Row_AdminText">
-						     <dnn:label id="plExtProfilePageID" runat="server" Suffix=":" 
-							controlname="ddlExtProfilePageID"></dnn:label>
-					     </span>
-					</td>
-				     <td class="Forum_Row_AdminR" valign="middle" align="left">
-                              <asp:dropdownlist id="ddlExtProfilePageID" runat="server" 
-							cssclass="Forum_NormalTextBox" width="250px" />
-					</td>
-			     </tr>
-			     <tr id="rowExtProfileUserParam" runat="server">
-				     <td class="Forum_Row_AdminL" width="35%">
-				          <span class="Forum_Row_AdminText">
-						     <dnn:label id="plExtProfileUserParam" runat="server" Suffix=":" 
-							controlname="txtExtProfileUserParam"></dnn:label>
-					     </span>
-					</td>
-				     <td class="Forum_Row_AdminR" valign="middle" align="left">
-					     <asp:TextBox id="txtExtProfileUserParam" runat="server" 
-							CssClass="Forum_NormalTextBox" />
-					</td>
-			     </tr>
+
 		     </table>
 		     <div class="Forum_Row_Admin_Foot" align="center">
 			     <asp:linkbutton cssclass="CommandButton" id="cmdUpdate" runat="server" text="Update" resourcekey="cmdUpdate" />

@@ -18,7 +18,9 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 Option Strict On
-Option Explicit On 
+Option Explicit On
+
+Imports DotNetNuke.Entities.Profile
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
@@ -38,6 +40,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </summary>
 		''' <remarks></remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
+			BindTabs()
+
 			If Entities.Host.Host.GetHostSettingsDictionary.ContainsKey("DisableUsersOnline") And (Not Entities.Host.Host.GetHostSettingsDictionary("DisableUsersOnline") Is Nothing) Then
 				If Entities.Host.Host.GetHostSettingsDictionary("DisableUsersOnline").ToString = "Y" Then
 					rowUserOnline.Visible = False
@@ -50,8 +54,21 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			End If
 
 			chkEnablePMSystem.Checked = objConfig.EnablePMSystem
+			EnablePM(objConfig.EnablePMSystem)
 			chkEnableMemberList.Checked = objConfig.EnableMemberList
-
+			' we use memberlist below because it determines if we are showing rows based on it.
+			EnableMemberList(objConfig.EnableMemberList)
+			chkEnableExtDirectory.Checked = objConfig.EnableExternalDirectory
+			EnableExternalDirectory(objConfig.EnableExternalDirectory)
+			ddlExtDirectoryPageID.SelectedValue = objConfig.ExternalDirectoryPage.ToString()
+			txtExtDirectoryParamName.Text = objConfig.ExternalDirectoryParamName
+			txtExtDirectoryParamValue.Text = objConfig.ExternalDirectoryParamValue
+			chkEnableExtProfilePage.Checked = objConfig.EnableExternalProfile
+			EnableExternalProfile(objConfig.EnableExternalProfile)
+			ddlExtProfilePageID.SelectedValue = objConfig.ExternalProfilePage.ToString()
+			txtExtProfileUserParam.Text = objConfig.ExternalProfileParam.ToString()
+			txtExtProfileParamName.Text = objConfig.ExternalProfileParamName
+			txtExtProfileParamValue.Text = objConfig.ExternalProfileParamValue
 			txtEmoticonPath.Text = objConfig.EmoticonPath
 			txtEmoticonMaxFileSize.Text = objConfig.EmoticonMaxFileSize.ToString()
 
@@ -92,8 +109,23 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				' Update settings in the database
 				Dim ctlModule As New Entities.Modules.ModuleController
 				ctlModule.UpdateModuleSetting(ModuleId, "EnableUsersOnline", chkUserOnline.Checked.ToString)
+				' PM System
 				ctlModule.UpdateModuleSetting(ModuleId, "EnablePMSystem", chkEnablePMSystem.Checked.ToString)
+
+
+				' Member Directory
 				ctlModule.UpdateModuleSetting(ModuleId, "EnableMemberList", chkEnableMemberList.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, "EnableExternalDirectory", chkEnableExtDirectory.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, "ExternalDirectoryPage", ddlExtDirectoryPageID.SelectedValue)
+				ctlModule.UpdateModuleSetting(ModuleId, "ExternalDirectoryParamName", txtExtDirectoryParamName.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, "ExternalDirectoryParamValue", txtExtDirectoryParamValue.Text)
+				' User Profile
+				ctlModule.UpdateModuleSetting(ModuleId, "EnableExternalProfile", chkEnableExtProfilePage.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, "ExternalProfilePage", ddlExtProfilePageID.SelectedValue)
+				ctlModule.UpdateModuleSetting(ModuleId, "ExternalProfileParam", txtExtProfileUserParam.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, "ExternalProfileParamName", txtExtProfileParamName.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, "ExternalProfileParamName", txtExtProfileParamValue.Text)
+				' Emoticons (disabled)
 				ctlModule.UpdateModuleSetting(ModuleId, "EnableEmoticons", chkEnableEmoticons.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, "EmoticonMaxFileSize", txtEmoticonMaxFileSize.Text)
 
@@ -124,6 +156,118 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected Sub chkEnableEmoticons_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnableEmoticons.CheckedChanged
 			rowEmoticonPath.Visible = chkEnableEmoticons.Checked
 			rowEmoticonMaxFileSize.Visible = chkEnableEmoticons.Checked
+		End Sub
+
+		''' <summary>
+		''' Enables/Disabled External Profile Pages.
+		''' </summary>
+		''' <param name="sender"></param>
+		''' <param name="e"></param>
+		''' <remarks></remarks>
+		Protected Sub chkEnableExtProfilePage_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkEnableExtProfilePage.CheckedChanged
+			EnableExternalProfile(chkEnableExtProfilePage.Checked)
+		End Sub
+
+		''' <summary>
+		''' Enables/Disabled Member Directory items.
+		''' </summary>
+		''' <param name="sender"></param>
+		''' <param name="e"></param>
+		''' <remarks></remarks>
+		Protected Sub chkEnableMemberList_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkEnableMemberList.CheckedChanged
+			EnableMemberList(chkEnableMemberList.Checked)
+		End Sub
+
+		''' <summary>
+		''' Enables/Disables External Directory items.
+		''' </summary>
+		''' <param name="sender"></param>
+		''' <param name="e"></param>
+		''' <remarks></remarks>
+		Protected Sub chkEnableExtDirectory_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkEnableExtDirectory.CheckedChanged
+			EnableExternalDirectory(chkEnableExtDirectory.Checked)
+		End Sub
+
+#End Region
+
+#Region "Private Methods"
+
+		''' <summary>
+		''' Populates drop down lists with tab collections.
+		''' </summary>
+		''' <remarks></remarks>
+		Private Sub BindTabs()
+			Dim colTabs As New List(Of DotNetNuke.Entities.Tabs.TabInfo)
+			colTabs = DotNetNuke.Entities.Tabs.TabController.GetPortalTabs(PortalId, 0, True, True, False, False)
+
+			ddlExtDirectoryPageID.ClearSelection()
+			ddlExtDirectoryPageID.DataSource = colTabs
+			ddlExtDirectoryPageID.DataBind()
+
+			ddlExtProfilePageID.ClearSelection()
+			ddlExtProfilePageID.DataSource = colTabs
+			ddlExtProfilePageID.DataBind()
+
+			'ddlExtProfilePageID.ClearSelection()
+			'ddlExtProfilePageID.DataSource = colProfileProps
+			'ddlExtProfilePageID.DataBind()
+		End Sub
+
+		''' <summary>
+		''' Sets row visibility for member directory related items.
+		''' </summary>
+		''' <param name="Enabled"></param>
+		''' <remarks></remarks>
+		Private Sub EnableMemberList(ByVal Enabled As Boolean)
+			rowEnableExtDirectory.Visible = Enabled
+			rowExtDirectoryPageID.Visible = Enabled
+			rowExtDirectoryParamName.Visible = Enabled
+			rowExtDirectoryParamValue.Visible = Enabled
+
+			If Not Enabled Then
+				chkEnableExtDirectory.Checked = False
+			End If
+		End Sub
+
+		''' <summary>
+		''' Sets row visibility for External Directory support.
+		''' </summary>
+		''' <param name="Enabled"></param>
+		''' <remarks></remarks>
+		Private Sub EnableExternalDirectory(ByVal Enabled As Boolean)
+			rowExtDirectoryPageID.Visible = Enabled
+			rowExtDirectoryParamName.Visible = Enabled
+			rowExtDirectoryParamValue.Visible = Enabled
+		End Sub
+
+		''' <summary>
+		''' Sets row visibility for External Profile support.
+		''' </summary>
+		''' <param name="Enabled">True if enabled, false otherwise.</param>
+		''' <remarks></remarks>
+		Private Sub EnableExternalProfile(ByVal Enabled As Boolean)
+			rowExtProfilePageID.Visible = Enabled
+			rowExtProfileUserParam.Visible = Enabled
+			rowExtProfileParamName.Visible = Enabled
+			rowExtProfileParamValue.Visible = Enabled
+		End Sub
+
+		''' <summary>
+		''' Sets row visibility for PM related items.
+		''' </summary>
+		''' <param name="Enabled"></param>
+		''' <remarks></remarks>
+		Private Sub EnablePM(ByVal Enabled As Boolean)
+			rowEnableExtPM.Visible = Enabled
+		End Sub
+
+		''' <summary>
+		''' Sets row visibility for External PM support.
+		''' </summary>
+		''' <param name="Enabled">True if enabled, false otherwise.</param>
+		''' <remarks></remarks>
+		Private Sub EnableExternalPM(ByVal Enabled As Boolean)
+
 		End Sub
 
 #End Region

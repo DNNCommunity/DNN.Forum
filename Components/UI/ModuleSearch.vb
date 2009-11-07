@@ -950,7 +950,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				RenderDivBegin(wr, "", "Forum_LastPostText")	   ' <div>
 				wr.Write(ForumControl.LocalizedText("by") & " ")
-				url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, SearchItem.LastApprovedUser.UserID)
+				url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, SearchItem.LastApprovedUser.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage)
 				RenderLinkButton(wr, url, SearchItem.LastApprovedUser.SiteAlias, "Forum_LastPostText") ' <a/>
 				RenderDivEnd(wr) ' </div>
 				RenderCellEnd(wr) ' </td>
@@ -1009,7 +1009,7 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			'link to user profile, always display in both view
-			url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, author.UserID)
+			url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, author.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage)
 			RenderTitleLinkButton(wr, url, author.SiteAlias, "Forum_Profile", ForumControl.LocalizedText("ViewProfile"))
 
 			RenderCellEnd(wr) ' </td>

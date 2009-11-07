@@ -658,7 +658,7 @@ Namespace DotNetNuke.Modules.Forum
 			For Each post As PostInfo In PostCollection
 				Me.cmdThreadAnswer = New System.Web.UI.WebControls.LinkButton
 				With cmdThreadAnswer
-					.CssClass = "Forum_HeaderText"
+					.CssClass = "Forum_AnswerText"
 					.ID = "cmdThreadAnswer" + post.PostID.ToString()
 					.Text = ForumControl.LocalizedText("MarkAnswer")
 					.CommandName = "MarkAnswer"
@@ -926,7 +926,7 @@ Namespace DotNetNuke.Modules.Forum
 			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
 
 			RenderCellBegin(wr, "", "", "100%", "", "", "", "")
-			RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0")
+			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0")
 			RenderRowBegin(wr) '<tr>
 
 			RenderCellBegin(wr, "", "", "100%", "left", "", "", "")
@@ -967,7 +967,7 @@ Namespace DotNetNuke.Modules.Forum
 			RenderTableEnd(wr) ' </table>
 			RenderCellEnd(wr) ' </td>
 
-			RenderCellBegin(wr, "", "", "100%", "left", "middle", "", "")
+			RenderCellBegin(wr, "", "", "100%", "right", "middle", "", "")
 			RenderTableBegin(wr, 0, 0, "InnerTable") '<table>
 			RenderRowBegin(wr) ' <tr>
 			RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td>
@@ -1481,8 +1481,8 @@ Namespace DotNetNuke.Modules.Forum
 				Dim currentCount As Integer = 1
 
 				RenderRowBegin(wr) '<tr>                
-				RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
-				RenderCellBegin(wr, "", "", "100%", "", "top", "", "")
+				RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
+				RenderCellBegin(wr, "", "", "100%", "", "top", "", "")	' <td>
 				RenderTableBegin(wr, "", "", "", "100%", "0", "0", "center", "", "0")	 ' <table> 
 
 				For Each Post As PostInfo In PostCollection
@@ -1520,7 +1520,7 @@ Namespace DotNetNuke.Modules.Forum
 				Next
 				RenderTableEnd(wr) ' </table>
 				RenderCellEnd(wr) ' </td> 
-				RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
+				RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
 				RenderRowEnd(wr) ' </tr>
 			Catch ex As Exception
 				LogException(ex)
@@ -1575,6 +1575,7 @@ Namespace DotNetNuke.Modules.Forum
 				RenderRowBegin(wr) ' <tr>
 				RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "Forum_HeaderCapLeft", "") ' <td><img /></td>
 
+
 				' start post status image
 				RenderCellBegin(wr, "Forum_Header", "", "1%", "left", "", "", "") '<td>
 				' display "new" image if this post is new since last time user visited the thread
@@ -1609,7 +1610,7 @@ Namespace DotNetNuke.Modules.Forum
 					' this is either not the original post or the user is not the author or a moderator
 					' If the thread is answered AND this is the post accepted as the answer
 					If Post.ParentThread.ThreadStatus = ThreadStatus.Answered And (Post.ParentThread.AnswerPostID = Post.PostID) And ThreadInfo.HostForum.EnableForumsThreadStatus Then
-						RenderDivBegin(wr, "", "Forum_HeaderText") ' <span>
+						RenderDivBegin(wr, "", "Forum_AnswerText") ' <span>
 						wr.Write(ForumControl.LocalizedText("AcceptedAnswer"))
 						wr.Write("&nbsp;")
 						RenderDivEnd(wr) ' </span>
@@ -1677,7 +1678,7 @@ Namespace DotNetNuke.Modules.Forum
 			RenderRowBegin(wr) '<tr> 
 
 			'link to user profile, always display in both views
-			_url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, author.UserID)
+			_url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, author.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage)
 			RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td>
 
 			' display user online status
@@ -1730,10 +1731,10 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 
 				' display user avatar
-				If objConfig.EnableUserAvatar AndAlso (Not author.Avatar = String.Empty) Then
+				If objConfig.EnableUserAvatar AndAlso (Not author.AvatarComplete = String.Empty) Then
 					If author.AvatarComplete <> String.Empty Then
 						RenderRowBegin(wr) ' <tr> (start avatar row)
-						RenderCellBegin(wr, "Forum_NormalSmall", "", "", "", "top", "", "") ' <td>
+						RenderCellBegin(wr, "Forum_UserAvatar", "", "", "", "top", "", "") ' <td>
 						wr.Write("<br />")
 						RenderImage(wr, author.AvatarComplete, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "")
 						RenderCellEnd(wr) ' </td>
@@ -1883,6 +1884,20 @@ Namespace DotNetNuke.Modules.Forum
 				Me.RenderLinkButton(wr, Utilities.Links.ContainerViewPostLink(TabID, Post.ForumID, Post.PostID), strSubject, "Forum_NormalBold")
 				wr.Write("&nbsp;")
 				wr.Write(strAuthorLocation)
+
+
+
+				' display edited tag if post has been modified
+				If (Post.UpdatedByUser > 0) Then
+					' if the person who edited the post is a moderator and hide mod edits is enabled, we don't want to show edit details.
+					'CP - Impersonate
+					Dim objPosterSecurity As New ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
+					If Not (objConfig.HideModEdits And objPosterSecurity.IsForumModerator) Then
+						wr.Write("&nbsp;")
+						RenderImage(wr, objConfig.GetThemeImageURL("s_edit.") & objConfig.ImageExtension, String.Format(ForumControl.LocalizedText("ModifiedBy") & " {0} {1}", Post.LastModifiedAuthor.SiteAlias, " " & ForumControl.LocalizedText("on") & " " & Post.UpdatedDate.ToString), "")
+					End If
+				End If
+
 				RenderDivEnd(wr) ' </span> 
 			Else
 				' link to select (open) this post when in tree view mode    
@@ -1906,16 +1921,16 @@ Namespace DotNetNuke.Modules.Forum
 				RenderRowBegin(wr) ' <tr>
 
 				RenderCellBegin(wr, "", "", "5%", "left", "top", "", "") ' <td>
-				' display edited tag if post has been modified
-				If (Post.UpdatedByUser > 0) Then
-					' if the person who edited the post is a moderator and hide mod edits is enabled, we don't want to show edit details.
-					'CP - Impersonate
-					Dim objPosterSecurity As New ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
-					If Not (objConfig.HideModEdits And objPosterSecurity.IsForumModerator) Then
-						wr.Write("&nbsp;")
-						RenderImage(wr, objConfig.GetThemeImageURL("s_edit.") & objConfig.ImageExtension, String.Format(ForumControl.LocalizedText("ModifiedBy") & " {0} {1}", Post.LastModifiedAuthor.SiteAlias, " " & ForumControl.LocalizedText("on") & " " & Post.UpdatedDate.ToString), "")
-					End If
-				End If
+				' '' display edited tag if post has been modified
+				''If (Post.UpdatedByUser > 0) Then
+				''	' if the person who edited the post is a moderator and hide mod edits is enabled, we don't want to show edit details.
+				''	'CP - Impersonate
+				''	Dim objPosterSecurity As New ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
+				''	If Not (objConfig.HideModEdits And objPosterSecurity.IsForumModerator) Then
+				''		wr.Write("&nbsp;")
+				''		RenderImage(wr, objConfig.GetThemeImageURL("s_edit.") & objConfig.ImageExtension, String.Format(ForumControl.LocalizedText("ModifiedBy") & " {0} {1}", Post.LastModifiedAuthor.SiteAlias, " " & ForumControl.LocalizedText("on") & " " & Post.UpdatedDate.ToString), "")
+				''	End If
+				''End If
 				RenderCellEnd(wr) ' </td> 
 
 				' (in flatview or selected, display commands on right)
@@ -2277,7 +2292,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			' Start the footer row
 			RenderRowBegin(wr)
-			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")	' <td><img/></td>
+			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
 
 			RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td> 
 			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0") ' <table>
@@ -2311,7 +2326,7 @@ Namespace DotNetNuke.Modules.Forum
 			RenderRowEnd(wr) ' </tr>
 			RenderTableEnd(wr) ' </table>
 			RenderCellEnd(wr) ' </td>
-			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "left")
+			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
 			RenderRowEnd(wr) ' </tr>  
 		End Sub
 
