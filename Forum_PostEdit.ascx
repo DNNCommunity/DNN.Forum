@@ -6,7 +6,7 @@
 <%@ Control language="vb" CodeBehind="Forum_PostEdit.ascx.vb" AutoEventWireup="True" Inherits="DotNetNuke.Modules.Forum.PostEdit" %>
 <asp:Literal ID="litCSSLoad" runat="server" />
 <asp:Panel ID="pnlContainer" runat="server">
-    <table class="Forum_Container" cellspacing="0" cellpadding="0" width="100%" align="center">
+    <table class="Forum_SearchContainer" cellspacing="0" cellpadding="0" width="100%" align="center">
 	    <tr>
 	        <td>
 	            <table id="tblNewPost" runat="server" class="Forum_Border" cellpadding="0" cellspacing="0" width="100%">
@@ -270,12 +270,7 @@
 	                    <td>
 		                    <table cellspacing="0" cellpadding="0" border="0" width="100%">
 			                    <tr valign="top">
-			                        <td width="200px" class="Forum_Row_AdminL" align="left">
-			                            <span class="Forum_Row_AdminText">
-			                                <dnn:label id="plMessage" runat="server" Suffix=":" controlname="lblMessage"></dnn:label>
-					                    </span>
-				                    </td>
-				                    <td width="80%" class="Forum_Row_AdminR" align="left">
+				                    <td width="80%" class="Forum_Row_Admin" align="left">
 				                        <div style="padding: 10px 10px 10px 0px">
 				                            <asp:label id="lblMessage" runat="server" CssClass="Forum_Normal" />
 				                        </div>
@@ -284,13 +279,10 @@
 		                    </table>
 	                    </td>
                     </tr>
-                    <tr>
-                        <td class="Forum_Row_Admin_Foot">&nbsp;</td>
-                    </tr>
 	            </table>
 	            <table id="tblPreview" runat="server" class="Forum_Border" cellpadding="0" cellspacing="0" width="100%" visible="false">
 				    <tr>
-                        <td class="Forum_AltHeaderCapLeft">&nbsp;</td>
+                        <td class="Forum_HeaderCapLeft"><asp:Image ID="imgPrevSpaceL" runat="server" /></td>
 	                    <td class="Forum_Header" width="99%">
 		                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
 			                    <tr>
@@ -303,15 +295,12 @@
 			                    </tr>
 		                    </table>
 	                    </td>
-	                    <td class="Forum_AltHeaderCapRight">&nbsp;</td>
+	                    <td class="Forum_HeaderCapRight"><asp:Image ID="imgPrevSpaceR" runat="server" /></td>
                     </tr>
 				    <tr>
 					    <td class="Forum_Row_Admin" colspan="3" style="padding: 10px 10px 10px 10px">
 					        <asp:label id="lblPreview" Runat="server" CssClass="Forum_Normal"></asp:label>
 					    </td>
-				    </tr>
-				    <tr>
-				        <td class="Forum_Row_Admin_Foot" colspan="3">&nbsp;</td>
 				    </tr>
 	            </table>
 	        </td>

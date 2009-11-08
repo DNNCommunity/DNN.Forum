@@ -260,6 +260,9 @@ Namespace DotNetNuke.Modules.Forum
 					imgReplyLeft.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
 					imgReplyRight.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
 
+					imgPrevSpaceL.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
+					imgPrevSpaceR.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
+
 					EnableControls(objAction)
 
 					If objConfig.DisableHTMLPosting = True Then
