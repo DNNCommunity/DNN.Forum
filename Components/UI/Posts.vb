@@ -18,7 +18,10 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 Option Strict On
-Option Explicit On 
+Option Explicit On
+
+Imports DotNetNuke.Entities.Profile
+Imports DotNetNuke.Entities.Users
 
 Namespace DotNetNuke.Modules.Forum
 
@@ -1737,14 +1740,23 @@ Namespace DotNetNuke.Modules.Forum
 						RenderCellBegin(wr, "Forum_UserAvatar", "", "", "", "top", "", "") ' <td>
 						wr.Write("<br />")
 						If objConfig.EnableProfileAvatar Then
-							' This needs to be rendered w/ specified size
-							'Dim rbiProfileAvatar As New Telerik.Web.UI.RadBinaryImage
-							'rbiProfileAvatar.Width = objConfig.UserAvatarWidth
-							'rbiProfileAvatar.Height = objConfig.UserAvatarHeight
-							'rbiProfileAvatar.ImageUrl = author.AvatarComplete
+							Dim WebVisibility As UserVisibilityMode
+							WebVisibility = author.Profile.ProfileProperties(objConfig.AvatarProfilePropName).Visibility
 
-							'rbiProfileAvatar.RenderControl(wr)
-							RenderImage(wr, author.AvatarComplete, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "", objConfig.UserAvatarWidth.ToString(), objConfig.UserAvatarHeight.ToString())
+							Select Case WebVisibility
+								Case UserVisibilityMode.AdminOnly
+									Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, -1, LoggedOnUser.UserID)
+
+									If objSecurity.IsForumAdmin Then
+										RenderProfileAvatar(author, wr)
+									End If
+								Case UserVisibilityMode.AllUsers
+									RenderProfileAvatar(author, wr)
+								Case UserVisibilityMode.MembersOnly
+									If LoggedOnUser.UserID > 0 Then
+										RenderProfileAvatar(author, wr)
+									End If
+							End Select
 						Else
 							RenderImage(wr, author.AvatarComplete, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "")
 						End If
@@ -1792,15 +1804,42 @@ Namespace DotNetNuke.Modules.Forum
 				RenderCellBegin(wr, "Forum_NormalSmall", "", "", "", "top", "", "")	' <td>
 
 				'Homepage
-				If Len(author.UserWebsite) > 0 And (author.EnableProfileWeb) Then
-					wr.Write("<br />")
-					RenderLinkButton(wr, author.UserWebsite, Replace(author.UserWebsite, "http://", ""), "Forum_Profile", "", True, objConfig.NoFollowWeb)
-				End If
+				Dim WebSiteVisibility As UserVisibilityMode
+				WebSiteVisibility = author.Profile.ProfileProperties("Website").Visibility
+
+				Select Case WebSiteVisibility
+					Case UserVisibilityMode.AdminOnly
+						Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, -1, LoggedOnUser.UserID)
+
+						If objSecurity.IsForumAdmin Then
+							RenderProfileLink(author, wr)
+						End If
+					Case UserVisibilityMode.AllUsers
+						RenderProfileLink(author, wr)
+					Case UserVisibilityMode.MembersOnly
+						If LoggedOnUser.UserID > 0 Then
+							RenderProfileLink(author, wr)
+						End If
+				End Select
 
 				'Region
-				If objConfig.DisplayPosterRegion And author.EnableProfileRegion And Len(author.Profile.Region) > 0 Then
-					wr.Write("<br />" & ForumControl.LocalizedText("Region") & ": " & author.Profile.Region)
-				End If
+				Dim CountryVisibility As UserVisibilityMode
+				CountryVisibility = author.Profile.ProfileProperties("Country").Visibility
+
+				Select Case CountryVisibility
+					Case UserVisibilityMode.AdminOnly
+						Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, -1, LoggedOnUser.UserID)
+
+						If objSecurity.IsForumAdmin Then
+							RenderCountry(author, wr)
+						End If
+					Case UserVisibilityMode.AllUsers
+						RenderCountry(author, wr)
+					Case UserVisibilityMode.MembersOnly
+						If LoggedOnUser.UserID > 0 Then
+							RenderCountry(author, wr)
+						End If
+				End Select
 
 				'Joined
 				Dim strJoinedDate As String
@@ -1815,12 +1854,53 @@ Namespace DotNetNuke.Modules.Forum
 
 				RenderCellEnd(wr) ' </td>
 				RenderRowEnd(wr) ' </tr>
-
 			End If
 
 			RenderTableEnd(wr) ' </table>  (End of user avatar/alias table, close td next)
 		End Sub
 
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="author"></param>
+		''' <param name="wr"></param>
+		''' <remarks></remarks>
+		Private Sub RenderProfileAvatar(ByVal author As ForumUser, ByVal wr As HtmlTextWriter)
+			'' This needs to be rendered w/ specified size
+			'Dim rbiProfileAvatar As New Telerik.Web.UI.RadBinaryImage
+			'rbiProfileAvatar.Width = objConfig.UserAvatarWidth
+			'rbiProfileAvatar.Height = objConfig.UserAvatarHeight
+			'rbiProfileAvatar.ImageUrl = author.AvatarComplete
+
+			'rbiProfileAvatar.RenderControl(wr)
+			' Below is for use when no Telerik integration is going on. (Uncomment line below, comment out lines above)
+			RenderImage(wr, author.AvatarComplete, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "", objConfig.UserAvatarWidth.ToString(), objConfig.UserAvatarHeight.ToString())
+		End Sub
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="author"></param>
+		''' <param name="wr"></param>
+		''' <remarks></remarks>
+		Private Sub RenderProfileLink(ByVal author As ForumUser, ByVal wr As HtmlTextWriter)
+			If Len(author.UserWebsite) > 0 Then
+				wr.Write("<br />")
+				RenderLinkButton(wr, author.UserWebsite, Replace(author.UserWebsite, "http://", ""), "Forum_Profile", "", True, objConfig.NoFollowWeb)
+			End If
+		End Sub
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="author"></param>
+		''' <param name="wr"></param>
+		''' <remarks></remarks>
+		Private Sub RenderCountry(ByVal author As ForumUser, ByVal wr As HtmlTextWriter)
+			If objConfig.DisplayPosterRegion And Len(author.Profile.Region) > 0 Then
+				wr.Write("<br />" & ForumControl.LocalizedText("Region") & ": " & author.Profile.Region)
+			End If
+		End Sub
 		''' <summary>
 		''' Builds the post details: subject, user location, edited, created date
 		''' </summary>
