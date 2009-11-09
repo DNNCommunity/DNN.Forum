@@ -20,6 +20,8 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Entities.Users
+
 Namespace DotNetNuke.Modules.Forum
 
 #Region "ForumUser"
