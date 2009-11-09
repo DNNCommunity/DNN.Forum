@@ -154,6 +154,10 @@ Namespace DotNetNuke.Modules.Forum
 			Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & _moduleDataPrefix & "Avatar_Role_GetAll", PortalID), IDataReader)
 		End Function
 
+		Public Overrides Function RoleAvatar_GetUsers(ByVal PortalID As Integer, ByVal UserID As Integer) As IDataReader
+			Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & _moduleDataPrefix & "Avatar_Role_GetUsers", PortalID, UserID), IDataReader)
+		End Function
+
 		Public Overrides Sub RoleAvatar_Delete(ByVal RoleID As Integer)
 			SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & _moduleDataPrefix & "Avatar_Role_Delete", RoleID)
 		End Sub

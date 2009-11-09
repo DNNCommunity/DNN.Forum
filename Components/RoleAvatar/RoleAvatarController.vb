@@ -78,6 +78,35 @@ Namespace DotNetNuke.Modules.Forum
 		End Function
 
 		''' <summary>
+		''' This gets role avatars for a specific user. 
+		''' </summary>
+		''' <param name="PortalID">The portal the user belongs to (and we are viewing).</param>
+		''' <param name="UserID">The user who we want the role avatars for.</param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Function GetUsersRoleAvatars(ByVal PortalID As Integer, ByVal UserID As Integer) As List(Of RoleAvatarInfo)
+			Dim objAvatars As New List(Of RoleAvatarInfo)
+			Dim dr As IDataReader = Nothing
+			Try
+				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().RoleAvatar_GetUsers(PortalID, UserID)
+				While dr.Read
+					Dim objAvatarInfo As RoleAvatarInfo = FillRoleAvatarInfo(dr)
+					objAvatars.Add(objAvatarInfo)
+				End While
+				dr.NextResult()
+
+			Catch ex As Exception
+				LogException(ex)
+			Finally
+				If Not dr Is Nothing Then
+					dr.Close()
+				End If
+			End Try
+
+			Return objAvatars
+		End Function
+
+		''' <summary>
 		''' Attempts to load the stats from cache, if not available it retrieves it and places it in cache. 
 		''' </summary>
 		''' <param name="RoleID"></param>
@@ -88,6 +117,7 @@ Namespace DotNetNuke.Modules.Forum
 		Private Function GetFromCache(ByVal RoleID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer) As String
 
 			Dim strAvatar As String = String.Empty
+			' moving this 
 			Dim list As List(Of RoleAvatarInfo) = GetAllFromCache(ModuleID, PortalID)
 			Dim role As RoleAvatarInfo
 
@@ -205,25 +235,23 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 		''' <summary>
-		''' Returns a list of role based avatars
+		''' This is used to get role avatars for the user, it is sorted by file name ascending. (Top items would be 0 or A).
 		''' </summary>
 		''' <param name="UserID"></param>
-		''' <param name="PortalID"></param>
 		''' <param name="ModuleID"></param>
+		''' <param name="PortalID"></param>
+		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Function GetUserRoleAvatars(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer) As String
-
+		Public Function GetUsersRoleAvatars(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer) As String
 			Dim strAvatars As String = String.Empty
+			Dim colRoleAvatars As List(Of RoleAvatarInfo)
 
-			Dim listRoles As List(Of RoleIdInfo) = Me.GetUserRoles(UserID)
+			colRoleAvatars = GetUsersRoleAvatars(PortalID, UserID)
 
-			If Not listRoles Is Nothing Then
-				Dim objRole As RoleIdInfo
-
-				For Each objRole In listRoles
-					Dim tmp As String = GetFromCache(objRole.RoleID, ModuleID, PortalID)
-					If Len(tmp) > 0 And (Not strAvatars.Contains(tmp)) Then
-						strAvatars += tmp & ";"
+			If Not colRoleAvatars Is Nothing Then
+				For Each objAvatar As RoleAvatarInfo In colRoleAvatars
+					If Len(objAvatar.Avatar) > 0 And (Not strAvatars.Contains(objAvatar.Avatar)) Then
+						strAvatars += objAvatar.Avatar & ";"
 					End If
 				Next
 			End If
@@ -293,7 +321,6 @@ Namespace DotNetNuke.Modules.Forum
 
 		''' <summary>A private info object to store RoleID</summary>
 		''' <remarks></remarks>
-
 		Private Class RoleIdInfo
 
 #Region " Private Properties "
@@ -304,6 +331,12 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region " Public Properties "
 
+			''' <summary>
+			''' 
+			''' </summary>
+			''' <value></value>
+			''' <returns></returns>
+			''' <remarks></remarks>
 			Public Property RoleID() As Integer
 				Get
 					Return mRoleID

@@ -2,7 +2,7 @@
 <%@ Register src="~/DesktopModules/Forum/Controls/UCP_Menu.ascx" tagname="UCPmenu" tagprefix="forum" %>
 <asp:Literal ID="litCSSLoad" runat="server" />
 <asp:Panel ID="pnlContainer" runat="server">
-    <table cellpadding="0" cellspacing="0" width="100%" border="0">
+    <table cellpadding="0" cellspacing="0" width="100%" border="0" class="Forum_SearchContainer" >
         <tr valign="top">
             <td class="Forum_UCP_Left"><forum:UCPmenu ID="UCPmenu" runat="server" /></td>
             <td class="Forum_UCP_Right"><asp:PlaceHolder ID="phUserControl" runat="server" /></td>

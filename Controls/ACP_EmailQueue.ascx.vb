@@ -60,14 +60,22 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				End If
 			End If
 
-			If Convert.ToString(Entities.Host.Host.GetHostSettingsDictionary("ForumTaskDeleteDays")) <> String.Empty Then
-				txtTaskDeleteDays.Text = Convert.ToString(Entities.Host.Host.GetHostSettingsDictionary("ForumTaskDeleteDays"))
+			If Not Entities.Host.Host.GetHostSettingsDictionary("ForumTaskDeleteDays") Is Nothing Then
+				If Convert.ToString(Entities.Host.Host.GetHostSettingsDictionary("ForumTaskDeleteDays")) <> String.Empty Then
+					txtTaskDeleteDays.Text = Convert.ToString(Entities.Host.Host.GetHostSettingsDictionary("ForumTaskDeleteDays"))
+				Else
+					txtTaskDeleteDays.Text = "30"
+				End If
 			Else
 				txtTaskDeleteDays.Text = "30"
 			End If
 
-			If Convert.ToString(Entities.Host.Host.GetHostSettingsDictionary("ForumEmailDeleteDays")) <> String.Empty Then
-				txtEmailDeleteDays.Text = Convert.ToString(Entities.Host.Host.GetHostSettingsDictionary("ForumEmailDeleteDays"))
+			If Not Entities.Host.Host.GetHostSettingsDictionary("ForumEmailDeleteDays") Is Nothing Then
+				If Convert.ToString(Entities.Host.Host.GetHostSettingsDictionary("ForumEmailDeleteDays")) <> String.Empty Then
+					txtEmailDeleteDays.Text = Convert.ToString(Entities.Host.Host.GetHostSettingsDictionary("ForumEmailDeleteDays"))
+				Else
+					txtEmailDeleteDays.Text = "30"
+				End If
 			Else
 				txtEmailDeleteDays.Text = "30"
 			End If

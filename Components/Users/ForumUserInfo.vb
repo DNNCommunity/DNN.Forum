@@ -326,6 +326,21 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 		End Property
 
+		''' <summary>
+		''' Gets the avatar from the user's profile.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property ProfileAvatar() As String
+			Get
+				If Not Me.IsSuperUser Then
+					' we are using profile avatars, lets check for the property value
+					Return Me.Profile.GetPropertyValue(objConfig.AvatarProfilePropName)
+				End If
+			End Get
+		End Property
+
 #End Region
 
 #Region "Public Properties"
@@ -390,15 +405,6 @@ Namespace DotNetNuke.Modules.Forum
 			End Set
 		End Property
 
-		Public ReadOnly Property ProfileAvatar() As String
-			Get
-				If Not Me.IsSuperUser Then
-					' we are using profile avatars, lets check for the property value
-					Return Me.Profile.GetPropertyValue(objConfig.AvatarProfilePropName)
-				End If
-			End Get
-		End Property
-
 		''' <summary>
 		''' String of admin assigned avatars. 
 		''' </summary>
@@ -424,7 +430,7 @@ Namespace DotNetNuke.Modules.Forum
 			Get
 				If _RoleAvatars = String.Empty Then
 					Dim ctlRoleAvatar As New RoleAvatarController
-					_RoleAvatars = ctlRoleAvatar.GetUserRoleAvatars(UserID, objConfig.ModuleID, PortalID)
+					_RoleAvatars = ctlRoleAvatar.GetUsersRoleAvatars(UserID, objConfig.ModuleID, PortalID)
 				End If
 				Return _RoleAvatars
 

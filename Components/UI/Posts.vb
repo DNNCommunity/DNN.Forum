@@ -1738,6 +1738,12 @@ Namespace DotNetNuke.Modules.Forum
 						wr.Write("<br />")
 						If objConfig.EnableProfileAvatar Then
 							' This needs to be rendered w/ specified size
+							'Dim rbiProfileAvatar As New Telerik.Web.UI.RadBinaryImage
+							'rbiProfileAvatar.Width = objConfig.UserAvatarWidth
+							'rbiProfileAvatar.Height = objConfig.UserAvatarHeight
+							'rbiProfileAvatar.ImageUrl = author.AvatarComplete
+
+							'rbiProfileAvatar.RenderControl(wr)
 							RenderImage(wr, author.AvatarComplete, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "", objConfig.UserAvatarWidth.ToString(), objConfig.UserAvatarHeight.ToString())
 						Else
 							RenderImage(wr, author.AvatarComplete, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "")

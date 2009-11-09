@@ -262,6 +262,16 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			BindData()
 		End Sub
 
+		''' <summary>
+		''' Return users back to the Forum Home page.
+		''' </summary>
+		''' <param name="sender"></param>
+		''' <param name="e"></param>
+		''' <remarks></remarks>
+		Protected Sub cmdHome_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdHome.Click
+			Response.Redirect(NavigateURL(), True)
+		End Sub
+
 #End Region
 
 #Region "Private Methods"

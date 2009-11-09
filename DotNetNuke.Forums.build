@@ -107,8 +107,9 @@
 				<exclude name="**/temp/*" />
 				<exclude name="**/Themes/DNN/**/*" />
 				<exclude name="**/Themes/Empires/**/*" />
-					<exclude name="**/Themes/Blue/**/*" />
-					<exclude name="**/Themes/Extropy/**/*" />
+				<exclude name="**/Themes/Blue/**/*" />
+				<exclude name="**/Themes/Crispy/**/*" />
+				<exclude name="**/Themes/Extropy/**/*" />
 				<exclude name="**/Themes/BlackKat/**/*" />
 				<exclude name="**/Themes/Blood/**/*" />
 				<exclude name="**/Themes/Vista/**/*" />
@@ -165,8 +166,9 @@
 				<exclude name="**/temp/*" />
 				<exclude name="**/Themes/DNN/**/*" />
 				<exclude name="**/Themes/Empires/**/*" />
-					<exclude name="**/Themes/Blue/**/*" />
-					<exclude name="**/Themes/Extropy/**/*" />
+				<exclude name="**/Themes/Blue/**/*" />
+				<exclude name="**/Themes/Crispy/**/*" />
+				<exclude name="**/Themes/Extropy/**/*" />
 				<exclude name="**/Themes/BlackKat/**/*" />
 				<exclude name="**/Themes/Blood/**/*" />
 				<exclude name="**/Themes/Vista/**/*" />

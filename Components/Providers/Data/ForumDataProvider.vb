@@ -76,6 +76,7 @@ Namespace DotNetNuke.Modules.Forum
 #Region "RoleAvatar"
 
 		Public MustOverride Function RoleAvatar_GetAll(ByVal PortalID As Integer) As IDataReader
+		Public MustOverride Function RoleAvatar_GetUsers(ByVal PortalID As Integer, ByVal UserID As Integer) As IDataReader
 		Public MustOverride Function RoleAvatar_GetUserRoles(ByVal UserId As Integer) As IDataReader
 		Public MustOverride Function RoleAvatar_Get(ByVal RoleId As Integer) As IDataReader
 		Public MustOverride Sub RoleAvatar_Delete(ByVal RoleID As Integer)

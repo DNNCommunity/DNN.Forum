@@ -3,7 +3,7 @@
 <%@ Register TagPrefix="forum" TagName="ACPmenu" src="~/DesktopModules/Forum/Controls/ACP_Menu.ascx" %>
 <asp:Literal ID="litCSSLoad" runat="server" />
 <asp:Panel ID="pnlContainer" runat="server" />
-	<table cellpadding="0" cellspacing="0" width="100%" border="0">
+	<table cellpadding="0" cellspacing="0" width="100%" border="0" class="Forum_SearchContainer">
 		<tr valign="top">
 			<td class="Forum_UCP_Left"><forum:ACPmenu ID="ACPmenu" runat="server" /></td>
 			<td class="Forum_UCP_Right">
@@ -51,6 +51,9 @@
 						   </FooterTemplate>
 					    </asp:DataList>
 				    </td>
+				 </tr>
+				 <tr>
+					<td align="center"><asp:LinkButton ID="cmdHome" runat="server" CssClass="CommandButton" resourcekey="cmdHome"></asp:LinkButton></td>
 				 </tr>
 			  </table>
 			</td>
