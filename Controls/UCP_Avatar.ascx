@@ -10,7 +10,7 @@
 	<tr>
 		<td>
 			<table id="tblAvatar" cellspacing="0" cellpadding="2" width="100%">
-				<tr>
+				<tr id="rowUserAvatar" runat="server">
 					<td class="Forum_Row_AdminL" width="175" valign="top">
 						<span class="Forum_Row_AdminText">
 							<dnn:label id="plAvatar" runat="server" suffix=":" controlname="ctlUserAvatar"></dnn:label>

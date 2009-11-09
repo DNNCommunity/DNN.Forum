@@ -491,6 +491,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 				wr.RenderBeginTag(HtmlTextWriterTag.Table) ' <table>
 
 				'Profile
+				' we are removing profile as of 4.5.5, this means we will render a link to core one.  
 				wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
@@ -507,12 +508,26 @@ Namespace DotNetNuke.Modules.Forum.UCP
 
 				wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
-				cmdProfile.RenderControl(wr)
+
+				Dim objSecurity As New ModuleSecurity(ModuleID, TabID, -1, CurrentUserID)
+
+				If objSecurity.IsForumModerator Then
+					cmdProfile.RenderControl(wr)
+				Else
+					' link to core profile.
+					wr.AddAttribute(HtmlTextWriterAttribute.Href, DotNetNuke.Common.Globals.ProfileURL(ProfileUserID))
+					wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_Link")
+					wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
+					wr.Write(Localization.GetString("cmdProfile", Me.LocalResourceFile))
+					wr.RenderEndTag() '</a>
+				End If
+
 				wr.RenderEndTag() ' </td>
 				wr.RenderEndTag() ' </tr>
 
 				'Avatar
-				If objConfig.EnableUserAvatar Or objConfig.EnableUserAvatarPool Then
+				If objConfig.EnableUserAvatar And (objConfig.EnableProfileAvatar = False) Then
+					' If user avatars are enabled AND profile avatar = false, show the avatar section.
 					wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>
 					wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 					wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
@@ -533,8 +548,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 					wr.RenderEndTag() ' </td>
 					wr.RenderEndTag() ' </tr>
 				Else
-					Dim objSecurity As New ModuleSecurity(ModuleID, TabID, -1, CurrentUserID)
-
 					If objConfig.EnableSystemAvatar And objSecurity.IsForumAdmin Then
 						wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>
 						wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
@@ -749,10 +762,10 @@ Namespace DotNetNuke.Modules.Forum.UCP
 				.CssClass = "Forum_Link"
 				.ID = "cmdProfile"
 				.Text = Localization.GetString("cmdProfile", Me.LocalResourceFile)
-				.CommandArgument = (CInt(UserAjaxControl.Profile)).ToString()
 				.CausesValidation = False
-				AddHandler cmdProfile.Click, AddressOf PageButton_Click
 				.EnableViewState = False
+				.CommandArgument = (CInt(UserAjaxControl.Profile)).ToString()
+				AddHandler cmdProfile.Click, AddressOf PageButton_Click
 			End With
 			Controls.Add(cmdProfile)
 

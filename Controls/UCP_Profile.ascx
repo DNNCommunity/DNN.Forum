@@ -81,7 +81,7 @@
 						<asp:Label ID="visRegion" runat="server" CssClass="Forum_Normal" />
 					</td>
 				</tr>
-				<tr>
+				<tr id="rowBio" runat="server" visible="false">
 					<td class="Forum_Row_AdminL" width="175" valign="top">
 						<span class="Forum_Row_AdminText">
 							<dnn:label id="plBiography" runat="server" suffix=":" controlname="txtBiography"></dnn:label>

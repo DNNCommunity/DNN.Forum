@@ -58,18 +58,18 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Attachments"
 
-        Public MustOverride Function Attachment_GetAllByPostID(ByVal PostID As Integer) As IDataReader
-        Public MustOverride Function Attachment_GetAllByUserID(ByVal UserID As Integer) As IDataReader
-        Public MustOverride Sub Attachment_Update(ByVal objAttachment As AttachmentInfo)
+		Public MustOverride Function Attachment_GetAllByPostID(ByVal PostID As Integer) As IDataReader
+		Public MustOverride Function Attachment_GetAllByUserID(ByVal UserID As Integer) As IDataReader
+		Public MustOverride Sub Attachment_Update(ByVal objAttachment As AttachmentInfo)
 
 #End Region
 
 #Region "Emoticons"
 
-        Public MustOverride Function Emoticon_GetAll(ByVal ModuleID As Integer, ByVal IsDefault As Boolean) As IDataReader
-        Public MustOverride Sub Emoticon_Update(ByVal objEmoticon As EmoticonInfo)
-        Public MustOverride Sub Emoticon_Delete(ByVal ID As Integer)
-        Public MustOverride Sub Emoticon_SetOrder(ByVal ID As Integer, ByVal ModuleID As Integer, ByVal MoveUp As Boolean)
+		Public MustOverride Function Emoticon_GetAll(ByVal ModuleID As Integer, ByVal IsDefault As Boolean) As IDataReader
+		Public MustOverride Sub Emoticon_Update(ByVal objEmoticon As EmoticonInfo)
+		Public MustOverride Sub Emoticon_Delete(ByVal ID As Integer)
+		Public MustOverride Sub Emoticon_SetOrder(ByVal ID As Integer, ByVal ModuleID As Integer, ByVal MoveUp As Boolean)
 
 #End Region
 
@@ -77,9 +77,9 @@ Namespace DotNetNuke.Modules.Forum
 
 		Public MustOverride Function RoleAvatar_GetAll(ByVal PortalID As Integer) As IDataReader
 		Public MustOverride Function RoleAvatar_GetUserRoles(ByVal UserId As Integer) As IDataReader
-        Public MustOverride Function RoleAvatar_Get(ByVal RoleId As Integer) As IDataReader
+		Public MustOverride Function RoleAvatar_Get(ByVal RoleId As Integer) As IDataReader
 		Public MustOverride Sub RoleAvatar_Delete(ByVal RoleID As Integer)
-        Public MustOverride Sub RoleAvatar_Add(ByVal RoleID As Integer, ByVal Avatar As String)
+		Public MustOverride Sub RoleAvatar_Add(ByVal RoleID As Integer, ByVal Avatar As String)
 		Public MustOverride Sub RoleAvatar_Update(ByVal RoleID As Integer, ByVal Avatar As String)
 
 #End Region
@@ -137,8 +137,8 @@ Namespace DotNetNuke.Modules.Forum
 
 		Public MustOverride Function PostGetAll(ByVal ThreadID As Integer, ByVal ThreadPage As Integer, ByVal postsPerPage As Integer, ByVal TreeView As Boolean, ByVal Descending As Boolean, ByVal PortalID As Integer) As IDataReader
 		Public MustOverride Function PostGet(ByVal PostID As Integer, ByVal PortalID As Integer) As IDataReader
-        Public MustOverride Function PostAdd(ByVal ParentPostID As Integer, ByVal ForumID As Integer, ByVal UserID As Integer, ByVal RemoteAddr As String, ByVal Notify As Boolean, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal ObjectID As Integer, ByVal FileAttachmentURL As String, ByVal PortalID As Integer, ByVal ThreadIconID As Integer, ByVal PollID As Integer, ByVal IsModerated As Boolean, ByVal ParseInfo As Integer) As Integer
-        Public MustOverride Function PostUpdate(ByVal ThreadID As Integer, ByVal PostID As Integer, ByVal Notify As Boolean, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal UpdatedBy As Integer, ByVal FileAttachmentURL As String, ByVal PortalID As Integer, ByVal ThreadIconID As Integer, ByVal PollID As Integer, ByVal ParseInfo As Integer) As Integer
+		Public MustOverride Function PostAdd(ByVal ParentPostID As Integer, ByVal ForumID As Integer, ByVal UserID As Integer, ByVal RemoteAddr As String, ByVal Notify As Boolean, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal ObjectID As Integer, ByVal FileAttachmentURL As String, ByVal PortalID As Integer, ByVal ThreadIconID As Integer, ByVal PollID As Integer, ByVal IsModerated As Boolean, ByVal ParseInfo As Integer) As Integer
+		Public MustOverride Function PostUpdate(ByVal ThreadID As Integer, ByVal PostID As Integer, ByVal Notify As Boolean, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal UpdatedBy As Integer, ByVal FileAttachmentURL As String, ByVal PortalID As Integer, ByVal ThreadIconID As Integer, ByVal PollID As Integer, ByVal ParseInfo As Integer) As Integer
 		Public MustOverride Sub PostDelete(ByVal PostID As Integer, ByVal ModID As Integer, ByVal Notes As String, ByVal PortalID As Integer)
 		Public MustOverride Function PostReportCheck(ByVal PostID As Integer, ByVal UserID As Integer) As Boolean
 		Public MustOverride Function PostMove(ByVal PostID As Integer, ByVal oldThreadID As Integer, ByVal newThreadID As Integer, ByVal newForumID As Integer, ByVal oldForumID As Integer, ByVal ModID As Integer, ByVal SortOrder As Integer, ByVal Notes As String) As IDataReader
@@ -146,7 +146,7 @@ Namespace DotNetNuke.Modules.Forum
 		' Get children Posts (for thread split)
 		Public MustOverride Function PostGetChildren(ByVal PostID As Integer) As IDataReader
 		Public MustOverride Function PostGetEntireThread(ByVal ThreadID As Integer) As IDataReader
-        Public MustOverride Sub PostUpdateParseInfo(ByVal PostID As Integer, ByVal ParseInfo As Integer)
+		Public MustOverride Sub PostUpdateParseInfo(ByVal PostID As Integer, ByVal ParseInfo As Integer)
 #End Region
 
 #Region "Reported Posts"

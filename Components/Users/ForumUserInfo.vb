@@ -222,7 +222,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property AvatarComplete() As String
 			Get
 				If objConfig.EnableProfileAvatar Then
-					If Not ProfileAvatar.Trim = String.Empty Then
+					If Not ProfileAvatar Is Nothing Then
 						_AvatarComplete = objConfig.CurrentPortalSettings.HomeDirectory + objConfig.UserAvatarPath + ProfileAvatar
 					Else
 						_AvatarComplete = String.Empty
@@ -392,8 +392,10 @@ Namespace DotNetNuke.Modules.Forum
 
 		Public ReadOnly Property ProfileAvatar() As String
 			Get
-				' we are using profile avatars, lets check for the property value
-				Return Me.Profile.GetPropertyValue(objConfig.AvatarProfilePropName)
+				If Not Me.IsSuperUser Then
+					' we are using profile avatars, lets check for the property value
+					Return Me.Profile.GetPropertyValue(objConfig.AvatarProfilePropName)
+				End If
 			End Get
 		End Property
 

@@ -1736,7 +1736,13 @@ Namespace DotNetNuke.Modules.Forum
 						RenderRowBegin(wr) ' <tr> (start avatar row)
 						RenderCellBegin(wr, "Forum_UserAvatar", "", "", "", "top", "", "") ' <td>
 						wr.Write("<br />")
-						RenderImage(wr, author.AvatarComplete, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "")
+						If objConfig.EnableProfileAvatar Then
+							' This needs to be rendered w/ specified size
+							RenderImage(wr, author.AvatarComplete, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "", objConfig.UserAvatarWidth.ToString(), objConfig.UserAvatarHeight.ToString())
+						Else
+							RenderImage(wr, author.AvatarComplete, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "")
+						End If
+
 						RenderCellEnd(wr) ' </td>
 						RenderRowEnd(wr) ' </tr>
 					End If

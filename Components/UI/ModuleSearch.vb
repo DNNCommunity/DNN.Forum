@@ -1106,9 +1106,9 @@ Namespace DotNetNuke.Modules.Forum
 			RenderCellBegin(wr, "", "", "100%", "", "middle", "", "") ' <td>
 			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "middle", "0")	    ' <table>
 			RenderRowBegin(wr) ' <tr>
-			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "Forum_FooterCapLeft", "") ' <td><img/></td>
+			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "Forum_FooterCapLeft", "") ' <td><img/></td>
 			RenderCellBegin(wr, "Forum_Footer", "", "", "", "", "", "")	' <td>
-			RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0")	' <table>
+			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0")	' <table>
 			RenderRowBegin(wr) ' <tr>
 
 			RenderCellBegin(wr, "", "", "", "", "top", "", "") ' <td>
@@ -1130,14 +1130,14 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 
-			RenderCellBegin(wr, "", "", "100%", "left", "middle", "", "") ' <td>
+			RenderCellBegin(wr, "", "", "100%", "right", "middle", "", "") ' <td>
 			RenderSearchPaging(wr)
 			RenderCellEnd(wr) ' </td>
 			RenderRowEnd(wr) ' </tr>
 			RenderTableEnd(wr) ' </table>
 			RenderCellEnd(wr) ' </td>
 
-			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "Forum_FooterCapRight", "")		 ' <td><img/></td>
+			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "Forum_FooterCapRight", "")		 ' <td><img/></td>
 			RenderRowEnd(wr) ' </tr>
 			RenderTableEnd(wr) ' </table>
 			RenderCellEnd(wr) ' </td>

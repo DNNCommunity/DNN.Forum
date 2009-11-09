@@ -197,6 +197,10 @@ Namespace DotNetNuke.Modules.Forum
 
 					If objConfig.EnableUserAvatar Then
 						If _ProfileUser.AvatarComplete.Trim() <> String.Empty Then
+							If objConfig.EnableProfileAvatar Then
+								imgAvatar.Width = objConfig.UserAvatarWidth
+								imgAvatar.Height = objConfig.UserAvatarHeight
+							End If
 							imgAvatar.ImageUrl = _ProfileUser.AvatarComplete
 							rowUserAvatar.Visible = True
 						Else

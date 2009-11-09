@@ -412,7 +412,13 @@ Namespace DotNetNuke.Modules.Forum
 
 			img = CType(e.Item.FindControl("userAvatar"), Image)
 			If objFromUser.UserAvatar > 0 Then
-				img.ImageUrl = objFromUser.AvatarComplete
+				If objConfig.EnableProfileAvatar Then
+					img.ImageUrl = objFromUser.AvatarComplete
+					img.Width = objConfig.UserAvatarWidth
+					img.Height = objConfig.UserAvatarHeight
+				Else
+					img.ImageUrl = objFromUser.AvatarComplete
+				End If
 				img.Visible = True
 			Else
 				img.Visible = False

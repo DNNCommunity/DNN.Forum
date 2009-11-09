@@ -377,7 +377,41 @@ Namespace DotNetNuke.Modules.Forum
 
 			wr.RenderBeginTag(HtmlTextWriterTag.Img) ' img 
 			wr.RenderEndTag() ' img thumb
+		End Sub
 
+		''' <summary>
+		''' Creates an Image used w/ an HtmlTextWriter
+		''' </summary>
+		''' <param name="wr">The HtmlTextWriter being used.</param>
+		''' <param name="ImageUrl">The url to the image.</param>
+		''' <param name="Tooltip">The text to display on hover.</param>
+		''' <param name="Css">The css class to apply to the image.</param>
+		''' <param name="Width">The width we should set the image to.</param>
+		''' <param name="Height">The height we should set the image to.</param>
+		''' <remarks>(Similar to a stringbuilder)</remarks>
+		Protected Sub RenderImage(ByVal wr As HtmlTextWriter, ByVal ImageUrl As String, ByVal Tooltip As String, ByVal Css As String, ByVal Width As String, ByVal Height As String)
+			wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
+			wr.AddAttribute(HtmlTextWriterAttribute.Src, ImageUrl)
+
+			If Css.Length > 0 Then
+				wr.AddAttribute(HtmlTextWriterAttribute.Class, Css)
+			End If
+
+			If Width.Length > 0 Then
+				wr.AddAttribute(HtmlTextWriterAttribute.Width, Width)
+			End If
+
+			If Height.Length > 0 Then
+				wr.AddAttribute(HtmlTextWriterAttribute.Height, Height)
+			End If
+
+			If Tooltip.Length > 0 Then
+				wr.AddAttribute(HtmlTextWriterAttribute.Alt, Tooltip)
+				wr.AddAttribute(HtmlTextWriterAttribute.Title, Tooltip)
+			End If
+
+			wr.RenderBeginTag(HtmlTextWriterTag.Img) ' img 
+			wr.RenderEndTag() ' img thumb
 		End Sub
 
 		''' <summary>

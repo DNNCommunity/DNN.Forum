@@ -20,7 +20,7 @@
 				          <asp:RequiredFieldValidator ID="valName" runat="server" ErrorMessage="*" CssClass="NormalRed" Display="Dynamic" ControlToValidate="txtName" EnableViewState="false" />
 				     </td>
 			     </tr>
-			     <tr>
+			     <tr id="rowPrimaryAlias" runat="server" visible="false">
 				     <td class="Forum_Row_AdminL" width="35%">
 				          <span class="Forum_Row_AdminText">
 				               <dnn:label id="plPrimaryAlias" runat="server" Suffix=":" controlname="ddlPrimaryAlias"></dnn:label>

@@ -101,7 +101,14 @@ Namespace DotNetNuke.Modules.Forum.UCP
 					.EnableOnlineStatus = chkOnlineStatus.Checked
 					.PostsPerPage = Int32.Parse(txtPostsPerPage.Text)
 					.ThreadsPerPage = Int32.Parse(txtThreadsPerPage.Text)
-					.EnableDisplayInMemberList = chkEnableMemberList.Checked
+
+					' Dont' show directory list if using external directory
+					If Not objConfig.EnableExternalDirectory Then
+						.EnableDisplayInMemberList = chkEnableMemberList.Checked
+					Else
+						.EnableDisplayInMemberList = False
+					End If
+
 					.EnableModNotification = chkEnableForumModNotify.Checked
 					.EnablePM = chkEnablePM.Checked
 					.EnablePMNotifications = chkEnablePMNotifications.Checked
@@ -165,7 +172,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' </summary>
 		''' <remarks></remarks>
 		Private Sub EnableControls(ByVal objSecurity As Forum.ModuleSecurity, ByVal ProfileUser As ForumUser)
-			If objConfig.EnableMemberList Then
+			If objConfig.EnableMemberList And (objConfig.EnableExternalDirectory = False) Then
 				rowMemberList.Visible = True
 			Else
 				rowMemberList.Visible = False

@@ -57,7 +57,13 @@ Namespace DotNetNuke.Modules.Forum.UCP
 			If objSecurity.IsForumAdmin = True Then
 				cmdUpdate.Visible = True
 			Else
+
 				cmdUpdate.Visible = False
+			End If
+
+			' Hide the avatar if we are using profile avatars. 
+			If objConfig.EnableProfileAvatar Then
+				rowUserAvatar.Visible = False
 			End If
 
 			ctlUserAvatar.Images = ProfileUser.Avatar

@@ -755,21 +755,21 @@ Namespace DotNetNuke.Modules.Forum
 
 			'CP-** This td must not be closed at end of this function, move that and right cap to end of next function this is the spanning master column
 			'middle column, contains everything seen in thread view (using table)  - This needs to span into next function
-			RenderCellBegin(wr, "", "", "100%", "", "", "", "") ' <td>
+			RenderCellBegin(wr, "", "", "100%", "center", "", "", "") ' <td>
 
 			'Create a table here that will hold everything from the top header type colum (says Thread, Replies, Views, Last Post) through each thread but stop at the footer w/ this table
 			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "") ' <table>
 			RenderRowBegin(wr) ' <Tr>
 
 			' Threads column
-			RenderCellBegin(wr, "", "", "52%", "left", "middle", "", "") '<td>
+			RenderCellBegin(wr, "", "", "52%", "", "middle", "", "") '<td>
 			'This table is made simply so we can have a height controlling image and apply left cap here
-			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0") '<table>
+			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "center", "", "0")	'<table>
 			RenderRowBegin(wr) ' <Tr>
 
 			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "Forum_HeaderCapLeft", "") ' <td></td>
 
-			RenderCellBegin(wr, "Forum_Header", "", "", "", "", "", "")	' <td>
+			RenderCellBegin(wr, "Forum_Header", "", "", "left", "", "", "")	' <td>
 			RenderDivBegin(wr, "", "Forum_HeaderText") ' <div>
 			wr.Write("&nbsp;" & ForumControl.LocalizedText("Threads"))
 			RenderDivEnd(wr) ' </div>
@@ -1145,7 +1145,7 @@ Namespace DotNetNuke.Modules.Forum
 			RenderRowBegin(wr) ' <tr>
 			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "Forum_FooterCapLeft", "") ' <td><img/></td>
 
-			RenderCellBegin(wr, "Forum_Footer", "", "", "left", "", "", "") ' <td>
+			RenderCellBegin(wr, "Forum_Footer", "", "100%", "left", "", "", "") ' <td>
 
 			RenderTableBegin(wr, 0, 0, "") ' <table>
 			RenderRowBegin(wr) ' <tr>
@@ -1167,7 +1167,7 @@ Namespace DotNetNuke.Modules.Forum
 			RenderImage(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "")	' <img/>
 			RenderCellEnd(wr) ' </td>
 
-			RenderCellBegin(wr, "", "", "100%", "left", "middle", "", "") ' <td>
+			RenderCellBegin(wr, "", "", "100%", "", "middle", "", "") ' <td>
 			RenderThreadsPaging(wr)
 			RenderCellEnd(wr) ' </td>
 
