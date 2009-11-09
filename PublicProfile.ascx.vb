@@ -20,6 +20,8 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Entities.Users
+
 Namespace DotNetNuke.Modules.Forum
 
 	''' <summary>
@@ -118,15 +120,21 @@ Namespace DotNetNuke.Modules.Forum
 					txtAlias.Text = _ProfileUser.SiteAlias
 					lblPostCount.Text = _ProfileUser.PostCount.ToString()
 
-					If (Not _ProfileUser.Profile.Website Is Nothing) And _ProfileUser.EnableProfileWeb Then
-						lnkWWW.Text = _ProfileUser.Profile.Website
-						lnkWWW.NavigateUrl = AddHTTP(_ProfileUser.Profile.Website)
-						If objConfig.NoFollowWeb Then
-							lnkWWW.Attributes.Add("rel", "nofollow")
-						End If
-					Else
-						rowUserWeb.Visible = False
-					End If
+					Dim WebSiteVisibility As UserVisibilityMode
+					WebSiteVisibility = _ProfileUser.Profile.ProfileProperties("Website").Visibility
+
+					Select Case WebSiteVisibility
+						Case UserVisibilityMode.AdminOnly
+							If objSecurity.IsForumAdmin Then
+								RenderWebsite()
+							End If
+						Case UserVisibilityMode.AllUsers
+							RenderWebsite()
+						Case UserVisibilityMode.MembersOnly
+							If LoggedOnUser.UserID > 0 Then
+								RenderWebsite()
+							End If
+					End Select
 
 					If _ProfileUser.EnablePublicEmail AndAlso (Len(_ProfileUser.Email) > 0) Then
 						Dim strEmailText As String = HtmlUtils.FormatEmail(_ProfileUser.Email)
@@ -152,6 +160,7 @@ Namespace DotNetNuke.Modules.Forum
 					ctlUserAvatar.Security = objSecurity
 					ctlUserAvatar.AvatarType = AvatarControlType.User
 					ctlUserAvatar.Images = _ProfileUser.Avatar
+
 					If _ProfileUser.UserAvatar = UserAvatarType.PoolAvatar Then
 						ctlUserAvatar.IsPoolAvatar = True
 					End If
@@ -196,15 +205,33 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 
 					If objConfig.EnableUserAvatar Then
-						If _ProfileUser.AvatarComplete.Trim() <> String.Empty Then
+						If (_ProfileUser.AvatarComplete.Trim() <> String.Empty) Then
 							If objConfig.EnableProfileAvatar Then
-								imgAvatar.Width = objConfig.UserAvatarWidth
-								imgAvatar.Height = objConfig.UserAvatarHeight
+								Dim WebVisibility As UserVisibilityMode
+								WebVisibility = _ProfileUser.Profile.ProfileProperties(objConfig.AvatarProfilePropName).Visibility
+
+								Select Case WebVisibility
+									Case UserVisibilityMode.AdminOnly
+										If objSecurity.IsForumAdmin Then
+											RenderProfileAvatar(_ProfileUser)
+										Else
+											rowUserAvatar.Visible = False
+										End If
+									Case UserVisibilityMode.AllUsers
+										RenderProfileAvatar(_ProfileUser)
+									Case UserVisibilityMode.MembersOnly
+										If LoggedOnUser.UserID > 0 Then
+											RenderProfileAvatar(_ProfileUser)
+										Else
+											rowUserAvatar.Visible = False
+										End If
+								End Select
+							Else
+								' Avatars are enabled, it has a value and it is not a profile avatar, use old render stuff
+								rowUserAvatar.Visible = True
+								imgAvatar.ImageUrl = _ProfileUser.AvatarComplete
 							End If
-							imgAvatar.ImageUrl = _ProfileUser.AvatarComplete
-							rowUserAvatar.Visible = True
 						Else
-							imgAvatar.Visible = False
 							rowUserAvatar.Visible = False
 						End If
 					Else
@@ -212,14 +239,6 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 
 					If objConfig.EnableSystemAvatar Then
-						'CP - Temp
-						'If _ProfileUser.Avatar String.Empty Then
-						'    ' datalist
-						'    rowSystemAvatar.Visible = True
-						'Else
-						'    imgAvatar.Visible = False
-						'    rowSystemAvatar.Visible = False
-						'End If
 						rowSystemAvatar.Visible = False
 					Else
 						rowSystemAvatar.Visible = False
@@ -326,6 +345,29 @@ Namespace DotNetNuke.Modules.Forum
 			Catch exc As Exception
 				ProcessModuleLoadException(Me, exc)
 			End Try
+		End Sub
+
+		Private Sub RenderProfileAvatar(ByVal ProfileUser As ForumUser)
+			imgAvatar.Width = objConfig.UserAvatarWidth
+			imgAvatar.Height = objConfig.UserAvatarHeight
+			imgAvatar.ImageUrl = _ProfileUser.AvatarComplete
+			rowUserAvatar.Visible = True
+		End Sub
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <remarks></remarks>
+		Private Sub RenderWebsite()
+			If (Not _ProfileUser.Profile.Website Is Nothing) Then
+				lnkWWW.Text = _ProfileUser.Profile.Website
+				lnkWWW.NavigateUrl = AddHTTP(_ProfileUser.Profile.Website)
+				If objConfig.NoFollowWeb Then
+					lnkWWW.Attributes.Add("rel", "nofollow")
+				End If
+			Else
+				rowUserWeb.Visible = False
+			End If
 		End Sub
 
 		''' <summary>
