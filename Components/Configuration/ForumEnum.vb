@@ -93,6 +93,11 @@ Namespace DotNetNuke.Modules.Forum
 		PrivateUnModeratedPostRestricted = 7
 	End Enum
 
+	Public Enum PermissionKeys
+		FORUMADMIN
+		FORUMGLBMOD
+	End Enum
+
 	''' <summary>
 	''' The PostAction determines how a post is initially loaded in post edit and what other items to display in that screen. It also determines which sproc is called when submitting.
 	''' </summary>

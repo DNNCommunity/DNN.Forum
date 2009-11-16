@@ -144,18 +144,6 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 		End Property
 
-		'''' <summary>
-		'''' The forum configuration settings.
-		'''' </summary>
-		'''' <value></value>
-		'''' <returns></returns>
-		'''' <remarks></remarks>
-		'Public ReadOnly Property objConfigs() As Forum.Config
-		'	Get
-		'		Return Forum.Config.GetForumConfig(ModuleId)
-		'	End Get
-		'End Property
-
 		''' <summary>
 		''' Details about the thread which contains the post.
 		''' </summary>

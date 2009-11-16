@@ -24,95 +24,81 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "ThreadRateInfo"
 
-    ''' <summary>
-    ''' All properties associated with the Forum_ThreadRating table in the data store. 
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Class ThreadRateInfo
+	''' <summary>
+	''' All properties associated with the Forum_ThreadRating table in the data store. 
+	''' </summary>
+	''' <remarks></remarks>
+	Public Class ThreadRateInfo
 
 #Region "Private Members"
 
-        Private _ThreadID As Integer
-        Private _UserID As Integer
-        Private _Rate As Integer
-        Private _Comment As String
-        Private _RatedByAlias As String
+		Private _ThreadID As Integer
+		Private _UserID As Integer
+		Private _Rate As Double
 
 #End Region
 
 #Region "Constructors"
 
-        ''' <summary>
-        ''' Constructor
-        ''' </summary>
-        ''' <remarks></remarks>
-        Public Sub New()
-        End Sub
+		''' <summary>
+		''' Constructor
+		''' </summary>
+		''' <remarks></remarks>
+		Public Sub New()
+		End Sub
 
 #End Region
 
 #Region "Public Properties"
 
-        ''' <summary>
-        ''' The ThreadID associated with the thread rating.
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property ThreadID() As Integer
-            Get
-                Return _ThreadID
-            End Get
-            Set(ByVal Value As Integer)
-                _ThreadID = Value
-            End Set
-        End Property
+		''' <summary>
+		''' The ThreadID associated with the thread rating.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property ThreadID() As Integer
+			Get
+				Return _ThreadID
+			End Get
+			Set(ByVal Value As Integer)
+				_ThreadID = Value
+			End Set
+		End Property
 
-        ''' <summary>
-        ''' The UserID associated with the thread rating.
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property UserID() As Integer
-            Get
-                Return _UserID
-            End Get
-            Set(ByVal Value As Integer)
-                _UserID = Value
-            End Set
-        End Property
+		''' <summary>
+		''' The UserID associated with the thread rating.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property UserID() As Integer
+			Get
+				Return _UserID
+			End Get
+			Set(ByVal Value As Integer)
+				_UserID = Value
+			End Set
+		End Property
 
-        ''' <summary>
-        ''' The rating integer value associated with the thread rating.
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property Rate() As Integer
-            Get
-                Return _Rate
-            End Get
-            Set(ByVal Value As Integer)
-                _Rate = Value
-            End Set
-        End Property
-
-        ''' <summary>
-        ''' The image associated with the thread rating.
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public ReadOnly Property RatingImage() As String
-            Get
-                Return "stars_" & (_Rate * 10).ToString & ".gif"
-            End Get
-        End Property
+		''' <summary>
+		''' The rating integer value associated with the thread rating.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property Rate() As Double
+			Get
+				Return _Rate
+			End Get
+			Set(ByVal Value As Double)
+				_Rate = Value
+			End Set
+		End Property
 
 #End Region
 
-    End Class
+	End Class
 
 #End Region
 

@@ -256,11 +256,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Dim cntForum As New ForumController
 			Dim objForum As New ForumInfo
-			Dim cntUsers As New Users.UserController
-			Dim objUserInfo As New Users.UserInfo
-
-			objUserInfo = cntUsers.GetUser(PortalId, UserId)
-
 			' Make sure we are working w/ the current forumID
 			objForum = cntForum.GetForum(ForumID)
 
@@ -278,7 +273,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				.ForumType = CType(ddlForumType.SelectedIndex, Integer)
 				.IsIntegrated = False
 				.IntegratedModuleID = 0
-				.UpdatedByUser = objUserInfo.UserID
+				.UpdatedByUser = UserId
 				.ForumPermissions = dgPermissions.Permissions
 				.EnableForumsThreadStatus = chkEnableForumsThreadStatus.Checked
 				.EnableForumsRating = chkEnableForumsRating.Checked
@@ -342,11 +337,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected Sub cmdAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdAdd.Click
 			Dim cntForum As New ForumController
 			Dim objForum As New ForumInfo
-			Dim objUser As New Users.UserInfo
-			Dim cntUsers As New Entities.Users.UserController
 			Dim ForumID As Integer
-
-			objUser = cntUsers.GetUser(PortalId, UserId)
 
 			With objForum
 				.ForumID = ForumID
@@ -359,7 +350,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				.IsIntegrated = False
 				.IntegratedModuleID = 0
 				.IntegratedObjects = String.Empty
-				.CreatedByUser = objUser.UserID
+				.CreatedByUser = UserId
 				.ForumPermissions = dgPermissions.Permissions
 				.EnableForumsThreadStatus = chkEnableForumsThreadStatus.Checked
 				.EnableForumsRating = chkEnableForumsRating.Checked

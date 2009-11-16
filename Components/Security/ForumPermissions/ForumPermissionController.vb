@@ -45,16 +45,16 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="PermissionKey">The key to look for.</param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Shared Function HasForumPermission(ByVal objForumPermissions As ForumPermissionCollection, ByVal PermissionKey As String, ByVal UserID As Integer, ByVal PortalID As Integer) As Boolean
+		Public Shared Function HasForumPermission(ByVal objForumPermissions As ForumPermissionCollection, ByVal PermissionKey As String, ByVal UserID As Integer, ByVal PortalID As Integer, ByVal ModuleID As Integer) As Boolean
 			If Not objForumPermissions Is Nothing Then
 				For Each objForumPermission As ForumPermissionInfo In objForumPermissions
 					If objForumPermission.PermissionKey = PermissionKey Then
 						If Null.IsNull(objForumPermission.UserID) Then
-							If MockSecurity.IsInMockRoles(objForumPermission.RoleName, UserID, PortalID) Then	' PortalSecurity.IsInRoles
+							If MockSecurity.IsInMockRoles(objForumPermission.RoleName, UserID, PortalID, ModuleID) Then	' PortalSecurity.IsInRoles
 								Return True
 							End If
 						Else
-							If MockSecurity.IsInMockRoles("[" & objForumPermission.UserID.ToString & "]", UserID, PortalID) Then
+							If MockSecurity.IsInMockRoles("[" & objForumPermission.UserID.ToString & "]", UserID, PortalID, ModuleID) Then
 								Return True
 							End If
 

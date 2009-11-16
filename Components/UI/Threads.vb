@@ -39,15 +39,17 @@ Namespace DotNetNuke.Modules.Forum
 		Private _NoReply As Boolean = False
 		Dim TotalRecords As Integer = 0
 		Dim url As String
+		Private hsThreadRatings As New Hashtable
 
 
 #Region "Controls"
 
-		Private ddlDateFilter As DropDownList
+		Private ddlDateFilter As Telerik.Web.UI.RadComboBox
 		Private cmdRead As LinkButton
 		Private chkEmail As CheckBox
 		Private txtForumSearch As TextBox
 		Private cmdForumSearch As System.Web.UI.WebControls.ImageButton
+		Private trcRating As Telerik.Web.UI.RadRating
 
 #End Region
 
@@ -175,7 +177,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="e"></param>
 		''' <remarks>
 		''' </remarks>
-		Private Sub ddlDateFilter_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+		Protected Sub ddlDateFilter_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
 			Dim dFilter As String = ddlDateFilter.SelectedItem.Value
 
 			If Not HttpContext.Current.Request.QueryString("noreply") Is Nothing Then
@@ -200,7 +202,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="e"></param>
 		''' <remarks>
 		''' </remarks>
-		Private Sub cmdRead_Clicked(ByVal sender As Object, ByVal e As System.EventArgs)
+		Protected Sub cmdRead_Clicked(ByVal sender As Object, ByVal e As System.EventArgs)
 			Dim userThreadController As New UserThreadsController
 			userThreadController.MarkAll(LoggedOnUser.UserID, ForumId, True)
 		End Sub
@@ -212,7 +214,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="e"></param>
 		''' <remarks>
 		''' </remarks>
-		Private Sub chkEmail_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+		Protected Sub chkEmail_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs)
 			Dim ctlTracking As New TrackingController
 			ctlTracking.TrackingForumCreateDelete(ForumId, LoggedOnUser.UserID, CType(sender, CheckBox).Checked, ModuleID)
 		End Sub
@@ -223,7 +225,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
 		''' <remarks></remarks>
-		Private Sub cmdForumSearch_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs)
+		Protected Sub cmdForumSearch_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs)
 			url = Utilities.Links.ContainerSingleForumSearchLink(TabID, ForumId, txtForumSearch.Text)
 			MyBase.BasePage.Response.Redirect(url, False)
 		End Sub
@@ -385,9 +387,10 @@ Namespace DotNetNuke.Modules.Forum
 				End With
 			End If
 
-			ddlDateFilter = New DropDownList
+			ddlDateFilter = New Telerik.Web.UI.RadComboBox
 			With ddlDateFilter
-				.CssClass = "Forum_NormalTextBox"
+				'.CssClass = "Forum_NormalTextBox"
+				.Skin = "WebBlue"
 				.ID = "lstDateFilter"
 				.Width = Unit.Parse("160")
 				.AutoPostBack = True
@@ -412,6 +415,26 @@ Namespace DotNetNuke.Modules.Forum
 			BindControls()
 			AddControlHandlers()
 			AddControlsToTree()
+
+			For Each thread As ThreadInfo In ThreadCollection
+				Me.trcRating = New Telerik.Web.UI.RadRating
+				With trcRating
+					.Enabled = False
+					.Skin = "Office2007"
+					.Width = Unit.Parse("200")
+					.SelectionMode = Telerik.Web.UI.RatingSelectionMode.Continuous
+					.IsDirectionReversed = False
+					.Orientation = Orientation.Horizontal
+					.Precision = Telerik.Web.UI.RatingPrecision.Half
+					.ItemCount = 5
+
+					.ID = "trcRating" + thread.ThreadID.ToString()
+					.Value = thread.Rating
+					'AddHandler trcRating.Command, AddressOf trcRating_Rate
+				End With
+				hsThreadRatings.Add(thread.ThreadID, trcRating)
+				Controls.Add(trcRating)
+			Next
 		End Sub
 
 		''' <summary>
@@ -453,10 +476,6 @@ Namespace DotNetNuke.Modules.Forum
 				HttpContext.Current.Response.Redirect(Utilities.Links.ContainerAggregatedLink(TabID, False), True)
 			End If
 
-			' Now we get threads to display for this user
-			Dim ctlThread As New ThreadController
-			_ThreadCollection = ctlThread.ThreadGetAll(ModuleID, ForumId, ForumControl.ThreadsPerPage, ThreadPage, Filter, PortalID)
-
 			RenderTableBegin(wr, 0, 0, "tblThreads")
 			RenderNavBar(wr, objConfig, ForumControl)
 			RenderSearchBarRow(wr)
@@ -485,6 +504,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				AddHandler ddlDateFilter.SelectedIndexChanged, AddressOf ddlDateFilter_SelectedIndexChanged
 				AddHandler cmdForumSearch.Click, AddressOf cmdForumSearch_Click
+				' would add rating control handler here if we permit rating in thread view in future. (may move to per post rating, in which case this would always be no). 
 			Catch exc As Exception
 				LogException(exc)
 			End Try
@@ -504,7 +524,6 @@ Namespace DotNetNuke.Modules.Forum
 				Controls.Add(ddlDateFilter)
 				Controls.Add(txtForumSearch)
 				Controls.Add(cmdForumSearch)
-
 			Catch exc As Exception
 				LogException(exc)
 			End Try
@@ -525,10 +544,10 @@ Namespace DotNetNuke.Modules.Forum
 
 				For Each entry As DotNetNuke.Common.Lists.ListEntryInfo In colDateFilter
 					If LoggedOnUser.UserID > 0 Then
-						Dim dateEntry As New ListItem(Localization.GetString(entry.Text, ForumControl.objConfig.SharedResourceFile), entry.Value)
+						Dim dateEntry As New Telerik.Web.UI.RadComboBoxItem(Localization.GetString(entry.Text, ForumControl.objConfig.SharedResourceFile), entry.Value)
 						ddlDateFilter.Items.Add(dateEntry)
 					Else
-						Dim dateEntry As New ListItem(Localization.GetString(entry.Text, ForumControl.objConfig.SharedResourceFile), entry.Value)
+						Dim dateEntry As New Telerik.Web.UI.RadComboBoxItem(Localization.GetString(entry.Text, ForumControl.objConfig.SharedResourceFile), entry.Value)
 						If Not CInt(dateEntry.Value) = -1 Then
 							ddlDateFilter.Items.Add(dateEntry)
 						End If
@@ -562,6 +581,11 @@ Namespace DotNetNuke.Modules.Forum
 					chkEmail.Visible = True
 					chkEmail.Checked = blnTrackedForum
 				End If
+
+				' Now we get threads to display for this user
+				Dim ctlThread As New ThreadController
+				_ThreadCollection = ctlThread.ThreadGetAll(ModuleID, ForumId, ForumControl.ThreadsPerPage, ThreadPage, Filter, PortalID)
+
 			Catch exc As Exception
 				LogException(exc)
 			End Try
@@ -739,6 +763,15 @@ Namespace DotNetNuke.Modules.Forum
 			RenderCellEnd(wr) ' </Td>
 			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
 			RenderRowEnd(wr) ' </Tr>
+		End Sub
+
+		Public Overrides Sub OnPreRender()
+			' To permit ajax usage for some things, throw a script manager on the page
+			If DotNetNuke.Framework.AJAX.IsInstalled Then
+				DotNetNuke.Framework.AJAX.RegisterScriptManager()
+				'DotNetNuke.Framework.AJAX.RegisterPostBackControl(trcRating)
+				'DotNetNuke.Framework.AJAX.WrapUpdatePanelControl(trcRating, False)
+			End If
 		End Sub
 
 		''' <summary>
@@ -1011,10 +1044,17 @@ Namespace DotNetNuke.Modules.Forum
 						RenderCellEnd(wr) ' </td>
 
 						' CP - Add check for RatingsEnabled
-						If objConfig.EnableRatings And thread.HostForum.EnableForumsRating And thread.Rating > 0 Then
-							' Display rating image
+						If objConfig.EnableRatings And thread.HostForum.EnableForumsRating Then ' And thread.Rating > 0
+							' Display rating image (if available)
 							RenderCellBegin(wr, "", "", "30%", "right", "", "", "") ' <td>
-							RenderImage(wr, objConfig.GetThemeImageURL(thread.RatingImage), thread.RatingText, "") ' <img/>
+
+							If hsThreadRatings.ContainsKey(thread.ThreadID) Then
+								trcRating = CType(hsThreadRatings(thread.ThreadID), Telerik.Web.UI.RadRating)
+								' CP - we alter statement below if we want to enable 0 rating still showing image.
+								If thread.Rating > 0 Then
+									trcRating.RenderControl(wr)
+								End If
+							End If
 							RenderCellEnd(wr) ' </td>
 						End If
 

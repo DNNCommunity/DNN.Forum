@@ -54,10 +54,6 @@ Namespace DotNetNuke.Modules.Forum
 		Private HasForumModeratePerms As Boolean
 		Private HasUnmoderatedPerms As Boolean
 
-		'PER MODULE
-		Private Const _HasForumAdminPermission As String = "FORUMADMIN"
-		Private Const _HasGlobalModPermission As String = "FORUMGLBMOD"
-
 		' PER FORUM
 		Private Const _HasPrivateViewPerms As String = "VIEW"
 		Private Const _HasRestrictedStartThreadPerms As String = "STARTTHREAD"
@@ -90,8 +86,11 @@ Namespace DotNetNuke.Modules.Forum
 				mp = objMod.ModulePermissions
 
 				' Next 3 items only apply for currently logged in user accessing the class (CP - Modified 7/8)
-				HasGlobalModPermission = MockSecurity.HasMockModulePermission(mp, _HasGlobalModPermission, UserID, objMod.PortalID) ' Permissions.ModulePermissionController.HasModulePermission
-				HasForumAdminPermission = MockSecurity.HasMockModulePermission(mp, _HasForumAdminPermission, UserID, objMod.PortalID)
+				HasForumAdminPermission = MockSecurity.HasMockModulePermission(mp, DotNetNuke.Modules.Forum.PermissionKeys.FORUMADMIN.ToString, UserID, objMod.PortalID, moduleId)
+
+				If Not HasForumAdminPermission Then
+					HasGlobalModPermission = MockSecurity.HasMockModulePermission(mp, DotNetNuke.Modules.Forum.PermissionKeys.FORUMGLBMOD.ToString, UserID, objMod.PortalID, moduleId)
+				End If
 				'HasEditModPermission = PortalSecurity.HasEditPermissions(moduleId, tabId)
 
 				If ForumId > -1 Then
@@ -99,28 +98,64 @@ Namespace DotNetNuke.Modules.Forum
 					Dim fi As New DotNetNuke.Modules.Forum.ForumInfo
 					Dim fp As DotNetNuke.Modules.Forum.ForumPermissionCollection = ForumInfo.GetForumInfo(ForumId).ForumPermissions
 
-					HasPrivateViewPerms = ForumPermissionController.HasForumPermission(fp, _HasPrivateViewPerms, UserID, objMod.PortalID)
-					HasRestrictedStartThreadPerms = ForumPermissionController.HasForumPermission(fp, _HasRestrictedStartThreadPerms, UserID, objMod.PortalID)
-					HasRestrictedPostReplyPerms = ForumPermissionController.HasForumPermission(fp, _HasRestrictedPostReplyPerms, UserID, objMod.PortalID)
-					HasForumModeratePerms = ForumPermissionController.HasForumPermission(fp, _HasForumModeratePerms, UserID, objMod.PortalID)
-					HasAddAttachmentPerms = ForumPermissionController.HasForumPermission(fp, _HasAddAttachmentPerms, UserID, objMod.PortalID)
-					HasPinThreadPerms = ForumPermissionController.HasForumPermission(fp, _HasPinThreadPerms, UserID, objMod.PortalID)
-					HasLockThreadPerms = ForumPermissionController.HasForumPermission(fp, _HasLockThreadPerms, UserID, objMod.PortalID)
-					HasUnmoderatedPerms = ForumPermissionController.HasForumPermission(fp, _HasUnmoderatedPermission, UserID, objMod.PortalID)
-				Else
-					Dim objForumCnt As New ForumController
-					Dim arrAllForums As List(Of ForumInfo)
-					arrAllForums = objForumCnt.GetForumByModuleID(moduleId)
+					HasPrivateViewPerms = ForumPermissionController.HasForumPermission(fp, _HasPrivateViewPerms, UserID, objMod.PortalID, moduleId)
+					HasRestrictedStartThreadPerms = ForumPermissionController.HasForumPermission(fp, _HasRestrictedStartThreadPerms, UserID, objMod.PortalID, moduleId)
+					HasRestrictedPostReplyPerms = ForumPermissionController.HasForumPermission(fp, _HasRestrictedPostReplyPerms, UserID, objMod.PortalID, moduleId)
+					HasForumModeratePerms = ForumPermissionController.HasForumPermission(fp, _HasForumModeratePerms, UserID, objMod.PortalID, moduleId)
+					HasAddAttachmentPerms = ForumPermissionController.HasForumPermission(fp, _HasAddAttachmentPerms, UserID, objMod.PortalID, moduleId)
+					HasPinThreadPerms = ForumPermissionController.HasForumPermission(fp, _HasPinThreadPerms, UserID, objMod.PortalID, moduleId)
+					HasLockThreadPerms = ForumPermissionController.HasForumPermission(fp, _HasLockThreadPerms, UserID, objMod.PortalID, moduleId)
+					HasUnmoderatedPerms = ForumPermissionController.HasForumPermission(fp, _HasUnmoderatedPermission, UserID, objMod.PortalID, moduleId)
 
-					If arrAllForums.Count > 0 Then
-						For Each objForum As ForumInfo In arrAllForums
-							'CP - Use to see if user is a moderator in any forum. 
-							Dim Security As New Forum.ModuleSecurity(moduleId, tabId, objForum.ForumID, UserID)
-							If Security.IsForumModerator Then
-								HasModeratePermisson = True
-								Exit For
+					If HasForumAdminPermission Then
+						' make sure the user has view perms (we only have to worry about this on the specific forum level?)
+						' we could potentially tie attach/pin/lock to mods in general here if desired
+						If HasPrivateViewPerms And (ForumInfo.GetForumInfo(ForumId).PublicView = False) Then
+							HasForumModeratePerms = True
+							HasUnmoderatedPerms = True
+							'Else
+							'	' the user is not an admin or they don't have view perms. We should make sure that (as backup) this isn't a p
+						End If
+					Else
+						If HasGlobalModPermission Then
+							' This needs to be here so we ignore any user trust settings (this trumps those)
+							If HasPrivateViewPerms And (ForumInfo.GetForumInfo(ForumId).PublicView = False) Then
+								HasForumModeratePerms = True
+								HasUnmoderatedPerms = True
+								'Else
+								'	' the user is not an admin or they don't have view perms. We should make sure that (as backup) this isn't a p
 							End If
-						Next
+						Else
+							' we know the user is not forum admin or global mod
+						End If
+					End If
+
+				Else
+					If HasForumAdminPermission Then
+						HasModeratePermisson = True
+						HasUnmoderatedPerms = True
+					Else
+						If HasGlobalModPermission Then
+							HasModeratePermisson = True
+							HasUnmoderatedPerms = True
+						Else
+							' here is where we check per forum
+							Dim objForumCnt As New ForumController
+							Dim arrAllForums As List(Of ForumInfo)
+							arrAllForums = objForumCnt.GetForumByModuleID(moduleId)
+
+							If arrAllForums.Count > 0 Then
+								For Each objForum As ForumInfo In arrAllForums
+									'CP - Use to see if user is a moderator in any forum. 
+									Dim Security As New Forum.ModuleSecurity(moduleId, tabId, objForum.ForumID, UserID)
+									If Security.IsForumModerator Then
+										HasModeratePermisson = True
+										HasUnmoderatedPerms = True
+										Exit For
+									End If
+								Next
+							End If
+						End If
 					End If
 				End If
 			Else

@@ -42,6 +42,7 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Controls"
 
 		Private cmdRead As LinkButton
+		Private trcRating As Telerik.Web.UI.RadRating
 
 #End Region
 
@@ -88,7 +89,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' 	[skeel]	12/14/2008	Created
 		''' </history>
 		Private Sub cmdRead_Clicked(ByVal sender As Object, ByVal e As System.EventArgs)
-
 			Try
 				Dim ctlThread As New ThreadController
 				Dim userThreadController As New UserThreadsController
@@ -106,7 +106,6 @@ Namespace DotNetNuke.Modules.Forum
 
 			'Well since there are no more unread threads, we'll send the user to forum home
 			HttpContext.Current.Response.Redirect(Utilities.Links.ContainerForumHome(TabID), True)
-
 		End Sub
 
 #End Region
@@ -165,6 +164,26 @@ Namespace DotNetNuke.Modules.Forum
 
 			AddControlHandlers()
 			AddControlsToTree()
+
+			For Each thread As ThreadInfo In ThreadCollection
+				Me.trcRating = New Telerik.Web.UI.RadRating
+				With trcRating
+					.Enabled = False
+					.Skin = "Office2007"
+					.Width = Unit.Parse("200")
+					.SelectionMode = Telerik.Web.UI.RatingSelectionMode.Continuous
+					.IsDirectionReversed = False
+					.Orientation = Orientation.Horizontal
+					.Precision = Telerik.Web.UI.RatingPrecision.Half
+					.ItemCount = 5
+
+					.ID = "trcRating" + thread.ThreadID.ToString()
+					.Value = thread.Rating
+					'AddHandler trcRating.Command, AddressOf trcRating_Rate
+				End With
+				hsThreadRatings.Add(thread.ThreadID, trcRating)
+				Controls.Add(trcRating)
+			Next
 		End Sub
 
 		''' <summary>
@@ -224,9 +243,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </history>
 		Private Sub AddControlsToTree()
 			Try
-
 				Controls.Add(cmdRead)
-
 			Catch exc As Exception
 				LogException(exc)
 			End Try
@@ -575,7 +592,8 @@ Namespace DotNetNuke.Modules.Forum
 						If objConfig.EnableRatings And thread.HostForum.EnableForumsRating Then
 							' Display rating image
 							RenderCellBegin(wr, "", "", "30%", "right", "", "", "") ' <td>
-							RenderImage(wr, objConfig.GetThemeImageURL(thread.RatingImage), thread.RatingText, "") ' <img/>
+
+							''RenderImage(wr, objConfig.GetThemeImageURL(thread.RatingImage), thread.RatingText, "") ' <img/>
 							RenderCellEnd(wr) ' </td>
 						End If
 

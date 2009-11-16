@@ -213,19 +213,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' The rating image to load based on the threads rating
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public ReadOnly Property RatingImage() As String
-			Get
-				Dim intRate As Integer = CInt(Rating)
-				Return "stars_" & intRate.ToString & "." & ParentForum.ParentGroup.objConfig.ImageExtension
-			End Get
-		End Property
-
-		''' <summary>
 		''' The tooltip to load based on the threads rating
 		''' </summary>
 		''' <value></value>

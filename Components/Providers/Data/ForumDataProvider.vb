@@ -128,9 +128,14 @@ Namespace DotNetNuke.Modules.Forum
 		Public MustOverride Function ThreadSplit(ByVal PostID As Integer, ByVal ThreadID As Integer, ByVal NewForumID As Integer, ByVal ModeratorUserID As Integer, ByVal Subject As String, ByVal Notes As String) As IDataReader
 		Public MustOverride Function ThreadGetCount(ByVal ForumID As Integer, ByVal Filter As String) As Integer
 		Public MustOverride Sub ThreadViewsIncrement(ByVal ThreadID As Integer)
-		Public MustOverride Sub ThreadRateAdd(ByVal ThreadID As Integer, ByVal UserID As Integer, ByVal Rate As Integer, ByVal Commment As String)
-		Public MustOverride Function ThreadGetUserRating(ByVal ThreadID As Integer, ByVal UserID As Integer) As Integer
 		Public MustOverride Sub ThreadStatusChange(ByVal ThreadID As Integer, ByVal UserID As Integer, ByVal Status As Integer, ByVal AnswerPostID As Integer)
+
+#Region "Rating"
+
+		Public MustOverride Sub ThreadRateAdd(ByVal ThreadID As Integer, ByVal UserID As Integer, ByVal Rate As Double)
+		Public MustOverride Function ThreadGetUserRating(ByVal ThreadID As Integer, ByVal UserID As Integer) As Integer
+
+#End Region
 
 #End Region
 
@@ -248,7 +253,6 @@ Namespace DotNetNuke.Modules.Forum
 
 		Public MustOverride Function ManageGetAllByDisplayName(ByVal PortalID As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
 		Public MustOverride Function ManageGetUsersByRolename(ByVal PortalID As Integer, ByVal RoleName As String, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
-
 
 #End Region
 

@@ -177,11 +177,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			objGroup = cntGroup.GroupGet(GroupID)
 
 			Dim txtGroupName As TextBox = CType(e.Item.Controls(0).FindControl("txtGroupName"), TextBox)
-			Dim objUser As New Users.UserInfo
-			Dim cntUsers As New Entities.Users.UserController
 
-			objUser = cntUsers.GetUser(PortalId, UserId)
-			cntGroup.GroupUpdate(CType(GroupID, Integer), txtGroupName.Text, objUser.UserID, objGroup.SortOrder, ModuleId)
+			cntGroup.GroupUpdate(CType(GroupID, Integer), txtGroupName.Text, UserId, objGroup.SortOrder, ModuleId)
 
 			' Reset the module groups
 			Dim objGrpCnt As New GroupController
@@ -723,13 +720,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected Sub imgAddGroup_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles imgAddGroup.Click
 			If txtAddGroup.Text <> String.Empty Then
 				Dim ctlGroup As New GroupController
-				Dim objUser As New Users.UserInfo
-				Dim cntUsers As New Entities.Users.UserController
-
-				objUser = cntUsers.GetUser(PortalId, UserId)
 
 				Dim GroupID As Integer = -1
-				GroupID = ctlGroup.GroupAdd(txtAddGroup.Text, PortalId, ModuleId, objUser.UserID)
+				GroupID = ctlGroup.GroupAdd(txtAddGroup.Text, PortalId, ModuleId, UserId)
 
 				' Reset the module groups
 				Dim objGrpCnt As New GroupController

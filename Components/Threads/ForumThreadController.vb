@@ -302,22 +302,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 		''' <summary>
-		''' Adds a rating value for a user on a thread
-		''' </summary>
-		''' <param name="ThreadId"></param>
-		''' <param name="UserID"></param>
-		''' <param name="Rate"></param>
-		''' <param name="Comment"></param>
-		''' <remarks>
-		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	2/3/2006	Created
-		''' </history>
-		Public Sub ThreadRateAdd(ByVal ThreadId As Integer, ByVal UserID As Integer, ByVal Rate As Integer, ByVal Comment As String)
-			DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadRateAdd(ThreadId, UserID, Rate, Comment)
-		End Sub
-
-		''' <summary>
 		''' Updates the status of a specific thread
 		''' </summary>
 		''' <param name="ThreadId"></param>
@@ -332,6 +316,8 @@ Namespace DotNetNuke.Modules.Forum
 			DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadStatusChange(ThreadId, UserID, ThreadStatus, AnswerPostID)
 		End Sub
 
+#Region "Rating"
+
 		''' <summary>
 		''' Gets a specific users rating for a specific Thread
 		''' </summary>
@@ -342,10 +328,29 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		''' <history>
 		''' 	[cpaterra]	9/23/2006	Created
+		'''   [cpaterra] 11/15/2009 Updated
 		''' </history>
-		Public Function ThreadGetUserRating(ByVal ThreadID As Integer, ByVal UserID As Integer) As Integer
+		Public Function ThreadGetUserRating(ByVal ThreadID As Integer, ByVal UserID As Integer) As Double
 			Return DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadGetUserRating(ThreadID, UserID)
 		End Function
+
+		''' <summary>
+		''' Adds a rating value for a user on a thread
+		''' </summary>
+		''' <param name="ThreadId"></param>
+		''' <param name="UserID"></param>
+		''' <param name="Rate"></param>
+		''' <remarks>
+		''' </remarks>
+		''' <history>
+		''' 	[cpaterra]	2/3/2006	Created
+		'''   [cpaterra] 11/15/2009 Updated
+		''' </history>
+		Public Sub ThreadRateAdd(ByVal ThreadId As Integer, ByVal UserID As Integer, ByVal Rate As Double)
+			DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadRateAdd(ThreadId, UserID, Rate)
+		End Sub
+
+#End Region
 
 #End Region
 

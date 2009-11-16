@@ -289,15 +289,6 @@ Namespace DotNetNuke.Modules.Forum
 			SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & _moduleDataPrefix & "ThreadViewsIncrement", ThreadID)
 		End Sub
 
-		' Thread rating
-		Public Overrides Sub ThreadRateAdd(ByVal ThreadID As Integer, ByVal UserID As Integer, ByVal Rate As Integer, ByVal Comment As String)
-			SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & _moduleDataPrefix & "ThreadRateAdd", ThreadID, UserID, Rate, Comment)
-		End Sub
-
-		Public Overrides Function ThreadGetUserRating(ByVal ThreadID As Integer, ByVal UserID As Integer) As Integer
-			Return CType(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner & ObjectQualifier & _moduleDataPrefix & "ThreadGetUserRating", ThreadID, UserID), Integer)
-		End Function
-
 		' Thread Status
 		Public Overrides Sub ThreadStatusChange(ByVal ThreadID As Integer, ByVal UserID As Integer, ByVal Status As Integer, ByVal AnswerPostID As Integer)
 			SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & _moduleDataPrefix & "ThreadStatusChange", ThreadID, UserID, Status, AnswerPostID)
@@ -306,6 +297,18 @@ Namespace DotNetNuke.Modules.Forum
 		Public Overrides Function ReadsGetFirstUnread(ByVal ThreadID As Integer, ByVal LastVisitDate As Date, ByVal ViewDecending As Boolean) As Integer
 			Return CType(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner & ObjectQualifier & _moduleDataPrefix & "Reads_GetFirstUnread", ThreadID, LastVisitDate, ViewDecending), Integer)
 		End Function
+
+#Region "Rating"
+
+		Public Overrides Sub ThreadRateAdd(ByVal ThreadID As Integer, ByVal UserID As Integer, ByVal Rate As Double)
+			SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & _moduleDataPrefix & "ThreadRating_Add", ThreadID, UserID, Rate)
+		End Sub
+
+		Public Overrides Function ThreadGetUserRating(ByVal ThreadID As Integer, ByVal UserID As Integer) As Integer
+			Return CType(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner & ObjectQualifier & _moduleDataPrefix & "ThreadRating_GetUser", ThreadID, UserID), Integer)
+		End Function
+
+#End Region
 
 #End Region
 

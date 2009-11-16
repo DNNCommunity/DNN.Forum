@@ -20,7 +20,6 @@
 Option Strict On
 Option Explicit On
 
-Imports DotNetNuke.Entities.Profile
 Imports DotNetNuke.Entities.Users
 
 Namespace DotNetNuke.Modules.Forum
@@ -35,6 +34,8 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Declarations"
 
+#Region "Private Members"
+
 		Dim _ForumID As Integer = 0
 		Dim _ThreadID As Integer = 0
 		Dim _PostID As Integer = 0
@@ -48,13 +49,15 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _url As String
 		Dim newpost As Boolean = False	'[skeel] added 
 
+#End Region
+
 #Region "Controls"
 
-		Private ddlRating As DropDownList
+		Private trcRating As Telerik.Web.UI.RadRating
 		Private ddlForumView As DropDownList
-		Private ddlViewDescending As DropDownList
+		Private ddlViewDescending As Telerik.Web.UI.RadComboBox
 		Private chkEmail As CheckBox
-		Private ddlThreadStatus As DropDownList
+		Private ddlThreadStatus As Telerik.Web.UI.RadComboBox
 		Private cmdThreadAnswer As System.Web.UI.WebControls.LinkButton
 		Private txtForumSearch As TextBox
 		Private cmdForumSearch As System.Web.UI.WebControls.ImageButton
@@ -194,7 +197,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
 		''' <remarks></remarks>
-		Private Sub cmdBookmark_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs)
+		Protected Sub cmdBookmark_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs)
 			Dim BookmarkCtl As New BookmarkController
 			Select Case cmdBookmark.AlternateText
 				Case ForumControl.LocalizedText("RemoveBookmark")
@@ -213,33 +216,20 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 		''' <summary>
-		''' This Event gets the selected index of the thread rating and "casts" the users vote
-		''' It updates if the rating already existed. 
+		''' 
 		''' </summary>
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
-		''' <remarks>
-		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	5/28/2005	Created
-		''' </history>
-		Private Sub ddlRating_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
-			Dim rate As Integer = ddlRating.SelectedIndex
+		''' <remarks>This needs to have redirect link generated from link utils.</remarks>
+		Protected Sub trcRating_Rate(ByVal sender As Object, ByVal e As System.EventArgs)
+			Dim rate As Double = trcRating.Value
+
 			If rate > 0 Then
 				Dim ctlThread As New ThreadController
-				ctlThread.ThreadRateAdd(ThreadId, ForumControl.LoggedOnUserID, rate, "")
+				ctlThread.ThreadRateAdd(ThreadId, ForumControl.LoggedOnUserID, rate)
 			End If
 
 			Forum.ThreadInfo.ResetThreadInfo(ThreadId)
-
-			_url = "forumid=" & ForumId & "&scope=posts&threadid=" & ThreadId
-
-			If Not HttpContext.Current.Request.QueryString("threadpage") Is Nothing Then
-				_PostPage = Int32.Parse(HttpContext.Current.Request.QueryString("threadpage"))
-				_url += "threadpage" & _PostPage
-			End If
-
-			MyBase.BasePage.Response.Redirect(NavigateURL(TabID, "", _url), False)
 		End Sub
 
 		''' <summary>
@@ -252,7 +242,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <history>
 		''' 	[cpaterra]	5/28/2005	Created
 		''' </history>
-		Private Sub ddlForumView_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+		Protected Sub ddlForumView_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
 			ForumControl.TreeView = CType(ddlForumView.SelectedIndex, Boolean)
 
 			'<tam:note value=update database if it's an authenticated user?>
@@ -280,7 +270,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <history>
 		''' 	[cpaterra]	5/28/2005	Created
 		''' </history>
-		Private Sub ddlViewDescending_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+		Protected Sub ddlViewDescending_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
 			ForumControl.Descending = CType(ddlViewDescending.SelectedIndex, Boolean)
 
 			Dim ctlPost As New PostController
@@ -310,7 +300,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <history>
 		''' 	[cpaterra]	5/28/2005	Created
 		''' </history>
-		Private Sub chkEmail_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+		Protected Sub chkEmail_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
 			Dim ctlTracking As New TrackingController
 			ctlTracking.TrackingThreadCreateDelete(ForumId, _ThreadID, ForumControl.LoggedOnUserID, chkEmail.Checked, ModuleID)
 			Forum.ThreadInfo.ResetThreadInfo(_ThreadID)
@@ -326,7 +316,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <history>
 		''' 	[cpaterra]	9/23/2006	Created
 		''' </history>
-		Private Sub ddlThreadStatus_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+		Protected Sub ddlThreadStatus_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
 			Dim ThreadStatus As Integer = ddlThreadStatus.SelectedIndex
 			If ThreadStatus > 0 Then
 				Dim ctlThread As New ThreadController
@@ -334,15 +324,6 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			Forum.ThreadInfo.ResetThreadInfo(ThreadId)
-
-			_url = "forumid=" & ForumId & "&scope=posts&threadid=" & ThreadId	' "mid=" & ModuleID & "&
-
-			If Not HttpContext.Current.Request.QueryString("threadpage") Is Nothing Then
-				_PostPage = Int32.Parse(HttpContext.Current.Request.QueryString("threadpage"))
-				_url += "threadpage" & _PostPage
-			End If
-
-			MyBase.BasePage.Response.Redirect(NavigateURL(TabID, "", _url), False)
 		End Sub
 
 		''' <summary>
@@ -351,7 +332,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
 		''' <remarks></remarks>
-		Private Sub cmdThreadAnswer_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.CommandEventArgs)
+		Protected Sub cmdThreadAnswer_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.CommandEventArgs)
 			Dim ctlThread As New ThreadController
 			Dim answerPostID As Integer
 			Dim Argument As String
@@ -367,17 +348,7 @@ Namespace DotNetNuke.Modules.Forum
 				ctlThread.ThreadStatusChange(ThreadId, objPostInfo.UserID, ThreadStatus.Answered, answerPostID)
 
 				Forum.ThreadInfo.ResetThreadInfo(ThreadId)
-
-				_url = "forumid=" & ForumId & "&scope=posts&threadid=" & ThreadId	' "mid=" & ModuleID & "&
-
-				If Not HttpContext.Current.Request.QueryString("threadpage") Is Nothing Then
-					_PostPage = Int32.Parse(HttpContext.Current.Request.QueryString("threadpage"))
-					_url += "threadpage" & _PostPage
-				End If
-
-				MyBase.BasePage.Response.Redirect(NavigateURL(TabID, "", _url), False)
 			End If
-
 		End Sub
 
 		''' <summary>
@@ -386,7 +357,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
 		''' <remarks></remarks>
-		Private Sub cmdForumSearch_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs)
+		Protected Sub cmdForumSearch_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs)
 			If txtForumSearch.Text.Trim <> String.Empty Then
 				_url = Utilities.Links.ContainerSingleForumSearchLink(TabID, ForumId, txtForumSearch.Text)
 				MyBase.BasePage.Response.Redirect(_url, False)
@@ -401,7 +372,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
 		''' <remarks></remarks>
-		Private Sub cmdVote_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+		Protected Sub cmdVote_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
 			' get the user's vote and put it in the data store
 			Dim intAnswerID As Integer = CInt(rblstPoll.SelectedValue)
 			' update user voting, when page is redrawn it will handle checking if user voted
@@ -538,22 +509,24 @@ Namespace DotNetNuke.Modules.Forum
 		Public Overrides Sub CreateChildControls()
 			Controls.Clear()
 
+			Me.trcRating = New Telerik.Web.UI.RadRating
+			With trcRating
+				.Skin = "Office2007"
+				.SelectionMode = Telerik.Web.UI.RatingSelectionMode.Continuous
+				.IsDirectionReversed = False
+				.Orientation = Orientation.Horizontal
+				.Precision = Telerik.Web.UI.RatingPrecision.Half
+				.ItemCount = 5
+				AddHandler trcRating.Rate, AddressOf trcRating_Rate
+				.AutoPostBack = True
+			End With
+
 			' display tracking option only if user authenticated
 			If ForumControl.LoggedOnUserID > 0 Then
-				' Rating Dropdownlist
-				Me.ddlRating = New DropDownList
-				With ddlRating
-					.CssClass = "Forum_NormalTextBox"
-					.ID = "lstRating"
-					.Width = Unit.Parse("150")
-					.AutoPostBack = True
-					.ClearSelection()
-				End With
-
 				' Thread Status Dropdownlist
-				Me.ddlThreadStatus = New DropDownList
+				Me.ddlThreadStatus = New Telerik.Web.UI.RadComboBox
 				With ddlThreadStatus
-					.CssClass = "Forum_NormalTextBox"
+					.Skin = "WebBlue"
 					.ID = "lstThreadStatus"
 					.Width = Unit.Parse("150")
 					.AutoPostBack = True
@@ -585,14 +558,14 @@ Namespace DotNetNuke.Modules.Forum
 			End With
 
 			' Forum view (newest to oldest/oldest to newest) dropdownlist
-			ddlViewDescending = New DropDownList
+			ddlViewDescending = New Telerik.Web.UI.RadComboBox
 			With ddlViewDescending
-				.CssClass = "Forum_NormalTextBox"
+				.Skin = "WebBlue"
 				.ID = "lstViewDescending"
 				.Width = Unit.Parse("150")
 				.AutoPostBack = True
-				.Items.Add(New ListItem(ForumControl.LocalizedText("OldestToNewest")))
-				.Items.Add(New ListItem(ForumControl.LocalizedText("NewestToOldest")))
+				.Items.Add(New Telerik.Web.UI.RadComboBoxItem(ForumControl.LocalizedText("OldestToNewest")))
+				.Items.Add(New Telerik.Web.UI.RadComboBoxItem(ForumControl.LocalizedText("NewestToOldest")))
 				.ClearSelection()
 			End With
 
@@ -673,6 +646,13 @@ Namespace DotNetNuke.Modules.Forum
 			Next
 		End Sub
 
+		Public Overrides Sub OnPreRender()
+			' To permit ajax usage for some things, throw a script manager on the page
+			If DotNetNuke.Framework.AJAX.IsInstalled Then
+				DotNetNuke.Framework.AJAX.RegisterScriptManager()
+			End If
+		End Sub
+
 		''' <summary>
 		''' Does the actual calls for rendering the UI in logical order to build wr
 		''' </summary>
@@ -745,7 +725,7 @@ Namespace DotNetNuke.Modules.Forum
 					AddHandler cmdBookmark.Click, AddressOf cmdBookmark_Click '[skeel] added
 
 					If objConfig.EnableRatings Then
-						AddHandler ddlRating.SelectedIndexChanged, AddressOf ddlRating_SelectedIndexChanged
+						AddHandler trcRating.Rate, AddressOf trcRating_Rate
 					End If
 
 					If objConfig.EnableThreadStatus Then
@@ -768,9 +748,6 @@ Namespace DotNetNuke.Modules.Forum
 		Private Sub AddControlsToTree()
 			Try
 				If ForumControl.LoggedOnUserID > 0 Then
-					If objConfig.EnableRatings Then
-						Controls.Add(ddlRating)
-					End If
 					If objConfig.EnableThreadStatus Then
 						Controls.Add(ddlThreadStatus)
 					End If
@@ -779,8 +756,12 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 					'Polls
 					Controls.Add(rblstPoll)
-					Controls.Add(cmdVote)
+					'Controls.Add(cmdVote)
 					Controls.Add(cmdBookmark) '[skeel] added
+				End If
+
+				If objConfig.EnableRatings Then
+					Controls.Add(trcRating)
 				End If
 
 				Controls.Add(ddlForumView)
@@ -806,6 +787,10 @@ Namespace DotNetNuke.Modules.Forum
 				Dim ctlLists As New DotNetNuke.Common.Lists.ListController
 				Dim colThreadRate As DotNetNuke.Common.Lists.ListEntryInfoCollection = ctlLists.GetListEntryInfoCollection("ForumThreadRate")
 
+				If objConfig.EnableRatings Then
+					BindRating()
+				End If
+
 				' All enclosed items are user specific, so we must have a userID
 				If ForumControl.LoggedOnUserID > 0 Then
 					If objConfig.EnableThreadStatus And ThreadInfo.HostForum.EnableForumsThreadStatus Then
@@ -813,7 +798,7 @@ Namespace DotNetNuke.Modules.Forum
 						ddlThreadStatus.Visible = True
 						ddlThreadStatus.Items.Clear()
 						For Each entry As DotNetNuke.Common.Lists.ListEntryInfo In colThreadStatus
-							Dim statusEntry As New ListItem(Localization.GetString(entry.Text, ForumControl.objConfig.SharedResourceFile), entry.Value)
+							Dim statusEntry As New Telerik.Web.UI.RadComboBoxItem(Localization.GetString(entry.Text, ForumControl.objConfig.SharedResourceFile), entry.Value)
 							ddlThreadStatus.Items.Add(statusEntry)
 						Next
 					Else
@@ -821,24 +806,11 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 					'polling changes
 					If ThreadInfo.ThreadStatus = ThreadStatus.Poll Then
-						Dim statusEntry As New ListItem(Localization.GetString("Poll", objConfig.SharedResourceFile), ThreadStatus.Poll.ToString())
+						Dim statusEntry As New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Poll", objConfig.SharedResourceFile), ThreadStatus.Poll.ToString())
 						ddlThreadStatus.Items.Add(statusEntry)
 					End If
 
 					ddlThreadStatus.SelectedIndex = CType(ThreadInfo.ThreadStatus, Integer)
-
-					If objConfig.EnableRatings Then
-						ddlRating.Items.Clear()
-						For Each entry As DotNetNuke.Common.Lists.ListEntryInfo In colThreadRate
-							Dim rateEntry As New ListItem(Localization.GetString(entry.Text, ForumControl.objConfig.SharedResourceFile), entry.Value)
-							Dim rateTitle As String = Utilities.ForumUtils.GetRatingTitle(entry, objConfig)
-
-							ddlRating.Items.Add(rateTitle)
-						Next
-						' Get and bind current users rating 
-						Dim ctlThreads As New ThreadController
-						ddlRating.SelectedIndex = ctlThreads.ThreadGetUserRating(ThreadId, LoggedOnUser.UserID)
-					End If
 
 					' display tracking option only if user is authenticated and the forum module allows tracking
 					If objConfig.MailNotification Then
@@ -882,10 +854,10 @@ Namespace DotNetNuke.Modules.Forum
 
 					If (LoggedOnUser.ViewDescending) Then
 						ForumControl.Descending = True
-						ddlViewDescending.Items.FindByValue(ForumControl.LocalizedText("NewestToOldest")).Selected = True
+						ddlViewDescending.Items.FindItemByText(ForumControl.LocalizedText("NewestToOldest")).Selected = True
 					Else
 						ForumControl.Descending = False
-						ddlViewDescending.Items.FindByText(ForumControl.LocalizedText("OldestToNewest")).Selected = True
+						ddlViewDescending.Items.FindItemByText(ForumControl.LocalizedText("OldestToNewest")).Selected = True
 					End If
 
 					' Handle Polls
@@ -904,6 +876,8 @@ Namespace DotNetNuke.Modules.Forum
 				Else
 					ForumControl.TreeView = CType(ddlForumView.SelectedIndex, Boolean)
 					ForumControl.Descending = CType(ddlViewDescending.SelectedIndex, Boolean)
+					'CP - COMEBACK: Add way to display rating but don't allow voting (for anonymous users)
+
 				End If
 
 				_PostCollection = ctlPost.PostGetAll(ThreadId, PostPage, ForumControl.PostsPerPage, ForumControl.TreeView, ForumControl.Descending, PortalID)
@@ -914,6 +888,19 @@ Namespace DotNetNuke.Modules.Forum
 			Catch exc As Exception
 				LogException(exc)
 			End Try
+		End Sub
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <remarks></remarks>
+		Private Sub BindRating()
+			trcRating.Value = ThreadInfo.Rating
+			trcRating.ToolTip = ThreadInfo.RatingText
+
+			If Not LoggedOnUser.UserID > 0 Then
+				trcRating.Enabled = False
+			End If
 		End Sub
 
 		''' <summary>
@@ -945,20 +932,18 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			' Display rating only if user is authenticated
-			If ForumControl.LoggedOnUserID > 0 And PostCollection.Count > 0 Then
+			If PostCollection.Count > 0 Then
 				'check to see if new setting, enable ratings is enabled
 				If objConfig.EnableRatings And ThreadInfo.HostForum.EnableForumsRating Then
 					RenderCellBegin(wr, "", "", "", "left", "", "", "") ' <td> 
 					'CP - Sub in ajax image rating solution here for ddl
-					ddlRating.RenderControl(wr)
+					trcRating.RenderControl(wr)
+
 					' See if user has set status, if so we need to bind it
 					RenderCellEnd(wr) ' </td>
 
 					RenderCellBegin(wr, "", "", "", "left", "", "", "")  ' <td> '
-					' Rating image
-					RenderImage(wr, objConfig.GetThemeImageURL(ThreadInfo.RatingImage), ThreadInfo.RatingText, "")
 					RenderCellEnd(wr) ' </td>
-
 				End If
 			Else
 				RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td> 
@@ -1812,13 +1797,13 @@ Namespace DotNetNuke.Modules.Forum
 						Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, -1, LoggedOnUser.UserID)
 
 						If objSecurity.IsForumAdmin Then
-							RenderProfileLink(author, wr)
+							RenderWebSiteLink(author, wr)
 						End If
 					Case UserVisibilityMode.AllUsers
-						RenderProfileLink(author, wr)
+						RenderWebSiteLink(author, wr)
 					Case UserVisibilityMode.MembersOnly
 						If LoggedOnUser.UserID > 0 Then
-							RenderProfileLink(author, wr)
+							RenderWebSiteLink(author, wr)
 						End If
 				End Select
 
@@ -1860,30 +1845,30 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 		''' <summary>
-		''' 
+		''' Renders the user's profile avatar. 
 		''' </summary>
 		''' <param name="author"></param>
 		''' <param name="wr"></param>
 		''' <remarks></remarks>
 		Private Sub RenderProfileAvatar(ByVal author As ForumUser, ByVal wr As HtmlTextWriter)
-			'' This needs to be rendered w/ specified size
-			'Dim rbiProfileAvatar As New Telerik.Web.UI.RadBinaryImage
-			'rbiProfileAvatar.Width = objConfig.UserAvatarWidth
-			'rbiProfileAvatar.Height = objConfig.UserAvatarHeight
-			'rbiProfileAvatar.ImageUrl = author.AvatarComplete
+			' This needs to be rendered w/ specified size
+			Dim rbiProfileAvatar As New Telerik.Web.UI.RadBinaryImage
+			rbiProfileAvatar.Width = objConfig.UserAvatarWidth
+			rbiProfileAvatar.Height = objConfig.UserAvatarHeight
+			rbiProfileAvatar.ImageUrl = author.AvatarComplete
 
-			'rbiProfileAvatar.RenderControl(wr)
+			rbiProfileAvatar.RenderControl(wr)
 			' Below is for use when no Telerik integration is going on. (Uncomment line below, comment out lines above)
-			RenderImage(wr, author.AvatarComplete, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "", objConfig.UserAvatarWidth.ToString(), objConfig.UserAvatarHeight.ToString())
+			'RenderImage(wr, author.AvatarComplete, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "", objConfig.UserAvatarWidth.ToString(), objConfig.UserAvatarHeight.ToString())
 		End Sub
 
 		''' <summary>
-		''' 
+		''' Renders the user's website (as a link). 
 		''' </summary>
 		''' <param name="author"></param>
 		''' <param name="wr"></param>
 		''' <remarks></remarks>
-		Private Sub RenderProfileLink(ByVal author As ForumUser, ByVal wr As HtmlTextWriter)
+		Private Sub RenderWebSiteLink(ByVal author As ForumUser, ByVal wr As HtmlTextWriter)
 			If Len(author.UserWebsite) > 0 Then
 				wr.Write("<br />")
 				RenderLinkButton(wr, author.UserWebsite, Replace(author.UserWebsite, "http://", ""), "Forum_Profile", "", True, objConfig.NoFollowWeb)
@@ -1891,7 +1876,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 		''' <summary>
-		''' 
+		''' Renders the user's country. 
 		''' </summary>
 		''' <param name="author"></param>
 		''' <param name="wr"></param>

@@ -122,7 +122,7 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _FilterSubject As Boolean = False
 		' Community
 		Dim _EnableUsersOnline As Boolean = DefaultEnableUsersOnline
-		Dim _EnablePMSystem As Boolean = True
+		Dim _EnablePMSystem As Boolean = False
 		Dim _EnableMemberList As Boolean = True
 		' External Directory
 		Dim _EnableExternalDirectory As Boolean = False
@@ -2231,6 +2231,12 @@ Namespace DotNetNuke.Modules.Forum
 			If Not settings("EnablePMSystem") Is Nothing Then
 				If Not settings("EnablePMSystem").ToString = String.Empty Then
 					_EnablePMSystem = CBool(GetValue(settings("EnablePMSystem"), CStr(_EnablePMSystem)))
+				End If
+			End If
+
+			If Not settings("EnableMemberList") Is Nothing Then
+				If Not settings("EnableMemberList").ToString = String.Empty Then
+					_EnableMemberList = CBool(GetValue(settings("EnableMemberList"), CStr(_EnableMemberList)))
 				End If
 			End If
 

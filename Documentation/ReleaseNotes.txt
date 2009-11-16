@@ -21,3 +21,13 @@ FOR-11022 Added support for profile avatars (an image control as profile propert
 FOR-11024 Added support for external member directory page.
 FOR-11077 Corrected Issues found in doing forum themes (UI). 
 FOR-11078 Corrected SetFocus issues in PostEdit. No longer permitting subject edit on quote/reply either. 
+
+FOR-XXXXX Changed Security class to minimize db hits (using a core GetUser method can't utilize cache at this time). To overcome core issue we simply retrieve non-profile info from Users table. 
+FOR-XXXXX Integrated Telerik into PostView: Old/New Thread drop down to combobox, ratings drop down to rad rating control, thread status to combobox. 
+FOR-XXXXX Thread View: Email notification checkbox now utilizes 'ajax'. 
+FOR-XXXXX Integrated Telerik into ThreadView: Display date range drop down to combobox, rating image to rating control, thread status to combobox.
+FOR-XXXXX Added Post View Ajax Integration: Thread Status drop down, Rating Control, Bookmark Image, Post ASC/DESC drop down, Email notification checkbox, Accept Answer button
+
+-- Post View: Ajax Quick Reply? - consider rad tooltip or jquery for this (likely needs ajax event to redrawn control). 
+ What about rating scale change? (set to 5 local, 10 in all installs)
+ consider ajax loading panel in thread/post view.

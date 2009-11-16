@@ -175,6 +175,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Friend Function FillForumUserInfo(ByVal dr As IDataReader, ByVal PortalID As Integer, ByVal ModuleID As Integer) As ForumUser
 			Dim objForumUser As New ForumUser(ModuleID)
+			Dim UserID As Integer = -1
 			' portalid and issuperuser must be set first because they are used by the progressive hydration 
 			Try
 				objForumUser.PortalID = PortalID
@@ -185,26 +186,26 @@ Namespace DotNetNuke.Modules.Forum
 			Catch
 			End Try
 
-			'If objForumUser.IsSuperUser Then
-			'	Common.Globals.SetApplicationName(Common.Globals.glbSuperUserAppName)
-			'Else
-			'	Common.Globals.SetApplicationName(PortalID)
-			'End If
-
 			Try
 				objForumUser.UserID = Convert.ToInt32(dr("UserID"))
+				UserID = Convert.ToInt32(dr("UserID"))
 			Catch
 			End Try
 
-			Dim ctlDNNUser As New Users.UserController
-			Dim dnnUser As New Users.UserInfo
-			dnnUser = ctlDNNUser.GetUser(PortalID, objForumUser.UserID)
-
 			' If the user is nothing, they were deleted/unregistered so skip populating info and use defaults (they no longer exist as a DNN user)
-			If Not dnnUser Is Nothing Then
-				objForumUser.Username = dnnUser.Username
-				objForumUser.DisplayName = dnnUser.DisplayName
-				objForumUser.Email = dnnUser.Email
+			If UserID > 0 Then
+				Try
+					objForumUser.Username = Convert.ToString(dr("Username"))
+				Catch
+				End Try
+				Try
+					objForumUser.DisplayName = Convert.ToString(dr("DisplayName"))
+				Catch
+				End Try
+				Try
+					objForumUser.Email = Convert.ToString(dr("Email"))
+				Catch
+				End Try
 				Try
 					objForumUser.UserAvatar = Convert.ToInt32(dr("UserAvatar"))
 				Catch
@@ -327,7 +328,6 @@ Namespace DotNetNuke.Modules.Forum
 				End Try
 				objForumUser.IsDeleted = False
 			Else
-
 				objForumUser.Username = "anonymous"
 				objForumUser.DisplayName = "anonymous"
 				objForumUser.EnablePublicEmail = False
