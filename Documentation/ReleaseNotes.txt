@@ -26,7 +26,8 @@ FOR-XXXXX Changed Security class to minimize db hits (using a core GetUser metho
 FOR-XXXXX Integrated Telerik into PostView: Old/New Thread drop down to combobox, ratings drop down to rad rating control, thread status to combobox. 
 FOR-XXXXX Thread View: Email notification checkbox now utilizes 'ajax'. 
 FOR-XXXXX Integrated Telerik into ThreadView: Display date range drop down to combobox, rating image to rating control, thread status to combobox.
-FOR-XXXXX Added Post View Ajax Integration: Thread Status drop down, Rating Control, Bookmark Image, Post ASC/DESC drop down, Email notification checkbox, Accept Answer button
+FOR-XXXXX Added Post View Ajax Integration: Thread Status drop down, Rating Control, Bookmark Image, Post ASC/DESC drop down, Email notification checkbox, Accept Answer button.
+FOR-XXXXX Replaced rating images and text with Telerik rating control, updates to admin interface for this. 
 
 -- Post View: Ajax Quick Reply? - consider rad tooltip or jquery for this (likely needs ajax event to redrawn control). 
  What about rating scale change? (set to 5 local, 10 in all installs)

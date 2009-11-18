@@ -175,7 +175,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 
 			str = "<span class=""Forum_LastPostText""><a href=""" & Utilities.Links.ContainerViewPostLink(TabId, ForumID, LastApprovedPostID) & """ class=""Forum_LastPostText"">" & Utilities.ForumUtils.GetCreatedDateInfo(LastPostDate, objConfig, "Forum_LastPostText") & "</a>"
 			str += Localization.GetString("by", LocalResourceFile) & " "
-			str += "<a href=""" & Utilities.Links.UserPublicProfileLink(TabId, ModuleId, LastPostUserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage) & """ class=""Forum_LastPostText"">" & objUser.DisplayName & "</a>"
+			str += "<a href=""" & Utilities.Links.UserPublicProfileLink(TabId, ModuleId, LastPostUserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, LoggedOnUser.Username) & """ class=""Forum_LastPostText"">" & objUser.DisplayName & "</a>"
 			str += "</span>"
 			Return str
 		End Function

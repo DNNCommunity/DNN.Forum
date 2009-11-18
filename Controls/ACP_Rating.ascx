@@ -23,20 +23,11 @@
                     <tr>
                         <td class="Forum_Row_AdminL" width="25%">
                             <span class="Forum_Row_AdminText">
-                                <dnn:Label ID="pl1stRating" runat="server" ControlName="txt1stRating" Suffix=":" ></dnn:Label>
+                                <dnn:Label ID="plRatingScale" runat="server" ControlName="txtRatingScale" Suffix=":" ></dnn:Label>
                             </span>
                         </td>
                         <td align="left" class="Forum_Row_AdminR" valign="middle" width="75%">
-                            <table border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td>
-                                        <asp:TextBox ID="txt1stRating" runat="server" CssClass="Forum_NormalTextBox" MaxLength="50" Width="180px" EnableViewState="false" />&nbsp;
-                                    </td>
-                                    <td>
-                                        <asp:Image ID="img1stRating" runat="server" EnableViewState="false" />
-                                    </td>
-                                </tr>
-                            </table>
+                           <asp:TextBox ID="txtRatingScale" runat="server" CssClass="Forum_NormalTextBox" MaxLength="50" Width="180px" EnableViewState="false" />&nbsp;
                         </td>
                     </tr>
                     <tr>
@@ -46,16 +37,7 @@
                             </span>
                         </td>
                         <td align="left" class="Forum_Row_AdminR" valign="middle" width="75%">
-                            <table border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td>
-                                        <asp:TextBox ID="txt2ndRating" runat="server" CssClass="Forum_NormalTextBox" MaxLength="50" Width="180px" EnableViewState="false" />&nbsp;
-                                    </td>
-                                    <td>
-                                        <asp:Image ID="img2ndRating" runat="server" EnableViewState="false" />
-                                    </td>
-                                </tr>
-                            </table>
+ 
                         </td>
                     </tr>
                     <tr>
@@ -65,16 +47,7 @@
                             </span>
                         </td>
                         <td align="left" class="Forum_Row_AdminR" valign="middle" width="75%">
-                            <table border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td>
-                                        <asp:TextBox ID="txt3rdRating" runat="server" CssClass="Forum_NormalTextBox" MaxLength="50" Width="180px" EnableViewState="false" />&nbsp;
-                                    </td>
-                                    <td>
-                                        <asp:Image ID="img3rdRating" runat="server" EnableViewState="false" />
-                                    </td>
-                                </tr>
-                            </table>
+
                         </td>
                     </tr>
                     <tr>
@@ -84,130 +57,7 @@
                             </span>
                         </td>
                         <td align="left" class="Forum_Row_AdminR" valign="middle" width="75%">
-                            <table border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td>
-                                        <asp:TextBox ID="txt4thRating" runat="server" CssClass="Forum_NormalTextBox" MaxLength="50" Width="180px" EnableViewState="false" />&nbsp;
-                                    </td>
-                                    <td>
-                                        <asp:Image ID="img4thRating" runat="server" EnableViewState="false" />
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="Forum_Row_AdminL" width="25%">
-                            <span class="Forum_Row_AdminText">
-                                <dnn:Label ID="pl5thRating" runat="server" ControlName="txt5thRating" Suffix=":"></dnn:Label>
-                            </span>
-                        </td>
-                        <td align="left" class="Forum_Row_AdminR" valign="middle" width="75%">
-                            <table border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td>
-                                        <asp:TextBox ID="txt5thRating" runat="server" CssClass="Forum_NormalTextBox" MaxLength="50" Width="180px" EnableViewState="false" />&nbsp;
-                                    </td>
-                                    <td>
-                                        <asp:Image ID="img5thRating" runat="server" EnableViewState="false" />
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="Forum_Row_AdminL" width="25%">
-                            <span class="Forum_Row_AdminText">
-                                <dnn:Label ID="pl6thRating" runat="server" ControlName="txt6thRating" Suffix=":"></dnn:Label>
-                            </span>
-                        </td>
-                        <td align="left" class="Forum_Row_AdminR" valign="middle" width="75%">
-                            <table border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td>
-                                        <asp:TextBox ID="txt6thRating" runat="server" CssClass="Forum_NormalTextBox" MaxLength="50" Width="180px" EnableViewState="false" />&nbsp;
-                                    </td>
-                                    <td>
-                                        <asp:Image ID="img6thRating" runat="server" EnableViewState="false"/>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="Forum_Row_AdminL" width="25%">
-                            <span class="Forum_Row_AdminText">
-                                <dnn:Label ID="pl7thRating" runat="server" ControlName="txt7thRating" Suffix=":"></dnn:Label>
-                            </span>
-                        </td>
-                        <td align="left" class="Forum_Row_AdminR" valign="middle" width="75%">
-                              <table border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td>
-                                        <asp:TextBox ID="txt7thRating" runat="server" CssClass="Forum_NormalTextBox" MaxLength="50" Width="180px" EnableViewState="false" />&nbsp;
-                                    </td>
-                                    <td>
-                                        <asp:Image ID="img7thRating" runat="server" EnableViewState="false"/>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="Forum_Row_AdminL" width="25%">
-                            <span class="Forum_Row_AdminText">
-                                <dnn:Label ID="pl8thRating" runat="server" ControlName="txt8thRating" Suffix=":"></dnn:Label>
-                            </span>
-                        </td>
-                        <td align="left" class="Forum_Row_AdminR" valign="middle" width="75%">
-                            <table border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td>
-                                        <asp:TextBox ID="txt8thRating" runat="server" CssClass="Forum_NormalTextBox" MaxLength="50" Width="180px" EnableViewState="false" />&nbsp;
-                                    </td>
-                                    <td>
-                                        <asp:Image ID="img8thRating" runat="server" EnableViewState="false" />
-                                   </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="Forum_Row_AdminL" width="25%">
-                            <span class="Forum_Row_AdminText">
-                                <dnn:Label ID="pl9thRating" runat="server" ControlName="txt9thRating" Suffix=":"></dnn:Label>
-                            </span>
-                        </td>
-                        <td align="left" class="Forum_Row_AdminR" valign="middle" width="75%">
-                            <table border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td>
-                                        <asp:TextBox ID="txt9thRating" runat="server" CssClass="Forum_NormalTextBox" MaxLength="50" Width="180px" EnableViewState="false" />&nbsp;
-                                    </td>
-                                    <td>
-                                        <asp:Image ID="img9thRating" runat="server" EnableViewState="false" />
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="Forum_Row_AdminL" width="25%">
-                            <span class="Forum_Row_AdminText">
-                                <dnn:Label ID="pl10thRating" runat="server" ControlName="txt10thRating" Suffix=":"></dnn:Label>
-                            </span>
-                        </td>
-                        <td align="left" class="Forum_Row_AdminR" valign="middle" width="75%">
-                            <table border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td>
-                                        <asp:TextBox ID="txt10thRating" runat="server" CssClass="Forum_NormalTextBox" MaxLength="50" Width="180px" EnableViewState="false" />&nbsp;
-                                    </td>
-                                    <td>
-                                        <asp:Image ID="img10thRating" runat="server" EnableViewState="false" />
-                                    </td>
-                                </tr>
-                            </table>
+
                         </td>
                     </tr>
 	            </table>

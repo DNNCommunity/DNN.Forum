@@ -1346,7 +1346,7 @@ Namespace DotNetNuke.Modules.Forum
 							wr.Write(Forum.LocalizedText("by") & " ")
 							wr.RenderEndTag() ' </span>
 
-							url = Utilities.Links.UserPublicProfileLink(Forum.TabID, ModuleID, mForumInfo.MostRecentPostAuthorID, Forum.objConfig.EnableExternalProfile, Forum.objConfig.ExternalProfileParam, Forum.objConfig.ExternalProfilePage)
+							url = Utilities.Links.UserPublicProfileLink(Forum.TabID, ModuleID, mForumInfo.MostRecentPostAuthorID, Forum.objConfig.EnableExternalProfile, Forum.objConfig.ExternalProfileParam, Forum.objConfig.ExternalProfilePage, Forum.objConfig.ExternalProfileUsername, Forum.LoggedOnUser.Username)
 							wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText") 'Forum_AliasLink
 							wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>

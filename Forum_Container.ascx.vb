@@ -138,7 +138,7 @@ Namespace DotNetNuke.Modules.Forum
 				'Set the Navigator Actions Collection
 				For Each action As Entities.Modules.Actions.ModuleAction In Actions
 					If action.CommandName = Entities.Modules.Actions.ModuleActionType.ContentOptions Then
-						If PortalSecurity.HasNecessaryPermission(action.Secure, PortalSettings, ModuleConfiguration, UserId.ToString) = True Then
+						If DotNetNuke.Security.Permissions.ModulePermissionController.HasModuleAccess(action.Secure, "Edit", ModuleConfiguration) Then
 							DNNForum.NavigatorActions.Add(action)
 						End If
 					End If

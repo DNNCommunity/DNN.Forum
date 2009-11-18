@@ -98,6 +98,8 @@ Namespace DotNetNuke.Modules.Forum
 			ctlModule.UpdateModuleSetting(ModuleId, "EnableBadWordFilter", "True")
 			ctlModule.UpdateModuleSetting(ModuleId, "FilterSubject", "False")
 			ctlModule.UpdateModuleSetting(ModuleId, "EnableRatings", "True")
+			' Rating
+			ctlModule.UpdateModuleSetting(ModuleId, "RatingScale", "5")
 
 			' Users online module integration
 			Dim Enabled As Boolean

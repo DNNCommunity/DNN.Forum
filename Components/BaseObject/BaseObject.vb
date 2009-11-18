@@ -616,6 +616,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <remarks>Life cycle</remarks>
 		Public Overridable Sub OnPreRender()
+			' To permit ajax usage for some things, throw a script manager on the page
+			If DotNetNuke.Framework.AJAX.IsInstalled Then
+				DotNetNuke.Framework.AJAX.RegisterScriptManager()
+			End If
 		End Sub
 
 		''' <summary>

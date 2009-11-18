@@ -231,7 +231,7 @@ Namespace DotNetNuke.Modules.Forum
 					Dim objForumUser As ForumUser
 					objForumUser = ForumUserController.GetForumUser(user.UserID, False, ModuleId, PortalId)
 
-					userProfileLink.NavigateUrl = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, objForumUser.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage)
+					userProfileLink.NavigateUrl = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, objForumUser.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, LoggedOnUser.Username)
 					userProfileLink.Target = "_self"
 					userProfileLink.Text = objForumUser.SiteAlias
 				End If

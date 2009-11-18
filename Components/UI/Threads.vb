@@ -55,7 +55,7 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-#Region "Public Properties"
+#Region "Private Properties"
 
 		''' <summary>
 		'''  The containing Forum Info object. 
@@ -63,7 +63,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public ReadOnly Property ParentForum() As ForumInfo
+		Private ReadOnly Property ParentForum() As ForumInfo
 			Get
 				Return _ParentForum
 			End Get
@@ -75,7 +75,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public ReadOnly Property ForumId() As Integer
+		Private ReadOnly Property ForumId() As Integer
 			Get
 				Return ForumControl.GenericObjectID
 			End Get
@@ -87,7 +87,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public ReadOnly Property ThreadCollection() As List(Of ThreadInfo)
+		Private ReadOnly Property ThreadCollection() As List(Of ThreadInfo)
 			Get
 				Return _ThreadCollection
 			End Get
@@ -99,7 +99,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public ReadOnly Property ThreadPage() As Integer
+		Private ReadOnly Property ThreadPage() As Integer
 			Get
 				Return _ThreadPage
 			End Get
@@ -111,7 +111,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks>This can be things such as date</remarks>
-		Public ReadOnly Property Filter() As String
+		Private ReadOnly Property Filter() As String
 			Get
 				Return _Filter
 			End Get
@@ -125,7 +125,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public ReadOnly Property HasNewPosts(ByVal UserID As Integer, ByVal objThreadInfo As ThreadInfo) As Boolean
+		Private ReadOnly Property HasNewPosts(ByVal UserID As Integer, ByVal objThreadInfo As ThreadInfo) As Boolean
 			Get
 				Dim userthreadController As New UserThreadsController
 				Dim userthread As New UserThreadsInfo
@@ -157,7 +157,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Property NoReply() As Boolean
+		Private Property NoReply() As Boolean
 			Get
 				Return _NoReply
 			End Get
@@ -233,6 +233,8 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 #Region "Public Methods"
+
+#Region "Constructors"
 
 		''' <summary>
 		''' Creates a new instance of this class
@@ -359,6 +361,8 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 		End Sub
 
+#End Region
+
 		''' <summary>
 		''' Create an instance of the controls used here
 		''' </summary>
@@ -426,7 +430,7 @@ Namespace DotNetNuke.Modules.Forum
 					.IsDirectionReversed = False
 					.Orientation = Orientation.Horizontal
 					.Precision = Telerik.Web.UI.RatingPrecision.Half
-					.ItemCount = 5
+					.ItemCount = objConfig.RatingScale
 
 					.ID = "trcRating" + thread.ThreadID.ToString()
 					.Value = thread.Rating
@@ -977,7 +981,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						RenderDivBegin(wr, "", "Forum_NormalSmall") ' <div>
 						wr.Write(String.Format("{0}&nbsp;", ForumControl.LocalizedText("by")))
-						url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.StartedByUserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage)
+						url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.StartedByUserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, LoggedOnUser.Username)
 						RenderLinkButton(wr, url, thread.StartedByUser.SiteAlias, "Forum_NormalSmall") ' <a/>
 
 						' correct logic to handle posts per page per user
@@ -1045,7 +1049,6 @@ Namespace DotNetNuke.Modules.Forum
 
 						' CP - Add check for RatingsEnabled
 						If objConfig.EnableRatings And thread.HostForum.EnableForumsRating Then ' And thread.Rating > 0
-							' Display rating image (if available)
 							RenderCellBegin(wr, "", "", "30%", "right", "", "", "") ' <td>
 
 							If hsThreadRatings.ContainsKey(thread.ThreadID) Then
@@ -1062,8 +1065,6 @@ Namespace DotNetNuke.Modules.Forum
 						RenderCellBegin(wr, "", "", "5%", "right", "", "", "")	 ' <td>
 						If (objConfig.EnableThreadStatus And thread.HostForum.EnableForumsThreadStatus) Or (thread.ThreadStatus = ThreadStatus.Poll And thread.HostForum.AllowPolls) Then
 							RenderImage(wr, objConfig.GetThemeImageURL(thread.StatusImage), thread.StatusText, "") ' <img/>
-							'Else
-							'	RenderImage(wr, objConfig.GetImageURL("status_spacer.gif"), "", "")	' <img/>
 						End If
 						RenderCellEnd(wr) ' </td>
 
@@ -1142,7 +1143,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						RenderDivBegin(wr, "", "Forum_LastPostText")	' <div>
 						wr.Write(ForumControl.LocalizedText("by") & " ")
-						url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.LastApprovedUser.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage)
+						url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.LastApprovedUser.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, LoggedOnUser.Username)
 						RenderLinkButton(wr, url, thread.LastApprovedUser.SiteAlias, "Forum_LastPostText") ' <a/>
 						RenderDivEnd(wr) ' </div>
 						RenderCellEnd(wr) ' </td>

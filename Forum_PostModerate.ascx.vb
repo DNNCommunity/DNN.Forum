@@ -323,7 +323,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Protected Function UserProfileLink(ByVal UserId As Integer) As String
 			Dim url As String
-			url = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, UserId, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage)
+			url = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, UserId, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, LoggedOnUser.Username)
 
 			Return url
 		End Function

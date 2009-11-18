@@ -102,17 +102,8 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _Rank_0_Title As String = String.Empty
 		'Thread Ratings
 		Dim _EnableRatings As Boolean = True
-		Dim _Rating1Title As String = String.Empty
-		Dim _Rating2Title As String = String.Empty
-		Dim _Rating3Title As String = String.Empty
-		Dim _Rating4Title As String = String.Empty
-		Dim _Rating5Title As String = String.Empty
-		Dim _Rating6Title As String = String.Empty
-		Dim _Rating7Title As String = String.Empty
-		Dim _Rating8Title As String = String.Empty
-		Dim _Rating9Title As String = String.Empty
-		Dim _Rating10Title As String = String.Empty
-		Dim _NoRatingTitle As String = String.Empty
+		Dim _RatingScale As Integer = 10
+
 		' Syndication
 		Dim _EnableRSS As Boolean = True
 		Dim _RSSThreadsPerFeed As Integer = DefaultRSSThreadsPerFeed
@@ -941,6 +932,12 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 		End Property
 
+		Public ReadOnly Property ExternalProfileUsername() As Boolean
+			Get
+				Return False
+			End Get
+		End Property
+
 		''' <summary>
 		''' Gets the parameter to be used to represent UserID in external profile pages.
 		''' </summary>
@@ -1506,134 +1503,14 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' Gets the localization overriding 1 star rating title.
+		''' The highest number which a thread rating can be. 
 		''' </summary>
 		''' <value></value>
-		''' <returns>One 'star' post rating title.</returns>
-		''' <remarks>If empty string, localization value will be used.</remarks>
-		Public ReadOnly Property Rating1Title() As String
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property RatingScale() As Integer
 			Get
-				Return _Rating1Title
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets the localization overriding 2 star rating title.
-		''' </summary>
-		''' <value></value>
-		''' <returns>Two 'star' post rating title.</returns>
-		''' <remarks>If empty string, localization value will be used.</remarks>
-		Public ReadOnly Property Rating2Title() As String
-			Get
-				Return _Rating2Title
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets the localization overriding 3 star rating title.
-		''' </summary>
-		''' <value></value>
-		''' <returns>Three 'star' post rating title.</returns>
-		''' <remarks>If empty string, localization value will be used.</remarks>
-		Public ReadOnly Property Rating3Title() As String
-			Get
-				Return _Rating3Title
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets the localization overriding 4 star rating title.
-		''' </summary>
-		''' <value></value>
-		''' <returns>Four 'star' post rating title.</returns>
-		''' <remarks>If empty string, localization value will be used.</remarks>
-		Public ReadOnly Property Rating4Title() As String
-			Get
-				Return _Rating4Title
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets the localization overriding 5 star rating title.
-		''' </summary>
-		''' <value></value>
-		''' <returns>Five 'star' post rating title.</returns>
-		''' <remarks>If empty string, localization value will be used.</remarks>
-		Public ReadOnly Property Rating5Title() As String
-			Get
-				Return _Rating5Title
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets the localization overriding 6 star rating title.
-		''' </summary>
-		''' <value></value>
-		''' <returns>Six 'star' post rating title.</returns>
-		''' <remarks>If empty string, localization value will be used.</remarks>
-		Public ReadOnly Property Rating6Title() As String
-			Get
-				Return _Rating6Title
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets the localization overriding 7 star rating title.
-		''' </summary>
-		''' <value></value>
-		''' <returns>Seven 'star' post rating title.</returns>
-		''' <remarks>If empty string, localization value will be used.</remarks>
-		Public ReadOnly Property Rating7Title() As String
-			Get
-				Return _Rating7Title
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets the localization overriding 8 star rating title.
-		''' </summary>
-		''' <value></value>
-		''' <returns>Eight 'star' post rating title.</returns>
-		''' <remarks>If empty string, localization value will be used.</remarks>
-		Public ReadOnly Property Rating8Title() As String
-			Get
-				Return _Rating8Title
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets the localization overriding 9 star rating title.
-		''' </summary>
-		''' <value></value>
-		''' <returns>Nine 'star' post rating title.</returns>
-		''' <remarks>If empty string, localization value will be used.</remarks>
-		Public ReadOnly Property Rating9Title() As String
-			Get
-				Return _Rating9Title
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets the localization overriding 10 star rating title.
-		''' </summary>
-		''' <value></value>
-		''' <returns>Ten 'star' post rating title.</returns>
-		''' <remarks>If empty string, localization value will be used.</remarks>
-		Public ReadOnly Property Rating10Title() As String
-			Get
-				Return _Rating10Title
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets the localization overrideing no rating title.
-		''' </summary>
-		''' <value></value>
-		''' <returns>Not set 'star' post rating title.</returns>
-		''' <remarks>If empty string, loclalized value will be used.</remarks>
-		Public ReadOnly Property NoRatingTitle() As String
-			Get
-				Return _NoRatingTitle
+				Return _RatingScale
 			End Get
 		End Property
 
@@ -2556,73 +2433,6 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 			End If
 
-			'Ratings
-			If Not settings("Rating1Title") Is Nothing Then
-				If Not settings("Rating1Title").ToString = String.Empty Then
-					_Rating1Title = CStr(GetValue(settings("Rating1Title"), _Rating1Title))
-				End If
-			End If
-
-			If Not settings("Rating2Title") Is Nothing Then
-				If Not settings("Rating2Title").ToString = String.Empty Then
-					_Rating2Title = CStr(GetValue(settings("Rating2Title"), _Rating2Title))
-				End If
-			End If
-
-			If Not settings("Rating3Title") Is Nothing Then
-				If Not settings("Rating3Title").ToString = String.Empty Then
-					_Rating3Title = CStr(GetValue(settings("Rating3Title"), _Rating3Title))
-				End If
-			End If
-
-			If Not settings("Rating4Title") Is Nothing Then
-				If Not settings("Rating4Title").ToString = String.Empty Then
-					_Rating4Title = CStr(GetValue(settings("Rating4Title"), _Rating4Title))
-				End If
-			End If
-
-			If Not settings("Rating5Title") Is Nothing Then
-				If Not settings("Rating5Title").ToString = String.Empty Then
-					_Rating5Title = CStr(GetValue(settings("Rating5Title"), _Rating5Title))
-				End If
-			End If
-
-			If Not settings("Rating6Title") Is Nothing Then
-				If Not settings("Rating6Title").ToString = String.Empty Then
-					_Rating6Title = CStr(GetValue(settings("Rating6Title"), _Rating6Title))
-				End If
-			End If
-
-			If Not settings("Rating7Title") Is Nothing Then
-				If Not settings("Rating7Title").ToString = String.Empty Then
-					_Rating7Title = CStr(GetValue(settings("Rating7Title"), _Rating7Title))
-				End If
-			End If
-
-			If Not settings("Rating8Title") Is Nothing Then
-				If Not settings("Rating8Title").ToString = String.Empty Then
-					_Rating8Title = CStr(GetValue(settings("Rating8Title"), _Rating8Title))
-				End If
-			End If
-
-			If Not settings("Rating9Title") Is Nothing Then
-				If Not settings("Rating9Title").ToString = String.Empty Then
-					_Rating9Title = CStr(GetValue(settings("Rating9Title"), _Rating9Title))
-				End If
-			End If
-
-			If Not settings("Rating10Title") Is Nothing Then
-				If Not settings("Rating10Title").ToString = String.Empty Then
-					_Rating10Title = CStr(GetValue(settings("Rating10Title"), _Rating10Title))
-				End If
-			End If
-
-			If Not settings("NoRatingTitle") Is Nothing Then
-				If Not settings("NoRatingTitle").ToString = String.Empty Then
-					_NoRatingTitle = CStr(GetValue(settings("NoRatingTitle"), _NoRatingTitle))
-				End If
-			End If
-
 			If Not settings("LoadScripts") Is Nothing Then
 				If Not settings("LoadScripts").ToString = String.Empty Then
 					_LoadScripts = CBool(GetValue(settings("LoadScripts"), CStr(_LoadScripts)))
@@ -2712,6 +2522,12 @@ Namespace DotNetNuke.Modules.Forum
 			If Not settings("PrimaryAlias") Is Nothing Then
 				If Not settings("PrimaryAlias").ToString = String.Empty Then
 					_PrimaryAlias = GetValue(settings("PrimaryAlias"), CStr(_PrimaryAlias))
+				End If
+			End If
+
+			If Not settings("RatingScale") Is Nothing Then
+				If Not settings("RatingScale").ToString = String.Empty Then
+					_RatingScale = CInt(GetValue(settings("RatingScale"), CStr(_RatingScale)))
 				End If
 			End If
 		End Sub

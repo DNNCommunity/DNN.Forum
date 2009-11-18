@@ -19,7 +19,7 @@
 		<property name="pckZip" value="_Package" />
 
 		<property name="rootWeb" value="http://localhost/" overwrite="false" />
-		<property name="webAlias" value="DotNetNuke_2" overwrite="false" />
+		<property name="webAlias" value="DotNetNuke_Community" overwrite="false" />
 		<property name="verbose" value="false" overwrite="false" />
 		
 		<!-- ModuleName value should be set specific to the project -->
@@ -104,6 +104,8 @@
 				<exclude name="**/_sgbak/*" />
 				<exclude name="**/thumbs.db" />
 				<exclude name="**/*.zip" />
+				<exclude name="**/packages/*" />
+				<exclude name="**/ResourceZip/*" />				
 				<exclude name="**/temp/*" />
 				<exclude name="**/Themes/DNN/**/*" />
 				<exclude name="**/Themes/Empires/**/*" />
@@ -163,6 +165,8 @@
 				<exclude name="**/_sgbak/*" />
 				<exclude name="**/thumbs.db" />
 				<exclude name="**/*.zip" />
+				<exclude name="**/packages/*" />
+				<exclude name="**/ResourceZip/*" />	
 				<exclude name="**/temp/*" />
 				<exclude name="**/Themes/DNN/**/*" />
 				<exclude name="**/Themes/Empires/**/*" />
@@ -201,8 +205,10 @@
 				<include name="**/*.dnn" />
 				<include name="**/Documentation/License.txt" />
 				<include name="**/Documentation/ReleaseNotes.txt" />
+				<exclude name="**/*.ascx" />
+				<exclude name="**/Themes/**/*" />
+				<exclude name="**/Controls/**/*" />
 				<exclude name="**/DNNDebug.aspx" />
-				<exclude name="**/forumblog.dnn" />
 				<exclude name="**/BuildSupport/**/*" />
 			</fileset>
 		</copy>
@@ -230,8 +236,10 @@
 				<include name="**/*.dnn" />
 				<include name="**/Documentation/License.txt" />
 				<include name="**/Documentation/ReleaseNotes.txt" />
+				<exclude name="**/*.ascx" />
+				<exclude name="**/Themes/**/*" />
+				<exclude name="**/Controls/**/*" />
 				<exclude name="**/DNNDebug.aspx" />
-				<exclude name="**/forumblog.dnn" />
 				<exclude name="**/BuildSupport/**/*" />
 			</fileset>
 		</copy>

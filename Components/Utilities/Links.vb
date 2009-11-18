@@ -659,15 +659,20 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <param name="UserId"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Shared Function UserPublicProfileLink(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal UserId As Integer, ByVal IsExternal As Boolean, ByVal UserParam As String, ByVal ExtProfilePageID As Integer) _
+		Shared Function UserPublicProfileLink(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal UserId As Integer, ByVal IsExternal As Boolean, ByVal UserParam As String, ByVal ExtProfilePageID As Integer, ByVal UseName As Boolean, ByVal ProfileName As String) _
    As String
 
 			Dim url As String
 			Dim params As String()
 
 			If IsExternal Then
-				params = New String(0) {UserParam + "=" + UserId.ToString}
-				url = NavigateURL(ExtProfilePageID, "", params)
+				If UseName Then
+					params = New String(0) {UserParam + "=" + ProfileName}
+					url = NavigateURL(ExtProfilePageID, "", params)
+				Else
+					params = New String(0) {UserParam + "=" + UserId.ToString}
+					url = NavigateURL(ExtProfilePageID, "", params)
+				End If
 			Else
 				params = New String(1) {"mid=" & ModuleID.ToString, "userid=" & UserId.ToString}
 				url = NavigateURL(TabId, ForumPage.PublicProfile.ToString, params)
@@ -688,8 +693,13 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 			Dim params As String()
 
 			If IsExternal Then
-				params = New String(0) {ParamName + "=" + ParamValue}
-				url = NavigateURL(ExtDirectoryPageID, "", params)
+				If ParamName.Trim() <> "" And ParamValue.Trim() <> "" Then
+					params = New String(0) {ParamName + "=" + ParamValue}
+					url = NavigateURL(ExtDirectoryPageID, "", params)
+				Else
+					params = New String(0) {"mid=" & ModuleID}
+					url = NavigateURL(ExtDirectoryPageID, "", params)
+				End If
 			Else
 				params = New String(0) {"mid=" & ModuleID}
 				url = NavigateURL(TabId, ForumPage.MemberList.ToString, params)

@@ -329,7 +329,7 @@ Namespace DotNetNuke.Modules.Forum
 				lblMessage.Text = fTextDecode.ProcessHtml()
 				Dim objFromUser As ForumUser = ForumUserController.GetForumUser(mParentPMInfo.PMFromUserID, False, ModuleId, PortalId)
 				hlAuthor.Text = objFromUser.SiteAlias
-				hlAuthor.NavigateUrl = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, objFromUser.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage)
+				hlAuthor.NavigateUrl = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, objFromUser.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, LoggedOnUser.Username)
 
 				Select Case mPMAction
 					Case PMAction.Reply

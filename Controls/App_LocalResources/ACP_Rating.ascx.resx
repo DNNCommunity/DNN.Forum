@@ -126,70 +126,16 @@
   <data name="NumericValidation.ErrorMessage" xml:space="preserve">
     <value>&lt;br /&gt;Needs to be numeric!</value>
   </data>
-  <data name="pl10thRating.Help" xml:space="preserve">
-    <value>The word displayed in place of the numbering system for the equivalent of 10 star rating.&lt;br&gt;&lt;b&gt;NOTE&lt;/b&gt;&lt;br&gt;If left blank, default of: '10 out of 10 - based on &lt;b&gt;x&lt;/b&gt; ratings' will be used.</value>
-  </data>
-  <data name="pl10thRating.Text" xml:space="preserve">
-    <value>10th Rating </value>
-  </data>
-  <data name="pl1stRating.Help" xml:space="preserve">
-    <value>The word displayed in place of the numbering system for the equivalent of a 1 star rating.&lt;br&gt;&lt;b&gt;NOTE&lt;/b&gt;&lt;br&gt;If left blank, default of: '1 out of 10 - based on &lt;b&gt;x&lt;/b&gt; ratings' will be used.</value>
-  </data>
-  <data name="pl1stRating.Text" xml:space="preserve">
-    <value>1st Rating </value>
-  </data>
-  <data name="pl2ndRating.Help" xml:space="preserve">
-    <value>The word displayed in place of the numbering system for the equivalent of 2 star rating.&lt;br&gt;&lt;b&gt;NOTE&lt;/b&gt;&lt;br&gt;If left blank, default of: '2 out of 10 - based on &lt;b&gt;x&lt;/b&gt; ratings' will be used.</value>
-  </data>
-  <data name="pl2ndRating.Text" xml:space="preserve">
-    <value>2nd Rating </value>
-  </data>
-  <data name="pl3rdRating.Help" xml:space="preserve">
-    <value>The word displayed in place of the numbering system for the equivalent of 3 star rating.&lt;br&gt;&lt;b&gt;NOTE&lt;/b&gt;&lt;br&gt;If left blank, default of: '3 out of 10 - based on &lt;b&gt;x&lt;/b&gt; ratings' will be used.</value>
-  </data>
-  <data name="pl3rdRating.Text" xml:space="preserve">
-    <value>3rd Rating </value>
-  </data>
-  <data name="pl4thRating.Help" xml:space="preserve">
-    <value>The word displayed in place of the numbering system for the equivalent of 4 star rating.&lt;br&gt;&lt;b&gt;NOTE&lt;/b&gt;&lt;br&gt;If left blank, default of: '4 out of 10 - based on &lt;b&gt;x&lt;/b&gt; ratings' will be used.</value>
-  </data>
-  <data name="pl4thRating.Text" xml:space="preserve">
-    <value>4th Rating </value>
-  </data>
-  <data name="pl5thRating.Help" xml:space="preserve">
-    <value>The word displayed in place of the numbering system for the equivalent of 5 star rating.&lt;br&gt;&lt;b&gt;NOTE&lt;/b&gt;&lt;br&gt;If left blank, default of: '5 out of 10 - based on &lt;b&gt;x&lt;/b&gt; ratings' will be used.</value>
-  </data>
-  <data name="pl5thRating.Text" xml:space="preserve">
-    <value>5th Rating </value>
-  </data>
-  <data name="pl6thRating.Help" xml:space="preserve">
-    <value>The word displayed in place of the numbering system for the equivalent of 6 star rating.&lt;br&gt;&lt;b&gt;NOTE&lt;/b&gt;&lt;br&gt;If left blank, default of: '6 out of 10 - based on &lt;b&gt;x&lt;/b&gt; ratings' will be used.</value>
-  </data>
-  <data name="pl6thRating.Text" xml:space="preserve">
-    <value>6th Rating </value>
-  </data>
-  <data name="pl7thRating.Help" xml:space="preserve">
-    <value>The word displayed in place of the numbering system for the equivalent of 7 star rating.&lt;br&gt;&lt;b&gt;NOTE&lt;/b&gt;&lt;br&gt;If left blank, default of: '7 out of 10 - based on &lt;b&gt;x&lt;/b&gt; ratings' will be used.</value>
-  </data>
-  <data name="pl7thRating.Text" xml:space="preserve">
-    <value>7th Rating </value>
-  </data>
-  <data name="pl8thRating.Help" xml:space="preserve">
-    <value>The word displayed in place of the numbering system for the equivalent of 8 star rating.&lt;br&gt;&lt;b&gt;NOTE&lt;/b&gt;&lt;br&gt;If left blank, default of: '8 out of 10 - based on &lt;b&gt;x&lt;/b&gt; ratings' will be used.</value>
-  </data>
-  <data name="pl8thRating.Text" xml:space="preserve">
-    <value>8th Rating </value>
-  </data>
-  <data name="pl9thRating.Help" xml:space="preserve">
-    <value>The word displayed in place of the numbering system for the equivalent of 9 star rating.&lt;br&gt;&lt;b&gt;NOTE&lt;/b&gt;&lt;br&gt;If left blank, default of: '9 out of 10 - based on &lt;b&gt;x&lt;/b&gt; ratings' will be used.</value>
-  </data>
-  <data name="pl9thRating.Text" xml:space="preserve">
-    <value>9th Rating </value>
-  </data>
   <data name="plRatings.Help" xml:space="preserve">
     <value>If checked, users will be permitted to rate a thread's content if enabled at the forum level as well. </value>
   </data>
   <data name="plRatings.Text" xml:space="preserve">
     <value>Enable</value>
+  </data>
+  <data name="plRatingScale.Help" xml:space="preserve">
+    <value>A whole number that represents the highest rating for a thread.</value>
+  </data>
+  <data name="plRatingScale.Text" xml:space="preserve">
+    <value>Rating Scale</value>
   </data>
 </root>

@@ -37,7 +37,7 @@ Namespace DotNetNuke.Modules.Forum
 		Private mThreadsPerPage As Integer = 10
 		Dim mTotalRecords As Integer = 0
 		Dim Url As String
-
+		Private hsThreadRatings As New Hashtable
 
 #Region "Controls"
 
@@ -140,7 +140,6 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			mThreadsPerPage = LoggedOnUser.ThreadsPerPage
-
 		End Sub
 
 		''' <summary>
@@ -162,6 +161,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			End If
 
+			BindControls()
 			AddControlHandlers()
 			AddControlsToTree()
 
@@ -194,10 +194,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>
 		''' </remarks>
 		Public Overrides Sub Render(ByVal wr As HtmlTextWriter)
-			' Now we get threads containing new posts to display for this user
-			Dim ctlThread As New ThreadController
-			mThreadCollection = ctlThread.ThreadGetUnread(ModuleID, ForumControl.ThreadsPerPage, ThreadPage, LoggedOnUser.UserID)
-
 			RenderTableBegin(wr, 0, 0, "ThreadsTable")
 			RenderNavBar(wr, objConfig, ForumControl)
 			RenderBreadCrumbRow(wr)
@@ -209,7 +205,6 @@ Namespace DotNetNuke.Modules.Forum
 				RenderNoThreads(wr)
 			End If
 			RenderTableEnd(wr)
-
 		End Sub
 
 #End Region
@@ -247,6 +242,16 @@ Namespace DotNetNuke.Modules.Forum
 			Catch exc As Exception
 				LogException(exc)
 			End Try
+		End Sub
+
+		''' <summary>
+		''' Binds data to control objects.
+		''' </summary>
+		''' <remarks></remarks>
+		Private Sub BindControls()
+			' Now we get threads containing new posts to display for this user
+			Dim ctlThread As New ThreadController
+			mThreadCollection = ctlThread.ThreadGetUnread(ModuleID, ForumControl.ThreadsPerPage, ThreadPage, LoggedOnUser.UserID)
 		End Sub
 
 		''' <summary>
@@ -518,7 +523,7 @@ Namespace DotNetNuke.Modules.Forum
 						'Add thread started by
 						RenderDivBegin(wr, "", "Forum_NormalSmall") ' <div>
 						wr.Write(String.Format("{0}&nbsp;", ForumControl.LocalizedText("by")))
-						Url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.StartedByUserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage)
+						Url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.StartedByUserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, LoggedOnUser.Username)
 						RenderLinkButton(wr, Url, thread.StartedByUser.SiteAlias, "Forum_NormalSmall") ' <a/>
 
 						'Add in forum (where thread belongs)
@@ -594,6 +599,14 @@ Namespace DotNetNuke.Modules.Forum
 							RenderCellBegin(wr, "", "", "30%", "right", "", "", "") ' <td>
 
 							''RenderImage(wr, objConfig.GetThemeImageURL(thread.RatingImage), thread.RatingText, "") ' <img/>
+							If hsThreadRatings.ContainsKey(thread.ThreadID) Then
+								trcRating = CType(hsThreadRatings(thread.ThreadID), Telerik.Web.UI.RadRating)
+								' CP - we alter statement below if we want to enable 0 rating still showing image.
+								If thread.Rating > 0 Then
+									trcRating.RenderControl(wr)
+								End If
+							End If
+
 							RenderCellEnd(wr) ' </td>
 						End If
 
@@ -668,7 +681,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						RenderDivBegin(wr, "", "Forum_LastPostText")	   ' <div>
 						wr.Write(ForumControl.LocalizedText("by") & " ")
-						Url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.LastApprovedUser.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage)
+						Url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.LastApprovedUser.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, LoggedOnUser.Username)
 						RenderLinkButton(wr, Url, thread.LastApprovedUser.SiteAlias, "Forum_LastPostText") ' <a/>
 						RenderDivEnd(wr) ' </div>
 						RenderCellEnd(wr) ' </td>
@@ -892,7 +905,6 @@ Namespace DotNetNuke.Modules.Forum
 					Return ForumControl.LocalizedText("imgNewThread")
 				End If
 			End If
-
 		End Function
 
 		''' <summary>

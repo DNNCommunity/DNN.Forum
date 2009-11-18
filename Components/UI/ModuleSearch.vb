@@ -46,6 +46,13 @@ Namespace DotNetNuke.Modules.Forum
 		Private myThreads As Boolean = False
 		Private NoResults As Boolean = False
 		Private LatestHours As Boolean = False
+		Private hsThreadRatings As New Hashtable
+
+#Region "Controls"
+
+		Private trcRating As Telerik.Web.UI.RadRating
+
+#End Region
 
 #End Region
 
@@ -274,12 +281,69 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 		''' <summary>
-		''' Determines what the page size is, gets the search results collection
+		''' Create an instance of the controls used here
 		''' </summary>
 		''' <remarks>
-		''' Because of addition of my posts, page size needs to be set based on either threads per page OR posts per page. 
 		''' </remarks>
-		Public Overrides Sub OnPreRender()
+		Public Overrides Sub CreateChildControls()
+			Controls.Clear()
+
+			BindControls()
+
+			For Each thread As SearchInfo In SearchCollection
+				Me.trcRating = New Telerik.Web.UI.RadRating
+				With trcRating
+					.Enabled = False
+					.Skin = "Office2007"
+					.Width = Unit.Parse("200")
+					.SelectionMode = Telerik.Web.UI.RatingSelectionMode.Continuous
+					.IsDirectionReversed = False
+					.Orientation = Orientation.Horizontal
+					.Precision = Telerik.Web.UI.RatingPrecision.Half
+					.ItemCount = objConfig.RatingScale
+
+					.ID = "trcRating" + thread.ThreadID.ToString()
+					.Value = thread.Rating
+					'AddHandler trcRating.Command, AddressOf trcRating_Rate
+				End With
+				hsThreadRatings.Add(thread.ThreadID, trcRating)
+				Controls.Add(trcRating)
+			Next
+		End Sub
+
+		''' <summary>
+		''' Builds the UI
+		''' </summary>
+		''' <param name="wr"></param>
+		''' <remarks>
+		''' </remarks>
+		Public Overrides Sub Render(ByVal wr As HtmlTextWriter)
+			If Not ForumControl.Page.IsPostBack Then
+				RenderTableBegin(wr, 0, 0, "SearchResultsTable")
+				RenderNavBar(wr, objConfig, ForumControl)
+				RenderBreadCrumbRow(wr)
+				If Aggregated Or myThreads Or LatestHours Then
+					'[skeel] Thread view
+					RenderSearch(wr)
+				Else
+					'[skel] Posts view
+					RenderSearchResults(wr)
+				End If
+				RenderFooter(wr)
+				RenderBottomBreadCrumb(wr)
+				RenderTableEnd(wr)
+			End If
+		End Sub
+
+#End Region
+
+#Region "Private Methods"
+
+		''' <summary>
+		''' Determines what the page size is, gets the search results collection
+		''' </summary>
+		''' <remarks></remarks>
+		Private Sub BindControls()
 			Dim ctlSearch As New SearchController
 			Dim InThreadView As Boolean = False
 
@@ -318,34 +382,6 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 			End If
 		End Sub
-
-		''' <summary>
-		''' Builds the UI
-		''' </summary>
-		''' <param name="wr"></param>
-		''' <remarks>
-		''' </remarks>
-		Public Overrides Sub Render(ByVal wr As HtmlTextWriter)
-			If Not ForumControl.Page.IsPostBack Then
-				RenderTableBegin(wr, 0, 0, "SearchResultsTable")
-				RenderNavBar(wr, objConfig, ForumControl)
-				RenderBreadCrumbRow(wr)
-				If Aggregated Or myThreads Or LatestHours Then
-					'[skeel] Thread view
-					RenderSearch(wr)
-				Else
-					'[skel] Posts view
-					RenderSearchResults(wr)
-				End If
-				RenderFooter(wr)
-				RenderBottomBreadCrumb(wr)
-				RenderTableEnd(wr)
-			End If
-		End Sub
-
-#End Region
-
-#Region "Private Methods"
 
 		''' <summary>
 		''' breadcrumb
@@ -867,10 +903,16 @@ Namespace DotNetNuke.Modules.Forum
 
 				' start third cell for ratings held within nested table
 				' CP - Add check for RatingsEnabled
-				If objConfig.EnableRatings And SearchItem.Parent.EnableForumsRating And SearchItem.Rating > 0 Then
-					' Display rating image
+				If objConfig.EnableRatings And SearchItem.Parent.EnableForumsRating Then
 					RenderCellBegin(wr, "", "", "30%", "right", "", "", "") ' <td>
-					RenderImage(wr, objConfig.GetThemeImageURL(SearchItem.RatingImage), SearchItem.RatingText, "")
+
+					If hsThreadRatings.ContainsKey(SearchItem.ThreadID) Then
+						trcRating = CType(hsThreadRatings(SearchItem.ThreadID), Telerik.Web.UI.RadRating)
+						' CP - we alter statement below if we want to enable 0 rating still showing image.
+						If SearchItem.Rating > 0 Then
+							trcRating.RenderControl(wr)
+						End If
+					End If
 					RenderCellEnd(wr) ' </td>
 				End If
 
@@ -950,7 +992,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				RenderDivBegin(wr, "", "Forum_LastPostText")	   ' <div>
 				wr.Write(ForumControl.LocalizedText("by") & " ")
-				url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, SearchItem.LastApprovedUser.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage)
+				url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, SearchItem.LastApprovedUser.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, LoggedOnUser.Username)
 				RenderLinkButton(wr, url, SearchItem.LastApprovedUser.SiteAlias, "Forum_LastPostText") ' <a/>
 				RenderDivEnd(wr) ' </div>
 				RenderCellEnd(wr) ' </td>
@@ -1009,7 +1051,7 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			'link to user profile, always display in both view
-			url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, author.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage)
+			url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, author.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, LoggedOnUser.Username)
 			RenderTitleLinkButton(wr, url, author.SiteAlias, "Forum_Profile", ForumControl.LocalizedText("ViewProfile"))
 
 			RenderCellEnd(wr) ' </td>
@@ -1177,7 +1219,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 		''' <summary>
-		''' 
+		''' Obtains search parameters from the querystring.
 		''' </summary>
 		''' <returns></returns>
 		''' <remarks></remarks>

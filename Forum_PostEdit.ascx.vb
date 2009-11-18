@@ -1179,7 +1179,7 @@ Namespace DotNetNuke.Modules.Forum
 				End With
 
 				hlAuthor.Text = objParentPost.Author.SiteAlias
-				hlAuthor.NavigateUrl = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, objParentPost.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage)
+				hlAuthor.NavigateUrl = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, objParentPost.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, LoggedOnUser.Username)
 				hlAuthor.ToolTip = Localization.GetString("ReplyToToolTip", Me.LocalResourceFile)
 
 				If objAction = PostAction.Reply Then

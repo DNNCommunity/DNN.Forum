@@ -516,7 +516,7 @@ Namespace DotNetNuke.Modules.Forum
 				.IsDirectionReversed = False
 				.Orientation = Orientation.Horizontal
 				.Precision = Telerik.Web.UI.RatingPrecision.Half
-				.ItemCount = 5
+				.ItemCount = objConfig.RatingScale
 				AddHandler trcRating.Rate, AddressOf trcRating_Rate
 				.AutoPostBack = True
 			End With
@@ -644,13 +644,6 @@ Namespace DotNetNuke.Modules.Forum
 				hsThreadAnswers.Add(post.PostID, cmdThreadAnswer)
 				Controls.Add(cmdThreadAnswer)
 			Next
-		End Sub
-
-		Public Overrides Sub OnPreRender()
-			' To permit ajax usage for some things, throw a script manager on the page
-			If DotNetNuke.Framework.AJAX.IsInstalled Then
-				DotNetNuke.Framework.AJAX.RegisterScriptManager()
-			End If
 		End Sub
 
 		''' <summary>
@@ -1666,7 +1659,7 @@ Namespace DotNetNuke.Modules.Forum
 			RenderRowBegin(wr) '<tr> 
 
 			'link to user profile, always display in both views
-			_url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, author.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage)
+			_url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, author.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, LoggedOnUser.Username)
 			RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td>
 
 			' display user online status
