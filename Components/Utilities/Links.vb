@@ -697,8 +697,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 					params = New String(0) {ParamName + "=" + ParamValue}
 					url = NavigateURL(ExtDirectoryPageID, "", params)
 				Else
-					params = New String(0) {"mid=" & ModuleID}
-					url = NavigateURL(ExtDirectoryPageID, "", params)
+					url = NavigateURL(ExtDirectoryPageID, "", "")
 				End If
 			Else
 				params = New String(0) {"mid=" & ModuleID}
