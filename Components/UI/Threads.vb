@@ -981,7 +981,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						RenderDivBegin(wr, "", "Forum_NormalSmall") ' <div>
 						wr.Write(String.Format("{0}&nbsp;", ForumControl.LocalizedText("by")))
-						url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.StartedByUserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, LoggedOnUser.Username)
+						url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.StartedByUserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, thread.StartedByUser.Username)
 						RenderLinkButton(wr, url, thread.StartedByUser.SiteAlias, "Forum_NormalSmall") ' <a/>
 
 						' correct logic to handle posts per page per user

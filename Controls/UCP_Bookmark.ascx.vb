@@ -139,7 +139,8 @@ Namespace DotNetNuke.Modules.Forum.UCP
 			lbl.Text = CStr(objThread.TotalPosts)
 
 			lbl = CType(e.Item.FindControl("lblLastPostInfo"), Label)
-			lbl.Text = LastPostDetails(dataItem.ForumID, dataItem.LastApprovedPostCreatedDate, dataItem.LastApprovedPosterID, dataItem.LastApprovedPostID)
+			Dim objUser As ForumUser = ForumUserController.GetForumUser(dataItem.LastApprovedPosterID, False, ModuleId, PortalId)
+			lbl.Text = LastPostDetails(dataItem.ForumID, dataItem.LastApprovedPostCreatedDate, dataItem.LastApprovedPosterID, dataItem.LastApprovedPostID, objUser.Username)
 		End Sub
 
 		''' <summary>
@@ -167,7 +168,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' <param name="LastApprovedPostID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Protected Function LastPostDetails(ByVal ForumID As Integer, ByVal LastPostDate As DateTime, ByVal LastPostUserID As Integer, ByVal LastApprovedPostID As Integer) As String
+		Protected Function LastPostDetails(ByVal ForumID As Integer, ByVal LastPostDate As DateTime, ByVal LastPostUserID As Integer, ByVal LastApprovedPostID As Integer, ByVal LastApprovedUsername As String) As String
 			Dim objUser As ForumUser
 			Dim str As String
 
@@ -175,7 +176,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 
 			str = "<span class=""Forum_LastPostText""><a href=""" & Utilities.Links.ContainerViewPostLink(TabId, ForumID, LastApprovedPostID) & """ class=""Forum_LastPostText"">" & Utilities.ForumUtils.GetCreatedDateInfo(LastPostDate, objConfig, "Forum_LastPostText") & "</a>"
 			str += Localization.GetString("by", LocalResourceFile) & " "
-			str += "<a href=""" & Utilities.Links.UserPublicProfileLink(TabId, ModuleId, LastPostUserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, LoggedOnUser.Username) & """ class=""Forum_LastPostText"">" & objUser.DisplayName & "</a>"
+			str += "<a href=""" & Utilities.Links.UserPublicProfileLink(TabId, ModuleId, LastPostUserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, LastApprovedUsername) & """ class=""Forum_LastPostText"">" & objUser.DisplayName & "</a>"
 			str += "</span>"
 			Return str
 		End Function

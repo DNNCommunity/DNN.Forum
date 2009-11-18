@@ -1659,7 +1659,7 @@ Namespace DotNetNuke.Modules.Forum
 			RenderRowBegin(wr) '<tr> 
 
 			'link to user profile, always display in both views
-			_url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, author.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, LoggedOnUser.Username)
+			_url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, author.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, author.Username)
 			RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td>
 
 			' display user online status

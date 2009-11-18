@@ -523,7 +523,7 @@ Namespace DotNetNuke.Modules.Forum
 						'Add thread started by
 						RenderDivBegin(wr, "", "Forum_NormalSmall") ' <div>
 						wr.Write(String.Format("{0}&nbsp;", ForumControl.LocalizedText("by")))
-						Url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.StartedByUserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, LoggedOnUser.Username)
+						Url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.StartedByUserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, thread.StartedByUser.Username)
 						RenderLinkButton(wr, Url, thread.StartedByUser.SiteAlias, "Forum_NormalSmall") ' <a/>
 
 						'Add in forum (where thread belongs)
@@ -681,7 +681,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						RenderDivBegin(wr, "", "Forum_LastPostText")	   ' <div>
 						wr.Write(ForumControl.LocalizedText("by") & " ")
-						Url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.LastApprovedUser.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, LoggedOnUser.Username)
+						Url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.LastApprovedUser.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, thread.LastApprovedUser.Username)
 						RenderLinkButton(wr, Url, thread.LastApprovedUser.SiteAlias, "Forum_LastPostText") ' <a/>
 						RenderDivEnd(wr) ' </div>
 						RenderCellEnd(wr) ' </td>
