@@ -1,6 +1,7 @@
 <%@ Register TagPrefix="DNN" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke.WebControls" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Control Language="vb" AutoEventWireup="false" Codebehind="Forum_Search.ascx.vb" Inherits="DotNetNuke.Modules.Forum.SearchPage" %>
+<%@ Register assembly="Telerik.Web.UI" namespace="Telerik.Web.UI" tagprefix="telerik" %>
 <asp:Literal ID="litCSSLoad" runat="server" />
 <table class="Forum_SearchContainer" id="tblMain" cellspacing="0" cellpadding="0" width="100%"
 	align="center">
@@ -20,25 +21,15 @@
 					               <asp:label id="lblStartDate" runat="server" resourcekey="lblStartDate" CssClass="Forum_Row_AdminText" />
 					          </td>
 					          <td valign="middle" align="left">
-					               <asp:textbox id="txtFromDate" cssclass="Forum_NormalTextBox" runat="server" width="75px" />
+					               <telerik:RadDatePicker ID="rdpFrom" Skin="Web20" runat="server" Width="100px" />
 					          </td>
-					    	    <td valign="middle" align="left">
-					    	        <asp:hyperlink id="cmdCalFrom" resourcekey="cmdCalFrom" runat="server" />
-					    	    </td>
 					    	    <td valign="middle" align="left">
 					                <asp:label id="lblEndDate" runat="server" resourcekey="lblEndDate" CssClass="Forum_Row_AdminText" />
 					            </td>
 					    	    <td valign="middle" align="left">
-					                <asp:textbox id="txtToDate" cssclass="Forum_NormalTextBox" runat="server" width="75px" />
+					                <telerik:RadDatePicker ID="rdpTo" Skin="Web20" runat="server" Width="100px" />
 					            </td>
-					    	    <td valign="middle" align="left">
-					    	        <asp:hyperlink id="cmdCalTo" resourcekey="cmdCalTo" runat="server" />
-					    	    </td>
-					    	    <td valign="middle" align="left">
-					    	        <asp:comparevalidator id="valStartDate" cssclass="NormalRed" runat="server" resourcekey="valStartDate" display="Dynamic" type="Date" operator="DataTypeCheck" errormessage="Invalid Start date" controltovalidate="txtFromDate" />
-			                        <asp:comparevalidator id="valEndDate" cssclass="NormalRed" runat="server" resourcekey="valEndDate" display="Dynamic" type="Date" operator="DataTypeCheck" errormessage="<br />Invalid expiry date" controltovalidate="txtToDate" />
-			                        <asp:comparevalidator id="valDates" cssclass="NormalRed" runat="server" resourcekey="valDates" display="Dynamic" type="Date" operator="GreaterThanEqual" errormessage="<br />Expiry Date must be Greater than Effective Date" controltovalidate="txtToDate" controltocompare="txtFromDate" />  
-					    	    </td>
+
 					    	</tr>
 					    </table>
 					 </td>
@@ -81,14 +72,14 @@
 					</span>
                    </td>
                    <td align="left" valign="top">
-                       <asp:DropDownList ID="ddlThreadStatus" runat="server" CssClass="Forum_NormalTextBox" Width="250px">
-                       </asp:DropDownList></td>
+					<telerik:RadComboBox ID="rcbThreadStatus" runat="server" Width="250px" Skin="Web20" />
+                    </td>
                </tr>
 				<tr>
 					<td valign="top" width="150"><span class="Forum_Row_AdminText"><dnn:label id="plForums" Suffix=":" runat="server" controlname="txtForumID"></dnn:label>
 						</span></td>
 					<td valign="top" align="left">
-						<DNN:DNNTree ID="ForumTree" runat="server"></DNN:DNNTree>
+						<telerik:RadTreeView ID="rtvForums" runat="server" Skin="Web20" CheckBoxes="true" />
 					</td>
 				</tr>
 			</table>

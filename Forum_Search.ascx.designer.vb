@@ -44,22 +44,13 @@ Namespace DotNetNuke.Modules.Forum
 		Protected WithEvents lblStartDate As Global.System.Web.UI.WebControls.Label
 
 		'''<summary>
-		'''txtFromDate control.
+		'''rdpFrom control.
 		'''</summary>
 		'''<remarks>
 		'''Auto-generated field.
 		'''To modify move field declaration from designer file to code-behind file.
 		'''</remarks>
-		Protected WithEvents txtFromDate As Global.System.Web.UI.WebControls.TextBox
-
-		'''<summary>
-		'''cmdCalFrom control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdCalFrom As Global.System.Web.UI.WebControls.HyperLink
+		Protected WithEvents rdpFrom As Global.Telerik.Web.UI.RadDatePicker
 
 		'''<summary>
 		'''lblEndDate control.
@@ -71,49 +62,13 @@ Namespace DotNetNuke.Modules.Forum
 		Protected WithEvents lblEndDate As Global.System.Web.UI.WebControls.Label
 
 		'''<summary>
-		'''txtToDate control.
+		'''rdpTo control.
 		'''</summary>
 		'''<remarks>
 		'''Auto-generated field.
 		'''To modify move field declaration from designer file to code-behind file.
 		'''</remarks>
-		Protected WithEvents txtToDate As Global.System.Web.UI.WebControls.TextBox
-
-		'''<summary>
-		'''cmdCalTo control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdCalTo As Global.System.Web.UI.WebControls.HyperLink
-
-		'''<summary>
-		'''valStartDate control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valStartDate As Global.System.Web.UI.WebControls.CompareValidator
-
-		'''<summary>
-		'''valEndDate control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valEndDate As Global.System.Web.UI.WebControls.CompareValidator
-
-		'''<summary>
-		'''valDates control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valDates As Global.System.Web.UI.WebControls.CompareValidator
+		Protected WithEvents rdpTo As Global.Telerik.Web.UI.RadDatePicker
 
 		'''<summary>
 		'''plUserSuggest control.
@@ -179,13 +134,13 @@ Namespace DotNetNuke.Modules.Forum
 		Protected WithEvents plThreadStatus As Global.DotNetNuke.UI.UserControls.LabelControl
 
 		'''<summary>
-		'''ddlThreadStatus control.
+		'''rcbThreadStatus control.
 		'''</summary>
 		'''<remarks>
 		'''Auto-generated field.
 		'''To modify move field declaration from designer file to code-behind file.
 		'''</remarks>
-		Protected WithEvents ddlThreadStatus As Global.System.Web.UI.WebControls.DropDownList
+		Protected WithEvents rcbThreadStatus As Global.Telerik.Web.UI.RadComboBox
 
 		'''<summary>
 		'''plForums control.
@@ -197,13 +152,13 @@ Namespace DotNetNuke.Modules.Forum
 		Protected WithEvents plForums As Global.DotNetNuke.UI.UserControls.LabelControl
 
 		'''<summary>
-		'''ForumTree control.
+		'''rtvForums control.
 		'''</summary>
 		'''<remarks>
 		'''Auto-generated field.
 		'''To modify move field declaration from designer file to code-behind file.
 		'''</remarks>
-		Protected WithEvents ForumTree As Global.DotNetNuke.UI.WebControls.DnnTree
+		Protected WithEvents rtvForums As Global.Telerik.Web.UI.RadTreeView
 
 		'''<summary>
 		'''lblInfo control.

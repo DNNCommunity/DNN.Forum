@@ -120,47 +120,43 @@ Namespace DotNetNuke.Modules.Forum
 						ViewState("UrlReferrer") = Request.UrlReferrer.ToString()
 					End If
 
-					With Me.cmdCalFrom
-						.ImageUrl = objConfig.GetThemeImageURL("s_calendar.") & objConfig.ImageExtension
-						.NavigateUrl = CType(DotNetNuke.Common.Utilities.Calendar.InvokePopupCal(txtFromDate), String)
+					With Me.rdpFrom
 						.ToolTip = Localization.GetString("cmdCalFrom", LocalResourceFile)
 					End With
 
-					With Me.cmdCalTo
-						.ImageUrl = objConfig.GetThemeImageURL("s_calendar.") & objConfig.ImageExtension
-						.NavigateUrl = CType(DotNetNuke.Common.Utilities.Calendar.InvokePopupCal(txtToDate), String)
+					With Me.rdpTo
 						.ToolTip = Localization.GetString("cmdCalFrom", LocalResourceFile)
 					End With
 
-					txtFromDate.Text = DateAdd(DateInterval.Month, -1, Date.Today).ToShortDateString
-					txtToDate.Text = Date.Today.ToShortDateString
+					rdpFrom.SelectedDate = DateAdd(DateInterval.Month, -1, Date.Today)
+					rdpTo.SelectedDate = Date.Today
 
-					With Me.ddlThreadStatus
+					With Me.rcbThreadStatus
 						Dim ctlLists As New DotNetNuke.Common.Lists.ListController
 						Dim colThreadStatus As DotNetNuke.Common.Lists.ListEntryInfoCollection = ctlLists.GetListEntryInfoCollection("ThreadStatus")
-						ddlThreadStatus.Items.Clear()
+						rcbThreadStatus.Items.Clear()
 
 						For Each entry As DotNetNuke.Common.Lists.ListEntryInfo In colThreadStatus
-							Dim statusEntry As New ListItem(Localization.GetString(entry.Text, objConfig.SharedResourceFile), entry.Value)
-							ddlThreadStatus.Items.Add(statusEntry)
+							Dim statusEntry As New Telerik.Web.UI.RadComboBoxItem(Localization.GetString(entry.Text, objConfig.SharedResourceFile), entry.Value)
+							rcbThreadStatus.Items.Add(statusEntry)
 						Next
-						ddlThreadStatus.Items.Insert(1, New ListItem(Localization.GetString("AnyStatus", LocalResourceFile), "-1"))
+						rcbThreadStatus.Items.Insert(1, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("AnyStatus", LocalResourceFile), "-1"))
 					End With
 
 					' Treeview forum viewer
 					InitializeTextSuggest()
-					ForumTreeview.InitializeTree(objConfig, ForumTree)
-					ForumTreeview.SetTreeDefaults(objConfig, ForumTree, True)
-					ForumTreeview.PopulateTree(objConfig, ForumTree, UserId)
-
+					'ForumTreeview.InitializeTree(objConfig, ForumTree)
+					'ForumTreeview.SetTreeDefaults(objConfig, ForumTree, True)
+					'ForumTreeview.PopulateTree(objConfig, ForumTree, UserId)
+					ForumTreeview.PopulateTelerikTree(objConfig, rtvForums, UserId)
 					' Register scripts (broke DNNTree if loaded)
 					'Utils.RegisterPageScripts(Page, ForumConfig)
 				End If
 
 				SelectedForumIds = String.Empty
-				For Each objNode As DotNetNuke.UI.WebControls.TreeNode In Me.ForumTree.SelectedTreeNodes
-					Dim strType As String = objNode.Key.Substring(0, 1)
-					Dim iID As Integer = CInt(objNode.Key.Substring(1, objNode.Key.Length - 1))
+				For Each objNode As Telerik.Web.UI.RadTreeNode In Me.rtvForums.Nodes
+					Dim strType As String = objNode.Value.Substring(0, 1)
+					Dim iID As Integer = CInt(objNode.Value.Substring(1, objNode.Value.Length - 1))
 
 					If strType = "F" Then
 						SelectedForumId = iID
@@ -178,23 +174,23 @@ Namespace DotNetNuke.Modules.Forum
 			End Try
 		End Sub
 
-		''' <summary>
-		''' Populates one level of the forum treeview when needed(by groupid)
-		''' </summary>
-		''' <param name="source">Object</param>
-		''' <param name="e"></param>
-		''' <remarks>
-		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	2/15/2006	Created
-		''' </history>
-		Protected Sub ForumTree_PopulateOnDemand(ByVal source As Object, ByVal e As UI.WebControls.DNNTreeEventArgs) Handles ForumTree.PopulateOnDemand
-			Dim cntGroup As New GroupController
-			Dim strKey As String = e.Node.Key.Substring(1)			  'trim off type
-			Dim objGroup As GroupInfo = cntGroup.GroupGet(CInt(strKey))
+		'''' <summary>
+		'''' Populates one level of the forum treeview when needed(by groupid)
+		'''' </summary>
+		'''' <param name="source">Object</param>
+		'''' <param name="e"></param>
+		'''' <remarks>
+		'''' </remarks>
+		'''' <history>
+		'''' 	[cpaterra]	2/15/2006	Created
+		'''' </history>
+		'Protected Sub ForumTree_PopulateOnDemand(ByVal source As Object, ByVal e As UI.WebControls.DNNTreeEventArgs) Handles ForumTree.PopulateOnDemand
+		'	Dim cntGroup As New GroupController
+		'	Dim strKey As String = e.Node.Key.Substring(1)			  'trim off type
+		'	Dim objGroup As GroupInfo = cntGroup.GroupGet(CInt(strKey))
 
-			ForumTreeview.AddForums(objGroup, e.Node, objConfig, UserId)
-		End Sub
+		'	ForumTreeview.AddForums(objGroup, e.Node, objConfig, UserId)
+		'End Sub
 
 		''' <summary>
 		''' Builds a string to append the url we are navigation too with.  This will
@@ -214,9 +210,9 @@ Namespace DotNetNuke.Modules.Forum
 				Dim endDate As DateTime
 
 				' Default calendar entry is 00:00 AM so add 1 more day to cover "today" search date
-				If Len(txtFromDate.Text) > 0 AndAlso Len(txtToDate.Text) > 0 Then
-					startDate = Date.Parse(txtFromDate.Text)
-					endDate = DateAdd(DateInterval.Day, 1, Date.Parse(txtToDate.Text))
+				If Len(rdpFrom.SelectedDate) > 0 AndAlso Len(rdpTo.SelectedDate) > 0 Then
+					startDate = CDate(rdpFrom.SelectedDate)
+					endDate = DateAdd(DateInterval.Day, 1, CDate(rdpTo.SelectedDate))
 				Else
 					startDate = DateAdd(DateInterval.Month, -1, Date.Today)
 					endDate = Date.Today
@@ -240,9 +236,9 @@ Namespace DotNetNuke.Modules.Forum
 				sb.Append(ThreadPageSize.ToString)
 
 				SelectedForumIds = String.Empty
-				For Each objNode As DotNetNuke.UI.WebControls.TreeNode In Me.ForumTree.SelectedTreeNodes
-					Dim strType As String = objNode.Key.Substring(0, 1)
-					Dim iID As Integer = CInt(objNode.Key.Substring(1, objNode.Key.Length - 1))
+				For Each objNode As Telerik.Web.UI.RadTreeNode In Me.rtvForums.CheckedNodes
+					Dim strType As String = objNode.Value.Substring(0, 1)
+					Dim iID As Integer = CInt(objNode.Value.Substring(1, objNode.Value.Length - 1))
 
 					If strType = "F" Then
 						SelectedForumId = iID
@@ -280,9 +276,9 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 				End If
 
-				If ddlThreadStatus.SelectedIndex > 0 Then
+				If rcbThreadStatus.SelectedIndex > 0 Then
 					sb.Append("&threadstatusid=")
-					sb.Append(ddlThreadStatus.SelectedValue)
+					sb.Append(rcbThreadStatus.SelectedValue)
 				End If
 
 				If txtSubject.Text.Length > 0 Then
