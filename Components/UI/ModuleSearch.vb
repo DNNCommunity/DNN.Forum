@@ -290,25 +290,46 @@ Namespace DotNetNuke.Modules.Forum
 
 			BindControls()
 
-			For Each thread As SearchInfo In SearchCollection
-				Me.trcRating = New Telerik.Web.UI.RadRating
-				With trcRating
-					.Enabled = False
-					.Skin = "Office2007"
-					.Width = Unit.Parse("200")
-					.SelectionMode = Telerik.Web.UI.RatingSelectionMode.Continuous
-					.IsDirectionReversed = False
-					.Orientation = Orientation.Horizontal
-					.Precision = Telerik.Web.UI.RatingPrecision.Half
-					.ItemCount = objConfig.RatingScale
+			Dim ctlSearch As New SearchController
+			Dim InThreadView As Boolean = False
 
-					.ID = "trcRating" + thread.ThreadID.ToString()
-					.Value = thread.Rating
-					'AddHandler trcRating.Command, AddressOf trcRating_Rate
-				End With
-				hsThreadRatings.Add(thread.ThreadID, trcRating)
-				Controls.Add(trcRating)
-			Next
+			If Aggregated Or myThreads Or LatestHours Then
+				InThreadView = True
+			End If
+
+			' Get search results that will be rendered and the total number of search results
+			If InThreadView Then
+				SearchCollection = ctlSearch.SearchGetResults(SearchTerms, SearchPage, ResultsPerPage, ForumControl.LoggedOnUserID, ForumControl.ModuleID, StartDate, EndDate, ThreadStatusID)
+				If SearchCollection.Count > 0 Then
+					SearchCount = CType(SearchCollection(0), SearchInfo).RecordCount
+				End If
+
+				For Each thread As SearchInfo In SearchCollection
+					Me.trcRating = New Telerik.Web.UI.RadRating
+					With trcRating
+						.Enabled = False
+						.Skin = "Office2007"
+						.Width = Unit.Parse("200")
+						.SelectionMode = Telerik.Web.UI.RatingSelectionMode.Continuous
+						.IsDirectionReversed = False
+						.Orientation = Orientation.Horizontal
+						.Precision = Telerik.Web.UI.RatingPrecision.Half
+						.ItemCount = objConfig.RatingScale
+
+						.ID = "trcRating" + thread.ThreadID.ToString()
+						.Value = thread.Rating
+						'AddHandler trcRating.Command, AddressOf trcRating_Rate
+					End With
+					hsThreadRatings.Add(thread.ThreadID, trcRating)
+					Controls.Add(trcRating)
+				Next
+			Else
+				'[skeel] Post view
+				SearchCollection = ctlSearch.Search(SearchTerms, SearchPage, ResultsPerPage, ForumControl.LoggedOnUserID, ForumControl.ModuleID, StartDate, EndDate, ThreadStatusID)
+				If SearchCollection.Count > 0 Then
+					SearchCount = CType(SearchCollection(0), SearchResult).RecordCount
+				End If
+			End If
 		End Sub
 
 		''' <summary>
@@ -365,20 +386,6 @@ Namespace DotNetNuke.Modules.Forum
 					ResultsPerPage = objConfig.ThreadsPerPage
 				Else
 					ResultsPerPage = objConfig.PostsPerPage
-				End If
-			End If
-
-			' Get search results that will be rendered and the total number of search results
-			If InThreadView Then
-				SearchCollection = ctlSearch.SearchGetResults(SearchTerms, SearchPage, ResultsPerPage, ForumControl.LoggedOnUserID, ForumControl.ModuleID, StartDate, EndDate, ThreadStatusID)
-				If SearchCollection.Count > 0 Then
-					SearchCount = CType(SearchCollection(0), SearchInfo).RecordCount
-				End If
-			Else
-				'[skeel] Post view
-				SearchCollection = ctlSearch.Search(SearchTerms, SearchPage, ResultsPerPage, ForumControl.LoggedOnUserID, ForumControl.ModuleID, StartDate, EndDate, ThreadStatusID)
-				If SearchCollection.Count > 0 Then
-					SearchCount = CType(SearchCollection(0), SearchResult).RecordCount
 				End If
 			End If
 		End Sub
