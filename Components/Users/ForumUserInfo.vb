@@ -339,6 +339,8 @@ Namespace DotNetNuke.Modules.Forum
 				If Not Me.IsSuperUser Then
 					' we are using profile avatars, lets check for the property value
 					Return Me.Profile.GetPropertyValue(objConfig.AvatarProfilePropName)
+				Else
+					Return Nothing
 				End If
 			End Get
 		End Property

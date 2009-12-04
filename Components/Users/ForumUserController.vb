@@ -443,9 +443,8 @@ Namespace DotNetNuke.Modules.Forum
         ''' <summary>
         ''' Gets a single users profile (for the forum, which is distinct per portal)
         ''' </summary>
-        ''' <param name="PortalID"></param>
-        ''' <param name="UserId"></param>
-        ''' <returns></returns>
+		''' <param name="cacheItemArgs"></param>
+		''' <returns></returns>
         ''' <remarks></remarks>
         Public Function UserGetCallBack(ByVal cacheItemArgs As CacheItemArgs) As ForumUser
 
