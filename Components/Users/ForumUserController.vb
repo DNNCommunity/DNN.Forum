@@ -433,14 +433,25 @@ Namespace DotNetNuke.Modules.Forum
 
 		End Function
 
-		''' <summary>
-		''' Gets a single users profile (for the forum, which is distinct per portal)
-		''' </summary>
-		''' <param name="PortalID"></param>
-		''' <param name="UserId"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Function UserGet(ByVal PortalID As Integer, ByVal UserId As Integer, ByVal ModuleID As Integer) As ForumUser
+        Public Function UserGet(ByVal PortalID As Integer, ByVal UserId As Integer, ByVal ModuleID As Integer) As ForumUser
+            Dim cacheKey As String = String.Concat("froumuser_", PortalID, UserId)
+            Return CBO.GetCachedObject(Of ForumUser)(New CacheItemArgs(cacheKey, 5, DataCache.PortalDesktopModuleCachePriority, PortalID, UserId, ModuleID), _
+                                                                                                             AddressOf UserGetCallBack)
+        End Function
+
+
+        ''' <summary>
+        ''' Gets a single users profile (for the forum, which is distinct per portal)
+        ''' </summary>
+        ''' <param name="PortalID"></param>
+        ''' <param name="UserId"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Function UserGetCallBack(ByVal cacheItemArgs As CacheItemArgs) As ForumUser
+
+            Dim portalID As Integer = DirectCast(cacheItemArgs.ParamList(0), Integer)
+            Dim userID As Integer = DirectCast(cacheItemArgs.ParamList(1), Integer)
+            Dim moduleID As Integer = DirectCast(cacheItemArgs.ParamList(2), Integer)
 			Dim objUserInfo As New ForumUser(ModuleID)
 			Dim dr As IDataReader = Nothing
 			Try
@@ -504,6 +515,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Sub UserUpdate(ByVal objUser As ForumUser)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().UserUpdate(objUser.UserID, objUser.UserAvatar, objUser.Avatar, objUser.SystemAvatars, objUser.Signature, objUser.IsTrusted, objUser.EnableDisplayInMemberList, objUser.EnableOnlineStatus, objUser.ThreadsPerPage, objUser.PostsPerPage, objUser.EnableModNotification, objUser.EnablePublicEmail, objUser.EnablePM, objUser.EnablePMNotifications, objUser.EmailFormat, objUser.PortalID, objUser.LockTrust, objUser.EnableProfileWeb, objUser.EnableProfileRegion, objUser.EnableDefaultPostNotify, objUser.EnableSelfNotifications, objUser.IsBanned, objUser.LiftBanDate, objUser.Biography, objUser.StartBanDate)
+            DataCache.RemoveCache(String.Concat("froumuser_", objUser.PortalID, objUser.UserID))
 		End Sub
 
 		''' <summary>

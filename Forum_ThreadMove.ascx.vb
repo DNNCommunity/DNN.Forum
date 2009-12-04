@@ -162,8 +162,8 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 
 					' Treeview forum viewer
-					ForumTreeview.InitializeTree(objConfig, ForumTree)
-					ForumTreeview.SetTreeDefaults(objConfig, ForumTree, False)
+					'ForumTreeview.InitializeTree(objConfig, ForumTree)
+					'ForumTreeview.SetTreeDefaults(objConfig, ForumTree, False)
 					ForumTreeview.PopulateTree(objConfig, ForumTree, UserId)
 					lblErrorMsg.Visible = False
 

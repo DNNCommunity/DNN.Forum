@@ -81,8 +81,8 @@ Namespace DotNetNuke.Modules.Forum
 						rowDefaultForum.Visible = True
 					End If
 
-					ForumTreeview.InitializeTree(mForumConfig, DefaultForumTree)
-					ForumTreeview.SetTreeDefaults(mForumConfig, DefaultForumTree, False)
+					'ForumTreeview.InitializeTree(mForumConfig, DefaultForumTree)
+					'ForumTreeview.SetTreeDefaults(mForumConfig, DefaultForumTree, False)
 					ForumTreeview.PopulateTree(mForumConfig, DefaultForumTree, UserId)
 
 					' Register scripts (breakd DNNTree if loaded)
