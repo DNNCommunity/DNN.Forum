@@ -434,7 +434,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Function
 
         Public Function UserGet(ByVal PortalID As Integer, ByVal UserId As Integer, ByVal ModuleID As Integer) As ForumUser
-            Dim cacheKey As String = String.Concat("froumuser_", PortalID, UserId)
+            Dim cacheKey As String = FORUM_USER_CACHE_KEY_PREFIX & UserId.ToString & "-" & PortalID.ToString
             Return CBO.GetCachedObject(Of ForumUser)(New CacheItemArgs(cacheKey, 5, DataCache.PortalDesktopModuleCachePriority, PortalID, UserId, ModuleID), _
                                                                                                              AddressOf UserGetCallBack)
         End Function
@@ -446,7 +446,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="cacheItemArgs"></param>
 		''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function UserGetCallBack(ByVal cacheItemArgs As CacheItemArgs) As ForumUser
+        Private Function UserGetCallBack(ByVal cacheItemArgs As CacheItemArgs) As ForumUser
 
             Dim portalID As Integer = DirectCast(cacheItemArgs.ParamList(0), Integer)
             Dim userID As Integer = DirectCast(cacheItemArgs.ParamList(1), Integer)
@@ -507,15 +507,15 @@ Namespace DotNetNuke.Modules.Forum
 			UserUpdate(objUser)
 		End Sub
 
-		''' <summary>
-		''' Updates a Forum User's Forum Profile
-		''' </summary>
-		''' <param name="objUser"></param>		
-		''' <remarks></remarks>
-		Public Sub UserUpdate(ByVal objUser As ForumUser)
-			DotNetNuke.Modules.Forum.DataProvider.Instance().UserUpdate(objUser.UserID, objUser.UserAvatar, objUser.Avatar, objUser.SystemAvatars, objUser.Signature, objUser.IsTrusted, objUser.EnableDisplayInMemberList, objUser.EnableOnlineStatus, objUser.ThreadsPerPage, objUser.PostsPerPage, objUser.EnableModNotification, objUser.EnablePublicEmail, objUser.EnablePM, objUser.EnablePMNotifications, objUser.EmailFormat, objUser.PortalID, objUser.LockTrust, objUser.EnableProfileWeb, objUser.EnableProfileRegion, objUser.EnableDefaultPostNotify, objUser.EnableSelfNotifications, objUser.IsBanned, objUser.LiftBanDate, objUser.Biography, objUser.StartBanDate)
-            DataCache.RemoveCache(String.Concat("froumuser_", objUser.PortalID, objUser.UserID))
-		End Sub
+        ''' <summary>
+        ''' Updates a Forum User's Forum Profile
+        ''' </summary>
+        ''' <param name="objUser"></param>		
+        ''' <remarks></remarks>
+        Public Sub UserUpdate(ByVal objUser As ForumUser)
+            DotNetNuke.Modules.Forum.DataProvider.Instance().UserUpdate(objUser.UserID, objUser.UserAvatar, objUser.Avatar, objUser.SystemAvatars, objUser.Signature, objUser.IsTrusted, objUser.EnableDisplayInMemberList, objUser.EnableOnlineStatus, objUser.ThreadsPerPage, objUser.PostsPerPage, objUser.EnableModNotification, objUser.EnablePublicEmail, objUser.EnablePM, objUser.EnablePMNotifications, objUser.EmailFormat, objUser.PortalID, objUser.LockTrust, objUser.EnableProfileWeb, objUser.EnableProfileRegion, objUser.EnableDefaultPostNotify, objUser.EnableSelfNotifications, objUser.IsBanned, objUser.LiftBanDate, objUser.Biography, objUser.StartBanDate)
+            DataCache.RemoveCache(String.Concat(FORUM_USER_CACHE_KEY_PREFIX & objUser.UserID.ToString & "-" & objUser.PortalID.ToString))
+        End Sub
 
 		''' <summary>
 		''' Not Implemented
