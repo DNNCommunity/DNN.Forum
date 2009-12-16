@@ -203,7 +203,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim objForumUser As ForumUser
 
 			objConfig = Forum.Config.GetForumConfig(ModuleID)
-			objForum = cntForum.GetForum(ForumID)
+			objForum = cntForum.GetForumInfoCache(ForumID)
 			objForumUser = cntForumUser.UserGet(PortalID, UserID, ModuleID)
 
 			Dim objModSecurity As New Forum.ModuleSecurity(objConfig.ModuleID, TabID, objForum.ForumID, objForumUser.UserID)
@@ -416,7 +416,7 @@ Namespace DotNetNuke.Modules.Forum
 			End Select
 
 			' Refresh cache
-			ForumInfo.ResetForumInfo(objForum.ForumID)
+			ForumController.ResetForumInfoCache(objForum.ForumID)
 			ForumUserController.ResetForumUser(objForumUser.UserID, PortalID)
 
 			ThreadController.ResetThreadListCached(objForum.ForumID, objConfig.ModuleID)

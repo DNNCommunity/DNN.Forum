@@ -227,6 +227,64 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 
 #End Region
 
+#Region "Localization"
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <returns></returns>
+		''' <remarks>This is cached here because the core isn't caching it and there is no need for this to be done on every page load.</remarks>
+		Public Shared Function GetTrackingDurationList() As DotNetNuke.Common.Lists.ListEntryInfoCollection
+			Dim arrLists As DotNetNuke.Common.Lists.ListEntryInfoCollection
+			Dim strCacheKey As String = "TrackingDurationList"
+			arrLists = CType(DataCache.GetCache(strCacheKey), DotNetNuke.Common.Lists.ListEntryInfoCollection)
+
+			If arrLists Is Nothing Then
+				'forum caching settings
+				Dim ForumInfoCacheTimeout As Integer = 20
+				Dim timeOut As Int32 = ForumInfoCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
+
+				Dim ctlLists As New DotNetNuke.Common.Lists.ListController
+				arrLists = ctlLists.GetListEntryInfoCollection("TrackingDuration")
+
+				'Cache Forum if timeout > 0 and Forum is not null
+				If timeOut > 0 And arrLists IsNot Nothing Then
+					DataCache.SetCache(strCacheKey, arrLists, TimeSpan.FromMinutes(timeOut))
+				End If
+			End If
+
+			Return arrLists
+		End Function
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <returns></returns>
+		''' <remarks>This is cached here because the core isn't caching it and there is no need for this to be done on every page load.</remarks>
+		Public Shared Function GetThreadStatusList() As DotNetNuke.Common.Lists.ListEntryInfoCollection
+			Dim arrLists As DotNetNuke.Common.Lists.ListEntryInfoCollection
+			Dim strCacheKey As String = "ThreadStatusList"
+			arrLists = CType(DataCache.GetCache(strCacheKey), DotNetNuke.Common.Lists.ListEntryInfoCollection)
+
+			If arrLists Is Nothing Then
+				'forum caching settings
+				Dim ForumInfoCacheTimeout As Integer = 20
+				Dim timeOut As Int32 = ForumInfoCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
+
+				Dim ctlLists As New DotNetNuke.Common.Lists.ListController
+				arrLists = ctlLists.GetListEntryInfoCollection("ThreadStatus")
+
+				'Cache Forum if timeout > 0 and Forum is not null
+				If timeOut > 0 And arrLists IsNot Nothing Then
+					DataCache.SetCache(strCacheKey, arrLists, TimeSpan.FromMinutes(timeOut))
+				End If
+			End If
+
+			Return arrLists
+		End Function
+
+#End Region
+
 #Region "File System"
 
 		''' <summary>

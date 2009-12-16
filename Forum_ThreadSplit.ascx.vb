@@ -154,13 +154,15 @@ Namespace DotNetNuke.Modules.Forum
 
 				If Request.IsAuthenticated Then
 					If Not Request.QueryString("postid") Is Nothing Then
+						Dim cntForum As New ForumController
+
 						_PostID = Int32.Parse(Request.QueryString("postid"))
 
 						objPostInfo = ctlPost.PostGet(_PostID, PortalId)
 						_ThreadID = objPostInfo.ThreadID
 						_ThreadInfo = ThreadInfo.GetThreadInfo(_ThreadID)
 						_OldForumID = _ThreadInfo.ForumID
-						_ForumInfo = ForumInfo.GetForumInfo(_OldForumID)
+						_ForumInfo = cntForum.GetForumInfoCache(_OldForumID)
 
 						' If there is no postid, there is no reason to be here
 					Else
@@ -319,10 +321,10 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 
 					' the db calls handled caching at group level, make sure cache is updated at forum level(s)
-					ForumInfo.ResetForumInfo(newForumID)
+					ForumController.ResetForumInfoCache(newForumID)
 
 					If Not newForumID = _OldForumID Then
-						ForumInfo.ResetForumInfo(_OldForumID)
+						ForumController.ResetForumInfoCache(_OldForumID)
 					End If
 
 					' Handle sending emails 

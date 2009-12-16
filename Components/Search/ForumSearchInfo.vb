@@ -231,7 +231,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property Parent() As ForumInfo
 			Get
-				Return ForumInfo.GetForumInfo(ForumID)
+				Dim cntForum As New ForumController
+				Return cntForum.GetForumInfoCache(ForumID)
 			End Get
 		End Property
 

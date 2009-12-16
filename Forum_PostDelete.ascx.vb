@@ -201,7 +201,7 @@ Namespace DotNetNuke.Modules.Forum
 						cntThread.ThreadDelete(objThread.ThreadID, PortalId, Notes)
 
 						ThreadInfo.ResetThreadInfo(objThread.ThreadID)
-						ForumInfo.ResetForumInfo(objThread.ForumID)
+						ForumController.ResetForumInfoCache(objThread.ForumID)
 
 						' We need to clear all users who posted in the thread. (Otherwise cached user objects will not reflect proper post count) KNOWN ISSUE
 						'ForumUserController.ResetForumUser(objThread.)
@@ -256,7 +256,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						PostInfo.ResetPostInfo(objPost.PostID)
 						ThreadInfo.ResetThreadInfo(ThreadID)
-						ForumInfo.ResetForumInfo(ForumID)
+						ForumController.ResetForumInfoCache(ForumID)
 						ForumUserController.ResetForumUser(AuthorID, PortalId)
 
 						ThreadController.ResetThreadListCached(ForumID, ModuleId)

@@ -354,39 +354,6 @@
   <data name="Rank_9.Text" xml:space="preserve">
     <value>9th Level Poster</value>
   </data>
-  <data name="Rate0.Text" xml:space="preserve">
-    <value>Rate This Thread</value>
-  </data>
-  <data name="Rate1.Text" xml:space="preserve">
-    <value>Rating of 1</value>
-  </data>
-  <data name="Rate10.Text" xml:space="preserve">
-    <value>Rating of 10</value>
-  </data>
-  <data name="Rate2.Text" xml:space="preserve">
-    <value>Rating of 2</value>
-  </data>
-  <data name="Rate3.Text" xml:space="preserve">
-    <value>Rating of 3</value>
-  </data>
-  <data name="Rate4.Text" xml:space="preserve">
-    <value>Rating of 4</value>
-  </data>
-  <data name="Rate5.Text" xml:space="preserve">
-    <value>Rating of 5</value>
-  </data>
-  <data name="Rate6.Text" xml:space="preserve">
-    <value>Rating of 6</value>
-  </data>
-  <data name="Rate7.Text" xml:space="preserve">
-    <value>Rating of 7</value>
-  </data>
-  <data name="Rate8.Text" xml:space="preserve">
-    <value>Rating of 8</value>
-  </data>
-  <data name="Rate9.Text" xml:space="preserve">
-    <value>Rating of 9</value>
-  </data>
   <data name="Add Attachments.Permission" xml:space="preserve">
     <value>Attach</value>
   </data>

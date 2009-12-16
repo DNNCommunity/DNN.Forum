@@ -256,8 +256,8 @@ Namespace DotNetNuke.Modules.Forum
 
 						ctlThread.ThreadMove(_ThreadID, newForumID, UserId, Notes, _ThreadInfo.HostForum.ParentId)
 
-						ForumInfo.ResetForumInfo(newForumID)
-						ForumInfo.ResetForumInfo(_OldForumID)
+						ForumController.ResetForumInfoCache(newForumID)
+						ForumController.ResetForumInfoCache(_OldForumID)
 						ThreadInfo.ResetThreadInfo(_ThreadID)
 
 						ThreadController.ResetThreadListCached(newForumID, ModuleId)

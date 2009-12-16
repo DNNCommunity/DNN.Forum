@@ -158,7 +158,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>This is the actual forum, not the parent forum (when using sub-forums).</remarks>
 		Public ReadOnly Property HostForum() As ForumInfo
 			Get
-				Return ForumInfo.GetForumInfo(ForumID)
+				Dim cntForum As New ForumController
+				Return cntForum.GetForumInfoCache(ForumID)
 			End Get
 		End Property
 
@@ -202,7 +203,8 @@ Namespace DotNetNuke.Modules.Forum
 				Dim objForum As ForumInfo = New ForumInfo
 
 				If ForumID > 0 Then
-					objForum = ForumInfo.GetForumInfo(ForumID)
+					Dim cntForum As New ForumController
+					objForum = cntForum.GetForumInfoCache(ForumID)
 				Else
 					objForum.ModuleID = ModuleID
 					objForum.ForumID = ForumID

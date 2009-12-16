@@ -36,7 +36,7 @@
 						</span>
 					</td>
 					<td class="Forum_Row_AdminR" align="left" width="65%">
-						<asp:DropDownList ID="ddlProfileAvatarPropertyName" runat="server" DataTextField="PropertyName" DataValueField="PropertyName" Width="300px"/>
+						<asp:DropDownList ID="ddlProfileAvatarPropertyName" runat="server" DataTextField="PropertyName" DataValueField="PropertyName" Width="300px" CssClass="Forum_NormalTextBox" />
 					</td>
 				</tr>
 				<tr id="rowUserAvatarPath" runat="server">

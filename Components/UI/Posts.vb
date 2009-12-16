@@ -48,13 +48,13 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _TrackedThread As Boolean = False
 		Dim _url As String
 		Dim newpost As Boolean = False	'[skeel] added 
+		Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
 
 #End Region
 
 #Region "Controls"
 
 		Private trcRating As Telerik.Web.UI.RadRating
-		Private ddlForumView As DropDownList
 		Private ddlViewDescending As Telerik.Web.UI.RadComboBox
 		Private chkEmail As CheckBox
 		Private ddlThreadStatus As Telerik.Web.UI.RadComboBox
@@ -233,33 +233,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 		''' <summary>
-		''' This Event sets the users view preference tree/normal.  (normal by default)
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks>Anonymous users can see both views but it doesn't save to db when changed.
-		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	5/28/2005	Created
-		''' </history>
-		Protected Sub ddlForumView_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
-			ForumControl.TreeView = CType(ddlForumView.SelectedIndex, Boolean)
-
-			'<tam:note value=update database if it's an authenticated user?>
-			If LoggedOnUser.UserID > 0 Then
-				ForumControl.LoggedOnUser.FlatView = (ForumControl.TreeView = False)
-				Dim ctlForumUser As New ForumUserController
-				ctlForumUser.UserViewUpdate(LoggedOnUser.UserID, ForumControl.LoggedOnUser.FlatView, ForumControl.LoggedOnUser.ViewDescending)
-				'Else
-				'    If Not HttpContext.Current.Request.Cookies(".ASPXANONYMOUS") Is Nothing Then
-				'        Dim c As System.Web.HttpCookie
-				'        c = HttpContext.Current.Request.Cookies(".ASPXANONYMOUS")
-				'        c.Values.Add("ForumTreeView", ForumControl.TreeView.ToString)
-				'    End If
-			End If
-		End Sub
-
-		''' <summary>
 		''' This Event sets the users view preference ascending/descending and saves to 
 		''' the db. (Descending by default)
 		''' </summary>
@@ -274,13 +247,13 @@ Namespace DotNetNuke.Modules.Forum
 			ForumControl.Descending = CType(ddlViewDescending.SelectedIndex, Boolean)
 
 			Dim ctlPost As New PostController
-			_PostCollection = ctlPost.PostGetAll(ThreadId, PostPage, ForumControl.PostsPerPage, ForumControl.TreeView, ForumControl.Descending, PortalID)
+			_PostCollection = ctlPost.PostGetAll(ThreadId, PostPage, ForumControl.PostsPerPage, False, ForumControl.Descending, PortalID)
 
 			'<tam:note value=update database if it's an authenticated user>
 			If LoggedOnUser.UserID > 0 Then
 				ForumControl.LoggedOnUser.ViewDescending = (ForumControl.Descending)
 				Dim ctlForumUser As New ForumUserController
-				ctlForumUser.UserViewUpdate(LoggedOnUser.UserID, ForumControl.LoggedOnUser.FlatView, ForumControl.LoggedOnUser.ViewDescending)
+				ctlForumUser.UserViewUpdate(LoggedOnUser.UserID, True, ForumControl.LoggedOnUser.ViewDescending)
 				'Else
 				'    If Not HttpContext.Current.Request.Cookies(".ASPXANONYMOUS") Is Nothing Then
 				'        Dim c As System.Web.HttpCookie
@@ -484,12 +457,10 @@ Namespace DotNetNuke.Modules.Forum
 				HttpContext.Current.Response.Redirect(Utilities.Links.NoContentLink(TabID, ModuleID), False)
 			End If
 
-			Dim Security As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
-
 			' User might access this page by typing url so better check permission on parent forum
 			If Not (ParentForum.PublicView) Then
 				' The forum is private, see if we have proper view perms here
-				If Not Security.IsAllowedToViewPrivateForum Then
+				If Not objSecurity.IsAllowedToViewPrivateForum Then
 					HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
 				End If
 			End If
@@ -544,18 +515,6 @@ Namespace DotNetNuke.Modules.Forum
 					.Checked = False
 				End With
 			End If
-
-			' Forum view (tree/flat) dropdownlist
-			ddlForumView = New DropDownList
-			With ddlForumView
-				.CssClass = "Forum_NormalTextBox"
-				.ID = "lstForumView"
-				.Width = Unit.Parse("150")
-				.AutoPostBack = True
-				.Items.Add(New ListItem(ForumControl.LocalizedText("FlatView")))
-				.Items.Add(New ListItem(ForumControl.LocalizedText("TreeView")))
-				.ClearSelection()
-			End With
 
 			' Forum view (newest to oldest/oldest to newest) dropdownlist
 			ddlViewDescending = New Telerik.Web.UI.RadComboBox
@@ -624,7 +583,6 @@ Namespace DotNetNuke.Modules.Forum
 
 			If Not LoggedOnUser.UserID > 0 Then
 				ddlViewDescending.Visible = False
-				ddlForumView.Visible = False
 			End If
 
 			BindControls()
@@ -709,7 +667,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' </history>
 		Private Sub AddControlHandlers()
 			Try
-				AddHandler ddlForumView.SelectedIndexChanged, AddressOf ddlForumView_SelectedIndexChanged
 				AddHandler ddlViewDescending.SelectedIndexChanged, AddressOf ddlViewDescending_SelectedIndexChanged
 				AddHandler cmdForumSearch.Click, AddressOf cmdForumSearch_Click
 
@@ -749,7 +706,6 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 					'Polls
 					Controls.Add(rblstPoll)
-					'Controls.Add(cmdVote)
 					Controls.Add(cmdBookmark) '[skeel] added
 				End If
 
@@ -757,7 +713,7 @@ Namespace DotNetNuke.Modules.Forum
 					Controls.Add(trcRating)
 				End If
 
-				Controls.Add(ddlForumView)
+				'Controls.Add(ddlForumView)
 				Controls.Add(ddlViewDescending)
 				Controls.Add(txtForumSearch)
 				Controls.Add(cmdForumSearch)
@@ -776,9 +732,8 @@ Namespace DotNetNuke.Modules.Forum
 			Try
 				Dim ctlPost As New PostController
 
-				' Use new Lists feature to provide rate entries (localization support)
+				'' Use new Lists feature to provide rate entries (localization support)
 				Dim ctlLists As New DotNetNuke.Common.Lists.ListController
-				Dim colThreadRate As DotNetNuke.Common.Lists.ListEntryInfoCollection = ctlLists.GetListEntryInfoCollection("ForumThreadRate")
 
 				If objConfig.EnableRatings Then
 					BindRating()
@@ -787,10 +742,10 @@ Namespace DotNetNuke.Modules.Forum
 				' All enclosed items are user specific, so we must have a userID
 				If ForumControl.LoggedOnUserID > 0 Then
 					If objConfig.EnableThreadStatus And ThreadInfo.HostForum.EnableForumsThreadStatus Then
-						Dim colThreadStatus As DotNetNuke.Common.Lists.ListEntryInfoCollection = ctlLists.GetListEntryInfoCollection("ThreadStatus")
 						ddlThreadStatus.Visible = True
 						ddlThreadStatus.Items.Clear()
-						For Each entry As DotNetNuke.Common.Lists.ListEntryInfo In colThreadStatus
+
+						For Each entry As DotNetNuke.Common.Lists.ListEntryInfo In Utilities.ForumUtils.GetThreadStatusList
 							Dim statusEntry As New Telerik.Web.UI.RadComboBoxItem(Localization.GetString(entry.Text, ForumControl.objConfig.SharedResourceFile), entry.Value)
 							ddlThreadStatus.Items.Add(statusEntry)
 						Next
@@ -837,14 +792,6 @@ Namespace DotNetNuke.Modules.Forum
 						End If
 					End If
 
-					If (LoggedOnUser.FlatView) Then
-						ForumControl.TreeView = False
-						ddlForumView.Items.FindByText(ForumControl.LocalizedText("FlatView")).Selected = True
-					Else
-						ForumControl.TreeView = True
-						ddlForumView.Items.FindByValue(ForumControl.LocalizedText("TreeView")).Selected = True
-					End If
-
 					If (LoggedOnUser.ViewDescending) Then
 						ForumControl.Descending = True
 						ddlViewDescending.Items.FindItemByText(ForumControl.LocalizedText("NewestToOldest")).Selected = True
@@ -854,26 +801,26 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 
 					' Handle Polls
-					Dim cntAnswer As New AnswerController
-					Dim arrAnswers As List(Of AnswerInfo)
+					If ThreadInfo.PollID > 0 Then
+						Dim cntAnswer As New AnswerController
+						Dim arrAnswers As List(Of AnswerInfo)
 
-					arrAnswers = cntAnswer.GetPollAnswers(ThreadInfo.PollID)
-					If arrAnswers.Count > 0 Then
-						rblstPoll.DataTextField = "Answer"
-						rblstPoll.DataValueField = "AnswerID"
-						rblstPoll.DataSource = arrAnswers
-						rblstPoll.DataBind()
+						arrAnswers = cntAnswer.GetPollAnswers(ThreadInfo.PollID)
+						If arrAnswers.Count > 0 Then
+							rblstPoll.DataTextField = "Answer"
+							rblstPoll.DataValueField = "AnswerID"
+							rblstPoll.DataSource = arrAnswers
+							rblstPoll.DataBind()
 
-						rblstPoll.SelectedIndex = 0
+							rblstPoll.SelectedIndex = 0
+						End If
 					End If
 				Else
-					ForumControl.TreeView = CType(ddlForumView.SelectedIndex, Boolean)
 					ForumControl.Descending = CType(ddlViewDescending.SelectedIndex, Boolean)
 					'CP - COMEBACK: Add way to display rating but don't allow voting (for anonymous users)
-
 				End If
 
-				_PostCollection = ctlPost.PostGetAll(ThreadId, PostPage, ForumControl.PostsPerPage, ForumControl.TreeView, ForumControl.Descending, PortalID)
+				_PostCollection = ctlPost.PostGetAll(ThreadId, PostPage, ForumControl.PostsPerPage, False, ForumControl.Descending, PortalID)
 
 				If _PostCollection.Count > 0 And _PostID = 0 Then
 					_PostID = CType(_PostCollection.Item(0), PostInfo).PostID
@@ -908,13 +855,12 @@ Namespace DotNetNuke.Modules.Forum
 			' left cap
 			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
 
-			RenderCellBegin(wr, "", "", "100%", "", "", "", "")
-			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0")
+			RenderCellBegin(wr, "", "", "100%", "", "", "", "") ' <td>
+			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0") ' <table>
 			RenderRowBegin(wr) '<tr>
 
-			RenderCellBegin(wr, "", "", "100%", "left", "", "", "")
-			'Start table to hold module action buttons
-			RenderTableBegin(wr, "", "", "", "", "2", "0", "", "", "0")
+			RenderCellBegin(wr, "", "", "100%", "left", "", "", "") ' <td>
+			RenderTableBegin(wr, "", "", "", "", "2", "0", "", "", "0")	 ' <table>
 			RenderRowBegin(wr) '<tr>
 
 			'[skeel] Display bookmark image button here
@@ -1044,11 +990,10 @@ Namespace DotNetNuke.Modules.Forum
 			RenderCellBegin(wr, "", "", "", "", "middle", "", "")	'<td>           
 
 			' new thread button
-			Dim Security As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
 			'Remove LoggedOnUserID limitation if wishing to implement Anonymous Posting
 			If (LoggedOnUser.UserID > 0) And (Not ForumId = -1) Then
 				If Not ParentForum.PublicPosting Then
-					If Security.IsAllowedToStartRestrictedThread Then
+					If objSecurity.IsAllowedToStartRestrictedThread Then
 						RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0")	'<Table>            
 						RenderRowBegin(wr) '<tr>
 						_url = Utilities.Links.NewThreadLink(TabID, ForumId, ModuleID)
@@ -1062,7 +1007,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						RenderCellEnd(wr) ' </Td>
 
-						If LoggedOnUser.IsBanned Or (Not Security.IsAllowedToPostRestrictedReply) Or (ThreadInfo.IsClosed) Then
+						If LoggedOnUser.IsBanned Or (Not objSecurity.IsAllowedToPostRestrictedReply) Or (ThreadInfo.IsClosed) Then
 							RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
 							wr.Write("&nbsp;")
 							RenderCellEnd(wr) ' </Td>
@@ -1080,7 +1025,7 @@ Namespace DotNetNuke.Modules.Forum
 						End If
 
 						'[skeel] moved delete thread here
-						If LoggedOnUser.UserID > 0 AndAlso (Security.IsForumModerator) Then
+						If LoggedOnUser.UserID > 0 AndAlso (objSecurity.IsForumModerator) Then
 
 							_url = Utilities.Links.ThreadDeleteLink(TabID, ModuleID, ForumId, ThreadId, False)
 							RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
@@ -1093,7 +1038,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						RenderRowEnd(wr) ' </tr>
 						RenderTableEnd(wr) ' </table>
-					ElseIf Security.IsAllowedToPostRestrictedReply Then
+					ElseIf objSecurity.IsAllowedToPostRestrictedReply Then
 						RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0")	'<Table>            
 						RenderRowBegin(wr) '<tr>
 
@@ -1153,7 +1098,7 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 
 					'[skeel] moved delete thread here
-					If LoggedOnUser.UserID > 0 AndAlso (Security.IsForumModerator) Then
+					If LoggedOnUser.UserID > 0 AndAlso (objSecurity.IsForumModerator) Then
 						_url = Utilities.Links.ThreadDeleteLink(TabID, ModuleID, ForumId, ThreadId, False)
 						RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
 						wr.Write("&nbsp;")
@@ -1194,15 +1139,8 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 			RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0")	'<Table>            
 			RenderRowBegin(wr) '<tr>
-			RenderCellBegin(wr, "", "", "", "", "", "", "")  ' <td> ' 
-			' image button next thread
-			_url = Utilities.Links.ContainerViewThreadLink(TabID, ForumId, ThreadInfo.PreviousThreadID)
-			RenderImageButton(wr, _url, objConfig.GetThemeImageURL("s_previous.") & objConfig.ImageExtension, ForumControl.LocalizedText(EnabledText), "", False, PreviousEnabled)
-			RenderCellEnd(wr) ' </td>
 
-			RenderCellBegin(wr, "", "", "", "", "", "", "")  ' <td> ' 
-			wr.Write("&nbsp;")
-			RenderCellEnd(wr) ' </td>
+			_url = Utilities.Links.ContainerViewThreadLink(TabID, ForumId, ThreadInfo.PreviousThreadID)
 
 			RenderCellBegin(wr, "", "", "", "", "", "", "")  ' <td> ' 
 			If PreviousEnabled Then
@@ -1213,7 +1151,6 @@ Namespace DotNetNuke.Modules.Forum
 				RenderDivEnd(wr)
 			End If
 			RenderCellEnd(wr) ' </td>
-
 			RenderRowEnd(wr) ' </tr>
 			RenderTableEnd(wr) ' </table>
 			RenderCellEnd(wr) ' </td>    
@@ -1250,19 +1187,8 @@ Namespace DotNetNuke.Modules.Forum
 				RenderDivEnd(wr)
 			End If
 			RenderCellEnd(wr) ' </td>   
-
-			RenderCellBegin(wr, "", "", "", "", "", "", "")  ' <td> ' 
-			wr.Write("&nbsp;")
-			RenderCellEnd(wr) ' </td>
-
-			RenderCellBegin(wr, "", "", "", "", "", "", "")  ' <td> ' 
-			' cell for image button previous thread
-			RenderImageButton(wr, _url, objConfig.GetThemeImageURL("s_next.") & objConfig.ImageExtension, ForumControl.LocalizedText(NextText), "", False, NextEnabled)
-
-			RenderCellEnd(wr) ' </td>       
 			RenderRowEnd(wr) ' </tr>
 			RenderTableEnd(wr) ' </table>
-
 			RenderCellEnd(wr) ' </td>
 
 			RenderRowEnd(wr) ' </tr>
@@ -1344,7 +1270,6 @@ Namespace DotNetNuke.Modules.Forum
 				Next
 			End If
 
-			Dim Security As New Forum.ModuleSecurity(ModuleID, TabID, ThreadInfo.ForumID, LoggedOnUser.UserID)
 			If showPoll And (Not objPoll.PollClosed) Then
 				' if the user hasn't voted, show the the poll
 				rblstPoll.RenderControl(wr)
@@ -1355,7 +1280,7 @@ Namespace DotNetNuke.Modules.Forum
 				'End If
 			Else
 				' check to see if we are able to show user results
-				If objPoll.ShowResults Or ((LoggedOnUser.UserID = ThreadInfo.StartedByUserID) Or (Security.IsForumModerator)) Then
+				If objPoll.ShowResults Or ((LoggedOnUser.UserID = ThreadInfo.StartedByUserID) Or (objSecurity.IsForumModerator)) Then
 					' show results
 					RenderTableBegin(wr, "", "", "", "", "0", "0", "center", "middle", "")  ' <table> 
 
@@ -1481,23 +1406,13 @@ Namespace DotNetNuke.Modules.Forum
 					End Try
 
 					Dim postCountIsEven As Boolean = ThreadIsEven(intPostCount)
-					Dim selected As Boolean = (PostId = Post.PostID)
-
-					' See if we are in treeview and if so see if this is the selected post in tree view
-					' remember that selected post renders like flat mode view
-					If (Not ForumControl.TreeView) OrElse (ForumControl.TreeView AndAlso (selected)) Then
-						Me.RenderPost(wr, Post, postCountIsEven, True)
-						' spacer row should be displayed in flat view only
-						If Not currentCount = totalPostCount Then
-							If (Not ForumControl.TreeView) Then
-								RenderSpacerRow(wr)
-							End If
-							currentCount += 1
-						End If
-						intPostCount += 1
-					Else
-						Me.RenderPost(wr, Post, postCountIsEven, False)
+					Me.RenderPost(wr, Post, postCountIsEven, True)
+					' spacer row should be displayed in flat view only
+					If Not currentCount = totalPostCount Then
+						RenderSpacerRow(wr)
+						currentCount += 1
 					End If
+					intPostCount += 1
 				Next
 				RenderTableEnd(wr) ' </table>
 				RenderCellEnd(wr) ' </td> 
@@ -1578,10 +1493,9 @@ Namespace DotNetNuke.Modules.Forum
 				RenderCellEnd(wr) ' </td> 
 
 				RenderCellBegin(wr, "Forum_Header", "", "", "right", "", "", "")	   '<td>
-				Dim Security As New Forum.ModuleSecurity(ModuleID, TabID, Post.ForumID, LoggedOnUser.UserID)
 
 				' if the user is the original author or a moderator AND this is the original post
-				If ((LoggedOnUser.UserID = Post.ParentThread.StartedByUserID) Or (Security.IsForumModerator)) And Post.ParentPostID = 0 Then
+				If ((LoggedOnUser.UserID = Post.ParentThread.StartedByUserID) Or (objSecurity.IsForumModerator)) And Post.ParentPostID = 0 Then
 					If Post.ParentThread.ThreadStatus = ThreadStatus.Poll Then
 						ddlThreadStatus.Enabled = False
 					End If
@@ -1596,7 +1510,7 @@ Namespace DotNetNuke.Modules.Forum
 						wr.Write("&nbsp;")
 						RenderDivEnd(wr) ' </span>
 						' If the thread is NOT answered AND this user started the post or is a moderator of some sort
-					ElseIf ((LoggedOnUser.UserID = Post.ParentThread.StartedByUserID) Or (Security.IsForumModerator)) And (Post.ParentThread.ThreadStatus = ThreadStatus.Unanswered) And ThreadInfo.HostForum.EnableForumsThreadStatus Then
+					ElseIf ((LoggedOnUser.UserID = Post.ParentThread.StartedByUserID) Or (objSecurity.IsForumModerator)) And (Post.ParentThread.ThreadStatus = ThreadStatus.Unanswered) And ThreadInfo.HostForum.EnableForumsThreadStatus Then
 						' Select the proper command argument (set before rendering)
 						If hsThreadAnswers.ContainsKey(Post.PostID) Then
 							cmdThreadAnswer = CType(hsThreadAnswers(Post.PostID), LinkButton)
@@ -1723,7 +1637,6 @@ Namespace DotNetNuke.Modules.Forum
 
 							Select Case WebVisibility
 								Case UserVisibilityMode.AdminOnly
-									Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, -1, LoggedOnUser.UserID)
 
 									If objSecurity.IsForumAdmin Then
 										RenderProfileAvatar(author, wr)
@@ -1787,7 +1700,6 @@ Namespace DotNetNuke.Modules.Forum
 
 				Select Case WebSiteVisibility
 					Case UserVisibilityMode.AdminOnly
-						Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, -1, LoggedOnUser.UserID)
 
 						If objSecurity.IsForumAdmin Then
 							RenderWebSiteLink(author, wr)
@@ -1806,7 +1718,6 @@ Namespace DotNetNuke.Modules.Forum
 
 				Select Case CountryVisibility
 					Case UserVisibilityMode.AdminOnly
-						Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, -1, LoggedOnUser.UserID)
 
 						If objSecurity.IsForumAdmin Then
 							RenderCountry(author, wr)
@@ -1879,6 +1790,7 @@ Namespace DotNetNuke.Modules.Forum
 				wr.Write("<br />" & ForumControl.LocalizedText("Region") & ": " & author.Profile.Region)
 			End If
 		End Sub
+
 		''' <summary>
 		''' Builds the post details: subject, user location, edited, created date
 		''' </summary>
@@ -1915,15 +1827,13 @@ Namespace DotNetNuke.Modules.Forum
 			strCreatedDate = strCreatedDate.Replace("[CreatedDate]", displayCreatedDate.ToString("dd MMM yy"))
 			strCreatedDate = strCreatedDate.Replace("[PostTime]", displayCreatedDate.ToString("t"))
 
-			Dim Security As New Forum.ModuleSecurity(ModuleID, TabID, Post.ForumID, LoggedOnUser.UserID)
-
 			' display poster location 
 			If (Not objConfig.DisplayPosterLocation = ShowPosterLocation.None) Then
-				If ((objConfig.DisplayPosterLocation = ShowPosterLocation.ToAdmin) AndAlso (Security.IsForumAdmin)) OrElse (objConfig.DisplayPosterLocation = ShowPosterLocation.ToAll) Then
+				If ((objConfig.DisplayPosterLocation = ShowPosterLocation.ToAdmin) AndAlso (objSecurity.IsForumAdmin)) OrElse (objConfig.DisplayPosterLocation = ShowPosterLocation.ToAll) Then
 					If (Not Post.RemoteAddr.Length = 0) AndAlso (Not Post.RemoteAddr = "127.0.0.1") AndAlso (Not Post.RemoteAddr = "::1") Then
 						strAuthorLocation = String.Format("&nbsp;({0})", Utilities.ForumUtils.LookupCountry(Post.RemoteAddr))
 						' This will show the ip in italics (This should only show to moderators) 
-						If Security.IsForumModerator Then
+						If objSecurity.IsForumModerator Then
 							strAuthorLocation = strAuthorLocation & "<EM> (" & Post.RemoteAddr & ")</EM>"
 						End If
 					End If
@@ -1954,8 +1864,6 @@ Namespace DotNetNuke.Modules.Forum
 				Me.RenderLinkButton(wr, Utilities.Links.ContainerViewPostLink(TabID, Post.ForumID, Post.PostID), strSubject, "Forum_NormalBold")
 				wr.Write("&nbsp;")
 				wr.Write(strAuthorLocation)
-
-
 
 				' display edited tag if post has been modified
 				If (Post.UpdatedByUser > 0) Then
@@ -2422,11 +2330,10 @@ Namespace DotNetNuke.Modules.Forum
 
 			RenderCellBegin(wr, "", "", "50%", "left", "middle", "", "") ' <td> '
 			' new thread button
-			Dim Security As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
 			'Remove LoggedOnUserID limitation if wishing to implement Anonymous Posting
 			If (LoggedOnUser.UserID > 0) And (Not ForumId = -1) Then
 				If Not ParentForum.PublicPosting Then
-					If Security.IsAllowedToStartRestrictedThread Then
+					If objSecurity.IsAllowedToStartRestrictedThread Then
 
 						RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0")	'<Table>            
 						RenderRowBegin(wr) '<tr>
@@ -2441,7 +2348,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						RenderCellEnd(wr) ' </Td>
 
-						If LoggedOnUser.IsBanned Or (Not Security.IsAllowedToPostRestrictedReply) Or (ThreadInfo.IsClosed) Then
+						If LoggedOnUser.IsBanned Or (Not objSecurity.IsAllowedToPostRestrictedReply) Or (ThreadInfo.IsClosed) Then
 							RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
 							wr.Write("&nbsp;")
 							RenderCellEnd(wr) ' </Td>
@@ -2459,7 +2366,7 @@ Namespace DotNetNuke.Modules.Forum
 						End If
 
 						'[skeel] moved delete thread here
-						If LoggedOnUser.UserID > 0 AndAlso (Security.IsForumModerator) Then
+						If LoggedOnUser.UserID > 0 AndAlso (objSecurity.IsForumModerator) Then
 							_url = Utilities.Links.ThreadDeleteLink(TabID, ModuleID, ForumId, ThreadId, False)
 							RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
 							wr.Write("&nbsp;")
@@ -2471,7 +2378,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						RenderRowEnd(wr) ' </tr>
 						RenderTableEnd(wr) ' </table>
-					ElseIf Security.IsAllowedToPostRestrictedReply Then
+					ElseIf objSecurity.IsAllowedToPostRestrictedReply Then
 						RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0")	'<Table>            
 						RenderRowBegin(wr) '<tr>
 
@@ -2527,7 +2434,7 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 
 					'[skeel] moved delete thread here
-					If LoggedOnUser.UserID > 0 AndAlso (Security.IsForumModerator) Then
+					If LoggedOnUser.UserID > 0 AndAlso (objSecurity.IsForumModerator) Then
 						_url = Utilities.Links.ThreadDeleteLink(TabID, ModuleID, ForumId, ThreadId, False)
 						RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
 						wr.Write("&nbsp;")
@@ -2565,16 +2472,8 @@ Namespace DotNetNuke.Modules.Forum
 
 			RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0")	'<Table>            
 			RenderRowBegin(wr) '<tr>
-			RenderCellBegin(wr, "", "", "", "", "", "", "")  ' <td> ' 
 
-			' image button next thread
 			_url = Utilities.Links.ContainerViewThreadLink(TabID, ForumId, ThreadInfo.PreviousThreadID)
-			RenderImageButton(wr, _url, objConfig.GetThemeImageURL("s_previous.") & objConfig.ImageExtension, ForumControl.LocalizedText(EnabledText), "", False, PreviousEnabled)
-			RenderCellEnd(wr) ' </td>
-
-			RenderCellBegin(wr, "", "", "", "", "", "", "")  ' <td> ' 
-			wr.Write("&nbsp;")
-			RenderCellEnd(wr) ' </td>
 
 			RenderCellBegin(wr, "", "", "", "", "", "", "")  ' <td> ' 
 
@@ -2589,10 +2488,9 @@ Namespace DotNetNuke.Modules.Forum
 
 			RenderRowEnd(wr) ' </tr>
 			RenderTableEnd(wr) ' </table>
-
 			RenderCellEnd(wr) ' </td>
 
-			RenderCellBegin(wr, "", "", "", "", "", "", "")  ' <td> ' 
+			RenderCellBegin(wr, "", "", "", "", "", "", "")  ' <td> 
 			wr.Write("&nbsp;")
 			RenderCellEnd(wr) ' </td>
 
@@ -2607,14 +2505,14 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			If NextEnabled Then
-				RenderCellBegin(wr, "Forum_NavBarButton", "", "", "", "", "", "")  ' <td> '
+				RenderCellBegin(wr, "Forum_NavBarButton", "", "", "", "", "", "")  ' <td> 
 			Else
-				RenderCellBegin(wr, "Forum_NavBarButtonDisabled", "", "", "", "", "", "")	' <td> '
+				RenderCellBegin(wr, "Forum_NavBarButtonDisabled", "", "", "", "", "", "")	' <td> 
 			End If
 
 			RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0")	'<Table>            
 			RenderRowBegin(wr) '<tr>
-			RenderCellBegin(wr, "", "", "", "", "", "", "")  ' <td> ' 
+			RenderCellBegin(wr, "", "", "", "", "", "", "")  ' <td> 
 
 			If NextEnabled Then
 				_url = Utilities.Links.ContainerViewThreadLink(TabID, ForumId, ThreadInfo.NextThreadID)
@@ -2625,16 +2523,6 @@ Namespace DotNetNuke.Modules.Forum
 				RenderDivEnd(wr)
 			End If
 			RenderCellEnd(wr) ' </td>   
-
-			RenderCellBegin(wr, "", "", "", "", "", "", "")  ' <td> ' 
-			wr.Write("&nbsp;")
-			RenderCellEnd(wr) ' </td>
-
-			RenderCellBegin(wr, "", "", "", "", "", "", "")  ' <td> ' 
-			' cell for image button previous thread
-			RenderImageButton(wr, _url, objConfig.GetThemeImageURL("s_next.") & objConfig.ImageExtension, ForumControl.LocalizedText(NextText), "", False, NextEnabled)
-
-			RenderCellEnd(wr) ' </td>       
 			RenderRowEnd(wr) ' </tr>
 			RenderTableEnd(wr) ' </table>
 
@@ -2648,7 +2536,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			RenderRowBegin(wr) '<Tr>
 
-			RenderCellBegin(wr, "", "", "", "left", "", "3", "") ' <td> ' 
+			RenderCellBegin(wr, "", "", "", "left", "", "3", "") ' <td> 
 			Dim ChildGroupView As Boolean = False
 			If CType(ForumControl.TabModuleSettings("groupid"), String) <> String.Empty Then
 				ChildGroupView = True
@@ -2659,79 +2547,36 @@ Namespace DotNetNuke.Modules.Forum
 
 			'Treeview ViewOrder drop down lists
 			RenderRowBegin(wr) '<tr>
-			RenderCellBegin(wr, "", "", "100%", "right", "", "2", "") ' <td> ' 
+			RenderCellBegin(wr, "", "", "100%", "right", "", "2", "") ' <td> 
 
 			If PostCollection.Count > 0 Then
-				If objConfig.EnableTreeView Then
-					ddlForumView.RenderControl(wr)
-				End If
+				'If objConfig.EnableTreeView Then
+				'	ddlForumView.RenderControl(wr)
+				'End If
 
 				wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 				wr.AddAttribute(HtmlTextWriterAttribute.Src, objConfig.GetThemeImageURL("spacer.gif"))
 				wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <Img>
 				wr.RenderEndTag() ' </Img>
-
 				ddlViewDescending.RenderControl(wr)
 			End If
 
 			RenderCellEnd(wr) ' </td> 
 			RenderRowEnd(wr) ' </tr>   
 
-			' CP - This cannot be here for usability issues, it would have to reflect a search specific to the thread.
-			''[skeel] View unread treaads and latest x hours
-			'RenderRowBegin(wr) ' <tr>
-			'RenderCellBegin(wr, "Forum_LastPostText", "", "", "right", "", "2", "") ' <td> 
-
-			''View latest x hours
-			'wr.Write(Localization.GetString("ViewLatest", objConfig.SharedResourceFile) & " ")
-			'url = Utils.ContainerViewLatestHoursLink(TabID, 6)
-			'RenderLinkButton(wr, url, Localization.GetString("6", objConfig.SharedResourceFile), "Forum_LastPostText")
-			'wr.Write(", ")
-			'url = Utils.ContainerViewLatestHoursLink(TabID, 12)
-			'RenderLinkButton(wr, url, Localization.GetString("12", objConfig.SharedResourceFile), "Forum_LastPostText")
-			'wr.Write(", ")
-			'url = Utils.ContainerViewLatestHoursLink(TabID, 24)
-			'RenderLinkButton(wr, url, Localization.GetString("24", objConfig.SharedResourceFile), "Forum_LastPostText")
-			'wr.Write(", ")
-			'url = Utils.ContainerViewLatestHoursLink(TabID, 48)
-			'RenderLinkButton(wr, url, Localization.GetString("48", objConfig.SharedResourceFile), "Forum_LastPostText")
-			'wr.Write("&nbsp;" & Localization.GetString("Hours", objConfig.SharedResourceFile) & "&nbsp;")
-
-			''View unread threads link
-			'If LoggedOnUserID > 0 Then
-			'	wr.Write("|&nbsp;")
-			'	url = Utils.ContainerViewUnreadThreadsLink(TabID)
-			'	RenderLinkButton(wr, url, Localization.GetString("ViewUnreadThreads", objConfig.SharedResourceFile), "Forum_LastPostText")
-			'	wr.Write("&nbsp;")
-			'End If
-
-			'RenderCellEnd(wr) ' </td> 
-			'RenderRowEnd(wr) ' </tr>   
-			' END ADD
-
 			'[Skeel] Notifications row
 			RenderRowBegin(wr) '<tr>
-			RenderCellBegin(wr, "", "", "", "right", "", "2", "")	' <td> ' 
+			RenderCellBegin(wr, "", "", "", "right", "", "2", "")	' <td> 
 			wr.Write("<br />")
 
 			' Display tracking option if user is authenticated and post count > 0 and user not track parent forum (make sure tracking is enabled)
 			'CP - Seperating so we can show user they are tracking at forum level if need be
 			If (PostCollection.Count > 0) AndAlso (ForumControl.LoggedOnUserID > 0) And (objConfig.MailNotification) Then
-				'CP - ADD (Using If HERE for showing user tracked at forum level if need be)
 				If TrackedForum Then
-					'maybe create a new email icon w/ a checkbox to show already subscribed at forum level
-					RenderImage(wr, objConfig.GetThemeImageURL("s_subscribe.") & objConfig.ImageExtension, Localization.GetString("AlreadyTrackingForum", ForumControl.objConfig.SharedResourceFile), "")
-					wr.Write("&nbsp;")
 				ElseIf TrackedModule Then
-					'maybe create a new email icon w/ a checkbox to show already subscribed at forum level
-					RenderImage(wr, objConfig.GetThemeImageURL("s_subscribe.") & objConfig.ImageExtension, Localization.GetString("AlreadyTrackingModule", ForumControl.objConfig.SharedResourceFile), "")
-					wr.Write("&nbsp;")
 				Else
-					RenderImage(wr, objConfig.GetThemeImageURL("s_subscribe.") & objConfig.ImageExtension, Localization.GetString("subscribe", ForumControl.objConfig.SharedResourceFile), "")
-					wr.Write("&nbsp;")
 					chkEmail.RenderControl(wr)
 				End If
-				'END ADD
 			End If
 
 			RenderCellEnd(wr) ' </td> 
@@ -2758,26 +2603,24 @@ Namespace DotNetNuke.Modules.Forum
 			Dim HostThread As ThreadInfo = Post.ParentThread
 			Dim HostForum As ForumInfo = HostThread.HostForum
 
-			Dim Security As New Forum.ModuleSecurity(ModuleID, TabID, HostForum.ForumID, LoggedOnUser.UserID)
-
 			' Render reply/mod buttons if necessary
 			' First see if the user has the ability to post
 			' remove logged on limitation if wishing to implement Anonymous posting
 			If LoggedOnUser.UserID > 0 Then
-				If (Not HostForum.PublicPosting And Security.IsAllowedToPostRestrictedReply) Or (HostForum.PublicPosting = True) Then
+				If (Not HostForum.PublicPosting And objSecurity.IsAllowedToPostRestrictedReply) Or (HostForum.PublicPosting = True) Then
 					' move link (logged user is admin and this is the first post in the thread)
 					'start table for mod/reply buttons
 					RenderTableBegin(wr, "tblCommand_" & Post.PostID.ToString, "", "", "", "4", "0", "", "", "0")	  ' <table>
 					RenderRowBegin(wr)
 
 					'Never Remove LoggedOnUserID limitation EVEN if wishing to implement Anonymous Posting - ParentPostID is so we know this is the first post in a thread to move it
-					If LoggedOnUser.UserID > 0 And (Security.IsForumModerator) AndAlso (Post.ParentPostID = 0) Then
+					If LoggedOnUser.UserID > 0 And (objSecurity.IsForumModerator) AndAlso (Post.ParentPostID = 0) Then
 						_url = Utilities.Links.ThreadMoveLink(TabID, ModuleID, ForumId, ThreadId)
 
 						RenderCellBegin(wr, "Forum_ReplyCell", "", "", "", "", "", "")
 						RenderLinkButton(wr, _url, ForumControl.LocalizedText("Move"), "Forum_Link")
 						RenderCellEnd(wr)
-					ElseIf LoggedOnUser.UserID > 0 And (Security.IsForumModerator) Then
+					ElseIf LoggedOnUser.UserID > 0 And (objSecurity.IsForumModerator) Then
 						' Split thread
 						_url = Utilities.Links.ThreadSplitLink(TabID, ModuleID, ForumId, Post.PostID)
 
@@ -2787,8 +2630,7 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 
 					'Never Remove LoggedOnUserID limitation EVEN if wishing to implement Anonymous Posting
-					If LoggedOnUser.UserID > 0 AndAlso (Security.IsForumModerator) Then
-
+					If LoggedOnUser.UserID > 0 AndAlso (objSecurity.IsForumModerator) Then
 						_url = Utilities.Links.PostDeleteLink(TabID, ModuleID, ForumId, Post.PostID, False)
 
 						RenderCellBegin(wr, "Forum_ReplyCell", "", "", "", "", "", "")
@@ -2804,16 +2646,15 @@ Namespace DotNetNuke.Modules.Forum
 						RenderCellEnd(wr)
 					End If
 
-
 					'Never Remove LoggedOnUserID limitation EVEN if wishing to implement Anonymous Posting - Anonymous cannot edit post
-					If LoggedOnUser.UserID > 0 AndAlso (Security.IsForumModerator) Then
+					If LoggedOnUser.UserID > 0 AndAlso (objSecurity.IsForumModerator) Then
 						_url = Utilities.Links.NewPostLink(TabID, ForumId, Post.PostID, "edit", ModuleID)
 
 						RenderCellBegin(wr, "Forum_ReplyCell", "", "", "", "", "", "")
 						RenderLinkButton(wr, _url, ForumControl.LocalizedText("Edit"), "Forum_Link")
 						RenderCellEnd(wr)
 						'don't allow non mod, forum admin or anything other than a moderator to edit a closed forum post (if the forum is not moderated, or the user is trusted)
-					ElseIf LoggedOnUser.UserID > 0 And (Post.ParentThread.HostForum.IsActive) And ((LoggedOnUser.UserID = Post.Author.UserID) AndAlso (Post.ParentThread.HostForum.IsModerated = False Or author.IsTrusted Or Security.IsUnmoderated)) Then
+					ElseIf LoggedOnUser.UserID > 0 And (Post.ParentThread.HostForum.IsActive) And ((LoggedOnUser.UserID = Post.Author.UserID) AndAlso (Post.ParentThread.HostForum.IsModerated = False Or author.IsTrusted Or objSecurity.IsUnmoderated)) Then
 
 						'[skeel] check for PostEditWindow
 						If objConfig.PostEditWindow = 0 Then
@@ -2847,7 +2688,7 @@ Namespace DotNetNuke.Modules.Forum
 					If LoggedOnUser.UserID > 0 AndAlso (Not Post.ParentThread.IsClosed) And (Post.ParentThread.HostForum.IsActive) Then
 						If Not Post.ParentThread.HostForum.PublicPosting Then
 							' see if user can reply
-							If Security.IsAllowedToPostRestrictedReply Then
+							If objSecurity.IsAllowedToPostRestrictedReply Then
 								_url = Utilities.Links.NewPostLink(TabID, ForumId, Post.PostID, "quote", ModuleID)
 								' Quote link
 								RenderCellBegin(wr, "Forum_ReplyCell", "", "", "", "", "", "")

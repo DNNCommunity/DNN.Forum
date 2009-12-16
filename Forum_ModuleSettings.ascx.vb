@@ -149,7 +149,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			Dim objForumCnt As New ForumController
 			Dim objForumInfo As New ForumInfo
-			objForumInfo = objForumCnt.GetForum(DefaultForumId)
+			objForumInfo = objForumCnt.GetForumInfoCache(DefaultForumId)
 			DefaultGroupID = objForumInfo.GroupID
 
 			Dim objGroup As GroupInfo = GroupController.GroupGet(DefaultGroupID)

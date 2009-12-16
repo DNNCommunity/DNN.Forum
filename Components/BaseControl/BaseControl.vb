@@ -289,21 +289,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' If the post view is being viewed in Flat/Tree mode.
-		''' </summary>
-		''' <value></value>
-		''' <returns>True if the post view is in treeview mode, false it is in flat mode.</returns>
-		''' <remarks>This is only really used on the post view (ForumPost.vb)</remarks>
-		Friend Property TreeView() As Boolean
-			Get
-				Return _TreeView
-			End Get
-			Set(ByVal Value As Boolean)
-				_TreeView = Value
-			End Set
-		End Property
-
-		''' <summary>
 		''' If Posts are being viewed in ascending/descending mode. 
 		''' </summary>
 		''' <value></value>

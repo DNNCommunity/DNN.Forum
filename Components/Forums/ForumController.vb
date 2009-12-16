@@ -52,7 +52,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Function ForumGetAllByParentID(ByVal ParentID As Integer, ByVal GroupId As Integer, ByVal EnabledOnly As Boolean) As List(Of ForumInfo)
 			Dim arrForums As List(Of ForumInfo)
-			Dim strCacheKey As String = ForumInfoCacheKeyPrefix & CStr(ParentID) & CStr(GroupId)
+			Dim strCacheKey As String = ForumInfoCacheKeyPrefix + "-" + CStr(ParentID) + "-" + CStr(GroupId)
 			arrForums = CType(DataCache.GetCache(strCacheKey), List(Of ForumInfo))
 
 			If arrForums Is Nothing Then
@@ -78,7 +78,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Function ForumGetAll(ByVal GroupId As Integer) As List(Of ForumInfo)
 			Dim arrForums As List(Of ForumInfo)
-			Dim strCacheKey As String = ForumInfoCacheKeyPrefix & CStr(GroupId)
+			Dim strCacheKey As String = ForumInfoCacheKeyPrefix + "-" + CStr(GroupId)
 			arrForums = CType(DataCache.GetCache(strCacheKey), List(Of ForumInfo))
 
 			If arrForums Is Nothing Then
@@ -101,38 +101,89 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="GroupID">The GroupID of forums to clear the cached items for.</param>
 		''' <remarks></remarks>
 		Public Sub ClearCache_ForumGetAll(ByVal ParentID As Integer, ByVal GroupID As Integer)
-			Dim strCacheKey As String = ForumInfoCacheKeyPrefix & CStr(ParentID) & CStr(GroupID)
-			Dim strCacheKey2 As String = ForumInfoCacheKeyPrefix & CStr(GroupID)
+			Dim strCacheKey As String = ForumInfoCacheKeyPrefix + "-" + CStr(ParentID) + "-" + CStr(GroupID)
+			Dim strCacheKey2 As String = ForumInfoCacheKeyPrefix + "-" + CStr(GroupID)
 			DataCache.RemoveCache(strCacheKey)
 			DataCache.RemoveCache(strCacheKey2)
 		End Sub
 
 		''' <summary>
-		''' Calls the Custom Hydrator to hydrate a specific ForumID instance.
+		''' Checks the cache first, if it is not populated it then loads the foruminfo
 		''' </summary>
-		''' <param name="ForumId">The ForumID of the forum to hydrate.</param>
-		''' <returns>A single instance of the forum info object for the specified ForumID.</returns>
-		''' <remarks></remarks>
-		Public Function GetForum(ByVal ForumId As Integer) As ForumInfo
-			Dim dr As IDataReader = DotNetNuke.Modules.Forum.DataProvider.Instance().ForumGet(ForumId)
-			Try
-				Return FillForumInfo(dr, True, True)
-			Finally
-				If Not dr Is Nothing Then
-					dr.Close()
+		''' <param name="ForumID">The ForumID (integer) that we want to retrieve information about (and store in cache).</param>
+		''' <returns></returns>
+		''' <remarks>
+		''' </remarks>
+		Public Function GetForumInfoCache(ByVal ForumID As Integer) As ForumInfo
+			Dim strCacheKey As String = ForumInfoCacheKeyPrefix + "-SingleForum-" + CStr(ForumID)
+			Dim objForum As ForumInfo = CType(DataCache.GetCache(strCacheKey), ForumInfo)
+
+			If objForum Is Nothing Then
+				If ForumID > 0 Then
+					'forum caching settings
+					Dim timeOut As Int32 = ForumInfoCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
+					objForum = New ForumInfo
+					objForum = GetForum(ForumID)
+
+					'Cache Forum if timeout > 0 and Forum is not null
+					If timeOut > 0 And objForum IsNot Nothing Then
+						DataCache.SetCache(strCacheKey, objForum, TimeSpan.FromMinutes(timeOut))
+					End If
+				Else
+					objForum = New ForumInfo
 				End If
-			End Try
+			End If
+
+			Return objForum
 		End Function
 
 		''' <summary>
-		''' Used to get all forums for a moduleID. Permissions are not considered here, meaning all forums are returned regardless of the users ability to see them or not. 
+		''' Resets the cache for the forumuser Info.
 		''' </summary>
-		''' <param name="ModuleID">The ModuleID of the module for which to return all forums.</param>
-		''' <returns>Arraylist of all forums available for a ModuleID instance.</returns>
-		''' <remarks>ONLY USE IN ADMIN SETTINGS!!!</remarks>
-		Public Function GetForumByModuleID(ByVal ModuleID As Integer) As List(Of ForumInfo)
-			Return CBO.FillCollection(Of ForumInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ForumsGetByModuleID(ModuleID))
+		''' <param name="ForumID">The ForumID (integer) that we want to remove from cache.</param>
+		''' <remarks>
+		''' </remarks>
+		Public Shared Sub ResetForumInfoCache(ByVal ForumID As Integer)
+			Dim strCacheKey As String = ForumInfoCacheKeyPrefix + "-SingleForum-" + CStr(ForumID)
+
+			DataCache.RemoveCache(strCacheKey)
+		End Sub
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="ModuleID"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Function GetModuleForums(ByVal ModuleID As Integer) As List(Of ForumInfo)
+			Dim arrForums As List(Of ForumInfo)
+			Dim strCacheKey As String = ForumInfoCacheKeyPrefix + "-" + CStr(ModuleID) + "-Module"
+			arrForums = CType(DataCache.GetCache(strCacheKey), List(Of ForumInfo))
+
+			If arrForums Is Nothing Then
+				'forum caching settings
+				Dim timeOut As Int32 = ForumInfoCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
+
+				arrForums = GetForumByModuleID(ModuleID)
+
+				'Cache Forum if timeout > 0 and Forum is not null
+				If timeOut > 0 And arrForums IsNot Nothing Then
+					DataCache.SetCache(strCacheKey, arrForums, TimeSpan.FromMinutes(timeOut))
+				End If
+			End If
+			Return arrForums
 		End Function
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="ModuleID"></param>
+		''' <remarks></remarks>
+		Public Sub ClearCache_GetModuleForums(ByVal ModuleID As Integer)
+			Dim strCacheKey As String = ForumInfoCacheKeyPrefix + "-" + CStr(ModuleID) + "-Module"
+
+			DataCache.RemoveCache(strCacheKey)
+		End Sub
 
 		''' <summary>
 		''' Adds a new forum to the data store. 
@@ -161,7 +212,7 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			ClearCache_ForumGetAll(objForum.ParentId, objForum.GroupID)
-
+			ClearCache_GetModuleForums(objForum.ModuleID)
 			Return ForumId
 		End Function
 
@@ -194,6 +245,7 @@ Namespace DotNetNuke.Modules.Forum
 			If PreviousParentID <> objForum.ParentId Then
 				ClearCache_ForumGetAll(objForum.ParentId, objForum.GroupID)
 			End If
+			ClearCache_GetModuleForums(objForum.ModuleID)
 		End Sub
 
 		''' <summary>
@@ -202,9 +254,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="GroupID"></param>
 		''' <param name="ForumID"></param>
 		''' <remarks></remarks>
-		Public Sub ForumDelete(ByVal ParentID As Integer, ByVal GroupID As Integer, ByVal ForumID As Integer)
+		Public Sub ForumDelete(ByVal ParentID As Integer, ByVal GroupID As Integer, ByVal ForumID As Integer, ByVal ModuleID As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().ForumDelete(ForumID, GroupID)
 			ClearCache_ForumGetAll(ParentID, GroupID)
+			ClearCache_GetModuleForums(ModuleID)
 		End Sub
 
 		''' <summary>
@@ -221,7 +274,24 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-#Region "Private Hydration Methods"
+#Region "Private Methods"
+
+		''' <summary>
+		''' Calls the Custom Hydrator to hydrate a specific ForumID instance.
+		''' </summary>
+		''' <param name="ForumId">The ForumID of the forum to hydrate.</param>
+		''' <returns>A single instance of the forum info object for the specified ForumID.</returns>
+		''' <remarks></remarks>
+		Private Function GetForum(ByVal ForumId As Integer) As ForumInfo
+			Dim dr As IDataReader = DotNetNuke.Modules.Forum.DataProvider.Instance().ForumGet(ForumId)
+			Try
+				Return FillForumInfo(dr, True, True)
+			Finally
+				If Not dr Is Nothing Then
+					dr.Close()
+				End If
+			End Try
+		End Function
 
 		''' <summary>
 		''' The Custom Hydrator function which is used for performance reasons. (This is faster than core CBO)
@@ -426,6 +496,16 @@ Namespace DotNetNuke.Modules.Forum
 				objForumInfo = Nothing
 			End If
 			Return objForumInfo
+		End Function
+
+		''' <summary>
+		''' Used to get all forums for a moduleID. Permissions are not considered here, meaning all forums are returned regardless of the users ability to see them or not. 
+		''' </summary>
+		''' <param name="ModuleID">The ModuleID of the module for which to return all forums.</param>
+		''' <returns>Arraylist of all forums available for a ModuleID instance.</returns>
+		''' <remarks>ONLY USE IN ADMIN SETTINGS!!!</remarks>
+		Private Function GetForumByModuleID(ByVal ModuleID As Integer) As List(Of ForumInfo)
+			Return CBO.FillCollection(Of ForumInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ForumsGetByModuleID(ModuleID))
 		End Function
 
 #End Region

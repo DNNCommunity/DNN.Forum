@@ -40,7 +40,7 @@ Namespace DotNetNuke.Modules.Forum
 		Dim TotalRecords As Integer = 0
 		Dim url As String
 		Private hsThreadRatings As New Hashtable
-
+		Dim Security As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
 
 #Region "Controls"
 
@@ -252,7 +252,8 @@ Namespace DotNetNuke.Modules.Forum
 				_ParentForum.GroupID = -1
 				_ParentForum.ForumID = -1
 			Else
-				_ParentForum = ForumInfo.GetForumInfo(ForumControl.GenericObjectID)
+				Dim cntForum As New ForumController
+				_ParentForum = cntForum.GetForumInfoCache(ForumControl.GenericObjectID)
 
 				' Make sure the forum is not disabled
 				If Not _ParentForum.IsActive Then
@@ -262,8 +263,6 @@ Namespace DotNetNuke.Modules.Forum
 				If objConfig.OverrideTitle Then
 					Me.BaseControl.BasePage.Title = _ParentForum.Name & " - " & Me.BaseControl.PortalName
 				End If
-
-				Dim Security As New Forum.ModuleSecurity(ModuleID, TabID, ParentForum.ForumID, LoggedOnUser.UserID)
 
 				' User might access this page by typing url so better check permission on parent forum
 				If Not (_ParentForum.PublicView) Then
@@ -470,7 +469,7 @@ Namespace DotNetNuke.Modules.Forum
 					userForumController.Add(userForum)
 					UserForumsController.ResetUserForumReadCache(ForumControl.LoggedOnUserID, ForumId)
 				End If
-				ForumInfo.ResetForumInfo(ForumId)
+				ForumController.ResetForumInfoCache(ForumId)
 			End If
 
 			Dim AggregatedView As Boolean = False
@@ -540,13 +539,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Private Sub BindControls()
 			Try
-				' Use new Lists feature to provide rate entries (localization support)
-				Dim ctlLists As New DotNetNuke.Common.Lists.ListController
-				Dim colDateFilter As DotNetNuke.Common.Lists.ListEntryInfoCollection = ctlLists.GetListEntryInfoCollection("TrackingDuration")
-
 				ddlDateFilter.Items.Clear()
 
-				For Each entry As DotNetNuke.Common.Lists.ListEntryInfo In colDateFilter
+				For Each entry As DotNetNuke.Common.Lists.ListEntryInfo In DotNetNuke.Modules.Forum.Utilities.ForumUtils.GetTrackingDurationList
 					If LoggedOnUser.UserID > 0 Then
 						Dim dateEntry As New Telerik.Web.UI.RadComboBoxItem(Localization.GetString(entry.Text, ForumControl.objConfig.SharedResourceFile), entry.Value)
 						ddlDateFilter.Items.Add(dateEntry)
@@ -701,8 +696,6 @@ Namespace DotNetNuke.Modules.Forum
 			RenderCellBegin(wr, "", "", "100%", "left", "", "2", "") ' <td>
 			'Remove LoggedOnUserID limitation if wishing to implement Anonymous Posting
 			If (LoggedOnUser.UserID > 0) And (Not ForumId = -1) Then
-				Dim Security As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
-
 				If Not ParentForum.PublicPosting Then
 					If Security.IsAllowedToStartRestrictedThread Then
 						RenderTableBegin(wr, "", "", "", "", "4", "0", "", "", "0")	'<Table>            
@@ -1243,8 +1236,6 @@ Namespace DotNetNuke.Modules.Forum
 			RenderCellBegin(wr, "", "", "", "left", "", "", "") ' <td>
 			'Remove LoggedOnUserID limitation if wishing to implement Anonymous Posting
 			If (LoggedOnUser.UserID > 0) And (Not ForumId = -1) Then
-				Dim Security As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
-
 				If Not ParentForum.PublicPosting Then
 					If Security.IsAllowedToStartRestrictedThread Then
 						RenderTableBegin(wr, "", "", "", "", "4", "0", "", "", "0")	'<Table>     
@@ -1334,8 +1325,6 @@ Namespace DotNetNuke.Modules.Forum
 				' check email
 				RenderRowBegin(wr) ' <tr>
 				RenderCellBegin(wr, "", "", "", "right", "", "", "")
-				RenderImage(wr, objConfig.GetThemeImageURL("s_subscribe.") & objConfig.ImageExtension, Localization.GetString("subscribe", ForumControl.objConfig.SharedResourceFile), "")
-				wr.Write("&nbsp;")
 				chkEmail.RenderControl(wr)
 
 				'' We check if user is subscribed in this forum
@@ -1371,7 +1360,7 @@ Namespace DotNetNuke.Modules.Forum
 				wr.Write("&nbsp;")
 				RenderCellEnd(wr) ' </td>
 
-				RenderCellBegin(wr, "Forum_ReplyCell", "", "65px", "right", "", "", "") ' <td>
+				RenderCellBegin(wr, "Forum_ReplyCell", "", "85px", "right", "", "", "") ' <td>
 				cmdRead.RenderControl(wr)
 				RenderCellEnd(wr) ' </td>
 

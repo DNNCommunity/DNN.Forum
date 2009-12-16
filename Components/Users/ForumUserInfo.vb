@@ -490,21 +490,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' The user's post view option (Flat/Tree)
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property FlatView() As Boolean
-			Get
-				Return _FlatView
-			End Get
-			Set(ByVal Value As Boolean)
-				_FlatView = Value
-			End Set
-		End Property
-
-		''' <summary>
 		''' If the user is moderated, they are not 'trusted' 
 		''' </summary>
 		''' <value></value>

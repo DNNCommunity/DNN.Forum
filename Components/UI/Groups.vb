@@ -197,7 +197,7 @@ Namespace DotNetNuke.Modules.Forum
 				'Parent Forum view
 				Dim cltForum As New ForumController
 				Dim objForumInfo As ForumInfo
-				objForumInfo = cltForum.GetForum(mForumId)
+				objForumInfo = cltForum.GetForumInfoCache(mForumId)
 				wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.Groups, objForumInfo, objConfig, ChildGroupView))
 			ElseIf mGroupId > 0 Then
 				'Group view
@@ -484,8 +484,8 @@ Namespace DotNetNuke.Modules.Forum
 			GroupLinkURL = Utilities.Links.ContainerSingleGroupLink(TabID, Group.GroupID)
 
 			Dim forum As ForumInfo
-			Dim forumctl As New ForumController
-			forum = forumctl.GetForum(mForumId)
+			Dim cntForum As New ForumController
+			forum = cntForum.GetForumInfoCache(mForumId)
 
 
 			RenderLinkButton(wr, GroupLinkURL, Group.Name + " > " & forum.Name, "Forum_AltHeaderText")

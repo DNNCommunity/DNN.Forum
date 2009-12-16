@@ -86,7 +86,8 @@ Namespace DotNetNuke.Modules.Forum
 			' Reset Group Info
 			GroupInfo.ResetGroupInfo(GroupID)
 			' Reset Forum Info
-			ForumInfo.ResetForumInfo(ForumID)
+
+			ForumController.ResetForumInfoCache(ForumID)
 			Dim f As New ForumController
 			f.ClearCache_ForumGetAll(ParentID, GroupID)
 		End Sub

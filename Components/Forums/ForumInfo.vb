@@ -227,7 +227,8 @@ Namespace DotNetNuke.Modules.Forum
 				Dim objForum As ForumInfo = New ForumInfo
 
 				If ParentId > 0 Then
-					objForum = GetForumInfo(ParentId)
+					Dim cntForum As New ForumController
+					objForum = cntForum.GetForumInfoCache(ParentId)
 				Else
 					objForum.ModuleID = ModuleID
 					objForum.ForumID = ForumID
@@ -921,7 +922,9 @@ Namespace DotNetNuke.Modules.Forum
 				Dim mForumInfo As New ForumInfo
 
 				If _ForumID <> -1 Then
-					mForumInfo = ForumInfo.GetForumInfo(_ForumID)
+					Dim cntForum As New ForumController
+
+					mForumInfo = cntForum.GetForumInfoCache(_ForumID)
 				Else
 					'Aggregated Forum
 					mForumInfo = New ForumInfo
@@ -1380,55 +1383,6 @@ Namespace DotNetNuke.Modules.Forum
 			Catch ex As Exception
 				LogException(ex)
 			End Try
-		End Sub
-
-		''' <summary>
-		''' Checks the cache first, if it is not populated it then loads the foruminfo
-		''' </summary>
-		''' <param name="ForumID"></param>
-		''' <returns></returns>
-		''' <remarks>
-		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	11/26/2005	Created
-		''' </history>
-		Public Shared Function GetForumInfo(ByVal ForumID As Integer) As ForumInfo
-			Dim strCacheKey As String = ForumInfoCacheKeyPrefix & CStr(ForumID)
-			Dim objForum As ForumInfo = CType(DataCache.GetCache(strCacheKey), ForumInfo)
-
-			If objForum Is Nothing Then
-				If ForumID > 0 Then
-					'forum caching settings
-					Dim timeOut As Int32 = ForumInfoCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
-
-					Dim cntForum As New ForumController
-					objForum = cntForum.GetForum(ForumID)
-
-					'Cache Forum if timeout > 0 and Forum is not null
-					If timeOut > 0 And objForum IsNot Nothing Then
-						DataCache.SetCache(strCacheKey, objForum, TimeSpan.FromMinutes(timeOut))
-					End If
-				Else
-					objForum = New ForumInfo
-				End If
-			End If
-
-			Return objForum
-		End Function
-
-		''' <summary>
-		''' Resets the cache for the forumuser Info.
-		''' </summary>
-		''' <param name="ForumID"></param>
-		''' <remarks>
-		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	11/26/2005	Created
-		''' </history>
-		Public Shared Sub ResetForumInfo(ByVal ForumID As Integer)
-			Dim strCacheKey As String = ForumInfoCacheKeyPrefix & CStr(ForumID)
-
-			DataCache.RemoveCache(strCacheKey)
 		End Sub
 
 #End Region

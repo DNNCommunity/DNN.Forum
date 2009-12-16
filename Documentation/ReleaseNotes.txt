@@ -23,6 +23,8 @@ FOR-11077 Corrected Issues found in doing forum themes (UI).
 FOR-11078 Corrected SetFocus issues in PostEdit. No longer permitting subject edit on quote/reply either. 
 
 FOR-XXXXX Changed Security class to minimize db hits (using a core GetUser method can't utilize cache at this time). To overcome core issue we simply retrieve non-profile info from Users table. 
+FOR-XXXXX Removed email icon for notifications in Posts, Threads View. Also removed next/previous button images in posts view.
+
 FOR-XXXXX Integrated Telerik into PostView: Old/New Thread drop down to combobox, ratings drop down to rad rating control, thread status to combobox. 
 FOR-XXXXX Thread View: Email notification checkbox now utilizes 'ajax'. 
 FOR-XXXXX Integrated Telerik into ThreadView: Display date range drop down to combobox, rating image to rating control, thread status to combobox.
@@ -32,3 +34,6 @@ FOR-XXXXX Replaced rating images and text with Telerik rating control, updates t
 -- Post View: Ajax Quick Reply? - consider rad tooltip or jquery for this (likely needs ajax event to redrawn control). 
  What about rating scale change? (set to 5 local, 10 in all installs)
  consider ajax loading panel in thread/post view.
+ 
+ 
+ - delete ForumThreadRate list

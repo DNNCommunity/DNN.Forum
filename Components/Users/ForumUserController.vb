@@ -271,10 +271,6 @@ Namespace DotNetNuke.Modules.Forum
 				Catch
 				End Try
 				Try
-					objForumUser.FlatView = Convert.ToBoolean(dr("FlatView"))
-				Catch
-				End Try
-				Try
 					objForumUser.ViewDescending = Convert.ToBoolean(dr("ViewDescending"))
 				Catch
 				End Try

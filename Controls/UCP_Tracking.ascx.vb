@@ -135,7 +135,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 			Dim lbl As Label
 			Dim lit As Literal
 
-			objForum = cntForum.GetForum(dataItem.ForumID)
+			objForum = cntForum.GetForumInfoCache(dataItem.ForumID)
 
 			hl = CType(e.Item.FindControl("hlName"), HyperLink)
 			hl.Text = dataItem.Subject

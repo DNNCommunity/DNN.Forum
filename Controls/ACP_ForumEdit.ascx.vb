@@ -111,7 +111,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			Get
 				If ForumID > 0 Then
 					Dim cntForum As New ForumController
-					Return cntForum.GetForum(ForumID)
+					Return cntForum.GetForumInfoCache(ForumID)
 				Else
 					Return Nothing
 				End If
@@ -257,7 +257,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			Dim cntForum As New ForumController
 			Dim objForum As New ForumInfo
 			' Make sure we are working w/ the current forumID
-			objForum = cntForum.GetForum(ForumID)
+			objForum = cntForum.GetForumInfoCache(ForumID)
 
 			'[skeel] store this value to clear correct cache
 			Dim CurrentParentID As Integer
@@ -317,8 +317,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			cntForum.ForumUpdate(objForum, CurrentParentID)
 
 			'update the cached values
-			ForumInfo.ResetForumInfo(ForumID)
-			ForumInfo.ResetForumInfo(CurrentParentID)
+			ForumController.ResetForumInfoCache(ForumID)
+			ForumController.ResetForumInfoCache(CurrentParentID)
+
 			' Update group info in cache in case the forum moved
 			GroupInfo.ResetGroupInfo(Convert.ToInt32(ddlGroup.SelectedValue))
 
@@ -391,7 +392,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			ForumID = cntForum.ForumAdd(objForum)
 
 			'update the cached values
-			ForumInfo.ResetForumInfo(ForumID)
+			ForumController.ResetForumInfoCache(ForumID)
 			' Update the group info so it knows there is a new forum
 			GroupInfo.ResetGroupInfo(Convert.ToInt32(ddlGroup.SelectedValue))
 
@@ -419,7 +420,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			'[skeel] dont like above, group id might have been changed so:
 			If Not objForum Is Nothing Then
 				Dim cntForum As New ForumController
-				cntForum.ForumDelete(objForum.ParentId, objForum.GroupID, ForumID)
+				cntForum.ForumDelete(objForum.ParentId, objForum.GroupID, ForumID, ModuleId)
 				' Go Back to forum/group management screen
 				Response.Redirect(Utilities.Links.ACPForumsManageLink(TabId, ModuleId, CType(ddlGroup.SelectedValue, Integer)), False)
 			End If
@@ -613,7 +614,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Private Sub BindForumCopyLists()
 			Dim objForumCnt As New ForumController
 			Dim arr As List(Of ForumInfo)
-			arr = objForumCnt.GetForumByModuleID(ModuleId)
+			arr = objForumCnt.GetModuleForums(ModuleId)
 
 			If arr.Count > 0 Then
 				ddlForumPermTemplate.DataSource = arr
@@ -742,7 +743,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					Dim objPerForum As ForumInfo
 
 					' set the perms stuff from the forum template selected
-					objPerForum = objForumCnt.GetForum(intForumID)
+					objPerForum = objForumCnt.GetForumInfoCache(intForumID)
 					'PublicPosting = objPerForum.PublicPosting
 					'PublicView = objPerForum.PublicView
 					'ModeratedForum = objPerForum.IsModerated

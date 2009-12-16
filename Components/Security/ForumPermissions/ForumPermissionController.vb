@@ -36,6 +36,8 @@ Namespace DotNetNuke.Modules.Forum
 	''' </history>
 	Public Class ForumPermissionController
 
+		Private Const ForumInfoCacheTimeout As Integer = 20
+
 #Region "Public Shared Methods"
 
 		''' <summary>
@@ -157,9 +159,21 @@ Namespace DotNetNuke.Modules.Forum
 
 		Private Function GetForumPermissionsDictionary(ByVal ForumID As Integer) As Dictionary(Of Integer, ForumPermissionCollection)
 			Dim dicForumPermissions As Dictionary(Of Integer, ForumPermissionCollection)
-			Dim dr As IDataReader = DataProvider.Instance().GetForumPermissions(ForumID)
-			dicForumPermissions = FillForumPermissionDictionary(dr)
+			Dim strCacheKey As String = "ForumPermsDic" + "-" + CStr(ForumID)
+			dicForumPermissions = CType(DataCache.GetCache(strCacheKey), Dictionary(Of Integer, ForumPermissionCollection))
 
+			If dicForumPermissions Is Nothing Then
+				'forum caching settings
+				Dim timeOut As Int32 = ForumInfoCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
+				Dim dr As IDataReader = DataProvider.Instance().GetForumPermissions(ForumID)
+
+				dicForumPermissions = FillForumPermissionDictionary(dr)
+
+				'Cache Forum if timeout > 0 and Forum is not null
+				If timeOut > 0 And dicForumPermissions IsNot Nothing Then
+					DataCache.SetCache(strCacheKey, dicForumPermissions, TimeSpan.FromMinutes(timeOut))
+				End If
+			End If
 			'Return the Dictionary
 			Return dicForumPermissions
 		End Function

@@ -639,7 +639,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				Dim GroupID As Integer = Convert.ToInt32(Split(str, "|")(1))
 				Dim ForumID As Integer = Convert.ToInt32(Split(str, "|")(2))
 				Dim ctlForum As New ForumController
-				ctlForum.ForumDelete(ParentID, GroupID, ForumID)
+				ctlForum.ForumDelete(ParentID, GroupID, ForumID, ModuleId)
 
 				BindGroupList()
 			Catch exc As Exception
@@ -660,8 +660,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected Sub ForumUp_Click(ByVal Sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs)
 			Try
 				Dim forumID As Integer = Int32.Parse(CType(Sender, ImageButton).CommandArgument)
+				Dim cntForum As New ForumController
+				Dim forum As ForumInfo = cntForum.GetForumInfoCache(forumID)
 
-				Dim forum As ForumInfo = ForumInfo.GetForumInfo(forumID)
 				Dim ctlForum As New ForumController
 				ctlForum.ForumSortOrderUpdate(forum.ParentId, forum.GroupID, forumID, True)
 
@@ -684,7 +685,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected Sub ForumDown_Click(ByVal Sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs)
 			Try
 				Dim forumID As Integer = Int32.Parse(CType(Sender, ImageButton).CommandArgument)
-				Dim forum As ForumInfo = ForumInfo.GetForumInfo(forumID)
+				Dim cntForum As New ForumController
+				Dim forum As ForumInfo = cntForum.GetForumInfoCache(forumID)
 				Dim GroupID As Integer = forum.GroupID
 				Dim ctlForum As New ForumController
 				ctlForum.ForumSortOrderUpdate(forum.ParentId, forum.GroupID, forumID, False)
@@ -752,7 +754,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Private Function EnabledImage(ByVal ForumID As Integer) As String
-			Dim forum As ForumInfo = ForumInfo.GetForumInfo(ForumID)
+			Dim cntForum As New ForumController
+			Dim forum As ForumInfo = cntForum.GetForumInfoCache(ForumID)
 			Dim GroupID As Integer = forum.GroupID
 			Dim ctlForum As New ForumController
 			Dim imagepath As String
@@ -773,7 +776,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Private Function EnabledImageText(ByVal ForumID As Integer) As String
-			Dim forum As ForumInfo = ForumInfo.GetForumInfo(ForumID)
+			Dim cntForum As New ForumController
+			Dim forum As ForumInfo = cntForum.GetForumInfoCache(ForumID)
 			Dim GroupID As Integer = forum.GroupID
 			Dim ctlForum As New ForumController
 			Dim imagetext As String

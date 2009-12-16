@@ -77,7 +77,8 @@ Namespace DotNetNuke.Modules.Forum
 
 					If mForumID <> -1 Then
 						' We need this to make sure the forum is enabled and not private
-						mForumInfo = ForumInfo.GetForumInfo(mForumID)
+						Dim cntForum As New ForumController
+						mForumInfo = cntForum.GetForumInfoCache(mForumID)
 					Else
 						' Aggregated
 						mForumInfo = New ForumInfo

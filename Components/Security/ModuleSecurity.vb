@@ -96,7 +96,9 @@ Namespace DotNetNuke.Modules.Forum
 				If ForumId > -1 Then
 					' For forum specific perms, we need to hook into the forum permission controller
 					Dim fi As New DotNetNuke.Modules.Forum.ForumInfo
-					Dim fp As DotNetNuke.Modules.Forum.ForumPermissionCollection = ForumInfo.GetForumInfo(ForumId).ForumPermissions
+					Dim cntForum As New ForumController
+
+					Dim fp As DotNetNuke.Modules.Forum.ForumPermissionCollection = cntForum.GetForumInfoCache(ForumId).ForumPermissions
 
 					HasPrivateViewPerms = ForumPermissionController.HasForumPermission(fp, _HasPrivateViewPerms, UserID, objMod.PortalID, moduleId)
 					HasRestrictedStartThreadPerms = ForumPermissionController.HasForumPermission(fp, _HasRestrictedStartThreadPerms, UserID, objMod.PortalID, moduleId)
@@ -110,7 +112,7 @@ Namespace DotNetNuke.Modules.Forum
 					If HasForumAdminPermission Then
 						' make sure the user has view perms (we only have to worry about this on the specific forum level?)
 						' we could potentially tie attach/pin/lock to mods in general here if desired
-						If HasPrivateViewPerms And (ForumInfo.GetForumInfo(ForumId).PublicView = False) Then
+						If HasPrivateViewPerms And (cntForum.GetForumInfoCache(ForumId).PublicView = False) Then
 							HasForumModeratePerms = True
 							HasUnmoderatedPerms = True
 							'Else
@@ -119,7 +121,7 @@ Namespace DotNetNuke.Modules.Forum
 					Else
 						If HasGlobalModPermission Then
 							' This needs to be here so we ignore any user trust settings (this trumps those)
-							If HasPrivateViewPerms And (ForumInfo.GetForumInfo(ForumId).PublicView = False) Then
+							If HasPrivateViewPerms And (cntForum.GetForumInfoCache(ForumId).PublicView = False) Then
 								HasForumModeratePerms = True
 								HasUnmoderatedPerms = True
 								'Else
@@ -142,7 +144,7 @@ Namespace DotNetNuke.Modules.Forum
 							' here is where we check per forum
 							Dim objForumCnt As New ForumController
 							Dim arrAllForums As List(Of ForumInfo)
-							arrAllForums = objForumCnt.GetForumByModuleID(moduleId)
+							arrAllForums = objForumCnt.GetModuleForums(moduleId)
 
 							If arrAllForums.Count > 0 Then
 								For Each objForum As ForumInfo In arrAllForums
