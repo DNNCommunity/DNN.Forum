@@ -27,37 +27,7 @@
                             </span>
                         </td>
                         <td align="left" class="Forum_Row_AdminR" valign="middle" width="75%">
-                           <asp:TextBox ID="txtRatingScale" runat="server" CssClass="Forum_NormalTextBox" MaxLength="50" Width="180px" EnableViewState="false" />&nbsp;
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="Forum_Row_AdminL" width="25%">
-                            <span class="Forum_Row_AdminText">
-                                <dnn:Label ID="pl2ndRating" runat="server" ControlName="txt2ndRating" Suffix=":"></dnn:Label>
-                            </span>
-                        </td>
-                        <td align="left" class="Forum_Row_AdminR" valign="middle" width="75%">
- 
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="Forum_Row_AdminL" width="25%">
-                            <span class="Forum_Row_AdminText">
-                                <dnn:Label ID="pl3rdRating" runat="server" ControlName="txt3rdRating" Suffix=":"></dnn:Label>
-                            </span>
-                        </td>
-                        <td align="left" class="Forum_Row_AdminR" valign="middle" width="75%">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="Forum_Row_AdminL" width="25%">
-                            <span class="Forum_Row_AdminText">
-                                <dnn:Label ID="pl4thRating" runat="server" ControlName="txt4thRating" Suffix=":"></dnn:Label>
-                            </span>
-                        </td>
-                        <td align="left" class="Forum_Row_AdminR" valign="middle" width="75%">
-
+                           <asp:TextBox ID="txtRatingScale" runat="server" CssClass="Forum_NormalTextBox" MaxLength="50" Width="180px" />
                         </td>
                     </tr>
 	            </table>

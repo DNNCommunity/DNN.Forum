@@ -71,33 +71,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected WithEvents txtRatingScale As Global.System.Web.UI.WebControls.TextBox
 
 		'''<summary>
-		'''pl2ndRating control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents pl2ndRating As Global.DotNetNuke.UI.UserControls.LabelControl
-
-		'''<summary>
-		'''pl3rdRating control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents pl3rdRating As Global.DotNetNuke.UI.UserControls.LabelControl
-
-		'''<summary>
-		'''pl4thRating control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents pl4thRating As Global.DotNetNuke.UI.UserControls.LabelControl
-
-		'''<summary>
 		'''cmdUpdate control.
 		'''</summary>
 		'''<remarks>
