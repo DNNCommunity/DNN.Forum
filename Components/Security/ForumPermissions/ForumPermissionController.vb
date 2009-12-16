@@ -298,6 +298,12 @@ Namespace DotNetNuke.Modules.Forum
 			DataProvider.Instance().UpdateForumPermission(objForumPermission.ForumPermissionID, objForumPermission.ForumID, objForumPermission.PermissionID, objForumPermission.RoleID, objForumPermission.AllowAccess, objForumPermission.UserID)
 		End Sub
 
+		Public Shared Sub ClearCache_GetForumPermissionsDictionary(ByVal ForumID As Integer)
+			Dim strCacheKey As String = "ForumPermsDic" + "-" + CStr(ForumID)
+
+			DataCache.RemoveCache(strCacheKey)
+		End Sub
+
 #End Region
 
 	End Class

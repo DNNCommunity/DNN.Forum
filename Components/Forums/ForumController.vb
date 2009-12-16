@@ -146,6 +146,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public Shared Sub ResetForumInfoCache(ByVal ForumID As Integer)
 			Dim strCacheKey As String = ForumInfoCacheKeyPrefix + "-SingleForum-" + CStr(ForumID)
 
+			ForumPermissionController.ClearCache_GetForumPermissionsDictionary(ForumID)
 			DataCache.RemoveCache(strCacheKey)
 		End Sub
 
