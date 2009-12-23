@@ -107,13 +107,13 @@ Namespace DotNetNuke.Modules.Forum
 		Protected WithEvents plNewForum As Global.DotNetNuke.UI.UserControls.LabelControl
 
 		'''<summary>
-		'''ForumTree control.
+		'''rtvForums control.
 		'''</summary>
 		'''<remarks>
 		'''Auto-generated field.
 		'''To modify move field declaration from designer file to code-behind file.
 		'''</remarks>
-		Protected WithEvents ForumTree As Global.DotNetNuke.UI.WebControls.DnnTree
+		Protected WithEvents rtvForums As Global.Telerik.Web.UI.RadTreeView
 
 		'''<summary>
 		'''lblErrorMsg control.

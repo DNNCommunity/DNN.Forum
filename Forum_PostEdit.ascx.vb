@@ -622,7 +622,7 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 
 				Dim Connect As New PostConnector
-				lblPreview.Text = Connect.ProcessPostBody(teContent.Text, objConfig, PortalId, objAction, UserId)
+				lblPreview.Text = System.Web.HttpUtility.HtmlDecode(Connect.ProcessPostBody(teContent.Text, objConfig, PortalId, objAction, UserId))
 
 				tblPreview.Visible = True
 				cmdSubmit.Visible = True

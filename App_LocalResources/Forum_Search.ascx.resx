@@ -147,12 +147,6 @@
   <data name="ControlTitle_forumsearch.Text" xml:space="preserve">
     <value>Search Forum</value>
   </data>
-  <data name="cmdCalFrom.Text" xml:space="preserve">
-    <value>Calendar Popup</value>
-  </data>
-  <data name="cmdCalTo.Text" xml:space="preserve">
-    <value>Calendar Popup</value>
-  </data>
   <data name="plUserSuggest.Text" xml:space="preserve">
     <value>Post Authors</value>
   </data>
@@ -174,13 +168,7 @@
   <data name="plPostDates.Text" xml:space="preserve">
     <value>Post Dates</value>
   </data>
-  <data name="valDates.Text" xml:space="preserve">
-    <value>&lt;br /&gt;Start must be greater than or equal to end.</value>
-  </data>
-  <data name="valEndDate.Text" xml:space="preserve">
-    <value>&lt;br /&gt;Invalid End Date</value>
-  </data>
-  <data name="valStartDate.Text" xml:space="preserve">
-    <value>Invalid Start Date</value>
+  <data name="valCompareDates.Text" xml:space="preserve">
+    <value>The End date must be greater than the Start date.</value>
   </data>
 </root>

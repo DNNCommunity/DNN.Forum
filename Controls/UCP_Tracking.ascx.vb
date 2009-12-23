@@ -49,6 +49,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
 			Localization.LocalizeDataGrid(dgForums, Me.LocalResourceFile)
 			Localization.LocalizeDataGrid(dgThreads, Me.LocalResourceFile)
+			BuildTabs()
 
 			ForumPager.PageSize = Convert.ToInt32(LoggedOnUser.ThreadsPerPage)
 			ThreadPager.PageSize = Convert.ToInt32(LoggedOnUser.ThreadsPerPage)
@@ -58,16 +59,18 @@ Namespace DotNetNuke.Modules.Forum.UCP
 
 			BindForumData(ForumPager.PageSize, 1)
 			BindThreadData(ThreadPager.PageSize, 1)
-
-			tblForum.Visible = True
-			cmdForum.Enabled = False
-			tblThread.Visible = False
-			cmdThread.Enabled = True
 		End Sub
 
 #End Region
 
 #Region "Event Handlers"
+
+		'Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
+		'	If DotNetNuke.Framework.AJAX.IsInstalled Then
+		'		DotNetNuke.Framework.AJAX.RegisterScriptManager()
+		'		'DotNetNuke.Framework.AJAX.RegisterPostBackControl(urlLogo)
+		'	End If
+		'End Sub
 
 		''' <summary>
 		''' Deletes selected tracked forums for a user. 
@@ -229,35 +232,47 @@ Namespace DotNetNuke.Modules.Forum.UCP
 			BindThreadData(ThreadPager.PageSize, CurrentPage)
 		End Sub
 
-		''' <summary>
-		''' Used to mimic tab-like interface.
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
-		Protected Sub cmdForum_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdForum.Click
-			tblForum.Visible = True
-			cmdForum.Enabled = False
-			tblThread.Visible = False
-			cmdThread.Enabled = True
-		End Sub
+		'''' <summary>
+		'''' Used to mimic tab-like interface.
+		'''' </summary>
+		'''' <param name="sender"></param>
+		'''' <param name="e"></param>
+		'''' <remarks></remarks>
+		'Protected Sub cmdForum_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdForum.Click
+		'	tblForum.Visible = True
+		'	cmdForum.Enabled = False
+		'	tblThread.Visible = False
+		'	cmdThread.Enabled = True
+		'End Sub
 
-		''' <summary>
-		''' Used to mimic tab-like interface.
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
-		Protected Sub cmdThread_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdThread.Click
-			tblForum.Visible = False
-			cmdForum.Enabled = True
-			tblThread.Visible = True
-			cmdThread.Enabled = False
-		End Sub
+		'''' <summary>
+		'''' Used to mimic tab-like interface.
+		'''' </summary>
+		'''' <param name="sender"></param>
+		'''' <param name="e"></param>
+		'''' <remarks></remarks>
+		'Protected Sub cmdThread_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdThread.Click
+		'	tblForum.Visible = False
+		'	cmdForum.Enabled = True
+		'	tblThread.Visible = True
+		'	cmdThread.Enabled = False
+		'End Sub
 
 #End Region
 
 #Region "Private Methods"
+
+		Private Sub BuildTabs()
+			Dim tabForums As New Telerik.Web.UI.RadTab
+			tabForums.Text = Localization.GetString("TabForums", LocalResourceFile)
+			tabForums.PageViewID = "rpvForums"
+			rtsNotifications.Tabs.Add(tabForums)
+
+			Dim tabThreads As New Telerik.Web.UI.RadTab
+			tabThreads.Text = Localization.GetString("TabThreads", LocalResourceFile)
+			tabThreads.PageViewID = "rpvThreads"
+			rtsNotifications.Tabs.Add(tabThreads)
+		End Sub
 
 		''' <summary>
 		''' Binds a list of tracked forums for a specific user to a datagrid. 
@@ -356,7 +371,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 			Dim str As String
 			objUser = ForumUserController.GetForumUser(LastPostUserID, False, ModuleId, PortalId)
 
-			str = "<span class=""Forum_LastPostText""><a href=""" & Utilities.Links.ContainerViewPostLink(TabId, ForumID, LastApprovedPostID) & """ class=""Forum_LastPostText"">" & Utilities.ForumUtils.GetCreatedDateInfo(LastPostDate, objConfig, "Forum_LastPostText") & "</a>"
+			str = "<span class=""Forum_LastPostText""><a href=""" & Utilities.Links.ContainerViewPostLink(TabId, ForumID, LastApprovedPostID) & """ class=""Forum_LastPostText"">" & Utilities.ForumUtils.GetCreatedDateInfo(LastPostDate, objConfig, "Forum_LastPostText") & "</a><br />"
 			str += Localization.GetString("by", LocalResourceFile) & " "
 			str += "<a href=""" & Utilities.Links.UserPublicProfileLink(TabId, ModuleId, LastPostUserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, LastApprovedUsername) & """ class=""Forum_LastPostText"">" & objUser.DisplayName & "</a>"
 			str += "</span>"

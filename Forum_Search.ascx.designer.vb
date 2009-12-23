@@ -161,15 +161,6 @@ Namespace DotNetNuke.Modules.Forum
 		Protected WithEvents rtvForums As Global.Telerik.Web.UI.RadTreeView
 
 		'''<summary>
-		'''lblInfo control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblInfo As Global.System.Web.UI.WebControls.Label
-
-		'''<summary>
 		'''cmdSearch control.
 		'''</summary>
 		'''<remarks>
@@ -186,5 +177,23 @@ Namespace DotNetNuke.Modules.Forum
 		'''To modify move field declaration from designer file to code-behind file.
 		'''</remarks>
 		Protected WithEvents cmdCancel As Global.System.Web.UI.WebControls.LinkButton
+
+		'''<summary>
+		'''valCompareDates control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents valCompareDates As Global.System.Web.UI.WebControls.CompareValidator
+
+		'''<summary>
+		'''lblInfo control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents lblInfo As Global.System.Web.UI.WebControls.Label
 	End Class
 End Namespace

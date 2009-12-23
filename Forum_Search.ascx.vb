@@ -174,24 +174,6 @@ Namespace DotNetNuke.Modules.Forum
 			End Try
 		End Sub
 
-		'''' <summary>
-		'''' Populates one level of the forum treeview when needed(by groupid)
-		'''' </summary>
-		'''' <param name="source">Object</param>
-		'''' <param name="e"></param>
-		'''' <remarks>
-		'''' </remarks>
-		'''' <history>
-		'''' 	[cpaterra]	2/15/2006	Created
-		'''' </history>
-		'Protected Sub ForumTree_PopulateOnDemand(ByVal source As Object, ByVal e As UI.WebControls.DNNTreeEventArgs) Handles ForumTree.PopulateOnDemand
-		'	Dim cntGroup As New GroupController
-		'	Dim strKey As String = e.Node.Key.Substring(1)			  'trim off type
-		'	Dim objGroup As GroupInfo = cntGroup.GroupGet(CInt(strKey))
-
-		'	ForumTreeview.AddForums(objGroup, e.Node, objConfig, UserId)
-		'End Sub
-
 		''' <summary>
 		''' Builds a string to append the url we are navigation too with.  This will
 		''' build search criteria the screen we are going to needs.

@@ -48,7 +48,7 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _TrackedThread As Boolean = False
 		Dim _url As String
 		Dim newpost As Boolean = False	'[skeel] added 
-		Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
+		'Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
 
 #End Region
 
@@ -460,6 +460,8 @@ Namespace DotNetNuke.Modules.Forum
 			' User might access this page by typing url so better check permission on parent forum
 			If Not (ParentForum.PublicView) Then
 				' The forum is private, see if we have proper view perms here
+				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
+
 				If Not objSecurity.IsAllowedToViewPrivateForum Then
 					HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
 				End If
@@ -993,6 +995,8 @@ Namespace DotNetNuke.Modules.Forum
 			'Remove LoggedOnUserID limitation if wishing to implement Anonymous Posting
 			If (LoggedOnUser.UserID > 0) And (Not ForumId = -1) Then
 				If Not ParentForum.PublicPosting Then
+					Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
+
 					If objSecurity.IsAllowedToStartRestrictedThread Then
 						RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0")	'<Table>            
 						RenderRowBegin(wr) '<tr>
@@ -1098,6 +1102,7 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 
 					'[skeel] moved delete thread here
+					Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
 					If LoggedOnUser.UserID > 0 AndAlso (objSecurity.IsForumModerator) Then
 						_url = Utilities.Links.ThreadDeleteLink(TabID, ModuleID, ForumId, ThreadId, False)
 						RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
@@ -1280,6 +1285,8 @@ Namespace DotNetNuke.Modules.Forum
 				'End If
 			Else
 				' check to see if we are able to show user results
+				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
+
 				If objPoll.ShowResults Or ((LoggedOnUser.UserID = ThreadInfo.StartedByUserID) Or (objSecurity.IsForumModerator)) Then
 					' show results
 					RenderTableBegin(wr, "", "", "", "", "0", "0", "center", "middle", "")  ' <table> 
@@ -1495,6 +1502,8 @@ Namespace DotNetNuke.Modules.Forum
 				RenderCellBegin(wr, "Forum_Header", "", "", "right", "", "", "")	   '<td>
 
 				' if the user is the original author or a moderator AND this is the original post
+				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
+
 				If ((LoggedOnUser.UserID = Post.ParentThread.StartedByUserID) Or (objSecurity.IsForumModerator)) And Post.ParentPostID = 0 Then
 					If Post.ParentThread.ThreadStatus = ThreadStatus.Poll Then
 						ddlThreadStatus.Enabled = False
@@ -1565,6 +1574,7 @@ Namespace DotNetNuke.Modules.Forum
 		Private Sub RenderAuthor(ByVal wr As HtmlTextWriter, ByVal Post As PostInfo, ByVal PostCountIsEven As Boolean, ByVal ShowDetails As Boolean)
 			Dim author As ForumUser = Post.Author
 			Dim authorOnline As Boolean = (author.EnableOnlineStatus AndAlso author.IsOnline AndAlso (ForumControl.objConfig.EnableUsersOnline))
+			Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
 
 			' table to display integrated media, user alias, poster rank, avatar, homepage, and number of posts.
 			RenderTableBegin(wr, "", "Forum_PostAuthorTable", "", "100%", "0", "0", "", "", "")
@@ -1806,6 +1816,8 @@ Namespace DotNetNuke.Modules.Forum
 			Dim strSubject As String = String.Empty
 			Dim strCreatedDate As String = String.Empty
 			Dim strAuthorLocation As String = String.Empty
+
+			Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
 
 			If PostCountIsEven Then
 				detailCellClass = "Forum_PostDetails"
@@ -2332,6 +2344,8 @@ Namespace DotNetNuke.Modules.Forum
 			' new thread button
 			'Remove LoggedOnUserID limitation if wishing to implement Anonymous Posting
 			If (LoggedOnUser.UserID > 0) And (Not ForumId = -1) Then
+				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
+
 				If Not ParentForum.PublicPosting Then
 					If objSecurity.IsAllowedToStartRestrictedThread Then
 
@@ -2607,6 +2621,8 @@ Namespace DotNetNuke.Modules.Forum
 			' First see if the user has the ability to post
 			' remove logged on limitation if wishing to implement Anonymous posting
 			If LoggedOnUser.UserID > 0 Then
+				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
+
 				If (Not HostForum.PublicPosting And objSecurity.IsAllowedToPostRestrictedReply) Or (HostForum.PublicPosting = True) Then
 					' move link (logged user is admin and this is the first post in the thread)
 					'start table for mod/reply buttons

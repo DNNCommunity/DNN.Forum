@@ -174,7 +174,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 
 			objUser = ForumUserController.GetForumUser(LastPostUserID, False, ModuleId, PortalId)
 
-			str = "<span class=""Forum_LastPostText""><a href=""" & Utilities.Links.ContainerViewPostLink(TabId, ForumID, LastApprovedPostID) & """ class=""Forum_LastPostText"">" & Utilities.ForumUtils.GetCreatedDateInfo(LastPostDate, objConfig, "Forum_LastPostText") & "</a>"
+			str = "<span class=""Forum_LastPostText""><a href=""" & Utilities.Links.ContainerViewPostLink(TabId, ForumID, LastApprovedPostID) & """ class=""Forum_LastPostText"">" & Utilities.ForumUtils.GetCreatedDateInfo(LastPostDate, objConfig, "Forum_LastPostText") & "</a><br />"
 			str += Localization.GetString("by", LocalResourceFile) & " "
 			str += "<a href=""" & Utilities.Links.UserPublicProfileLink(TabId, ModuleId, LastPostUserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, LastApprovedUsername) & """ class=""Forum_LastPostText"">" & objUser.DisplayName & "</a>"
 			str += "</span>"

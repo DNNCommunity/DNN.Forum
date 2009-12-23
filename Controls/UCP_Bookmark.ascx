@@ -50,8 +50,8 @@
 					</td>
 				</tr>
 				<tr>
-					<td align="center">
-						<asp:LinkButton ID="cmdRemove" CssClass="CommandButton" runat="server" resourcekey="cmdRemove" EnableViewState="false" />
+					<td align="center" width="100%">
+						<asp:LinkButton ID="cmdRemove" CssClass="CommandButton" runat="server" resourcekey="cmdRemove" EnableViewState="false" Width="200" />
 					</td>
 				</tr>
 			</table>

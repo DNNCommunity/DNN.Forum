@@ -168,10 +168,10 @@
   <data name="Forum.Header" xml:space="preserve">
     <value>Forum</value>
   </data>
-  <data name="cmdForum.Text" xml:space="preserve">
+  <data name="TabForums.Text" xml:space="preserve">
     <value>Forums</value>
   </data>
-  <data name="cmdThread.Text" xml:space="preserve">
+  <data name="TabThreads.Text" xml:space="preserve">
     <value>Threads</value>
   </data>
 </root>

@@ -200,9 +200,10 @@ Namespace DotNetNuke.Modules.Forum
 					lblErrorMsg.Visible = False
 
 					' Treeview forum viewer
-					ForumTreeview.InitializeTree(objConfig, ForumTree)
-					ForumTreeview.SetTreeDefaults(objConfig, ForumTree, False)
-					ForumTreeview.PopulateTree(objConfig, ForumTree, UserId)
+					'ForumTreeview.InitializeTree(objConfig, ForumTree)
+					'ForumTreeview.SetTreeDefaults(objConfig, ForumTree, False)
+					'ForumTreeview.PopulateTree(objConfig, ForumTree, UserId)
+					ForumTreeview.PopulateTelerikTree(objConfig, rtvForums, UserId)
 					SelectDefaultForumTree(_ThreadInfo)
 
 					' Get all posts
@@ -223,20 +224,20 @@ Namespace DotNetNuke.Modules.Forum
 			End Try
 		End Sub
 
-		''' <summary>
-		''' Populates one level of the forum treeview when needed(by groupid)
-		''' </summary>
-		''' <param name="source">Object</param>
-		''' <param name="e">UI.WebControls.DNNTreeEventArgs</param>
-		''' <remarks>
-		''' </remarks>
-		Protected Sub ForumTree_PopulateOnDemand(ByVal source As Object, ByVal e As UI.WebControls.DNNTreeEventArgs) Handles ForumTree.PopulateOnDemand
-			Dim groupController As New GroupController
-			Dim strKey As String = e.Node.Key.Substring(1)			  'trim off type
-			Dim objGroup As GroupInfo = groupController.GroupGet(CInt(strKey))
+		'''' <summary>
+		'''' Populates one level of the forum treeview when needed(by groupid)
+		'''' </summary>
+		'''' <param name="source">Object</param>
+		'''' <param name="e">UI.WebControls.DNNTreeEventArgs</param>
+		'''' <remarks>
+		'''' </remarks>
+		'Protected Sub ForumTree_PopulateOnDemand(ByVal source As Object, ByVal e As UI.WebControls.DNNTreeEventArgs) Handles ForumTree.PopulateOnDemand
+		'	Dim groupController As New GroupController
+		'	Dim strKey As String = e.Node.Key.Substring(1)			  'trim off type
+		'	Dim objGroup As GroupInfo = groupController.GroupGet(CInt(strKey))
 
-			ForumTreeview.AddForums(objGroup, e.Node, objConfig, UserId)
-		End Sub
+		'	ForumTreeview.AddForums(objGroup, e.Node, objConfig, UserId)
+		'End Sub
 
 		''' <summary>
 		''' Moves the thread to a new forum, unless user is attempting to move
@@ -251,9 +252,9 @@ Namespace DotNetNuke.Modules.Forum
 				' See if user selected a forum to move thread to.
 				Dim newForumID As Integer = -1
 
-				For Each objNode As DotNetNuke.UI.WebControls.TreeNode In Me.ForumTree.SelectedTreeNodes
-					Dim strType As String = objNode.Key.Substring(0, 1)
-					Dim iID As Integer = CInt(objNode.Key.Substring(1, objNode.Key.Length - 1))
+				For Each objNode As Telerik.Web.UI.RadTreeNode In Me.rtvForums.CheckedNodes
+					Dim strType As String = objNode.Value.Substring(0, 1)
+					Dim iID As Integer = CInt(objNode.Value.Substring(1, objNode.Value.Length - 1))
 
 					newForumID = iID
 					Exit For
@@ -379,48 +380,13 @@ Namespace DotNetNuke.Modules.Forum
 		''' 	[cpaterra]	9/25/2006	Created
 		''' </history>
 		Private Sub SelectDefaultForumTree(ByVal objThreadInfo As ThreadInfo)
-			Dim GroupController As New GroupController
-			Dim SelectedGroupID As Integer
 			Dim SelectedForumID As Integer
-
-			SelectedGroupID = objThreadInfo.HostForum.GroupID
 			SelectedForumID = objThreadInfo.ForumID
 
-			Dim objGroup As GroupInfo = GroupController.GroupGet(SelectedGroupID)
-			Dim objGroupNode As DotNetNuke.UI.WebControls.TreeNode = ForumTree.TreeNodes.FindNodeByKey("G" & SelectedGroupID.ToString)
-			Dim arrForums As List(Of ForumInfo) = objGroup.AuthorizedForums(UserId, True)
-
-			If ForumTree.PopulateNodesFromClient = True Then
-				' make sure there are authorized forums in this group
-				If arrForums.Count > 0 Then
-					' Populate the group's forums node & possibly select the node
-					ForumTreeview.AddForums(objGroup, objGroupNode, objConfig, UserId)
-					' Expand the group
-					objGroupNode.Expand()
-
-					Dim strKey As String = "F" & SelectedForumID.ToString
-					Dim objNode As DotNetNuke.UI.WebControls.TreeNode = Me.ForumTree.TreeNodes.FindNodeByKey(strKey)
-
-					If Not objNode Is Nothing Then
-						objNode.MakeNodeVisible()
-						objNode.Selected = True
-					End If
-				End If
-			Else
-				If arrForums.Count > 0 Then
-					' Expand the group
-					objGroupNode.Expand()
-
-					' Now select the node
-					Dim strKey As String = "F" & SelectedForumID.ToString
-					Dim objNode As DotNetNuke.UI.WebControls.TreeNode = Me.ForumTree.TreeNodes.FindNodeByKey(strKey)
-
-					If Not objNode Is Nothing Then
-						objNode.MakeNodeVisible()
-						objNode.Selected = True
-					End If
-				End If
-			End If
+			Dim node As Telerik.Web.UI.RadTreeNode = rtvForums.FindNodeByValue("F" + SelectedForumID.ToString)
+			node.Selected = True
+			node.ParentNode.Expanded = True
+			node.Checked = True
 		End Sub
 
 		''' <summary>

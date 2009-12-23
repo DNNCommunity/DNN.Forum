@@ -352,7 +352,6 @@ Namespace DotNetNuke.Modules.Forum
 				For Each objGroup In arrAuthGroups
 					' filter based on group:  - 1 means show all, matching the groupid to the current groupid in the colleciton means show a single one
 					If GroupID = 0 Or GroupID = objGroup.GroupID Then
-
 						'[skeel] Subforums
 						Dim arrForums As List(Of ForumInfo)
 
@@ -364,7 +363,6 @@ Namespace DotNetNuke.Modules.Forum
 
 						' display group only if group contains atleast one authorized forum
 						If arrForums.Count > 0 Then
-
 							'[skeel] Subforums
 							If mForumId > 0 Then
 								RenderGroupForumInfo(wr, objGroup)
@@ -473,7 +471,6 @@ Namespace DotNetNuke.Modules.Forum
 			wr.AddAttribute(HtmlTextWriterAttribute.Width, "1px")
 			wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_AltHeaderCapLeft")
 			wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
-			'wr.Write("&nbsp;")
 			RenderImage(wr, objConfig.GetThemeImageURL("alt_headfoot_height.gif"), "", "")
 			RenderCellEnd(wr) ' </td>
 

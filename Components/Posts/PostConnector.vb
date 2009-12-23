@@ -34,7 +34,7 @@ Namespace DotNetNuke.Modules.Forum
 
 		Private _objConfig As Forum.Config
 
-		Private Property objConfg() As Forum.Config
+		Private Property objConfig() As Forum.Config
 			Get
 				Return _objConfig
 			End Get
@@ -68,10 +68,22 @@ Namespace DotNetNuke.Modules.Forum
 			Return PostingValidation(TabID, ModuleID, PortalID, UserID, PostSubject, PostBody, ForumID, ParentPostID, -1, False, False, False, Forum.ThreadStatus.NotSet, Attachments, "0.0.0.0", -1, -1, False, Provider)
 		End Function
 
-		Public Function ProcessPostBody(ByVal PostBody As String, ByVal objConfig As Forum.Config, ByVal PortalID As Integer, ByVal objAction As PostAction, ByVal UserID As Integer) As String
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="PostBody"></param>
+		''' <param name="myConfig"></param>
+		''' <param name="PortalID"></param>
+		''' <param name="objAction"></param>
+		''' <param name="UserID"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Function ProcessPostBody(ByVal PostBody As String, ByVal myConfig As Forum.Config, ByVal PortalID As Integer, ByVal objAction As PostAction, ByVal UserID As Integer) As String
 			Dim objSecurity As New PortalSecurity
 			Dim ProcessedBody As String
 			Dim fText As Utilities.PostContent
+
+			objConfig = myConfig
 
 			ProcessedBody = objSecurity.InputFilter(PostBody, PortalSecurity.FilterFlag.NoScripting)
 
@@ -196,7 +208,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns>A message indicating what happend, ie. if the post was successfull or why it failed.</returns>
 		''' <remarks>Internal and external methods for posting call this.</remarks>
 		Private Function PostingValidation(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer, ByVal UserID As Integer, ByVal PostSubject As String, ByVal PostBody As String, ByVal ForumID As Integer, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal IsPinned As Boolean, ByVal IsClosed As Boolean, ByVal ReceiveReply As Boolean, ByVal Status As Forum.ThreadStatus, ByVal lstAttachmentFileIDs As String, ByVal RemoteAddress As String, ByVal PollID As Integer, ByVal ThreadIconID As Integer, ByVal IsQuote As Boolean, ByVal Provider As String) As PostMessage
-			Dim objConfig As Forum.Config
 			Dim cntForum As New ForumController
 			Dim objForum As New ForumInfo
 			Dim cntForumUser As New ForumUserController
@@ -767,7 +778,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				' Where are we linking?
 				Dim Link As String = urlMatch.Groups(1).Value
-				Dim LocalURL As String = _objConfig.CurrentPortalSettings.PortalAlias.HTTPAlias
+				Dim LocalURL As String = objConfig.CurrentPortalSettings.PortalAlias.HTTPAlias
 
 				If Link.IndexOf(LocalURL) >= 0 Then
 					'Portal Link - keep "as is"
@@ -823,7 +834,7 @@ Namespace DotNetNuke.Modules.Forum
 				ImageMatch = regExp.Match(mMatch.Value)
 				If ImageMatch.Success = True Then
 					Dim w As Integer = CInt(ImageMatch.Groups(2).Value)
-					If w <= _objConfig.MaxPostImageWidth Then
+					If w <= objConfig.MaxPostImageWidth Then
 						'image okay, return original html string
 						strImage = mMatch.Value
 						GetImage = False
@@ -855,14 +866,14 @@ Namespace DotNetNuke.Modules.Forum
 					response.Close()
 
 					'Check the width
-					If srcImage.Width > _objConfig.MaxPostImageWidth Then
+					If srcImage.Width > objConfig.MaxPostImageWidth Then
 
 						'Calculate new image size
 						Dim w As Integer = srcImage.Width
 						Dim h As Integer = srcImage.Height
-						Dim f As Decimal = CDec(_objConfig.MaxPostImageWidth / w)
+						Dim f As Decimal = CDec(objConfig.MaxPostImageWidth / w)
 						h = CInt(Math.Ceiling(h * f))
-						strImage = "<img src=""" & imageUrl & """ height=""" & CStr(h) & """ width=""" & CStr(_objConfig.MaxPostImageWidth) & """ border=""0"" />"
+						strImage = "<img src=""" & imageUrl & """ height=""" & CStr(h) & """ width=""" & CStr(objConfig.MaxPostImageWidth) & """ border=""0"" />"
 					Else
 						'Width is smaller than allowed, return the original html string
 						strImage = mMatch.Value

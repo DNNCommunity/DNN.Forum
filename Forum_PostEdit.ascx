@@ -247,12 +247,14 @@
                         <td>
                             <table cellpadding="0" cellspacing="0" width="100%">
                                 <tr>
-                                    <td class="Forum_HeaderCapLeft"><asp:Image ID="imgReplyLeft" runat="server" /></td>
+                                    <td class="Forum_HeaderCapLeft">
+								<asp:Image ID="imgReplyLeft" runat="server" />
+							</td>
 	                                <td class="Forum_Header" width="100%">
 		                                <table width="100%" cellpadding="0" cellspacing="0" border="0">
 			                                <tr>
 				                                <td>
-				                                    <asp:image id="imgAltHeaderReply" runat="server"></asp:image>
+				                                    <asp:image id="imgAltHeaderReply" runat="server" />
 				                                </td>
 				                                <td align="left" width="100%">&nbsp;
 				                                    <asp:label id="lblPostReplyHeader" Runat="server" resourcekey="lblPostReplyHeader" CssClass="Forum_HeaderText"></asp:label>&nbsp;
@@ -279,38 +281,56 @@
 		                    </table>
 	                    </td>
                     </tr>
-	            </table>
-	            <table id="tblPreview" runat="server" class="Forum_Border" cellpadding="0" cellspacing="0" width="100%" visible="false">
-				    <tr>
-                        <td class="Forum_HeaderCapLeft"><asp:Image ID="imgPrevSpaceL" runat="server" /></td>
-	                    <td class="Forum_Header" width="99%">
-		                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
-			                    <tr>
-				                    <td>
-				                        <asp:image id="imgAltHeaderPreview" runat="server"></asp:image>
-				                    </td>
-				                    <td align="left" width="100%">&nbsp;
-				                        <asp:label id="lblPreviewHead" Runat="server" resourcekey="lblPreviewHead" CssClass="Forum_HeaderText"></asp:label>
+	          </table>
+			<table id="tblPreview" runat="server" class="Forum_Border" cellpadding="0" cellspacing="0" width="100%" visible="false">
+				<tr>
+					<td>
+						<table cellpadding="0" cellspacing="0" width="100%">
+							<tr>
+								<td class="Forum_HeaderCapLeft">
+									<asp:Image ID="imgPrevSpaceL" runat="server" />
+								</td>
+								<td class="Forum_Header" width="100%">
+									<table width="100%" cellpadding="0" cellspacing="0" border="0">
+										<tr>
+											<td>
+											    <asp:image id="imgAltHeaderPreview" runat="server" />
+											</td>
+											<td align="left" width="100%">&nbsp;
+											    <asp:label id="lblPreviewHead" Runat="server" resourcekey="lblPreviewHead" CssClass="Forum_HeaderText"></asp:label>
+											</td>
+										</tr>
+									</table>
+								</td>
+								<td class="Forum_HeaderCapRight">
+									<asp:Image ID="imgPrevSpaceR" runat="server" />
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<table cellspacing="0" cellpadding="0" border="0" width="100%">
+			                    <tr valign="top">
+				                    <td width="80%" class="Forum_Row_Admin" align="left">
+				                        <div style="padding: 10px 10px 10px 0px">
+				                            <asp:label id="lblPreview" Runat="server" CssClass="Forum_Normal" />
+				                        </div>
 				                    </td>
 			                    </tr>
 		                    </table>
-	                    </td>
-	                    <td class="Forum_HeaderCapRight"><asp:Image ID="imgPrevSpaceR" runat="server" /></td>
-                    </tr>
-				    <tr>
-					    <td class="Forum_Row_Admin" colspan="3" style="padding: 10px 10px 10px 10px">
-					        <asp:label id="lblPreview" Runat="server" CssClass="Forum_Normal"></asp:label>
-					    </td>
-				    </tr>
-	            </table>
-	        </td>
-	    </tr>
-	    <tr id="rowModerate" runat="server" visible="false">
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr id="rowModerate" runat="server" visible="false">
 		   <td align="center" width="100%">
                 <asp:label id="lblModerate" Runat="server" CssClass="Forum_NormalBold" resourcekey="lblModerate"/>
 		   </td>
 	    </tr>
-	    <tr>
+	<tr>
 	        <td align="center" width="100%">
 			  <asp:linkbutton cssclass="CommandButton" id="cmdBackToForum" runat="server" resourcekey="cmdBackToForum"></asp:linkbutton>
 	            <asp:linkbutton cssclass="CommandButton" id="cmdSubmit" runat="server" resourcekey="cmdSubmit"></asp:linkbutton>&nbsp;
@@ -319,10 +339,10 @@
 	            <asp:linkbutton cssclass="CommandButton" id="cmdCancel" runat="server" resourcekey="cmdCancel" CausesValidation="False"></asp:linkbutton>
 		   </td>
 	    </tr>
-	    <tr>
-		    <td align="center" width="100%">
-			    <asp:label id="lblInfo" Runat="server" CssClass="NormalRed"></asp:label>
-			</td>
-	    </tr>
-    </table>
+	<tr>
+		<td align="center" width="100%">
+			<asp:label id="lblInfo" Runat="server" CssClass="NormalRed"></asp:label>
+		</td>
+	</tr>
+</table>
 </asp:Panel>

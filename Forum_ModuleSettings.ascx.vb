@@ -81,12 +81,7 @@ Namespace DotNetNuke.Modules.Forum
 						rowDefaultForum.Visible = True
 					End If
 
-					'ForumTreeview.InitializeTree(mForumConfig, DefaultForumTree)
-					'ForumTreeview.SetTreeDefaults(mForumConfig, DefaultForumTree, False)
-					ForumTreeview.PopulateTree(mForumConfig, DefaultForumTree, UserId)
-
-					' Register scripts (breakd DNNTree if loaded)
-					'Utils.RegisterPageScripts(Page, ForumConfig)
+					ForumTreeview.PopulateTelerikTree(mForumConfig, rtvForums, UserId)
 
 					' Bind the default forum
 					If CType(TabModuleSettings("defaultforumid"), String) <> String.Empty And (Not cboGroup.SelectedValue = "-1") Then
@@ -116,9 +111,9 @@ Namespace DotNetNuke.Modules.Forum
 
 				If Not CType(cboGroup.SelectedItem.Value, Integer) = -1 Then
 					' Set the default forumid (tree) can only be a single selction here
-					For Each objNode As DotNetNuke.UI.WebControls.TreeNode In Me.DefaultForumTree.SelectedTreeNodes
-						Dim strType As String = objNode.Key.Substring(0, 1)
-						Dim iID As Integer = CInt(objNode.Key.Substring(1, objNode.Key.Length - 1))
+					For Each objNode As Telerik.Web.UI.RadTreeNode In Me.rtvForums.CheckedNodes
+						Dim strType As String = objNode.Value.Substring(0, 1)
+						Dim iID As Integer = CInt(objNode.Value.Substring(1, objNode.Value.Length - 1))
 
 						defaultID = iID
 						Exit For
@@ -144,49 +139,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="DefaultForumId"></param>
 		''' <remarks></remarks>
 		Private Sub SelectDefaultForumTree(ByVal DefaultForumId As Integer)
-			Dim GroupController As New GroupController
-			Dim DefaultGroupID As Integer
-
-			Dim objForumCnt As New ForumController
-			Dim objForumInfo As New ForumInfo
-			objForumInfo = objForumCnt.GetForumInfoCache(DefaultForumId)
-			DefaultGroupID = objForumInfo.GroupID
-
-			Dim objGroup As GroupInfo = GroupController.GroupGet(DefaultGroupID)
-			Dim objGroupNode As DotNetNuke.UI.WebControls.TreeNode = DefaultForumTree.TreeNodes.FindNodeByKey("G" & DefaultGroupID)
-			Dim arrForums As List(Of ForumInfo) = objGroup.AuthorizedForums(UserId, True)
-
-			If DefaultForumTree.PopulateNodesFromClient = True Then
-				' make sure there are authorized forums in this gorup
-				If arrForums.Count > 0 Then
-					' Populate the group's forums node & possibly select the node
-					ForumTreeview.AddForums(objGroup, objGroupNode, ForumConfig, UserId)
-					' Expand the group
-					objGroupNode.Expand()
-
-					Dim strKey As String = "F" & DefaultForumId.ToString
-					Dim objNode As DotNetNuke.UI.WebControls.TreeNode = Me.DefaultForumTree.TreeNodes.FindNodeByKey(strKey)
-
-					If Not objNode Is Nothing Then
-						objNode.MakeNodeVisible()
-						objNode.Selected = True
-					End If
-				End If
-			Else
-				If arrForums.Count > 0 Then
-					' Expand the group
-					objGroupNode.Expand()
-
-					' Now select the node
-					Dim strKey As String = "F" & DefaultForumId.ToString
-					Dim objNode As DotNetNuke.UI.WebControls.TreeNode = Me.DefaultForumTree.TreeNodes.FindNodeByKey(strKey)
-
-					If Not objNode Is Nothing Then
-						objNode.MakeNodeVisible()
-						objNode.Selected = True
-					End If
-				End If
-			End If
+			Dim node As Telerik.Web.UI.RadTreeNode = rtvForums.FindNodeByValue("F" + DefaultForumId.ToString)
+			node.Selected = True
+			node.ParentNode.Expanded = True
+			node.Checked = True
 		End Sub
 
 		''' <summary>
@@ -251,37 +207,6 @@ Namespace DotNetNuke.Modules.Forum
 			If mForumConfig Is Nothing Then
 				mForumConfig = ForumConfig()
 			End If
-		End Sub
-
-		''' <summary>
-		''' Populates one level of the forum treeview when needed(by groupid)
-		''' </summary>
-		''' <param name="source"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
-		Private Sub DefaultForumTree_PopulateOnDemand(ByVal source As Object, ByVal e As UI.WebControls.DNNTreeEventArgs) Handles DefaultForumTree.PopulateOnDemand
-			Dim groupController As New GroupController
-			Dim strKey As String = e.Node.Key.Substring(1)			  'trim off type
-			Dim objGroup As GroupInfo = groupController.GroupGet(CInt(strKey))
-
-			ForumTreeview.AddForums(objGroup, e.Node, ForumConfig, UserId)
-		End Sub
-
-		''' <summary>
-		''' Handles when the group selector ddl is switched.
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
-		Protected Sub cboGroup_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboGroup.SelectedIndexChanged
-			If Not CType(cboGroup.SelectedValue, Integer) = -1 Then
-				rowDefaultForum.Visible = True
-				ForumTreeview.PopulateTree(mForumConfig, DefaultForumTree, UserId)
-			Else
-				' Its the aggregated view, don't show the forum tree row
-				rowDefaultForum.Visible = False
-			End If
-			DefaultForumTree.SelectedTreeNodes.Clear()
 		End Sub
 
 #End Region
