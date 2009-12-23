@@ -65,6 +65,8 @@ Namespace DotNetNuke.Modules.Forum
 		Private rblstPoll As RadioButtonList
 		Private cmdVote As LinkButton
 		Private cmdBookmark As System.Web.UI.WebControls.ImageButton '[skeel] added
+		Private txtQuickReply As System.Web.UI.WebControls.TextBox
+		Private cmdSubmit As System.Web.UI.WebControls.LinkButton
 
 #End Region
 
@@ -360,6 +362,59 @@ Namespace DotNetNuke.Modules.Forum
 			' update user answer cache - 
 		End Sub
 
+		Protected Sub cmdSubmit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+			If Len(txtQuickReply.Text) > 0 Then
+				Dim RemoteAddress As String = "0.0.0.0"
+
+				'If Not Request.ServerVariables("REMOTE_ADDR") Is Nothing Then
+				'	RemoteAddress = Request.ServerVariables("REMOTE_ADDR")
+				'End If
+
+				Dim cntPostConnect As New PostConnector
+				Dim PostMessage As PostMessage
+
+				PostMessage = cntPostConnect.SubmitInternalPost(TabID, ModuleID, PortalID, LoggedOnUser.UserID, ThreadInfo.Subject, txtQuickReply.Text, ForumId, ThreadInfo.ThreadID, -1, ThreadInfo.IsPinned, False, False, ThreadInfo.ThreadStatus, "", RemoteAddress, ThreadInfo.PollID, ThreadInfo.ThreadIconID, False)
+
+				Select Case PostMessage
+					Case PostMessage.PostApproved
+						'	Dim ReturnURL As String = NavigateURL()
+
+						'	If objModSecurity.IsModerator Then
+						'		If Not ViewState("UrlReferrer") Is Nothing Then
+						'			ReturnURL = (CType(ViewState("UrlReferrer"), String))
+						'		Else
+						'			ReturnURL = Utilities.Links.ContainerViewForumLink(TabID, objForum.ForumID, False)
+						'		End If
+						'	Else
+						'		ReturnURL = Utilities.Links.ContainerViewForumLink(TabID, ForumId, False)
+						'	End If
+
+						'	Response.Redirect(ReturnURL, False)
+					Case PostMessage.PostModerated
+						'tblNewPost.Visible = False
+						'tblOldPost.Visible = False
+						'tblPreview.Visible = False
+						'cmdCancel.Visible = False
+						'cmdBackToEdit.Visible = False
+						'cmdSubmit.Visible = False
+						'cmdPreview.Visible = False
+						'cmdBackToForum.Visible = True
+						'rowModerate.Visible = True
+						'tblPoll.Visible = False
+					Case Else
+						'lblInfo.Visible = True
+						'lblInfo.Text = Localization.GetString(PostMessage.ToString() + ".Text", LocalResourceFile)
+				End Select
+				txtQuickReply.Text = ""
+				'Forum.ThreadInfo.ResetThreadInfo(ThreadId)
+
+				Dim ctlPost As New PostController
+				_PostCollection = ctlPost.PostGetAll(ThreadId, PostPage, ForumControl.PostsPerPage, False, ForumControl.Descending, PortalID)
+			Else
+				' there is no content
+			End If
+		End Sub
+
 #End Region
 
 #Region "Public Methods"
@@ -587,6 +642,23 @@ Namespace DotNetNuke.Modules.Forum
 				ddlViewDescending.Visible = False
 			End If
 
+			' Quick Reply
+			Me.txtQuickReply = New TextBox
+			With txtQuickReply
+				.CssClass = "Forum_NormalTextBox"
+				.ID = "txtQuickReply"
+				.Width = Unit.Percentage(99)
+				.Height = 150
+				.TextMode = TextBoxMode.MultiLine
+			End With
+
+			Me.cmdSubmit = New LinkButton
+			With cmdSubmit
+				.CssClass = "Forum_Link"
+				.ID = "cmdSubmit"
+				.Text = ForumControl.LocalizedText("cmdSubmit")
+			End With
+
 			BindControls()
 			AddControlHandlers()
 			AddControlsToTree()
@@ -620,6 +692,7 @@ Namespace DotNetNuke.Modules.Forum
 			RenderThread(wr)
 			RenderFooter(wr)
 			RenderBottomBreadCrumbRow(wr)
+			RenderQuickReply(wr)
 			RenderTableEnd(wr)
 
 			'increment the thread view count
@@ -671,6 +744,7 @@ Namespace DotNetNuke.Modules.Forum
 			Try
 				AddHandler ddlViewDescending.SelectedIndexChanged, AddressOf ddlViewDescending_SelectedIndexChanged
 				AddHandler cmdForumSearch.Click, AddressOf cmdForumSearch_Click
+				AddHandler cmdSubmit.Click, AddressOf cmdSubmit_Click
 
 				If ForumControl.LoggedOnUserID > 0 Then
 					AddHandler chkEmail.CheckedChanged, AddressOf chkEmail_CheckedChanged
@@ -715,10 +789,11 @@ Namespace DotNetNuke.Modules.Forum
 					Controls.Add(trcRating)
 				End If
 
-				'Controls.Add(ddlForumView)
 				Controls.Add(ddlViewDescending)
 				Controls.Add(txtForumSearch)
 				Controls.Add(cmdForumSearch)
+				Controls.Add(txtQuickReply)
+				Controls.Add(cmdSubmit)
 
 			Catch exc As Exception
 				LogException(exc)
@@ -1572,190 +1647,191 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>
 		''' </remarks>
 		Private Sub RenderAuthor(ByVal wr As HtmlTextWriter, ByVal Post As PostInfo, ByVal PostCountIsEven As Boolean, ByVal ShowDetails As Boolean)
-			Dim author As ForumUser = Post.Author
-			Dim authorOnline As Boolean = (author.EnableOnlineStatus AndAlso author.IsOnline AndAlso (ForumControl.objConfig.EnableUsersOnline))
-			Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
+			If Not Post Is Nothing Then
+				Dim author As ForumUser = Post.Author
+				Dim authorOnline As Boolean = (author.EnableOnlineStatus AndAlso author.IsOnline AndAlso (ForumControl.objConfig.EnableUsersOnline))
+				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
 
-			' table to display integrated media, user alias, poster rank, avatar, homepage, and number of posts.
-			RenderTableBegin(wr, "", "Forum_PostAuthorTable", "", "100%", "0", "0", "", "", "")
+				' table to display integrated media, user alias, poster rank, avatar, homepage, and number of posts.
+				RenderTableBegin(wr, "", "Forum_PostAuthorTable", "", "100%", "0", "0", "", "", "")
 
-			' row to display user alias and online status
-			RenderRowBegin(wr) '<tr> 
+				' row to display user alias and online status
+				RenderRowBegin(wr) '<tr> 
 
-			'link to user profile, always display in both views
-			_url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, author.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, author.Username)
-			RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td>
+				'link to user profile, always display in both views
+				_url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, author.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, author.Username)
+				RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td>
 
-			' display user online status
-			If objConfig.EnableUsersOnline Then
-				RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "") ' <table>
-				RenderRowBegin(wr) ' <tr>
-				RenderCellBegin(wr, "", "", "", "", "middle", "", "")	' <td> 
-				If authorOnline Then
-					Dim imgURL As String = objConfig.GetThemeImageURL("s_online.") & objConfig.ImageExtension
-					RenderImage(wr, imgURL, ForumControl.LocalizedText("imgOnline"), "")
-				Else
-					Dim imgURL As String = objConfig.GetThemeImageURL("s_offline.") & objConfig.ImageExtension
-					RenderImage(wr, imgURL, ForumControl.LocalizedText("imgOffline"), "")
-				End If
-				RenderCellEnd(wr) ' </td>
-
-				RenderCellBegin(wr, "", "", "", "", "middle", "", "")	 ' <td>
-				wr.Write("&nbsp;")
-				RenderTitleLinkButton(wr, _url, author.SiteAlias, "Forum_Profile", ForumControl.LocalizedText("ViewProfile"))
-				RenderCellEnd(wr) ' </td>
-				RenderRowEnd(wr) ' </tr>
-				RenderTableEnd(wr) ' </table>
-			Else
-				RenderTitleLinkButton(wr, _url, author.SiteAlias, "Forum_Profile", ForumControl.LocalizedText("ViewProfile"))
-			End If
-
-			RenderCellEnd(wr) ' </td>
-			RenderRowEnd(wr) ' </tr> (end user alias/online)  
-
-			If ShowDetails Then	' Display author details only in flatView
-
-				' display user ranking 
-				If (objConfig.Ranking) Then
-					Dim authorRank As PosterRank = Utilities.ForumUtils.GetRank(author, ForumControl.objConfig)
-					Dim rankImage As String = String.Format("Rank_{0}." & objConfig.ImageExtension, CType(authorRank, Integer).ToString)
-					Dim rankURL As String = objConfig.GetThemeImageURL(rankImage)
-					Dim RankTitle As String = Utilities.ForumUtils.GetRankTitle(authorRank, objConfig)
-
-					RenderRowBegin(wr) ' <tr> (start ranking row)
-					RenderCellBegin(wr, "", "", "", "", "top", "", "") ' <td>
-					If objConfig.EnableRankingImage Then
-						RenderImage(wr, rankURL, RankTitle, "")
+				' display user online status
+				If objConfig.EnableUsersOnline Then
+					RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "") ' <table>
+					RenderRowBegin(wr) ' <tr>
+					RenderCellBegin(wr, "", "", "", "", "middle", "", "")	' <td> 
+					If authorOnline Then
+						Dim imgURL As String = objConfig.GetThemeImageURL("s_online.") & objConfig.ImageExtension
+						RenderImage(wr, imgURL, ForumControl.LocalizedText("imgOnline"), "")
 					Else
-						RenderDivBegin(wr, "", "Forum_NormalSmall")
-						wr.Write(RankTitle)
-						RenderDivEnd(wr)
+						Dim imgURL As String = objConfig.GetThemeImageURL("s_offline.") & objConfig.ImageExtension
+						RenderImage(wr, imgURL, ForumControl.LocalizedText("imgOffline"), "")
 					End If
+					RenderCellEnd(wr) ' </td>
+
+					RenderCellBegin(wr, "", "", "", "", "middle", "", "")	 ' <td>
+					wr.Write("&nbsp;")
+					RenderTitleLinkButton(wr, _url, author.SiteAlias, "Forum_Profile", ForumControl.LocalizedText("ViewProfile"))
+					RenderCellEnd(wr) ' </td>
+					RenderRowEnd(wr) ' </tr>
+					RenderTableEnd(wr) ' </table>
+				Else
+					RenderTitleLinkButton(wr, _url, author.SiteAlias, "Forum_Profile", ForumControl.LocalizedText("ViewProfile"))
+				End If
+
+				RenderCellEnd(wr) ' </td>
+				RenderRowEnd(wr) ' </tr> (end user alias/online)  
+
+				If ShowDetails Then	' Display author details only in flatView
+					' display user ranking 
+					If (objConfig.Ranking) Then
+						Dim authorRank As PosterRank = Utilities.ForumUtils.GetRank(author, ForumControl.objConfig)
+						Dim rankImage As String = String.Format("Rank_{0}." & objConfig.ImageExtension, CType(authorRank, Integer).ToString)
+						Dim rankURL As String = objConfig.GetThemeImageURL(rankImage)
+						Dim RankTitle As String = Utilities.ForumUtils.GetRankTitle(authorRank, objConfig)
+
+						RenderRowBegin(wr) ' <tr> (start ranking row)
+						RenderCellBegin(wr, "", "", "", "", "top", "", "") ' <td>
+						If objConfig.EnableRankingImage Then
+							RenderImage(wr, rankURL, RankTitle, "")
+						Else
+							RenderDivBegin(wr, "", "Forum_NormalSmall")
+							wr.Write(RankTitle)
+							RenderDivEnd(wr)
+						End If
+						RenderCellEnd(wr) ' </td>
+						RenderRowEnd(wr) ' </tr>
+					End If
+
+					' display user avatar
+					If objConfig.EnableUserAvatar AndAlso (Not author.AvatarComplete = String.Empty) Then
+						If author.AvatarComplete <> String.Empty Then
+							RenderRowBegin(wr) ' <tr> (start avatar row)
+							RenderCellBegin(wr, "Forum_UserAvatar", "", "", "", "top", "", "") ' <td>
+							wr.Write("<br />")
+							If objConfig.EnableProfileAvatar Then
+								Dim WebVisibility As UserVisibilityMode
+								WebVisibility = author.Profile.ProfileProperties(objConfig.AvatarProfilePropName).Visibility
+
+								Select Case WebVisibility
+									Case UserVisibilityMode.AdminOnly
+
+										If objSecurity.IsForumAdmin Then
+											RenderProfileAvatar(author, wr)
+										End If
+									Case UserVisibilityMode.AllUsers
+										RenderProfileAvatar(author, wr)
+									Case UserVisibilityMode.MembersOnly
+										If LoggedOnUser.UserID > 0 Then
+											RenderProfileAvatar(author, wr)
+										End If
+								End Select
+							Else
+								RenderImage(wr, author.AvatarComplete, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "")
+							End If
+
+							RenderCellEnd(wr) ' </td>
+							RenderRowEnd(wr) ' </tr>
+						End If
+					End If
+
+					' display system avatars (ie. DNN Core avatar)
+					If objConfig.EnableSystemAvatar AndAlso (Not author.SystemAvatars = String.Empty) Then
+						Dim SystemAvatar As String
+						For Each SystemAvatar In author.SystemAvatarsComplete.Trim(";"c).Split(";"c)
+							If SystemAvatar.Length > 0 AndAlso (Not SystemAvatar.ToLower = "standard") Then
+								Dim SystemAvatarUrl As String = SystemAvatar
+								RenderRowBegin(wr) ' <tr> (start system avatar row) 
+								RenderCellBegin(wr, "Forum_NormalSmall", "", "", "", "top", "", "") ' <td>
+								wr.Write("<br />")
+								RenderImage(wr, SystemAvatarUrl, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "")
+								RenderCellEnd(wr) ' </td>
+								RenderRowEnd(wr) ' </tr>
+							End If
+						Next
+
+					End If
+
+					'Now for RoleBased Avatars
+					If objConfig.EnableRoleAvatar AndAlso (Not author.RoleAvatar = ";") Then
+						Dim RoleAvatar As String
+						For Each RoleAvatar In author.RoleAvatarComplete.Trim(";"c).Split(";"c)
+							If RoleAvatar.Length > 0 AndAlso (Not RoleAvatar.ToLower = "standard") Then
+								Dim RoleAvatarUrl As String = RoleAvatar
+								RenderRowBegin(wr) ' <tr> (start system avatar row) 
+								RenderCellBegin(wr, "Forum_NormalSmall", "", "", "", "top", "", "") ' <td>
+								wr.Write("<br />")
+								RenderImage(wr, RoleAvatarUrl, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "")
+								RenderCellEnd(wr) ' </td>
+								RenderRowEnd(wr) ' </tr>
+							End If
+						Next
+					End If
+
+					'Author information
+					RenderRowBegin(wr) ' <tr> 
+					RenderCellBegin(wr, "Forum_NormalSmall", "", "", "", "top", "", "")	' <td>
+
+					'Homepage
+					Dim WebSiteVisibility As UserVisibilityMode
+					WebSiteVisibility = author.Profile.ProfileProperties("Website").Visibility
+
+					Select Case WebSiteVisibility
+						Case UserVisibilityMode.AdminOnly
+
+							If objSecurity.IsForumAdmin Then
+								RenderWebSiteLink(author, wr)
+							End If
+						Case UserVisibilityMode.AllUsers
+							RenderWebSiteLink(author, wr)
+						Case UserVisibilityMode.MembersOnly
+							If LoggedOnUser.UserID > 0 Then
+								RenderWebSiteLink(author, wr)
+							End If
+					End Select
+
+					'Region
+					Dim CountryVisibility As UserVisibilityMode
+					CountryVisibility = author.Profile.ProfileProperties("Country").Visibility
+
+					Select Case CountryVisibility
+						Case UserVisibilityMode.AdminOnly
+
+							If objSecurity.IsForumAdmin Then
+								RenderCountry(author, wr)
+							End If
+						Case UserVisibilityMode.AllUsers
+							RenderCountry(author, wr)
+						Case UserVisibilityMode.MembersOnly
+							If LoggedOnUser.UserID > 0 Then
+								RenderCountry(author, wr)
+							End If
+					End Select
+
+					'Joined
+					Dim strJoinedDate As String
+					Dim displayCreatedDate As DateTime = Utilities.ForumUtils.ConvertTimeZone(CType(author.Membership.CreatedDate, DateTime), objConfig)
+					strJoinedDate = ForumControl.LocalizedText("Joined") & ": " & displayCreatedDate.ToShortDateString
+					wr.Write("<br />" & strJoinedDate)
+
+					'Post count
+					RenderDivBegin(wr, "spAuthorPostCount", "Forum_NormalSmall")
+					wr.Write(ForumControl.LocalizedText("PostCount").Replace("[PostCount]", author.PostCount.ToString))
+					RenderDivEnd(wr)
+
 					RenderCellEnd(wr) ' </td>
 					RenderRowEnd(wr) ' </tr>
 				End If
 
-				' display user avatar
-				If objConfig.EnableUserAvatar AndAlso (Not author.AvatarComplete = String.Empty) Then
-					If author.AvatarComplete <> String.Empty Then
-						RenderRowBegin(wr) ' <tr> (start avatar row)
-						RenderCellBegin(wr, "Forum_UserAvatar", "", "", "", "top", "", "") ' <td>
-						wr.Write("<br />")
-						If objConfig.EnableProfileAvatar Then
-							Dim WebVisibility As UserVisibilityMode
-							WebVisibility = author.Profile.ProfileProperties(objConfig.AvatarProfilePropName).Visibility
-
-							Select Case WebVisibility
-								Case UserVisibilityMode.AdminOnly
-
-									If objSecurity.IsForumAdmin Then
-										RenderProfileAvatar(author, wr)
-									End If
-								Case UserVisibilityMode.AllUsers
-									RenderProfileAvatar(author, wr)
-								Case UserVisibilityMode.MembersOnly
-									If LoggedOnUser.UserID > 0 Then
-										RenderProfileAvatar(author, wr)
-									End If
-							End Select
-						Else
-							RenderImage(wr, author.AvatarComplete, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "")
-						End If
-
-						RenderCellEnd(wr) ' </td>
-						RenderRowEnd(wr) ' </tr>
-					End If
-				End If
-
-				' display system avatars (ie. DNN Core avatar)
-				If objConfig.EnableSystemAvatar AndAlso (Not author.SystemAvatars = String.Empty) Then
-					Dim SystemAvatar As String
-					For Each SystemAvatar In author.SystemAvatarsComplete.Trim(";"c).Split(";"c)
-						If SystemAvatar.Length > 0 AndAlso (Not SystemAvatar.ToLower = "standard") Then
-							Dim SystemAvatarUrl As String = SystemAvatar
-							RenderRowBegin(wr) ' <tr> (start system avatar row) 
-							RenderCellBegin(wr, "Forum_NormalSmall", "", "", "", "top", "", "") ' <td>
-							wr.Write("<br />")
-							RenderImage(wr, SystemAvatarUrl, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "")
-							RenderCellEnd(wr) ' </td>
-							RenderRowEnd(wr) ' </tr>
-						End If
-					Next
-
-				End If
-
-				'Now for RoleBased Avatars
-				If objConfig.EnableRoleAvatar AndAlso (Not author.RoleAvatar = ";") Then
-					Dim RoleAvatar As String
-					For Each RoleAvatar In author.RoleAvatarComplete.Trim(";"c).Split(";"c)
-						If RoleAvatar.Length > 0 AndAlso (Not RoleAvatar.ToLower = "standard") Then
-							Dim RoleAvatarUrl As String = RoleAvatar
-							RenderRowBegin(wr) ' <tr> (start system avatar row) 
-							RenderCellBegin(wr, "Forum_NormalSmall", "", "", "", "top", "", "") ' <td>
-							wr.Write("<br />")
-							RenderImage(wr, RoleAvatarUrl, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "")
-							RenderCellEnd(wr) ' </td>
-							RenderRowEnd(wr) ' </tr>
-						End If
-					Next
-				End If
-
-				'Author information
-				RenderRowBegin(wr) ' <tr> 
-				RenderCellBegin(wr, "Forum_NormalSmall", "", "", "", "top", "", "")	' <td>
-
-				'Homepage
-				Dim WebSiteVisibility As UserVisibilityMode
-				WebSiteVisibility = author.Profile.ProfileProperties("Website").Visibility
-
-				Select Case WebSiteVisibility
-					Case UserVisibilityMode.AdminOnly
-
-						If objSecurity.IsForumAdmin Then
-							RenderWebSiteLink(author, wr)
-						End If
-					Case UserVisibilityMode.AllUsers
-						RenderWebSiteLink(author, wr)
-					Case UserVisibilityMode.MembersOnly
-						If LoggedOnUser.UserID > 0 Then
-							RenderWebSiteLink(author, wr)
-						End If
-				End Select
-
-				'Region
-				Dim CountryVisibility As UserVisibilityMode
-				CountryVisibility = author.Profile.ProfileProperties("Country").Visibility
-
-				Select Case CountryVisibility
-					Case UserVisibilityMode.AdminOnly
-
-						If objSecurity.IsForumAdmin Then
-							RenderCountry(author, wr)
-						End If
-					Case UserVisibilityMode.AllUsers
-						RenderCountry(author, wr)
-					Case UserVisibilityMode.MembersOnly
-						If LoggedOnUser.UserID > 0 Then
-							RenderCountry(author, wr)
-						End If
-				End Select
-
-				'Joined
-				Dim strJoinedDate As String
-				Dim displayCreatedDate As DateTime = Utilities.ForumUtils.ConvertTimeZone(CType(author.Membership.CreatedDate, DateTime), objConfig)
-				strJoinedDate = ForumControl.LocalizedText("Joined") & ": " & displayCreatedDate.ToShortDateString
-				wr.Write("<br />" & strJoinedDate)
-
-				'Post count
-				RenderDivBegin(wr, "spAuthorPostCount", "Forum_NormalSmall")
-				wr.Write(ForumControl.LocalizedText("PostCount").Replace("[PostCount]", author.PostCount.ToString))
-				RenderDivEnd(wr)
-
-				RenderCellEnd(wr) ' </td>
-				RenderRowEnd(wr) ' </tr>
+				RenderTableEnd(wr) ' </table>  (End of user avatar/alias table, close td next)
 			End If
-
-			RenderTableEnd(wr) ' </table>  (End of user avatar/alias table, close td next)
 		End Sub
 
 		''' <summary>
@@ -2605,6 +2681,29 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="wr"></param>
+		''' <remarks></remarks>
+		Private Sub RenderQuickReply(ByVal wr As HtmlTextWriter)
+			If (LoggedOnUser.UserID > 0) And (Not ForumId = -1) Then
+				If Not ParentForum.PublicPosting Then
+					If LoggedOnUser.IsBanned = False And ThreadInfo.IsClosed = False Then
+						Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
+						If objSecurity.IsAllowedToPostRestrictedReply Then
+							QuickReply(wr)
+						End If
+					End If
+				Else
+					If LoggedOnUser.IsBanned = False And ThreadInfo.IsClosed = False Then
+						Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
+						QuickReply(wr)
+					End If
+				End If
+			End If
+		End Sub
+
+		''' <summary>
 		''' Renders available post reply/quote/moderate, etc.  buttons
 		''' </summary>
 		''' <param name="wr"></param>
@@ -2935,6 +3034,82 @@ Namespace DotNetNuke.Modules.Forum
 		''' </history>
 		Private Sub RenderPostBookmark(ByVal wr As HtmlTextWriter, ByVal BookMark As String)
 			wr.Write("<a name=""" & BookMark & """></a>")
+		End Sub
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="wr"></param>
+		''' <remarks></remarks>
+		Private Sub QuickReply(ByVal wr As HtmlTextWriter)
+			RenderRowBegin(wr) '<tr>
+			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
+
+			RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td> 
+			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0") ' <table>
+			RenderRowBegin(wr) ' <tr>
+			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "Forum_HeaderCapLeft", "") ' <td><img/></td>
+
+			RenderCellBegin(wr, "Forum_Header", "", "", "", "", "", "")	' <td>
+			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0") ' <table>
+			RenderRowBegin(wr) ' <tr>
+
+			RenderCellBegin(wr, "", "", "100%", "", "", "", "")  ' <td>
+			RenderDivBegin(wr, "", "Forum_HeaderText") ' <span>
+			wr.Write("&nbsp;" & "Quick Reply")
+			RenderDivEnd(wr) ' </span>
+			RenderCellEnd(wr) ' </td> 
+			RenderRowEnd(wr) ' </tr>   
+			RenderTableEnd(wr) ' </table>  
+			RenderCellEnd(wr) ' </td>   
+			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "Forum_HeaderCapRight", "") ' <td><img/></td>
+			RenderRowEnd(wr) ' </tr>
+			RenderTableEnd(wr) ' </table>
+			RenderCellEnd(wr) ' </td>
+			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
+			RenderRowEnd(wr) ' </tr>  
+
+			' Show quick reply textbox row
+			RenderRowBegin(wr) '<tr>
+			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
+
+			RenderCellBegin(wr, "Forum_UCP_HeaderInfo", "", "", "left", "middle", "", "") ' <td> 
+			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0") ' <table>
+			RenderRowBegin(wr) ' <tr>
+
+			RenderCellBegin(wr, "", "", "125px", "", "top", "", "")	' <td>
+			RenderDivBegin(wr, "", "Forum_NormalBold") ' <span>
+			wr.Write("&nbsp;" & "Body")
+			RenderDivEnd(wr) ' </span>
+			RenderCellEnd(wr) ' </td> 
+
+			RenderCellBegin(wr, "", "", "", "left", "", "", "")	' <td>
+			txtQuickReply.RenderControl(wr)
+			RenderCellEnd(wr) ' </td> 
+
+			RenderRowEnd(wr) ' </tr>
+			RenderTableEnd(wr) ' </table>
+			RenderCellEnd(wr) ' </td>
+			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
+			RenderRowEnd(wr) ' </tr>  
+
+			' Submit Row
+			RenderRowBegin(wr) '<tr>
+			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
+
+			RenderCellBegin(wr, "", "", "", "center", "middle", "", "")	' <td> 
+			RenderTableBegin(wr, "", "", "", "125px", "0", "0", "", "", "0")	' <table>
+			RenderRowBegin(wr) ' <tr>
+
+
+			RenderCellBegin(wr, "Forum_NavBarButton", "", "125px", "", "", "", "")	' <td>
+			cmdSubmit.RenderControl(wr)
+			RenderCellEnd(wr) ' </td> 
+			RenderRowEnd(wr) ' </tr>
+			RenderTableEnd(wr) ' </table>
+			RenderCellEnd(wr) ' </td> 
+			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
+			RenderRowEnd(wr) ' </tr>  
 		End Sub
 
 #End Region

@@ -100,12 +100,14 @@ function pageLoad()
 											<td align="left" width="100%" class="Forum_Header">
 												&nbsp;<asp:Label CssClass="Forum_HeaderText" runat="server" ID="lblSubject" Text='<%# FormatCreatedDate(DataBinder.Eval(Container.DataItem, "CreatedDate")) %>' />
     										</td>
-    											<td class="Forum_HeaderCapRight"><asp:image ImageUrl='<%# SpacerImage() %>' runat="server" ID="imgSpacer2"/></td>
+    											<td class="Forum_HeaderCapRight">
+    												<asp:image ImageUrl='<%# SpacerImage() %>' runat="server" ID="imgSpacer2"/>
+    											</td>
 										</tr>
 									</table>
 								</td>
 							</tr>
-														<tr>
+							<tr>
 								<td class="Forum_Row_AdminBox">
 									<table cellpadding="0" cellspacing="0" border="0" width="100%" id="tblPost">
 										<tr>

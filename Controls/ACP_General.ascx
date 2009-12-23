@@ -7,92 +7,92 @@
 		</td>
      </tr>
      <tr>
-		<td>    
+		<td class="Forum_UCP_HeaderInfo">    
 			<table id="tblGeneral" cellspacing="0" cellpadding="0" width="100%" runat="server">
 			     <tr>
-				     <td class="Forum_Row_AdminL" width="35%">
+				     <td width="35%">
 				          <span class="Forum_Row_AdminText">
 				               <dnn:label id="plForumName" runat="server" Suffix=":" controlname="txtName"></dnn:label>
 					     </span>
 				     </td>
-				     <td class="Forum_Row_AdminR" align="left">
-				          <asp:textbox id="txtName" runat="server" cssclass="Forum_NormalTextBox" Columns="26" width="250px" EnableViewState="false"/>
+				     <td align="left">
+				          <asp:textbox id="txtName" runat="server" cssclass="Forum_NormalTextBox" Columns="26" width="250px" EnableViewState="false" />
 				          <asp:RequiredFieldValidator ID="valName" runat="server" ErrorMessage="*" CssClass="NormalRed" Display="Dynamic" ControlToValidate="txtName" EnableViewState="false" />
 				     </td>
 			     </tr>
 			     <tr id="rowPrimaryAlias" runat="server" visible="false">
-				     <td class="Forum_Row_AdminL" width="35%">
+				     <td width="35%">
 				          <span class="Forum_Row_AdminText">
 				               <dnn:label id="plPrimaryAlias" runat="server" Suffix=":" controlname="ddlPrimaryAlias"></dnn:label>
 					     </span>
 				     </td>
-				     <td class="Forum_Row_AdminR" align="left">
+				     <td align="left">
 				          <asp:dropdownlist id="ddlPrimaryAlias" runat="server" cssclass="Forum_NormalTextBox" Columns="26" width="250px" />
 				     </td>
 			     </tr>
 			     <tr>
-				     <td class="Forum_Row_AdminL" width="35%">
+				     <td width="35%">
 				          <span class="Forum_Row_AdminText">
 				               <dnn:label id="plAggregatedForums" runat="server" Suffix=":" controlname="chkAggregatedForums"></dnn:label>
 					     </span>
 					</td>
-				     <td class="Forum_Row_AdminR" align="left">
+				     <td align="left">
 				          <asp:checkbox id="chkAggregatedForums" runat="server" CssClass="Forum_NormalTextBox" EnableViewState="false" />
 				     </td>
 			     </tr>
 			     <tr>
-				     <td class="Forum_Row_AdminL" width="35%">
+				     <td width="35%">
 				          <span class="Forum_Row_AdminText">
 							<dnn:label id="plTimeZone" runat="server" controlname="chkTimeZone" Suffix=":"></dnn:label>
 					     </span>
 					</td>
-				     <td class="Forum_Row_AdminR" align="left">
+				     <td align="left">
 					     <asp:checkbox id="chkTimeZone" runat="server" CssClass="Forum_NormalTextBox" EnableViewState="false" />
 					</td>
 			     </tr>
 				<tr>
-				     <td class="Forum_Row_AdminL" width="35%">
+				     <td width="35%">
 				          <span class="Forum_Row_AdminText">
 					          <dnn:label id="plEnableThreadStatus" runat="server" Suffix=":" controlname="chkEnableThreadStatus"></dnn:label>
 					     </span>
 					</td>
-				     <td class="Forum_Row_AdminR" align="left">
+				     <td align="left">
 					     <asp:checkbox id="chkEnableThreadStatus" runat="server" CssClass="Forum_NormalTextBox" EnableViewState="false" />
 					</td>
 			     </tr>
 			     <tr>
-				     <td class="Forum_Row_AdminL" width="35%">
+				     <td width="35%">
 				          <span class="Forum_Row_AdminText">
 					          <dnn:label id="plEnablePostAbuse" runat="server" Suffix=":" controlname="chkEnablePostAbuse"></dnn:label>
 					     </span>
 					</td>
-				     <td class="Forum_Row_AdminR" align="left">
+				     <td align="left">
 					     <asp:checkbox id="chkEnablePostAbuse" runat="server" CssClass="Forum_NormalTextBox" EnableViewState="false" />
 					</td>
 			     </tr>
                     <tr>
-                         <td class="Forum_Row_AdminL" width="35%">
+                         <td width="35%">
                               <span class="Forum_Row_AdminText">
                                    <dnn:Label ID="plDisableHTMLPosting" runat="server" ControlName="chkDisableHTMLPosting" Suffix=":"></dnn:Label>
                               </span>
                          </td>
-                         <td align="left" class="Forum_Row_AdminR">
+                         <td align="left" >
                                 <asp:CheckBox ID="chkDisableHTMLPosting" runat="server" CssClass="Forum_NormalTextBox" EnableViewState="false" />
                          </td>
                     </tr>
 			     <tr>
-				     <td class="Forum_Row_AdminL" width="35%">
+				     <td width="35%">
 				          <span class="Forum_Row_AdminText">
 						     <dnn:label id="plSearchIndexDate" runat="server" Suffix=":" controlname="chkShowNavigator"></dnn:label>
 					     </span>
 					</td>
-				     <td class="Forum_Row_AdminR" align="left">
+				     <td align="left">
 					     <asp:Label id="lblDateIndexed" runat="server" CssClass="Forum_Normal" />&nbsp;
 					     <asp:linkbutton id="cmdResetDate" runat="server" CssClass="Forum_Profile" resourcekey="cmdResetDate" EnableViewState="false" />
 					</td>
 			     </tr>
 		     </table>
-		     <div class="Forum_Row_Admin_Foot" align="center">
+		     <div align="center">
 			     <asp:linkbutton cssclass="CommandButton" id="cmdUpdate" runat="server" text="Update" resourcekey="cmdUpdate" EnableViewState="false" />
 			</div>
 			<div align="center">

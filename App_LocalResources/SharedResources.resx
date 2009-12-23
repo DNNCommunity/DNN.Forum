@@ -606,4 +606,7 @@
   <data name="ImageTag.Text" xml:space="preserve">
     <value>[image]</value>
   </data>
+  <data name="cmdSubmit.Text" xml:space="preserve">
+    <value>Submit</value>
+  </data>
 </root>

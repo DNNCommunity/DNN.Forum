@@ -221,20 +221,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					imgExpand.CommandName = "select"
 				End If
 
-				imgColumnControl = item.Controls(0).FindControl("imgHeadSpacerL")
-				If TypeOf imgColumnControl Is System.Web.UI.WebControls.Image Then
-					Dim imgHeadSpacer As Image = CType(imgColumnControl, System.Web.UI.WebControls.Image)
-
-					imgHeadSpacer.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
-				End If
-
-				imgColumnControl = item.Controls(0).FindControl("imgHeadSpacerR")
-				If TypeOf imgColumnControl Is System.Web.UI.WebControls.Image Then
-					Dim imgHeadSpacer As Image = CType(imgColumnControl, System.Web.UI.WebControls.Image)
-
-					imgHeadSpacer.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
-				End If
-
 				imgColumnControl = item.Controls(0).FindControl("lblGroupName")
 				If TypeOf imgColumnControl Is System.Web.UI.WebControls.Label Then
 					Dim lblGroupName As Label = CType(imgColumnControl, System.Web.UI.WebControls.Label)
@@ -831,6 +817,15 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			Else
 				Return "Anonymous"
 			End If
+		End Function
+
+		''' <summary>
+		''' Sets the height spacer image. 
+		''' </summary>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Protected Function SpacerImage() As String
+			Return objConfig.GetThemeImageURL("headfoot_height.gif")
 		End Function
 
 #End Region

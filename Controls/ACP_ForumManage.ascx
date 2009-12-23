@@ -34,16 +34,18 @@
 				                </tr>
 	                          </table>
 			                <asp:DataList id="lstGroup" cellspacing="0" cellpadding="0" gridlines="None" borderwidth="0" datakeyfield="GroupID" width="100%" runat="server">
-							<FooterTemplate><div class="Forum_Row_Admin_Foot">&nbsp;</div></FooterTemplate>
+							<FooterTemplate>
+								<div class="Forum_Row_Admin_Foot">&nbsp;</div>
+							</FooterTemplate>
 							<ItemStyle CssClass="Forum_Grid_Row_Alt" />
 							<AlternatingItemStyle CssClass="Forum_Grid_Row" />
 				                <ItemTemplate>
-					                <table width="100%" cellpadding="0" cellspacing="0" border="0" runat="server" id="tblGroup" class="">
+					                <table width="100%" cellpadding="0" cellspacing="0" border="0" runat="server" id="tblGroup" >
 						                <tr>
 						                     <td class="Forum_HeaderCapLeft">
-											<asp:Image ID="imgHeadSpacerL" runat="server" />
+											<asp:image ImageUrl='<%# SpacerImage() %>' runat="server" ID="imgSpacer"/>
 										 </td>
-							                <td class="Forum_Header">
+							                <td class="Forum_Header" width="100%">
 								                <table cellspacing="0" cellpadding="0" width="100%" runat="server" id="tblGroupEditHeaderClosed">
 									                <tr>
 										                <td width="20px" align="center" valign="middle">
@@ -53,7 +55,7 @@
 											                <asp:Label CssClass="Forum_HeaderText" runat="server" ID="lblGroupName" />&nbsp;
 											                <asp:Label CssClass="Forum_HeaderText" runat="server" ID="lblForumCount" />
 										                </td>
-										                <td align="right">
+										                <td align="right" width="75px">
 											                <asp:Label CssClass="Forum_HeaderText" runat="server" ID="lblCreatedDate" />
 										                </td>
 										                <td align="right" width="125px">
@@ -66,18 +68,18 @@
 								                </table>
 							                </td>
 										 <td class="Forum_HeaderCapRight">
-											<asp:Image ID="imgHeadSpacerR" runat="server" />
+											<asp:image ImageUrl='<%# SpacerImage() %>' runat="server" ID="Image1"/>
 										 </td>
 						                </tr>
 					                </table>
 				                </ItemTemplate>
 				                <EditItemTemplate>
-					                <table width="100%" cellpadding="0" cellspacing="0" border="0" runat="server" id="tblGroup" class="">
+					                <table width="100%" cellpadding="0" cellspacing="0" border="0" runat="server" id="tblGroup">
 						                <tr>
 						                	 <td class="Forum_HeaderCapLeft">
-											<asp:Image ID="imgHeadSpacerL" runat="server" />
+											<asp:image ImageUrl='<%# SpacerImage() %>' runat="server" ID="imgSpacer"/>
 										 </td>
-							                <td class="Forum_Header">
+							                <td class="Forum_Header" width="100%">
 								                <table cellspacing="0" cellpadding="0" width="100%">
 									                <tr>
 										                <td align="left">
@@ -91,7 +93,7 @@
 								                </table>
 							                </td>
 							                <td class="Forum_HeaderCapRight">
-											<asp:Image ID="imgHeadSpacerR" runat="server" />
+												<asp:image ImageUrl='<%# SpacerImage() %>' runat="server" ID="Image2"/>
 										 </td>
 						                </tr>
 					                </table>
@@ -100,7 +102,7 @@
 					                <table id="tblGroupSelected" cellspacing="0" cellpadding="0" width="100%">
 						                <tr>
 						                	<td class="Forum_HeaderCapLeft">
-											<asp:Image ID="imgHeadSpacerL" runat="server" />
+											<asp:image ImageUrl='<%# SpacerImage() %>' runat="server" ID="imgSpacer"/>
 										 </td>
 							                <td width="100%" class="Forum_Header">
 								                <table cellspacing="0" cellpadding="0" width="100%" runat="server" id="tblGroupEditHeaderOpen">
@@ -118,7 +120,7 @@
 								                </table>
 							                </td>
 							                <td class="Forum_HeaderCapRight">
-											<asp:Image ID="imgHeadSpacerR" runat="server" />
+											<asp:image ImageUrl='<%# SpacerImage() %>' runat="server" ID="Image3"/>
 										 </td>
 						                </tr>
 						                <tr>

@@ -16,7 +16,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td class="Forum_UCP_HeaderInfo">
 						<table id="tblEmailTemplates" cellspacing="0" cellpadding="0" width="100%" runat="server">
 				            <tr id="rowDefaults" runat="server">
 					            <td class="Forum_Row_AdminL" width="20%">

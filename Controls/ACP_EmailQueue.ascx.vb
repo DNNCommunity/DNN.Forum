@@ -60,7 +60,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				End If
 			End If
 
-			If Not Entities.Host.Host.GetHostSettingsDictionary("ForumTaskDeleteDays") Is Nothing Then
+			If Not Host.Host.GetHostSettingsDictionary("ForumTaskDeleteDays") Is Nothing Then
 				If Convert.ToString(Entities.Host.Host.GetHostSettingsDictionary("ForumTaskDeleteDays")) <> String.Empty Then
 					txtTaskDeleteDays.Text = Convert.ToString(Entities.Host.Host.GetHostSettingsDictionary("ForumTaskDeleteDays"))
 				Else

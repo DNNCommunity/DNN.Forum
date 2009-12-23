@@ -7,7 +7,7 @@
 		</td>
      </tr>
      <tr>
-		<td>
+		<td class="Forum_UCP_HeaderInfo">
 			<table id="tblGeneral" cellspacing="0" cellpadding="0" width="100%">
 				<tr>
 				     <td class="Forum_Row_AdminL" width="30%">
