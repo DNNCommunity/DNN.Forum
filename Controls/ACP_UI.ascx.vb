@@ -47,20 +47,16 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			chkEnableScripts.Checked = objConfig.LoadScripts
 			chkEnableIconBarAsImages.Checked = objConfig.IconBarAsImages
 			chkDisplayPosterRegion.Checked = objConfig.DisplayPosterRegion
+			chkEnableQuickReply.Checked = objConfig.EnableQuickReply
 
 			Dim themesPath As String = System.IO.Path.Combine(Server.MapPath(objConfig.SourceDirectory), "Themes")
 			Dim forumThemePath As String = System.IO.Path.Combine(themesPath, objConfig.ForumTheme)
 
-			'If System.IO.Directory.Exists(forumThemePath) Then
-			'ddlSkins.Items.FindByValue(LoggedOnUser.Theme).Selected = True
-			'Else	   ' If skin folder has been deleted select default skin or first skin
 			If System.IO.Directory.Exists(forumThemePath) Then
 				ddlSkins.Items.FindByValue(objConfig.ForumTheme).Selected = True
 			Else
 				ddlSkins.Items(0).Selected = True
 			End If
-			'End If
-
 		End Sub
 
 #End Region
@@ -98,7 +94,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				ctlModule.UpdateModuleSetting(ModuleId, "IconBarAsImages", chkEnableIconBarAsImages.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, "DisplayPosterLocation", ddlDisplayPosterLocation.SelectedItem.Value)
 				ctlModule.UpdateModuleSetting(ModuleId, "DisplayPosterRegion", chkDisplayPosterRegion.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "MaxPostImageWidth", txtMaxPostImageWidth.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, "DisplayPosterRegion", chkDisplayPosterRegion.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, "EnableQuickReply", chkEnableQuickReply.Text)
 
 				Config.ResetForumConfig(ModuleId)
 

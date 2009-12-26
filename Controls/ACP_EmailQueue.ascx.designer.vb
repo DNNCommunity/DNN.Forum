@@ -26,6 +26,33 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
 		'''<summary>
+		'''rowID control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents rowID As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+		'''<summary>
+		'''plScheduleItemID control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents plScheduleItemID As Global.DotNetNuke.UI.UserControls.LabelControl
+
+		'''<summary>
+		'''txtScheduleItemID control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents txtScheduleItemID As Global.System.Web.UI.WebControls.TextBox
+
+		'''<summary>
 		'''plTaskDeleteDays control.
 		'''</summary>
 		'''<remarks>

@@ -299,7 +299,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			' Get search results that will be rendered and the total number of search results
 			If InThreadView Then
-				SearchCollection = ctlSearch.SearchGetResults(SearchTerms, SearchPage, ResultsPerPage, ForumControl.LoggedOnUserID, ForumControl.ModuleID, StartDate, EndDate, ThreadStatusID)
+				SearchCollection = ctlSearch.SearchGetResults(SearchTerms, SearchPage, ResultsPerPage, ForumControl.LoggedOnUser.UserID, ForumControl.ModuleID, StartDate, EndDate, ThreadStatusID)
 				If SearchCollection.Count > 0 Then
 					SearchCount = CType(SearchCollection(0), SearchInfo).RecordCount
 				End If
@@ -325,7 +325,7 @@ Namespace DotNetNuke.Modules.Forum
 				Next
 			Else
 				'[skeel] Post view
-				SearchCollection = ctlSearch.Search(SearchTerms, SearchPage, ResultsPerPage, ForumControl.LoggedOnUserID, ForumControl.ModuleID, StartDate, EndDate, ThreadStatusID)
+				SearchCollection = ctlSearch.Search(SearchTerms, SearchPage, ResultsPerPage, ForumControl.LoggedOnUser.UserID, ForumControl.ModuleID, StartDate, EndDate, ThreadStatusID)
 				If SearchCollection.Count > 0 Then
 					SearchCount = CType(SearchCollection(0), SearchResult).RecordCount
 				End If
@@ -372,9 +372,9 @@ Namespace DotNetNuke.Modules.Forum
 				InThreadView = True
 			End If
 
-			If ForumControl.LoggedOnUserID > 0 Then
+			If ForumControl.LoggedOnUser.UserID > 0 Then
 				Dim forumUser As ForumUser
-				forumUser = ForumUserController.GetForumUser(ForumControl.LoggedOnUserID, False, ForumControl.ModuleID, PortalID)
+				forumUser = ForumUserController.GetForumUser(ForumControl.LoggedOnUser.UserID, False, ForumControl.ModuleID, PortalID)
 
 				If InThreadView Then
 					ResultsPerPage = forumUser.ThreadsPerPage
@@ -761,7 +761,7 @@ Namespace DotNetNuke.Modules.Forum
 						If (SearchItem.LastApprovedPost.ParentThread.IsClosed) Then
 							' thread IS popular, pinned, locked
 							' See if this is an unread post
-							If (HasNewPosts(LoggedOnUser.UserID, SearchItem.LastApprovedPost.ParentThread)) Then
+							If (HasNewPosts(ForumControl.LoggedOnUser.UserID, SearchItem.LastApprovedPost.ParentThread)) Then
 								' IS read
 								RenderImageButton(wr, url, objConfig.GetThemeImageURL("s_postlockedpinnedunreadplu.") & objConfig.ImageExtension, ForumControl.LocalizedText("imgHotNewLockedPinnedThread"), "")
 							Else
@@ -771,7 +771,7 @@ Namespace DotNetNuke.Modules.Forum
 						Else
 							' thread IS popular, Pinned but NOT locked
 							' See if this is an unread post
-							If (HasNewPosts(LoggedOnUser.UserID, SearchItem.LastApprovedPost.ParentThread)) Then
+							If (HasNewPosts(ForumControl.LoggedOnUser.UserID, SearchItem.LastApprovedPost.ParentThread)) Then
 								' IS read
 								RenderImageButton(wr, url, objConfig.GetThemeImageURL("s_postpinnedunreadplus.") & objConfig.ImageExtension, ForumControl.LocalizedText("imgNewHotPinnedThread"), "")
 							Else
@@ -784,7 +784,7 @@ Namespace DotNetNuke.Modules.Forum
 						' see if thread is locked
 						If (SearchItem.LastApprovedPost.ParentThread.IsClosed) Then
 							' thread IS pinned, Locked but NOT popular
-							If (HasNewPosts(LoggedOnUser.UserID, SearchItem.LastApprovedPost.ParentThread)) Then
+							If (HasNewPosts(ForumControl.LoggedOnUser.UserID, SearchItem.LastApprovedPost.ParentThread)) Then
 								' IS read
 								RenderImageButton(wr, url, objConfig.GetThemeImageURL("s_postpinnedlockedunread.") & objConfig.ImageExtension, ForumControl.LocalizedText("imgNewPinnedLockedThread"), "")
 							Else
@@ -793,7 +793,7 @@ Namespace DotNetNuke.Modules.Forum
 							End If
 						Else
 							'thread IS pinned but NOT popular, Locked
-							If (HasNewPosts(LoggedOnUser.UserID, SearchItem.LastApprovedPost.ParentThread)) Then
+							If (HasNewPosts(ForumControl.LoggedOnUser.UserID, SearchItem.LastApprovedPost.ParentThread)) Then
 								' IS read
 								RenderImageButton(wr, url, objConfig.GetThemeImageURL("s_postpinnedunread.") & objConfig.ImageExtension, ForumControl.LocalizedText("imgNewPinnedThread"), "")
 							Else
@@ -842,8 +842,8 @@ Namespace DotNetNuke.Modules.Forum
 				' CapPageCount is number of pages to show as option for user in threads view.
 				Dim CapPageCount As Integer = objConfig.PostPagesCount
 
-				If LoggedOnUser.UserID > 0 Then
-					userPostsPerPage = LoggedOnUser.PostsPerPage
+				If ForumControl.LoggedOnUser.UserID > 0 Then
+					userPostsPerPage = ForumControl.LoggedOnUser.PostsPerPage
 				Else
 					userPostsPerPage = objConfig.PostsPerPage
 				End If
@@ -1288,8 +1288,8 @@ Namespace DotNetNuke.Modules.Forum
 		Private Function NewPost(ByVal PostThreadID As Integer, ByVal PostCreatedDate As Date) As Boolean
 			Dim userThreadController As New UserThreadsController
 			Dim userThread As New UserThreadsInfo
-			If LoggedOnUser.UserID > 0 Then
-				userThread = userThreadController.GetCachedUserThreadRead(LoggedOnUser.UserID, PostThreadID)
+			If ForumControl.LoggedOnUser.UserID > 0 Then
+				userThread = userThreadController.GetCachedUserThreadRead(ForumControl.LoggedOnUser.UserID, PostThreadID)
 				If userThread Is Nothing Then
 					Return True
 				Else
@@ -1335,7 +1335,7 @@ Namespace DotNetNuke.Modules.Forum
 				' thread IS locked
 				If (Thread.IsPopular) Then
 					' thread IS locked, popular
-					If HasNewPosts(LoggedOnUser.UserID, Thread) Then
+					If HasNewPosts(ForumControl.LoggedOnUser.UserID, Thread) Then
 						'new
 						Return objConfig.GetThemeImageURL("s_postlockedunreadplus.") & objConfig.ImageExtension
 					Else
@@ -1344,7 +1344,7 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 				Else
 					' thread IS locked NOT popular
-					If HasNewPosts(LoggedOnUser.UserID, Thread) Then
+					If HasNewPosts(ForumControl.LoggedOnUser.UserID, Thread) Then
 						'new
 						Return objConfig.GetThemeImageURL("s_postlockedunread.") & objConfig.ImageExtension
 					Else
@@ -1355,13 +1355,13 @@ Namespace DotNetNuke.Modules.Forum
 			Else
 				' thread NOT locked
 				If (Thread.IsPopular) Then
-					If HasNewPosts(LoggedOnUser.UserID, Thread) Then
+					If HasNewPosts(ForumControl.LoggedOnUser.UserID, Thread) Then
 						Return objConfig.GetThemeImageURL("s_postunreadplus.") & objConfig.ImageExtension
 					Else
 						Return objConfig.GetThemeImageURL("s_postreadplus.") & objConfig.ImageExtension
 					End If
 				Else
-					If HasNewPosts(LoggedOnUser.UserID, Thread) Then
+					If HasNewPosts(ForumControl.LoggedOnUser.UserID, Thread) Then
 						Return objConfig.GetThemeImageURL("s_postunread.") & objConfig.ImageExtension
 					Else
 						Return objConfig.GetThemeImageURL("s_postread.") & objConfig.ImageExtension
@@ -1383,7 +1383,7 @@ Namespace DotNetNuke.Modules.Forum
 				' thread IS locked
 				If (Thread.IsPopular) Then
 					' thread IS locked, popular
-					If HasNewPosts(LoggedOnUser.UserID, Thread) Then
+					If HasNewPosts(ForumControl.LoggedOnUser.UserID, Thread) Then
 						' new
 						Return ForumControl.LocalizedText("imgNewPopLockedThread")
 					Else
@@ -1392,7 +1392,7 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 				Else
 					' thread IS locked NOT popular
-					If HasNewPosts(LoggedOnUser.UserID, Thread) Then
+					If HasNewPosts(ForumControl.LoggedOnUser.UserID, Thread) Then
 						' new
 						Return ForumControl.LocalizedText("imgNewLockedThread")
 					Else
@@ -1404,7 +1404,7 @@ Namespace DotNetNuke.Modules.Forum
 				' thread NOT locked
 				If (Thread.IsPopular) Then
 					' thread NOT locked IS popular
-					If HasNewPosts(LoggedOnUser.UserID, Thread) Then
+					If HasNewPosts(ForumControl.LoggedOnUser.UserID, Thread) Then
 						' new
 						Return ForumControl.LocalizedText("imgNewPopThread")
 					Else
@@ -1413,7 +1413,7 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 				Else
 					' thread NOT locked, popular
-					If HasNewPosts(LoggedOnUser.UserID, Thread) Then
+					If HasNewPosts(ForumControl.LoggedOnUser.UserID, Thread) Then
 						' new
 						Return ForumControl.LocalizedText("imgNewThread")
 					Else

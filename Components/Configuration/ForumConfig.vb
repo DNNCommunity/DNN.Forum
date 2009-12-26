@@ -58,6 +58,7 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _EnableTimeZone As Boolean = True
 		Dim _EnableThreadStatus As Boolean = True
 		Dim _IconBarAsImages As Boolean = False
+		Dim _EnableQuickReply As Boolean = False
 		Dim _EnableUserSignatures As Boolean = True
 		Dim _EnableModSigUpdates As Boolean = True
 		Dim _EnableHTMLSignatures As Boolean = True
@@ -686,6 +687,18 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 		End Property
 
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property EnableQuickReply() As Boolean
+			Get
+				Return _EnableQuickReply
+			End Get
+		End Property
+
 #End Region
 
 #Region "User Settings"
@@ -932,6 +945,12 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 		End Property
 
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
 		Public ReadOnly Property ExternalProfileUsername() As Boolean
 			Get
 				Return False
@@ -2097,7 +2116,6 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 			End If
 
-			' Everything below here has been modified or added since the module was originally created.
 			'Community
 			If Not settings("EnableUsersOnline") Is Nothing Then
 				If Not settings("EnableUsersOnline").ToString = String.Empty Then
@@ -2442,6 +2460,12 @@ Namespace DotNetNuke.Modules.Forum
 			If Not settings("IconBarAsImages") Is Nothing Then
 				If Not settings("IconBarAsImages").ToString = String.Empty Then
 					_IconBarAsImages = CBool(GetValue(settings("IconBarAsImages"), CStr(_IconBarAsImages)))
+				End If
+			End If
+
+			If Not settings("EnableQuickReply") Is Nothing Then
+				If Not settings("EnableQuickReply").ToString = String.Empty Then
+					_EnableQuickReply = CBool(GetValue(settings("EnableQuickReply"), CStr(_EnableQuickReply)))
 				End If
 			End If
 

@@ -93,11 +93,11 @@ Namespace DotNetNuke.Modules.Forum
 				Dim ctlThread As New ThreadController
 				Dim userThreadController As New UserThreadsController
 
-				mThreadCollection = ctlThread.ThreadGetUnread(ModuleID, ForumControl.ThreadsPerPage, ThreadPage, LoggedOnUser.UserID)
+				mThreadCollection = ctlThread.ThreadGetUnread(ModuleID, ForumControl.ThreadsPerPage, ThreadPage, ForumControl.LoggedOnUser.UserID)
 				Dim thread As ThreadInfo
 
 				For Each thread In mThreadCollection
-					userThreadController.MarkAll(LoggedOnUser.UserID, thread.ForumID, True)
+					userThreadController.MarkAll(ForumControl.LoggedOnUser.UserID, thread.ForumID, True)
 				Next
 
 			Catch ex As Exception
@@ -122,7 +122,7 @@ Namespace DotNetNuke.Modules.Forum
 			MyBase.New(forum)
 
 			' User might access this page by typing url so better check if they are logged in
-			If LoggedOnUser.UserID = -1 Then
+			If ForumControl.LoggedOnUser.UserID = -1 Then
 				HttpContext.Current.Response.Redirect(Utilities.Links.ContainerForumHome(TabID), True)
 				Exit Sub
 			End If
@@ -139,7 +139,7 @@ Namespace DotNetNuke.Modules.Forum
 				mThreadPage = mThreadPage - 1
 			End If
 
-			mThreadsPerPage = LoggedOnUser.ThreadsPerPage
+			mThreadsPerPage = ForumControl.LoggedOnUser.ThreadsPerPage
 		End Sub
 
 		''' <summary>
@@ -151,7 +151,7 @@ Namespace DotNetNuke.Modules.Forum
 			Controls.Clear()
 
 			' display tracking option only if user authenticated
-			If ForumControl.LoggedOnUserID > 0 Then
+			If ForumControl.LoggedOnUser.UserID > 0 Then
 				cmdRead = New LinkButton
 				With cmdRead
 					.CssClass = "Forum_Profile"
@@ -251,7 +251,7 @@ Namespace DotNetNuke.Modules.Forum
 		Private Sub BindControls()
 			' Now we get threads containing new posts to display for this user
 			Dim ctlThread As New ThreadController
-			mThreadCollection = ctlThread.ThreadGetUnread(ModuleID, ForumControl.ThreadsPerPage, ThreadPage, LoggedOnUser.UserID)
+			mThreadCollection = ctlThread.ThreadGetUnread(ModuleID, ForumControl.ThreadsPerPage, ThreadPage, ForumControl.LoggedOnUser.UserID)
 		End Sub
 
 		''' <summary>
@@ -536,8 +536,8 @@ Namespace DotNetNuke.Modules.Forum
 						' CapPageCount is number of pages to show as option for user in threads view.
 						Dim CapPageCount As Integer = objConfig.PostPagesCount
 
-						If LoggedOnUser.UserID > 0 Then
-							userPostsPerPage = LoggedOnUser.PostsPerPage
+						If ForumControl.LoggedOnUser.UserID > 0 Then
+							userPostsPerPage = ForumControl.LoggedOnUser.PostsPerPage
 						Else
 							userPostsPerPage = objConfig.PostsPerPage
 						End If
@@ -666,7 +666,7 @@ Namespace DotNetNuke.Modules.Forum
 						Url = Utilities.Links.ContainerViewPostLink(TabID, thread.ForumID, thread.LastApprovedPost.PostID)
 
 						' Skeel - This is for showing link to first unread post for logged in users. 
-						If LoggedOnUser.DefaultPostsPerPage < thread.TotalPosts Then
+						If ForumControl.LoggedOnUser.DefaultPostsPerPage < thread.TotalPosts Then
 							'Find the page on which the first unread post is located
 							wr.AddAttribute(HtmlTextWriterAttribute.Href, FirstUnreadLink(thread))
 						Else
@@ -923,12 +923,12 @@ Namespace DotNetNuke.Modules.Forum
 			Dim ReadLink As String
 
 			ReadLink = Utilities.Links.ContainerViewThreadLink(TabID, Thread.ForumID, Thread.ThreadID) & "#unread"
-			usrThread = cltUserThread.GetCachedUserThreadRead(LoggedOnUser.UserID, Thread.ThreadID)
+			usrThread = cltUserThread.GetCachedUserThreadRead(ForumControl.LoggedOnUser.UserID, Thread.ThreadID)
 
 			If usrThread Is Nothing Then
 				'All new
-				If LoggedOnUser.ViewDescending = True Then
-					Dim PageCount As Decimal = CDec(Thread.TotalPosts / LoggedOnUser.DefaultPostsPerPage)
+				If ForumControl.LoggedOnUser.ViewDescending = True Then
+					Dim PageCount As Decimal = CDec(Thread.TotalPosts / ForumControl.LoggedOnUser.DefaultPostsPerPage)
 					PageCount = Math.Ceiling(PageCount)
 					ReadLink = Utilities.Links.ContainerViewThreadPagedLink(TabID, Thread.ForumID, Thread.ThreadID, CInt(PageCount)) & "#unread"
 				Else
@@ -936,12 +936,12 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 			Else
 				'Get the Index
-				Dim PostIndex As Integer = cltUserThread.GetPostIndexFirstUnread(Thread.ThreadID, usrThread.LastVisitDate, LoggedOnUser.ViewDescending)
-				Dim PageCount As Integer = CInt(Math.Ceiling(CDec(Thread.TotalPosts / LoggedOnUser.DefaultPostsPerPage)))
+				Dim PostIndex As Integer = cltUserThread.GetPostIndexFirstUnread(Thread.ThreadID, usrThread.LastVisitDate, ForumControl.LoggedOnUser.ViewDescending)
+				Dim PageCount As Integer = CInt(Math.Ceiling(CDec(Thread.TotalPosts / ForumControl.LoggedOnUser.DefaultPostsPerPage)))
 				Dim PageNumber As Integer = 1
 
 				Do While PageNumber <= PageCount
-					If (LoggedOnUser.DefaultPostsPerPage * PageNumber) >= PostIndex Then
+					If (ForumControl.LoggedOnUser.DefaultPostsPerPage * PageNumber) >= PostIndex Then
 						If PageNumber = 1 Then
 							ReadLink = Utilities.Links.ContainerViewThreadLink(TabID, Thread.ForumID, Thread.ThreadID) & "#unread"
 						Else

@@ -192,4 +192,10 @@
   <data name="plMaxPostImageWidth.Text" xml:space="preserve">
     <value>Max Post Image Width</value>
   </data>
+  <data name="plEnableQuickReply.Help" xml:space="preserve">
+    <value>If checked, users will be permitted to post replies directly in posts view. This uses a normal textbox and not a WYSIWYG editor and is only visible to those with proper posting permissions.</value>
+  </data>
+  <data name="plEnableQuickReply.Text" xml:space="preserve">
+    <value>Enable Quick Reply</value>
+  </data>
 </root>

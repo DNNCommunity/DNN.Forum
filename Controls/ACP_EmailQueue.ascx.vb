@@ -47,8 +47,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				' Add a check here to see if task is installed and enabled, if so enable control
 				' we need to 'hack' a way to get the ScheduleID of the forum email queue item
 				Dim ScheduleItemID As Integer = DataProvider.Instance().EmailQueueTaskScheduleItemIDGet(True)
+				txtScheduleItemID.Text = ScheduleItemID.ToString()
 
-				Dim objScheduleItem As Scheduling.ScheduleItem
+				Dim objScheduleItem As New Scheduling.ScheduleItem
 				objScheduleItem = DotNetNuke.Services.Scheduling.SchedulingProvider.Instance.GetSchedule(ScheduleItemID)
 
 				If Not objScheduleItem Is Nothing Then
@@ -58,26 +59,21 @@ Namespace DotNetNuke.Modules.Forum.ACP
 						cmdUpdate.Visible = True
 					End If
 				End If
-			End If
 
-			If Not Host.Host.GetHostSettingsDictionary("ForumTaskDeleteDays") Is Nothing Then
-				If Convert.ToString(Entities.Host.Host.GetHostSettingsDictionary("ForumTaskDeleteDays")) <> String.Empty Then
-					txtTaskDeleteDays.Text = Convert.ToString(Entities.Host.Host.GetHostSettingsDictionary("ForumTaskDeleteDays"))
+				' Need to check for cleanup queue schedule settings
+				If objScheduleItem.GetSetting("ForumTaskDeleteDays") <> String.Empty Then
+					txtTaskDeleteDays.Text = objScheduleItem.GetSetting("ForumTaskDeleteDays")
 				Else
 					txtTaskDeleteDays.Text = "30"
 				End If
-			Else
-				txtTaskDeleteDays.Text = "30"
-			End If
 
-			If Not Entities.Host.Host.GetHostSettingsDictionary("ForumEmailDeleteDays") Is Nothing Then
-				If Convert.ToString(Entities.Host.Host.GetHostSettingsDictionary("ForumEmailDeleteDays")) <> String.Empty Then
-					txtEmailDeleteDays.Text = Convert.ToString(Entities.Host.Host.GetHostSettingsDictionary("ForumEmailDeleteDays"))
+				If objScheduleItem.GetSetting("ForumEmailDeleteDays") <> String.Empty Then
+					txtEmailDeleteDays.Text = objScheduleItem.GetSetting("ForumEmailDeleteDays")
 				Else
 					txtEmailDeleteDays.Text = "30"
 				End If
 			Else
-				txtEmailDeleteDays.Text = "30"
+				cmdUpdate.Visible = False
 			End If
 		End Sub
 
@@ -94,9 +90,21 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </remarks>
 		Private Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
-				lblUpdateDone.Visible = True
-				Entities.Host.Host.GetHostSettingsDictionary("ForumTaskDeleteDays") = txtTaskDeleteDays.Text
-				Entities.Host.Host.GetHostSettingsDictionary("ForumEmailDeleteDays") = txtEmailDeleteDays.Text
+				Dim objScheduleItem As New Scheduling.ScheduleItem
+				Dim ScheduleItemID As Integer = -1
+
+				If txtScheduleItemID.Text <> "" Then
+					ScheduleItemID = CInt(txtScheduleItemID.Text)
+				End If
+
+				objScheduleItem = DotNetNuke.Services.Scheduling.SchedulingProvider.Instance.GetSchedule(ScheduleItemID)
+
+				If Not objScheduleItem Is Nothing Then
+					DotNetNuke.Services.Scheduling.SchedulingProvider.Instance.AddScheduleItemSetting(ScheduleItemID, "ForumTaskDeleteDays", txtTaskDeleteDays.Text)
+					DotNetNuke.Services.Scheduling.SchedulingProvider.Instance.AddScheduleItemSetting(ScheduleItemID, "ForumEmailDeleteDays", txtEmailDeleteDays.Text)
+
+					lblUpdateDone.Visible = True
+				End If
 			Catch exc As Exception
 				ProcessModuleLoadException(Me, exc)
 			End Try

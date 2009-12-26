@@ -1227,11 +1227,11 @@ Namespace DotNetNuke.Modules.Forum
 						End If
 					Case PostAction.Reply
 						tblPoll.Visible = False
-						txtSubject.Text = HttpUtility.HtmlDecode(ReplySubject(objParentPost))
+						txtSubject.Text = HttpUtility.HtmlDecode(Utilities.ForumUtils.SetReplySubject(objParentPost.Subject))
 						rowThreadStatus.Visible = False
 					Case PostAction.Quote
 						tblPoll.Visible = False
-						txtSubject.Text = HttpUtility.HtmlDecode(ReplySubject(objParentPost))
+						txtSubject.Text = HttpUtility.HtmlDecode(Utilities.ForumUtils.SetReplySubject(objParentPost.Subject))
 						teContent.Text = fTextDecode.ProcessQuoteBody(objParentPost.Author.SiteAlias, objConfig)
 						rowThreadStatus.Visible = False
 				End Select
@@ -1279,29 +1279,6 @@ Namespace DotNetNuke.Modules.Forum
 
 		'	Return url
 		'End Function
-
-		''' <summary>
-		''' Gets the subject if this is a quote or reply and pre-populates that
-		''' text box.
-		''' </summary>
-		''' <returns></returns>
-		''' <remarks>
-		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	11/28/2005	Created
-		''' </history>
-		Private Function ReplySubject(ByVal objParentPost As PostInfo) As String
-			Dim strSubject As String = objParentPost.Subject
-
-			If (strSubject.Length >= 3) Then
-				If Not (strSubject.Substring(0, 3) = "Re:") Then
-					strSubject = "Re: " + strSubject
-				End If
-			Else
-				strSubject = "Re: " + strSubject
-			End If
-			Return strSubject
-		End Function
 
 		''' <summary>
 		''' Binds the list of available thread status choices.

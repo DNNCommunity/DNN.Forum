@@ -109,7 +109,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			' Get groups
 			Dim cntGroup As New GroupController
-			arrAuthGroups = cntGroup.GroupGetAllAuthorized(ModuleID, LoggedOnUser.UserID, False)
+			arrAuthGroups = cntGroup.GroupGetAllAuthorized(ModuleID, ForumControl.LoggedOnUser.UserID, False)
 			mAuthorizedForumsCount = 0
 
 			If arrAuthGroups.Count > 0 Then
@@ -117,7 +117,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				For Each objGroup In arrAuthGroups
 					Dim arrAuthForums As New List(Of ForumInfo)
-					arrAuthForums = objGroup.AuthorizedForums(LoggedOnUser.UserID, False)
+					arrAuthForums = objGroup.AuthorizedForums(ForumControl.LoggedOnUser.UserID, False)
 					If arrAuthForums.Count > 0 Then
 						arrAuthForumsCount += arrAuthForums.Count
 					End If
@@ -227,7 +227,7 @@ Namespace DotNetNuke.Modules.Forum
 				wr.Write("&nbsp;" & Localization.GetString("Hours", objConfig.SharedResourceFile) & "&nbsp;")
 
 				'View unread threads link
-				If LoggedOnUser.UserID > 0 Then
+				If ForumControl.LoggedOnUser.UserID > 0 Then
 					wr.Write("|&nbsp;")
 					url = Utilities.Links.ContainerViewUnreadThreadsLink(TabID)
 					RenderLinkButton(wr, url, Localization.GetString("ViewUnreadThreads", objConfig.SharedResourceFile), "Forum_LastPostText", "", False, objConfig.NoFollowLatestThreads)
@@ -356,9 +356,9 @@ Namespace DotNetNuke.Modules.Forum
 						Dim arrForums As List(Of ForumInfo)
 
 						If mForumId > 0 Then
-							arrForums = objGroup.AuthorizedSubForums(LoggedOnUser.UserID, False, mForumId)
+							arrForums = objGroup.AuthorizedSubForums(ForumControl.LoggedOnUser.UserID, False, mForumId)
 						Else
-							arrForums = objGroup.AuthorizedNoParentForums(LoggedOnUser.UserID, False)
+							arrForums = objGroup.AuthorizedNoParentForums(ForumControl.LoggedOnUser.UserID, False)
 						End If
 
 						' display group only if group contains atleast one authorized forum

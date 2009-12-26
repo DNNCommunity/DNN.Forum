@@ -437,6 +437,23 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 #Region "String Replacement"
 
 		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="PostSubject"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Shared Function SetReplySubject(ByVal PostSubject As String) As String
+			If (PostSubject.Length >= 3) Then
+				If Not (PostSubject.Substring(0, 3) = "Re:") Then
+					PostSubject = "Re: " + PostSubject
+				End If
+			Else
+				PostSubject = "Re: " + PostSubject
+			End If
+			Return PostSubject
+		End Function
+
+		''' <summary>
 		''' Replaces text regardless of case of the string
 		''' </summary>
 		''' <param name="text"></param>

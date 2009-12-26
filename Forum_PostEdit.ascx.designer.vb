@@ -476,69 +476,6 @@ Namespace DotNetNuke.Modules.Forum
 		Protected WithEvents cmdCalEndDate As Global.System.Web.UI.WebControls.HyperLink
 
 		'''<summary>
-		'''tblOldPost control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents tblOldPost As Global.System.Web.UI.HtmlControls.HtmlTable
-
-		'''<summary>
-		'''imgReplyLeft control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents imgReplyLeft As Global.System.Web.UI.WebControls.Image
-
-		'''<summary>
-		'''imgAltHeaderReply control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents imgAltHeaderReply As Global.System.Web.UI.WebControls.Image
-
-		'''<summary>
-		'''lblPostReplyHeader control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblPostReplyHeader As Global.System.Web.UI.WebControls.Label
-
-		'''<summary>
-		'''hlAuthor control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents hlAuthor As Global.System.Web.UI.WebControls.HyperLink
-
-		'''<summary>
-		'''imgReplyRight control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents imgReplyRight As Global.System.Web.UI.WebControls.Image
-
-		'''<summary>
-		'''lblMessage control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblMessage As Global.System.Web.UI.WebControls.Label
-
-		'''<summary>
 		'''tblPreview control.
 		'''</summary>
 		'''<remarks>
@@ -663,5 +600,68 @@ Namespace DotNetNuke.Modules.Forum
 		'''To modify move field declaration from designer file to code-behind file.
 		'''</remarks>
 		Protected WithEvents lblInfo As Global.System.Web.UI.WebControls.Label
+
+		'''<summary>
+		'''tblOldPost control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents tblOldPost As Global.System.Web.UI.HtmlControls.HtmlTable
+
+		'''<summary>
+		'''imgReplyLeft control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents imgReplyLeft As Global.System.Web.UI.WebControls.Image
+
+		'''<summary>
+		'''imgAltHeaderReply control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents imgAltHeaderReply As Global.System.Web.UI.WebControls.Image
+
+		'''<summary>
+		'''lblPostReplyHeader control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents lblPostReplyHeader As Global.System.Web.UI.WebControls.Label
+
+		'''<summary>
+		'''hlAuthor control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents hlAuthor As Global.System.Web.UI.WebControls.HyperLink
+
+		'''<summary>
+		'''imgReplyRight control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents imgReplyRight As Global.System.Web.UI.WebControls.Image
+
+		'''<summary>
+		'''lblMessage control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents lblMessage As Global.System.Web.UI.WebControls.Label
 	End Class
 End Namespace

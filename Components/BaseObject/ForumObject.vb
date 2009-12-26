@@ -96,17 +96,17 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 		End Property
 
-		''' <summary>
-		''' Gets the Forum User object who is accessing the module. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>The ForumUser object</returns>
-		''' <remarks>Anonymous Users handled. PortalModulebase attribute picked up from the Basecontrol object.</remarks>
-		Protected ReadOnly Property LoggedOnUser() As ForumUser
-			Get
-				Return MyBase.BaseControl.LoggedOnUser
-			End Get
-		End Property
+		'''' <summary>
+		'''' Gets the Forum User object who is accessing the module. 
+		'''' </summary>
+		'''' <value></value>
+		'''' <returns>The ForumUser object</returns>
+		'''' <remarks>Anonymous Users handled. PortalModulebase attribute picked up from the Basecontrol object.</remarks>
+		'Protected ReadOnly Property LoggedOnUser() As ForumUser
+		'	Get
+		'		Return MyBase.BaseControl.LoggedOnUser
+		'	End Get
+		'End Property
 
 		''' <summary>
 		''' Gets the TabID being accessed. 

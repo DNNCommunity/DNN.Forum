@@ -140,6 +140,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			grdBadWords.EditItemIndex = Null.NullInteger
 			imgAdd.Enabled = True
 			BindData(ddlSearchType.SelectedValue, BottomPager.PageSize)
+
 		End Sub
 
 		''' <summary>

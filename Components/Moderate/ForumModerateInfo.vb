@@ -73,7 +73,7 @@ Namespace DotNetNuke.Modules.Forum
         ''' <remarks></remarks>
         Public Shadows Sub Render(ByVal wr As HtmlTextWriter, ByVal ForumControl As DNNForum, ByVal Count As Integer)
 			Dim fPage As Page = ForumControl.DNNPage
-            Dim fLoggedOnUserID As Integer = ForumControl.LoggedOnUserID
+			Dim fLoggedOnUserID As Integer = ForumControl.LoggedOnUser.UserID
 			Dim fConfig As Forum.Config = ForumControl.objConfig
 			Dim fTabID As Integer = ForumControl.TabID
 			Dim fModuleID As Integer = ForumControl.ModuleID

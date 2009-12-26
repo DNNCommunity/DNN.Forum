@@ -24,72 +24,72 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region " CleanupEmailQueuedTasks"
 
-    ''' <summary>
-    ''' This is the Email Queue Task handler. It is designed to allow email notifications to be
-    ''' sent using a background thread and to not worry about the ASP.NET default limitation of 25
-    ''' threads since only one will be spawned to handle this.
-    ''' This is all methods necessary to use the core Scheduler for tasks. 
-    ''' </summary>
-    ''' <remarks>Run by the DNN scheduler only. NOT FULLY TESTED.
-    ''' </remarks>
-    Public Class CleanupEmailQueuedTasks
-        Inherits DotNetNuke.Services.Scheduling.SchedulerClient
+	''' <summary>
+	''' This is the Email Queue Task handler. It is designed to allow email notifications to be
+	''' sent using a background thread and to not worry about the ASP.NET default limitation of 25
+	''' threads since only one will be spawned to handle this.
+	''' This is all methods necessary to use the core Scheduler for tasks. 
+	''' </summary>
+	''' <remarks>Run by the DNN scheduler only. NOT FULLY TESTED.
+	''' </remarks>
+	Public Class CleanupEmailQueuedTasks
+		Inherits DotNetNuke.Services.Scheduling.SchedulerClient
 
-        ''' <summary>
-        ''' Creates a new instance of a history item (Constructor)
-        ''' </summary>
-        ''' <param name="objScheduleHistoryItem">The task which will need to have its history updated.</param>
-        ''' <remarks>Core part, used for auditing tasks.
-        ''' </remarks>
-        Public Sub New(ByVal objScheduleHistoryItem As DotNetNuke.Services.Scheduling.ScheduleHistoryItem)
-            MyBase.new()
-            Me.ScheduleHistoryItem = objScheduleHistoryItem
-        End Sub
+		''' <summary>
+		''' Creates a new instance of a history item (Constructor)
+		''' </summary>
+		''' <param name="objScheduleHistoryItem">The task which will need to have its history updated.</param>
+		''' <remarks>Core part, used for auditing tasks.
+		''' </remarks>
+		Public Sub New(ByVal objScheduleHistoryItem As DotNetNuke.Services.Scheduling.ScheduleHistoryItem)
+			MyBase.new()
+			Me.ScheduleHistoryItem = objScheduleHistoryItem
+		End Sub
 
-        ''' <summary>
-        ''' Logs information to the schedule history
-        ''' </summary>
-        ''' <remarks>This task cleans the emails which the IEmailQueueSendTask has already sent.
-        ''' </remarks>
-        Public Overrides Sub DoWork()
-            Dim objEmailQueueTaskCnt As New EmailQueueTaskController
-            Try
-                'notification that the event is progressing
-                Progressing()    'OPTIONAL
+		''' <summary>
+		''' Logs information to the schedule history
+		''' </summary>
+		''' <remarks>This task cleans the emails which the IEmailQueueSendTask has already sent.
+		''' </remarks>
+		Public Overrides Sub DoWork()
+			Dim objEmailQueueTaskCnt As New EmailQueueTaskController
+			Try
+				'notification that the event is progressing
+				Progressing()	  'OPTIONAL
 
-                Dim tasksDeleteDate As Date = Date.Now().AddDays(-30)
-				If Convert.ToString(Entities.Host.Host.GetHostSettingsDictionary("ForumTaskDeleteDays")) <> String.Empty Then
+				Dim tasksDeleteDate As Date = Date.Now().AddDays(-30)
+				If Not Me.ScheduleHistoryItem.GetSetting("ForumTaskDeleteDays") Is Nothing Then
 					Dim DaysToDelete As Integer
-					DaysToDelete = Convert.ToInt32(Entities.Host.Host.GetHostSettingsDictionary("ForumTaskDeleteDays"))
+					DaysToDelete = CInt(Me.ScheduleHistoryItem.GetSetting("ForumTaskDeleteDays"))
 					tasksDeleteDate = Date.Now.AddDays(-DaysToDelete)
 				End If
 
 				Dim emailsDeleteDate As Date = Date.Now().AddDays(-30)
-				If Convert.ToString(Entities.Host.Host.GetHostSettingsDictionary("ForumEmailDeleteDays")) <> String.Empty Then
+				If Not Me.ScheduleHistoryItem.GetSetting("ForumEmailDeleteDays") Is Nothing Then
 					Dim DaysToDelete As Integer
-					DaysToDelete = Convert.ToInt32(Entities.Host.Host.GetHostSettingsDictionary("ForumEmailDeleteDays"))
+					DaysToDelete = CInt(Me.ScheduleHistoryItem.GetSetting("ForumEmailDeleteDays"))
 					emailsDeleteDate = Date.Now.AddDays(-DaysToDelete)
 				End If
 
-                ' add logic to delete tasks and emails (based on hostsettings)
-                objEmailQueueTaskCnt.EmailQueueTaskCleanTasks(tasksDeleteDate)
-                objEmailQueueTaskCnt.EmailQueueTaskCleanEmails(emailsDeleteDate)
+				' logic to delete tasks and emails (based on schedule item settings - The actual point of the task)
+				objEmailQueueTaskCnt.EmailQueueTaskCleanTasks(tasksDeleteDate)
+				objEmailQueueTaskCnt.EmailQueueTaskCleanEmails(emailsDeleteDate)
 
-                ' finish up this task in schedular
-                ScheduleHistoryItem.Succeeded = True     'REQUIRED
-                ScheduleHistoryItem.AddLogNote("Email Queue Cleanup Completed.")
+				' finish up this task in schedular
+				ScheduleHistoryItem.Succeeded = True	 'REQUIRED
+				ScheduleHistoryItem.AddLogNote("Email Queue Cleanup Completed.")
 
-            Catch exc As Exception    'REQUIRED
-                ScheduleHistoryItem.Succeeded = False    'REQUIRED
-                ScheduleHistoryItem.AddLogNote("Email Queue Cleanup Initialization Failed. " + exc.ToString)    'OPTIONAL
-                'notification that we have errored
-                Errored(exc)    'REQUIRED
-                'log the exception
-                LogException(exc)    'OPTIONAL
-            End Try
-        End Sub
+			Catch exc As Exception	 'REQUIRED
+				ScheduleHistoryItem.Succeeded = False	 'REQUIRED
+				ScheduleHistoryItem.AddLogNote("Email Queue Cleanup Initialization Failed. " + exc.ToString)	 'OPTIONAL
+				'notification that we have errored
+				Errored(exc)	 'REQUIRED
+				'log the exception
+				LogException(exc)	 'OPTIONAL
+			End Try
+		End Sub
 
-    End Class
+	End Class
 
 #End Region
 

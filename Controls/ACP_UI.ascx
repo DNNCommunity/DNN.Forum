@@ -118,6 +118,16 @@
 						   <asp:checkbox id="chkDisplayPosterRegion" runat="server" CssClass="Forum_NormalTextBox" />
 					</td>
 				</tr>
+				<tr>
+					 <td class="Forum_Row_AdminL" width="35%">
+						 <span class="Forum_Row_AdminText">
+							 <dnn:Label ID="plEnableQuickReply" runat="server" ControlName="chkEnableQuickReply" Suffix=":"></dnn:Label>
+						 </span>
+					 </td>
+					 <td align="left" class="Forum_Row_AdminR">
+						   <asp:checkbox id="chkEnableQuickReply" runat="server" CssClass="Forum_NormalTextBox" />
+					</td>
+				</tr>
 		     </table>
 		     <div class="Forum_Row_Admin_Foot" align="center">
 		         <br />

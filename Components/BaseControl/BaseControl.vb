@@ -372,18 +372,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' The UserID accessing the module. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>The UserID integer of the user accessing the module</returns>
-		''' <remarks>-1 Represents Anonymous (not logged in) (we are recreating PortalModuleBase)</remarks>
-		Friend ReadOnly Property LoggedOnUserID() As Integer
-			Get
-				Return Users.UserController.GetCurrentUserInfo.UserID
-			End Get
-		End Property
-
-		''' <summary>
 		''' The Forum User object of the logged on user. 
 		''' </summary>
 		''' <value></value>
@@ -391,7 +379,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>Handled anonymous (not logged in)</remarks>
 		Friend ReadOnly Property LoggedOnUser() As ForumUser
 			Get
-				Return ForumUserController.GetForumUser(LoggedOnUserID, False, ModuleID, PortalID)
+				Return ForumUserController.GetForumUser(Users.UserController.GetCurrentUserInfo.UserID, False, ModuleID, PortalID)
 			End Get
 		End Property
 

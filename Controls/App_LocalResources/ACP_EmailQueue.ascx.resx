@@ -138,4 +138,7 @@
   <data name="plTaskDeleteDays.Text" xml:space="preserve">
     <value>Task History (days)</value>
   </data>
+  <data name="plScheduleItemID.Text" xml:space="preserve">
+    <value>Schedule Item ID</value>
+  </data>
 </root>
