@@ -527,96 +527,106 @@ Namespace DotNetNuke.Modules.Forum
     ''' <remarks>Should only be necessary via IEmailQueueable.</remarks>
     Public Class EmailQueueTaskController
 
-#Region "Private Methods"
+#Region "Public Methods"
 
-        ''' <summary>
-        ''' Used to add an email queue task to the data store.
-        ''' </summary>
-        ''' <param name="EmailFromAddress">The email address seen as from.</param>
-        ''' <param name="FromFriendlyName">The full name of whom the email should send from.</param>
-        ''' <param name="EmailPriority">The priority of the outgoing email.</param>
-        ''' <param name="EmailHTMLBody">The HTML body of the outgoing email.</param>
-        ''' <param name="EmailTextBody">The text body of the outgoing email.</param>
-        ''' <param name="EmailSubject">The subject of the outgoing email.</param>
-        ''' <param name="PortalID">The portalID the email will be sent from.</param>
-        ''' <param name="QueuePriority"></param>
-        ''' <param name="ModuleID">The ModuleID which sent the email.</param>
-        ''' <param name="EnableFriendlyToName">If true, the full name of the receiver will be shown as the from name.</param>
-        ''' <param name="DistroCall">The name of the stored procedure to call, or the query to use for distribution calls.</param>
-        ''' <param name="DistroIsSproc">True if the DistroCall is the name of a stored procedure, otherwise it is inline SQL.</param>
-        ''' <param name="DistroParams">The parameters to pass to the stored procedure (if necessary)</param>
-        ''' <param name="ScheduleStartDate">When the email should be ready to be sent.</param>
-        ''' <param name="PersonalizeEmail">True if the email going out should use tokens. (not impelemented)</param>
-        ''' <param name="Attachment">The path to the file to attach to the outgoing email. (not implemented)</param>
-        ''' <returns>An integer representing the primary key of the Queue Task.</returns>
-        ''' <remarks></remarks>
-        Public Function EmailQueueTaskAdd(ByVal EmailFromAddress As String, ByVal FromFriendlyName As String, ByVal EmailPriority As Integer, ByVal EmailHTMLBody As String, ByVal EmailTextBody As String, ByVal EmailSubject As String, ByVal PortalID As Integer, ByVal QueuePriority As Integer, ByVal ModuleID As Integer, ByVal EnableFriendlyToName As Boolean, ByVal DistroCall As String, ByVal DistroIsSproc As Boolean, ByVal DistroParams As String, ByVal ScheduleStartDate As Date, ByVal PersonalizeEmail As Boolean, ByVal Attachment As String) As Integer
-            Return CType(DataProvider.Instance().EmailQueueTaskAdd(EmailFromAddress, FromFriendlyName, EmailPriority, EmailHTMLBody, EmailTextBody, EmailSubject, PortalID, QueuePriority, ModuleID, EnableFriendlyToName, DistroCall, DistroIsSproc, DistroParams, ScheduleStartDate, PersonalizeEmail, Attachment), Integer)
-        End Function
+		''' <summary>
+		''' Used to add an email queue task to the data store.
+		''' </summary>
+		''' <param name="EmailFromAddress">The email address seen as from.</param>
+		''' <param name="FromFriendlyName">The full name of whom the email should send from.</param>
+		''' <param name="EmailPriority">The priority of the outgoing email.</param>
+		''' <param name="EmailHTMLBody">The HTML body of the outgoing email.</param>
+		''' <param name="EmailTextBody">The text body of the outgoing email.</param>
+		''' <param name="EmailSubject">The subject of the outgoing email.</param>
+		''' <param name="PortalID">The portalID the email will be sent from.</param>
+		''' <param name="QueuePriority"></param>
+		''' <param name="ModuleID">The ModuleID which sent the email.</param>
+		''' <param name="EnableFriendlyToName">If true, the full name of the receiver will be shown as the from name.</param>
+		''' <param name="DistroCall">The name of the stored procedure to call, or the query to use for distribution calls.</param>
+		''' <param name="DistroIsSproc">True if the DistroCall is the name of a stored procedure, otherwise it is inline SQL.</param>
+		''' <param name="DistroParams">The parameters to pass to the stored procedure (if necessary)</param>
+		''' <param name="ScheduleStartDate">When the email should be ready to be sent.</param>
+		''' <param name="PersonalizeEmail">True if the email going out should use tokens. (not impelemented)</param>
+		''' <param name="Attachment">The path to the file to attach to the outgoing email. (not implemented)</param>
+		''' <returns>An integer representing the primary key of the Queue Task.</returns>
+		''' <remarks></remarks>
+		Public Function EmailQueueTaskAdd(ByVal EmailFromAddress As String, ByVal FromFriendlyName As String, ByVal EmailPriority As Integer, ByVal EmailHTMLBody As String, ByVal EmailTextBody As String, ByVal EmailSubject As String, ByVal PortalID As Integer, ByVal QueuePriority As Integer, ByVal ModuleID As Integer, ByVal EnableFriendlyToName As Boolean, ByVal DistroCall As String, ByVal DistroIsSproc As Boolean, ByVal DistroParams As String, ByVal ScheduleStartDate As Date, ByVal PersonalizeEmail As Boolean, ByVal Attachment As String) As Integer
+			Return CType(DataProvider.Instance().EmailQueueTaskAdd(EmailFromAddress, FromFriendlyName, EmailPriority, EmailHTMLBody, EmailTextBody, EmailSubject, PortalID, QueuePriority, ModuleID, EnableFriendlyToName, DistroCall, DistroIsSproc, DistroParams, ScheduleStartDate, PersonalizeEmail, Attachment), Integer)
+		End Function
 
-        ''' <summary>
-        ''' Gets a single email queue task from the data store.
-        ''' </summary>
-        ''' <param name="EmailQueueID">The primary key value to look for in the data store.</param>
-        ''' <returns>The populated info object w/ one row of data.</returns>
-        ''' <remarks>Only called from the email queue task.</remarks>
-        Public Function EmailQueueTaskGet(ByVal EmailQueueID As Integer) As EmailQueueTaskInfo
-            Return CType(CBO.FillObject(DotNetNuke.Modules.Forum.DataProvider.Instance().EmailQueueTaskGet(EmailQueueID), GetType(EmailQueueTaskInfo)), EmailQueueTaskInfo)
-        End Function
+		''' <summary>
+		''' Gets a single email queue task from the data store.
+		''' </summary>
+		''' <param name="EmailQueueID">The primary key value to look for in the data store.</param>
+		''' <returns>The populated info object w/ one row of data.</returns>
+		''' <remarks>Only called from the email queue task.</remarks>
+		Public Function EmailQueueTaskGet(ByVal EmailQueueID As Integer) As EmailQueueTaskInfo
+			Return CType(CBO.FillObject(DotNetNuke.Modules.Forum.DataProvider.Instance().EmailQueueTaskGet(EmailQueueID), GetType(EmailQueueTaskInfo)), EmailQueueTaskInfo)
+		End Function
 
-        ''' <summary>
-        ''' Gets the next email queue task to send.
-        ''' </summary>
-        ''' <returns>The info object of the next email queued task to send.</returns>
-        ''' <remarks>Only called from the email queue task.</remarks>
-        Public Function EmailQueueTaskGetNext() As EmailQueueTaskInfo
-            Return CType(CBO.FillObject(DotNetNuke.Modules.Forum.DataProvider.Instance().EmailQueueTaskGetNext(), GetType(EmailQueueTaskInfo)), EmailQueueTaskInfo)
-        End Function
+		''' <summary>
+		''' Gets the next email queue task to send.
+		''' </summary>
+		''' <returns>The info object of the next email queued task to send.</returns>
+		''' <remarks>Only called from the email queue task.</remarks>
+		Public Function EmailQueueTaskGetNext() As EmailQueueTaskInfo
+			Return CType(CBO.FillObject(DotNetNuke.Modules.Forum.DataProvider.Instance().EmailQueueTaskGetNext(), GetType(EmailQueueTaskInfo)), EmailQueueTaskInfo)
+		End Function
 
-        ''' <summary>
-        ''' Marks an email queue task as complete.
-        ''' </summary>
-        ''' <param name="EmailQueueID">The primary key to lookup in the table.</param>
-        ''' <remarks>Only called from the email queue task.</remarks>
-        Public Sub EmailQueueTaskCompleted(ByVal EmailQueueID As Integer)
-            DataProvider.Instance().EmailQueueTaskCompleted(EmailQueueID)
-        End Sub
+		''' <summary>
+		''' Marks an email queue task as complete.
+		''' </summary>
+		''' <param name="EmailQueueID">The primary key to lookup in the table.</param>
+		''' <remarks>Only called from the email queue task.</remarks>
+		Public Sub EmailQueueTaskCompleted(ByVal EmailQueueID As Integer)
+			DataProvider.Instance().EmailQueueTaskCompleted(EmailQueueID)
+		End Sub
 
-        ''' <summary>
-        ''' Marks an email queue task as failed, by increasing an integer value.
-        ''' </summary>
-        ''' <param name="EmailQueueID">The primiary key to matchup w/ in the data store.</param>
-        ''' <remarks>This is called form the email queue task. Will not send after 2 failures.</remarks>
-        Public Sub EmailQueueTaskMarkFailed(ByVal EmailQueueID As Integer)
-            DataProvider.Instance().EmailQueueTaskMarkFailed(EmailQueueID)
-        End Sub
+		''' <summary>
+		''' Marks an email queue task as failed, by increasing an integer value.
+		''' </summary>
+		''' <param name="EmailQueueID">The primiary key to matchup w/ in the data store.</param>
+		''' <remarks>This is called form the email queue task. Will not send after 2 failures.</remarks>
+		Public Sub EmailQueueTaskMarkFailed(ByVal EmailQueueID As Integer)
+			DataProvider.Instance().EmailQueueTaskMarkFailed(EmailQueueID)
+		End Sub
 
-        ''' <summary>
-        ''' Starts the email queued task.
-        ''' </summary>
-        ''' <param name="EmailQueueID">The primarly key to matchup in the data store.</param>
-        ''' <remarks>Start populates the emails to send to table.</remarks>
-        Public Sub EmailQueueTaskStart(ByVal EmailQueueID As Integer)
-            DataProvider.Instance().EmailQueueTaskStart(EmailQueueID)
-        End Sub
+		''' <summary>
+		''' Starts the email queued task.
+		''' </summary>
+		''' <param name="EmailQueueID">The primarly key to matchup in the data store.</param>
+		''' <remarks>Start populates the emails to send to table.</remarks>
+		Public Sub EmailQueueTaskStart(ByVal EmailQueueID As Integer)
+			DataProvider.Instance().EmailQueueTaskStart(EmailQueueID)
+		End Sub
 
-        ''' <summary>
-        ''' Deletes all send to emails from the email queue emails table.
-        ''' </summary>
-        ''' <param name="DeleteDate">The date to look for to delete all previous task emails.</param>
-        ''' <remarks>It is easier to use a scheduled task to delete emails by date rather than PK. This is called from the clean email queue task.</remarks>
-        Public Sub EmailQueueTaskCleanEmails(ByVal DeleteDate As Date)
-            DataProvider.Instance().EmailQueueTaskCleanEmails(DeleteDate)
-        End Sub
+		''' <summary>
+		''' Deletes all send to emails from the email queue emails table.
+		''' </summary>
+		''' <param name="DeleteDate">The date to look for to delete all previous task emails.</param>
+		''' <remarks>It is easier to use a scheduled task to delete emails by date rather than PK. This is called from the clean email queue task.</remarks>
+		Public Sub EmailQueueTaskCleanEmails(ByVal DeleteDate As Date)
+			DataProvider.Instance().EmailQueueTaskCleanEmails(DeleteDate)
+		End Sub
 
-        ''' <summary>
-        ''' Deletes all previous email tasks from the data store. 
-        ''' </summary>
-        ''' <param name="DeleteDate">The date to delete the scheduled tasks in the queue.</param>
-        ''' <remarks>Only called from the clean scheduled task for the queue.</remarks>
-        Public Sub EmailQueueTaskCleanTasks(ByVal DeleteDate As Date)
-            DataProvider.Instance().EmailQueueTaskCleanTasks(DeleteDate)
-        End Sub
+		''' <summary>
+		''' Deletes all previous email tasks from the data store. 
+		''' </summary>
+		''' <param name="DeleteDate">The date to delete the scheduled tasks in the queue.</param>
+		''' <remarks>Only called from the clean scheduled task for the queue.</remarks>
+		Public Sub EmailQueueTaskCleanTasks(ByVal DeleteDate As Date)
+			DataProvider.Instance().EmailQueueTaskCleanTasks(DeleteDate)
+		End Sub
+
+		''' <summary>
+		''' Retrieves all email tasks associated with a portal.
+		''' </summary>
+		''' <param name="PortalID">The Portal to retrieve email tasks for.</param>
+		''' <returns>A colleciton of email tasks associated with the specified portal.</returns>
+		''' <remarks></remarks>
+		Public Function GetPortalEmailSendTasks(ByVal PortalID As Integer) As List(Of EmailQueueTaskInfo)
+			Return CBO.FillCollection(Of EmailQueueTaskInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().GetPortalEmailSendTasks(PortalID))
+		End Function
 
 #End Region
 

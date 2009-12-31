@@ -53,6 +53,9 @@ Namespace DotNetNuke.Modules.Forum
 		Dim ctlEmailSettings As String = "ACP_Email.ascx"
 		'Dim ctlEmailTemplate As String = "ACP_EmailTemplate.ascx"
 		Dim ctlEmailQueue As String = "ACP_EmailQueue.ascx"
+		Dim ctlEmailQueueTaskDetail As String = "ACP_EmailQueueTaskDetail.ascx"
+		Dim ctlEmailSubscribers As String = "ACP_EmailSubscribers.ascx"
+
 		Dim _CtlToLoad As String
 
 #End Region
@@ -147,6 +150,10 @@ Namespace DotNetNuke.Modules.Forum
 								' Email Template
 							Case CStr(AdminAjaxControl.EmailQueue)
 								ACPmenu.ControlToLoad = ctlEmailQueue
+							Case CStr(AdminAjaxControl.EmailQueueTaskDetail)
+								ACPmenu.ControlToLoad = ctlEmailQueueTaskDetail
+							Case CStr(AdminAjaxControl.EmailSubscribers)
+								ACPmenu.ControlToLoad = ctlEmailSubscribers
 							Case Else
 								ACPmenu.ControlToLoad = ctlOverview
 						End Select

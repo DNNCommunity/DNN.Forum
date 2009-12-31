@@ -162,6 +162,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
 				If Not Page.IsPostBack Then
 					litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
+					BuildTabs()
 					SetURLController()
 					BindGroup()
 					BindLists()
@@ -224,17 +225,17 @@ Namespace DotNetNuke.Modules.Forum.ACP
 						End If
 					End If
 
-					tblGeneral.Visible = True
-					cmdGeneral.Enabled = False
-					tblBehavior.Visible = False
-					cmdBehavior.Enabled = True
-					tblEmail.Visible = False
+					'tblGeneral.Visible = True
+					'cmdGeneral.Enabled = False
+					'tblBehavior.Visible = False
+					'cmdBehavior.Enabled = True
+					'tblEmail.Visible = False
 
-					If objConfig.MailNotification And objConfig.EnablePerForumFrom Then
-						cmdEmail.Enabled = True
-					Else
-						cmdEmail.Enabled = False
-					End If
+					'If objConfig.MailNotification And objConfig.EnablePerForumFrom Then
+					'	cmdEmail.Enabled = True
+					'Else
+					'	cmdEmail.Enabled = False
+					'End If
 
 					' Register scripts
 					Utilities.ForumUtils.RegisterPageScripts(Page, objConfig)
@@ -489,59 +490,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected Sub ddlForumBehavior_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ddlForumBehavior.SelectedIndexChanged
 			HandleForumBehavior()
 			SetupForumPermsGrid(False)
-		End Sub
-
-		''' <summary>
-		''' Tab-like interface changes.
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
-		Protected Sub cmdGeneral_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdGeneral.Click
-			tblGeneral.Visible = True
-			cmdGeneral.Enabled = False
-			tblBehavior.Visible = False
-			cmdBehavior.Enabled = True
-			tblEmail.Visible = False
-			If objConfig.MailNotification And objConfig.EnablePerForumFrom Then
-				cmdEmail.Enabled = True
-			Else
-				cmdEmail.Enabled = False
-			End If
-		End Sub
-
-		''' <summary>
-		''' Tab-like interface changes.
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
-		Protected Sub cmdBehavior_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBehavior.Click
-			tblGeneral.Visible = False
-			cmdGeneral.Enabled = True
-			tblBehavior.Visible = True
-			cmdBehavior.Enabled = False
-			tblEmail.Visible = False
-			If objConfig.MailNotification And objConfig.EnablePerForumFrom Then
-				cmdEmail.Enabled = True
-			Else
-				cmdEmail.Enabled = False
-			End If
-		End Sub
-
-		''' <summary>
-		''' Tab-like interface changes.
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
-		Protected Sub cmdEmail_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdEmail.Click
-			tblGeneral.Visible = False
-			cmdGeneral.Enabled = True
-			tblBehavior.Visible = False
-			cmdBehavior.Enabled = True
-			tblEmail.Visible = True
-			cmdEmail.Enabled = False
 		End Sub
 
 #End Region
@@ -963,6 +911,23 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					ModeratedForum = False
 					PublicPosting = False
 			End Select
+		End Sub
+
+		Private Sub BuildTabs()
+			Dim tabForums As New Telerik.Web.UI.RadTab
+			tabForums.Text = Localization.GetString("TabGeneral", LocalResourceFile)
+			tabForums.PageViewID = "rpvGeneral"
+			rtsForum.Tabs.Add(tabForums)
+
+			Dim tabThreads As New Telerik.Web.UI.RadTab
+			tabThreads.Text = Localization.GetString("TabOptions", LocalResourceFile)
+			tabThreads.PageViewID = "rpvOptions"
+			rtsForum.Tabs.Add(tabThreads)
+
+			Dim tabEmail As New Telerik.Web.UI.RadTab
+			tabEmail.Text = Localization.GetString("TabEmail", LocalResourceFile)
+			tabEmail.PageViewID = "rpvEmail"
+			rtsForum.Tabs.Add(tabEmail)
 		End Sub
 
 #End Region

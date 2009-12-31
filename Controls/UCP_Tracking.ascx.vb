@@ -232,32 +232,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 			BindThreadData(ThreadPager.PageSize, CurrentPage)
 		End Sub
 
-		'''' <summary>
-		'''' Used to mimic tab-like interface.
-		'''' </summary>
-		'''' <param name="sender"></param>
-		'''' <param name="e"></param>
-		'''' <remarks></remarks>
-		'Protected Sub cmdForum_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdForum.Click
-		'	tblForum.Visible = True
-		'	cmdForum.Enabled = False
-		'	tblThread.Visible = False
-		'	cmdThread.Enabled = True
-		'End Sub
-
-		'''' <summary>
-		'''' Used to mimic tab-like interface.
-		'''' </summary>
-		'''' <param name="sender"></param>
-		'''' <param name="e"></param>
-		'''' <remarks></remarks>
-		'Protected Sub cmdThread_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdThread.Click
-		'	tblForum.Visible = False
-		'	cmdForum.Enabled = True
-		'	tblThread.Visible = True
-		'	cmdThread.Enabled = False
-		'End Sub
-
 #End Region
 
 #Region "Private Methods"

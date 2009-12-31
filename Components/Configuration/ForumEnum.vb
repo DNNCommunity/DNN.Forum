@@ -777,6 +777,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>No Ajax</remarks>
 		EmailTemplate
 		EmailQueue
+		EmailQueueTaskDetail
+		EmailSubscribers
 	End Enum
 
 	Public Enum UserAvatarType

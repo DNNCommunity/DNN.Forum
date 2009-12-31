@@ -309,10 +309,10 @@
   <data name="plAllowPolls.Text" xml:space="preserve">
     <value>Enable Polls</value>
   </data>
-  <data name="cmdBehavior.Text" xml:space="preserve">
+  <data name="TabOptions.Text" xml:space="preserve">
     <value>Options</value>
   </data>
-  <data name="cmdGeneral.Text" xml:space="preserve">
+  <data name="TabGeneral.Text" xml:space="preserve">
     <value>General Settings</value>
   </data>
   <data name="None.Text" xml:space="preserve">
@@ -327,7 +327,7 @@
   <data name="EditForum.Text" xml:space="preserve">
     <value>Edit Forum</value>
   </data>
-  <data name="cmdEmail.Text" xml:space="preserve">
+  <data name="TabEmail.Text" xml:space="preserve">
     <value>Email</value>
   </data>
   <data name="plEmailAddress.Help" xml:space="preserve">

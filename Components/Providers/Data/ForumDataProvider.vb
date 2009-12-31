@@ -153,6 +153,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public MustOverride Function PostGetChildren(ByVal PostID As Integer) As IDataReader
 		Public MustOverride Function PostGetEntireThread(ByVal ThreadID As Integer) As IDataReader
 		Public MustOverride Sub PostUpdateParseInfo(ByVal PostID As Integer, ByVal ParseInfo As Integer)
+
 #End Region
 
 #Region "Reported Posts"
@@ -348,6 +349,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public MustOverride Sub EmailQueueTaskCleanEmails(ByVal DeleteDate As Date)
 		Public MustOverride Sub EmailQueueTaskCleanTasks(ByVal DeleteDate As Date)
 		Public MustOverride Function EmailQueueTaskScheduleItemIDGet(ByVal DeleteTask As Boolean) As Integer
+		Public MustOverride Function GetPortalEmailSendTasks(ByVal PortalID As Integer) As IDataReader
 
 #End Region
 
@@ -357,6 +359,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public MustOverride Function TaskEmailsToSendGet(ByVal EmailQueueID As Integer) As IDataReader
 		Public MustOverride Sub TaskEmailsSendStatusUpdate(ByVal EmailQueueID As Integer, ByVal EmailAddress As String, ByVal Failed As Boolean)
 		Public MustOverride Function TaskEmailsSprocInsertToSend(ByVal SprocName As String, ByVal params As String, ByVal EmailQueueID As Integer) As IDataReader
+		Public MustOverride Function TaskEmailsGet(ByVal EmailQueueID As Integer) As IDataReader
 
 #End Region
 
@@ -369,6 +372,13 @@ Namespace DotNetNuke.Modules.Forum
 		Public MustOverride Sub TrackingForumDeleteAll(ByVal UserID As Integer, ByVal ModuleID As Integer)
 		Public MustOverride Sub TrackingForumCreateDelete(ByVal ForumID As Integer, ByVal UserID As Integer, ByVal Add As Boolean, ByVal ModuleID As Integer)
 		Public MustOverride Sub TrackingThreadCreateDelete(ByVal ForumID As Integer, ByVal ThreadID As Integer, ByVal UserID As Integer, ByVal Add As Boolean, ByVal ModuleID As Integer)
+
+#End Region
+
+#Region "User Tracking"
+
+		Public MustOverride Function GetForumSubscribers(ByVal ForumID As Integer) As IDataReader
+		Public MustOverride Function GetThreadSubscribers(ByVal ThreadID As Integer) As IDataReader
 
 #End Region
 

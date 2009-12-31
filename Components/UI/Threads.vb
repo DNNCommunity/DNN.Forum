@@ -40,7 +40,6 @@ Namespace DotNetNuke.Modules.Forum
 		Dim TotalRecords As Integer = 0
 		Dim url As String
 		Private hsThreadRatings As New Hashtable
-		'Dim Security As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, ForumControl.LoggedOnUser.UserID)
 
 #Region "Controls"
 
@@ -50,6 +49,7 @@ Namespace DotNetNuke.Modules.Forum
 		Private txtForumSearch As TextBox
 		Private cmdForumSearch As System.Web.UI.WebControls.ImageButton
 		Private trcRating As Telerik.Web.UI.RadRating
+		Private cmdForumSubscribers As LinkButton
 
 #End Region
 
@@ -228,6 +228,11 @@ Namespace DotNetNuke.Modules.Forum
 		Protected Sub cmdForumSearch_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs)
 			url = Utilities.Links.ContainerSingleForumSearchLink(TabID, ForumId, txtForumSearch.Text)
 			MyBase.BasePage.Response.Redirect(url, False)
+		End Sub
+
+		Protected Sub cmdForumSubscribers_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+			url = Utilities.Links.ForumEmailSubscribers(TabID, ModuleID, ForumId)
+			HttpContext.Current.Response.Redirect(url, False)
 		End Sub
 
 #End Region
@@ -417,6 +422,13 @@ Namespace DotNetNuke.Modules.Forum
 				.ImageUrl = objConfig.GetThemeImageURL("s_lookup.") & objConfig.ImageExtension
 			End With
 
+			Me.cmdForumSubscribers = New LinkButton
+			With cmdForumSubscribers
+				.CssClass = "Forum_Profile"
+				.ID = "cmdForumSubscribers"
+				.Text = ForumControl.LocalizedText("cmdForumSubscribers")
+			End With
+
 			BindControls()
 			AddControlHandlers()
 			AddControlsToTree()
@@ -509,6 +521,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				AddHandler ddlDateFilter.SelectedIndexChanged, AddressOf ddlDateFilter_SelectedIndexChanged
 				AddHandler cmdForumSearch.Click, AddressOf cmdForumSearch_Click
+				AddHandler cmdForumSubscribers.Click, AddressOf cmdForumSubscribers_Click
 				' would add rating control handler here if we permit rating in thread view in future. (may move to per post rating, in which case this would always be no). 
 			Catch exc As Exception
 				LogException(exc)
@@ -525,6 +538,7 @@ Namespace DotNetNuke.Modules.Forum
 				If ForumControl.LoggedOnUser.UserID > 0 Then
 					Controls.Add(cmdRead)
 					Controls.Add(chkEmail)
+					Controls.Add(cmdForumSubscribers)
 				End If
 				Controls.Add(ddlDateFilter)
 				Controls.Add(txtForumSearch)
@@ -1331,6 +1345,14 @@ Namespace DotNetNuke.Modules.Forum
 				' check email
 				RenderRowBegin(wr) ' <tr>
 				RenderCellBegin(wr, "", "", "", "right", "", "", "")
+
+				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, ForumControl.LoggedOnUser.UserID)
+
+				If objSecurity.IsForumAdmin Then
+					cmdForumSubscribers.RenderControl(wr)
+					wr.Write("<br />")
+				End If
+
 				chkEmail.RenderControl(wr)
 
 				'' We check if user is subscribed in this forum

@@ -178,6 +178,7 @@
     <Compile Include="Components\RoleAvatar\RoleAvatarInfo.vb" />
     <Compile Include="Components\Search\ForumSearchResult.vb" />
     <Compile Include="Components\Security\MockSecurity.vb" />
+    <Compile Include="Components\Tracking\UserTracking.vb" />
     <Compile Include="Components\UI\Groups.vb">
     </Compile>
     <Compile Include="Components\Groups\ForumGroupController.vb" />
@@ -320,6 +321,20 @@
     </Compile>
     <Compile Include="Controls\AvatarControl.ascx.vb">
       <DependentUpon>AvatarControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_EmailQueueTaskDetail.ascx.designer.vb">
+      <DependentUpon>ACP_EmailQueueTaskDetail.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_EmailQueueTaskDetail.ascx.vb">
+      <DependentUpon>ACP_EmailQueueTaskDetail.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\ACP_EmailSubscribers.ascx.designer.vb">
+      <DependentUpon>ACP_EmailSubscribers.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_EmailSubscribers.ascx.vb">
+      <DependentUpon>ACP_EmailSubscribers.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Controls\EmoticonControl.ascx.designer.vb">
@@ -702,6 +717,7 @@
     <None Include="Providers\DataProviders\SqlDataProvider\04.05.02.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\04.05.03.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\04.05.05.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.05.06.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
@@ -960,6 +976,8 @@
     <Content Include="Controls\ACP_SEO.ascx" />
     <Content Include="Controls\AttachmentControl.ascx" />
     <Content Include="Controls\AvatarControl.ascx" />
+    <Content Include="Controls\ACP_EmailQueueTaskDetail.ascx" />
+    <Content Include="Controls\ACP_EmailSubscribers.ascx" />
     <Content Include="Controls\EmoticonControl.ascx" />
     <Content Include="Controls\MCP_ReportedUsers.ascx" />
     <Content Include="Controls\MCP_BannedUsers.ascx" />
@@ -1087,6 +1105,12 @@
     <Content Include="Controls\App_LocalResources\EmoticonControl.ascx.resx" />
     <Content Include="Controls\App_LocalResources\AttachmentControl.ascx.resx" />
     <Content Include="Controls\App_LocalResources\ACP_Emoticon.ascx.resx" />
+    <Content Include="Controls\App_LocalResources\ACP_EmailQueueTaskDetail.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Controls\App_LocalResources\ACP_EmailSubscribers.ascx.resx">
+      <SubType>Designer</SubType>
+    </Content>
     <EmbeddedResource Include="js\forum.js" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />

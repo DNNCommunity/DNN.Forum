@@ -61,6 +61,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Dim ctlEmailTemplate As String = "ACP_EmailTemplate.ascx"
 		Dim ctlEmoticon As String = "ACP_Emoticon.ascx"
 		Dim ctlEmailQueue As String = "ACP_EmailQueue.ascx"
+		Dim ctlEmailQueueTaskDetail As String = "ACP_EmailQueueTaskDetail.ascx"
+		Dim ctlEmailSubscribers As String = "ACP_EmailSubscribers.ascx"
 		Dim ctlUser As String = "ACP_User.ascx"
 		Dim ctlForumEdit As String = "ACP_ForumEdit.ascx"
 		Dim cmdOverview As LinkButton
@@ -80,6 +82,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Dim cmdPopStatus As LinkButton
 		Dim cmdEmailSettings As LinkButton
 		Dim cmdEmailQueue As LinkButton
+		Dim cmdEmailQueueTaskDetail As LinkButton
+		Dim cmdEmailSubscribers As LinkButton
 
 		''' <summary>
 		''' The various sections of the menu that can be expanded/collapsed.
@@ -264,6 +268,10 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					ControlToLoad = ctlEmailQueue
 				Case AdminAjaxControl.Emoticon
 					ControlToLoad = ctlEmoticon
+				Case AdminAjaxControl.EmailQueueTaskDetail
+					ControlToLoad = ctlEmailQueueTaskDetail
+				Case AdminAjaxControl.EmailSubscribers
+					ControlToLoad = ctlEmailSubscribers
 				Case Else
 					ControlToLoad = ctlOverview
 			End Select
@@ -404,6 +412,10 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					Case ctlEmailTemplate
 						ExpandSection = ExpandMenuSection.Email
 					Case ctlEmailQueue
+						ExpandSection = ExpandMenuSection.Email
+					Case ctlEmailQueueTaskDetail
+						ExpandSection = ExpandMenuSection.Email
+					Case ctlEmailSubscribers
 						ExpandSection = ExpandMenuSection.Email
 				End Select
 
@@ -980,7 +992,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.RenderEndTag() ' </div>
 
 				' Fifth Menu Section, Email
-				GenerateMenuSection(wr, Localization.GetString("EmailSection", Me.LocalResourceFile), IsExpanded(5, ExpandSection), 60)
+				GenerateMenuSection(wr, Localization.GetString("EmailSection", Me.LocalResourceFile), IsExpanded(5, ExpandSection), 100)
 				wr.AddAttribute(HtmlTextWriterAttribute.Cellpadding, "0")
 				wr.AddAttribute(HtmlTextWriterAttribute.Cellspacing, "0")
 				wr.AddAttribute(HtmlTextWriterAttribute.Align, "left")
@@ -1064,6 +1076,60 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					wr.RenderEndTag() ' </td>
 					wr.RenderEndTag() ' </tr>
 				End If
+
+				' Queue Task Detail
+				wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>
+				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
+				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
+
+				If ControlToLoad = ctlEmailQueueTaskDetail Then
+					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
+					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
+					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
+					wr.AddAttribute(HtmlTextWriterAttribute.Title, imgSelectedToolTip)
+					wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <img> 
+					wr.RenderEndTag() ' </img>
+				End If
+				wr.RenderEndTag() ' </td>
+
+				wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
+				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
+				If EnableAjax Then
+					cmdEmailQueueTaskDetail.RenderControl(wr)
+				Else
+					url = Utilities.Links.ACPControlLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID, AdminAjaxControl.EmailQueueTaskDetail)
+					RenderLinkButton(wr, url, Localization.GetString("cmdEmailQueueTaskDetail", Me.LocalResourceFile), "Forum_Link")
+				End If
+
+				wr.RenderEndTag() ' </td>
+				wr.RenderEndTag() ' </tr>
+
+				' Email Subscribers
+				wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>
+				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
+				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
+
+				If ControlToLoad = ctlEmailSubscribers Then
+					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
+					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
+					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
+					wr.AddAttribute(HtmlTextWriterAttribute.Title, imgSelectedToolTip)
+					wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <img> 
+					wr.RenderEndTag() ' </img>
+				End If
+				wr.RenderEndTag() ' </td>
+
+				wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
+				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
+				If EnableAjax Then
+					cmdEmailSubscribers.RenderControl(wr)
+				Else
+					url = Utilities.Links.ACPControlLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID, AdminAjaxControl.EmailQueueTaskDetail)
+					RenderLinkButton(wr, url, Localization.GetString("cmdEmailSubscribers", Me.LocalResourceFile), "Forum_Link")
+				End If
+
+				wr.RenderEndTag() ' </td>
+				wr.RenderEndTag() ' </tr>
 
 				'Close Section
 				wr.RenderEndTag() ' </table>
@@ -1313,6 +1379,27 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			End With
 			Controls.Add(cmdEmailQueue)
 
+			Me.cmdEmailQueueTaskDetail = New LinkButton
+			With cmdEmailQueueTaskDetail
+				.CssClass = "Forum_Link"
+				.ID = "cmdEmailQueueTaskDetail"
+				.Text = Localization.GetString("cmdEmailQueueTaskDetail", Me.LocalResourceFile)
+				.CommandArgument = (CInt(AdminAjaxControl.EmailQueueTaskDetail)).ToString()
+				.CausesValidation = False
+				AddHandler cmdEmailQueueTaskDetail.Click, AddressOf PageButton_Click
+			End With
+			Controls.Add(cmdEmailQueueTaskDetail)
+
+			Me.cmdEmailSubscribers = New LinkButton
+			With cmdEmailSubscribers
+				.CssClass = "Forum_Link"
+				.ID = "cmdEmailSubscribers"
+				.Text = Localization.GetString("cmdEmailSubscribers", Me.LocalResourceFile)
+				.CommandArgument = (CInt(AdminAjaxControl.EmailSubscribers)).ToString()
+				.CausesValidation = False
+				AddHandler cmdEmailSubscribers.Click, AddressOf PageButton_Click
+			End With
+			Controls.Add(cmdEmailSubscribers)
 		End Sub
 
 #End Region

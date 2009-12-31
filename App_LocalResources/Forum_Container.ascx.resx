@@ -438,4 +438,10 @@
   <data name="ViewProfile.Text" xml:space="preserve">
     <value>View Profile</value>
   </data>
+  <data name="cmdForumSubscribers.Text" xml:space="preserve">
+    <value>View Subscribers</value>
+  </data>
+  <data name="cmdThreadSubscribers.Text" xml:space="preserve">
+    <value>View Subscribers</value>
+  </data>
 </root>

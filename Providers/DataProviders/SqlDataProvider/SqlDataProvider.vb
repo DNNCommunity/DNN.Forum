@@ -841,6 +841,10 @@ Namespace DotNetNuke.Modules.Forum
 			Return CType(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner & ObjectQualifier & _moduleDataPrefix & "EmailQueue_TaskScheduleItemIDGet", DeleteTask), Integer)
 		End Function
 
+		Public Overrides Function GetPortalEmailSendTasks(ByVal PortalID As Integer) As IDataReader
+			Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & _moduleDataPrefix & "EmailQueue_GetPortalSendTasks", PortalID), IDataReader)
+		End Function
+
 #End Region
 
 #Region "Task Emails"
@@ -859,6 +863,10 @@ Namespace DotNetNuke.Modules.Forum
 
 		Public Overrides Function TaskEmailsSprocInsertToSend(ByVal SprocName As String, ByVal params As String, ByVal EmailQueueID As Integer) As IDataReader
 			Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & SprocName, params, EmailQueueID), IDataReader)
+		End Function
+
+		Public Overrides Function TaskEmailsGet(ByVal EmailQueueID As Integer) As IDataReader
+			Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & _moduleDataPrefix & "EmailQueue_TaskEmailsGet", EmailQueueID), IDataReader)
 		End Function
 
 #End Region
@@ -886,6 +894,18 @@ Namespace DotNetNuke.Modules.Forum
 		Public Overrides Sub TrackingThreadCreateDelete(ByVal ForumID As Integer, ByVal ThreadID As Integer, ByVal UserID As Integer, ByVal Add As Boolean, ByVal ModuleID As Integer)
 			SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & _moduleDataPrefix & "Tracking_ThreadCreateDelete", ForumID, ThreadID, UserID, Add, ModuleID)
 		End Sub
+
+#End Region
+
+#Region "User Tracking"
+
+		Public Overrides Function GetForumSubscribers(ByVal ForumID As Integer) As IDataReader
+			Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & _moduleDataPrefix & "UserTracking_GetForum", ForumID), IDataReader)
+		End Function
+
+		Public Overrides Function GetThreadSubscribers(ByVal ThreadID As Integer) As IDataReader
+			Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & _moduleDataPrefix & "UserTracking_GetThread", ThreadID), IDataReader)
+		End Function
 
 #End Region
 

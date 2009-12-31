@@ -48,7 +48,6 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _TrackedThread As Boolean = False
 		Dim _url As String
 		Dim newpost As Boolean = False	'[skeel] added 
-		'Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, ForumControl.LoggedOnUser.UserID)
 
 #End Region
 
@@ -67,6 +66,7 @@ Namespace DotNetNuke.Modules.Forum
 		Private cmdBookmark As System.Web.UI.WebControls.ImageButton '[skeel] added
 		Private txtQuickReply As System.Web.UI.WebControls.TextBox
 		Private cmdSubmit As System.Web.UI.WebControls.LinkButton
+		Private cmdThreadSubscribers As LinkButton
 
 #End Region
 
@@ -420,6 +420,12 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 		End Sub
 
+		Protected Sub cmdThreadSubscribers_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+			Dim url As String
+			url = Utilities.Links.ThreadEmailSubscribers(TabID, ModuleID, ForumId, ThreadId)
+			HttpContext.Current.Response.Redirect(url, False)
+		End Sub
+
 #End Region
 
 #Region "Public Methods"
@@ -664,6 +670,13 @@ Namespace DotNetNuke.Modules.Forum
 				.Text = ForumControl.LocalizedText("cmdSubmit")
 			End With
 
+			Me.cmdThreadSubscribers = New LinkButton
+			With cmdThreadSubscribers
+				.CssClass = "Forum_Profile"
+				.ID = "cmdThreadSubscribers"
+				.Text = ForumControl.LocalizedText("cmdThreadSubscribers")
+			End With
+
 			BindControls()
 			AddControlHandlers()
 			AddControlsToTree()
@@ -750,6 +763,7 @@ Namespace DotNetNuke.Modules.Forum
 				AddHandler ddlViewDescending.SelectedIndexChanged, AddressOf ddlViewDescending_SelectedIndexChanged
 				AddHandler cmdForumSearch.Click, AddressOf cmdForumSearch_Click
 				AddHandler cmdSubmit.Click, AddressOf cmdSubmit_Click
+				AddHandler cmdThreadSubscribers.Click, AddressOf cmdThreadSubscribers_Click
 
 				If ForumControl.LoggedOnUser.UserID > 0 Then
 					AddHandler chkEmail.CheckedChanged, AddressOf chkEmail_CheckedChanged
@@ -788,6 +802,7 @@ Namespace DotNetNuke.Modules.Forum
 					'Polls
 					Controls.Add(rblstPoll)
 					Controls.Add(cmdBookmark) '[skeel] added
+					Controls.Add(cmdThreadSubscribers)
 				End If
 
 				If objConfig.EnableRatings Then
@@ -2667,6 +2682,13 @@ Namespace DotNetNuke.Modules.Forum
 			' Display tracking option if user is authenticated and post count > 0 and user not track parent forum (make sure tracking is enabled)
 			'CP - Seperating so we can show user they are tracking at forum level if need be
 			If (PostCollection.Count > 0) AndAlso (ForumControl.LoggedOnUser.UserID > 0) And (objConfig.MailNotification) Then
+				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, ForumControl.LoggedOnUser.UserID)
+
+				If objSecurity.IsForumAdmin Then
+					cmdThreadSubscribers.RenderControl(wr)
+					wr.Write("<br />")
+				End If
+
 				If TrackedForum Then
 				ElseIf TrackedModule Then
 				Else

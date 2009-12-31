@@ -38,8 +38,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <param name="ModuleID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Shared Function ACPControlLink(ByVal TabId As Integer, ByVal ModuleID As Integer, _
-								  ByVal AdminControl As AdminAjaxControl) As String
+		Shared Function ACPControlLink(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal AdminControl As AdminAjaxControl) As String
 			Dim url As String
 			Dim params As String()
 
@@ -48,6 +47,28 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 			Else
 				params = New String(0) {"mid=" & ModuleID.ToString}
 			End If
+
+			url = NavigateURL(TabId, ForumPage.ACP.ToString, params)
+
+			Return url
+		End Function
+
+		Shared Function ForumEmailSubscribers(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal ForumID As Integer) As String
+			Dim url As String
+			Dim params As String()
+
+			params = New String(2) {"mid=" & ModuleID.ToString, "view=" & CStr(AdminAjaxControl.EmailSubscribers), "ForumID=" & ForumID.ToString()}
+
+			url = NavigateURL(TabId, ForumPage.ACP.ToString, params)
+
+			Return url
+		End Function
+
+		Shared Function ThreadEmailSubscribers(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal ForumID As Integer, ByVal ThreadID As Integer) As String
+			Dim url As String
+			Dim params As String()
+
+			params = New String(3) {"mid=" & ModuleID.ToString, "view=" & CStr(AdminAjaxControl.EmailSubscribers), "ForumID=" & ForumID, "ThreadID=" & ThreadID.ToString()}
 
 			url = NavigateURL(TabId, ForumPage.ACP.ToString, params)
 
@@ -270,8 +291,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <param name="ForumId"></param>
 		''' <returns></returns>
 		''' <remarks>Users ForumContainer dispatch control.</remarks>
-		Public Shared Function ContainerViewForumLink(ByVal TabId As Integer, ByVal ForumId As Integer, _
-											  ByVal NoReply As Boolean) As String
+		Public Shared Function ContainerViewForumLink(ByVal TabId As Integer, ByVal ForumId As Integer, ByVal NoReply As Boolean) As String
 			Dim url As String
 			Dim params As String()
 
@@ -294,8 +314,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <param name="ThreadId"></param>
 		''' <returns></returns>
 		''' <remarks>Usere ForumContainer dispatch control.</remarks>
-		Public Shared Function ContainerViewThreadLink(ByVal TabId As Integer, ByVal ForumId As Integer, _
-											   ByVal ThreadId As Integer) As String
+		Public Shared Function ContainerViewThreadLink(ByVal TabId As Integer, ByVal ForumId As Integer, ByVal ThreadId As Integer) As String
 			Dim url As String
 			Dim params As String()
 
