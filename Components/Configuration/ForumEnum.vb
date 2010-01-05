@@ -843,6 +843,7 @@ Namespace DotNetNuke.Modules.Forum
 		UserCannotStartThread = 14
 		UserCannotViewForum = 15
 	End Enum
+
 #End Region
 
 End Namespace

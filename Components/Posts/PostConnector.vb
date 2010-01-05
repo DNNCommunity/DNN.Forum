@@ -50,26 +50,26 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Public Methods"
 
 		''' <summary>
-		''' All posting from external sources are designed to go through this method. 
+		''' All posting from external sources are designed to go through this method. The API will take care of all security, moderation, notifications, filtering, etc,
 		''' </summary>
-		''' <param name="TabID"></param>
-		''' <param name="ModuleID"></param>
-		''' <param name="PortalID"></param>
-		''' <param name="UserID"></param>
-		''' <param name="PostSubject"></param>
-		''' <param name="PostBody"></param>
-		''' <param name="ForumID"></param>
-		''' <param name="ParentPostID"></param>
-		''' <param name="Attachments"></param>
-		''' <param name="Provider"></param>
-		''' <returns></returns>
+		''' <param name="TabID">The TabID (page) your forum that you wish to post to resides on.</param>
+		''' <param name="ModuleID">The module you wish to post to.</param>
+		''' <param name="PortalID">The portal associated with the tab/modue and user posting.</param>
+		''' <param name="UserID">The user posting the message.</param>
+		''' <param name="PostSubject">The 'uncleansed' post subject.</param>
+		''' <param name="PostBody">The 'uncleansed' post body.</param>
+		''' <param name="ForumID">The forum you wish to post to.</param>
+		''' <param name="ParentPostID">The post you are replying to, if you are starting a new thread this should be equal to 0.</param>
+		''' <param name="Attachments">A string of attachments, separated by a semicolon (Not fully implemented).</param>
+		''' <param name="Provider">A unique string used to identify how the post was submitted (this should be your own unique value for your module/task).</param>
+		''' <returns>An enumerator PostMessage that tells what happend (post moderated, post approved, reason rejected, etc.).</returns>
 		''' <remarks>This is available for all outside modules/applications to post to the forum module.</remarks>
 		Public Function SubmitExternalPost(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer, ByVal UserID As Integer, ByVal PostSubject As String, ByVal PostBody As String, ByVal ForumID As Integer, ByVal ParentPostID As Integer, ByVal Attachments As String, ByVal Provider As String) As PostMessage
 			Return PostingValidation(TabID, ModuleID, PortalID, UserID, PostSubject, PostBody, ForumID, ParentPostID, -1, False, False, False, Forum.ThreadStatus.NotSet, Attachments, "0.0.0.0", -1, -1, False, Provider)
 		End Function
 
 		''' <summary>
-		''' 
+		''' This is meant for preview only and is not required for external post submission. (Although the external posting will also run this very same method). 
 		''' </summary>
 		''' <param name="PostBody"></param>
 		''' <param name="myConfig"></param>
@@ -129,6 +129,14 @@ Namespace DotNetNuke.Modules.Forum
 			Return ProcessedBody
 		End Function
 
+		''' <summary>
+		''' This is meant for preview only and is not required for external post submission. (Although the external posting will also run this very same method). 
+		''' </summary>
+		''' <param name="PostSubject"></param>
+		''' <param name="objConfig"></param>
+		''' <param name="PortalID"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
 		Public Function ProcessPostSubject(ByVal PostSubject As String, ByVal objConfig As Forum.Config, ByVal PortalID As Integer) As String
 			Dim objSecurity As New PortalSecurity
 			Dim ProcessedSubject As String
