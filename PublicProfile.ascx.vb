@@ -199,7 +199,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					If objConfig.EnableUserAvatar Then
 						If (ProfileUser.AvatarComplete.Trim() <> String.Empty) Then
-							If objConfig.EnableProfileAvatar Then
+							If objConfig.EnableProfileAvatar = False Then
 								Dim WebVisibility As UserVisibilityMode
 								WebVisibility = ProfileUser.Profile.ProfileProperties(objConfig.AvatarProfilePropName).Visibility
 

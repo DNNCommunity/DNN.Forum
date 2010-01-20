@@ -91,7 +91,7 @@
 						controlname="chkEnableExtProfilePage"></dnn:label>
 				     </span>
 				</td>
-				<td align="middle" align="left">
+				<td align="left">
                               <asp:checkbox id="chkEnableExtProfilePage" runat="server" CssClass="Forum_NormalTextBox" AutoPostBack="True" />
 					</td>
 			  </tr>
