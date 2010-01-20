@@ -74,10 +74,10 @@ Namespace DotNetNuke.Modules.Forum
 			'' load the css file
 			'litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
 
-			'If DotNetNuke.Framework.AJAX.IsInstalled Then
-			'	DotNetNuke.Framework.AJAX.RegisterScriptManager()
-			'	'DotNetNuke.Framework.AJAX.WrapUpdatePanelControl(pnlContainer, False)
-			'End If
+			If DotNetNuke.Framework.AJAX.IsInstalled Then
+				DotNetNuke.Framework.AJAX.RegisterScriptManager()
+				'DotNetNuke.Framework.AJAX.WrapUpdatePanelControl(pnlContainer, False)
+			End If
 			''
 			If Not (Request.QueryString("groupid") Is Nothing) Then
 				_GroupID = Int32.Parse(Request.QueryString("groupid"))

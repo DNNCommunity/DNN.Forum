@@ -173,7 +173,7 @@
                   <moduleControl>
                     <controlKey />
                     <controlSrc>DesktopModules/Forum/Forum_Container.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
+                    <supportsPartialRendering>True</supportsPartialRendering>
                     <controlTitle />
                     <controlType>View</controlType>
                     <iconFile />
