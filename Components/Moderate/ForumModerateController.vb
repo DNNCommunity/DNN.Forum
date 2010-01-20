@@ -1,6 +1,6 @@
 '
 ' DotNetNuke® - http://www.dotnetnuke.com
-' Copyright (c) 2002-2009
+' Copyright (c) 2002-2010
 ' by DotNetNuke Corporation
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -91,6 +91,20 @@ Namespace DotNetNuke.Modules.Forum
 			Dim f As New ForumController
 			f.ClearCache_ForumGetAll(ParentID, GroupID)
 		End Sub
+
+		''' <summary>
+		''' This is used to add moderator history. Currently, this is only used for thread status changes by a moderator. Other items are handled via other stored procedures located in this class. 
+		''' </summary>
+		''' <param name="ObjectID"></param>
+		''' <param name="PortalID"></param>
+		''' <param name="ModeratorID"></param>
+		''' <param name="Notes"></param>
+		''' <param name="ActionID"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Function AddModeratorHistory(ByVal ObjectID As Integer, ByVal PortalID As Integer, ByVal ModeratorID As Integer, ByVal Notes As String, ByVal ActionID As Integer) As Integer
+			Return DotNetNuke.Modules.Forum.DataProvider.Instance().AddModeratorHistory(ObjectID, PortalID, ModeratorID, Notes, ActionID)
+		End Function
 
 #End Region
 

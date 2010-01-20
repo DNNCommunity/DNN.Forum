@@ -1,6 +1,6 @@
 '
 ' DotNetNuke® - http://www.dotnetnuke.com
-' Copyright (c) 2002-2009
+' Copyright (c) 2002-2010
 ' by DotNetNuke Corporation
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -95,7 +95,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				ctlModule.UpdateModuleSetting(ModuleId, "DisplayPosterLocation", ddlDisplayPosterLocation.SelectedItem.Value)
 				ctlModule.UpdateModuleSetting(ModuleId, "DisplayPosterRegion", chkDisplayPosterRegion.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, "DisplayPosterRegion", chkDisplayPosterRegion.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "EnableQuickReply", chkEnableQuickReply.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, "EnableQuickReply", chkEnableQuickReply.Checked.ToString)
 
 				Config.ResetForumConfig(ModuleId)
 

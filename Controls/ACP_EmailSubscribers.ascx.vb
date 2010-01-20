@@ -1,6 +1,6 @@
 '
 ' DotNetNuke® - http://www.dotnetnuke.com
-' Copyright (c) 2002-2009
+' Copyright (c) 2002-2010
 ' by DotNetNuke Corporation
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -78,6 +78,16 @@ Namespace DotNetNuke.Modules.Forum.ACP
 #Region "Event Handlers"
 
 		''' <summary>
+		''' Runs when the control is initialized, even before anything in LoadInitialView runs. 
+		''' </summary>
+		''' <param name="sender"></param>
+		''' <param name="e"></param>
+		''' <remarks>All controls containing grids should localize the grid headers here. </remarks>
+		Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+			SetLocalization()
+		End Sub
+
+		''' <summary>
 		''' Used to populate the grid with a datasource when one is not found (and is needed).  
 		''' </summary>
 		''' <param name="source"></param>
@@ -147,8 +157,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					rgForums.DataBind()
 				End If
 			End If
-
-			SetLocalization()
 		End Sub
 
 		''' <summary>

@@ -1,6 +1,6 @@
 '
 ' DotNetNuke® - http://www.dotnetnuke.com
-' Copyright (c) 2002-2009
+' Copyright (c) 2002-2010
 ' by DotNetNuke Corporation
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -93,6 +93,10 @@ Namespace DotNetNuke.Modules.Forum
 		PrivateUnModeratedPostRestricted = 7
 	End Enum
 
+	''' <summary>
+	''' 
+	''' </summary>
+	''' <remarks></remarks>
 	Public Enum PermissionKeys
 		FORUMADMIN
 		FORUMGLBMOD
@@ -274,6 +278,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <remarks>New for 4.5 or greater.</remarks>
 		[PostMove] = 14
+		[ThreadStatusChange] = 15
 	End Enum
 
 	''' <summary>

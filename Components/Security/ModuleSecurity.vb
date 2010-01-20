@@ -1,6 +1,6 @@
 '
 ' DotNetNuke® - http://www.dotnetnuke.com
-' Copyright (c) 2002-2009
+' Copyright (c) 2002-2010
 ' by DotNetNuke Corporation
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,7 +25,7 @@ Namespace DotNetNuke.Modules.Forum
 #Region "ModuleSecurity"
 
 	''' <summary>
-	''' The central class where all non-core security related checks should be done against.
+	''' The central class where all non-core security related checks should be done.
 	''' </summary>
 	''' <remarks>This base allows one level lower than core permissions (ie. forum level).
 	''' </remarks>

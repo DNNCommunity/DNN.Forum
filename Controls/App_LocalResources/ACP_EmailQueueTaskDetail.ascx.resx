@@ -147,4 +147,7 @@
   <data name="View.Text" xml:space="preserve">
     <value>View</value>
   </data>
+  <data name="EmailSubject.Header" xml:space="preserve">
+    <value>Subject</value>
+  </data>
 </root>

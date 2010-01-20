@@ -1,6 +1,6 @@
 '
 ' DotNetNuke® - http://www.dotnetnuke.com
-' Copyright (c) 2002-2009
+' Copyright (c) 2002-2010
 ' by DotNetNuke Corporation
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -47,8 +47,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' </summary>
 		''' <remarks></remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
-			Localization.LocalizeDataGrid(dgForums, Me.LocalResourceFile)
-			Localization.LocalizeDataGrid(dgThreads, Me.LocalResourceFile)
 			BuildTabs()
 
 			ForumPager.PageSize = Convert.ToInt32(LoggedOnUser.ThreadsPerPage)
@@ -65,12 +63,17 @@ Namespace DotNetNuke.Modules.Forum.UCP
 
 #Region "Event Handlers"
 
-		'Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
-		'	If DotNetNuke.Framework.AJAX.IsInstalled Then
-		'		DotNetNuke.Framework.AJAX.RegisterScriptManager()
-		'		'DotNetNuke.Framework.AJAX.RegisterPostBackControl(urlLogo)
-		'	End If
-		'End Sub
+		''' <summary>
+		''' Runs when the control is initialized, even before anything in LoadInitialView runs. 
+		''' </summary>
+		''' <param name="sender"></param>
+		''' <param name="e"></param>
+		''' <remarks>All controls containing grids should localize the grid headers here. </remarks>
+		Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+			'SetLocalization()
+			Localization.LocalizeDataGrid(dgForums, Me.LocalResourceFile)
+			Localization.LocalizeDataGrid(dgThreads, Me.LocalResourceFile)
+		End Sub
 
 		''' <summary>
 		''' Deletes selected tracked forums for a user. 
@@ -236,6 +239,10 @@ Namespace DotNetNuke.Modules.Forum.UCP
 
 #Region "Private Methods"
 
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <remarks></remarks>
 		Private Sub BuildTabs()
 			Dim tabForums As New Telerik.Web.UI.RadTab
 			tabForums.Text = Localization.GetString("TabForums", LocalResourceFile)

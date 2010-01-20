@@ -1,6 +1,6 @@
 '
 ' DotNetNuke® - http://www.dotnetnuke.com
-' Copyright (c) 2002-2009
+' Copyright (c) 2002-2010
 ' by DotNetNuke Corporation
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -36,9 +36,7 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Members"
 
-		Private _ForumConfig As Forum.Config
-		Private _ProfileUserID As Integer
-		Private _ProfileUser As ForumUser
+		Private ProfileUser As ForumUser
 		Private _LoggedOnUser As ForumUser
 		Private _IsModerator As Boolean = False
 
@@ -71,29 +69,24 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load, Me.Load
 			Try
-				_ForumConfig = Config.GetForumConfig(ModuleId)
-				Dim _LoggedOnUserID As Integer = -1
-
 				litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
 
 				Dim objSecurity As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
 
-				If Not Request.QueryString("userid") Is Nothing Then
-					_ProfileUserID = Int32.Parse(Request.QueryString("userid"))
-					_ProfileUser = ForumUserController.GetForumUser(_ProfileUserID, False, ModuleId, PortalId)
+				If Request.QueryString("userid") IsNot Nothing Then
+					' This needs to be done on every page load (since we are not using viewstate). 
+					Dim profileUserID As Integer = -1
+					profileUserID = Int32.Parse(Request.QueryString("userid"))
+					ProfileUser = ForumUserController.GetForumUser(profileUserID, False, ModuleId, PortalId)
 					_IsModerator = False
 
 					' See if they are admin or moderator - always have to be some type of mod or admin to edit (and be logged in)
-					If _LoggedOnUserID > 0 And (objSecurity.IsModerator) Then
+					If LoggedOnUser.UserID > 0 And (objSecurity.IsModerator) Then
 						EnableControls(True)
 						_IsModerator = True
 					Else
 						_IsModerator = False
 					End If
-				Else
-					'If there is no userid in querystring, we need to redirect as it was a user who unregistered or it was someone just putting in qs values randomly
-					' they don't belong here
-					HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
 				End If
 
 				rowModifyUserAvatar.Visible = False
@@ -117,11 +110,11 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 
 				If Not Page.IsPostBack Then
-					txtAlias.Text = _ProfileUser.SiteAlias
-					lblPostCount.Text = _ProfileUser.PostCount.ToString()
+					txtAlias.Text = ProfileUser.SiteAlias
+					lblPostCount.Text = ProfileUser.PostCount.ToString()
 
 					Dim WebSiteVisibility As UserVisibilityMode
-					WebSiteVisibility = _ProfileUser.Profile.ProfileProperties("Website").Visibility
+					WebSiteVisibility = ProfileUser.Profile.ProfileProperties("Website").Visibility
 
 					Select Case WebSiteVisibility
 						Case UserVisibilityMode.AdminOnly
@@ -136,22 +129,22 @@ Namespace DotNetNuke.Modules.Forum
 							End If
 					End Select
 
-					If _ProfileUser.EnablePublicEmail AndAlso (Len(_ProfileUser.Email) > 0) Then
-						Dim strEmailText As String = HtmlUtils.FormatEmail(_ProfileUser.Email)
+					If ProfileUser.EnablePublicEmail AndAlso (Len(ProfileUser.Email) > 0) Then
+						Dim strEmailText As String = HtmlUtils.FormatEmail(ProfileUser.Email)
 						strEmailText = "<span class=""Forum_Profile"">" & strEmailText & "</span>"
 						litEmail.Text = strEmailText
 					Else
 						litEmail.Text = Localization.GetString("NotAvailable.Text", Me.LocalResourceFile)
 					End If
 
-					If _ProfileUser.Profile.IM <> String.Empty Then
-						txtIM.Text = _ProfileUser.Profile.IM
+					If ProfileUser.Profile.IM <> String.Empty Then
+						txtIM.Text = ProfileUser.Profile.IM
 					Else
 						txtIM.Text = Localization.GetString("NotAvailable.Text", Me.LocalResourceFile)
 					End If
 
-					If _ProfileUser.Biography <> String.Empty Then
-						litBiography.Text = HttpUtility.HtmlDecode(HttpUtility.HtmlDecode(_ProfileUser.Biography))
+					If ProfileUser.Biography <> String.Empty Then
+						litBiography.Text = HttpUtility.HtmlDecode(HttpUtility.HtmlDecode(ProfileUser.Biography))
 					Else
 						litBiography.Text = "<p>" & Localization.GetString("NotAvailable.Text", Me.LocalResourceFile) & "</p>"
 					End If
@@ -159,9 +152,9 @@ Namespace DotNetNuke.Modules.Forum
 					' Avatar (moderator control)
 					ctlUserAvatar.Security = objSecurity
 					ctlUserAvatar.AvatarType = AvatarControlType.User
-					ctlUserAvatar.Images = _ProfileUser.Avatar
+					ctlUserAvatar.Images = ProfileUser.Avatar
 
-					If _ProfileUser.UserAvatar = UserAvatarType.PoolAvatar Then
+					If ProfileUser.UserAvatar = UserAvatarType.PoolAvatar Then
 						ctlUserAvatar.IsPoolAvatar = True
 					End If
 					ctlUserAvatar.LoadInitialView()
@@ -171,7 +164,7 @@ Namespace DotNetNuke.Modules.Forum
 					imgSpc2.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
 					imgSpc3.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
 					imgSpc4.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
-					lblProfile.Text = "&nbsp;" & String.Format(Localization.GetString("LookingAtProfile", Me.LocalResourceFile), _ProfileUser.SiteAlias)
+					lblProfile.Text = "&nbsp;" & String.Format(Localization.GetString("LookingAtProfile", Me.LocalResourceFile), ProfileUser.SiteAlias)
 
 					If objConfig.EnableUserBanning Then
 						rowUserBanning.Visible = True
@@ -188,14 +181,14 @@ Namespace DotNetNuke.Modules.Forum
 							rowEditUserSig.Visible = False
 						End If
 
-						If _ProfileUser.Signature.Length > 0 Then
+						If ProfileUser.Signature.Length > 0 Then
 							If objConfig.EnableHTMLSignatures Then
-								lblSignature.Text = Server.HtmlDecode(_ProfileUser.Signature)
+								lblSignature.Text = Server.HtmlDecode(ProfileUser.Signature)
 							Else
-								lblSignature.Text = _ProfileUser.Signature
+								lblSignature.Text = ProfileUser.Signature
 							End If
 
-							txtSignature.Text = _ProfileUser.Signature
+							txtSignature.Text = ProfileUser.Signature
 						Else
 							lblSignature.Text = "&nbsp;"
 						End If
@@ -205,23 +198,23 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 
 					If objConfig.EnableUserAvatar Then
-						If (_ProfileUser.AvatarComplete.Trim() <> String.Empty) Then
+						If (ProfileUser.AvatarComplete.Trim() <> String.Empty) Then
 							If objConfig.EnableProfileAvatar Then
 								Dim WebVisibility As UserVisibilityMode
-								WebVisibility = _ProfileUser.Profile.ProfileProperties(objConfig.AvatarProfilePropName).Visibility
+								WebVisibility = ProfileUser.Profile.ProfileProperties(objConfig.AvatarProfilePropName).Visibility
 
 								Select Case WebVisibility
 									Case UserVisibilityMode.AdminOnly
 										If objSecurity.IsForumAdmin Then
-											RenderProfileAvatar(_ProfileUser)
+											RenderProfileAvatar(ProfileUser)
 										Else
 											rowUserAvatar.Visible = False
 										End If
 									Case UserVisibilityMode.AllUsers
-										RenderProfileAvatar(_ProfileUser)
+										RenderProfileAvatar(ProfileUser)
 									Case UserVisibilityMode.MembersOnly
 										If LoggedOnUser.UserID > 0 Then
-											RenderProfileAvatar(_ProfileUser)
+											RenderProfileAvatar(ProfileUser)
 										Else
 											rowUserAvatar.Visible = False
 										End If
@@ -229,7 +222,7 @@ Namespace DotNetNuke.Modules.Forum
 							Else
 								' Avatars are enabled, it has a value and it is not a profile avatar, use old render stuff
 								rowUserAvatar.Visible = True
-								imgAvatar.ImageUrl = _ProfileUser.AvatarComplete
+								imgAvatar.ImageUrl = ProfileUser.AvatarComplete
 							End If
 						Else
 							rowUserAvatar.Visible = False
@@ -246,7 +239,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					If objConfig.Ranking Then
 						rowRanking.Visible = True
-						Dim authorRank As PosterRank = Utilities.ForumUtils.GetRank(_ProfileUser, objConfig)
+						Dim authorRank As PosterRank = Utilities.ForumUtils.GetRank(ProfileUser, objConfig)
 						Dim rankImage As String = String.Format("Rank_{0}." & objConfig.ImageExtension, CType(authorRank, Integer).ToString)
 						Dim rankURL As String = objConfig.GetThemeImageURL(rankImage)
 						Dim RankTitle As String = Utilities.ForumUtils.GetRankTitle(authorRank, objConfig)
@@ -267,57 +260,57 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 
 					' Moderator setting
-					chkIsTrusted.Checked = _ProfileUser.IsTrusted
+					chkIsTrusted.Checked = ProfileUser.IsTrusted
 					' if the user's trust level is locked, only allow mod/site admin to update
-					If _ProfileUser.LockTrust And (Not objSecurity.IsForumAdmin) Then
+					If ProfileUser.LockTrust And (Not objSecurity.IsForumAdmin) Then
 						chkIsTrusted.Enabled = False
 					End If
 
 					' banned info
-					chkUserBanned.Checked = _ProfileUser.IsBanned
-					If _ProfileUser.IsBanned Then
+					chkUserBanned.Checked = ProfileUser.IsBanned
+					If ProfileUser.IsBanned Then
 						lblLiftBan.Visible = True
-						Dim LiftBanDate As DateTime = Utilities.ForumUtils.ConvertTimeZone(CType(_ProfileUser.LiftBanDate.ToString, DateTime), _ForumConfig)
+						Dim LiftBanDate As DateTime = Utilities.ForumUtils.ConvertTimeZone(CType(ProfileUser.LiftBanDate.ToString, DateTime), objConfig)
 						lblLiftBan.Text = LiftBanDate.ToString
 					Else
 						lblLiftBan.Visible = False
 					End If
 
 					Dim txtStats As New Text.StringBuilder
-					txtStats.AppendFormat("<b>" & _ProfileUser.SiteAlias & "</b>")
-					txtStats.AppendFormat(" " & Localization.GetString("Contributed.Text", Me.LocalResourceFile), _ProfileUser.PostCount.ToString)
+					txtStats.AppendFormat("<b>" & ProfileUser.SiteAlias & "</b>")
+					txtStats.AppendFormat(" " & Localization.GetString("Contributed.Text", Me.LocalResourceFile), ProfileUser.PostCount.ToString)
 
-					If _ProfileUser.PostCount > 0 Then
+					If ProfileUser.PostCount > 0 Then
 						txtStats.AppendFormat("<br />")
-						txtStats.AppendFormat(Localization.GetString("MostRecent.Text", Me.LocalResourceFile), _ProfileUser.LastActivity.ToLongDateString)
+						txtStats.AppendFormat(Localization.GetString("MostRecent.Text", Me.LocalResourceFile), ProfileUser.LastActivity.ToLongDateString)
 
 						If Request.IsAuthenticated Then
 							' if the user is logged in, use the threads/page option
-							lnkUserPosts.NavigateUrl = NavigateURL(TabId, "", New String() {"pagesize=" & LoggedOnUser.ThreadsPerPage, "authors=" & _ProfileUser.UserID, "scope=threadsearch"})
+							lnkUserPosts.NavigateUrl = NavigateURL(TabId, "", New String() {"pagesize=" & LoggedOnUser.ThreadsPerPage, "authors=" & ProfileUser.UserID, "scope=threadsearch"})
 						Else
 							' user is not logged in, use forum default for threads/page
-							lnkUserPosts.NavigateUrl = NavigateURL(TabId, "", New String() {"pagesize=" & objConfig.ThreadsPerPage, "authors=" & _ProfileUser.UserID, "scope=threadsearch"})
+							lnkUserPosts.NavigateUrl = NavigateURL(TabId, "", New String() {"pagesize=" & objConfig.ThreadsPerPage, "authors=" & ProfileUser.UserID, "scope=threadsearch"})
 						End If
 
 						lblStatistic.Text = txtStats.ToString
 					Else
-						If _ProfileUser.IsDeleted Then
+						If ProfileUser.IsDeleted Then
 							rowPostLink.Visible = False
 							rowStats.Visible = False
 						End If
 					End If
 
 					' User Joined Date (localized, including date)
-					Dim displayCreatedDate As DateTime = Utilities.ForumUtils.ConvertTimeZone(CType(_ProfileUser.Membership.CreatedDate, DateTime), _ForumConfig)
+					Dim displayCreatedDate As DateTime = Utilities.ForumUtils.ConvertTimeZone(CType(ProfileUser.Membership.CreatedDate, DateTime), objConfig)
 					lblJoinedDate.Text = Localization.GetString("JoinedDate.Text", Me.LocalResourceFile) & " " & displayCreatedDate.ToShortDateString
 
-					If _LoggedOnUserID > 0 Then
+					If LoggedOnUser.UserID > 0 Then
 						If objConfig.EnablePMSystem Then
 							'If the user receives private messages and the logged in user does as well
 							rowPMUser.Visible = True
-							If _ProfileUser.EnablePM And LoggedOnUser.EnablePM Then
+							If ProfileUser.EnablePM And LoggedOnUser.EnablePM Then
 								' No need to send a private message to yourself
-								If Not (_ProfileUser.UserID = LoggedOnUser.UserID) Then
+								If Not (ProfileUser.UserID = LoggedOnUser.UserID) Then
 									cmdPMUser.Enabled = True
 								Else
 									cmdPMUser.Enabled = False
@@ -350,7 +343,7 @@ Namespace DotNetNuke.Modules.Forum
 		Private Sub RenderProfileAvatar(ByVal ProfileUser As ForumUser)
 			imgAvatar.Width = objConfig.UserAvatarWidth
 			imgAvatar.Height = objConfig.UserAvatarHeight
-			imgAvatar.ImageUrl = _ProfileUser.AvatarComplete
+			imgAvatar.ImageUrl = ProfileUser.AvatarComplete
 			rowUserAvatar.Visible = True
 		End Sub
 
@@ -359,9 +352,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <remarks></remarks>
 		Private Sub RenderWebsite()
-			If (Not _ProfileUser.Profile.Website Is Nothing) Then
-				lnkWWW.Text = _ProfileUser.Profile.Website
-				lnkWWW.NavigateUrl = AddHTTP(_ProfileUser.Profile.Website)
+			If (Not ProfileUser.Profile.Website Is Nothing) Then
+				lnkWWW.Text = ProfileUser.Profile.Website
+				lnkWWW.NavigateUrl = AddHTTP(ProfileUser.Profile.Website)
 				If objConfig.NoFollowWeb Then
 					lnkWWW.Attributes.Add("rel", "nofollow")
 				End If
@@ -383,8 +376,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' </history>
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
-				With _ProfileUser
-					ForumUserController.GetForumUser(_ProfileUser.UserID, False, ModuleId, PortalId)
+				With ProfileUser
+					ForumUserController.GetForumUser(ProfileUser.UserID, False, ModuleId, PortalId)
 					.IsTrusted = chkIsTrusted.Checked
 					.Signature = String.Empty
 
@@ -402,7 +395,7 @@ Namespace DotNetNuke.Modules.Forum
 						End If
 					End If
 					Dim cntUser As New ForumUserController
-					cntUser.Update(_ProfileUser)
+					cntUser.Update(ProfileUser)
 				End With
 
 			Catch Exc As System.Exception
@@ -440,7 +433,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' 	[cpaterra]	9/10/2006	Created
 		''' </history>
 		Protected Sub cmdManageUser_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdManageUser.Click
-			Response.Redirect(Utilities.Links.UCP_AdminLinks(TabId, ModuleId, _ProfileUser.UserID, UserAjaxControl.Profile), False)
+			Response.Redirect(Utilities.Links.UCP_AdminLinks(TabId, ModuleId, ProfileUser.UserID, UserAjaxControl.Profile), False)
 		End Sub
 
 		''' <summary>
@@ -455,7 +448,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' 	[cpaterra]	1/15/2006	Created
 		''' </history>
 		Protected Sub cmdPMUser_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdPMUser.Click
-			Response.Redirect(Utilities.Links.PMUserLink(TabId, ModuleId, _ProfileUser.UserID), False)
+			Response.Redirect(Utilities.Links.PMUserLink(TabId, ModuleId, ProfileUser.UserID), False)
 		End Sub
 
 #End Region

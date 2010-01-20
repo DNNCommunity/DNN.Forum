@@ -1,6 +1,6 @@
 '
 ' DotNetNuke® - http://www.dotnetnuke.com
-' Copyright (c) 2002-2009
+' Copyright (c) 2002-2010
 ' by DotNetNuke Corporation
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -216,6 +216,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public MustOverride Function ModeratePostGet(ByVal ForumID As Integer) As IDataReader
 		Public MustOverride Function ModerateForumGetByModeratorThreads(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer) As IDataReader
 		Public MustOverride Function ModeratePostApprove(ByVal PostID As Integer, ByVal ApprovedBy As Integer, ByVal Notes As String) As Integer
+		Public MustOverride Function AddModeratorHistory(ByVal ObjectID As Integer, ByVal PortalID As Integer, ByVal ModeratorID As Integer, ByVal Notes As String, ByVal ActionID As Integer) As Integer
 
 #End Region
 

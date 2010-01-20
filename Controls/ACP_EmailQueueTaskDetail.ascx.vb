@@ -1,6 +1,6 @@
 '
 ' DotNetNuke® - http://www.dotnetnuke.com
-' Copyright (c) 2002-2009
+' Copyright (c) 2002-2010
 ' by DotNetNuke Corporation
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -41,13 +41,23 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </summary>
 		''' <remarks></remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
+
 			BindGrid(False)
-			SetLocalization()
 		End Sub
 
 #End Region
 
 #Region "Event Handlers"
+
+		''' <summary>
+		''' Runs when the control is initialized, even before anything in LoadInitialView runs. 
+		''' </summary>
+		''' <param name="sender"></param>
+		''' <param name="e"></param>
+		''' <remarks>All controls containing grids should localize the grid headers here. </remarks>
+		Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+			SetLocalization()
+		End Sub
 
 		''' <summary>
 		''' Runs when a Command event is raised in the Grid 
@@ -116,25 +126,30 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			End Select
 		End Sub
 
-		''' <summary>
-		''' Updates the email settings in the database
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks>
-		''' </remarks>
-		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
-			Try
+		'''' <summary>
+		'''' Updates the email settings in the database
+		'''' </summary>
+		'''' <param name="sender"></param>
+		'''' <param name="e"></param>
+		'''' <remarks>
+		'''' </remarks>
+		'Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
+		'	Try
 
-			Catch exc As Exception
-				ProcessModuleLoadException(Me, exc)
-			End Try
-		End Sub
+		'	Catch exc As Exception
+		'		ProcessModuleLoadException(Me, exc)
+		'	End Try
+		'End Sub
 
 #End Region
 
 #Region "Private Methods"
 
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="BindIt"></param>
+		''' <remarks></remarks>
 		Private Sub BindGrid(ByVal BindIt As Boolean)
 			Dim cntEmailTask As New EmailQueueTaskController
 			Dim colEmailTasks As List(Of EmailQueueTaskInfo)

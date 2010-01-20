@@ -1,6 +1,6 @@
 '
 ' DotNetNuke® - http://www.dotnetnuke.com
-' Copyright (c) 2002-2009
+' Copyright (c) 2002-2010
 ' by DotNetNuke Corporation
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -76,44 +76,28 @@ Namespace DotNetNuke.Modules.Forum
 
 						If Not dnnUser Is Nothing Then
 							' the user is a DNN user but has never visited the forums for this portal
+							' so lets create a forum user 
+							fUser = New ForumUser(ModuleID)
+							With fUser
+								.PortalID = PortalID
+								.UserID = dnnUser.UserID
+								Dim myConfig As Forum.Config
+								myConfig = Config.GetForumConfig(ModuleID)
 
-							' Add check to see if the user has a profile on some other portalID
-							'' USER NEW UserGetMultiPortalUser(UserID)
-							Dim MultiPortalUser As ForumUser = ctlForumUser.UserGetMultiPortal(UserID, ModuleID)
-
-							If Not MultiPortalUser.UserID = -1 Then
-								Try
-									MultiPortalUser.PortalID = PortalID
-									'' USE NEW UserAddMultiPortalUser sproc (NOT SURE WE NEED, TEST W/OUT FIRST!!!)
-									ctlForumUser.UserAdd(MultiPortalUser)
-
-									fUser = ctlForumUser.UserGet(PortalID, UserID, ModuleID)
-								Catch Exc As System.Exception
-									LogException(Exc) ' error adding user to forums
-								End Try
-							Else
-								' so lets create a forum user 
-								fUser = New ForumUser(ModuleID)
-								With fUser
-									.PortalID = PortalID
-									.UserID = dnnUser.UserID
-									Dim myConfig As Forum.Config
-									myConfig = Config.GetForumConfig(ModuleID)
-
-									.ThreadsPerPage = myConfig.ThreadsPerPage
-									.PostsPerPage = myConfig.PostsPerPage
-									.EnableDisplayInMemberList = myConfig.EnableMemberList
-									.EnableOnlineStatus = myConfig.EnableUsersOnline
-									.EnablePM = myConfig.EnablePMSystem
-									.EnablePMNotifications = myConfig.MailNotification
-									.IsTrusted = myConfig.TrustNewUsers
-									.EnablePublicEmail = False
-									.EnableModNotification = myConfig.MailNotification
-									.EnableSelfNotifications = False
-								End With
-								ctlForumUser.UserAdd(fUser)
-								fUser = ctlForumUser.UserGet(PortalID, UserID, ModuleID)
-							End If
+								.ThreadsPerPage = myConfig.ThreadsPerPage
+								.PostsPerPage = myConfig.PostsPerPage
+								.EnableDisplayInMemberList = myConfig.EnableMemberList
+								.EnableOnlineStatus = myConfig.EnableUsersOnline
+								.EnablePM = myConfig.EnablePMSystem
+								.EnablePMNotifications = myConfig.MailNotification
+								.IsTrusted = myConfig.TrustNewUsers
+								.EnablePublicEmail = False
+								.EnableModNotification = myConfig.MailNotification
+								.EnableSelfNotifications = False
+							End With
+							ctlForumUser.UserAdd(fUser)
+							fUser = ctlForumUser.UserGet(PortalID, UserID, ModuleID)
+							'End If
 						Else
 							' the user was deleted from the DNN membership
 							' so lets return an anonymous user

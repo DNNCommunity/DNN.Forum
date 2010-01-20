@@ -1,6 +1,6 @@
 '
 ' DotNetNuke® - http://www.dotnetnuke.com
-' Copyright (c) 2002-2009
+' Copyright (c) 2002-2010
 ' by DotNetNuke Corporation
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -307,13 +307,22 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ThreadId"></param>
 		''' <param name="UserID"></param>
 		''' <param name="ThreadStatus"></param>
-		''' <remarks>
+		''' <param name="AnswerPostID"></param>
+		''' <param name="ModeratorUserID"></param>
+		''' <param name="PortalID"></param>
+		''' <remarks>We are not tracking moderator actions when setting poll for thread status type (regardless of what it was before). 
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	9/23/2006	Created
-		''' </history>
-		Public Sub ThreadStatusChange(ByVal ThreadId As Integer, ByVal UserID As Integer, ByVal ThreadStatus As Integer, ByVal AnswerPostID As Integer)
+		Public Sub ThreadStatusChange(ByVal ThreadId As Integer, ByVal UserID As Integer, ByVal ThreadStatus As Integer, ByVal AnswerPostID As Integer, ByVal ModeratorUserID As Integer, ByVal PortalID As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadStatusChange(ThreadId, UserID, ThreadStatus, AnswerPostID)
+
+			If ModeratorUserID > 0 Then
+				' Log moderator action.
+				Dim cntModerate As New ModerateController
+
+				cntModerate.AddModeratorHistory(ThreadId, PortalID, UserID, "Thread Status Changed.", ModerateAction.ThreadStatusChange)
+			End If
+
+			' NOTE: CP: COMEBACK: Eventually add email notifications here. 
 		End Sub
 
 #Region "Rating"

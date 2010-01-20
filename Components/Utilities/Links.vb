@@ -1,6 +1,6 @@
 ﻿'
 ' DotNetNuke® - http://www.dotnetnuke.com
-' Copyright (c) 2002-2009
+' Copyright (c) 2002-2010
 ' by DotNetNuke Corporation
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,6 +23,7 @@ Option Strict On
 Imports DotNetNuke.Entities.Portals
 
 Namespace DotNetNuke.Modules.Forum.Utilities
+
 	''' <summary>
 	''' This class houses all the link generation methods for the entire forum module.
 	''' </summary>
@@ -176,7 +177,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Shared Function ForumEditLink(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal ForumID As Integer, _
-								 ByVal GroupID As Integer) As String
+			  ByVal GroupID As Integer) As String
 			Dim url As String
 			Dim params As String()
 
@@ -269,7 +270,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks>Users ForumContainer dispatch control.</remarks>
 		Shared Function ContainerThreadDateFilterLink(ByVal TabId As Integer, ByVal dFilter As String, _
-											  ByVal ForumId As Integer, ByVal NoReply As Boolean) As String
+				 ByVal ForumId As Integer, ByVal NoReply As Boolean) As String
 			Dim url As String
 			Dim params As String()
 
@@ -366,7 +367,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks>Users ForumContainer dispatch control.</remarks>
 		Public Shared Function ContainerViewThreadPagedLink(ByVal TabId As Integer, ByVal ForumId As Integer, _
-												   ByVal ThreadId As Integer, ByVal Page As Integer) As String
+				   ByVal ThreadId As Integer, ByVal Page As Integer) As String
 			Dim url As String
 			Dim params As String()
 
@@ -385,7 +386,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks>Uses ForumContainer dispatch control.</remarks>
 		Public Shared Function ContainerViewPostLink(ByVal TabId As Integer, ByVal ForumId As Integer, _
-											 ByVal PostId As Integer) As String
+				ByVal PostId As Integer) As String
 			Dim url As String
 			Dim params As String()
 
@@ -407,8 +408,8 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks>Uses ForumContainer dispatch control.</remarks>
 		Public Shared Function ContainerViewPostPagedLink(ByVal TabId As Integer, ByVal ForumId As Integer, _
-												 ByVal ThreadId As Integer, ByVal PostId As Integer, _
-												 ByVal Page As Integer) As String
+				 ByVal ThreadId As Integer, ByVal PostId As Integer, _
+				 ByVal Page As Integer) As String
 			Dim url As String
 			Dim params As String()
 
@@ -429,7 +430,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks>Uses ForumContainer dispatch control.</remarks>
 		Public Shared Function ContainerPostToModerateLink(ByVal TabId As Integer, ByVal ForumId As Integer, _
-												  ByVal ModuleID As Integer) As String
+				  ByVal ModuleID As Integer) As String
 			Dim url As String
 			Dim params As String()
 
@@ -507,7 +508,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks>Uses ForumContainer dispatch control.</remarks>
 		Public Shared Function ContainerSingleForumSearchLink(ByVal TabId As Integer, ByVal ForumId As Integer, _
-													ByVal SearchString As String) As String
+				 ByVal SearchString As String) As String
 			Dim url As String
 			Dim params As String()
 
@@ -535,7 +536,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Shared Function MCPControlLink(ByVal TabId As Integer, ByVal ModuleID As Integer, _
-								  ByVal ModeratorControl As ModeratorAjaxControl) As String
+			   ByVal ModeratorControl As ModeratorAjaxControl) As String
 			Dim url As String
 			Dim params As String()
 
@@ -564,7 +565,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Shared Function ThreadMoveLink(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal ForumId As Integer, _
-								  ByVal ThreadID As Integer) As String
+			   ByVal ThreadID As Integer) As String
 			Dim url As String
 			Dim params As String()
 
@@ -584,7 +585,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Shared Function ThreadSplitLink(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal ForumId As Integer, _
-								   ByVal PostID As Integer) As String
+			    ByVal PostID As Integer) As String
 			Dim url As String
 			Dim params As String()
 
@@ -605,7 +606,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Shared Function ThreadDeleteLink(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal ForumId As Integer, _
-								    ByVal ThreadID As Integer, ByVal FromModerationQueue As Boolean) As String
+				ByVal ThreadID As Integer, ByVal FromModerationQueue As Boolean) As String
 			Dim url As String
 			Dim params As String()
 
@@ -632,7 +633,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Shared Function PostDeleteLink(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal ForumId As Integer, _
-								  ByVal PostID As Integer, ByVal FromModerationQueue As Boolean) As String
+			   ByVal PostID As Integer, ByVal FromModerationQueue As Boolean) As String
 			Dim url As String
 			Dim params As String()
 
@@ -679,7 +680,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Shared Function UserPublicProfileLink(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal UserId As Integer, ByVal IsExternal As Boolean, ByVal UserParam As String, ByVal ExtProfilePageID As Integer, ByVal UseName As Boolean, ByVal ProfileName As String) _
-   As String
+		 As String
 
 			Dim url As String
 			Dim params As String()
@@ -789,7 +790,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Shared Function NewPostLink(ByVal TabId As Integer, ByVal ForumId As Integer, ByVal PostID As Integer, _
-							    ByVal Action As String, ByVal ModuleID As Integer) As String
+			    ByVal Action As String, ByVal ModuleID As Integer) As String
 			Dim url As String
 			Dim params As String()
 
@@ -831,7 +832,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Shared Function NewPMReplyLink(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal PMID As Integer, _
-								  ByVal PMAction As String) As String
+			   ByVal PMAction As String) As String
 			Dim url As String
 			Dim params As String()
 
@@ -922,7 +923,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks>Added by Skeel</remarks>
 		Shared Function PMThreadLinkFromOutbox(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal PMThreadID As Integer, _
-										ByVal PMID As Integer) As String
+			   ByVal PMID As Integer) As String
 			Dim url As String
 			Dim params As String()
 
@@ -945,7 +946,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks>Added by Skeel</remarks>
 		Shared Function UCP_AdminLinks(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal UserId As Integer, _
-								  ByVal UserControl As UserAjaxControl) As String
+			   ByVal UserControl As UserAjaxControl) As String
 			Dim url As String
 			Dim params As String()
 
@@ -969,7 +970,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks>Added by Skeel</remarks>
 		Shared Function UCP_UserLinks(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal UserControl As UserAjaxControl, _
-								 ByVal SiteSettings As PortalSettings) As String
+			  ByVal SiteSettings As PortalSettings) As String
 			Dim url As String
 			Dim params As String()
 

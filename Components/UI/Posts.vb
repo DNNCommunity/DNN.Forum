@@ -1,6 +1,6 @@
 '
 ' DotNetNuke® - http://www.dotnetnuke.com
-' Copyright (c) 2002-2009
+' Copyright (c) 2002-2010
 ' by DotNetNuke Corporation
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -194,31 +194,43 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Event Handlers"
 
 		''' <summary>
-		''' Adds or remove the current thread to the users bookmark list 
+		''' Updates the thread status
 		''' </summary>
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
-		''' <remarks></remarks>
-		Protected Sub cmdBookmark_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs)
-			Dim BookmarkCtl As New BookmarkController
-			Select Case cmdBookmark.AlternateText
-				Case ForumControl.LocalizedText("RemoveBookmark")
-					BookmarkCtl.BookmarkCreateDelete(ThreadId, ForumControl.LoggedOnUser.UserID, False, ModuleID)
-					'Change ImageButton to support AJAX
-					cmdBookmark.AlternateText = ForumControl.LocalizedText("AddBookmark")
-					cmdBookmark.ToolTip = ForumControl.LocalizedText("AddBookmark")
-					cmdBookmark.ImageUrl = objConfig.GetThemeImageURL("forum_bookmark.") & objConfig.ImageExtension
-				Case ForumControl.LocalizedText("AddBookmark")
-					BookmarkCtl.BookmarkCreateDelete(ThreadId, ForumControl.LoggedOnUser.UserID, True, ModuleID)
-					'Change ImageButton to support AJAX
-					cmdBookmark.AlternateText = ForumControl.LocalizedText("RemoveBookmark")
-					cmdBookmark.ToolTip = ForumControl.LocalizedText("RemoveBookmark")
-					cmdBookmark.ImageUrl = objConfig.GetThemeImageURL("forum_nobookmark.") & objConfig.ImageExtension
-			End Select
+		''' <remarks>
+		''' </remarks>
+		Protected Sub ddlThreadStatus_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+			Dim ThreadStatus As Integer = ddlThreadStatus.SelectedIndex
+			If ThreadStatus > 0 Then
+				Dim ctlThread As New ThreadController
+
+				Dim ModeratorID As Integer = -1
+				If ForumControl.LoggedOnUser.UserID <> ThreadInfo.StartedByUserID Then
+					ModeratorID = ForumControl.LoggedOnUser.UserID
+				End If
+
+				ctlThread.ThreadStatusChange(ThreadId, ForumControl.LoggedOnUser.UserID, ThreadStatus, 0, ModeratorID, PortalID)
+			End If
+
+			Forum.ThreadInfo.ResetThreadInfo(ThreadId)
 		End Sub
 
 		''' <summary>
-		''' 
+		''' This Event turns the users thread tracking on/off.
+		''' </summary>
+		''' <param name="sender"></param>
+		''' <param name="e"></param>
+		''' <remarks>
+		''' </remarks>
+		Protected Sub chkEmail_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+			Dim ctlTracking As New TrackingController
+			ctlTracking.TrackingThreadCreateDelete(ForumId, _ThreadID, ForumControl.LoggedOnUser.UserID, chkEmail.Checked, ModuleID)
+			Forum.ThreadInfo.ResetThreadInfo(_ThreadID)
+		End Sub
+
+		''' <summary>
+		''' Applies the user's thread rating.
 		''' </summary>
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
@@ -232,113 +244,6 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			Forum.ThreadInfo.ResetThreadInfo(ThreadId)
-		End Sub
-
-		''' <summary>
-		''' This Event sets the users view preference ascending/descending and saves to 
-		''' the db. (Descending by default)
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks>Anonymous users can see both views but it doesn't save to db when changed.
-		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	5/28/2005	Created
-		''' </history>
-		Protected Sub ddlViewDescending_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
-			ForumControl.Descending = CType(ddlViewDescending.SelectedIndex, Boolean)
-
-			Dim ctlPost As New PostController
-			_PostCollection = ctlPost.PostGetAll(ThreadId, PostPage, ForumControl.PostsPerPage, False, ForumControl.Descending, PortalID)
-
-			'<tam:note value=update database if it's an authenticated user>
-			If ForumControl.LoggedOnUser.UserID > 0 Then
-				ForumControl.LoggedOnUser.ViewDescending = (ForumControl.Descending)
-				Dim ctlForumUser As New ForumUserController
-				ctlForumUser.UserViewUpdate(ForumControl.LoggedOnUser.UserID, True, ForumControl.LoggedOnUser.ViewDescending)
-				'Else
-				'    If Not HttpContext.Current.Request.Cookies(".ASPXANONYMOUS") Is Nothing Then
-				'        Dim c As System.Web.HttpCookie
-				'        c = HttpContext.Current.Request.Cookies(".ASPXANONYMOUS")
-				'        c.Values.Add("ForumDescending", ForumControl.Descending.ToString)
-				'    End If
-			End If
-		End Sub
-
-		''' <summary>
-		''' This Event turns the users thread tracking on/off.
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks>
-		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	5/28/2005	Created
-		''' </history>
-		Protected Sub chkEmail_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-			Dim ctlTracking As New TrackingController
-			ctlTracking.TrackingThreadCreateDelete(ForumId, _ThreadID, ForumControl.LoggedOnUser.UserID, chkEmail.Checked, ModuleID)
-			Forum.ThreadInfo.ResetThreadInfo(_ThreadID)
-		End Sub
-
-		''' <summary>
-		''' Updates the thread status
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks>
-		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	9/23/2006	Created
-		''' </history>
-		Protected Sub ddlThreadStatus_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
-			Dim ThreadStatus As Integer = ddlThreadStatus.SelectedIndex
-			If ThreadStatus > 0 Then
-				Dim ctlThread As New ThreadController
-				ctlThread.ThreadStatusChange(ThreadId, ForumControl.LoggedOnUser.UserID, ThreadStatus, 0)
-			End If
-
-			Forum.ThreadInfo.ResetThreadInfo(ThreadId)
-		End Sub
-
-		''' <summary>
-		''' Changes a thread status
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
-		Protected Sub cmdThreadAnswer_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.CommandEventArgs)
-			Dim ctlThread As New ThreadController
-			Dim answerPostID As Integer
-			Dim Argument As String
-
-			If e.CommandName = "MarkAnswer" Then
-				Argument = CStr(e.CommandArgument)
-				answerPostID = Int32.Parse(Argument)
-
-				Dim ctlPost As New PostController
-				Dim objPostInfo As PostInfo
-				objPostInfo = ctlPost.PostGet(answerPostID, PortalID)
-
-				ctlThread.ThreadStatusChange(ThreadId, objPostInfo.UserID, ThreadStatus.Answered, answerPostID)
-
-				Forum.ThreadInfo.ResetThreadInfo(ThreadId)
-			End If
-		End Sub
-
-		''' <summary>
-		''' This directs the user to the search results of this particular forum. It searches this forum and the subject, body of the post. 
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
-		Protected Sub cmdForumSearch_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs)
-			If txtForumSearch.Text.Trim <> String.Empty Then
-				_url = Utilities.Links.ContainerSingleForumSearchLink(TabID, ForumId, txtForumSearch.Text)
-				MyBase.BasePage.Response.Redirect(_url, False)
-			Else
-				' inform the user that they need to specify something for search
-			End If
 		End Sub
 
 		''' <summary>
@@ -363,7 +268,86 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 		''' <summary>
-		''' 
+		''' Adds or remove the current thread to the users bookmark list 
+		''' </summary>
+		''' <param name="sender"></param>
+		''' <param name="e"></param>
+		''' <remarks></remarks>
+		Protected Sub cmdBookmark_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs)
+			Dim BookmarkCtl As New BookmarkController
+			Select Case cmdBookmark.AlternateText
+				Case ForumControl.LocalizedText("RemoveBookmark")
+					BookmarkCtl.BookmarkCreateDelete(ThreadId, ForumControl.LoggedOnUser.UserID, False, ModuleID)
+					'Change ImageButton to support AJAX
+					cmdBookmark.AlternateText = ForumControl.LocalizedText("AddBookmark")
+					cmdBookmark.ToolTip = ForumControl.LocalizedText("AddBookmark")
+					cmdBookmark.ImageUrl = objConfig.GetThemeImageURL("forum_bookmark.") & objConfig.ImageExtension
+				Case ForumControl.LocalizedText("AddBookmark")
+					BookmarkCtl.BookmarkCreateDelete(ThreadId, ForumControl.LoggedOnUser.UserID, True, ModuleID)
+					'Change ImageButton to support AJAX
+					cmdBookmark.AlternateText = ForumControl.LocalizedText("RemoveBookmark")
+					cmdBookmark.ToolTip = ForumControl.LocalizedText("RemoveBookmark")
+					cmdBookmark.ImageUrl = objConfig.GetThemeImageURL("forum_nobookmark.") & objConfig.ImageExtension
+			End Select
+		End Sub
+
+		''' <summary>
+		''' This takes moderators/forum admin to moderator screen with the thread loaded to view subscribers. 
+		''' </summary>
+		''' <param name="sender"></param>
+		''' <param name="e"></param>
+		''' <remarks></remarks>
+		Protected Sub cmdThreadSubscribers_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+			Dim url As String
+			url = Utilities.Links.ThreadEmailSubscribers(TabID, ModuleID, ForumId, ThreadId)
+			HttpContext.Current.Response.Redirect(url, False)
+		End Sub
+
+		''' <summary>
+		''' This Event sets the users view preference ascending/descending and saves to 
+		''' the db. (Descending by default)
+		''' </summary>
+		''' <param name="sender"></param>
+		''' <param name="e"></param>
+		''' <remarks>Anonymous users can see both views but it doesn't save to db when changed.
+		''' </remarks>
+		Protected Sub ddlViewDescending_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+			ForumControl.Descending = CType(ddlViewDescending.SelectedIndex, Boolean)
+
+			Dim ctlPost As New PostController
+			_PostCollection = ctlPost.PostGetAll(ThreadId, PostPage, ForumControl.PostsPerPage, False, ForumControl.Descending, PortalID)
+
+			'<tam:note value=update database if it's an authenticated user>
+			If ForumControl.LoggedOnUser.UserID > 0 Then
+				ForumControl.LoggedOnUser.ViewDescending = (ForumControl.Descending)
+				Dim ctlForumUser As New ForumUserController
+				ctlForumUser.UserViewUpdate(ForumControl.LoggedOnUser.UserID, True, ForumControl.LoggedOnUser.ViewDescending)
+				'Else
+				'    If Not HttpContext.Current.Request.Cookies(".ASPXANONYMOUS") Is Nothing Then
+				'        Dim c As System.Web.HttpCookie
+				'        c = HttpContext.Current.Request.Cookies(".ASPXANONYMOUS")
+				'        c.Values.Add("ForumDescending", ForumControl.Descending.ToString)
+				'    End If
+			End If
+		End Sub
+
+		''' <summary>
+		''' This directs the user to the search results of this particular forum. It searches this forum and the subject, body of the post. 
+		''' </summary>
+		''' <param name="sender"></param>
+		''' <param name="e"></param>
+		''' <remarks></remarks>
+		Protected Sub cmdForumSearch_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs)
+			If txtForumSearch.Text.Trim <> String.Empty Then
+				_url = Utilities.Links.ContainerSingleForumSearchLink(TabID, ForumId, txtForumSearch.Text)
+				MyBase.BasePage.Response.Redirect(_url, False)
+			Else
+				' inform the user that they need to specify something for search
+			End If
+		End Sub
+
+		''' <summary>
+		''' Submits a quickly reply to the posting API (which is related to an existing thread). 
 		''' </summary>
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
@@ -420,10 +404,34 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 		End Sub
 
-		Protected Sub cmdThreadSubscribers_Click(ByVal sender As Object, ByVal e As System.EventArgs)
-			Dim url As String
-			url = Utilities.Links.ThreadEmailSubscribers(TabID, ModuleID, ForumId, ThreadId)
-			HttpContext.Current.Response.Redirect(url, False)
+		''' <summary>
+		''' Sets a specific post as an answer, only available when thread status is set to 'unresolved'. 
+		''' </summary>
+		''' <param name="sender"></param>
+		''' <param name="e"></param>
+		''' <remarks></remarks>
+		Protected Sub cmdThreadAnswer_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.CommandEventArgs)
+			Dim ctlThread As New ThreadController
+			Dim answerPostID As Integer
+			Dim Argument As String
+
+			If e.CommandName = "MarkAnswer" Then
+				Argument = CStr(e.CommandArgument)
+				answerPostID = Int32.Parse(Argument)
+
+				Dim ctlPost As New PostController
+				Dim objPostInfo As PostInfo
+				objPostInfo = ctlPost.PostGet(answerPostID, PortalID)
+
+				Dim ModeratorID As Integer = -1
+				If ThreadInfo.StartedByUserID <> ForumControl.LoggedOnUser.UserID Then
+					ModeratorID = ForumControl.LoggedOnUser.UserID
+				End If
+
+				ctlThread.ThreadStatusChange(ThreadId, objPostInfo.UserID, ThreadStatus.Answered, answerPostID, ModeratorID, PortalID)
+
+				Forum.ThreadInfo.ResetThreadInfo(ThreadId)
+			End If
 		End Sub
 
 #End Region
@@ -760,26 +768,30 @@ Namespace DotNetNuke.Modules.Forum
 		''' </history>
 		Private Sub AddControlHandlers()
 			Try
-				AddHandler ddlViewDescending.SelectedIndexChanged, AddressOf ddlViewDescending_SelectedIndexChanged
-				AddHandler cmdForumSearch.Click, AddressOf cmdForumSearch_Click
-				AddHandler cmdSubmit.Click, AddressOf cmdSubmit_Click
-				AddHandler cmdThreadSubscribers.Click, AddressOf cmdThreadSubscribers_Click
+				If objConfig.EnableThreadStatus And ForumControl.LoggedOnUser.UserID > 0 Then
+					AddHandler ddlThreadStatus.SelectedIndexChanged, AddressOf ddlThreadStatus_SelectedIndexChanged
+				End If
+
+				If objConfig.MailNotification And ForumControl.LoggedOnUser.UserID > 0 Then
+					AddHandler chkEmail.CheckedChanged, AddressOf chkEmail_CheckedChanged
+				End If
+
+				If objConfig.EnableRatings And ForumControl.LoggedOnUser.UserID > 0 Then
+					AddHandler trcRating.Rate, AddressOf trcRating_Rate
+				End If
+
+				AddHandler cmdVote.Click, AddressOf cmdVote_Click
 
 				If ForumControl.LoggedOnUser.UserID > 0 Then
-					AddHandler chkEmail.CheckedChanged, AddressOf chkEmail_CheckedChanged
-					AddHandler cmdBookmark.Click, AddressOf cmdBookmark_Click '[skeel] added
+					AddHandler cmdBookmark.Click, AddressOf cmdBookmark_Click
+					AddHandler cmdThreadSubscribers.Click, AddressOf cmdThreadSubscribers_Click
 
-					If objConfig.EnableRatings Then
-						AddHandler trcRating.Rate, AddressOf trcRating_Rate
-					End If
-
-					If objConfig.EnableThreadStatus Then
-						AddHandler ddlThreadStatus.SelectedIndexChanged, AddressOf ddlThreadStatus_SelectedIndexChanged
-					End If
-
-					' Polls
-					AddHandler cmdVote.Click, AddressOf cmdVote_Click
+					' Remove for anon posting (if we allow quick reply via anonymous posting)
+					AddHandler cmdSubmit.Click, AddressOf cmdSubmit_Click
 				End If
+
+				AddHandler ddlViewDescending.SelectedIndexChanged, AddressOf ddlViewDescending_SelectedIndexChanged
+				AddHandler cmdForumSearch.Click, AddressOf cmdForumSearch_Click
 			Catch exc As Exception
 				LogException(exc)
 			End Try
@@ -792,29 +804,32 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Private Sub AddControlsToTree()
 			Try
-				If ForumControl.LoggedOnUser.UserID > 0 Then
-					If objConfig.EnableThreadStatus Then
-						Controls.Add(ddlThreadStatus)
-					End If
-					If objConfig.MailNotification Then
-						Controls.Add(chkEmail)
-					End If
-					'Polls
-					Controls.Add(rblstPoll)
-					Controls.Add(cmdBookmark) '[skeel] added
-					Controls.Add(cmdThreadSubscribers)
+				If objConfig.EnableThreadStatus And ForumControl.LoggedOnUser.UserID > 0 Then
+					Controls.Add(ddlThreadStatus)
 				End If
 
-				If objConfig.EnableRatings Then
+				If objConfig.MailNotification And ForumControl.LoggedOnUser.UserID > 0 Then
+					Controls.Add(chkEmail)
+				End If
+
+				If objConfig.EnableRatings And ForumControl.LoggedOnUser.UserID > 0 Then
 					Controls.Add(trcRating)
+				End If
+
+				Controls.Add(rblstPoll)
+
+				If ForumControl.LoggedOnUser.UserID > 0 Then
+					Controls.Add(cmdBookmark)
+					Controls.Add(cmdThreadSubscribers)
+
+					' Remove for anon posting (if we allow quick reply via anonymous posting)
+					Controls.Add(txtQuickReply)
+					Controls.Add(cmdSubmit)
 				End If
 
 				Controls.Add(ddlViewDescending)
 				Controls.Add(txtForumSearch)
 				Controls.Add(cmdForumSearch)
-				Controls.Add(txtQuickReply)
-				Controls.Add(cmdSubmit)
-
 			Catch exc As Exception
 				LogException(exc)
 			End Try
@@ -3066,7 +3081,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 		''' <summary>
-		''' 
+		''' Renders a textbox on the screen for a quickly reply to threads.
 		''' </summary>
 		''' <param name="wr"></param>
 		''' <remarks></remarks>

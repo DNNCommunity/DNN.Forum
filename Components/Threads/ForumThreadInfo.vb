@@ -1,6 +1,6 @@
 '
 ' DotNetNuke® - http://www.dotnetnuke.com
-' Copyright (c) 2002-2009
+' Copyright (c) 2002-2010
 ' by DotNetNuke Corporation
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -57,6 +57,7 @@ Namespace DotNetNuke.Modules.Forum
 		Private _PreviousThreadID As Integer
 		Private _ThreadStatus As ThreadStatus
 		Private _AnswerPostID As Integer = -1
+		Private _AnswerDate As DateTime
 		Private _PollID As Integer = -1
 		Private _TotalRecords As Integer = 0
 		'CP - Not implemented
@@ -625,6 +626,21 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 			Set(ByVal Value As Integer)
 				_AnswerPostID = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' The date the thread was marked as answered. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks>Currently we are not populating this in any of the get sprocs. This was added quickly just for DNN.COM moderation purposes. Thread_Get, Thread_GetAll, Thread_GetByForum, Thread_GetUnread = All need updated.</remarks>
+		Public Property AnswerDate() As DateTime
+			Get
+				Return _AnswerDate
+			End Get
+			Set(ByVal Value As DateTime)
+				_AnswerDate = Value
 			End Set
 		End Property
 
