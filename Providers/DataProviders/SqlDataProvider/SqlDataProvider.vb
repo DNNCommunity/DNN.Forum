@@ -292,7 +292,7 @@ Namespace DotNetNuke.Modules.Forum
 
 		' Thread Status
 		Public Overrides Sub ThreadStatusChange(ByVal ThreadID As Integer, ByVal UserID As Integer, ByVal Status As Integer, ByVal AnswerPostID As Integer)
-			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "ThreadStatusChange", ThreadID, UserID, Status, AnswerPostID)
+			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "Thread_StatusChange", ThreadID, UserID, Status, AnswerPostID)
 		End Sub
 
 		Public Overrides Function ReadsGetFirstUnread(ByVal ThreadID As Integer, ByVal LastVisitDate As Date, ByVal ViewDecending As Boolean) As Integer

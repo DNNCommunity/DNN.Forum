@@ -217,9 +217,9 @@
     <value>{0}'s Profile</value>
   </data>
   <data name="plAvatar.Help" xml:space="preserve">
-    <value>Allows administrators and moderators to edit the user's avatar</value>
+    <value>Allows administrators and moderators to edit the user's avatar if the module isn't using a profile avatar.</value>
   </data>
   <data name="plAvatar.Text" xml:space="preserve">
-    <value>Avatar:</value>
+    <value>Avatar (Module):</value>
   </data>
 </root>
