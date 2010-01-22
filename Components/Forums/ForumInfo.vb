@@ -939,43 +939,29 @@ Namespace DotNetNuke.Modules.Forum
 					objForumInfo.TotalPosts = 0
 
 					Name = Localization.GetString("AggregatedForumName", Forum.objConfig.SharedResourceFile)
+					objForumInfo.Name = Name
+
 					Description = Localization.GetString("AggregatedForumDescription", Forum.objConfig.SharedResourceFile)
+					objForumInfo.Description = Description
 
-					' get latest post info for the aggregated forum by looping through all the forums
-					Dim objGroups As New GroupController
-					Dim objGroup As GroupInfo
-					Dim arrForums As List(Of ForumInfo)
+					Dim SearchCollection As New ArrayList
+					Dim cntSearch As New SearchController
+					SearchCollection = cntSearch.SearchGetResults("", 0, 1, Forum.LoggedOnUser.UserID, Forum.ModuleID, DateAdd(DateInterval.Year, -1, DateTime.Today), DateAdd(DateInterval.Day, 1, DateTime.Today), -1)
 
-					For Each objGroup In objGroups.GroupsGetByModuleID(ModuleID)
-						' we never need last post info for link type forums.
-						arrForums = objGroup.AuthorizedForums(fLoggedOnUser.UserID, False)
-
-						If arrForums.Count > 0 Then
-							For Each objForum As ForumInfo In arrForums
-								' Make sure the forum is exposed for public viewing, is active, and there is at least one post in it. Also make sure it is not pinned.
-								If (Not objForum.MostRecentPostAuthorID = 0) And objForum.IsActive Then
-									'objForum.PublicView And And (objForum.MostRecentThreadPinned = False)
-									_TotalThreads += objForum.TotalThreads
-									_TotalPosts += objForum.TotalPosts
-									If objForum.MostRecentPostDate > _MostRecentPostDate Then
-										_MostRecentPostDate = objForum.MostRecentPostDate
-										_MostRecentPostID = objForum.MostRecentPostID
-										_MostRecentPostAuthorID = objForum.MostRecentPostAuthorID
-										_MostRecentThreadID = objForum.MostRecentThreadID
-									End If
-								End If
-							Next
+					For Each objSearch As SearchInfo In SearchCollection
+						If objSearch IsNot Nothing Then
+							_MostRecentPostDate = objSearch.CreatedDate
+							_MostRecentPostID = objSearch.LastPostedPostID
+							_MostRecentPostAuthorID = objSearch.LastApprovedUser.UserID
+							_MostRecentThreadID = objSearch.ThreadID
 						End If
 					Next
 
-					'[skeel] Add the information to the foruminfo object
 					objForumInfo.MostRecentPostDate = _MostRecentPostDate
 					objForumInfo.MostRecentPostID = _MostRecentPostID
 					MostRecentPostAuthorID = _MostRecentPostAuthorID
 					objForumInfo.MostRecentPostAuthorID = _MostRecentPostAuthorID
 					objForumInfo.MostRecentThreadID = _MostRecentThreadID
-					objForumInfo.TotalThreads = _TotalThreads
-					objForumInfo.TotalPosts = _TotalPosts
 				End If
 
 				If Not objForumInfo Is Nothing Then
@@ -1236,7 +1222,7 @@ Namespace DotNetNuke.Modules.Forum
 					wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_Threads")
 					wr.RenderBeginTag(HtmlTextWriterTag.Span) ' <span>
 
-					If objForumInfo.ForumType = 2 Then
+					If objForumInfo.ForumType = 2 Or objForumInfo.ForumID = -1 Then
 						wr.Write("-")
 					Else
 						wr.Write(objForumInfo.TotalThreads.ToString)
@@ -1259,7 +1245,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_Posts")
 					wr.RenderBeginTag(HtmlTextWriterTag.Span) ' <span>
-					If objForumInfo.ForumType = 2 Then
+					If objForumInfo.ForumType = 2 Or objForumInfo.ForumID = -1 Then
 						wr.Write("-")
 					Else
 						wr.Write(objForumInfo.TotalPosts.ToString)
@@ -1309,7 +1295,7 @@ Namespace DotNetNuke.Modules.Forum
 						wr.Write("-")
 						wr.RenderEndTag() ' </span>
 					Else
-						If (objForumInfo.MostRecentPostAuthorID > 0) AndAlso (objForumInfo.MostRecentPostID > 0) Then
+						If (objForumInfo.MostRecentPostID > 0) Then
 							'Dim displayCreatedDate As DateTime = ConvertTimeZone(MostRecentPostDate, objConfig)
 							Dim lastPostInfo As New PostInfo
 							lastPostInfo = PostInfo.GetPostInfo(objForumInfo.MostRecentPostID, PortalID)

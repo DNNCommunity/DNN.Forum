@@ -110,7 +110,6 @@ Namespace DotNetNuke.Modules.Forum
 								.EnablePM = False
 								.EnableSelfNotifications = False
 								.EnableModNotification = False
-								.EnablePublicEmail = False
 							End With
 						End If
 					End If
@@ -124,6 +123,8 @@ Namespace DotNetNuke.Modules.Forum
 						.DisplayName = "anonymous"
 						.EnablePublicEmail = False
 						.EnablePM = False
+						.EnableSelfNotifications = False
+						.EnableModNotification = False
 					End With
 				End If
 				If timeOut > 0 And fUser IsNot Nothing Then

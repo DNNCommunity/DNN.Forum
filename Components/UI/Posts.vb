@@ -776,7 +776,7 @@ Namespace DotNetNuke.Modules.Forum
 					AddHandler chkEmail.CheckedChanged, AddressOf chkEmail_CheckedChanged
 				End If
 
-				If objConfig.EnableRatings And ForumControl.LoggedOnUser.UserID > 0 Then
+				If objConfig.EnableRatings Then
 					AddHandler trcRating.Rate, AddressOf trcRating_Rate
 				End If
 
@@ -812,7 +812,7 @@ Namespace DotNetNuke.Modules.Forum
 					Controls.Add(chkEmail)
 				End If
 
-				If objConfig.EnableRatings And ForumControl.LoggedOnUser.UserID > 0 Then
+				If objConfig.EnableRatings Then
 					Controls.Add(trcRating)
 				End If
 
@@ -930,6 +930,7 @@ Namespace DotNetNuke.Modules.Forum
 				Else
 					ForumControl.Descending = CType(ddlViewDescending.SelectedIndex, Boolean)
 					'CP - COMEBACK: Add way to display rating but don't allow voting (for anonymous users)
+					trcRating.Enabled = False
 				End If
 
 				_PostCollection = ctlPost.PostGetAll(ThreadId, PostPage, ForumControl.PostsPerPage, False, ForumControl.Descending, PortalID)
@@ -1751,7 +1752,7 @@ Namespace DotNetNuke.Modules.Forum
 							RenderRowBegin(wr) ' <tr> (start avatar row)
 							RenderCellBegin(wr, "Forum_UserAvatar", "", "", "", "top", "", "") ' <td>
 							wr.Write("<br />")
-							If objConfig.EnableProfileAvatar Then
+							If objConfig.EnableProfileAvatar And author.UserID > 0 Then
 								Dim WebVisibility As UserVisibilityMode
 								WebVisibility = author.Profile.ProfileProperties(objConfig.AvatarProfilePropName).Visibility
 
@@ -1769,7 +1770,9 @@ Namespace DotNetNuke.Modules.Forum
 										End If
 								End Select
 							Else
-								RenderImage(wr, author.AvatarComplete, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "")
+								If author.UserID > 0 Then
+									RenderImage(wr, author.AvatarComplete, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "")
+								End If
 							End If
 
 							RenderCellEnd(wr) ' </td>
@@ -1815,40 +1818,42 @@ Namespace DotNetNuke.Modules.Forum
 					RenderCellBegin(wr, "Forum_NormalSmall", "", "", "", "top", "", "")	' <td>
 
 					'Homepage
-					Dim WebSiteVisibility As UserVisibilityMode
-					WebSiteVisibility = author.Profile.ProfileProperties("Website").Visibility
+					If author.UserID > 0 Then
+						Dim WebSiteVisibility As UserVisibilityMode
+						WebSiteVisibility = author.Profile.ProfileProperties("Website").Visibility
 
-					Select Case WebSiteVisibility
-						Case UserVisibilityMode.AdminOnly
+						Select Case WebSiteVisibility
+							Case UserVisibilityMode.AdminOnly
 
-							If objSecurity.IsForumAdmin Then
+								If objSecurity.IsForumAdmin Then
+									RenderWebSiteLink(author, wr)
+								End If
+							Case UserVisibilityMode.AllUsers
 								RenderWebSiteLink(author, wr)
-							End If
-						Case UserVisibilityMode.AllUsers
-							RenderWebSiteLink(author, wr)
-						Case UserVisibilityMode.MembersOnly
-							If ForumControl.LoggedOnUser.UserID > 0 Then
-								RenderWebSiteLink(author, wr)
-							End If
-					End Select
+							Case UserVisibilityMode.MembersOnly
+								If ForumControl.LoggedOnUser.UserID > 0 Then
+									RenderWebSiteLink(author, wr)
+								End If
+						End Select
 
-					'Region
-					Dim CountryVisibility As UserVisibilityMode
-					CountryVisibility = author.Profile.ProfileProperties("Country").Visibility
+						'Region
+						Dim CountryVisibility As UserVisibilityMode
+						CountryVisibility = author.Profile.ProfileProperties("Country").Visibility
 
-					Select Case CountryVisibility
-						Case UserVisibilityMode.AdminOnly
+						Select Case CountryVisibility
+							Case UserVisibilityMode.AdminOnly
 
-							If objSecurity.IsForumAdmin Then
+								If objSecurity.IsForumAdmin Then
+									RenderCountry(author, wr)
+								End If
+							Case UserVisibilityMode.AllUsers
 								RenderCountry(author, wr)
-							End If
-						Case UserVisibilityMode.AllUsers
-							RenderCountry(author, wr)
-						Case UserVisibilityMode.MembersOnly
-							If ForumControl.LoggedOnUser.UserID > 0 Then
-								RenderCountry(author, wr)
-							End If
-					End Select
+							Case UserVisibilityMode.MembersOnly
+								If ForumControl.LoggedOnUser.UserID > 0 Then
+									RenderCountry(author, wr)
+								End If
+						End Select
+					End If
 
 					'Joined
 					Dim strJoinedDate As String

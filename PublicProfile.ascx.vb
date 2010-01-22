@@ -340,6 +340,11 @@ Namespace DotNetNuke.Modules.Forum
 			End Try
 		End Sub
 
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="ProfileUser"></param>
+		''' <remarks></remarks>
 		Private Sub RenderProfileAvatar(ByVal ProfileUser As ForumUser)
 			imgAvatar.Width = objConfig.UserAvatarWidth
 			imgAvatar.Height = objConfig.UserAvatarHeight
