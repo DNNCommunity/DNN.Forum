@@ -315,7 +315,7 @@ Namespace DotNetNuke.Modules.Forum
 			ForumControl.Descending = CType(ddlViewDescending.SelectedIndex, Boolean)
 
 			Dim ctlPost As New PostController
-			_PostCollection = ctlPost.PostGetAll(ThreadId, PostPage, ForumControl.PostsPerPage, False, ForumControl.Descending, PortalID)
+			_PostCollection = ctlPost.PostGetAll(ThreadId, PostPage, ForumControl.LoggedOnUser.PostsPerPage, False, ForumControl.Descending, PortalID)
 
 			'<tam:note value=update database if it's an authenticated user>
 			If ForumControl.LoggedOnUser.UserID > 0 Then
@@ -398,7 +398,7 @@ Namespace DotNetNuke.Modules.Forum
 				'Forum.ThreadInfo.ResetThreadInfo(ThreadId)
 
 				Dim ctlPost As New PostController
-				_PostCollection = ctlPost.PostGetAll(ThreadId, PostPage, ForumControl.PostsPerPage, False, ForumControl.Descending, PortalID)
+				_PostCollection = ctlPost.PostGetAll(ThreadId, PostPage, ForumControl.LoggedOnUser.PostsPerPage, False, ForumControl.Descending, PortalID)
 			Else
 				' there is no content
 			End If
@@ -933,7 +933,7 @@ Namespace DotNetNuke.Modules.Forum
 					trcRating.Enabled = False
 				End If
 
-				_PostCollection = ctlPost.PostGetAll(ThreadId, PostPage, ForumControl.PostsPerPage, False, ForumControl.Descending, PortalID)
+				_PostCollection = ctlPost.PostGetAll(ThreadId, PostPage, ForumControl.LoggedOnUser.PostsPerPage, False, ForumControl.Descending, PortalID)
 
 				If _PostCollection.Count > 0 And _PostID = 0 Then
 					_PostID = CType(_PostCollection.Item(0), PostInfo).PostID
@@ -2389,7 +2389,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>
 		''' </remarks>
 		Private Sub RenderFooter(ByVal wr As HtmlTextWriter)
-			Dim pageCount As Integer = CInt(Math.Floor((ThreadInfo.Replies) / ForumControl.PostsPerPage)) + 1
+			Dim pageCount As Integer = CInt(Math.Floor((ThreadInfo.Replies) / ForumControl.LoggedOnUser.PostsPerPage)) + 1
 			Dim pageCountInfo As New StringBuilder
 
 			pageCountInfo.Append(ForumControl.LocalizedText("PageCountInfo"))

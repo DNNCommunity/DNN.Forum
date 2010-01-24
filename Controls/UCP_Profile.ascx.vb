@@ -77,7 +77,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 				lblDisplayName.Text = .SiteAlias
 				lblWebsite.Text = .Profile.Website
 				visWebsite.Text = Localization.GetString("Visibility", Me.LocalResourceFile) & ": " & WebVisibility.ToString
-				chkDisplayEmail.Checked = .EnablePublicEmail
 				hlEmail.Text = .Email
 				hlEmail.NavigateUrl = "mailto:" & .Email
 				visEmail.Text = Localization.GetString("Visibility", Me.LocalResourceFile) & ": " & EmailVisibility.ToString
@@ -142,7 +141,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 					Dim PreviouslyBanned As Boolean
 					.UserID = .UserID
 					.PortalID = PortalId
-					.EnablePublicEmail = chkDisplayEmail.Checked
 					.EnableProfileWeb = chkEnableProfileWeb.Checked
 					.EnableProfileRegion = chkEnableProfileRegion.Checked
 					.IsTrusted = chkIsTrusted.Checked

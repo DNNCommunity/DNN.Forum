@@ -507,8 +507,6 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-#Region "Forum Settings Page"
-
 #Region "Hidden Settings"
 
 		''' <summary>
@@ -1192,8 +1190,6 @@ Namespace DotNetNuke.Modules.Forum
 				Return _NoFollowLatestThreads
 			End Get
 		End Property
-
-#End Region
 
 #End Region
 

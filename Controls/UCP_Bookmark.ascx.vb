@@ -229,7 +229,8 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		Protected Sub BindData(ByVal PageSize As Integer, ByVal CurrentPage As Integer)
 			Dim BookmarkCtl As New BookmarkController
 			Dim arrThreads As New List(Of TrackingInfo)
-			arrThreads = BookmarkCtl.BookmarkThreadGet(UserId, ModuleId, objConfig.ForumMemberName, PageSize, CurrentPage - 1)
+
+			arrThreads = BookmarkCtl.BookmarkThreadGet(ProfileUserID, ModuleId, objConfig.ForumMemberName, PageSize, CurrentPage - 1)
 
 			If Not arrThreads Is Nothing Then
 				If arrThreads.Count > 0 Then

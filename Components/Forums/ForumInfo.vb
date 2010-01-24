@@ -914,7 +914,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public Sub Render(ByVal wr As HtmlTextWriter, ByVal Forum As DNNForum, Optional ByVal Count As Integer = 0)
 			Try
 				Dim fLoggedOnUser As ForumUser = Forum.LoggedOnUser
-				Dim fPostsPerPage As Integer = Forum.PostsPerPage
+				Dim fPostsPerPage As Integer = Forum.LoggedOnUser.PostsPerPage
 				Dim fPage As Page = Forum.DNNPage
 				Dim fTabID As Integer = Forum.TabID
 				Dim fModuleID As Integer = Forum.ModuleID
@@ -959,7 +959,6 @@ Namespace DotNetNuke.Modules.Forum
 
 					objForumInfo.MostRecentPostDate = _MostRecentPostDate
 					objForumInfo.MostRecentPostID = _MostRecentPostID
-					MostRecentPostAuthorID = _MostRecentPostAuthorID
 					objForumInfo.MostRecentPostAuthorID = _MostRecentPostAuthorID
 					objForumInfo.MostRecentThreadID = _MostRecentThreadID
 				End If

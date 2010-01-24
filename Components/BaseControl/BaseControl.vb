@@ -384,42 +384,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' The Threads per page size. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>The paging size number of records to retrieve.</returns>
-		''' <remarks>Used to determine number of threads returned on trips to the database. (CAN be user specific)</remarks>
-		Friend ReadOnly Property ThreadsPerPage() As Integer
-			Get
-				Dim context As HttpContext = HttpContext.Current
-				If context.Request.IsAuthenticated Then
-					Return LoggedOnUser.ThreadsPerPage
-				Else
-					Return _Config.ThreadsPerPage
-				End If
-
-			End Get
-		End Property
-
-		''' <summary>
-		''' Posts per page size. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>The number of posts to display to the current user.</returns>
-		''' <remarks>The posts per page to be retrieved from the database in a single call. (CAN be user specific)</remarks>
-		Friend ReadOnly Property PostsPerPage() As Integer
-			Get
-				Dim context As HttpContext = HttpContext.Current
-				If context.Request.IsAuthenticated Then
-					Return LoggedOnUser.PostsPerPage
-				Else
-					Return _Config.PostsPerPage
-				End If
-
-			End Get
-		End Property
-
-		''' <summary>
 		''' The Page object is used so we can override some elements. 
 		''' </summary>
 		''' <value></value>

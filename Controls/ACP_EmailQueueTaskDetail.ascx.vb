@@ -41,9 +41,57 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </summary>
 		''' <remarks></remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
-
-			BindGrid(False)
+			rgTaskDetails.PageSize = PageSize
+			PageIndex = 0
 		End Sub
+
+#End Region
+
+#Region "Private Members"
+
+		'Dim _SortExpression As String = "CurrentPoints"
+		Dim _Ascending As Boolean = False
+		Dim _PageIndex As Integer = 0
+
+#End Region
+
+#Region "Private Properties"
+
+		''' <summary>
+		''' The total number of users we will show in the grid at a given time, this is pulled from the settings.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private ReadOnly Property PageSize() As Integer
+			Get
+				'If CType(Settings("PageSize"), String) <> "" Then
+				'	Return CInt(Settings("PageSize"))
+				'Else
+				'	Return 10
+				'End If
+				Return 20
+			End Get
+		End Property
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Property PageIndex() As Integer
+			Get
+				If CStr(ViewState("PageIndex")) <> String.Empty Then
+					_PageIndex = CInt(ViewState("PageIndex"))
+				End If
+				Return _PageIndex
+			End Get
+			Set(ByVal value As Integer)
+				_PageIndex = value
+				ViewState("PageIndex") = value
+			End Set
+		End Property
 
 #End Region
 
@@ -107,6 +155,12 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			End If
 		End Sub
 
+		Protected Sub rgTaskDetails_PageChange(ByVal source As Object, ByVal e As Telerik.Web.UI.GridPageChangedEventArgs) Handles rgTaskDetails.PageIndexChanged
+			PageIndex = e.NewPageIndex
+
+			BindGrid(False)
+		End Sub
+
 		''' <summary>
 		''' 
 		''' </summary>
@@ -154,7 +208,11 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			Dim cntEmailTask As New EmailQueueTaskController
 			Dim colEmailTasks As List(Of EmailQueueTaskInfo)
 
-			colEmailTasks = cntEmailTask.GetPortalEmailSendTasks(PortalId)
+			colEmailTasks = cntEmailTask.GetPortalEmailSendTasks(PortalId, PageIndex, PageSize)
+
+			Dim cntEmailTask2 As New EmailQueueTaskController
+
+			rgTaskDetails.VirtualItemCount = cntEmailTask2.GetPortalEmailTaskCount(PortalId)
 
 			If Not colEmailTasks Is Nothing Then
 				rgTaskDetails.DataSource = colEmailTasks

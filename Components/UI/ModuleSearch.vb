@@ -517,7 +517,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				' start post status image
 				RenderCellBegin(wr, "Forum_Header", "", "1%", "left", "middle", "", "") '<td>
-				' display "new" image if this post is new since last time user visited the thread
+				' display "new" image if this post is new since last time user visited the thread (leave even if permitting anonymous posting)
 				If HttpContext.Current.Request.IsAuthenticated Then
 					If NewPost(SearchItem.ThreadID, SearchItem.CreatedDate) Then
 						RenderImage(wr, objConfig.GetThemeImageURL("s_new.") & objConfig.ImageExtension, ForumControl.LocalizedText("UnreadPost"), "")

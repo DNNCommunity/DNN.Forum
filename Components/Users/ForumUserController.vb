@@ -91,7 +91,6 @@ Namespace DotNetNuke.Modules.Forum
 								.EnablePM = myConfig.EnablePMSystem
 								.EnablePMNotifications = myConfig.MailNotification
 								.IsTrusted = myConfig.TrustNewUsers
-								.EnablePublicEmail = False
 								.EnableModNotification = myConfig.MailNotification
 								.EnableSelfNotifications = False
 							End With
@@ -106,7 +105,6 @@ Namespace DotNetNuke.Modules.Forum
 								.UserID = -1
 								.Username = "anonymous"
 								.DisplayName = "anonymous"
-								.EnablePublicEmail = False
 								.EnablePM = False
 								.EnableSelfNotifications = False
 								.EnableModNotification = False
@@ -121,7 +119,6 @@ Namespace DotNetNuke.Modules.Forum
 						.UserID = -1
 						.Username = "anonymous"
 						.DisplayName = "anonymous"
-						.EnablePublicEmail = False
 						.EnablePM = False
 						.EnableSelfNotifications = False
 						.EnableModNotification = False
@@ -240,10 +237,6 @@ Namespace DotNetNuke.Modules.Forum
 				Catch
 				End Try
 				Try
-					objForumUser.EnablePublicEmail = Convert.ToBoolean(dr("EnablePublicEmail"))
-				Catch
-				End Try
-				Try
 					objForumUser.EnablePM = Convert.ToBoolean(dr("EnablePM"))
 				Catch
 				End Try
@@ -311,7 +304,6 @@ Namespace DotNetNuke.Modules.Forum
 			Else
 				objForumUser.Username = "anonymous"
 				objForumUser.DisplayName = "anonymous"
-				objForumUser.EnablePublicEmail = False
 				objForumUser.EnablePM = False
 				objForumUser.PostCount = 0
 				objForumUser.EnableProfileWeb = False
@@ -414,37 +406,44 @@ Namespace DotNetNuke.Modules.Forum
 
 		End Function
 
-        Public Function UserGet(ByVal PortalID As Integer, ByVal UserId As Integer, ByVal ModuleID As Integer) As ForumUser
-            Dim cacheKey As String = FORUM_USER_CACHE_KEY_PREFIX & UserId.ToString & "-" & PortalID.ToString
-            Return CBO.GetCachedObject(Of ForumUser)(New CacheItemArgs(cacheKey, 5, DataCache.PortalDesktopModuleCachePriority, PortalID, UserId, ModuleID), _
-                                                                                                             AddressOf UserGetCallBack)
-        End Function
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="PortalID"></param>
+		''' <param name="UserId"></param>
+		''' <param name="ModuleID"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Function UserGet(ByVal PortalID As Integer, ByVal UserId As Integer, ByVal ModuleID As Integer) As ForumUser
+			Dim cacheKey As String = FORUM_USER_CACHE_KEY_PREFIX & UserId.ToString & "-" & PortalID.ToString
+			Return CBO.GetCachedObject(Of ForumUser)(New CacheItemArgs(cacheKey, 5, DataCache.PortalDesktopModuleCachePriority, PortalID, UserId, ModuleID), AddressOf UserGetCallBack)
+		End Function
 
 
-        ''' <summary>
-        ''' Gets a single users profile (for the forum, which is distinct per portal)
-        ''' </summary>
+		''' <summary>
+		''' Gets a single users profile (for the forum, which is distinct per portal)
+		''' </summary>
 		''' <param name="cacheItemArgs"></param>
 		''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Function UserGetCallBack(ByVal cacheItemArgs As CacheItemArgs) As ForumUser
+		''' <remarks></remarks>
+		Private Function UserGetCallBack(ByVal cacheItemArgs As CacheItemArgs) As ForumUser
 
-            Dim portalID As Integer = DirectCast(cacheItemArgs.ParamList(0), Integer)
-            Dim userID As Integer = DirectCast(cacheItemArgs.ParamList(1), Integer)
-            Dim moduleID As Integer = DirectCast(cacheItemArgs.ParamList(2), Integer)
-			Dim objUserInfo As New ForumUser(ModuleID)
+			Dim portalID As Integer = DirectCast(cacheItemArgs.ParamList(0), Integer)
+			Dim userID As Integer = DirectCast(cacheItemArgs.ParamList(1), Integer)
+			Dim moduleID As Integer = DirectCast(cacheItemArgs.ParamList(2), Integer)
+			Dim objUserInfo As New ForumUser(moduleID)
 			Dim dr As IDataReader = Nothing
 			Try
-				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().UserGet(UserId, PortalID)
+				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().UserGet(userID, portalID)
 				While dr.Read
-					objUserInfo = FillForumUserInfo(dr, PortalID, ModuleID)
+					objUserInfo = FillForumUserInfo(dr, portalID, moduleID)
 					' For user banning, add a check here for date and if banned. If so, we need to update the db, then run this method again. 
 					If objUserInfo.IsBanned = True And objUserInfo.LiftBanDate < Date.Now Then
 						objUserInfo.IsBanned = False
 						objUserInfo.LiftBanDate = Null.NullDate
 
 						UserUpdate(objUserInfo)
-						UserGet(PortalID, UserId, ModuleID)
+						UserGet(portalID, userID, moduleID)
 					End If
 
 				End While
@@ -476,7 +475,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="User"></param>
 		''' <remarks></remarks>
 		Public Sub UserAdd(ByVal User As ForumUser)
-			DotNetNuke.Modules.Forum.DataProvider.Instance().UserAdd(User.UserID, User.UserAvatar, User.Avatar, User.SystemAvatars, User.Signature, User.IsTrusted, User.EnableDisplayInMemberList, User.EnableOnlineStatus, User.ThreadsPerPage, User.PostsPerPage, User.EnablePublicEmail, User.EnablePM, User.EnablePMNotifications, User.PortalID)
+			DotNetNuke.Modules.Forum.DataProvider.Instance().UserAdd(User.UserID, User.UserAvatar, User.Avatar, User.SystemAvatars, User.Signature, User.IsTrusted, User.EnableDisplayInMemberList, User.EnableOnlineStatus, User.ThreadsPerPage, User.PostsPerPage, False, User.EnablePM, User.EnablePMNotifications, User.PortalID)
 		End Sub
 
 		''' <summary>
@@ -488,15 +487,15 @@ Namespace DotNetNuke.Modules.Forum
 			UserUpdate(objUser)
 		End Sub
 
-        ''' <summary>
-        ''' Updates a Forum User's Forum Profile
-        ''' </summary>
-        ''' <param name="objUser"></param>		
-        ''' <remarks></remarks>
-        Public Sub UserUpdate(ByVal objUser As ForumUser)
-            DotNetNuke.Modules.Forum.DataProvider.Instance().UserUpdate(objUser.UserID, objUser.UserAvatar, objUser.Avatar, objUser.SystemAvatars, objUser.Signature, objUser.IsTrusted, objUser.EnableDisplayInMemberList, objUser.EnableOnlineStatus, objUser.ThreadsPerPage, objUser.PostsPerPage, objUser.EnableModNotification, objUser.EnablePublicEmail, objUser.EnablePM, objUser.EnablePMNotifications, objUser.EmailFormat, objUser.PortalID, objUser.LockTrust, objUser.EnableProfileWeb, objUser.EnableProfileRegion, objUser.EnableDefaultPostNotify, objUser.EnableSelfNotifications, objUser.IsBanned, objUser.LiftBanDate, objUser.Biography, objUser.StartBanDate)
-            DataCache.RemoveCache(String.Concat(FORUM_USER_CACHE_KEY_PREFIX & objUser.UserID.ToString & "-" & objUser.PortalID.ToString))
-        End Sub
+		''' <summary>
+		''' Updates a Forum User's Forum Profile
+		''' </summary>
+		''' <param name="objUser"></param>		
+		''' <remarks></remarks>
+		Public Sub UserUpdate(ByVal objUser As ForumUser)
+			DotNetNuke.Modules.Forum.DataProvider.Instance().UserUpdate(objUser.UserID, objUser.UserAvatar, objUser.Avatar, objUser.SystemAvatars, objUser.Signature, objUser.IsTrusted, objUser.EnableDisplayInMemberList, objUser.EnableOnlineStatus, objUser.ThreadsPerPage, objUser.PostsPerPage, objUser.EnableModNotification, False, objUser.EnablePM, objUser.EnablePMNotifications, objUser.EmailFormat, objUser.PortalID, objUser.LockTrust, objUser.EnableProfileWeb, objUser.EnableProfileRegion, objUser.EnableDefaultPostNotify, objUser.EnableSelfNotifications, objUser.IsBanned, objUser.LiftBanDate, objUser.Biography, objUser.StartBanDate)
+			DataCache.RemoveCache(String.Concat(FORUM_USER_CACHE_KEY_PREFIX & objUser.UserID.ToString & "-" & objUser.PortalID.ToString))
+		End Sub
 
 		''' <summary>
 		''' Not Implemented

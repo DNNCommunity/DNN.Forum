@@ -913,6 +913,10 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			End Select
 		End Sub
 
+		''' <summary>
+		''' Contructs a list of user interface tabs. 
+		''' </summary>
+		''' <remarks></remarks>
 		Private Sub BuildTabs()
 			Dim tabForums As New Telerik.Web.UI.RadTab
 			tabForums.Text = Localization.GetString("TabGeneral", LocalResourceFile)

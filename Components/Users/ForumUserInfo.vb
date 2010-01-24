@@ -65,8 +65,8 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _EnableDisplayInMemberList As Boolean = False
 		Dim _EnablePrivateMessages As Boolean = True
 		Dim _EnableOnlineStatus As Boolean = True
-		Dim _ThreadsPerPage As Integer = DefaultThreadsPerPage
-		Dim _PostsPerPage As Integer = DefaultPostsPerPage
+		Dim _ThreadsPerPage As Integer = -1
+		Dim _PostsPerPage As Integer = -1
 		Dim _LastActivity As DateTime = Now
 		Dim _FlatView As Boolean = True
 		Dim _ViewDescending As Boolean = False
@@ -93,36 +93,12 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _UserWebsite As String
 		Dim _Biography As String
 		Dim _StartBanDate As Date
-		' Not implemented
-		Dim _IsAnonymous As Boolean = False
 
 #End Region
 
 #Region "Public ReadOnly Properties"
 
-		''' <summary>
-		''' The default number of threads shown per page. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public ReadOnly Property DefaultThreadsPerPage() As Integer
-			Get
-				Return Forum.Config.DefaultThreadsPerPage
-			End Get
-		End Property
-
-		''' <summary>
-		''' The default number of posts shown per page. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public ReadOnly Property DefaultPostsPerPage() As Integer
-			Get
-				Return Forum.Config.DefaultPostsPerPage
-			End Get
-		End Property
+#Region "Core Profile"
 
 		''' <summary>
 		''' User profile item of selected timezone. 
@@ -169,6 +145,8 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 		End Property
 
+#End Region
+
 		''' <summary>
 		''' Sets the users referred to alias depending on forum configuration
 		''' </summary>
@@ -177,13 +155,11 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>This will be either core username or core displayname</remarks>
 		Public ReadOnly Property SiteAlias() As String
 			Get
-				Dim strSiteAlias As String = String.Empty
 				If objConfig.ForumMemberName = 0 Then
-					strSiteAlias = Me.Username
+					Return Me.Username
 				Else
-					strSiteAlias = Me.DisplayName
+					Return Me.DisplayName
 				End If
-				Return strSiteAlias
 			End Get
 		End Property
 
@@ -535,21 +511,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' If the user allows their email address (core profile) to be displayed in their forum profile. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property EnablePublicEmail() As Boolean
-			Get
-				Return _EnablePublicEmail
-			End Get
-			Set(ByVal Value As Boolean)
-				_EnablePublicEmail = Value
-			End Set
-		End Property
-
-		''' <summary>
 		''' Number of threads per page shown to a user at once. 
 		''' </summary>
 		''' <value></value>
@@ -557,7 +518,11 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Property ThreadsPerPage() As Integer
 			Get
-				Return _ThreadsPerPage
+				If Not _ThreadsPerPage > 0 Then
+					Return Forum.Config.DefaultThreadsPerPage
+				Else
+					Return _ThreadsPerPage
+				End If
 			End Get
 			Set(ByVal Value As Integer)
 				_ThreadsPerPage = Value
@@ -572,7 +537,11 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Property PostsPerPage() As Integer
 			Get
-				Return _PostsPerPage
+				If Not _PostsPerPage > 0 Then
+					Return Forum.Config.DefaultPostsPerPage
+				Else
+					Return _PostsPerPage
+				End If
 			End Get
 			Set(ByVal Value As Integer)
 				_PostsPerPage = Value
@@ -696,21 +665,6 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 			Set(ByVal Value As Integer)
 				_TrackingDuration = Value
-			End Set
-		End Property
-
-		''' <summary>
-		''' 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks>Not Implemented</remarks>
-		Public Property IsAnonymous() As Boolean
-			Get
-				Return _IsAnonymous
-			End Get
-			Set(ByVal Value As Boolean)
-				_IsAnonymous = Value
 			End Set
 		End Property
 

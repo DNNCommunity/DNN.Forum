@@ -46,7 +46,6 @@
 						</span>
 					</td>
 					<td class="Forum_Row_AdminM" align="left">
-						<asp:CheckBox ID="chkDisplayEmail" runat="server" CssClass="Forum_NormalTextBox" />&nbsp;
 						<asp:HyperLink ID="hlEmail" runat="server" CssClass="Forum_Profile" />        
 					</td>
 					<td class="Forum_Row_AdminR" align="left">

@@ -624,8 +624,12 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="PortalID">The Portal to retrieve email tasks for.</param>
 		''' <returns>A colleciton of email tasks associated with the specified portal.</returns>
 		''' <remarks></remarks>
-		Public Function GetPortalEmailSendTasks(ByVal PortalID As Integer) As List(Of EmailQueueTaskInfo)
-			Return CBO.FillCollection(Of EmailQueueTaskInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().GetPortalEmailSendTasks(PortalID))
+		Public Function GetPortalEmailSendTasks(ByVal PortalID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer) As List(Of EmailQueueTaskInfo)
+			Return CBO.FillCollection(Of EmailQueueTaskInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().GetPortalEmailSendTasks(PortalID, PageIndex, PageSize))
+		End Function
+
+		Public Function GetPortalEmailTaskCount(ByVal PortalID As Integer) As Integer
+			Return DotNetNuke.Modules.Forum.DataProvider.Instance().GetPortalEmailTaskCount(PortalID)
 		End Function
 
 #End Region

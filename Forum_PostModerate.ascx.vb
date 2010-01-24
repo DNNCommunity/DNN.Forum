@@ -74,6 +74,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, mForumID, UserId)
 
+				' (leave even if permitting anonymous posting)
 				If Request.IsAuthenticated Then
 					If Not (Security.IsForumModerator) Then
 						' they don't belong here

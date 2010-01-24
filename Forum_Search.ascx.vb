@@ -206,16 +206,7 @@ Namespace DotNetNuke.Modules.Forum
 				sb.Append("&todate=")
 				sb.Append(Utilities.ForumUtils.DateToNum(endDate).ToString)
 				sb.Append("&pagesize=")
-
-				Dim ThreadPageSize As Integer
-				If Request.IsAuthenticated Then
-					ThreadPageSize = LoggedOnUser.ThreadsPerPage
-				Else
-					' use the default config value
-					ThreadPageSize = objConfig.ThreadsPerPage
-				End If
-
-				sb.Append(ThreadPageSize.ToString)
+				sb.Append(LoggedOnUser.ThreadsPerPage.ToString)
 
 				SelectedForumIds = String.Empty
 				For Each objNode As Telerik.Web.UI.RadTreeNode In Me.rtvForums.CheckedNodes

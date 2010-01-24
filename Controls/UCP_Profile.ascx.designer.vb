@@ -98,15 +98,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		Protected WithEvents plEmail As Global.DotNetNuke.UI.UserControls.LabelControl
 
 		'''<summary>
-		'''chkDisplayEmail control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkDisplayEmail As Global.System.Web.UI.WebControls.CheckBox
-
-		'''<summary>
 		'''hlEmail control.
 		'''</summary>
 		'''<remarks>

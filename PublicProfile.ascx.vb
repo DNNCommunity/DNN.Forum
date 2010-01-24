@@ -120,22 +120,18 @@ Namespace DotNetNuke.Modules.Forum
 						Case UserVisibilityMode.AdminOnly
 							If objSecurity.IsForumAdmin Then
 								RenderWebsite()
+							Else
+								litEmail.Text = Localization.GetString("NotAvailable.Text", Me.LocalResourceFile)
 							End If
 						Case UserVisibilityMode.AllUsers
 							RenderWebsite()
 						Case UserVisibilityMode.MembersOnly
 							If LoggedOnUser.UserID > 0 Then
 								RenderWebsite()
+							Else
+								litEmail.Text = Localization.GetString("NotAvailable.Text", Me.LocalResourceFile)
 							End If
 					End Select
-
-					If ProfileUser.EnablePublicEmail AndAlso (Len(ProfileUser.Email) > 0) Then
-						Dim strEmailText As String = HtmlUtils.FormatEmail(ProfileUser.Email)
-						strEmailText = "<span class=""Forum_Profile"">" & strEmailText & "</span>"
-						litEmail.Text = strEmailText
-					Else
-						litEmail.Text = Localization.GetString("NotAvailable.Text", Me.LocalResourceFile)
-					End If
 
 					If ProfileUser.Profile.IM <> String.Empty Then
 						txtIM.Text = ProfileUser.Profile.IM
@@ -363,6 +359,10 @@ Namespace DotNetNuke.Modules.Forum
 				If objConfig.NoFollowWeb Then
 					lnkWWW.Attributes.Add("rel", "nofollow")
 				End If
+
+				Dim strEmailText As String = HtmlUtils.FormatEmail(ProfileUser.Email)
+				strEmailText = "<span class=""Forum_Profile"">" & strEmailText & "</span>"
+				litEmail.Text = strEmailText
 			Else
 				rowUserWeb.Visible = False
 			End If

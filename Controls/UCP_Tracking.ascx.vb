@@ -264,7 +264,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		Private Sub BindForumData(ByVal PageSize As Integer, ByVal CurrentPage As Integer)
 			Dim TrackCtl As New TrackingController
 			Dim arrForums As New List(Of TrackingInfo)
-			arrForums = TrackCtl.TrackingForumGetAll(UserId, ModuleId, PageSize, CurrentPage - 1)
+			arrForums = TrackCtl.TrackingForumGetAll(ProfileUserID, ModuleId, PageSize, CurrentPage - 1)
 
 			If Not arrForums Is Nothing Then
 				If arrForums.Count > 0 Then
@@ -307,7 +307,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		Private Sub BindThreadData(ByVal PageSize As Integer, ByVal CurrentPage As Integer)
 			Dim TrackCtl As New TrackingController
 			Dim arrThreads As New List(Of TrackingInfo)
-			arrThreads = TrackCtl.TrackingThreadGetAll(UserId, ModuleId, PageSize, CurrentPage - 1)
+			arrThreads = TrackCtl.TrackingThreadGetAll(ProfileUserID, ModuleId, PageSize, CurrentPage - 1)
 
 			If Not arrThreads Is Nothing Then
 				If arrThreads.Count > 0 Then
