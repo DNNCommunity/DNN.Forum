@@ -846,8 +846,12 @@ Namespace DotNetNuke.Modules.Forum
 			Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "EmailQueue_TaskScheduleItemIDGet", DeleteTask), Integer)
 		End Function
 
-		Public Overrides Function GetPortalEmailSendTasks(ByVal PortalID As Integer) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "EmailQueue_GetPortalSendTasks", PortalID), IDataReader)
+		Public Overrides Function GetPortalEmailSendTasks(ByVal PortalID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
+			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "EmailQueue_GetPortalSendTasks", PortalID, PageIndex, PageSize), IDataReader)
+		End Function
+
+		Public Overrides Function GetPortalEmailTaskCount(ByVal PortalID As Integer) As Integer
+			Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "EmailQueue_PortalTaskCount", PortalID), Integer)
 		End Function
 
 #End Region
