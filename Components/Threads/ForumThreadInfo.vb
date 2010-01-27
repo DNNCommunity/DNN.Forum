@@ -131,7 +131,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property StartedByUser() As ForumUser
 			Get
-				Return ForumUserController.GetForumUser(StartedByUserID, False, ModuleID, PortalID)
+				Dim cntForumUser As New ForumUserController
+				Return cntForumUser.GetForumUser(StartedByUserID, False, ModuleID, PortalID)
 			End Get
 		End Property
 
@@ -143,7 +144,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property LastApprovedUser() As ForumUser
 			Get
-				Return ForumUserController.GetForumUser(LastApprovedPost.Author.UserID, False, ModuleID, PortalID)
+				Dim cntForumUser As New ForumUserController
+				Return cntForumUser.GetForumUser(LastApprovedPost.Author.UserID, False, ModuleID, PortalID)
 			End Get
 		End Property
 

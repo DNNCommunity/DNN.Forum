@@ -880,7 +880,8 @@ Namespace DotNetNuke.Modules.Forum
 						End If
 
 						If Keywords.ContainsKey("[POSTAUTHOR]") Then
-							Keywords.Item("[POSTAUTHOR]") = ForumUserController.GetForumUser(objPMInfo.PMFromUserID, False, ModuleID, PortalID).SiteAlias
+							Dim cntForumUser As New ForumUserController
+							Keywords.Item("[POSTAUTHOR]") = cntForumUser.GetForumUser(objPMInfo.PMFromUserID, False, ModuleID, PortalID).SiteAlias
 						End If
 
 						If Keywords.ContainsKey("[POSTBODY]") Then

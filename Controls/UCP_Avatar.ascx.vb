@@ -42,7 +42,9 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' <remarks></remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
 			Dim objSecurity As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
-			Dim ProfileUser As ForumUser = ForumUserController.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
+			Dim cntForumUser As New ForumUserController
+
+			Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
 			If objSecurity.IsForumAdmin = True AndAlso objConfig.EnableSystemAvatar Then
 				rowSystemAvatar.Visible = True
@@ -85,7 +87,9 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' <remarks></remarks>
 		Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 			Dim objSecurity As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
-			Dim ProfileUser As ForumUser = ForumUserController.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
+			Dim cntForumUser As New ForumUserController
+
+			Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
 			If objSecurity.IsForumAdmin = True AndAlso objConfig.EnableSystemAvatar Then
 				ctlSystemAvatar.Security = objSecurity
@@ -109,7 +113,9 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
 				ForumUserController.ResetForumUser(ProfileUserID, PortalId)
-				Dim ProfileUser As ForumUser = ForumUserController.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
+				Dim cntForumUser As New ForumUserController
+
+				Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
 				With ProfileUser
 

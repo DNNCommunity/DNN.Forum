@@ -141,8 +141,10 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Components\BaseObject\BaseObject.vb">
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Components\BaseObject\ForumObject.vb">
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Components\Bookmark\ForumBookmark.vb" />
     <Compile Include="Components\Configuration\ForumConfig.vb" />
@@ -164,6 +166,7 @@
     <Compile Include="Components\Emoticons\EmoticonInfo.vb" />
     <Compile Include="Components\Forums\ForumController.vb" />
     <Compile Include="Components\Forums\ForumForums.vb">
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Components\Forums\ForumInfo.vb" />
     <Compile Include="Components\Portals\ForumPortalSettings.vb" />
@@ -180,6 +183,7 @@
     <Compile Include="Components\Security\MockSecurity.vb" />
     <Compile Include="Components\Tracking\UserTracking.vb" />
     <Compile Include="Components\UI\Groups.vb">
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Components\Groups\ForumGroupController.vb" />
     <Compile Include="Components\Groups\ForumGroupInfo.vb" />
@@ -198,6 +202,7 @@
     <Compile Include="Components\Polls\PollController.vb" />
     <Compile Include="Components\Polls\PollInfo.vb" />
     <Compile Include="Components\UI\Posts.vb">
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Components\Posts\ForumPostController.vb" />
     <Compile Include="Components\Posts\ForumPostInfo.vb" />
@@ -218,6 +223,7 @@
     <Compile Include="Components\Search\ForumSearchHelper.vb" />
     <Compile Include="Components\Search\ForumSearchInfo.vb" />
     <Compile Include="Components\UI\ModuleSearch.vb">
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Components\Security\ForumPermissions\ForumPermissionCollection.vb" />
     <Compile Include="Components\Security\ForumPermissions\ForumPermissionController.vb" />
@@ -227,6 +233,7 @@
     <Compile Include="Components\Templates\ForumTemplateController.vb" />
     <Compile Include="Components\Templates\ForumTemplateInfo.vb" />
     <Compile Include="Components\UI\Threads.vb">
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Components\Threads\ForumThreadController.vb" />
     <Compile Include="Components\Threads\ForumThreadInfo.vb" />
@@ -235,6 +242,7 @@
     <Compile Include="Components\Tracking\ForumTracking.vb" />
     <Compile Include="Components\Treeview\ForumTreeview.vb" />
     <Compile Include="Components\UI\Unread.vb">
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Components\UpgradeLogic\UpgradeLogic.vb" />
     <Compile Include="Components\Users\ForumUserController.vb" />

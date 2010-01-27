@@ -114,6 +114,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				Dim LoggedOnUserID As Integer = -1
 				Dim objForumUser As ForumUser
+				Dim cntForumUser As New ForumUserController
 
 				If Request.IsAuthenticated And (objConfig.EnablePMSystem = True) Then
 					LoggedOnUserID = Entities.Users.UserController.GetCurrentUserInfo.UserID
@@ -121,7 +122,7 @@ Namespace DotNetNuke.Modules.Forum
 					Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
 				End If
 
-				objForumUser = ForumUserController.GetForumUser(LoggedOnUserID, False, ModuleId, PortalId)
+				objForumUser = cntForumUser.GetForumUser(LoggedOnUserID, False, ModuleId, PortalId)
 				BottomPager.PageSize = Convert.ToInt32(objForumUser.ThreadsPerPage)
 
 				If Not Page.IsPostBack Then
@@ -203,7 +204,9 @@ Namespace DotNetNuke.Modules.Forum
 					Dim userOnlineImage As System.Web.UI.WebControls.Image = CType(imgColumnControl, System.Web.UI.WebControls.Image)
 					Dim user As Users.UserInfo = CType(item.DataItem, Users.UserInfo)
 					Dim objForumUser As ForumUser
-					objForumUser = ForumUserController.GetForumUser(user.UserID, False, ModuleId, PortalId)
+					Dim cntForumUser As New ForumUserController
+
+					objForumUser = cntForumUser.GetForumUser(user.UserID, False, ModuleId, PortalId)
 
 					If objConfig.EnableUsersOnline Then
 						If objForumUser.EnableOnlineStatus Then
@@ -229,7 +232,9 @@ Namespace DotNetNuke.Modules.Forum
 					Dim userProfileLink As System.Web.UI.WebControls.HyperLink = CType(imgColumnControl, System.Web.UI.WebControls.HyperLink)
 					Dim user As Users.UserInfo = CType(item.DataItem, Users.UserInfo)
 					Dim objForumUser As ForumUser
-					objForumUser = ForumUserController.GetForumUser(user.UserID, False, ModuleId, PortalId)
+					Dim cntForumUser As New ForumUserController
+
+					objForumUser = cntForumUser.GetForumUser(user.UserID, False, ModuleId, PortalId)
 
 					userProfileLink.NavigateUrl = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, objForumUser.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, objForumUser.Username)
 					userProfileLink.Target = "_self"
@@ -241,7 +246,9 @@ Namespace DotNetNuke.Modules.Forum
 					Dim lblCreatedDate As System.Web.UI.WebControls.Label = CType(imgColumnControl, System.Web.UI.WebControls.Label)
 					Dim user As Users.UserInfo = CType(item.DataItem, Users.UserInfo)
 					Dim objForumUser As ForumUser
-					objForumUser = ForumUserController.GetForumUser(user.UserID, False, ModuleId, PortalId)
+					Dim cntForumUser As New ForumUserController
+
+					objForumUser = cntForumUser.GetForumUser(user.UserID, False, ModuleId, PortalId)
 
 					lblCreatedDate.Text = Utilities.ForumUtils.ConvertTimeZone(objForumUser.Membership.CreatedDate, objConfig).ToShortDateString
 				End If
@@ -251,7 +258,9 @@ Namespace DotNetNuke.Modules.Forum
 					Dim lblPostCount As System.Web.UI.WebControls.Label = CType(imgColumnControl, System.Web.UI.WebControls.Label)
 					Dim user As Users.UserInfo = CType(item.DataItem, Users.UserInfo)
 					Dim objForumUser As ForumUser
-					objForumUser = ForumUserController.GetForumUser(user.UserID, False, ModuleId, PortalId)
+					Dim cntForumUser As New ForumUserController
+
+					objForumUser = cntForumUser.GetForumUser(user.UserID, False, ModuleId, PortalId)
 
 					lblPostCount.Text = objForumUser.PostCount.ToString
 				End If
@@ -261,11 +270,15 @@ Namespace DotNetNuke.Modules.Forum
 					Dim hlMessageUser As System.Web.UI.WebControls.HyperLink = CType(imgColumnControl, System.Web.UI.WebControls.HyperLink)
 					Dim user As Users.UserInfo = CType(item.DataItem, Users.UserInfo)
 					Dim objForumUser As ForumUser
-					objForumUser = ForumUserController.GetForumUser(user.UserID, False, ModuleId, PortalId)
+					Dim cntForumUser As New ForumUserController
+
+					objForumUser = cntForumUser.GetForumUser(user.UserID, False, ModuleId, PortalId)
 
 					If Request.IsAuthenticated Then
 						Dim LoggedOnUser As ForumUser
-						LoggedOnUser = ForumUserController.GetForumUser(UserId, False, ModuleId, PortalId)
+						Dim ctlForumUser As New ForumUserController
+
+						LoggedOnUser = ctlForumUser.GetForumUser(UserId, False, ModuleId, PortalId)
 
 						If objConfig.EnablePMSystem And objForumUser.EnablePM And LoggedOnUser.EnablePM Then
 							hlMessageUser.Visible = True

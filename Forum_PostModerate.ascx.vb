@@ -127,7 +127,7 @@ Namespace DotNetNuke.Modules.Forum
 						Dim _post As PostInfo = PostInfo.GetPostInfo(postID, PortalId)
 						Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(TabId, _post.ForumID, _post.PostID)
 
-						ApprovePost(postID, LoggedOnUser.UserID, _notes, _mailURL, ProfileUrl, _post.ForumID)
+						ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, _post.ForumID)
 						ForumUserController.ResetForumUser(_post.Author.UserID, PortalId)
 
 						' Rebind latest non-approved posts to datalist
@@ -135,7 +135,7 @@ Namespace DotNetNuke.Modules.Forum
 					Case "move"
 						Dim _post As PostInfo = PostInfo.GetPostInfo(postID, PortalId)
 						' We have to approve the post before moving the thread, this decreases post count and also avoids this being stuck in moderation if the user cancels out (no email sent 4 this)
-						ApproveMovePost(_post.PostID, LoggedOnUser.UserID, "move", _post.ForumID)
+						ApproveMovePost(_post.PostID, CurrentForumUser.UserID, "move", _post.ForumID)
 
 						'"moderatorreturn=1"
 						Dim url As String = Utilities.Links.ThreadMoveLink(TabId, ModuleId, _post.ForumID, _post.ThreadID)
@@ -161,7 +161,7 @@ Namespace DotNetNuke.Modules.Forum
 						Dim _notes As String = "Approved with edit"
 						Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(TabId, _post.ForumID, _post.PostID)
 
-						ApprovePost(postID, LoggedOnUser.UserID, _notes, _mailURL, ProfileUrl, _post.ForumID)
+						ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, _post.ForumID)
 						ForumUserController.ResetForumUser(_post.Author.UserID, PortalId)
 
 						'"moderatorreturn=1"
@@ -174,7 +174,7 @@ Namespace DotNetNuke.Modules.Forum
 						Dim _post As PostInfo = PostInfo.GetPostInfo(postID, PortalId)
 						Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(TabId, _post.ForumID, _post.PostID)
 
-						ApprovePost(postID, LoggedOnUser.UserID, _notes, _mailURL, ProfileUrl, _post.ForumID)
+						ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, _post.ForumID)
 						ForumUserController.ResetForumUser(_post.Author.UserID, PortalId)
 
 						' "moderatorreturn=1"
@@ -326,7 +326,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Protected Function UserProfileLink(ByVal UserId As Integer) As String
 			Dim url As String
-			Dim objUser As ForumUser = ForumUserController.GetForumUser(UserId, False, ModuleId, PortalId)
+			Dim cntForumUser As New ForumUserController
+
+			Dim objUser As ForumUser = cntForumUser.GetForumUser(UserId, False, ModuleId, PortalId)
 			url = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, UserId, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, objUser.Username)
 
 			Return url
@@ -407,7 +409,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Protected Function FormatUserAlias(ByVal UserID As Integer) As String
 			Dim objUser As ForumUser
-			objUser = ForumUserController.GetForumUser(UserID, False, ModuleId, PortalId)
+			Dim cntForumUser As New ForumUserController
+
+			objUser = cntForumUser.GetForumUser(UserID, False, ModuleId, PortalId)
 
 			Return objUser.SiteAlias
 		End Function
@@ -420,7 +424,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Protected Function FormatUserPostCount(ByVal UserID As Integer) As String
 			Dim objUser As ForumUser
-			objUser = ForumUserController.GetForumUser(UserID, False, ModuleId, PortalId)
+			Dim cntForumUser As New ForumUserController
+
+			objUser = cntForumUser.GetForumUser(UserID, False, ModuleId, PortalId)
 
 			Return objUser.PostCount.ToString & " " & Localization.GetString("Posts", LocalResourceFile)
 		End Function
@@ -435,7 +441,9 @@ Namespace DotNetNuke.Modules.Forum
 		Protected Function FormatJoinedDate(ByVal UserID As Integer) As String
 			Dim strCreatedDate As String = String.Empty
 			Dim objUser As ForumUser
-			objUser = ForumUserController.GetForumUser(UserID, False, ModuleId, PortalId)
+			Dim cntForumUser As New ForumUserController
+
+			objUser = cntForumUser.GetForumUser(UserID, False, ModuleId, PortalId)
 
 			Dim displayCreatedDate As DateTime
 			displayCreatedDate = Utilities.ForumUtils.ConvertTimeZone(objUser.Membership.CreatedDate, objConfig)

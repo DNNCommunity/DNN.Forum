@@ -53,83 +53,28 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>(UpdateLastVisit)This is only true if called from Forum_Container, BaseObject could possibly be used
 		''' later on but i didn't know the impact of this without investigation
 		''' </remarks>
-		Public Shared Function GetForumUser(ByVal UserID As Integer, ByVal UpdateLastVisit As Boolean, ByVal ModuleID As Integer, ByVal PortalID As Integer) As ForumUser
-			Dim keyID As String = FORUM_USER_CACHE_KEY_PREFIX & UserID.ToString & "-" & PortalID.ToString
-			Dim fUser As ForumUser = CType(DataCache.GetCache(keyID), ForumUser)
-
-			If fUser Is Nothing Then
-				'thread caching settings
+		Public Function GetForumUser(ByVal UserID As Integer, ByVal UpdateLastVisit As Boolean, ByVal ModuleID As Integer, ByVal PortalID As Integer) As ForumUser
+			If UserID > 0 Then
+				Dim cacheKey As String = FORUM_USER_CACHE_KEY_PREFIX & UserID.ToString & "-" & PortalID.ToString
 				Dim timeOut As Int32 = ForumUserInfoCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
+				Dim objForumUser As New ForumUser(ModuleID)
 
-				' if current user is authenticated
-				If UserID > 0 Then
-					' get the forum user based on the UserID
-					Dim ctlForumUser As New ForumUserController
-					fUser = ctlForumUser.UserGet(PortalID, UserID, ModuleID)
+				objForumUser = CType(DataCache.GetCache(cacheKey), ForumUser)
 
-					' we could not find this forum user 
-					If fUser.UserID < 1 Then
-						' get the DNN user
-						Dim ctlDNNUser As New Users.UserController
-						Dim dnnUser As New Users.UserInfo
-						dnnUser = ctlDNNUser.GetUser(PortalID, UserID)
-
-						If Not dnnUser Is Nothing Then
-							' the user is a DNN user but has never visited the forums for this portal
-							' so lets create a forum user 
-							fUser = New ForumUser(ModuleID)
-							With fUser
-								.PortalID = PortalID
-								.UserID = dnnUser.UserID
-								Dim myConfig As Forum.Config
-								myConfig = Config.GetForumConfig(ModuleID)
-
-								.ThreadsPerPage = myConfig.ThreadsPerPage
-								.PostsPerPage = myConfig.PostsPerPage
-								.EnableDisplayInMemberList = myConfig.EnableMemberList
-								.EnableOnlineStatus = myConfig.EnableUsersOnline
-								.EnablePM = myConfig.EnablePMSystem
-								.EnablePMNotifications = myConfig.MailNotification
-								.IsTrusted = myConfig.TrustNewUsers
-								.EnableModNotification = myConfig.MailNotification
-								.EnableSelfNotifications = False
-							End With
-							ctlForumUser.UserAdd(fUser)
-							fUser = ctlForumUser.UserGet(PortalID, UserID, ModuleID)
-							'End If
-						Else
-							' the user was deleted from the DNN membership
-							' so lets return an anonymous user
-							fUser = New ForumUser(ModuleID)
-							With fUser
-								.UserID = -1
-								.Username = "anonymous"
-								.DisplayName = "anonymous"
-								.EnablePM = False
-								.EnableSelfNotifications = False
-								.EnableModNotification = False
-							End With
-						End If
-					End If
-
+				If objForumUser Is Nothing Then
+					Return UserCheck(UserID, PortalID, ModuleID)
 				Else
-					' return an anonymous user
-					fUser = New ForumUser(ModuleID)
-					With fUser
-						.UserID = -1
-						.Username = "anonymous"
-						.DisplayName = "anonymous"
-						.EnablePM = False
-						.EnableSelfNotifications = False
-						.EnableModNotification = False
-					End With
+					' Forum User Object is something, make sure fUser.UserID > 0
+					If objForumUser.UserID > 0 Then
+						Return objForumUser
+					Else
+						Return UserCheck(UserID, PortalID, ModuleID)
+					End If
 				End If
-				If timeOut > 0 And fUser IsNot Nothing Then
-					DataCache.SetCache(keyID, fUser, TimeSpan.FromMinutes(timeOut))
-				End If
+			Else
+				' We know the user is simply not logged in.
+				Return SetAnonymousUser(ModuleID)
 			End If
-
-			Return fUser
 		End Function
 
 		''' <summary>
@@ -418,7 +363,6 @@ Namespace DotNetNuke.Modules.Forum
 			Dim cacheKey As String = FORUM_USER_CACHE_KEY_PREFIX & UserId.ToString & "-" & PortalID.ToString
 			Return CBO.GetCachedObject(Of ForumUser)(New CacheItemArgs(cacheKey, 5, DataCache.PortalDesktopModuleCachePriority, PortalID, UserId, ModuleID), AddressOf UserGetCallBack)
 		End Function
-
 
 		''' <summary>
 		''' Gets a single users profile (for the forum, which is distinct per portal)
@@ -845,6 +789,114 @@ Namespace DotNetNuke.Modules.Forum
 		End Function
 
 #End Region
+
+#End Region
+
+#Region "Private Methods"
+
+		''' <summary>
+		''' This returns standard forum user information for anonymous or deleted users. 
+		''' </summary>
+		''' <param name="ModuleID"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Function SetAnonymousUser(ByVal ModuleID As Integer) As ForumUser
+			Dim fUser As New ForumUser(ModuleID)
+
+			With fUser
+				.UserID = -1
+				.Username = "anonymous"
+				.DisplayName = "anonymous"
+				.EnablePM = False
+				.IsTrusted = False
+				.EnableSelfNotifications = False
+				.EnableModNotification = False
+			End With
+
+			Return fUser
+		End Function
+
+		''' <summary>
+		''' Used to retrieve a core user (ie. membership by the UserID).
+		''' </summary>
+		''' <param name="UserID"></param>
+		''' <param name="PortalID"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Function GetCoreUser(ByVal UserID As Integer, ByVal PortalID As Integer) As Entities.Users.UserInfo
+			Dim cntUser As New Users.UserController
+			Return cntUser.GetUser(PortalID, UserID)
+		End Function
+
+		''' <summary>
+		''' This will create a new user for the forum. 
+		''' </summary>
+		''' <param name="UserID"></param>
+		''' <param name="PortalID"></param>
+		''' <param name="ModuleID"></param>
+		''' <remarks></remarks>
+		Private Sub SetForumUser(ByVal UserID As Integer, ByVal PortalID As Integer, ByVal ModuleID As Integer)
+			Dim cntForumUser As New ForumUserController
+			Dim fUser As New ForumUser(ModuleID)
+
+			With fUser
+				.PortalID = PortalID
+				.UserID = UserID
+				Dim myConfig As Forum.Config
+				myConfig = Config.GetForumConfig(ModuleID)
+
+				.ThreadsPerPage = myConfig.ThreadsPerPage
+				.PostsPerPage = myConfig.PostsPerPage
+				.EnableDisplayInMemberList = myConfig.EnableMemberList
+				.EnableOnlineStatus = myConfig.EnableUsersOnline
+				.EnablePM = myConfig.EnablePMSystem
+				.EnablePMNotifications = myConfig.MailNotification
+				.IsTrusted = myConfig.TrustNewUsers
+				.EnableModNotification = myConfig.MailNotification
+				.EnableSelfNotifications = False
+			End With
+
+			cntForumUser.UserAdd(fUser)
+
+			ResetForumUser(UserID, PortalID)
+		End Sub
+
+		''' <summary>
+		''' This checks to see if a user exists for the portal's forum. If a valid user exists here, the cache is set. If not, user is created so long as they exist as a core user. 
+		''' </summary>
+		''' <param name="UserID"></param>
+		''' <param name="PortalID"></param>
+		''' <param name="ModuleID"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Function UserCheck(ByVal UserID As Integer, ByVal PortalID As Integer, ByVal ModuleID As Integer) As ForumUser
+			Dim cacheKey As String = FORUM_USER_CACHE_KEY_PREFIX & UserID.ToString & "-" & PortalID.ToString
+			Dim timeOut As Int32 = ForumUserInfoCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
+
+			Dim cntForumUser As New ForumUserController
+			Dim fUser As New ForumUser(ModuleID)
+			fUser = cntForumUser.UserGet(PortalID, UserID, ModuleID)
+
+			' we could not find this forum user 
+			If fUser IsNot Nothing Then
+				Dim dnnUser As New Users.UserInfo
+				dnnUser = GetCoreUser(UserID, PortalID)
+
+				If Not dnnUser Is Nothing Then
+					' the user is a DNN user but has never visited the forums for this portal
+					SetForumUser(UserID, PortalID, ModuleID)
+
+					fUser = New ForumUser(ModuleID)
+					fUser = cntForumUser.UserGet(PortalID, UserID, ModuleID)
+				End If
+			End If
+
+			If timeOut > 0 And fUser IsNot Nothing Then
+				DataCache.SetCache(cacheKey, fUser, TimeSpan.FromMinutes(timeOut))
+			End If
+
+			Return fUser
+		End Function
 
 #End Region
 

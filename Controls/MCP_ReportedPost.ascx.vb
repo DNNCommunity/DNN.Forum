@@ -43,8 +43,8 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
 			Localization.LocalizeDataGrid(dgReportedPost, Me.LocalResourceFile)
 			Localization.LocalizeDataGrid(dgPostReportDetails, Me.LocalResourceFile)
-			BottomPager.PageSize = Convert.ToInt32(LoggedOnUser.ThreadsPerPage)
-			DetailPager.PageSize = Convert.ToInt32(LoggedOnUser.ThreadsPerPage)
+			BottomPager.PageSize = Convert.ToInt32(CurrentForumUser.ThreadsPerPage)
+			DetailPager.PageSize = Convert.ToInt32(CurrentForumUser.ThreadsPerPage)
 			BindData(BottomPager.PageSize, 1)
 		End Sub
 

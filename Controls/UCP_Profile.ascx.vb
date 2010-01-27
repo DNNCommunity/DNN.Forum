@@ -46,7 +46,9 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' <remarks></remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
 			Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
-			Dim ProfileUser As ForumUser = ForumUserController.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
+			Dim cntForumUser As New ForumUserController
+
+			Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
 			'[skeel] get visibility settings
 			Dim ProfileProp As ProfilePropertyDefinition
@@ -135,7 +137,8 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' </history>
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
-				Dim ProfileUser As ForumUser = ForumUserController.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
+				Dim cntForumUser As New ForumUserController
+				Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
 				With ProfileUser
 					Dim PreviouslyBanned As Boolean
@@ -162,8 +165,8 @@ Namespace DotNetNuke.Modules.Forum.UCP
 						.StartBanDate = Null.NullDate
 					End If
 
-					Dim cntForumUser As New ForumUserController
-					cntForumUser.Update(ProfileUser)
+					Dim ctlForumUser As New ForumUserController
+					ctlForumUser.Update(ProfileUser)
 
 					ForumUserController.ResetForumUser(.UserID, PortalId)
 					' We need an audit trail for banning users, check to see if the user was banned before this visit

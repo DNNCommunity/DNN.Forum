@@ -48,7 +48,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' <remarks></remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
 			Localization.LocalizeDataGrid(dgBookmarks, Me.LocalResourceFile)
-			BottomPager.PageSize = Convert.ToInt32(LoggedOnUser.ThreadsPerPage)
+			BottomPager.PageSize = Convert.ToInt32(CurrentForumUser.ThreadsPerPage)
 
 			BindData(BottomPager.PageSize, 1)
 			cmdRemove.Attributes.Add("onClick", "javascript:return confirm('" & Localization.GetString("RemoveItem", Me.LocalResourceFile) & "');")
@@ -139,7 +139,9 @@ Namespace DotNetNuke.Modules.Forum.UCP
 			lbl.Text = CStr(objThread.TotalPosts)
 
 			lbl = CType(e.Item.FindControl("lblLastPostInfo"), Label)
-			Dim objUser As ForumUser = ForumUserController.GetForumUser(dataItem.LastApprovedPosterID, False, ModuleId, PortalId)
+
+			Dim cntForumUser As New ForumUserController
+			Dim objUser As ForumUser = cntForumUser.GetForumUser(dataItem.LastApprovedPosterID, False, ModuleId, PortalId)
 			lbl.Text = LastPostDetails(dataItem.ForumID, dataItem.LastApprovedPostCreatedDate, dataItem.LastApprovedPosterID, dataItem.LastApprovedPostID, objUser.Username)
 		End Sub
 
@@ -171,8 +173,9 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		Protected Function LastPostDetails(ByVal ForumID As Integer, ByVal LastPostDate As DateTime, ByVal LastPostUserID As Integer, ByVal LastApprovedPostID As Integer, ByVal LastApprovedUsername As String) As String
 			Dim objUser As ForumUser
 			Dim str As String
+			Dim cntForumUser As New ForumUserController
 
-			objUser = ForumUserController.GetForumUser(LastPostUserID, False, ModuleId, PortalId)
+			objUser = cntForumUser.GetForumUser(LastPostUserID, False, ModuleId, PortalId)
 
 			str = "<span class=""Forum_LastPostText""><a href=""" & Utilities.Links.ContainerViewPostLink(TabId, ForumID, LastApprovedPostID) & """ class=""Forum_LastPostText"">" & Utilities.ForumUtils.GetCreatedDateInfo(LastPostDate, objConfig, "Forum_LastPostText") & "</a><br />"
 			str += Localization.GetString("by", LocalResourceFile) & " "

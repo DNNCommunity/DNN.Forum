@@ -74,10 +74,7 @@ Namespace DotNetNuke.Modules.Forum
 					ForumBaseObject = New ThreadSearch(Me)
 				Case ForumScope.Unread
 					ForumBaseObject = New Unread(Me)
-					'Case ForumScope.PortalSearch
-					'    ForumBaseObject = New PortalSearch(Me)
 			End Select
-
 		End Sub
 
 		''' <summary>

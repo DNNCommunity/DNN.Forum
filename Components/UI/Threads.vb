@@ -185,11 +185,11 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 			url = Utilities.Links.ContainerThreadDateFilterLink(TabID, dFilter, ForumId, NoReply)
 
-			If ForumControl.LoggedOnUser.UserID > 0 Then
+			If CurrentForumUser.UserID > 0 Then
 				'update the user profile
 				Dim fUserCnt As New ForumUserController
-				fUserCnt.UserUpdateTrackingDuration(CType(dFilter, Integer), ForumControl.LoggedOnUser.UserID, ForumControl.PortalID)
-				Forum.ForumUserController.ResetForumUser(ForumControl.LoggedOnUser.UserID, PortalID)
+				fUserCnt.UserUpdateTrackingDuration(CType(dFilter, Integer), CurrentForumUser.UserID, ForumControl.PortalID)
+				Forum.ForumUserController.ResetForumUser(CurrentForumUser.UserID, PortalID)
 			End If
 
 			HttpContext.Current.Response.Redirect(url, False)
@@ -204,7 +204,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Protected Sub cmdRead_Clicked(ByVal sender As Object, ByVal e As System.EventArgs)
 			Dim userThreadController As New UserThreadsController
-			userThreadController.MarkAll(ForumControl.LoggedOnUser.UserID, ForumId, True)
+			userThreadController.MarkAll(CurrentForumUser.UserID, ForumId, True)
 		End Sub
 
 		''' <summary>
@@ -216,7 +216,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Protected Sub chkEmail_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs)
 			Dim ctlTracking As New TrackingController
-			ctlTracking.TrackingForumCreateDelete(ForumId, ForumControl.LoggedOnUser.UserID, CType(sender, CheckBox).Checked, ModuleID)
+			ctlTracking.TrackingForumCreateDelete(ForumId, CurrentForumUser.UserID, CType(sender, CheckBox).Checked, ModuleID)
 		End Sub
 
 		''' <summary>
@@ -250,7 +250,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public Sub New(ByVal forum As DNNForum)
 			MyBase.New(forum)
 
-			Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, ForumControl.LoggedOnUser.UserID)
+			Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
 
 			' User might access this page by typing url so better check permissions of parent forum
 			If ForumControl.GenericObjectID = -1 Then
@@ -287,8 +287,8 @@ Namespace DotNetNuke.Modules.Forum
 				Dim TotalThreads As Integer = ParentForum.TotalThreads
 				Dim userThreadsPerPage As Integer
 
-				If ForumControl.LoggedOnUser.UserID > 0 Then
-					userThreadsPerPage = ForumControl.LoggedOnUser.ThreadsPerPage
+				If CurrentForumUser.UserID > 0 Then
+					userThreadsPerPage = CurrentForumUser.ThreadsPerPage
 				Else
 					userThreadsPerPage = objConfig.ThreadsPerPage
 				End If
@@ -309,15 +309,15 @@ Namespace DotNetNuke.Modules.Forum
 
 			Dim Term As New SearchTerms
 
-			If ForumControl.LoggedOnUser.UserID > -1 Then
-				Dim dateFilter As Integer = ForumControl.LoggedOnUser.TrackingDuration
+			If CurrentForumUser.UserID > -1 Then
+				Dim dateFilter As Integer = CurrentForumUser.TrackingDuration
 
 				If dateFilter > 999 Then
 					' we are not going to add a searchTerm, this means get all threads from all days
 				ElseIf dateFilter = -1 Then ' Last Activity
 					Dim DateDiff As TimeSpan
 					Dim DateString As String
-					DateDiff = Date.Now.Subtract(ForumControl.LoggedOnUser.LastActivity)
+					DateDiff = Date.Now.Subtract(CurrentForumUser.LastActivity)
 					DateString = " DATEADD(hh, " & -DateDiff.Hours & ", GETDATE()) "
 					Term.AddSearchTerm("FP.CreatedDate", CompareOperator.GreaterThan, DateString)
 				ElseIf (dateFilter = 0) Then ' Today
@@ -378,7 +378,7 @@ Namespace DotNetNuke.Modules.Forum
 			Controls.Clear()
 
 			' display tracking option only if user authenticated
-			If ForumControl.LoggedOnUser.UserID > 0 Then
+			If CurrentForumUser.UserID > 0 Then
 				cmdRead = New LinkButton
 				With cmdRead
 					.CssClass = "Forum_Link"
@@ -467,21 +467,21 @@ Namespace DotNetNuke.Modules.Forum
 				Dim userForumController As New UserForumsController
 				Dim userForum As New UserForumsInfo
 
-				userForum = userForumController.GetCachedUserForumRead(ForumControl.LoggedOnUser.UserID, ForumId)
+				userForum = userForumController.GetCachedUserForumRead(CurrentForumUser.UserID, ForumId)
 
 				If Not userForum Is Nothing Then
 					userForum.LastVisitDate = Now
 					userForumController.Update(userForum)
-					UserForumsController.ResetUserForumReadCache(ForumControl.LoggedOnUser.UserID, ForumId)
+					UserForumsController.ResetUserForumReadCache(CurrentForumUser.UserID, ForumId)
 				Else
 					userForum = New UserForumsInfo
 					With userForum
-						.UserID = ForumControl.LoggedOnUser.UserID
+						.UserID = CurrentForumUser.UserID
 						.ForumID = ForumId
 						.LastVisitDate = Now
 					End With
 					userForumController.Add(userForum)
-					UserForumsController.ResetUserForumReadCache(ForumControl.LoggedOnUser.UserID, ForumId)
+					UserForumsController.ResetUserForumReadCache(CurrentForumUser.UserID, ForumId)
 				End If
 				ForumController.ResetForumInfoCache(ForumId)
 			End If
@@ -514,7 +514,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Private Sub AddControlHandlers()
 			Try
-				If ForumControl.LoggedOnUser.UserID > 0 Then
+				If CurrentForumUser.UserID > 0 Then
 					AddHandler cmdRead.Click, AddressOf cmdRead_Clicked
 					AddHandler chkEmail.CheckedChanged, AddressOf chkEmail_CheckedChanged
 				End If
@@ -535,7 +535,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Private Sub AddControlsToTree()
 			Try
-				If ForumControl.LoggedOnUser.UserID > 0 Then
+				If CurrentForumUser.UserID > 0 Then
 					Controls.Add(cmdRead)
 					Controls.Add(chkEmail)
 					Controls.Add(cmdForumSubscribers)
@@ -558,7 +558,7 @@ Namespace DotNetNuke.Modules.Forum
 				ddlDateFilter.Items.Clear()
 
 				For Each entry As DotNetNuke.Common.Lists.ListEntryInfo In DotNetNuke.Modules.Forum.Utilities.ForumUtils.GetTrackingDurationList
-					If ForumControl.LoggedOnUser.UserID > 0 Then
+					If CurrentForumUser.UserID > 0 Then
 						Dim dateEntry As New Telerik.Web.UI.RadComboBoxItem(Localization.GetString(entry.Text, ForumControl.objConfig.SharedResourceFile), entry.Value)
 						ddlDateFilter.Items.Add(dateEntry)
 					Else
@@ -575,18 +575,18 @@ Namespace DotNetNuke.Modules.Forum
 					dateFilter = Int16.Parse(HttpContext.Current.Request.QueryString("datefilter"))
 				Else
 					' Tracking Duration
-					If ForumControl.LoggedOnUser.UserID > 0 Then
-						dateFilter = ForumControl.LoggedOnUser.TrackingDuration
+					If CurrentForumUser.UserID > 0 Then
+						dateFilter = CurrentForumUser.TrackingDuration
 					End If
 				End If
 
 				ddlDateFilter.SelectedValue = dateFilter.ToString()
 
-				If ForumControl.LoggedOnUser.UserID > 0 And objConfig.MailNotification Then
+				If CurrentForumUser.UserID > 0 And objConfig.MailNotification Then
 					' We check if user is subscribed in this forum
 					Dim blnTrackedForum As Boolean = False
 
-					For Each objTrackedForum As TrackingInfo In ForumControl.LoggedOnUser.TrackedForums
+					For Each objTrackedForum As TrackingInfo In CurrentForumUser.TrackedForums
 						If objTrackedForum.ForumID = ForumId Then
 							blnTrackedForum = True
 							Exit For
@@ -599,7 +599,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				' Now we get threads to display for this user
 				Dim ctlThread As New ThreadController
-				_ThreadCollection = ctlThread.ThreadGetAll(ModuleID, ForumId, ForumControl.LoggedOnUser.ThreadsPerPage, ThreadPage, Filter, PortalID)
+				_ThreadCollection = ctlThread.ThreadGetAll(ModuleID, ForumId, CurrentForumUser.ThreadsPerPage, ThreadPage, Filter, PortalID)
 
 			Catch exc As Exception
 				LogException(exc)
@@ -711,8 +711,8 @@ Namespace DotNetNuke.Modules.Forum
 			RenderRowBegin(wr) '<tr>
 			RenderCellBegin(wr, "", "", "100%", "left", "", "2", "") ' <td>
 			'Remove LoggedOnUserID limitation if wishing to implement Anonymous Posting
-			If (ForumControl.LoggedOnUser.UserID > 0) And (Not ForumId = -1) Then
-				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, ForumControl.LoggedOnUser.UserID)
+			If (CurrentForumUser.UserID > 0) And (Not ForumId = -1) Then
+				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
 
 				If Not ParentForum.PublicPosting Then
 					If objSecurity.IsAllowedToStartRestrictedThread Then
@@ -721,7 +721,7 @@ Namespace DotNetNuke.Modules.Forum
 						url = Utilities.Links.NewThreadLink(TabID, ForumId, ModuleID)
 						RenderCellBegin(wr, "Forum_NavBarButton", "", "", "", "middle", "", "") ' <td> 
 
-						If ForumControl.LoggedOnUser.IsBanned Then
+						If CurrentForumUser.IsBanned Then
 							RenderLinkButton(wr, url, ForumControl.LocalizedText("NewThread"), "Forum_Link", False)
 						Else
 							RenderLinkButton(wr, url, ForumControl.LocalizedText("NewThread"), "Forum_Link")
@@ -750,7 +750,7 @@ Namespace DotNetNuke.Modules.Forum
 					url = Utilities.Links.NewThreadLink(TabID, ForumId, ModuleID)
 					RenderCellBegin(wr, "Forum_NavBarButton", "", "", "", "middle", "", "") ' <td> 
 
-					If ForumControl.LoggedOnUser.IsBanned Then
+					If CurrentForumUser.IsBanned Then
 						RenderLinkButton(wr, url, ForumControl.LocalizedText("NewThread"), "Forum_Link", False)
 					Else
 						RenderLinkButton(wr, url, ForumControl.LocalizedText("NewThread"), "Forum_Link")
@@ -911,7 +911,7 @@ Namespace DotNetNuke.Modules.Forum
 								If (thread.IsClosed) Then
 									' thread IS popular, pinned, locked
 									' See if this is an unread post
-									If (HasNewPosts(ForumControl.LoggedOnUser.UserID, thread)) Then
+									If (HasNewPosts(CurrentForumUser.UserID, thread)) Then
 										' IS read
 										RenderImage(wr, objConfig.GetThemeImageURL("s_postlockedpinnedunreadplu.") & objConfig.ImageExtension, ForumControl.LocalizedText("imgHotNewLockedPinnedThread"), "")
 									Else
@@ -921,7 +921,7 @@ Namespace DotNetNuke.Modules.Forum
 								Else
 									' thread IS popular, Pinned but NOT locked
 									' See if this is an unread post
-									If (HasNewPosts(ForumControl.LoggedOnUser.UserID, thread)) Then
+									If (HasNewPosts(CurrentForumUser.UserID, thread)) Then
 										' IS read
 										RenderImage(wr, objConfig.GetThemeImageURL("s_postpinnedunreadplus.") & objConfig.ImageExtension, ForumControl.LocalizedText("imgNewHotPinnedThread"), "")
 									Else
@@ -934,7 +934,7 @@ Namespace DotNetNuke.Modules.Forum
 								' see if thread is locked
 								If (thread.IsClosed) Then
 									' thread IS pinned, Locked but NOT popular
-									If (HasNewPosts(ForumControl.LoggedOnUser.UserID, thread)) Then
+									If (HasNewPosts(CurrentForumUser.UserID, thread)) Then
 										' IS read
 										RenderImage(wr, objConfig.GetThemeImageURL("s_postpinnedlockedunread.") & objConfig.ImageExtension, ForumControl.LocalizedText("imgNewPinnedLockedThread"), "")
 									Else
@@ -943,7 +943,7 @@ Namespace DotNetNuke.Modules.Forum
 									End If
 								Else
 									'thread IS pinned but NOT popular, Locked
-									If (HasNewPosts(ForumControl.LoggedOnUser.UserID, thread)) Then
+									If (HasNewPosts(CurrentForumUser.UserID, thread)) Then
 										' IS read
 										RenderImage(wr, objConfig.GetThemeImageURL("s_postpinnedunread.") & objConfig.ImageExtension, ForumControl.LocalizedText("imgNewPinnedThread"), "")
 									Else
@@ -971,7 +971,7 @@ Namespace DotNetNuke.Modules.Forum
 						wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 
 						Dim SubjectCssClass As String
-						If (HasNewPosts(ForumControl.LoggedOnUser.UserID, thread)) Then
+						If (HasNewPosts(CurrentForumUser.UserID, thread)) Then
 							SubjectCssClass = "Forum_NormalBold"
 						Else
 							SubjectCssClass = "Forum_Normal"
@@ -1000,8 +1000,8 @@ Namespace DotNetNuke.Modules.Forum
 						' CapPageCount is number of pages to show as option for user in threads view.
 						Dim CapPageCount As Integer = objConfig.PostPagesCount
 
-						If ForumControl.LoggedOnUser.UserID > 0 Then
-							userPostsPerPage = ForumControl.LoggedOnUser.PostsPerPage
+						If CurrentForumUser.UserID > 0 Then
+							userPostsPerPage = CurrentForumUser.PostsPerPage
 						Else
 							userPostsPerPage = objConfig.PostsPerPage
 						End If
@@ -1125,14 +1125,14 @@ Namespace DotNetNuke.Modules.Forum
 						RenderCellBegin(wr, "", "", "", "right", "", "", "") ' <td>
 
 						' Skeel - This is for showing link to first unread post for logged in users. 
-						If ForumControl.LoggedOnUser.UserID > 0 Then
-							If HasNewPosts(ForumControl.LoggedOnUser.UserID, thread) Then
+						If CurrentForumUser.UserID > 0 Then
+							If HasNewPosts(CurrentForumUser.UserID, thread) Then
 								Dim params As String()
 
 								params = New String(2) {"forumid=" & ForumId, "postid=" & thread.LastApprovedPost.PostID, "scope=posts"}
 								url = NavigateURL(TabID, "", params)
 
-								If ForumControl.LoggedOnUser.PostsPerPage < thread.TotalPosts Then
+								If CurrentForumUser.PostsPerPage < thread.TotalPosts Then
 									'Find the page on which the first unread post is located
 									wr.AddAttribute(HtmlTextWriterAttribute.Href, FirstUnreadLink(thread))
 								Else
@@ -1154,7 +1154,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						RenderDivBegin(wr, "", "Forum_LastPostText")	' <div>
 						wr.Write(ForumControl.LocalizedText("by") & " ")
-						url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.LastApprovedUser.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, ForumControl.LoggedOnUser.Username)
+						url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.LastApprovedUser.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, CurrentForumUser.Username)
 						RenderLinkButton(wr, url, thread.LastApprovedUser.SiteAlias, "Forum_LastPostText") ' <a/>
 						RenderDivEnd(wr) ' </div>
 						RenderCellEnd(wr) ' </td>
@@ -1253,8 +1253,8 @@ Namespace DotNetNuke.Modules.Forum
 			RenderRowBegin(wr) '<tr>
 			RenderCellBegin(wr, "", "", "", "left", "", "", "") ' <td>
 			'Remove LoggedOnUserID limitation if wishing to implement Anonymous Posting
-			If (ForumControl.LoggedOnUser.UserID > 0) And (Not ForumId = -1) Then
-				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, ForumControl.LoggedOnUser.UserID)
+			If (CurrentForumUser.UserID > 0) And (Not ForumId = -1) Then
+				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
 
 				If Not ParentForum.PublicPosting Then
 					If objSecurity.IsAllowedToStartRestrictedThread Then
@@ -1271,7 +1271,7 @@ Namespace DotNetNuke.Modules.Forum
 						url = Utilities.Links.NewThreadLink(TabID, ForumId, ModuleID)
 						RenderCellBegin(wr, "Forum_NavBarButton", "", "", "", "middle", "", "") ' <td> 
 
-						If ForumControl.LoggedOnUser.IsBanned Then
+						If CurrentForumUser.IsBanned Then
 							RenderLinkButton(wr, url, ForumControl.LocalizedText("NewThread"), "Forum_Link", False)
 						Else
 							RenderLinkButton(wr, url, ForumControl.LocalizedText("NewThread"), "Forum_Link")
@@ -1299,7 +1299,7 @@ Namespace DotNetNuke.Modules.Forum
 					url = Utilities.Links.NewThreadLink(TabID, ForumId, ModuleID)
 					RenderCellBegin(wr, "Forum_NavBarButton", "", "", "", "middle", "", "") ' <td> 
 
-					If ForumControl.LoggedOnUser.IsBanned Then
+					If CurrentForumUser.IsBanned Then
 						RenderLinkButton(wr, url, ForumControl.LocalizedText("NewThread"), "Forum_Link", False)
 					Else
 						RenderLinkButton(wr, url, ForumControl.LocalizedText("NewThread"), "Forum_Link")
@@ -1341,12 +1341,12 @@ Namespace DotNetNuke.Modules.Forum
 
 			' Display tracking option if user is authenticated and thread count > 0
 			' CP - Removed (Total Records > 0) as why shouldn't a user be able to subscribe to a new forum
-			If (ForumControl.LoggedOnUser.UserID > 0) And (objConfig.MailNotification) And (ForumId <> -1) Then
+			If (CurrentForumUser.UserID > 0) And (objConfig.MailNotification) And (ForumId <> -1) Then
 				' check email
 				RenderRowBegin(wr) ' <tr>
 				RenderCellBegin(wr, "", "", "", "right", "", "", "")
 
-				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, ForumControl.LoggedOnUser.UserID)
+				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
 
 				If objSecurity.IsForumAdmin Then
 					cmdForumSubscribers.RenderControl(wr)
@@ -1421,7 +1421,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim ctlPagingControl As New DotNetNuke.Modules.Forum.WebControls.PagingControl
 			ctlPagingControl.CssClass = "Forum_FooterText"
 			ctlPagingControl.TotalRecords = TotalRecords
-			ctlPagingControl.PageSize = ForumControl.LoggedOnUser.ThreadsPerPage
+			ctlPagingControl.PageSize = CurrentForumUser.ThreadsPerPage
 			ctlPagingControl.CurrentPage = ThreadPage + 1
 
 			Dim Params As String = "forumid=" & ForumId.ToString & "&scope=threads"
@@ -1464,7 +1464,7 @@ Namespace DotNetNuke.Modules.Forum
 				' thread IS locked
 				If (Thread.IsPopular) Then
 					' thread IS locked, popular
-					If HasNewPosts(ForumControl.LoggedOnUser.UserID, Thread) Then
+					If HasNewPosts(CurrentForumUser.UserID, Thread) Then
 						'new
 						Return objConfig.GetThemeImageURL("s_postlockedunreadplus.") & objConfig.ImageExtension
 					Else
@@ -1473,7 +1473,7 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 				Else
 					' thread IS locked NOT popular
-					If HasNewPosts(ForumControl.LoggedOnUser.UserID, Thread) Then
+					If HasNewPosts(CurrentForumUser.UserID, Thread) Then
 						'new
 						Return objConfig.GetThemeImageURL("s_postlockedunread.") & objConfig.ImageExtension
 					Else
@@ -1485,13 +1485,13 @@ Namespace DotNetNuke.Modules.Forum
 			Else
 				' thread NOT locked
 				If (Thread.IsPopular) Then
-					If HasNewPosts(ForumControl.LoggedOnUser.UserID, Thread) Then
+					If HasNewPosts(CurrentForumUser.UserID, Thread) Then
 						Return objConfig.GetThemeImageURL("s_postunreadplus.") & objConfig.ImageExtension
 					Else
 						Return objConfig.GetThemeImageURL("s_postreadplus.") & objConfig.ImageExtension
 					End If
 				Else
-					If HasNewPosts(ForumControl.LoggedOnUser.UserID, Thread) Then
+					If HasNewPosts(CurrentForumUser.UserID, Thread) Then
 						Return objConfig.GetThemeImageURL("s_postunread.") & objConfig.ImageExtension
 					Else
 						Return objConfig.GetThemeImageURL("s_postread.") & objConfig.ImageExtension
@@ -1514,7 +1514,7 @@ Namespace DotNetNuke.Modules.Forum
 				' thread IS locked
 				If (Thread.IsPopular) Then
 					' thread IS locked, popular
-					If HasNewPosts(ForumControl.LoggedOnUser.UserID, Thread) Then
+					If HasNewPosts(CurrentForumUser.UserID, Thread) Then
 						' new
 						Return ForumControl.LocalizedText("imgNewPopLockedThread")
 					Else
@@ -1523,7 +1523,7 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 				Else
 					' thread IS locked NOT popular
-					If HasNewPosts(ForumControl.LoggedOnUser.UserID, Thread) Then
+					If HasNewPosts(CurrentForumUser.UserID, Thread) Then
 						' new
 						Return ForumControl.LocalizedText("imgNewLockedThread")
 					Else
@@ -1535,7 +1535,7 @@ Namespace DotNetNuke.Modules.Forum
 				' thread NOT locked
 				If (Thread.IsPopular) Then
 					' thread NOT locked IS popular
-					If HasNewPosts(ForumControl.LoggedOnUser.UserID, Thread) Then
+					If HasNewPosts(CurrentForumUser.UserID, Thread) Then
 						' new
 						Return ForumControl.LocalizedText("imgNewPopThread")
 					Else
@@ -1544,7 +1544,7 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 				Else
 					' thread NOT locked, popular
-					If HasNewPosts(ForumControl.LoggedOnUser.UserID, Thread) Then
+					If HasNewPosts(CurrentForumUser.UserID, Thread) Then
 						' new
 						Return ForumControl.LocalizedText("imgNewThread")
 					Else
@@ -1572,12 +1572,12 @@ Namespace DotNetNuke.Modules.Forum
 			Dim ReadLink As String
 
 			ReadLink = Utilities.Links.ContainerViewThreadLink(TabID, ForumId, Thread.ThreadID) & "#unread"
-			usrThread = cltUserThread.GetCachedUserThreadRead(ForumControl.LoggedOnUser.UserID, Thread.ThreadID)
+			usrThread = cltUserThread.GetCachedUserThreadRead(CurrentForumUser.UserID, Thread.ThreadID)
 
 			If usrThread Is Nothing Then
 				'All new
-				If ForumControl.LoggedOnUser.ViewDescending = True Then
-					Dim PageCount As Decimal = CDec(Thread.TotalPosts / ForumControl.LoggedOnUser.PostsPerPage)
+				If CurrentForumUser.ViewDescending = True Then
+					Dim PageCount As Decimal = CDec(Thread.TotalPosts / CurrentForumUser.PostsPerPage)
 					PageCount = Math.Ceiling(PageCount)
 					ReadLink = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumId, Thread.ThreadID, CInt(PageCount)) & "#unread"
 				Else
@@ -1585,12 +1585,12 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 			Else
 				'Get the Index
-				Dim PostIndex As Integer = cltUserThread.GetPostIndexFirstUnread(Thread.ThreadID, usrThread.LastVisitDate, ForumControl.LoggedOnUser.ViewDescending)
-				Dim PageCount As Integer = CInt(Math.Ceiling(CDec(Thread.TotalPosts / ForumControl.LoggedOnUser.PostsPerPage)))
+				Dim PostIndex As Integer = cltUserThread.GetPostIndexFirstUnread(Thread.ThreadID, usrThread.LastVisitDate, CurrentForumUser.ViewDescending)
+				Dim PageCount As Integer = CInt(Math.Ceiling(CDec(Thread.TotalPosts / CurrentForumUser.PostsPerPage)))
 				Dim PageNumber As Integer = 1
 
 				Do While PageNumber <= PageCount
-					If (ForumControl.LoggedOnUser.PostsPerPage * PageNumber) >= PostIndex Then
+					If (CurrentForumUser.PostsPerPage * PageNumber) >= PostIndex Then
 						If PageNumber = 1 Then
 							ReadLink = Utilities.Links.ContainerViewThreadLink(TabID, ForumId, Thread.ThreadID) & "#unread"
 						Else

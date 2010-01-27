@@ -148,7 +148,8 @@ Namespace DotNetNuke.Modules.Forum
 					' Before we do anything, see if the user is logged in and has permission to be here
 					objLoggedOnUserID = Users.UserController.GetCurrentUserInfo.UserID
 					If Request.IsAuthenticated And objLoggedOnUserID > 0 Then
-						objForumUser = ForumUserController.GetForumUser(objLoggedOnUserID, False, ModuleId, PortalId)
+						Dim cntForumUser As New ForumUserController
+						objForumUser = cntForumUser.GetForumUser(objLoggedOnUserID, False, ModuleId, PortalId)
 
 						' Before anything else, make sure the user is not banned
 						If objForumUser.IsBanned Then
@@ -422,8 +423,8 @@ Namespace DotNetNuke.Modules.Forum
 					Else
 						objLoggedOnUserID = Users.UserController.GetCurrentUserInfo.UserID
 					End If
-
-					Dim objForumUser As ForumUser = ForumUserController.GetForumUser(objLoggedOnUserID, False, ModuleId, PortalId)
+					Dim cntForumUser As New ForumUserController
+					Dim objForumUser As ForumUser = cntForumUser.GetForumUser(objLoggedOnUserID, False, ModuleId, PortalId)
 					Dim objAction As New PostAction
 
 					' Validation (from UI)

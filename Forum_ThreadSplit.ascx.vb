@@ -486,7 +486,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Protected Function PostCount(ByVal UserID As Integer) As String
 			Dim objUser As ForumUser
-			objUser = ForumUserController.GetForumUser(UserID, False, ModuleId, PortalId)
+			Dim cntForumUser As New ForumUserController
+
+			objUser = cntForumUser.GetForumUser(UserID, False, ModuleId, PortalId)
 
 			Return objUser.PostCount.ToString
 		End Function
@@ -499,7 +501,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Protected Function UserAlias(ByVal UserID As Integer) As String
 			Dim objUser As ForumUser
-			objUser = ForumUserController.GetForumUser(UserID, False, ModuleId, PortalId)
+			Dim cntForumUser As New ForumUserController
+
+			objUser = cntForumUser.GetForumUser(UserID, False, ModuleId, PortalId)
 
 			Return objUser.SiteAlias
 		End Function
@@ -596,7 +600,9 @@ Namespace DotNetNuke.Modules.Forum
 		Protected Function FormatJoinedDate(ByVal UserID As Integer) As String
 			Dim strCreatedDate As String = String.Empty
 			Dim objUser As ForumUser
-			objUser = ForumUserController.GetForumUser(UserID, False, ModuleId, PortalId)
+			Dim cntForumUser As New ForumUserController
+
+			objUser = cntForumUser.GetForumUser(UserID, False, ModuleId, PortalId)
 
 			Dim displayCreatedDate As DateTime = Utilities.ForumUtils.ConvertTimeZone(CType(objUser.UserJoinedDate, DateTime), objConfig)
 			strCreatedDate = displayCreatedDate.ToShortDateString

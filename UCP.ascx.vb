@@ -91,7 +91,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				If Not Security.IsForumAdmin = True Then
 					If Request.IsAuthenticated Then
-						If Not (ProfileUserID = LoggedOnUser.UserID) Then
+						If Not (ProfileUserID = CurrentForumUser.UserID) Then
 							' they don't belong here
 							HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
 						End If
@@ -138,7 +138,7 @@ Namespace DotNetNuke.Modules.Forum
 				UCPmenu.PortalID = PortalId
 				UCPmenu.objConfig = objConfig
 				UCPmenu.ProfileUserID = ProfileUserID
-				UCPmenu.CurrentUserID = LoggedOnUser.UserID
+				UCPmenu.CurrentUserID = CurrentForumUser.UserID
 				UCPmenu.ModuleID = ModuleId
 				UCPmenu.TabID = TabId
 				' Load the appropriate Control

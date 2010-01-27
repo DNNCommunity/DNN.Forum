@@ -192,8 +192,9 @@ Namespace DotNetNuke.Modules.Forum
 					' they don't belong here
 					HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
 				End If
+				Dim cntForumUser As New ForumUserController
 
-				CurrentForumUser = ForumUserController.GetForumUser(LoggedOnUserID, False, ModuleId, PortalId)
+				CurrentForumUser = cntForumUser.GetForumUser(LoggedOnUserID, False, ModuleId, PortalId)
 				BottomPager.PageSize = Convert.ToInt32(CurrentForumUser.PostsPerPage)
 
 				' Make sure there is a pmthreadid, if not redirect the user
@@ -336,9 +337,11 @@ Namespace DotNetNuke.Modules.Forum
 			Dim lbl As Label
 			Dim cmd As LinkButton
 			Dim img As Image
+			Dim cntForumUser As New ForumUserController
+			Dim ctlForumUser As New ForumUserController
 
-			Dim objFromUser As ForumUser = ForumUserController.GetForumUser(dataItem.PMFromUserID, False, ModuleId, PortalId)
-			Dim objToUser As ForumUser = ForumUserController.GetForumUser(dataItem.PMToUserID, False, ModuleId, PortalId)
+			Dim objFromUser As ForumUser = cntForumUser.GetForumUser(dataItem.PMFromUserID, False, ModuleId, PortalId)
+			Dim objToUser As ForumUser = ctlForumUser.GetForumUser(dataItem.PMToUserID, False, ModuleId, PortalId)
 
 			img = CType(e.Item.FindControl("imgHeadSpacerL"), Image)
 			img.ImageUrl = ForumConfig.GetThemeImageURL("header_cap_left.gif")

@@ -1031,7 +1031,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <param name="ActionTitle"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Shared Function GetActionCss(ByVal ActionTitle As String, ByVal ForumControl As Forum.DNNForum) As String
+		Shared Function GetActionCss(ByVal ActionTitle As String, ByVal ForumControl As Forum.DNNForum, ByVal CurrentForumUser As ForumUser) As String
 			Dim CssClass As String = String.Empty
 			Select Case ActionTitle
 				Case ForumControl.LocalizedText("Administration")
@@ -1039,7 +1039,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 				Case ForumControl.LocalizedText("Moderate")
 					CssClass = ("Forum_ib_moderate")
 				Case ForumControl.LocalizedText("Inbox")
-					If ForumControl.LoggedOnUser.UserHasNewMessages Then
+					If CurrentForumUser.UserHasNewMessages Then
 						CssClass = ("Forum_ib_Inbox_New")
 					Else
 						CssClass = ("Forum_ib_Inbox")
@@ -1086,8 +1086,9 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 			End If
 
 			If objConfig.EnablePMSystem And mLoggedOnUserID > 0 Then
+				Dim cntForumUser As New ForumUserController
 				Dim objForumUser As ForumUser
-				objForumUser = ForumUserController.GetForumUser(mLoggedOnUserID, False, ModBase.ModuleId, ModBase.PortalId)
+				objForumUser = cntForumUser.GetForumUser(mLoggedOnUserID, False, ModBase.ModuleId, ModBase.PortalId)
 				If objForumUser.EnablePM Then
 					Actions.Add(ModBase.GetNextActionID, Services.Localization.Localization.GetString("Inbox.Text", ModBase.LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", Utilities.Links.UCP_UserLinks(ModBase.TabId, ModBase.ModuleId, UserAjaxControl.Inbox, objConfig.CurrentPortalSettings), False, SecurityAccessLevel.View, True, False)
 				End If

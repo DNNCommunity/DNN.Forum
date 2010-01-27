@@ -599,7 +599,9 @@ Namespace DotNetNuke.Modules.Forum.UCP
 				wr.RenderEndTag() ' </div>
 
 				' Fourth Menu section, contains PM system
-				Dim ProfileUser As ForumUser = ForumUserController.GetForumUser(ProfileUserID, False, objConfig.ModuleID, PortalID)
+				Dim cntForumUser As New ForumUserController
+				Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, objConfig.ModuleID, PortalID)
+
 				If ProfileUser.EnablePM And objConfig.EnablePMSystem Then
 					GenerateMenuSection(wr, Localization.GetString("PMInformation", Me.LocalResourceFile), IsExpanded(4, ExpandSection), 80)
 
@@ -798,7 +800,9 @@ Namespace DotNetNuke.Modules.Forum.UCP
 
 			Dim PMController As New PMController
 			Dim PMInfo As PMCountInfo
-			Dim ProfileUser As ForumUser = ForumUserController.GetForumUser(ProfileUserID, False, ModuleID, PortalID)
+			Dim cntForumUser As New ForumUserController
+
+			Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleID, PortalID)
 
 			PMInfo = PMController.PMGetMessageStatus(ProfileUser.UserID, PortalID)
 

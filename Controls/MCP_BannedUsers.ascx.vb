@@ -48,7 +48,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		''' <remarks></remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
 			Localization.LocalizeDataGrid(dgBannedUsers, Me.LocalResourceFile)
-			BottomPager.PageSize = Convert.ToInt32(LoggedOnUser.ThreadsPerPage)
+			BottomPager.PageSize = Convert.ToInt32(CurrentForumUser.ThreadsPerPage)
 
 			BindData(BottomPager.PageSize, 1)
 		End Sub
@@ -71,7 +71,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 			Dim lbl As Label
 			Dim img As Image
 
-			Dim objSecurity As New Forum.ModuleSecurity(ModuleId, TabId, -1, LoggedOnUser.UserID)
+			Dim objSecurity As New Forum.ModuleSecurity(ModuleId, TabId, -1, CurrentForumUser.UserID)
 
 			If objSecurity.IsForumAdmin Then
 				hl = CType(e.Item.FindControl("hlEdit"), HyperLink)

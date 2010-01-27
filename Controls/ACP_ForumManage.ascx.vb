@@ -812,7 +812,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <remarks></remarks>
 		Private Function FormatUser(ByVal UserID As Object) As String
 			If Not IsDBNull(UserID) Then
-				Dim user As ForumUser = ForumUserController.GetForumUser(CType(UserID, Integer), False, ModuleId, PortalId)
+				Dim cntForumUser As New ForumUserController
+				Dim user As ForumUser = cntForumUser.GetForumUser(CType(UserID, Integer), False, ModuleId, PortalId)
 				Return user.Username
 			Else
 				Return "Anonymous"

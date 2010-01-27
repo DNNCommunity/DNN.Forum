@@ -164,7 +164,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property Author() As ForumUser
 			Get
-				Return ForumUserController.GetForumUser(UserID, False, ModuleId, ParentThread.PortalID)
+				Dim cntForumUser As New ForumUserController
+				Return cntForumUser.GetForumUser(UserID, False, ModuleId, ParentThread.PortalID)
 			End Get
 		End Property
 
@@ -176,7 +177,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>Returns anonymous user if it wasn't updated. </remarks>
 		Public ReadOnly Property LastModifiedAuthor() As ForumUser
 			Get
-				Return ForumUserController.GetForumUser(UpdatedByUser, False, ModuleId, ParentThread.PortalID)
+				Dim cntForumUser As New ForumUserController
+				Return cntForumUser.GetForumUser(UpdatedByUser, False, ModuleId, ParentThread.PortalID)
 			End Get
 		End Property
 

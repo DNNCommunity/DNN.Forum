@@ -48,7 +48,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		''' <remarks>So far this is a static page</remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
 			Localization.LocalizeDataGrid(dgModQueue, Me.LocalResourceFile)
-			BottomPager.PageSize = Convert.ToInt32(LoggedOnUser.ThreadsPerPage)
+			BottomPager.PageSize = Convert.ToInt32(CurrentForumUser.ThreadsPerPage)
 			BindData()
 		End Sub
 
@@ -100,7 +100,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 			Dim ctlModerate As New ModerateController
 			Dim arrPostsToModerate As List(Of ModerateForumInfo)
 
-			arrPostsToModerate = ctlModerate.ModerateForumGetByModeratorThreads(LoggedOnUser.UserID, ModuleId, PortalId)
+			arrPostsToModerate = ctlModerate.ModerateForumGetByModeratorThreads(CurrentForumUser.UserID, ModuleId, PortalId)
 
 			If Not arrPostsToModerate Is Nothing Then
 				If arrPostsToModerate.Count > 0 Then

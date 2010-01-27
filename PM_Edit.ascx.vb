@@ -112,7 +112,9 @@ Namespace DotNetNuke.Modules.Forum
 					' Get info of who is to receive this private message
 					If Not Request.QueryString("userid") Is Nothing Then
 						mPMRecipientID = Int32.Parse(Request.QueryString("userid"))
-						mPMRecipientUser = ForumUserController.GetForumUser(mPMRecipientID, False, ModuleId, PortalId)
+						Dim cntForumUser As New ForumUserController
+
+						mPMRecipientUser = cntForumUser.GetForumUser(mPMRecipientID, False, ModuleId, PortalId)
 						If Not mPMRecipientUser Is Nothing Then
 							txtForumUserSuggest.Text = mPMRecipientUser.SiteAlias
 							mPMToEnabled = mPMRecipientUser.EnablePM
@@ -135,12 +137,14 @@ Namespace DotNetNuke.Modules.Forum
 							Dim FromUserID As Integer = mParentPMThread.PMStartThreadUserID
 							'Dim NewToUserID As Integer
 
-							If ToUserID = LoggedOnUser.UserID Then
+							If ToUserID = CurrentForumUser.UserID Then
 								mPMRecipientID = FromUserID
 							Else
 								mPMRecipientID = ToUserID
 							End If
-							mPMRecipientUser = ForumUserController.GetForumUser(mPMRecipientID, False, ModuleId, PortalId)
+							Dim cntForumUser As New ForumUserController
+
+							mPMRecipientUser = cntForumUser.GetForumUser(mPMRecipientID, False, ModuleId, PortalId)
 
 							If Not mPMRecipientUser Is Nothing Then
 								txtForumUserSuggest.Text = mPMRecipientUser.SiteAlias
@@ -168,7 +172,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					'See if both recipient and sender have pm enabled
 					'Add check to make sure user is not blocked from sending this particular user a PM
-					If (Not LoggedOnUser.EnablePM) Or (Not mPMToEnabled) Then
+					If (Not CurrentForumUser.EnablePM) Or (Not mPMToEnabled) Then
 						' they don't belong here
 						' if there is not a userid, there better be some type of pmid
 						HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
@@ -327,7 +331,9 @@ Namespace DotNetNuke.Modules.Forum
 				Dim fTextDecode As Utilities.PostContent = New Utilities.PostContent(Server.HtmlDecode(mParentPMInfo.Body), objConfig)
 
 				lblMessage.Text = fTextDecode.ProcessHtml()
-				Dim objFromUser As ForumUser = ForumUserController.GetForumUser(mParentPMInfo.PMFromUserID, False, ModuleId, PortalId)
+				Dim cntForumUser As New ForumUserController
+
+				Dim objFromUser As ForumUser = cntForumUser.GetForumUser(mParentPMInfo.PMFromUserID, False, ModuleId, PortalId)
 				hlAuthor.Text = objFromUser.SiteAlias
 				hlAuthor.NavigateUrl = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, objFromUser.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, objFromUser.Username)
 
@@ -444,7 +450,8 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 
 				' Make sure we have the recipient
-				mPMRecipientUser = ForumUserController.GetForumUser(mPMRecipientID, False, ModuleId, PortalId)
+				Dim cntForumUser As New ForumUserController
+				mPMRecipientUser = cntForumUser.GetForumUser(mPMRecipientID, False, ModuleId, PortalId)
 
 				' Obtain pm action
 				If (Not Request.QueryString("pmaction") Is Nothing) Then
@@ -456,7 +463,7 @@ Namespace DotNetNuke.Modules.Forum
 				' Add new private message
 				Select Case mPMAction
 					Case PMAction.[New]
-						_newPMID = ctlPost.PMAdd(0, LoggedOnUser.UserID, _RemoteAddr, _Subject, _Body, mPMRecipientID, PortalId)
+						_newPMID = ctlPost.PMAdd(0, CurrentForumUser.UserID, _RemoteAddr, _Subject, _Body, mPMRecipientID, PortalId)
 						_emailType = ForumEmailType.UserPMReceived
 					Case PMAction.Edit
 						'Check if it's still an unread PM
@@ -470,7 +477,7 @@ Namespace DotNetNuke.Modules.Forum
 							Exit Sub
 						End If
 					Case Else	' Reply or Quote
-						_newPMID = ctlPost.PMAdd(_ParentPMID, LoggedOnUser.UserID, _RemoteAddr, _Subject, _Body, mPMRecipientID, PortalId)
+						_newPMID = ctlPost.PMAdd(_ParentPMID, CurrentForumUser.UserID, _RemoteAddr, _Subject, _Body, mPMRecipientID, PortalId)
 						_emailType = ForumEmailType.UserPMReceived
 				End Select
 				Dim ctlPM As New PMController
@@ -487,7 +494,7 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 
 				' Reset the user cached objects here
-				ForumUserController.ResetForumUser(LoggedOnUser.UserID, PortalId)
+				ForumUserController.ResetForumUser(CurrentForumUser.UserID, PortalId)
 				ForumUserController.ResetForumUser(mPMRecipientID, PortalId)
 				ForumPMReadsController.ResetUserNewPMCount(mPMRecipientID)
 

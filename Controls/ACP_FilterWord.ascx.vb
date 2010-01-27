@@ -135,7 +135,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			Dim txtBadWord As TextBox = CType(e.Item.Cells(0).Controls(0), TextBox)
 			Dim txtReplacedWord As TextBox = CType(e.Item.Cells(1).Controls(0), TextBox)
 			Dim cntWordFilter As New WordFilterController
-			cntWordFilter.FilterWordUpdate(PortalId, txtBadWord.Text, txtReplacedWord.Text, LoggedOnUser.UserID)
+			cntWordFilter.FilterWordUpdate(PortalId, txtBadWord.Text, txtReplacedWord.Text, CurrentForumUser.UserID)
 
 			grdBadWords.EditItemIndex = Null.NullInteger
 			imgAdd.Enabled = True
@@ -163,7 +163,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <remarks></remarks>
 		Protected Sub imgAdd_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles imgAdd.Click
 			Dim ctlFilterWords As New WordFilterController
-			ctlFilterWords.FilterWordUpdate(PortalId, txtNewBadWord.Text, txtNewReplaceWord.Text, LoggedOnUser.UserID)
+			ctlFilterWords.FilterWordUpdate(PortalId, txtNewBadWord.Text, txtNewReplaceWord.Text, CurrentForumUser.UserID)
 
 			grdBadWords.EditItemIndex = Null.NullInteger
 			txtNewBadWord.Text = String.Empty
@@ -247,7 +247,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <remarks></remarks>
 		Private Function DisplayAuthor(ByVal DataItem As FilterWordInfo) As String
 			Dim strAuthor As String = String.Empty
-			strAuthor = ForumUserController.GetForumUser(DataItem.CreatedBy, False, ModuleId, PortalId).SiteAlias
+			Dim cntForumUser As New ForumUserController
+			strAuthor = cntForumUser.GetForumUser(DataItem.CreatedBy, False, ModuleId, PortalId).SiteAlias
 			Return strAuthor
 		End Function
 

@@ -78,9 +78,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
 			Localization.LocalizeDataGrid(dgPMThreads, Me.LocalResourceFile)
-			BottomPager.PageSize = Convert.ToInt32(LoggedOnUser.ThreadsPerPage)
+			BottomPager.PageSize = Convert.ToInt32(CurrentForumUser.ThreadsPerPage)
 
-			If Not LoggedOnUser.EnablePM Then
+			If Not CurrentForumUser.EnablePM Then
 				Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
 			End If
 
@@ -237,7 +237,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Protected Function ToUserDetails(ByVal PMToUserID As Integer) As String
 			Dim objUser As ForumUser
-			objUser = ForumUserController.GetForumUser(PMToUserID, False, ModuleId, PortalId)
+			Dim cntForumUser As New ForumUserController
+
+			objUser = cntForumUser.GetForumUser(PMToUserID, False, ModuleId, PortalId)
 
 			Return objUser.SiteAlias
 		End Function

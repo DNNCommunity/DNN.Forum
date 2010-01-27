@@ -239,7 +239,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property Author() As ForumUser
 			Get
-				Return ForumUserController.GetForumUser(mAuthorID, False, ModuleId, PortalID)
+				Dim cntForumUser As New ForumUserController
+				Return cntForumUser.GetForumUser(mAuthorID, False, ModuleId, PortalID)
 			End Get
 		End Property
 

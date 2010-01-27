@@ -206,7 +206,7 @@ Namespace DotNetNuke.Modules.Forum
 				sb.Append("&todate=")
 				sb.Append(Utilities.ForumUtils.DateToNum(endDate).ToString)
 				sb.Append("&pagesize=")
-				sb.Append(LoggedOnUser.ThreadsPerPage.ToString)
+				sb.Append(CurrentForumUser.ThreadsPerPage.ToString)
 
 				SelectedForumIds = String.Empty
 				For Each objNode As Telerik.Web.UI.RadTreeNode In Me.rtvForums.CheckedNodes

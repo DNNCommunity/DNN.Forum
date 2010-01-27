@@ -68,7 +68,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property LastApprovedUser() As ForumUser
 			Get
-				Return ForumUserController.GetForumUser(LastApprovedPost.UserID, False, ModuleID, PortalID)
+				Dim cntForumUser As New ForumUserController
+				Return cntForumUser.GetForumUser(LastApprovedPost.UserID, False, ModuleID, PortalID)
 			End Get
 		End Property
 

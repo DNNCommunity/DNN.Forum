@@ -32,14 +32,15 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Public ReadOnly Properties"
 
 		''' <summary>
-		''' This is the user who is logged on
+		''' This is the user who is viewing the forum.
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public ReadOnly Property LoggedOnUser() As ForumUser
+		Public ReadOnly Property CurrentForumUser() As ForumUser
 			Get
-				Return ForumUserController.GetForumUser(Users.UserController.GetCurrentUserInfo.UserID, False, ModuleId, PortalId)
+				Dim cntForumUser As New ForumUserController
+				Return cntForumUser.GetForumUser(Users.UserController.GetCurrentUserInfo.UserID, False, ModuleId, PortalId)
 			End Get
 		End Property
 
@@ -55,7 +56,7 @@ Namespace DotNetNuke.Modules.Forum
 					Dim _ProfileUserID As Integer = Int32.Parse(Request.QueryString("userid"))
 					Return _ProfileUserID
 				Else
-					Return LoggedOnUser.UserID
+					Return CurrentForumUser.UserID
 				End If
 			End Get
 		End Property

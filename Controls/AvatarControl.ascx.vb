@@ -329,8 +329,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <remarks>Added by Skeel</remarks>
 		Private Sub DeleteUploadedAvatarAndSaveProfile()
-			Dim ctlUser As New ForumUserController
-			Dim ProfileUser As ForumUser = ForumUserController.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
+			Dim cntForumUser As New ForumUserController
+			Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
 			'Get the parent folder
 			Dim ParentFolderName As String = PortalSettings.HomeDirectoryMapPath
@@ -353,7 +353,10 @@ Namespace DotNetNuke.Modules.Forum
 				.UserAvatar = UserAvatarType.PoolAvatar
 				.Avatar = Images
 			End With
-			ctlUser.Update(ProfileUser)
+
+			Dim ctlForumUser As New ForumUserController
+			ctlForumUser.Update(ProfileUser)
+
 			ForumUserController.ResetForumUser(ProfileUserID, PortalId)
 		End Sub
 
@@ -492,15 +495,17 @@ Namespace DotNetNuke.Modules.Forum
 				'[skeel] In case of a User upload, we want to update the profile now, 
 				'to ensure uploaded avatars are always deleted when not in use
 				If AvatarType = AvatarControlType.User Then
-					Dim ctlUser As New ForumUserController
-					Dim ProfileUser As ForumUser = ForumUserController.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
-					With ProfileUser
+					Dim cntForumUser As New ForumUserController
+					Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
+					With ProfileUser
 						.UserAvatar = UserAvatarType.UserAvatar
 						.Avatar = Images
-
 					End With
-					ctlUser.Update(ProfileUser)
+
+					Dim ctlForumUser As New ForumUserController
+					ctlForumUser.Update(ProfileUser)
+
 					ForumUserController.ResetForumUser(ProfileUserID, PortalId)
 				End If
 			Catch exc As Exception
@@ -666,7 +671,8 @@ Namespace DotNetNuke.Modules.Forum
 
 			If AvatarType = AvatarControlType.User Then
 				'[skeel] At this point, we need to check if the current avatar needs to be deleted
-				Dim ProfileUser As ForumUser = ForumUserController.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
+				Dim cntForumUser As New ForumUserController
+				Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
 				If ProfileUser.UserAvatar = UserAvatarType.UserAvatar Then
 

@@ -372,18 +372,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' The Forum User object of the logged on user. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks>Handled anonymous (not logged in)</remarks>
-		Friend ReadOnly Property LoggedOnUser() As ForumUser
-			Get
-				Return ForumUserController.GetForumUser(Users.UserController.GetCurrentUserInfo.UserID, False, ModuleID, PortalID)
-			End Get
-		End Property
-
-		''' <summary>
 		''' The Page object is used so we can override some elements. 
 		''' </summary>
 		''' <value></value>

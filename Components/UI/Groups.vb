@@ -109,7 +109,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			' Get groups
 			Dim cntGroup As New GroupController
-			arrAuthGroups = cntGroup.GroupGetAllAuthorized(ModuleID, ForumControl.LoggedOnUser.UserID, False)
+			arrAuthGroups = cntGroup.GroupGetAllAuthorized(ModuleID, CurrentForumUser.UserID, False)
 			mAuthorizedForumsCount = 0
 
 			If arrAuthGroups.Count > 0 Then
@@ -117,7 +117,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				For Each objGroup In arrAuthGroups
 					Dim arrAuthForums As New List(Of ForumInfo)
-					arrAuthForums = objGroup.AuthorizedForums(ForumControl.LoggedOnUser.UserID, False)
+					arrAuthForums = objGroup.AuthorizedForums(CurrentForumUser.UserID, False)
 					If arrAuthForums.Count > 0 Then
 						arrAuthForumsCount += arrAuthForums.Count
 					End If
@@ -227,7 +227,7 @@ Namespace DotNetNuke.Modules.Forum
 				wr.Write("&nbsp;" & Localization.GetString("Hours", objConfig.SharedResourceFile) & "&nbsp;")
 
 				'View unread threads link
-				If ForumControl.LoggedOnUser.UserID > 0 Then
+				If CurrentForumUser.UserID > 0 Then
 					wr.Write("|&nbsp;")
 					url = Utilities.Links.ContainerViewUnreadThreadsLink(TabID)
 					RenderLinkButton(wr, url, Localization.GetString("ViewUnreadThreads", objConfig.SharedResourceFile), "Forum_LastPostText", "", False, objConfig.NoFollowLatestThreads)
@@ -356,9 +356,9 @@ Namespace DotNetNuke.Modules.Forum
 						Dim arrForums As List(Of ForumInfo)
 
 						If mForumId > 0 Then
-							arrForums = objGroup.AuthorizedSubForums(ForumControl.LoggedOnUser.UserID, False, mForumId)
+							arrForums = objGroup.AuthorizedSubForums(CurrentForumUser.UserID, False, mForumId)
 						Else
-							arrForums = objGroup.AuthorizedNoParentForums(ForumControl.LoggedOnUser.UserID, False)
+							arrForums = objGroup.AuthorizedNoParentForums(CurrentForumUser.UserID, False)
 						End If
 
 						' display group only if group contains atleast one authorized forum
@@ -376,7 +376,7 @@ Namespace DotNetNuke.Modules.Forum
 
 							' Render a row for each forum in this group exposed to this user
 							For Each objForum As ForumInfo In arrForums
-								objForum.Render(wr, Me.ForumControl, Count)
+								objForum.Render(wr, Me.ForumControl, CurrentForumUser, Count)
 								Count += 1
 							Next
 						End If

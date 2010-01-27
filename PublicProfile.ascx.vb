@@ -76,12 +76,14 @@ Namespace DotNetNuke.Modules.Forum
 				If Request.QueryString("userid") IsNot Nothing Then
 					' This needs to be done on every page load (since we are not using viewstate). 
 					Dim profileUserID As Integer = -1
+					Dim cntForumUser As New ForumUserController
+
 					profileUserID = Int32.Parse(Request.QueryString("userid"))
-					ProfileUser = ForumUserController.GetForumUser(profileUserID, False, ModuleId, PortalId)
+					ProfileUser = cntForumUser.GetForumUser(profileUserID, False, ModuleId, PortalId)
 					_IsModerator = False
 
 					' See if they are admin or moderator - always have to be some type of mod or admin to edit (and be logged in)
-					If LoggedOnUser.UserID > 0 And (objSecurity.IsModerator) Then
+					If CurrentForumUser.UserID > 0 And (objSecurity.IsModerator) Then
 						EnableControls(True)
 						_IsModerator = True
 					Else
@@ -126,7 +128,7 @@ Namespace DotNetNuke.Modules.Forum
 						Case UserVisibilityMode.AllUsers
 							RenderWebsite()
 						Case UserVisibilityMode.MembersOnly
-							If LoggedOnUser.UserID > 0 Then
+							If CurrentForumUser.UserID > 0 Then
 								RenderWebsite()
 							Else
 								litEmail.Text = Localization.GetString("NotAvailable.Text", Me.LocalResourceFile)
@@ -209,7 +211,7 @@ Namespace DotNetNuke.Modules.Forum
 									Case UserVisibilityMode.AllUsers
 										RenderProfileAvatar(ProfileUser)
 									Case UserVisibilityMode.MembersOnly
-										If LoggedOnUser.UserID > 0 Then
+										If CurrentForumUser.UserID > 0 Then
 											RenderProfileAvatar(ProfileUser)
 										Else
 											rowUserAvatar.Visible = False
@@ -282,7 +284,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						If Request.IsAuthenticated Then
 							' if the user is logged in, use the threads/page option
-							lnkUserPosts.NavigateUrl = NavigateURL(TabId, "", New String() {"pagesize=" & LoggedOnUser.ThreadsPerPage, "authors=" & ProfileUser.UserID, "scope=threadsearch"})
+							lnkUserPosts.NavigateUrl = NavigateURL(TabId, "", New String() {"pagesize=" & CurrentForumUser.ThreadsPerPage, "authors=" & ProfileUser.UserID, "scope=threadsearch"})
 						Else
 							' user is not logged in, use forum default for threads/page
 							lnkUserPosts.NavigateUrl = NavigateURL(TabId, "", New String() {"pagesize=" & objConfig.ThreadsPerPage, "authors=" & ProfileUser.UserID, "scope=threadsearch"})
@@ -300,13 +302,13 @@ Namespace DotNetNuke.Modules.Forum
 					Dim displayCreatedDate As DateTime = Utilities.ForumUtils.ConvertTimeZone(CType(ProfileUser.Membership.CreatedDate, DateTime), objConfig)
 					lblJoinedDate.Text = Localization.GetString("JoinedDate.Text", Me.LocalResourceFile) & " " & displayCreatedDate.ToShortDateString
 
-					If LoggedOnUser.UserID > 0 Then
+					If CurrentForumUser.UserID > 0 Then
 						If objConfig.EnablePMSystem Then
 							'If the user receives private messages and the logged in user does as well
 							rowPMUser.Visible = True
-							If ProfileUser.EnablePM And LoggedOnUser.EnablePM Then
+							If ProfileUser.EnablePM And CurrentForumUser.EnablePM Then
 								' No need to send a private message to yourself
-								If Not (ProfileUser.UserID = LoggedOnUser.UserID) Then
+								If Not (ProfileUser.UserID = CurrentForumUser.UserID) Then
 									cmdPMUser.Enabled = True
 								Else
 									cmdPMUser.Enabled = False
@@ -382,7 +384,9 @@ Namespace DotNetNuke.Modules.Forum
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
 				With ProfileUser
-					ForumUserController.GetForumUser(ProfileUser.UserID, False, ModuleId, PortalId)
+					Dim cntForumUser As New ForumUserController
+
+					cntForumUser.GetForumUser(ProfileUser.UserID, False, ModuleId, PortalId)
 					.IsTrusted = chkIsTrusted.Checked
 					.Signature = String.Empty
 

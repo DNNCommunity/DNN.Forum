@@ -246,7 +246,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property MostRecentPostAuthor(ByVal RecentPostAuthorID As Integer) As ForumUser
 			Get
-				Return ForumUserController.GetForumUser(RecentPostAuthorID, False, ModuleID, PortalID)
+				Dim cntForumUser As New ForumUserController
+				Return cntForumUser.GetForumUser(RecentPostAuthorID, False, ModuleID, PortalID)
 			End Get
 		End Property
 
@@ -911,10 +912,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="Count"></param>
 		''' <remarks>
 		''' </remarks>
-		Public Sub Render(ByVal wr As HtmlTextWriter, ByVal Forum As DNNForum, Optional ByVal Count As Integer = 0)
+		Public Sub Render(ByVal wr As HtmlTextWriter, ByVal Forum As DNNForum, ByVal CurrentForumUser As ForumUser, Optional ByVal Count As Integer = 0)
 			Try
-				Dim fLoggedOnUser As ForumUser = Forum.LoggedOnUser
-				Dim fPostsPerPage As Integer = Forum.LoggedOnUser.PostsPerPage
+				Dim fPostsPerPage As Integer = CurrentForumUser.PostsPerPage
 				Dim fPage As Page = Forum.DNNPage
 				Dim fTabID As Integer = Forum.TabID
 				Dim fModuleID As Integer = Forum.ModuleID
@@ -937,6 +937,9 @@ Namespace DotNetNuke.Modules.Forum
 					objForumInfo.IsIntegrated = False
 					objForumInfo.TotalThreads = 0
 					objForumInfo.TotalPosts = 0
+					objForumInfo.ParentId = 0
+					objForumInfo.SubForums = 0
+					objForumInfo.NotifyByDefault = False
 
 					Name = Localization.GetString("AggregatedForumName", Forum.objConfig.SharedResourceFile)
 					objForumInfo.Name = Name
@@ -946,7 +949,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					Dim SearchCollection As New ArrayList
 					Dim cntSearch As New SearchController
-					SearchCollection = cntSearch.SearchGetResults("", 0, 1, Forum.LoggedOnUser.UserID, Forum.ModuleID, DateAdd(DateInterval.Year, -1, DateTime.Today), DateAdd(DateInterval.Day, 1, DateTime.Today), -1)
+					SearchCollection = cntSearch.SearchGetResults("", 0, 1, CurrentForumUser.UserID, Forum.ModuleID, DateAdd(DateInterval.Year, -1, DateTime.Today), DateAdd(DateInterval.Day, 1, DateTime.Today), -1)
 
 					For Each objSearch As SearchInfo In SearchCollection
 						If objSearch IsNot Nothing Then
@@ -1032,7 +1035,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					' Only worry about user forum reads if the user is logged in (performance reasons)
 					' [skeel] .. and not a link type forum
-					If fLoggedOnUser.UserID > 0 And objForumInfo.ForumType <> 2 Then
+					If CurrentForumUser.UserID > 0 And objForumInfo.ForumType <> 2 Then
 						Dim userForumController As New UserForumsController
 
 						'[skeel] added support for subforums
@@ -1042,7 +1045,7 @@ Namespace DotNetNuke.Modules.Forum
 							Dim dr As IDataReader = userForumController.GetSubForumIDs(objForumInfo.ForumID)
 							While dr.Read
 								Dim userForum As New UserForumsInfo
-								userForum = userForumController.GetCachedUserForumRead(fLoggedOnUser.UserID, CInt(dr("ForumID").ToString))
+								userForum = userForumController.GetCachedUserForumRead(CurrentForumUser.UserID, CInt(dr("ForumID").ToString))
 								If Not userForum Is Nothing Then
 									If LastVisitDate > userForum.LastVisitDate Then
 										LastVisitDate = userForum.LastVisitDate
@@ -1061,7 +1064,7 @@ Namespace DotNetNuke.Modules.Forum
 								'a lot of CPU cycles just to show an icon, so for now we always show it as containing new posts
 							Else
 								'Regular forum
-								userForum = userForumController.GetCachedUserForumRead(fLoggedOnUser.UserID, ForumID)
+								userForum = userForumController.GetCachedUserForumRead(CurrentForumUser.UserID, ForumID)
 							End If
 
 							If Not userForum Is Nothing Then
@@ -1298,6 +1301,7 @@ Namespace DotNetNuke.Modules.Forum
 							'Dim displayCreatedDate As DateTime = ConvertTimeZone(MostRecentPostDate, objConfig)
 							Dim lastPostInfo As New PostInfo
 							lastPostInfo = PostInfo.GetPostInfo(objForumInfo.MostRecentPostID, PortalID)
+
 							Dim strLastPostInfo As String = Utilities.ForumUtils.GetCreatedDateInfo(objForumInfo.MostRecentPostDate, Forum.objConfig, "")
 							' shows only first 15 letters of the post subject title
 							Dim truncatedTitle As String
@@ -1306,7 +1310,6 @@ Namespace DotNetNuke.Modules.Forum
 							Else
 								truncatedTitle = lastPostInfo.Subject
 							End If
-
 
 							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText")
 							wr.RenderBeginTag(HtmlTextWriterTag.Div) ' <div>
@@ -1335,11 +1338,11 @@ Namespace DotNetNuke.Modules.Forum
 							wr.Write(Forum.LocalizedText("by") & " ")
 							wr.RenderEndTag() ' </span>
 
-							url = Utilities.Links.UserPublicProfileLink(Forum.TabID, ModuleID, objForumInfo.MostRecentPostAuthorID, Forum.objConfig.EnableExternalProfile, Forum.objConfig.ExternalProfileParam, Forum.objConfig.ExternalProfilePage, Forum.objConfig.ExternalProfileUsername, objForumInfo.MostRecentPostAuthor(objForumInfo.MostRecentPostAuthorID).Username)
+							url = Utilities.Links.UserPublicProfileLink(Forum.TabID, ModuleID, objForumInfo.MostRecentPostAuthorID, Forum.objConfig.EnableExternalProfile, Forum.objConfig.ExternalProfileParam, Forum.objConfig.ExternalProfilePage, Forum.objConfig.ExternalProfileUsername, MostRecentPostAuthor(objForumInfo.MostRecentPostAuthorID).Username)
 							wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText") 'Forum_AliasLink
 							wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
-							wr.Write(objForumInfo.MostRecentPostAuthor(objForumInfo.MostRecentPostAuthorID).SiteAlias)
+							wr.Write(MostRecentPostAuthor(objForumInfo.MostRecentPostAuthorID).SiteAlias)
 							wr.RenderEndTag() '  </A>
 						Else
 							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText")
@@ -1389,8 +1392,8 @@ Namespace DotNetNuke.Modules.Forum
 				objForumInfo.MostRecentPostDate = CDate(dr("MostRecentPostDate").ToString)
 				objForumInfo.MostRecentPostID = CInt(dr("MostRecentPostID").ToString)
 				objForumInfo.MostRecentThreadID = CInt(dr("MostRecentThreadID").ToString)
-				'Needed to display the correct name
-				MostRecentPostAuthorID = objForumInfo.MostRecentPostAuthorID
+				''Needed to display the correct name
+				'MostRecentPostAuthorID = objForumInfo.MostRecentPostAuthorID
 
 			End While
 			dr.Close()

@@ -45,7 +45,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		''' <remarks>So far this is a static page</remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
 			Localization.LocalizeDataGrid(dgReportedUsers, Me.LocalResourceFile)
-			BottomPager.PageSize = Convert.ToInt32(LoggedOnUser.ThreadsPerPage)
+			BottomPager.PageSize = Convert.ToInt32(CurrentForumUser.ThreadsPerPage)
 
 			BindData(BottomPager.PageSize, 1)
 		End Sub
@@ -67,7 +67,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 			Dim hl As HyperLink
 			Dim img As Image
 
-			Dim objSecurity As New Forum.ModuleSecurity(ModuleId, TabId, -1, LoggedOnUser.UserID)
+			Dim objSecurity As New Forum.ModuleSecurity(ModuleId, TabId, -1, CurrentForumUser.UserID)
 
 			img = CType(e.Item.FindControl("imgEdit"), Image)
 

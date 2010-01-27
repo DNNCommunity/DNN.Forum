@@ -33,7 +33,8 @@ Namespace DotNetNuke.Modules.Forum
     ''' <history>
     ''' 	[cpaterra]	7/13/2005	Created
     ''' </history>
-    Public Class ForumBaseObject
+	Public Class ForumBaseObject
+		Inherits ForumModuleBase
 
 #Region "Private Members"
 
@@ -570,7 +571,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			For Each Action As Entities.Modules.Actions.ModuleAction In ForumControl.NavigatorActions
 				If objConfig.IconBarAsImages Then
-					RenderCssLinkButton(wr, Action.Url, Action.Title, Utilities.ForumUtils.GetActionCss(Action.Title, ForumControl), objConfig)
+					RenderCssLinkButton(wr, Action.Url, Action.Title, Utilities.ForumUtils.GetActionCss(Action.Title, ForumControl, CurrentForumUser), objConfig)
 				Else
 					RenderLinkButton(wr, Action.Url, Action.Title, "Forum_ToolbarLink")
 				End If
@@ -660,7 +661,7 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-    End Class
+	End Class
 
 #End Region
 

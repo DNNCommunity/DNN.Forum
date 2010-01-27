@@ -78,9 +78,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
 			Localization.LocalizeDataGrid(dgPMThreads, Me.LocalResourceFile)
-			BottomPager.PageSize = Convert.ToInt32(LoggedOnUser.ThreadsPerPage)
+			BottomPager.PageSize = Convert.ToInt32(CurrentForumUser.ThreadsPerPage)
 
-			If Not LoggedOnUser.EnablePM Then
+			If Not CurrentForumUser.EnablePM Then
 				Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
 			End If
 
@@ -229,8 +229,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Protected Function LastPMDetails(ByVal LastPMDate As DateTime, ByVal LastPMUserID As Integer) As String
 			Dim strLastPMInfo As String = String.Empty
+			Dim cntForumUser As New ForumUserController
 			Dim objUser As ForumUser
-			objUser = ForumUserController.GetForumUser(LastPMUserID, False, ModuleId, PortalId)
+
+			objUser = cntForumUser.GetForumUser(LastPMUserID, False, ModuleId, PortalId)
 
 			strLastPMInfo = Utilities.ForumUtils.GetCreatedDateInfo(LastPMDate, objConfig, "Forum_LastPostText")
 			strLastPMInfo += Services.Localization.Localization.GetString("by.Text", LocalResourceFile) & " " & objUser.SiteAlias
@@ -246,7 +248,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Protected Function StartedByDetails(ByVal PMStartUserID As Integer) As String
 			Dim objUser As ForumUser
-			objUser = ForumUserController.GetForumUser(PMStartUserID, False, ModuleId, PortalId)
+			Dim cntForumUser As New ForumUserController
+
+			objUser = cntForumUser.GetForumUser(PMStartUserID, False, ModuleId, PortalId)
 
 			Return Services.Localization.Localization.GetString("by.Text", LocalResourceFile) & " " & objUser.SiteAlias
 		End Function
@@ -259,7 +263,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Protected Function ToUserDetails(ByVal PMToUserID As Integer) As String
 			Dim objUser As ForumUser
-			objUser = ForumUserController.GetForumUser(PMToUserID, False, ModuleId, PortalId)
+			Dim cntForumUser As New ForumUserController
+
+			objUser = cntForumUser.GetForumUser(PMToUserID, False, ModuleId, PortalId)
 
 			Return objUser.SiteAlias
 		End Function
