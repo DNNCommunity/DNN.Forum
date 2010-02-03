@@ -359,7 +359,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ModuleID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Function UserGet(ByVal PortalID As Integer, ByVal UserId As Integer, ByVal ModuleID As Integer) As ForumUser
+		Private Function UserGet(ByVal PortalID As Integer, ByVal UserId As Integer, ByVal ModuleID As Integer) As ForumUser
 			Dim cacheKey As String = FORUM_USER_CACHE_KEY_PREFIX & UserId.ToString & "-" & PortalID.ToString
 			Return CBO.GetCachedObject(Of ForumUser)(New CacheItemArgs(cacheKey, 5, DataCache.PortalDesktopModuleCachePriority, PortalID, UserId, ModuleID), AddressOf UserGetCallBack)
 		End Function

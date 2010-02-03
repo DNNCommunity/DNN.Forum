@@ -43,26 +43,28 @@ Namespace DotNetNuke.Modules.Forum
 			If Not objModulePermissions Is Nothing Then
 				For Each objModulePermission As ModulePermissionInfo In objModulePermissions
 					If objModulePermission.PermissionKey = PermissionKey Then
-
-
 						' test (add or for global mod)
 						If objModulePermission.PermissionKey = (DotNetNuke.Modules.Forum.PermissionKeys.FORUMADMIN.ToString) Then
 							' if we are looking for admin, lets just take care of hosts here (since they aren't in a role)
 							Dim cntUsers As New ForumUserController
+							Dim objUser As ForumUser = cntUsers.GetForumUser(UserID, False, ModuleID, PortalID)
 
-							Dim objUser As ForumUser = cntUsers.UserGet(PortalID, UserID, ModuleID)
-							If objUser.IsSuperUser Then
-								Return True
-							Else
-								If Null.IsNull(objModulePermission.UserID) Then
-									If IsInMockRoles(objModulePermission.RoleName, UserID, PortalID, ModuleID) Then
-										Return True
-									End If
+							If objUser IsNot Nothing Then
+								If objUser.IsSuperUser Then
+									Return True
 								Else
-									If IsInMockRoles("[" & objModulePermission.UserID.ToString & "]", UserID, PortalID, ModuleID) Then
-										Return True
+									If Null.IsNull(objModulePermission.UserID) Then
+										If IsInMockRoles(objModulePermission.RoleName, UserID, PortalID, ModuleID) Then
+											Return True
+										End If
+									Else
+										If IsInMockRoles("[" & objModulePermission.UserID.ToString & "]", UserID, PortalID, ModuleID) Then
+											Return True
+										End If
 									End If
 								End If
+							Else
+								Return False
 							End If
 						End If
 					End If
@@ -85,7 +87,7 @@ Namespace DotNetNuke.Modules.Forum
 				Dim IsInRole As Boolean = False
 				Dim cntUsers As New ForumUserController
 
-				Dim objUser As ForumUser = cntUsers.UserGet(PortalID, UserID, ModuleID)
+				Dim objUser As ForumUser = cntUsers.GetForumUser(UserID, False, ModuleID, PortalID)
 				Dim role As String
 
 				For Each role In roles.Split(New Char() {";"c})

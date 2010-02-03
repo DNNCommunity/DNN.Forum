@@ -603,9 +603,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				txtForumID.Text = CType(.ForumID, String)
 				txtForumName.Text = .Name
 				txtForumDescription.Text = .Description
-				txtForumCreatorName.Text = ctlForumUser.UserGet(PortalId, .CreatedByUser, ModuleId).Username
+				txtForumCreatorName.Text = ctlForumUser.GetForumUser(.CreatedByUser, False, ModuleId, PortalId).Username
 				txtCreatedDate.Text = CType(.CreatedDate, String)
-				txtUpdatedName.Text = ctlForumUser.UserGet(PortalId, .UpdatedByUser, ModuleId).Username
+				txtUpdatedName.Text = ctlForumUser.GetForumUser(.UpdatedByUser, False, ModuleId, PortalId).Username
 				txtUpdatedDate.Text = CType(.UpdatedDate, String)
 				chkActive.Checked = .IsActive
 				chkEnableForumsThreadStatus.Checked = .EnableForumsThreadStatus

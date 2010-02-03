@@ -223,7 +223,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			objConfig = Forum.Config.GetForumConfig(ModuleID)
 			objForum = cntForum.GetForumInfoCache(ForumID)
-			objForumUser = cntForumUser.UserGet(PortalID, UserID, ModuleID)
+			objForumUser = cntForumUser.GetForumUser(UserID, False, ModuleID, PortalID)
 
 			Dim objModSecurity As New Forum.ModuleSecurity(objConfig.ModuleID, TabID, objForum.ForumID, objForumUser.UserID)
 			Dim IsModerated As Boolean = False
