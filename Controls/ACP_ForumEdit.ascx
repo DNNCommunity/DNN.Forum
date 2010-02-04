@@ -20,7 +20,7 @@
                     </tr>
                     <tr>
                         <td class="Forum_UCP_HeaderInfo" align="left">                           
-						<telerik:RadTabStrip ID="rtsForum" runat="server" Skin="Vista" MultiPageID="rmpForumSettings" SelectedIndex="0" />		
+						<telerik:RadTabStrip ID="rtsForum" runat="server" Skin="Vista" MultiPageID="rmpForumSettings" SelectedIndex="0" CausesValidation="false" />		
 						<telerik:RadMultiPage ID="rmpForumSettings" runat="server" SelectedIndex="0">
 							<telerik:RadPageView ID="rpvGeneral" runat="server">
 								 <table id="tblGeneral" cellspacing="0" cellpadding="0" width="100%" runat="server">
