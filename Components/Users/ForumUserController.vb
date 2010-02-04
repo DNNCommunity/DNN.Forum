@@ -57,9 +57,9 @@ Namespace DotNetNuke.Modules.Forum
 			If UserID > 0 Then
 				Dim cacheKey As String = FORUM_USER_CACHE_KEY_PREFIX & UserID.ToString & "-" & PortalID.ToString
 				Dim timeOut As Int32 = ForumUserInfoCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
-				Dim objForumUser As New ForumUser(ModuleID)
+				Dim objForumUser As ForumUser	'As New ForumUser(ModuleID)
 
-				objForumUser = CType(DataCache.GetCache(cacheKey), ForumUser)
+				objForumUser = TryCast(DataCache.GetCache(cacheKey), ForumUser)
 
 				If objForumUser Is Nothing Then
 					Return UserCheck(UserID, PortalID, ModuleID)
@@ -349,68 +349,6 @@ Namespace DotNetNuke.Modules.Forum
 
 			Return objUsers
 
-		End Function
-
-		''' <summary>
-		''' 
-		''' </summary>
-		''' <param name="PortalID"></param>
-		''' <param name="UserId"></param>
-		''' <param name="ModuleID"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Private Function UserGet(ByVal PortalID As Integer, ByVal UserId As Integer, ByVal ModuleID As Integer) As ForumUser
-			Dim cacheKey As String = FORUM_USER_CACHE_KEY_PREFIX & UserId.ToString & "-" & PortalID.ToString
-			Return CBO.GetCachedObject(Of ForumUser)(New CacheItemArgs(cacheKey, 5, DataCache.PortalDesktopModuleCachePriority, PortalID, UserId, ModuleID), AddressOf UserGetCallBack)
-		End Function
-
-		''' <summary>
-		''' Gets a single users profile (for the forum, which is distinct per portal)
-		''' </summary>
-		''' <param name="cacheItemArgs"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Private Function UserGetCallBack(ByVal cacheItemArgs As CacheItemArgs) As ForumUser
-
-			Dim portalID As Integer = DirectCast(cacheItemArgs.ParamList(0), Integer)
-			Dim userID As Integer = DirectCast(cacheItemArgs.ParamList(1), Integer)
-			Dim moduleID As Integer = DirectCast(cacheItemArgs.ParamList(2), Integer)
-			Dim objUserInfo As New ForumUser(moduleID)
-			Dim dr As IDataReader = Nothing
-			Try
-				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().UserGet(userID, portalID)
-				While dr.Read
-					objUserInfo = FillForumUserInfo(dr, portalID, moduleID)
-					' For user banning, add a check here for date and if banned. If so, we need to update the db, then run this method again. 
-					If objUserInfo.IsBanned = True And objUserInfo.LiftBanDate < Date.Now Then
-						objUserInfo.IsBanned = False
-						objUserInfo.LiftBanDate = Null.NullDate
-
-						UserUpdate(objUserInfo)
-						UserGet(portalID, userID, moduleID)
-					End If
-
-				End While
-			Catch exc As Exception
-				LogException(exc)
-			Finally
-				If Not dr Is Nothing Then
-					dr.Close()
-				End If
-			End Try
-
-			Return objUserInfo
-		End Function
-
-		''' <summary>
-		''' Gets a single users profile (for the forum, which is distinct per portal)
-		''' </summary>
-		''' <param name="UserId"></param>
-		''' <returns></returns>
-		''' <remarks>This is typically only used in upgrades. It is possible that it is used in multi-portal if a user already exists but only for minimal items.</remarks>
-		Public Function UserGetMultiPortal(ByVal UserId As Integer, ByVal ModuleID As Integer) As ForumUser
-			Dim objUserInfo As New ForumUser(ModuleID)
-			Return objUserInfo
 		End Function
 
 		''' <summary>
@@ -795,6 +733,57 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Private Methods"
 
 		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="PortalID"></param>
+		''' <param name="UserId"></param>
+		''' <param name="ModuleID"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Function UserGet(ByVal PortalID As Integer, ByVal UserId As Integer, ByVal ModuleID As Integer) As ForumUser
+			Dim cacheKey As String = FORUM_USER_CACHE_KEY_PREFIX & UserId.ToString & "-" & PortalID.ToString
+			Return CBO.GetCachedObject(Of ForumUser)(New CacheItemArgs(cacheKey, 5, DataCache.PortalDesktopModuleCachePriority, PortalID, UserId, ModuleID), AddressOf UserGetCallBack)
+		End Function
+
+		''' <summary>
+		''' Gets a single users profile (for the forum, which is distinct per portal)
+		''' </summary>
+		''' <param name="cacheItemArgs"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Function UserGetCallBack(ByVal cacheItemArgs As CacheItemArgs) As ForumUser
+			Dim portalID As Integer = DirectCast(cacheItemArgs.ParamList(0), Integer)
+			Dim userID As Integer = DirectCast(cacheItemArgs.ParamList(1), Integer)
+			Dim moduleID As Integer = DirectCast(cacheItemArgs.ParamList(2), Integer)
+			Dim objUserInfo As ForumUser
+			Dim dr As IDataReader = Nothing
+			Try
+				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().UserGet(userID, portalID)
+				If dr.Read Then
+					objUserInfo = FillForumUserInfo(dr, portalID, moduleID)
+					' For user banning, add a check here for date and if banned. If so, we need to update the db, then run this method again. 
+					If objUserInfo.IsBanned = True And objUserInfo.LiftBanDate < Date.Now Then
+						objUserInfo.IsBanned = False
+						objUserInfo.LiftBanDate = Null.NullDate
+
+						UserUpdate(objUserInfo)
+						'UserGet(portalID, userID, moduleID)
+					End If
+				Else
+					objUserInfo = SetForumUser(userID, portalID, moduleID)
+				End If
+			Catch exc As Exception
+				LogException(exc)
+			Finally
+				If Not dr Is Nothing Then
+					dr.Close()
+				End If
+			End Try
+
+			Return objUserInfo
+		End Function
+
+		''' <summary>
 		''' This returns standard forum user information for anonymous or deleted users. 
 		''' </summary>
 		''' <param name="ModuleID"></param>
@@ -835,31 +824,30 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="PortalID"></param>
 		''' <param name="ModuleID"></param>
 		''' <remarks></remarks>
-		Private Sub SetForumUser(ByVal UserID As Integer, ByVal PortalID As Integer, ByVal ModuleID As Integer)
+		Private Function SetForumUser(ByVal UserID As Integer, ByVal PortalID As Integer, ByVal ModuleID As Integer) As ForumUser
 			Dim cntForumUser As New ForumUserController
 			Dim fUser As New ForumUser(ModuleID)
 
-			With fUser
-				.PortalID = PortalID
-				.UserID = UserID
-				Dim myConfig As Forum.Config
-				myConfig = Config.GetForumConfig(ModuleID)
+			fUser.PortalID = PortalID
+			fUser.UserID = UserID
+			Dim myConfig As Forum.Config
+			myConfig = Config.GetForumConfig(ModuleID)
 
-				.ThreadsPerPage = myConfig.ThreadsPerPage
-				.PostsPerPage = myConfig.PostsPerPage
-				.EnableDisplayInMemberList = myConfig.EnableMemberList
-				.EnableOnlineStatus = myConfig.EnableUsersOnline
-				.EnablePM = myConfig.EnablePMSystem
-				.EnablePMNotifications = myConfig.MailNotification
-				.IsTrusted = myConfig.TrustNewUsers
-				.EnableModNotification = myConfig.MailNotification
-				.EnableSelfNotifications = False
-			End With
+			fUser.ThreadsPerPage = myConfig.ThreadsPerPage
+			fUser.PostsPerPage = myConfig.PostsPerPage
+			fUser.EnableDisplayInMemberList = myConfig.EnableMemberList
+			fUser.EnableOnlineStatus = myConfig.EnableUsersOnline
+			fUser.EnablePM = myConfig.EnablePMSystem
+			fUser.EnablePMNotifications = myConfig.MailNotification
+			fUser.IsTrusted = myConfig.TrustNewUsers
+			fUser.EnableModNotification = myConfig.MailNotification
+			fUser.EnableSelfNotifications = False
 
 			cntForumUser.UserAdd(fUser)
-
 			ResetForumUser(UserID, PortalID)
-		End Sub
+
+			Return fUser
+		End Function
 
 		''' <summary>
 		''' This checks to see if a user exists for the portal's forum. If a valid user exists here, the cache is set. If not, user is created so long as they exist as a core user. 
@@ -877,23 +865,23 @@ Namespace DotNetNuke.Modules.Forum
 			Dim fUser As New ForumUser(ModuleID)
 			fUser = cntForumUser.UserGet(PortalID, UserID, ModuleID)
 
-			' we could not find this forum user 
-			If fUser IsNot Nothing Then
-				Dim dnnUser As New Users.UserInfo
-				dnnUser = GetCoreUser(UserID, PortalID)
+			'' we could not find this forum user 
+			'If fUser Is Nothing Then
+			'    Dim dnnUser As New Users.UserInfo
+			'    dnnUser = GetCoreUser(UserID, PortalID)
 
-				If Not dnnUser Is Nothing Then
-					' the user is a DNN user but has never visited the forums for this portal
-					SetForumUser(UserID, PortalID, ModuleID)
+			'    If Not dnnUser Is Nothing Then
+			'        ' the user is a DNN user but has never visited the forums for this portal
+			'        SetForumUser(UserID, PortalID, ModuleID)
 
-					fUser = New ForumUser(ModuleID)
-					fUser = cntForumUser.UserGet(PortalID, UserID, ModuleID)
-				End If
-			End If
+			'        fUser = New ForumUser(ModuleID)
+			'        fUser = cntForumUser.UserGet(PortalID, UserID, ModuleID)
+			'    End If
+			'End If
 
-			If timeOut > 0 And fUser IsNot Nothing Then
-				DataCache.SetCache(cacheKey, fUser, TimeSpan.FromMinutes(timeOut))
-			End If
+			'If timeOut > 0 And fUser IsNot Nothing Then
+			'    DataCache.SetCache(cacheKey, fUser, TimeSpan.FromMinutes(timeOut))
+			'End If
 
 			Return fUser
 		End Function
