@@ -206,9 +206,9 @@ Namespace DotNetNuke.Modules.Forum
 						' We need to clear all users who posted in the thread. (Otherwise cached user objects will not reflect proper post count) KNOWN ISSUE
 						'ForumUserController.ResetForumUser(objThread.)
 
-						ThreadController.ResetThreadListCached(objThread.ForumID, objThread.ModuleID)
+						ThreadController.ResetThreadListCached(objThread.ForumID, objThread.HostForum.ModuleID)
 						If objConfig.AggregatedForums Then
-							ThreadController.ResetThreadListCached(-1, objThread.ModuleID)
+							ThreadController.ResetThreadListCached(-1, objThread.HostForum.ModuleID)
 						End If
 
 						' have to handle that the post we just removed deleted the entire thread

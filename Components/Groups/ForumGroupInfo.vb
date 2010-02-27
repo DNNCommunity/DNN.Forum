@@ -31,19 +31,17 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Members"
 
-		Private Const GroupInfoCacheKeyPrefix As String = "GroupInfo"
-		Private mGroupID As Integer
-		Private mName As String
-		Private mPortalID As Integer
-		Private mModuleID As Integer
-		Private mSortOrder As Integer
-		Private mCreatedDate As DateTime
-		Private mUpdatedDate As DateTime
-		Private mCreatedByUser As Integer
-		Private mUpdatedByUser As Integer
+		Private _GroupID As Integer
+		Private _Name As String
+		Private _PortalID As Integer
+		Private _ModuleID As Integer
+		Private _SortOrder As Integer
+		Private _CreatedDate As DateTime
+		Private _CreatedByUser As Integer
+		Private _UpdatedDate As DateTime
+		Private _UpdatedByUser As Integer
 		'Not part of table
-		Private mForumCount As Integer
-		Private mActiveForumCount As Integer
+		Private _ForumCount As Integer
 
 #End Region
 
@@ -59,37 +57,6 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 #Region "Public Methods"
-
-		''' <summary>
-		''' Attempts to load the group from cache, if not available it retrieves it and places it in cache. 
-		''' </summary>
-		''' <param name="GroupID"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Shared Function GetGroupInfo(ByVal GroupID As Integer) As GroupInfo
-			Dim strCacheKey As String = GroupInfoCacheKeyPrefix & CStr(GroupID)
-			Dim objGroup As New GroupInfo
-			objGroup = CType(DataCache.GetCache(strCacheKey), GroupInfo)
-
-			If objGroup Is Nothing Then
-				Dim cntGroup As New GroupController
-				objGroup = cntGroup.GroupGet(GroupID)
-				DataCache.SetCache(strCacheKey, objGroup)
-			End If
-
-			Return objGroup
-		End Function
-
-		''' <summary>
-		''' Resets the group info in cache. 
-		''' </summary>
-		''' <param name="GroupID"></param>
-		''' <remarks></remarks>
-		Public Shared Sub ResetGroupInfo(ByVal GroupID As Integer)
-			Dim strCacheKey As String = GroupInfoCacheKeyPrefix & CStr(GroupID)
-
-			DataCache.RemoveCache(strCacheKey)
-		End Sub
 
 		''' <summary>
 		''' Builds a collection of authorized forums for the specified Group.
@@ -259,10 +226,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Property GroupID() As Integer
 			Get
-				Return mGroupID
+				Return _GroupID
 			End Get
 			Set(ByVal Value As Integer)
-				mGroupID = Value
+				_GroupID = Value
 			End Set
 		End Property
 
@@ -274,10 +241,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Property Name() As String
 			Get
-				Return mName
+				Return _Name
 			End Get
 			Set(ByVal Value As String)
-				mName = Value
+				_Name = Value
 			End Set
 		End Property
 
@@ -289,10 +256,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Property PortalID() As Integer
 			Get
-				Return mPortalID
+				Return _PortalID
 			End Get
 			Set(ByVal Value As Integer)
-				mPortalID = Value
+				_PortalID = Value
 			End Set
 		End Property
 
@@ -304,70 +271,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Property ModuleID() As Integer
 			Get
-				Return mModuleID
+				Return _ModuleID
 			End Get
 			Set(ByVal Value As Integer)
-				mModuleID = Value
-			End Set
-		End Property
-
-		''' <summary>
-		''' The date the group was created. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property CreatedDate() As DateTime
-			Get
-				Return mCreatedDate
-			End Get
-			Set(ByVal Value As DateTime)
-				mCreatedDate = Value
-			End Set
-		End Property
-
-		''' <summary>
-		''' The UserID of the person who created the Group. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property CreatedByUser() As Integer
-			Get
-				Return mCreatedByUser
-			End Get
-			Set(ByVal Value As Integer)
-				mCreatedByUser = Value
-			End Set
-		End Property
-
-		''' <summary>
-		''' The date the group was last updated. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property UpdatedDate() As DateTime
-			Get
-				Return mUpdatedDate
-			End Get
-			Set(ByVal Value As DateTime)
-				mUpdatedDate = Value
-			End Set
-		End Property
-
-		''' <summary>
-		''' The last UserID to update the group. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property UpdatedByUser() As Integer
-			Get
-				Return mUpdatedByUser
-			End Get
-			Set(ByVal Value As Integer)
-				mUpdatedByUser = Value
+				_ModuleID = Value
 			End Set
 		End Property
 
@@ -379,10 +286,70 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Property SortOrder() As Integer
 			Get
-				Return mSortOrder
+				Return _SortOrder
 			End Get
 			Set(ByVal Value As Integer)
-				mSortOrder = Value
+				_SortOrder = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' The date the group was created. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property CreatedDate() As DateTime
+			Get
+				Return _CreatedDate
+			End Get
+			Set(ByVal Value As DateTime)
+				_CreatedDate = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' The UserID of the person who created the Group. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property CreatedByUser() As Integer
+			Get
+				Return _CreatedByUser
+			End Get
+			Set(ByVal Value As Integer)
+				_CreatedByUser = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' The last UserID to update the group. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property UpdatedByUser() As Integer
+			Get
+				Return _UpdatedByUser
+			End Get
+			Set(ByVal Value As Integer)
+				_UpdatedByUser = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' The date the group was last updated. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property UpdatedDate() As DateTime
+			Get
+				Return _UpdatedDate
+			End Get
+			Set(ByVal Value As DateTime)
+				_UpdatedDate = Value
 			End Set
 		End Property
 
@@ -394,25 +361,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>Not stored in table, retrieved in Get Sprocs</remarks>
 		Public Property ForumCount() As Integer
 			Get
-				Return mForumCount
+				Return _ForumCount
 			End Get
 			Set(ByVal Value As Integer)
-				mForumCount = Value
-			End Set
-		End Property
-
-		''' <summary>
-		''' Number of active forums in the group. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks>Not stored in table, retrieved in Get Sprocs</remarks>
-		Public Property ActiveForumCount() As Integer
-			Get
-				Return mActiveForumCount
-			End Get
-			Set(ByVal Value As Integer)
-				mActiveForumCount = Value
+				_ForumCount = Value
 			End Set
 		End Property
 
@@ -429,25 +381,6 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property objConfig() As Forum.Config
 			Get
 				Return Forum.Config.GetForumConfig(ModuleID)
-			End Get
-		End Property
-
-		''' <summary>
-		''' This would allow for multiple Group Levels, not used. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public ReadOnly Property Parent() As GroupInfo
-			Get
-				If GroupID <> -1 Then
-					Return GroupInfo.GetGroupInfo(GroupID)
-				Else
-					Dim objGroup As GroupInfo = New GroupInfo
-					objGroup.ModuleID = ModuleID
-					objGroup.GroupID = GroupID
-					Return objGroup
-				End If
 			End Get
 		End Property
 

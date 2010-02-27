@@ -24,168 +24,204 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "GroupController"
 
-    ''' <summary>
-    ''' CRUD (and all db methods) Group database methods
-    ''' </summary>
-    ''' <remarks>
-    ''' </remarks>
-    ''' <history>
-    ''' 	[cpaterra]	7/13/2005	Created
-    ''' </history>
-    Public Class GroupController
+	''' <summary>
+	''' CRUD (and all db methods) Group database methods
+	''' </summary>
+	''' <remarks>
+	''' </remarks>
+	''' <history>
+	''' 	[cpaterra]	7/13/2005	Created
+	''' </history>
+	Public Class GroupController
 
 #Region "Private Members"
 
-        Private Const GroupInfoCachePrefix As String = "ForumAllGroups"
-        Private Const GroupInfoCacheTimeout As Integer = 20
+		Private Const GroupInfoCacheKeyPrefix As String = "Group-Cache-"
+		Private Const GroupInfoCachePrefix As String = "ForumAllGroups"
+		Private Const GroupInfoCacheTimeout As Integer = 20
 
 #End Region
 
 #Region "Public Methods"
 
-        ''' <summary>
-        ''' Get all Groups based on moduleId. Cache this when possible.
-        ''' </summary>
-        ''' <param name="ModuleId">The ModuleID being used to retrieve all groups.</param>
-        ''' <returns>An arraylist of all groups corresponding to the supplied ModuleID.</returns>
-        ''' <remarks>
-        ''' </remarks>
-        ''' <history>
-        ''' 	[cpaterra]	2/11/2006	Created
-        ''' </history>
-        Public Function GroupsGetByModuleID(ByVal ModuleId As Integer) As List(Of GroupInfo)
-            Dim strCacheKey As String = GroupInfoCachePrefix & ModuleId.ToString()
-            Dim arrGroups As New List(Of GroupInfo)
-            arrGroups = CType(DataCache.GetCache(strCacheKey), List(Of GroupInfo))
+		''' <summary>
+		''' Attempts to load the group from cache, if not available it retrieves it and places it in cache. 
+		''' </summary>
+		''' <param name="GroupID"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Function GetCachedGroup(ByVal GroupID As Integer) As GroupInfo
+			Dim strCacheKey As String = GroupInfoCacheKeyPrefix & CStr(GroupID)
+			Dim objGroup As New GroupInfo
+			objGroup = CType(DataCache.GetCache(strCacheKey), GroupInfo)
 
-            If arrGroups Is Nothing Then
+			If objGroup Is Nothing Then
+				objGroup = GetGroup(GroupID)
+				DataCache.SetCache(strCacheKey, objGroup)
+			End If
+
+			Return objGroup
+		End Function
+
+		''' <summary>
+		''' Removes the group from cache.
+		''' </summary>
+		''' <param name="GroupID"></param>
+		''' <remarks></remarks>
+		Public Sub ResetGroupCache(ByVal GroupID As Integer)
+			Dim strCacheKey As String = GroupInfoCacheKeyPrefix & CStr(GroupID)
+
+			DataCache.RemoveCache(strCacheKey)
+		End Sub
+
+
+		''' <summary>
+		''' Get all Groups based on moduleId. Cache this when possible.
+		''' </summary>
+		''' <param name="ModuleId">The ModuleID being used to retrieve all groups.</param>
+		''' <returns>An arraylist of all groups corresponding to the supplied ModuleID.</returns>
+		''' <remarks>
+		''' </remarks>
+		''' <history>
+		''' 	[cpaterra]	2/11/2006	Created
+		''' </history>
+		Public Function GroupsGetByModuleID(ByVal ModuleId As Integer) As List(Of GroupInfo)
+			Dim strCacheKey As String = GroupInfoCachePrefix & ModuleId.ToString()
+			Dim arrGroups As New List(Of GroupInfo)
+			arrGroups = CType(DataCache.GetCache(strCacheKey), List(Of GroupInfo))
+
+			If arrGroups Is Nothing Then
 				Dim timeOut As Int32 = GroupInfoCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
 
-                arrGroups = CBO.FillCollection(Of GroupInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().GroupGetByModuleID(ModuleId))
+				arrGroups = CBO.FillCollection(Of GroupInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().GroupGetByModuleID(ModuleId))
 
-                'Cache Group if timeout > 0 and Group is not null
-                If timeOut > 0 And arrGroups IsNot Nothing Then
+				'Cache Group if timeout > 0 and Group is not null
+				If timeOut > 0 And arrGroups IsNot Nothing Then
 					DataCache.SetCache(strCacheKey, arrGroups, TimeSpan.FromMinutes(timeOut))
-                End If
-            End If
+				End If
+			End If
 
-            Return arrGroups
-        End Function
+			Return arrGroups
+		End Function
 
-        ''' <summary>
-        ''' Used to clear the group cache. (All groups are cached)
-        ''' </summary>
-        ''' <param name="ModuleID"></param>
-        ''' <remarks></remarks>
-        Public Sub ResetAllGroupsByModuleID(ByVal ModuleID As Integer)
-            Dim strCacheKey As String = GroupInfoCachePrefix & ModuleID.ToString()
+		''' <summary>
+		''' Used to clear the group cache. (All groups are cached)
+		''' </summary>
+		''' <param name="ModuleID"></param>
+		''' <remarks></remarks>
+		Public Sub ResetAllGroupsByModuleID(ByVal ModuleID As Integer)
+			Dim strCacheKey As String = GroupInfoCachePrefix & ModuleID.ToString()
 
-            DataCache.RemoveCache(strCacheKey)
-        End Sub
+			DataCache.RemoveCache(strCacheKey)
+		End Sub
 
-        ''' <summary>
-        ''' Returns all groups with at least one authorized forum.
-        ''' </summary>
-        ''' <param name="ModuleId">Integer</param>
-        ''' <param name="UserID">The UserID to return results for. (Because of private permissions)</param>
-        ''' <param name="NoLinkForums">True if Link Type forums should be excluded.</param>
-        ''' <returns>A Generics arraylist of GroupInfo items.</returns>
-        ''' <remarks>
-        ''' </remarks>
-        ''' <history>
-        ''' 	[cpaterra]	2/11/2006	Created
-        ''' </history>
-        Public Function GroupGetAllAuthorized(ByVal ModuleId As Integer, ByVal UserID As Integer, ByVal NoLinkForums As Boolean) As List(Of GroupInfo)
-            Dim arrAllGroups As New List(Of GroupInfo)
-            Dim arrAuthGroups As New List(Of GroupInfo)
-            arrAllGroups = GroupsGetByModuleID(ModuleId)
+		''' <summary>
+		''' Returns all groups with at least one authorized forum.
+		''' </summary>
+		''' <param name="ModuleId">Integer</param>
+		''' <param name="UserID">The UserID to return results for. (Because of private permissions)</param>
+		''' <param name="NoLinkForums">True if Link Type forums should be excluded.</param>
+		''' <returns>A Generics arraylist of GroupInfo items.</returns>
+		''' <remarks>
+		''' </remarks>
+		''' <history>
+		''' 	[cpaterra]	2/11/2006	Created
+		''' </history>
+		Public Function GroupGetAllAuthorized(ByVal ModuleId As Integer, ByVal UserID As Integer, ByVal NoLinkForums As Boolean) As List(Of GroupInfo)
+			Dim arrAllGroups As New List(Of GroupInfo)
+			Dim arrAuthGroups As New List(Of GroupInfo)
+			arrAllGroups = GroupsGetByModuleID(ModuleId)
 
-            If arrAllGroups.Count > 0 Then
-                For Each objGroup As GroupInfo In arrAllGroups
-                    Dim arrAuthForums As New List(Of ForumInfo)
-                    arrAuthForums = objGroup.AuthorizedForums(UserID, NoLinkForums)
-                    If arrAuthForums.Count > 0 Then
-                        arrAuthGroups.Add(objGroup)
-                    End If
-                Next
-            End If
+			If arrAllGroups.Count > 0 Then
+				For Each objGroup As GroupInfo In arrAllGroups
+					Dim arrAuthForums As New List(Of ForumInfo)
+					arrAuthForums = objGroup.AuthorizedForums(UserID, NoLinkForums)
+					If arrAuthForums.Count > 0 Then
+						arrAuthGroups.Add(objGroup)
+					End If
+				Next
+			End If
 
-            Return arrAuthGroups
-        End Function
+			Return arrAuthGroups
+		End Function
 
-        ''' <summary>
-        ''' Gets a single group
-        ''' </summary>
-        ''' <param name="GroupId">Integer</param>
-        ''' <returns>GroupInfo</returns>
-        ''' <remarks>
-        ''' </remarks>
-        ''' <history>
-        ''' 	[cpaterra]	2/11/2006	Created
-        ''' </history>
-        Public Function GroupGet(ByVal GroupId As Integer) As GroupInfo
-            Return CType(CBO.FillObject(DotNetNuke.Modules.Forum.DataProvider.Instance().GroupGet(GroupId), GetType(GroupInfo)), GroupInfo)
-        End Function
+		''' <summary>
+		''' Adds a new group to the database. 
+		''' </summary>
+		''' <param name="Name"></param>
+		''' <param name="PortalID"></param>
+		''' <param name="ModuleId"></param>
+		''' <param name="CreatedByUser"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Function GroupAdd(ByVal Name As String, ByVal PortalID As Integer, ByVal ModuleId As Integer, ByVal CreatedByUser As Integer) As Integer
+			Return DotNetNuke.Modules.Forum.DataProvider.Instance().GroupAdd(Name, PortalID, ModuleId, CreatedByUser)
+		End Function
 
-        ''' <summary>
-        ''' Adds a new group to the database. 
-        ''' </summary>
-        ''' <param name="Name"></param>
-        ''' <param name="PortalID"></param>
-        ''' <param name="ModuleId"></param>
-        ''' <param name="CreatedByUser"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Function GroupAdd(ByVal Name As String, ByVal PortalID As Integer, ByVal ModuleId As Integer, ByVal CreatedByUser As Integer) As Integer
-            Return DotNetNuke.Modules.Forum.DataProvider.Instance().GroupAdd(Name, PortalID, ModuleId, CreatedByUser)
-        End Function
+		''' <summary>
+		''' Updates an existing group in the database. 
+		''' </summary>
+		''' <param name="GroupID"></param>
+		''' <param name="Name"></param>
+		''' <param name="UpdatedByUser"></param>
+		''' <param name="SortOrder"></param>
+		''' <param name="ModuleID"></param>
+		''' <remarks></remarks>
+		Public Sub GroupUpdate(ByVal GroupID As Integer, ByVal Name As String, ByVal UpdatedByUser As Integer, ByVal SortOrder As Integer, ByVal ModuleID As Integer)
+			DotNetNuke.Modules.Forum.DataProvider.Instance().GroupUpdate(GroupID, Name, UpdatedByUser, SortOrder, ModuleID)
+		End Sub
 
-        ''' <summary>
-        ''' Delete's a forum group 
-        ''' (Should not happen when there are forums within it)
-        ''' </summary>
-        ''' <param name="GroupID">The PK value associated with the Group.</param>
-        ''' <param name="ModuleID">The module instance the group is tied to.</param>
-        ''' <remarks>
-        ''' </remarks>
-        ''' <history>
-        ''' 	[cpaterra]	2/11/2006	Created
-        ''' </history>
-        Public Sub GroupDelete(ByVal GroupID As Integer, ByVal ModuleID As Integer)
-            DotNetNuke.Modules.Forum.DataProvider.Instance().GroupDelete(GroupID, ModuleID)
-        End Sub
+		''' <summary>
+		''' Delete's a forum group 
+		''' (Should not happen when there are forums within it)
+		''' </summary>
+		''' <param name="GroupID">The PK value associated with the Group.</param>
+		''' <param name="ModuleID">The module instance the group is tied to.</param>
+		''' <remarks>
+		''' </remarks>
+		''' <history>
+		''' 	[cpaterra]	2/11/2006	Created
+		''' </history>
+		Public Sub GroupDelete(ByVal GroupID As Integer, ByVal ModuleID As Integer)
+			DotNetNuke.Modules.Forum.DataProvider.Instance().GroupDelete(GroupID, ModuleID)
+		End Sub
 
-        ''' <summary>
-        ''' Updates an existing group in the database. 
-        ''' </summary>
-        ''' <param name="GroupID"></param>
-        ''' <param name="Name"></param>
-        ''' <param name="UpdatedByUser"></param>
-        ''' <param name="SortOrder"></param>
-        ''' <param name="ModuleID"></param>
-        ''' <remarks></remarks>
-        Public Sub GroupUpdate(ByVal GroupID As Integer, ByVal Name As String, ByVal UpdatedByUser As Integer, ByVal SortOrder As Integer, ByVal ModuleID As Integer)
-            DotNetNuke.Modules.Forum.DataProvider.Instance().GroupUpdate(GroupID, Name, UpdatedByUser, SortOrder, ModuleID)
-        End Sub
-
-        ''' <summary>
-        ''' Updates the view order of the groups (top to bottom) - Moves up
-        ''' or down one level
-        ''' </summary>
-        ''' <param name="GroupID">Integer</param>
-        ''' <param name="MoveUp">Boolean</param>
-        ''' <remarks>
-        ''' </remarks>
-        ''' <history>
-        ''' 	[cpaterra]	2/11/2006	Created
-        ''' </history>
-        Public Sub GroupSortOrderUpdate(ByVal GroupID As Integer, ByVal MoveUp As Boolean)
-            DotNetNuke.Modules.Forum.DataProvider.Instance().GroupSortOrderUpdate(GroupID, MoveUp)
-        End Sub
+		''' <summary>
+		''' Updates the view order of the groups (top to bottom) - Moves up
+		''' or down one level
+		''' </summary>
+		''' <param name="GroupID">Integer</param>
+		''' <param name="MoveUp">Boolean</param>
+		''' <remarks>
+		''' </remarks>
+		''' <history>
+		''' 	[cpaterra]	2/11/2006	Created
+		''' </history>
+		Public Sub GroupSortOrderUpdate(ByVal GroupID As Integer, ByVal MoveUp As Boolean)
+			DotNetNuke.Modules.Forum.DataProvider.Instance().GroupSortOrderUpdate(GroupID, MoveUp)
+		End Sub
 
 #End Region
 
-    End Class
+#Region "Private Methods"
+
+		''' <summary>
+		''' Returns a single forum group.
+		''' </summary>
+		''' <param name="GroupId">Integer</param>
+		''' <returns>GroupInfo</returns>
+		''' <remarks>
+		''' </remarks>
+		''' <history>
+		''' 	[cpaterra]	2/11/2006	Created
+		''' </history>
+		Private Function GetGroup(ByVal GroupId As Integer) As GroupInfo
+			Return CType(CBO.FillObject(DotNetNuke.Modules.Forum.DataProvider.Instance().GroupGet(GroupId), GetType(GroupInfo)), GroupInfo)
+		End Function
+
+#End Region
+
+	End Class
 
 #End Region
 

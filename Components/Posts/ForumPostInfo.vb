@@ -120,17 +120,17 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Public Properties"
 
-		''' <summary>
-		''' The moduleID this post is being accessed from.
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public ReadOnly Property ModuleId() As Integer
-			Get
-				Return ParentThread.ModuleID
-			End Get
-		End Property
+		'''' <summary>
+		'''' The moduleID this post is being accessed from.
+		'''' </summary>
+		'''' <value></value>
+		'''' <returns></returns>
+		'''' <remarks></remarks>
+		'Public ReadOnly Property ModuleId() As Integer
+		'	Get
+		'		Return ParentThread.HostForum.ModuleID
+		'	End Get
+		'End Property
 
 		''' <summary>
 		''' The forumID this post and thread belong to. 
@@ -165,7 +165,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property Author() As ForumUser
 			Get
 				Dim cntForumUser As New ForumUserController
-				Return cntForumUser.GetForumUser(UserID, False, ModuleId, ParentThread.PortalID)
+				Return cntForumUser.GetForumUser(UserID, False, ParentThread.HostForum.ModuleID, ParentThread.HostForum.PortalID)
 			End Get
 		End Property
 
@@ -178,7 +178,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property LastModifiedAuthor() As ForumUser
 			Get
 				Dim cntForumUser As New ForumUserController
-				Return cntForumUser.GetForumUser(UpdatedByUser, False, ModuleId, ParentThread.PortalID)
+				Return cntForumUser.GetForumUser(UpdatedByUser, False, ParentThread.HostForum.ModuleID, ParentThread.HostForum.PortalID)
 			End Get
 		End Property
 

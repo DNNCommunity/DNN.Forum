@@ -152,7 +152,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public ReadOnly Property ParentForum() As ForumInfo
+		Public ReadOnly Property HostForum() As ForumInfo
 			Get
 				Return _HostForum
 			End Get
@@ -523,7 +523,7 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			_HostForum = ThreadInfo.HostForum
-			_ForumID = ParentForum.ForumID
+			_ForumID = HostForum.ForumID
 
 			' Make sure the forum is active 
 			If Not _HostForum.IsActive Then
@@ -532,7 +532,7 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			' User might access this page by typing url so better check permission on parent forum
-			If Not (ParentForum.PublicView) Then
+			If Not (HostForum.PublicView) Then
 				' The forum is private, see if we have proper view perms here
 				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
 
@@ -1105,7 +1105,7 @@ Namespace DotNetNuke.Modules.Forum
 			' new thread button
 			'Remove LoggedOnUserID limitation if wishing to implement Anonymous Posting
 			If (CurrentForumUser.UserID > 0) And (Not ForumId = -1) Then
-				If Not ParentForum.PublicPosting Then
+				If Not HostForum.PublicPosting Then
 					Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
 
 					If objSecurity.IsAllowedToStartRestrictedThread Then
@@ -2462,7 +2462,7 @@ Namespace DotNetNuke.Modules.Forum
 			If (CurrentForumUser.UserID > 0) And (Not ForumId = -1) Then
 				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
 
-				If Not ParentForum.PublicPosting Then
+				If Not HostForum.PublicPosting Then
 					If objSecurity.IsAllowedToStartRestrictedThread Then
 
 						RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0")	'<Table>            
@@ -2735,7 +2735,7 @@ Namespace DotNetNuke.Modules.Forum
 		Private Sub RenderQuickReply(ByVal wr As HtmlTextWriter)
 			If objConfig.EnableQuickReply Then
 				If (CurrentForumUser.UserID > 0) And (Not ForumId = -1) Then
-					If Not ParentForum.PublicPosting Then
+					If Not HostForum.PublicPosting Then
 						If CurrentForumUser.IsBanned = False And ThreadInfo.IsClosed = False Then
 							Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
 							If objSecurity.IsAllowedToPostRestrictedReply Then

@@ -103,17 +103,17 @@ Namespace DotNetNuke.Modules.Forum
 		Public Sub New()
 		End Sub
 
-		''' <summary>
-		''' Creates a new instance of a foruminfo object based on its ID.
-		''' </summary>
-		''' <param name="ForumID"></param>
-		''' <remarks>
-		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	11/26/2005	Created
-		''' </history>
-		Private Sub New(ByVal ForumID As Integer)
-		End Sub
+		'''' <summary>
+		'''' Creates a new instance of a foruminfo object based on its ID.
+		'''' </summary>
+		'''' <param name="ForumID"></param>
+		'''' <remarks>
+		'''' </remarks>
+		'''' <history>
+		'''' 	[cpaterra]	11/26/2005	Created
+		'''' </history>
+		'Private Sub New(ByVal ForumID As Integer)
+		'End Sub
 
 #End Region
 
@@ -206,7 +206,10 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property ParentGroup() As GroupInfo
 			Get
 				If GroupID <> -1 Then
-					Return GroupInfo.GetGroupInfo(GroupID)
+					Dim cntGroup As New GroupController
+					Dim objGroup As GroupInfo
+					objGroup = cntGroup.GetCachedGroup(GroupID)
+					Return cntGroup.GetCachedGroup(GroupID)
 				Else
 					Dim _groupInfo As GroupInfo = New GroupInfo
 					_groupInfo.ModuleID = ModuleID

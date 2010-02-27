@@ -582,7 +582,7 @@ Namespace DotNetNuke.Modules.Forum
 				emailType = ForumEmailType.ModeratorPostToModerate
 
 				' This will now take moderator directly to post to moderate from email.
-				_mailURL = Utilities.Links.ContainerPostToModerateLink(TabID, newPostInfo.ForumID, newPostInfo.ModuleId)
+				_mailURL = Utilities.Links.ContainerPostToModerateLink(TabID, newPostInfo.ForumID, newPostInfo.ParentThread.HostForum.ModuleID)
 
 				If objConfig.MailNotification Then
 					Utilities.ForumUtils.SendForumMail(newPostInfo.PostID, _mailURL, emailType, "Moderated Post", objConfig, ProfileUrl, PortalID)

@@ -322,7 +322,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			ForumController.ResetForumInfoCache(CurrentParentID)
 
 			' Update group info in cache in case the forum moved
-			GroupInfo.ResetGroupInfo(Convert.ToInt32(ddlGroup.SelectedValue))
+			Dim cntGroup As New GroupController
+			cntGroup.ResetGroupCache(Convert.ToInt32(ddlGroup.SelectedValue))
 
 			' Go Back to forum/group management screen
 			Response.Redirect(Utilities.Links.ACPForumsManageLink(TabId, ModuleId, CType(ddlGroup.SelectedValue, Integer)), False)
@@ -395,7 +396,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			'update the cached values
 			ForumController.ResetForumInfoCache(ForumID)
 			' Update the group info so it knows there is a new forum
-			GroupInfo.ResetGroupInfo(Convert.ToInt32(ddlGroup.SelectedValue))
+			Dim cntGroup As New GroupController
+			cntGroup.ResetGroupCache(Convert.ToInt32(ddlGroup.SelectedValue))
 
 			' Go Back to forum/group management screen
 			Response.Redirect(Utilities.Links.ACPForumsManageLink(TabId, ModuleId, CType(ddlGroup.SelectedValue, Integer)), False)

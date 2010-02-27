@@ -197,7 +197,7 @@ Namespace DotNetNuke.Modules.Forum
 			For Each objPost As PostInfo In arrPost
 				' we need to make sure we delete the threadid last (because of split and possibly move). 
 				If Not objPost.PostID = ThreadID Then
-					cntPost.PostDelete(objPost.PostID, objPost.ModuleId, Notes, PortalID, objPost.ParentThread.HostForum.GroupID, True, objPost.ParentThread.HostForum.ParentId)
+					cntPost.PostDelete(objPost.PostID, objPost.ParentThread.HostForum.ModuleID, Notes, PortalID, objPost.ParentThread.HostForum.GroupID, True, objPost.ParentThread.HostForum.ParentId)
 				Else
 					objThreadPost = objPost
 				End If
@@ -206,7 +206,7 @@ Namespace DotNetNuke.Modules.Forum
 			' we deleted all posts in the thread but the threadid one
 			If Not objThreadPost Is Nothing Then
 				' not sure how this would happen, but just to be safe
-				cntPost.PostDelete(objThreadPost.PostID, objThreadPost.ModuleId, Notes, PortalID, objThreadPost.ParentThread.HostForum.GroupID, True, objThreadPost.ParentThread.HostForum.ParentId)
+				cntPost.PostDelete(objThreadPost.PostID, objThreadPost.ParentThread.HostForum.ModuleID, Notes, PortalID, objThreadPost.ParentThread.HostForum.GroupID, True, objThreadPost.ParentThread.HostForum.ParentId)
 			End If
 		End Sub
 

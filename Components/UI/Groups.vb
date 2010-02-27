@@ -203,7 +203,7 @@ Namespace DotNetNuke.Modules.Forum
 				'Group view
 				Dim cltGroups As New GroupController
 				Dim objGroupInfo As GroupInfo
-				objGroupInfo = cltGroups.GroupGet(mGroupId)
+				objGroupInfo = cltGroups.GetCachedGroup(mGroupId)
 				wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.Groups, objGroupInfo, objConfig, ChildGroupView))
 			Else
 				'Forum Home view

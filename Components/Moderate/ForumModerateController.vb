@@ -84,7 +84,8 @@ Namespace DotNetNuke.Modules.Forum
 			Dim GroupID As Integer
 			GroupID = DotNetNuke.Modules.Forum.DataProvider.Instance().ModeratePostApprove(PostID, ApprovedBy, Notes)
 			' Reset Group Info
-			GroupInfo.ResetGroupInfo(GroupID)
+			Dim cntGroup As New GroupController
+			cntGroup.ResetGroupCache(GroupID)
 			' Reset Forum Info
 
 			ForumController.ResetForumInfoCache(ForumID)
