@@ -311,8 +311,10 @@ Namespace DotNetNuke.Modules.Forum
 						Dim objGroups As New GroupController
 						Dim arrForums As List(Of ForumInfo)
 
-						For Each objGroup As GroupInfo In objGroups.GroupsGetByModuleID(ModuleId)
-							arrForums = objGroup.AuthorizedForums(UserId, True)
+						For Each objGroup As GroupInfo In objGroups.GetCachedModuleGroups(ModuleId)
+							Dim cntForum As New ForumController
+							arrForums = cntForum.AuthorizedForums(objGroup.GroupID, ModuleId, objConfig, UserId, True)
+
 							If arrForums.Count > 0 Then
 								For Each objForum In arrForums
 									ddlForum.Items.Add(New ListItem(objGroup.Name & " - " & objForum.Name, objForum.ForumID.ToString))

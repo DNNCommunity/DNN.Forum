@@ -61,7 +61,7 @@ Namespace DotNetNuke.Modules.Forum
 			Try
 				If (Page.IsPostBack = False) Then
 					Dim objGroups As New GroupController
-					cboGroup.DataSource = objGroups.GroupsGetByModuleID(ModuleId)
+					cboGroup.DataSource = objGroups.GetCachedModuleGroups(ModuleId)
 					cboGroup.DataBind()
 
 					cboGroup.Items.Insert(0, New ListItem(Localization.GetString("AllGroups", ForumConfig.SharedResourceFile), "0"))

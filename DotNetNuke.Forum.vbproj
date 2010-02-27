@@ -169,6 +169,8 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Components\Forums\ForumInfo.vb" />
+    <Compile Include="Components\Groups\GroupController.vb" />
+    <Compile Include="Components\Groups\GroupInfo.vb" />
     <Compile Include="Components\Portals\ForumPortalSettings.vb" />
     <Compile Include="Components\Posts\PostConnector.vb" />
     <Compile Include="Components\Posts\PostReportedController.vb" />
@@ -185,8 +187,6 @@
     <Compile Include="Components\UI\Groups.vb">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Components\Groups\ForumGroupController.vb" />
-    <Compile Include="Components\Groups\ForumGroupInfo.vb" />
     <Compile Include="Components\Keywords\ForumKeywordController.vb">
       <SubType>Code</SubType>
     </Compile>

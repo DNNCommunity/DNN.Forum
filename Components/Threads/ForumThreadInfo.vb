@@ -132,7 +132,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property StartedByUser() As ForumUser
 			Get
 				Dim cntForumUser As New ForumUserController
-				Return cntForumUser.GetForumUser(StartedByUserID, False, HostForum.ModuleID, HostForum.PortalID)
+				Return cntForumUser.GetForumUser(StartedByUserID, False, HostForum.ModuleID, HostForum.ParentGroup.PortalID)
 			End Get
 		End Property
 
@@ -145,7 +145,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property LastApprovedUser() As ForumUser
 			Get
 				Dim cntForumUser As New ForumUserController
-				Return cntForumUser.GetForumUser(LastApprovedPost.Author.UserID, False, HostForum.ModuleID, HostForum.PortalID)
+				Return cntForumUser.GetForumUser(LastApprovedPost.Author.UserID, False, HostForum.ModuleID, HostForum.ParentGroup.PortalID)
 			End Get
 		End Property
 
@@ -293,7 +293,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property LastApprovedPost() As PostInfo
 			Get
-				Return PostInfo.GetPostInfo(LastApprovedPostID, HostForum.PortalID)
+				Return PostInfo.GetPostInfo(LastApprovedPostID, HostForum.ParentGroup.PortalID)
 			End Get
 		End Property
 
@@ -309,7 +309,7 @@ Namespace DotNetNuke.Modules.Forum
 				Dim strTrimedBody As String = String.Empty
 				strTrimedBody = Utilities.ForumUtils.FormatToolTip(Utilities.ForumUtils.TrimString(strBody, 100))
 				If HostForum.ParentGroup.objConfig.EnableBadWordFilter Then
-					strTrimedBody = Utilities.ForumUtils.FormatProhibitedWord(strTrimedBody, LastApprovedPost.CreatedDate, HostForum.PortalID)
+					strTrimedBody = Utilities.ForumUtils.FormatProhibitedWord(strTrimedBody, LastApprovedPost.CreatedDate, HostForum.ParentGroup.PortalID)
 				End If
 				Return strTrimedBody
 			End Get

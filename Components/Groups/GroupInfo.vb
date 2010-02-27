@@ -23,7 +23,7 @@ Option Explicit On
 Namespace DotNetNuke.Modules.Forum
 
 	''' <summary>
-	''' A single instance of the GroupInfo Object. 
+	''' This is the forum's Group object. 
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
@@ -58,57 +58,6 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Public Methods"
 
-		''' <summary>
-		''' Builds a collection of authorized forums for the specified Group.
-		''' </summary>
-		''' <param name="UserID">The user to return results for. (Permissions)</param>
-		''' <param name="NoLinkForums">True if no link type forums should be added to the collection.</param>
-		''' <returns>A Generics collection of ForumInfo items.</returns>
-		''' <remarks></remarks>
-		Public Function AuthorizedForums(ByVal UserID As Integer, ByVal NoLinkForums As Boolean) As List(Of ForumInfo)
-			Dim cntForum As New ForumController
-			Dim arrAuthForums As New List(Of ForumInfo)
-			Dim arrAllForums As New List(Of ForumInfo)
-			Dim objForum As ForumInfo
-
-			arrAllForums = cntForum.ForumGetAll(GroupID)
-			' add Aggregated Forum option
-			If GroupID = -1 Then
-				objForum = New ForumInfo
-				objForum.ModuleID = ModuleID
-				objForum.GroupID = -1
-				objForum.ForumID = -1
-				objForum.ForumType = ForumType.Normal
-
-				arrAuthForums.Add(objForum)
-			End If
-
-			For Each objForum In arrAllForums
-				Dim Security As New Forum.ModuleSecurity(ModuleID, objConfig.CurrentPortalSettings.ActiveTab.TabID, objForum.ForumID, UserID)
-				If Not objForum.PublicView And objForum.IsActive Then
-					If Security.IsAllowedToViewPrivateForum And objForum.IsActive Then
-						If NoLinkForums Then
-							If Not (objForum.ForumType = ForumType.Link) Then
-								arrAuthForums.Add(objForum)
-							End If
-						Else
-							arrAuthForums.Add(objForum)
-						End If
-					End If
-				ElseIf objForum.IsActive Then
-					'We handle non-private seperately because module security (core) handles the rest
-					If NoLinkForums Then
-						If Not (objForum.ForumType = ForumType.Link) Then
-							arrAuthForums.Add(objForum)
-						End If
-					Else
-						arrAuthForums.Add(objForum)
-					End If
-				End If
-			Next
-
-			Return arrAuthForums
-		End Function
 
 		''' <summary>
 		''' Builds a collection of authorized forums with no parents for the specified Group.

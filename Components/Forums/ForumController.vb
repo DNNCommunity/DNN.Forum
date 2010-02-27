@@ -44,6 +44,80 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Public Methods"
 
 		''' <summary>
+		''' Updates nesseary information to display last post info for a parentforum (subforums container)
+		''' </summary>
+		''' <param name="objForum"></param>
+		''' <returns>An updated ForumInfo object</returns>
+		''' <remarks>Added by Skeel</remarks>
+		Public Function GetParentForumsMostRecentPost(ByVal objForum As ForumInfo) As ForumInfo
+			Dim dr As IDataReader = DotNetNuke.Modules.Forum.DataProvider.Instance().ForumGetMostRecentInfo(objForum.ForumID)
+			While dr.Read
+
+				objForum.MostRecentPostAuthorID = CInt(dr("MostRecentPostAuthorID").ToString)
+				objForum.MostRecentPostDate = CDate(dr("MostRecentPostDate").ToString)
+				objForum.MostRecentPostID = CInt(dr("MostRecentPostID").ToString)
+				objForum.MostRecentThreadID = CInt(dr("MostRecentThreadID").ToString)
+				''Needed to display the correct name
+				'MostRecentPostAuthorID = objForumInfo.MostRecentPostAuthorID
+
+			End While
+			dr.Close()
+			Return objForum
+		End Function
+
+		''' <summary>
+		''' Builds a collection of authorized forums for the specified Group.
+		''' </summary>
+		''' <param name="UserID">The user to return results for. (Permissions)</param>
+		''' <param name="NoLinkForums">True if no link type forums should be added to the collection.</param>
+		''' <returns>A Generics collection of ForumInfo items.</returns>
+		''' <remarks></remarks>
+		Public Function AuthorizedForums(ByVal GroupID As Integer, ByVal ModuleID As Integer, ByVal objConfig As Forum.Config, ByVal UserID As Integer, ByVal NoLinkForums As Boolean) As List(Of ForumInfo)
+			Dim cntForum As New ForumController
+			Dim arrAuthForums As New List(Of ForumInfo)
+			Dim arrAllForums As New List(Of ForumInfo)
+			Dim objForum As ForumInfo
+
+			arrAllForums = cntForum.ForumGetAll(GroupID)
+			' add Aggregated Forum option
+			If GroupID = -1 Then
+				objForum = New ForumInfo
+				objForum.ModuleID = ModuleID
+				objForum.GroupID = -1
+				objForum.ForumID = -1
+				objForum.ForumType = ForumType.Normal
+
+				arrAuthForums.Add(objForum)
+			End If
+
+			For Each objForum In arrAllForums
+				Dim Security As New Forum.ModuleSecurity(ModuleID, objConfig.CurrentPortalSettings.ActiveTab.TabID, objForum.ForumID, UserID)
+				If Not objForum.PublicView And objForum.IsActive Then
+					If Security.IsAllowedToViewPrivateForum And objForum.IsActive Then
+						If NoLinkForums Then
+							If Not (objForum.ForumType = ForumType.Link) Then
+								arrAuthForums.Add(objForum)
+							End If
+						Else
+							arrAuthForums.Add(objForum)
+						End If
+					End If
+				ElseIf objForum.IsActive Then
+					'We handle non-private seperately because module security (core) handles the rest
+					If NoLinkForums Then
+						If Not (objForum.ForumType = ForumType.Link) Then
+							arrAuthForums.Add(objForum)
+						End If
+					Else
+						arrAuthForums.Add(objForum)
+					End If
+				End If
+			Next
+
+			Return arrAuthForums
+		End Function
+
+		''' <summary>
 		''' Checks cache to get all forums for a specified GroupID, if not in cache a collection is 
 		''' retrieved from the database then hydrated one by one and placed into cache.
 		''' </summary>

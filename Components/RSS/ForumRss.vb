@@ -218,7 +218,7 @@ Namespace DotNetNuke.Modules.Forum
 				Dim arrThread As List(Of ThreadInfo)
 				Dim objThread As ThreadInfo
 
-				arrThread = cntThread.ThreadListGetCached(ModuleId, ForumID, mForumConfig.RSSThreadsPerFeed, (ThreadsPage - 1), "", forum.PortalID, 0)
+				arrThread = cntThread.ThreadListGetCached(ModuleId, ForumID, mForumConfig.RSSThreadsPerFeed, (ThreadsPage - 1), "", forum.ParentGroup.PortalID, 0)
 
 				For Each objThread In arrThread
 					Dim bodyForumText As New Utilities.PostContent(server.HtmlDecode(objThread.Body), mForumConfig)

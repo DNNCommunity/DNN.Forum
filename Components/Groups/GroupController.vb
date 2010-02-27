@@ -36,13 +36,39 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Members"
 
-		Private Const GroupInfoCacheKeyPrefix As String = "Group-Cache-"
-		Private Const GroupInfoCachePrefix As String = "ForumAllGroups"
-		Private Const GroupInfoCacheTimeout As Integer = 20
+		Private Const GroupCacheKeyPrefix As String = "Group-Cache-"
+		Private Const GroupCollectionKeyPrefix As String = "ModuleGroup-Cache-"
+		Private Const GroupCacheTimeout As Integer = 20
 
 #End Region
 
 #Region "Public Methods"
+
+		''' <summary>
+		''' Returns all groups based on a moduleId. This is not user specific and can be cached. 
+		''' </summary>
+		''' <param name="ModuleId">The ModuleID being used to retrieve groups.</param>
+		''' <returns>A collection of all groups associated with a single module.</returns>
+		''' <remarks>
+		''' </remarks>
+		Public Function GetCachedModuleGroups(ByVal ModuleId As Integer) As List(Of GroupInfo)
+			Dim strCacheKey As String = GroupCollectionKeyPrefix & ModuleId.ToString()
+			Dim arrGroups As New List(Of GroupInfo)
+			arrGroups = CType(DataCache.GetCache(strCacheKey), List(Of GroupInfo))
+
+			If arrGroups Is Nothing Then
+				Dim timeOut As Int32 = GroupCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
+
+				arrGroups = GetModuleGroups(ModuleId)
+
+				'Cache Group if timeout > 0 and Group is not null
+				If timeOut > 0 And arrGroups IsNot Nothing Then
+					DataCache.SetCache(strCacheKey, arrGroups, TimeSpan.FromMinutes(timeOut))
+				End If
+			End If
+
+			Return arrGroups
+		End Function
 
 		''' <summary>
 		''' Attempts to load the group from cache, if not available it retrieves it and places it in cache. 
@@ -51,7 +77,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Public Function GetCachedGroup(ByVal GroupID As Integer) As GroupInfo
-			Dim strCacheKey As String = GroupInfoCacheKeyPrefix & CStr(GroupID)
+			Dim strCacheKey As String = GroupCacheKeyPrefix & CStr(GroupID)
 			Dim objGroup As New GroupInfo
 			objGroup = CType(DataCache.GetCache(strCacheKey), GroupInfo)
 
@@ -68,74 +94,34 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <param name="GroupID"></param>
 		''' <remarks></remarks>
-		Public Sub ResetGroupCache(ByVal GroupID As Integer)
-			Dim strCacheKey As String = GroupInfoCacheKeyPrefix & CStr(GroupID)
+		Public Sub ResetCachedGroup(ByVal GroupID As Integer, ByVal ModuleID As Integer)
+			Dim strCacheKey As String = GroupCacheKeyPrefix & CStr(GroupID)
 
 			DataCache.RemoveCache(strCacheKey)
-		End Sub
-
-
-		''' <summary>
-		''' Get all Groups based on moduleId. Cache this when possible.
-		''' </summary>
-		''' <param name="ModuleId">The ModuleID being used to retrieve all groups.</param>
-		''' <returns>An arraylist of all groups corresponding to the supplied ModuleID.</returns>
-		''' <remarks>
-		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	2/11/2006	Created
-		''' </history>
-		Public Function GroupsGetByModuleID(ByVal ModuleId As Integer) As List(Of GroupInfo)
-			Dim strCacheKey As String = GroupInfoCachePrefix & ModuleId.ToString()
-			Dim arrGroups As New List(Of GroupInfo)
-			arrGroups = CType(DataCache.GetCache(strCacheKey), List(Of GroupInfo))
-
-			If arrGroups Is Nothing Then
-				Dim timeOut As Int32 = GroupInfoCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
-
-				arrGroups = CBO.FillCollection(Of GroupInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().GroupGetByModuleID(ModuleId))
-
-				'Cache Group if timeout > 0 and Group is not null
-				If timeOut > 0 And arrGroups IsNot Nothing Then
-					DataCache.SetCache(strCacheKey, arrGroups, TimeSpan.FromMinutes(timeOut))
-				End If
-			End If
-
-			Return arrGroups
-		End Function
-
-		''' <summary>
-		''' Used to clear the group cache. (All groups are cached)
-		''' </summary>
-		''' <param name="ModuleID"></param>
-		''' <remarks></remarks>
-		Public Sub ResetAllGroupsByModuleID(ByVal ModuleID As Integer)
-			Dim strCacheKey As String = GroupInfoCachePrefix & ModuleID.ToString()
-
-			DataCache.RemoveCache(strCacheKey)
+			ResetCachedModuleGroups(ModuleID)
 		End Sub
 
 		''' <summary>
-		''' Returns all groups with at least one authorized forum.
+		''' Returns all groups with at least one authorized forum specific to a user. This is necessary so we know which forum groups to show the user (if there is not a single valid forum, don't show the group). 
 		''' </summary>
-		''' <param name="ModuleId">Integer</param>
+		''' <param name="ModuleId">The Module we wish to get groups for.</param>
 		''' <param name="UserID">The UserID to return results for. (Because of private permissions)</param>
 		''' <param name="NoLinkForums">True if Link Type forums should be excluded.</param>
-		''' <returns>A Generics arraylist of GroupInfo items.</returns>
-		''' <remarks>
+		''' <returns>A  collection of Groups.</returns>
+		''' <remarks>This is user specific, should never be cached. 
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	2/11/2006	Created
-		''' </history>
-		Public Function GroupGetAllAuthorized(ByVal ModuleId As Integer, ByVal UserID As Integer, ByVal NoLinkForums As Boolean) As List(Of GroupInfo)
+		Public Function GetUserAuthorizedGroups(ByVal ModuleId As Integer, ByVal UserID As Integer, ByVal NoLinkForums As Boolean) As List(Of GroupInfo)
 			Dim arrAllGroups As New List(Of GroupInfo)
 			Dim arrAuthGroups As New List(Of GroupInfo)
-			arrAllGroups = GroupsGetByModuleID(ModuleId)
+			arrAllGroups = GetModuleGroups(ModuleId)
 
 			If arrAllGroups.Count > 0 Then
 				For Each objGroup As GroupInfo In arrAllGroups
+					Dim cntForum As New ForumController
 					Dim arrAuthForums As New List(Of ForumInfo)
-					arrAuthForums = objGroup.AuthorizedForums(UserID, NoLinkForums)
+
+					arrAuthForums = cntForum.AuthorizedForums(objGroup.GroupID, ModuleId, objGroup.objConfig, UserID, NoLinkForums)
+
 					If arrAuthForums.Count > 0 Then
 						arrAuthGroups.Add(objGroup)
 					End If
@@ -169,6 +155,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Sub GroupUpdate(ByVal GroupID As Integer, ByVal Name As String, ByVal UpdatedByUser As Integer, ByVal SortOrder As Integer, ByVal ModuleID As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().GroupUpdate(GroupID, Name, UpdatedByUser, SortOrder, ModuleID)
+
+			ResetCachedGroup(GroupID, ModuleID)
 		End Sub
 
 		''' <summary>
@@ -184,6 +172,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' </history>
 		Public Sub GroupDelete(ByVal GroupID As Integer, ByVal ModuleID As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().GroupDelete(GroupID, ModuleID)
+
+			ResetCachedGroup(GroupID, ModuleID)
 		End Sub
 
 		''' <summary>
@@ -194,11 +184,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="MoveUp">Boolean</param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	2/11/2006	Created
-		''' </history>
-		Public Sub GroupSortOrderUpdate(ByVal GroupID As Integer, ByVal MoveUp As Boolean)
+		Public Sub GroupSortOrderUpdate(ByVal GroupID As Integer, ByVal MoveUp As Boolean, ByVal ModuleID As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().GroupSortOrderUpdate(GroupID, MoveUp)
+
+			ResetCachedGroup(GroupID, ModuleID)
 		End Sub
 
 #End Region
@@ -212,12 +201,30 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns>GroupInfo</returns>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	2/11/2006	Created
-		''' </history>
 		Private Function GetGroup(ByVal GroupId As Integer) As GroupInfo
 			Return CType(CBO.FillObject(DotNetNuke.Modules.Forum.DataProvider.Instance().GroupGet(GroupId), GetType(GroupInfo)), GroupInfo)
 		End Function
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="ModuleId"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Function GetModuleGroups(ByVal ModuleId As Integer) As List(Of GroupInfo)
+			Return CBO.FillCollection(Of GroupInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().GroupGetByModuleID(ModuleId))
+		End Function
+
+		''' <summary>
+		''' Used to clear the group cache. (All groups are cached)
+		''' </summary>
+		''' <param name="ModuleID"></param>
+		''' <remarks></remarks>
+		Private Sub ResetCachedModuleGroups(ByVal ModuleID As Integer)
+			Dim strCacheKey As String = GroupCollectionKeyPrefix & ModuleID.ToString()
+
+			DataCache.RemoveCache(strCacheKey)
+		End Sub
 
 #End Region
 

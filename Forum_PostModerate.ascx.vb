@@ -287,7 +287,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim ctlForum As New ForumController
 			Dim forum As ForumInfo = ctlForum.GetForumInfoCache(ForumID)
 			Dim ctlForumModerate As New ModerateController
-			ctlForumModerate.ModeratePostApprove(PostID, UserID, Notes, ForumID, forum.ParentId)
+			ctlForumModerate.ModeratePostApprove(PostID, UserID, Notes, ForumID, forum.ParentId, ModuleId)
 
 			If objConfig.MailNotification Then
 				' send notification mail to author
@@ -310,7 +310,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim ctlForum As New ForumController
 			Dim forum As ForumInfo = ctlForum.GetForumInfoCache(ForumID)
 			Dim ctlForumModerate As New ModerateController
-			ctlForumModerate.ModeratePostApprove(PostID, UserID, Notes, ForumID, forum.ParentId)
+			ctlForumModerate.ModeratePostApprove(PostID, UserID, Notes, ForumID, forum.ParentId, ModuleId)
 		End Sub
 
 #End Region

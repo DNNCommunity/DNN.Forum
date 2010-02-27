@@ -165,7 +165,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property Author() As ForumUser
 			Get
 				Dim cntForumUser As New ForumUserController
-				Return cntForumUser.GetForumUser(UserID, False, ParentThread.HostForum.ModuleID, ParentThread.HostForum.PortalID)
+				Return cntForumUser.GetForumUser(UserID, False, ParentThread.HostForum.ModuleID, ParentThread.HostForum.ParentGroup.PortalID)
 			End Get
 		End Property
 
@@ -178,7 +178,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property LastModifiedAuthor() As ForumUser
 			Get
 				Dim cntForumUser As New ForumUserController
-				Return cntForumUser.GetForumUser(UpdatedByUser, False, ParentThread.HostForum.ModuleID, ParentThread.HostForum.PortalID)
+				Return cntForumUser.GetForumUser(UpdatedByUser, False, ParentThread.HostForum.ModuleID, ParentThread.HostForum.ParentGroup.PortalID)
 			End Get
 		End Property
 

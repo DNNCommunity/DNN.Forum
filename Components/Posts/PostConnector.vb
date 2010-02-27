@@ -247,7 +247,7 @@ Namespace DotNetNuke.Modules.Forum
 			If objForum Is Nothing Then
 				Return PostMessage.ForumDoesntExist
 			Else
-				If objForum.IsParentForum Then
+				If objForum.SubForums > 0 Then
 					Return PostMessage.ForumIsParent
 				End If
 
@@ -538,12 +538,12 @@ Namespace DotNetNuke.Modules.Forum
 					If objConfig.EnableThreadStatus And objForum.EnableForumsThreadStatus Then
 						If Status > 0 Then
 							Dim ctlThread As New ThreadController
-							ctlThread.ThreadStatusChange(PostID, UserID, Status, 0, -1, objForum.ParentForum.PortalID)
+							ctlThread.ThreadStatusChange(PostID, UserID, Status, 0, -1, objForum.ParentForum.ParentGroup.PortalID)
 						End If
 						' even if thread status is off, user may be allowed to add a poll which means we need to set the status to "Poll"
 					ElseIf objForum.AllowPolls And PollID > 0 Then
 						Dim ctlThread As New ThreadController
-						ctlThread.ThreadStatusChange(PostID, UserID, Convert.ToInt32(ThreadStatus.Poll), 0, -1, objForum.ParentForum.PortalID)
+						ctlThread.ThreadStatusChange(PostID, UserID, Convert.ToInt32(ThreadStatus.Poll), 0, -1, objForum.ParentForum.ParentGroup.PortalID)
 					End If
 				Case PostAction.Edit
 					' If thread status is enabled and there is an edit on the first post in a thread, make sure we set the thread status
@@ -551,12 +551,12 @@ Namespace DotNetNuke.Modules.Forum
 						If Status > 0 Then
 							Dim ctlThread As New ThreadController
 							'NOTE: CP - COMEBACK: It may be possible for a thread status to be edited on the original post, for which we should send an update if it is a moderator.
-							ctlThread.ThreadStatusChange(PostID, UserID, Status, 0, -1, objForum.ParentForum.PortalID)
+							ctlThread.ThreadStatusChange(PostID, UserID, Status, 0, -1, objForum.ParentForum.ParentGroup.PortalID)
 						End If
 						' even if thread status is off, user may be allowed to add a poll which means we need to set the status to "Poll"
 					ElseIf objForum.AllowPolls And PollID > 0 And ParentPostID = -1 Then
 						Dim ctlThread As New ThreadController
-						ctlThread.ThreadStatusChange(PostID, UserID, Convert.ToInt32(ThreadStatus.Poll), 0, -1, objForum.ParentForum.PortalID)
+						ctlThread.ThreadStatusChange(PostID, UserID, Convert.ToInt32(ThreadStatus.Poll), 0, -1, objForum.ParentForum.ParentGroup.PortalID)
 					End If
 			End Select
 		End Sub
