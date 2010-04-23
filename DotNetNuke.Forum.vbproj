@@ -135,8 +135,11 @@
     </Compile>
     <Compile Include="Components\Attachments\AttachmentController.vb" />
     <Compile Include="Components\Attachments\AttachmentInfo.vb" />
-    <Compile Include="Components\BaseControl\BaseControl.vb" />
-    <Compile Include="Components\BaseControl\DNNForum.vb" />
+    <Compile Include="Components\BaseControl\BaseControl.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Components\BaseControl\DNNForum.vb">
+    </Compile>
     <Compile Include="Components\BaseControl\ForumModuleBase.vb">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -725,7 +728,7 @@
     <None Include="Providers\DataProviders\SqlDataProvider\04.05.02.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\04.05.03.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\04.05.05.SqlDataProvider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\04.05.08.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.05.09.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
