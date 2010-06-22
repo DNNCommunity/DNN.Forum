@@ -730,9 +730,7 @@
     </Content>
     <Content Include="Forum_PostReport.ascx" />
     <Content Include="Forum_ThreadSplit.ascx" />
-    <Content Include="Documentation\Contributors.txt" />
     <Content Include="Documentation\License.txt" />
-    <Content Include="Documentation\Readme.txt" />
     <Content Include="ACP.ascx" />
     <Content Include="Controls\ACP_Filter.ascx" />
     <Content Include="Forum_Container.ascx" />

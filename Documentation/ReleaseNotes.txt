@@ -1,39 +1,56 @@
-Forum 4.5.5
-
-FOR-10505 Z-Index issue for contorl panels corrected for default core skin.
-FOR-10507 Fixed uninstall issues (added if exists checks).
-FOR-10690 Updated manifest file and module for 5.1.1 core or greater. 
-FOR-10691 Removed IUpgradeable usage for custom permissions, offloaded to .dnn manifest file. 
-FOR-10692 Duplicated PortalSettings Class for scheduled tasks (for when no HttpContext is present)
-FOR-10693 Refactored module so posting is completely abstracted and no longer dependent on HttpContext.
-FOR-10694 Ratings Enable/Disable not saving issue corrected.
-FOR-10698 Fixed disabling user avatar also disabled system avatar. 
-FOR-10699 Fixed Posting a reply problem in forums with posting restrictions.
-FOR-10700 Fixed Attachment Upload Message Incomplete.  
-FOR-10770 Umlaut usage (Html Encoding) in Aggregate Subject corrected.
-FOR-10780 Display Name not rendered properly in Post Report corrected.
-FOR-10786 ACP/MCP/UCP Forum Home link moved to bottom center, removed from menu (usability reasons). 
-FOR-10815 Enable Role Avatar spelling errors corrected.
-FOR-10816 Pool Avatar Path spelling errors corrected.
-FOR-10845 Quote Post using single <div> tag corrected.
-FOR-11021 Added support for external profile page.
-FOR-11022 Added support for profile avatars (an image control as profile property). 
-FOR-11024 Added support for external member directory page.
-FOR-11077 Corrected Issues found in doing forum themes (UI). 
-FOR-11078 Corrected SetFocus issues in PostEdit. No longer permitting subject edit on quote/reply either. 
-
-FOR-XXXXX Changed Security class to minimize db hits (using a core GetUser method can't utilize cache at this time). To overcome core issue we simply retrieve non-profile info from Users table. 
-FOR-XXXXX Removed email icon for notifications in Posts, Threads View. Also removed next/previous button images in posts view.
-
-FOR-XXXXX Integrated Telerik into PostView: Old/New Thread drop down to combobox, ratings drop down to rad rating control, thread status to combobox. 
-FOR-XXXXX Thread View: Email notification checkbox now utilizes 'ajax'. 
-FOR-XXXXX Integrated Telerik into ThreadView: Display date range drop down to combobox, rating image to rating control, thread status to combobox.
-FOR-XXXXX Added Post View Ajax Integration: Thread Status drop down, Rating Control, Bookmark Image, Post ASC/DESC drop down, Email notification checkbox, Accept Answer button.
-FOR-XXXXX Replaced rating images and text with Telerik rating control, updates to admin interface for this. 
-
--- Post View: Ajax Quick Reply? - consider rad tooltip or jquery for this (likely needs ajax event to redrawn control). 
- What about rating scale change? (set to 5 local, 10 in all installs)
- consider ajax loading panel in thread/post view.
- 
- 
- - delete ForumThreadRate list
+<h3>Forum 4.6.0</h3>
+<p class="Contributor">
+	DotNetNuke&reg; <br />
+	<a href="mailto:support@dotnetnuke.com">support@dotnetnuke.com</a><br />
+	<a href=http://www.dotnetnuke.com>http://www.dotnetnuke.com</a><br />
+</p>
+<hr/>
+<div class="License">
+	<h3>About the Core Forum</h3>
+	<p class="Owner">
+		<b>Version 4.6.0</b><br /><br />
+		This version of the module is a beta. It requires DotNetNuke Core 5.4.1 or greater. The module is now tightly integrated with the core user profile to determine visibility of profile items displayed in the module as well as for displaying a member's profile.
+		Also, because private messaging has also been added to the core it has been removed from the module itself. 
+		FYI: Developers should be aware that the module uses Visual Studio 2010 only. 
+	</p>
+	<ul>
+		<li>Updated manifest file for Core 5.x format.</li>
+		<li>Removed IUpgradeable usage for custom permissions, offloaded to .dnn manifest file.</li>
+		<li>Removed IUpgradeable usage for remainder of module, mainly localization Lists support, to avoid long standing bugs based on changes to localization over the years.</li>
+		<li>Posting was abstracted to an API so it no longer depends on HttpContext and can be used via other modules/providers/tasks without requiring HttpContext.</li>
+		<li>Umlaut usage (Html Encoding) in Aggregate Subject corrected.</li>
+		<li>Display Name not being rendered properly in Post Report corrected.</li>
+		<li>ACP/MCP/UCP Forum Home link moved to bottom center, removed from menu (usability reasons). </li>
+		<li>Z-Index issue for contorl panels corrected for default core skin.</li>
+		<li>Fixed an uninstall error that could occur depending on version of the module previously installed.</li>
+		<li>Fixed a problem where enable/disable rating was no longer taking effect via user interface.</li>
+		<li>Fixed issue where disabling user avatar also disabled system avatars.</li>
+		<li>Fixed a problem in restricted forums where posting a reply may not be possible depending on permissions (and it should have been).</li>
+		<li>Fixed several spelling errors throughout the module.</li>
+		<li>Fixed issue where, depending on HTML provider, users could not easily quote a post and type without switching to HTML code view.</li>
+		<li>Corrected issue w/ SetFocus isses in PostEdit, users are no longer able to reply/quote and change the subject either.</li>
+		<li>Changed security class to minimize db hits (using a core GetUser method which is capable of utilizing core caching).</li>
+		<li>Removed email icon for notifications in Posts, Threads View. Also removed next/previous button images in posts view.</li>
+		<li>Added quick reply capability (is a module setting).</li>
+		<li>Added ability for forum administrators to view details about email queue (what is in queue, what has/hasn't been sent).</li>
+		<li>Added ability for forum administrators to view who is subscribed to a forum or a thread.</li>
+		<li>Added tracking for the date a thread was marked as answered.</li>
+		<li>Removed module's own user profile view, now redirects to core profile. (Thus we implemented core user profile integration as well).</li>
+		<li>Removed module's own custom private messaging (although the tables remain for future export potential depending on feedback).</li>
+		<li>Removed totals for aggregated threads/posts counts (this reduces overhead, since it was unique per user in many situations).</li>
+		<li>Made all profile visibility dependent on core profile visibility of user.</li>
+		<li>Updates to correct Forum_Users not being created (on initial viewing) in sites with high volume.</li>
+		<li>Fixed several issues with Move Thread (around user interface).</li>
+		<li>Switched ratings to utilize Telerik Rating control.</li>
+		<li>Updated tree views used throughout moudle to use Telerik Treeview.</li>
+		<li>Integrated Telerik tab strip in control panels to replace the tab effect I previously mimiced.</li>
+		<li>Removed legacy stored procedures no longer called.</li>
+		<li>Added ability to use Core User Avatars (via profile).</li>
+		<li>Several changes to handle high volume sites such as www.dotnetnuke.com.</li>
+		<li>Removed custom emoticon control, back to being offloaded to HTML Provider.</li>
+		<li>Made My Threads work like it previously did so users can see all threads they are participating in, not just the ones they started.</li>
+		<li>Fixed issues where Telerik HTML Provider (shipped with newer core versions) causes problems with preview and editing of existing posts.</li>
+		<li>Removed Default theme from package, now ships with Blue that is used on www.dotnetnuke.com currently.</li>
+		<li>Fixed issues that remained that if a user was deleted (hard delete) and they had a post, it could screw up any of the views that were linked to such a post/thread.</li>
+	</ul>
+</div>
