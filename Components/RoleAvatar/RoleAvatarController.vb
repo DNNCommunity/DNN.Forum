@@ -243,12 +243,13 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Public Function GetUsersRoleAvatars(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer) As String
-			Dim strAvatars As String = String.Empty
+			Dim strAvatars As String
 			Dim colRoleAvatars As List(Of RoleAvatarInfo)
 
 			colRoleAvatars = GetUsersRoleAvatars(PortalID, UserID)
 
 			If Not colRoleAvatars Is Nothing Then
+				strAvatars = ""
 				For Each objAvatar As RoleAvatarInfo In colRoleAvatars
 					If Len(objAvatar.Avatar) > 0 And (Not strAvatars.Contains(objAvatar.Avatar)) Then
 						strAvatars += objAvatar.Avatar & ";"
@@ -257,7 +258,9 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			'We need to add something here to ensure this function isn't called again right away
-			If strAvatars = String.Empty Then
+			If strAvatars Is Nothing Then
+				strAvatars = ";"
+			ElseIf strAvatars = "" Then
 				strAvatars = ";"
 			End If
 

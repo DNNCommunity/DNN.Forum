@@ -130,33 +130,6 @@ Namespace DotNetNuke.Modules.Forum
 	End Enum
 
 	''' <summary>
-	''' Similar to PostAction, except specific to Private Messages
-	''' </summary>
-	''' <remarks>Not stored anywhere but here. Similar to PostAction.</remarks>
-	Public Enum PMAction As Integer
-		''' <summary>
-		''' New private message post/thread were created.
-		''' </summary>
-		''' <remarks></remarks>
-		[New] = 0
-		''' <summary>
-		''' A reply private message post to an existing private message thread.
-		''' </summary>
-		''' <remarks></remarks>
-		[Reply] = 1
-		''' <summary>
-		''' A quote (reply) private message post to an existing private message thread.
-		''' </summary>
-		''' <remarks></remarks>
-		[Quote] = 2
-		''' <summary>
-		''' Edit of a PM still in Outbox
-		''' </summary>
-		''' <remarks>Added by Skeel</remarks>
-		[Edit] = 3
-	End Enum
-
-	''' <summary>
 	''' ForumScope is used for controlling which class to instantiate in the Forum_Container.ascx dispatch page.
 	''' </summary>
 	''' <remarks>Used to determine which dynamically rendered UI to render. (ie. ForumThread, ForumPost, ForumGroup, etc)</remarks>
@@ -444,11 +417,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		UserThreadSplit = 8
 		''' <summary>
-		''' A new private message was sent to a user.
-		''' </summary>
-		''' <remarks></remarks>
-		UserPMReceived = 9
-		''' <summary>
 		''' A new thread was created.
 		''' </summary>
 		''' <remarks>This is handled by post added. Inactive.</remarks>
@@ -468,11 +436,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <remarks></remarks>
 		ModeratorPostAbuse = 13
-		''' <summary>
-		''' A user blocked another user from future private messages. 
-		''' </summary>
-		''' <remarks>(Sent to global moderators/forum admin. Inactive.</remarks>
-		ModeratorPMBlock = 14
 		''' <summary>
 		''' User is notified when a warning was submitted for one of their posts.
 		''' </summary>
@@ -694,14 +657,11 @@ Namespace DotNetNuke.Modules.Forum
 		ContainerModQueue
 		ContentRemoved
 		EmailTemplates
-		Emoticon
 		ForumEdit
 		ForumManage
 		ForumSearch
 		MCP
 		MemberList
-		PMEdit
-		PMThread
 		PostDelete
 		PostEdit
 		PostModerate ' consider load in mcp via ajax
@@ -725,9 +685,6 @@ Namespace DotNetNuke.Modules.Forum
 		Profile
 		Avatar
 		Signature
-		Inbox
-		Outbox
-		'Sent
 	End Enum
 
 	''' <summary>
@@ -754,11 +711,6 @@ Namespace DotNetNuke.Modules.Forum
 		Attachment
 		RSS
 		SEO
-		''' <summary>
-		''' 
-		''' </summary>
-		''' <remarks>No Ajax</remarks>
-		Emoticon
 		ForumManage
 		''' <summary>
 		''' 

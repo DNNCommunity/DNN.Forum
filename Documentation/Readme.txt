@@ -32,7 +32,6 @@ CHANGES WHICH ARE COMING AND WILL AFFECT A FUTURE RELEASE (To Do):
 - FOR-XXXX - Removal of TreeView for posts. As of 4.5.2, not available for new installs.(This may be re-introduced in the future as a separate treeview contorl via skinning).
 - FOR-8187 - Add force default notifications per forum (and as a global setting) - this permits opt-out unlike notification forums. 
 - FOR-9014 - Thread Status Change Email Notifications.
-- FOR-9685 - Add "Emoticon" support (different from previous versions - no gallery module integration).
 
 Version 04.05.02
 

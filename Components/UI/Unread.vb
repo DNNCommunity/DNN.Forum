@@ -178,7 +178,7 @@ Namespace DotNetNuke.Modules.Forum
 					.ItemCount = 5
 
 					.ID = "trcRating" + thread.ThreadID.ToString()
-					.Value = thread.Rating
+					.Value = CDec(thread.Rating)
 					'AddHandler trcRating.Command, AddressOf trcRating_Rate
 				End With
 				hsThreadRatings.Add(thread.ThreadID, trcRating)
@@ -523,7 +523,13 @@ Namespace DotNetNuke.Modules.Forum
 						'Add thread started by
 						RenderDivBegin(wr, "", "Forum_NormalSmall") ' <div>
 						wr.Write(String.Format("{0}&nbsp;", ForumControl.LocalizedText("by")))
-						Url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.StartedByUserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, thread.StartedByUser.Username)
+
+						If Not objConfig.EnableExternalProfile Then
+							Url = thread.StartedByUser.UserCoreProfileLink
+						Else
+							Url = Utilities.Links.UserExternalProfileLink(thread.StartedByUserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, thread.StartedByUser.Username)
+						End If
+
 						RenderLinkButton(wr, Url, thread.StartedByUser.SiteAlias, "Forum_NormalSmall") ' <a/>
 
 						'Add in forum (where thread belongs)
@@ -681,7 +687,13 @@ Namespace DotNetNuke.Modules.Forum
 
 						RenderDivBegin(wr, "", "Forum_LastPostText")	   ' <div>
 						wr.Write(ForumControl.LocalizedText("by") & " ")
-						Url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.LastApprovedUser.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, thread.LastApprovedUser.Username)
+
+						If Not objConfig.EnableExternalProfile Then
+							Url = thread.LastApprovedUser.UserCoreProfileLink
+						Else
+							Url = Utilities.Links.UserExternalProfileLink(thread.LastApprovedUser.UserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, thread.LastApprovedUser.Username)
+						End If
+
 						RenderLinkButton(wr, Url, thread.LastApprovedUser.SiteAlias, "Forum_LastPostText") ' <a/>
 						RenderDivEnd(wr) ' </div>
 						RenderCellEnd(wr) ' </td>

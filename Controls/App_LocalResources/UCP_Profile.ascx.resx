@@ -124,65 +124,11 @@
     <value>User's DNN username.&lt;br&gt;(Read Only)&lt;br&gt;To modify, use the link to edit your Account profile for this site.
  </value>
   </data>
-  <data name="plWebsite.Text" xml:space="preserve">
-    <value>Website</value>
-  </data>
-  <data name="plWebsite.Help" xml:space="preserve">
-    <value>User's website address.&lt;br&gt;(Read Only)&lt;br&gt;To modify, use the link to edit your Account profile for this site.</value>
-  </data>
   <data name="plEmail.Text" xml:space="preserve">
     <value>Display Email Address</value>
   </data>
   <data name="plEmail.Help" xml:space="preserve">
     <value>If checked, users will be able to view the email address in the user profile screen.</value>
-  </data>
-  <data name="plMSN.Text" xml:space="preserve">
-    <value>MSN</value>
-  </data>
-  <data name="plMSN.Help" xml:space="preserve">
-    <value>MSN IM contact information.</value>
-  </data>
-  <data name="plYahoo.Text" xml:space="preserve">
-    <value>Yahoo</value>
-  </data>
-  <data name="plYahoo.Help" xml:space="preserve">
-    <value>Yahoo IM contact information.</value>
-  </data>
-  <data name="plAIM.Text" xml:space="preserve">
-    <value>AIM</value>
-  </data>
-  <data name="plAIM.Help" xml:space="preserve">
-    <value>AOL IM contact information.</value>
-  </data>
-  <data name="plICQ.Text" xml:space="preserve">
-    <value>ICQ</value>
-  </data>
-  <data name="plICQ.Help" xml:space="preserve">
-    <value>ICQ IM contact information.</value>
-  </data>
-  <data name="plOccupation.Text" xml:space="preserve">
-    <value>Occupation</value>
-  </data>
-  <data name="plOccupation.Help" xml:space="preserve">
-    <value>Your occupation.</value>
-  </data>
-  <data name="plInterests.Text" xml:space="preserve">
-    <value>Interests</value>
-  </data>
-  <data name="plInterests.Help" xml:space="preserve">
-    <value>Your personal interests.</value>
-  </data>
-  <data name="dlSkin.Text" xml:space="preserve">
-    <value>Skin</value>
-  </data>
-  <data name="dlSkin.Help" xml:space="preserve">
-    <value>Your skin preference.</value>
-  </data>
-  <data name="dlCollapseGroups.Text" xml:space="preserve">
-    <value>Group View</value>
-  </data>
-  <data name="dlCollapseGroups.Help" xml:space="preserve">
-    <value>Your preference for how you see groups when you come to the forum.&lt;br&gt;This will determine if groups are expanded/collapsed when you view them.</value>
   </data>
   <data name="plOnlineStatus.Text" xml:space="preserve">
     <value>Display Online Status</value>
@@ -223,32 +169,11 @@
   <data name="plUserID.Text" xml:space="preserve">
     <value>UserID</value>
   </data>
-  <data name="plEnableProfileWeb.Help" xml:space="preserve">
-    <value>If checked, the user's website address will be displayed in all post and profile views within the forum module. </value>
-  </data>
-  <data name="plEnableProfileWeb.Text" xml:space="preserve">
-    <value>Display Website</value>
-  </data>
   <data name="Title.Text" xml:space="preserve">
     <value>Edit Profile</value>
   </data>
   <data name="lblUpdateDone.Text" xml:space="preserve">
     <value>Updated Successfully!</value>
-  </data>
-  <data name="plBiography.Help" xml:space="preserve">
-    <value>A little bit about you.</value>
-  </data>
-  <data name="plBiography.Text" xml:space="preserve">
-    <value>Biography</value>
-  </data>
-  <data name="plEnableProfileRegion.Help" xml:space="preserve">
-    <value>If checked, the user's region will be displayed to other users viewing this profile.</value>
-  </data>
-  <data name="plEnableProfileRegion.Text" xml:space="preserve">
-    <value>Enable Region</value>
-  </data>
-  <data name="cmdCalBanDate.Text" xml:space="preserve">
-    <value>Calendar</value>
   </data>
   <data name="plLiftBanDate.Help" xml:space="preserve">
     <value>The date that the user will no longer be banned from posting in the forums for this portal.</value>

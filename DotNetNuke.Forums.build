@@ -19,14 +19,14 @@
 		<property name="pckZip" value="_Package" />
 
 		<property name="rootWeb" value="http://localhost/" overwrite="false" />
-		<property name="webAlias" value="DotNetNuke_Community" overwrite="false" />
+		<property name="webAlias" value="DotNetNuke" overwrite="false" />
 		<property name="verbose" value="false" overwrite="false" />
 		
 		<!-- ModuleName value should be set specific to the project -->
 		<property name="ModuleName" value="Forum"  overwrite="false"  />
 	   	<property name="subproject.name" value="DotNetNuke.${ModuleName}" />
 		<property name="module.dll" value="${bin.dir}/DotNetNuke.Modules.${ModuleName}.dll" />
-		<property name="fullversion" value="04.05.08" />
+		<property name="fullversion" value="04.06.00" />
 
 		<property name="debug" value="false" overwrite="false" />
 		<property name="config" value="debug" if="${debug}" />
@@ -89,7 +89,7 @@
 				<!-- everything included here ends up in resource.zip, this should be excluded in the CreateBinZip -->
 				<include name="**/images/*" />
 				<include name="**/js/*" />
-				<include name="**/Themes/Default/*" />
+				<include name="**/Themes/Blue/*" />
 				<include name="**/Resources/**/*" />
 				<include name="**/Documentation/Contributors.txt" />
 				<include name="**/Documentation/Readme.txt" />
@@ -109,7 +109,6 @@
 				<exclude name="**/temp/*" />
 				<exclude name="**/Themes/DNN/**/*" />
 				<exclude name="**/Themes/Empires/**/*" />
-				<exclude name="**/Themes/Blue/**/*" />
 				<exclude name="**/Themes/Crispy/**/*" />
 				<exclude name="**/Themes/Extropy/**/*" />
 				<exclude name="**/Themes/BlackKat/**/*" />
@@ -147,7 +146,7 @@
 				<!-- everything included here ends up in resource.zip, this should be excluded in the CreateBinZip -->
 				<include name="**/images/*" />
 				<include name="**/js/*" />
-				<include name="**/Themes/Default/*" />
+				<include name="**/Themes/Blue/*" />
 				<include name="**/Resources/**/*" />
 				<include name="**/Documentation/Contributors.txt" />
 				<include name="**/Documentation/Readme.txt" />
@@ -170,7 +169,6 @@
 				<exclude name="**/temp/*" />
 				<exclude name="**/Themes/DNN/**/*" />
 				<exclude name="**/Themes/Empires/**/*" />
-				<exclude name="**/Themes/Blue/**/*" />
 				<exclude name="**/Themes/Crispy/**/*" />
 				<exclude name="**/Themes/Extropy/**/*" />
 				<exclude name="**/Themes/BlackKat/**/*" />

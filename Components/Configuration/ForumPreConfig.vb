@@ -115,8 +115,6 @@ Namespace DotNetNuke.Modules.Forum
 
 			'Community
 			ctlModule.UpdateModuleSetting(ModuleId, "EnableUsersOnline", Enabled.ToString)
-			ctlModule.UpdateModuleSetting(ModuleId, "EnablePMSystem", "False")
-			ctlModule.UpdateModuleSetting(ModuleId, "EnableMemberList", "False")
 
 			' User Country displayed in posts area (next to subject, user alias)
 			ctlModule.UpdateModuleSetting(ModuleId, "DisplayPosterLocation", "0")
@@ -126,10 +124,8 @@ Namespace DotNetNuke.Modules.Forum
 			ctlModule.UpdateModuleSetting(ModuleId, "EnableThreadStatus", "True")
 			ctlModule.UpdateModuleSetting(ModuleId, "EnablePostAbuse", "True")
 			ctlModule.UpdateModuleSetting(ModuleId, "DisableHTMLPosting", "False")
-			ctlModule.UpdateModuleSetting(ModuleId, "ForumMemberName", "0")
 			ctlModule.UpdateModuleSetting(ModuleId, "TrustNewUsers", "False")
 			ctlModule.UpdateModuleSetting(ModuleId, "ImageExtension", "png")
-
 			ctlModule.UpdateModuleSetting(ModuleId, "EnableUserAvatar", "True")
 			ctlModule.UpdateModuleSetting(ModuleId, "EnableUserAvatarPool", "False")
 			ctlModule.UpdateModuleSetting(ModuleId, "UserAvatarPoolPath", "Forums/PoolAvatar/")
@@ -143,11 +139,7 @@ Namespace DotNetNuke.Modules.Forum
 			ctlModule.UpdateModuleSetting(ModuleId, "RoleAvatarPath", "Forums/RoleAvatar/")
 			ctlModule.UpdateModuleSetting(ModuleId, "EmailAddressDisplayName", _portalSettings.PortalName & " " & Localization.GetString("Forum", mSourceDirectory & "/App_LocalResources/SharedResources.resx"))
 			ctlModule.UpdateModuleSetting(ModuleId, "PostEditWindow", "0")
-
-			ctlModule.UpdateModuleSetting(ModuleId, "EnableEmoticons", "False")
-			ctlModule.UpdateModuleSetting(ModuleId, "EmoticonMaxFileSize", "32")
 			ctlModule.UpdateModuleSetting(ModuleId, "NoFollowLatestThreads", "True")
-			ctlModule.UpdateModuleSetting(ModuleId, "EnableInlineAttachments", "False")
 
 			' Prepare to retire treeview (vs. flatview)
 			ctlModule.UpdateModuleSetting(ModuleId, "EnableTreeView", "False")

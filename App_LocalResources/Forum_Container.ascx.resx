@@ -423,14 +423,8 @@
   <data name="AddBookmark.Text" xml:space="preserve">
     <value>Add to bookmarks</value>
   </data>
-  <data name="PM.Text" xml:space="preserve">
-    <value>PM</value>
-  </data>
   <data name="RemoveBookmark.Text" xml:space="preserve">
     <value>Remove from bookmarks</value>
-  </data>
-  <data name="PMTooltip.Text" xml:space="preserve">
-    <value>Send Private Message</value>
   </data>
   <data name="Poll.Text" xml:space="preserve">
     <value>Poll</value>

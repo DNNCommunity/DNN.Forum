@@ -653,7 +653,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns>A collection of controls.</returns>
 		''' <remarks>The collection of child controls for the specified server control.</remarks>
-		Public ReadOnly Property Controls() As ControlCollection
+		Public Overloads ReadOnly Property Controls() As ControlCollection
 			Get
 				Return _BaseControl.Controls
 			End Get

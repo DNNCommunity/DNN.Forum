@@ -84,11 +84,13 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
 		''' <remarks></remarks>
-		Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+		Protected Sub Page_Init(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Init
 			If DotNetNuke.Framework.AJAX.IsInstalled Then
 				DotNetNuke.Framework.AJAX.RegisterScriptManager()
 				DotNetNuke.Framework.AJAX.WrapUpdatePanelControl(pnlContainer, False)
 			End If
+
+			litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
 		End Sub
 
 		''' <summary>
@@ -98,7 +100,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="e"></param>
 		''' <remarks>
 		''' </remarks>
-		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+		Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
 			Try
 				Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
 
@@ -108,8 +110,6 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 
 				If Not Page.IsPostBack Then
-					litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
-
 					' CP - Check the URL here to see if we should load a specific control (ie. view = x)
 					If Not Request.QueryString("view") Is Nothing Then
 						Dim strTempControl As String
@@ -158,9 +158,6 @@ Namespace DotNetNuke.Modules.Forum
 								ACPmenu.ControlToLoad = ctlOverview
 						End Select
 					End If
-
-					' Register scripts
-					Utilities.ForumUtils.RegisterPageScripts(Page, objConfig)
 				End If
 
 				ACPmenu.PortalID = PortalId
@@ -181,7 +178,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
 		''' <remarks>Reset viewstate, another control was requested to be loaded.</remarks>
-		Protected Sub ACPmenu_MenuClicked(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ACPmenu.MenuClicked
+		Protected Sub ACPmenu_MenuClicked(ByVal sender As Object, ByVal e As EventArgs) Handles ACPmenu.MenuClicked
 			ViewState("CtlToLoad") = String.Empty
 			Dim objControl As Entities.Modules.PortalModuleBase
 			objControl = LoadForumControl(ACPmenu.ControlToLoad)

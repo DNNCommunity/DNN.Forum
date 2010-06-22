@@ -213,76 +213,6 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 			Return _objectQualifier
 		End Function
 
-		''' <summary>
-		''' This registers a js file to handle transparent png issues in IE 5.5 or IE 6. 
-		''' </summary>
-		''' <param name="Page">The page to load the js script into</param>
-		''' <param name="Config">The forum configuration</param>
-		''' <remarks>Could be expanded later</remarks>
-		Public Shared Sub RegisterPageScripts(ByVal Page As System.Web.UI.Page, ByVal Config As Forum.Config)
-			If Config.LoadScripts Then
-				Page.ClientScript.RegisterClientScriptInclude(Page.GetType(), "InitScript", Page.ResolveUrl("DesktopModules/Forum/js/pngfix.js"))
-			End If
-		End Sub
-
-#End Region
-
-#Region "Localization"
-
-		''' <summary>
-		''' 
-		''' </summary>
-		''' <returns></returns>
-		''' <remarks>This is cached here because the core isn't caching it and there is no need for this to be done on every page load.</remarks>
-		Public Shared Function GetTrackingDurationList() As DotNetNuke.Common.Lists.ListEntryInfoCollection
-			Dim arrLists As DotNetNuke.Common.Lists.ListEntryInfoCollection
-			Dim strCacheKey As String = "TrackingDurationList"
-			arrLists = CType(DataCache.GetCache(strCacheKey), DotNetNuke.Common.Lists.ListEntryInfoCollection)
-
-			If arrLists Is Nothing Then
-				'forum caching settings
-				Dim ForumInfoCacheTimeout As Integer = 20
-				Dim timeOut As Int32 = ForumInfoCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
-
-				Dim ctlLists As New DotNetNuke.Common.Lists.ListController
-				arrLists = ctlLists.GetListEntryInfoCollection("TrackingDuration")
-
-				'Cache Forum if timeout > 0 and Forum is not null
-				If timeOut > 0 And arrLists IsNot Nothing Then
-					DataCache.SetCache(strCacheKey, arrLists, TimeSpan.FromMinutes(timeOut))
-				End If
-			End If
-
-			Return arrLists
-		End Function
-
-		''' <summary>
-		''' 
-		''' </summary>
-		''' <returns></returns>
-		''' <remarks>This is cached here because the core isn't caching it and there is no need for this to be done on every page load.</remarks>
-		Public Shared Function GetThreadStatusList() As DotNetNuke.Common.Lists.ListEntryInfoCollection
-			Dim arrLists As DotNetNuke.Common.Lists.ListEntryInfoCollection
-			Dim strCacheKey As String = "ThreadStatusList"
-			arrLists = CType(DataCache.GetCache(strCacheKey), DotNetNuke.Common.Lists.ListEntryInfoCollection)
-
-			If arrLists Is Nothing Then
-				'forum caching settings
-				Dim ForumInfoCacheTimeout As Integer = 20
-				Dim timeOut As Int32 = ForumInfoCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
-
-				Dim ctlLists As New DotNetNuke.Common.Lists.ListController
-				arrLists = ctlLists.GetListEntryInfoCollection("ThreadStatus")
-
-				'Cache Forum if timeout > 0 and Forum is not null
-				If timeOut > 0 And arrLists IsNot Nothing Then
-					DataCache.SetCache(strCacheKey, arrLists, TimeSpan.FromMinutes(timeOut))
-				End If
-			End If
-
-			Return arrLists
-		End Function
-
 #End Region
 
 #Region "File System"
@@ -506,13 +436,16 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <remarks></remarks>
 		Shared Function TrimString(ByVal Content As String, ByVal CharCount As Integer) As String
 			Dim descString As String = String.Empty
-			If Content.Length > 0 Then
-				If Len(Content) > CharCount Then
-					descString = Left(Content, CharCount) & "..."
-				Else
-					descString = Content
+			If Content IsNot Nothing Then
+				If Content.Length > 0 Then
+					If Len(Content) > CharCount Then
+						descString = Left(Content, CharCount) & "..."
+					Else
+						descString = Content
+					End If
 				End If
 			End If
+
 			Return descString
 		End Function
 
@@ -749,12 +682,13 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 				Dim imageURL As String = objConfig.GetThemeImageURL("breadcrumb." & objConfig.ImageExtension)
 
 				Select Case Scope
+
 					Case ForumScope.Groups
 						'[skeel] Support for full breadcrumb in group and parent forum view
 						Dim Completed As Boolean = False
 
-						''Forum Home
-						'sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), objConfig.Name, imageURL))
+						'Forum Home
+						sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), objConfig.Name, imageURL))
 
 						'Are we displaying a Group?
 						Try
@@ -787,8 +721,8 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 					Case ForumScope.Threads
 						Dim objForumInfo As ForumInfo
 						objForumInfo = CType(InfoObject, ForumInfo)
-						''Forum Home
-						'sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), objConfig.Name, imageURL))
+						'Forum Home
+						sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), objConfig.Name, imageURL))
 						If objForumInfo.ForumID = -1 And objConfig.AggregatedForums Then
 							' Render Group Name
 							sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(TabID, -1, False), Localization.GetString("Aggregate", objConfig.SharedResourceFile), imageURL))
@@ -805,16 +739,16 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 						End If
 
 					Case ForumScope.Unread
-						''Forum Home
-						'sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), objConfig.Name, imageURL))
+						'Forum Home
+						sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), objConfig.Name, imageURL))
 						'Unread Threads
 						sb = sb.Append(GetBreadCrumb("", Localization.GetString("UnreadThreads", objConfig.SharedResourceFile), imageURL))
 
 					Case ForumScope.Posts
 						Dim objThreadInfo As ThreadInfo
 						objThreadInfo = CType(InfoObject, ThreadInfo)
-						''Forum Home
-						'sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), objConfig.Name, imageURL))
+						'Forum Home
+						sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), objConfig.Name, imageURL))
 						' Render Group Name
 						sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objThreadInfo.HostForum.GroupID), TrimString(objThreadInfo.HostForum.ParentGroup.Name, 15), imageURL))
 
@@ -835,13 +769,13 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 						End If
 					Case ForumScope.ThreadSearch
 						If (Not InfoObject Is Nothing) And objConfig.AggregatedForums Then
-							''Forum Home
-							'sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), objConfig.Name, imageURL))
+							'Forum Home
+							sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), objConfig.Name, imageURL))
 							' Render Aggregated Group Name
 							sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(TabID, -1, False), Localization.GetString("Aggregate", objConfig.SharedResourceFile), imageURL))
 						Else
-							''Forum Home
-							'sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), objConfig.Name, imageURL))
+							'Forum Home
+							sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), objConfig.Name, imageURL))
 							'Search
 							sb = sb.Append(GetBreadCrumb(Utilities.Links.SearchPageLink(TabID, ModuleID), Localization.GetString("Search", objConfig.SharedResourceFile), imageURL))
 							'Results
@@ -982,15 +916,11 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 				' Set the time and reset later if per user is enabled
 				displayCreatedDate = PortalTime
 
-				' Only convert if timezone enabled for this forum
-				If objConfig.EnableTimeZone Then
-					' Only convert if user is logged in
-					If HttpContext.Current.Request.IsAuthenticated Then
-						Dim objUser As Users.UserInfo = Users.UserController.GetCurrentUserInfo
-						Dim UserTimeZone As Double = objUser.Profile.TimeZone
-						Dim UserTime As DateTime = GMTTime.AddMinutes(UserTimeZone)
-						displayCreatedDate = UserTime
-					End If
+				If HttpContext.Current.Request.IsAuthenticated Then
+					Dim objUser As Users.UserInfo = Users.UserController.GetCurrentUserInfo
+					Dim UserTimeZone As Double = objUser.Profile.TimeZone
+					Dim UserTime As DateTime = GMTTime.AddMinutes(UserTimeZone)
+					displayCreatedDate = UserTime
 				End If
 			Catch
 				' The added or subtracted value results in an un-representable DateTime. Possibly a problem with TimeZone values.
@@ -1037,12 +967,6 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 					CssClass = ("Forum_ib_admin")
 				Case ForumControl.LocalizedText("Moderate")
 					CssClass = ("Forum_ib_moderate")
-				Case ForumControl.LocalizedText("Inbox")
-					If CurrentForumUser.UserHasNewMessages Then
-						CssClass = ("Forum_ib_Inbox_New")
-					Else
-						CssClass = ("Forum_ib_Inbox")
-					End If
 				Case ForumControl.LocalizedText("MemberList")
 					CssClass = ("Forum_ib_memberlist")
 				Case ForumControl.LocalizedText("MySettings")
@@ -1082,19 +1006,6 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 
 			If (Security.IsForumAdmin) Then
 				Actions.Add(ModBase.GetNextActionID, Services.Localization.Localization.GetString("Administration.Text", ModBase.LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", Utilities.Links.ForumAdminLink(ModBase.TabId, ModBase.ModuleId), False, SecurityAccessLevel.View, True, False)
-			End If
-
-			If objConfig.EnablePMSystem And mLoggedOnUserID > 0 Then
-				Dim cntForumUser As New ForumUserController
-				Dim objForumUser As ForumUser
-				objForumUser = cntForumUser.GetForumUser(mLoggedOnUserID, False, ModBase.ModuleId, ModBase.PortalId)
-				If objForumUser.EnablePM Then
-					Actions.Add(ModBase.GetNextActionID, Services.Localization.Localization.GetString("Inbox.Text", ModBase.LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", Utilities.Links.UCP_UserLinks(ModBase.TabId, ModBase.ModuleId, UserAjaxControl.Inbox, objConfig.CurrentPortalSettings), False, SecurityAccessLevel.View, True, False)
-				End If
-			End If
-
-			If objConfig.EnableMemberList And mLoggedOnUserID > 0 Then
-				Actions.Add(ModBase.GetNextActionID, Services.Localization.Localization.GetString("MemberList.Text", ModBase.LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", Utilities.Links.MemberListLink(ModBase.TabId, ModBase.ModuleId, objConfig.EnableExternalDirectory, objConfig.ExternalDirectoryParamName, objConfig.ExternalDirectoryParamValue, objConfig.ExternalDirectoryPage), False, SecurityAccessLevel.View, True, False)
 			End If
 
 			If mLoggedOnUserID > 0 Then

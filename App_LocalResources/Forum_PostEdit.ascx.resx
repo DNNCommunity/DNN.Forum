@@ -303,12 +303,6 @@
   <data name="PostEditWindowError.Text" xml:space="preserve">
     <value>You are only allowed to edit your post within {0} minutes after the post was created. The post is now locked and can only be edited by a forum administrator or moderator.</value>
   </data>
-  <data name="plEmoticon.Help" xml:space="preserve">
-    <value>You can add emoticons to your post by clicking the individual emoticons. Use the 'Show All' link to get the complete list of available emoticons and their corresponding codes.</value>
-  </data>
-  <data name="plEmoticon.Text" xml:space="preserve">
-    <value>Emoticons</value>
-  </data>
   <data name="lblPostHeader.Text" xml:space="preserve">
     <value>Forum Post</value>
   </data>

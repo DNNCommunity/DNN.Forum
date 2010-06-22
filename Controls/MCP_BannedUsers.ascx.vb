@@ -84,7 +84,12 @@ Namespace DotNetNuke.Modules.Forum.MCP
 			End If
 
 			hl = CType(e.Item.FindControl("hlUser"), HyperLink)
-			hl.NavigateUrl = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, dataItem.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, dataItem.Username)
+			If Not objConfig.EnableExternalProfile Then
+				hl.NavigateUrl = dataItem.UserCoreProfileLink
+			Else
+				hl.NavigateUrl = Utilities.Links.UserExternalProfileLink(dataItem.UserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, dataItem.Username)
+			End If
+
 			hl.Target = "_blank"
 			hl.Text = dataItem.SiteAlias
 

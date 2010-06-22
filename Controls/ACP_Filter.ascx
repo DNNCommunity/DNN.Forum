@@ -7,30 +7,30 @@
 		</td>
      </tr>
      <tr>
-		<td>
-			<table class="" id="tblGeneral" runat="server" cellspacing="0" cellpadding="0" width="100%">
+		<td valign="top" align="center" class="Forum_Row_Admin">  
+			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr>
-					<td class="Forum_Row_AdminL" width="30%">
+					<td  width="35%">
 						<span class="Forum_Row_AdminText">
 							<dnn:label id="plBadWord" runat="server" Suffix=":" controlname="chkBadWord"></dnn:label>
 						</span>
 					</td>
-					<td class="Forum_Row_AdminR" valign="middle" align="left" width="70%">
+					<td  valign="middle" align="left">
 						<asp:checkbox id="chkBadWord" runat="server" CssClass="Forum_NormalTextBox" AutoPostBack="True" EnableViewState="false" />
 					</td>
 				</tr>
 				<tr id="rowSubjectFilter" runat="server">
-					<td class="Forum_Row_AdminL" width="30%">
+					<td  width="35%">
 						<span class="Forum_Row_AdminText">
 							<dnn:label id="plFilterSubject" runat="server" Suffix=":" controlname="chkFilterSubject"></dnn:label>
 						</span>
 					</td>
-					<td class="Forum_Row_AdminR" valign="middle" align="left" width="70%">
+					<td  valign="middle" align="left">
 						<asp:checkbox id="chkFilterSubject" runat="server" CssClass="Forum_NormalTextBox" EnableViewState="false" />
 					</td>
 				</tr>
 			</table>
-			<div class="Forum_Row_Admin_Foot" align="center">
+			<div align="center">
 				<asp:linkbutton id="cmdUpdate" runat="server" resourcekey="cmdUpdate" borderstyle="none" causesvalidation="False" cssclass="CommandButton" EnableViewState="false" />
 			</div>
 			<div align="center">

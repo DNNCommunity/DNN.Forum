@@ -2,6 +2,7 @@
 <%@ Control Language="vb" AutoEventWireup="false" Codebehind="Forum_Search.ascx.vb" Inherits="DotNetNuke.Modules.Forum.SearchPage" %>
 <%@ Register assembly="Telerik.Web.UI" namespace="Telerik.Web.UI" tagprefix="telerik" %>
 <%@ Register TagPrefix="DNN" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke.WebControls" %> 
+<%@ Register TagPrefix="RDNN" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 <asp:Literal ID="litCSSLoad" runat="server" />
 <table class="Forum_SearchContainer" id="tblMain" cellspacing="0" cellpadding="0" width="100%" 	align="center">
 	<tr>
@@ -20,13 +21,13 @@
 					               <asp:label id="lblStartDate" runat="server" resourcekey="lblStartDate" CssClass="Forum_Row_AdminText" />
 					          </td>
 					          <td valign="middle" align="left">
-					               <telerik:RadDatePicker ID="rdpFrom" Skin="Web20" runat="server" Width="100px" />
+					               <telerik:RadDatePicker ID="rdpFrom" runat="server" Width="100px" />
 					          </td>
 					    	    <td valign="middle" align="left">
 					                <asp:label id="lblEndDate" runat="server" resourcekey="lblEndDate" CssClass="Forum_Row_AdminText" />
 					            </td>
 					    	    <td valign="middle" align="left">
-					                <telerik:RadDatePicker ID="rdpTo" Skin="Web20" runat="server" Width="100px" />
+					                <telerik:RadDatePicker ID="rdpTo" runat="server" Width="100px" />
 					            </td>
 					    	</tr>
 					    </table>
@@ -71,7 +72,7 @@
 					</span>
                    </td>
                    <td align="left" valign="top">
-					<telerik:RadComboBox ID="rcbThreadStatus" runat="server" Width="250px" Skin="Web20" />
+					<telerik:RadComboBox ID="rcbThreadStatus" runat="server" Width="254px" />
                     </td>
                </tr>
 				<tr>
@@ -81,7 +82,7 @@
 						</span>
 					</td>
 					<td valign="top" align="left">
-						<telerik:RadTreeView ID="rtvForums" runat="server" Skin="Web20" CheckBoxes="true" />
+						<telerik:RadTreeView ID="rtvForums" runat="server" CheckBoxes="true" />
 					</td>
 				</tr>
 			</table>
@@ -90,9 +91,9 @@
 	<tr>
 		<td valign="middle" align="center" >
 			<asp:linkbutton class="CommandButton" id="cmdSearch" resourcekey="cmdSearch" runat="server" />&nbsp;
-			<asp:linkbutton class="CommandButton" id="cmdCancel" resourcekey="cmdCancel" runat="server"></asp:linkbutton><br /><br />
+			<asp:linkbutton class="CommandButton" id="cmdCancel" resourcekey="cmdCancel" runat="server" /><br /><br />
 			<asp:CompareValidator ID="valCompareDates" runat="server" ControlToValidate="rdpTo" ControlToCompare="rdpFrom" Operator="GreaterThan" Type="Date" CssClass="NormalRed" resourcekey="valCompareDates" />
-			<asp:label id="lblInfo" cssclass="NormalRed" runat="server"></asp:label>
+			<asp:label id="lblInfo" cssclass="NormalRed" runat="server" />
 		</td>
 	</tr>
 </table>

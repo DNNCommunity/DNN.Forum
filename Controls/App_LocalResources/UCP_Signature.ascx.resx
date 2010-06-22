@@ -123,10 +123,10 @@
   <data name="plSignature.Help" xml:space="preserve">
     <value>The message to display at bottom of all your posts.</value>
   </data>
-  <data name="Preview.Text" xml:space="preserve">
+  <data name="cmdPreview.Text" xml:space="preserve">
     <value>Preview</value>
   </data>
-  <data name="Edit.Text" xml:space="preserve">
+  <data name="cmdEdit.Text" xml:space="preserve">
     <value>Edit</value>
   </data>
   <data name="Title.Text" xml:space="preserve">

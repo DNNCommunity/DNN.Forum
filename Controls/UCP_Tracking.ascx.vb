@@ -160,7 +160,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 
 			Dim cntForumUser As New ForumUserController
 			Dim objUser As ForumUser = cntForumUser.GetForumUser(dataItem.LastApprovedPosterID, False, ModuleId, PortalId)
-			lbl.Text = LastPostDetails(dataItem.ForumID, dataItem.LastApprovedPostCreatedDate, dataItem.LastApprovedPosterID, dataItem.LastApprovedPostID, objUser.Username)
+			lbl.Text = LastPostDetails(dataItem.ForumID, dataItem.LastApprovedPostCreatedDate, objUser, dataItem.LastApprovedPostID)
 		End Sub
 
 		''' <summary>
@@ -211,7 +211,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 
 			Dim cntForumUser As New ForumUserController
 			Dim LAUser As ForumUser = cntForumUser.GetForumUser(dataItem.LastApprovedPosterID, False, ModuleId, PortalId)
-			lbl.Text = LastPostDetails(dataItem.ForumID, dataItem.LastApprovedPostCreatedDate, dataItem.LastApprovedPosterID, dataItem.LastApprovedPostID, LAUser.Username)
+			lbl.Text = LastPostDetails(dataItem.ForumID, dataItem.LastApprovedPostCreatedDate, LAUser, dataItem.LastApprovedPostID)
 		End Sub
 
 		''' <summary>
@@ -232,7 +232,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
 		''' <remarks></remarks>
-		Protected Sub ThreadPager_Command(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.CommandEventArgs) Handles ThreadPager.Command
+		Protected Sub ThreadPager_Command(ByVal sender As Object, ByVal e As CommandEventArgs) Handles ThreadPager.Command
 			Dim CurrentPage As Int32 = CType(e.CommandArgument, Int32)
 			ThreadPager.CurrentPage = CurrentPage
 			BindThreadData(ThreadPager.PageSize, CurrentPage)
@@ -346,20 +346,26 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' </summary>
 		''' <param name="ForumID"></param>
 		''' <param name="LastPostDate"></param>
-		''' <param name="LastPostUserID"></param>
+		''' <param name="LastApprovedUser"></param>
 		''' <param name="LastApprovedPostID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Private Function LastPostDetails(ByVal ForumID As Integer, ByVal LastPostDate As DateTime, ByVal LastPostUserID As Integer, ByVal LastApprovedPostID As Integer, ByVal LastApprovedUsername As String) As String
+		Private Function LastPostDetails(ByVal ForumID As Integer, ByVal LastPostDate As DateTime, ByVal LastApprovedUser As ForumUser, ByVal LastApprovedPostID As Integer) As String
 			Dim objUser As ForumUser
 			Dim str As String
 			Dim cntForumUser As New ForumUserController
 
-			objUser = cntForumUser.GetForumUser(LastPostUserID, False, ModuleId, PortalId)
+			objUser = cntForumUser.GetForumUser(LastApprovedUser.UserID, False, ModuleId, PortalId)
 
 			str = "<span class=""Forum_LastPostText""><a href=""" & Utilities.Links.ContainerViewPostLink(TabId, ForumID, LastApprovedPostID) & """ class=""Forum_LastPostText"">" & Utilities.ForumUtils.GetCreatedDateInfo(LastPostDate, objConfig, "Forum_LastPostText") & "</a><br />"
 			str += Localization.GetString("by", LocalResourceFile) & " "
-			str += "<a href=""" & Utilities.Links.UserPublicProfileLink(TabId, ModuleId, LastPostUserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, LastApprovedUsername) & """ class=""Forum_LastPostText"">" & objUser.DisplayName & "</a>"
+			str += "<a href="""
+			If Not objConfig.EnableExternalProfile Then
+				str += LastApprovedUser.UserCoreProfileLink
+			Else
+				str += Utilities.Links.UserExternalProfileLink(LastApprovedUser.UserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, LastApprovedUser.SiteAlias)
+			End If
+			str += """ class=""Forum_LastPostText"">" & LastApprovedUser.SiteAlias & "</a>"
 			str += "</span>"
 			Return str
 		End Function

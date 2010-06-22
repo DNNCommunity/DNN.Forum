@@ -20,7 +20,7 @@
 Option Strict On
 Option Explicit On
 
-Imports DotNetNuke.Entities.Users
+Imports DotNetNuke.Services.FileSystem
 
 Namespace DotNetNuke.Modules.Forum
 
@@ -71,8 +71,6 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _FlatView As Boolean = True
 		Dim _ViewDescending As Boolean = False
 		Dim _EnableModNotification As Boolean = True
-		Dim _EnablePM As Boolean = True
-		Dim _EnablePMNotifications As Boolean = True
 		Dim _EmailFormat As Integer
 		Dim _SiteAlias As String = "Anonymous"
 		Dim _objConfig As Config
@@ -145,6 +143,18 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 		End Property
 
+		''' <summary>
+		''' The user's last activity, based on the core membership provider.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property LastActivity() As Date
+			Get
+				Return Membership.LastActivityDate
+			End Get
+		End Property
+
 #End Region
 
 		''' <summary>
@@ -192,31 +202,127 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' The full path to the user's avatar for display. 
+		''' The full path to the user's avatar for display, unless using core profile avatar (this returns fileid in that case). 
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Public ReadOnly Property AvatarComplete() As String
 			Get
-				If objConfig.EnableProfileAvatar Then
-					If Not ProfileAvatar Is Nothing Then
-						_AvatarComplete = objConfig.CurrentPortalSettings.HomeDirectory + objConfig.UserAvatarPath + ProfileAvatar
-					Else
-						_AvatarComplete = String.Empty
-					End If
-				Else
-					If _Avatar.Trim(";"c) <> String.Empty Then
-						'[skeel] RETURN!! need to add none here as well, as UserAvatar has not been used before, 
-						'even if it was there - eventually it has to go..
-						If _UserAvatar = UserAvatarType.UserAvatar Or _UserAvatar = UserAvatarType.None Then
-							_AvatarComplete = objConfig.CurrentPortalSettings.HomeDirectory + objConfig.UserAvatarPath + _Avatar.Trim(";"c)
-						ElseIf _UserAvatar = UserAvatarType.PoolAvatar Then
-							_AvatarComplete = objConfig.CurrentPortalSettings.HomeDirectory + objConfig.UserAvatarPoolPath + _Avatar.Trim(";"c)
+				Try
+					If Not objConfig.CurrentPortalSettings Is Nothing Then
+						Dim homeDirectory As String = objConfig.CurrentPortalSettings.HomeDirectory
+
+						If objConfig.EnableProfileAvatar Then
+							If ProfileAvatar IsNot Nothing Then
+								If objConfig.EnableProfileUserFolders And (AvatarCoreFile IsNot Nothing) Then
+									Dim userFolder As String = GetUserFolderPath(UserID)
+
+									_AvatarComplete = homeDirectory + "Users/" + userFolder + "/" + AvatarCoreFile.FileName
+								Else
+									_AvatarComplete = homeDirectory + objConfig.UserAvatarPath + ProfileAvatar
+								End If
+							Else
+								_AvatarComplete = String.Empty
+							End If
+						Else
+							If _Avatar.Trim(";"c) <> String.Empty Then
+								'[skeel] RETURN!! need to add none here as well, as UserAvatar has not been used before, 
+								'even if it was there - eventually it has to go..
+								If _UserAvatar = UserAvatarType.UserAvatar Or _UserAvatar = UserAvatarType.None Then
+									_AvatarComplete = homeDirectory + objConfig.UserAvatarPath + _Avatar.Trim(";"c)
+								ElseIf _UserAvatar = UserAvatarType.PoolAvatar Then
+									_AvatarComplete = homeDirectory + objConfig.UserAvatarPoolPath + _Avatar.Trim(";"c)
+								End If
+							End If
 						End If
+						Return _AvatarComplete
+					Else
+						' We don't have context
+						Return Nothing
 					End If
+				Catch ex As Exception
+					LogException(ex)
+					Return Nothing
+				End Try
+			End Get
+		End Property
+
+#Region "Special Core code duplication, this is for user folders because if Int16 bug in 5.4.0, 5.4.1."
+
+		Private Enum EnumUserFolderElement
+			Root = 0
+			SubFolder = 1
+		End Enum
+
+		''' -----------------------------------------------------------------------------
+		''' <summary>
+		''' Returns path to a User Folder 
+		''' </summary>
+		''' <history>
+		''' 	[jlucarino]	03/01/2010	Created
+		''' </history>
+		''' -----------------------------------------------------------------------------
+		Private Shared Function GetUserFolderPath(ByVal UserID As Integer) As String
+			Dim RootFolder As String
+			Dim SubFolder As String
+			Dim FullPath As String
+
+			RootFolder = GetUserFolderPathElement(UserID, EnumUserFolderElement.Root)
+			SubFolder = GetUserFolderPathElement(UserID, EnumUserFolderElement.SubFolder)
+
+			FullPath = System.IO.Path.Combine(RootFolder, SubFolder)
+			FullPath = System.IO.Path.Combine(FullPath, UserID.ToString)
+
+			Return FullPath
+		End Function
+
+		''' -----------------------------------------------------------------------------
+		''' <summary>
+		''' Returns Root and SubFolder elements of User Folder path
+		''' </summary>
+		''' <history>
+		''' 	[jlucarino]	03/01/2010	Created
+		''' </history>
+		''' -----------------------------------------------------------------------------
+		Private Shared Function GetUserFolderPathElement(ByVal UserID As Integer, ByVal Mode As EnumUserFolderElement) As String
+			Const SUBFOLDER_SEED_LENGTH As Integer = 2
+			Const BYTE_OFFSET As Integer = 255
+			Dim Element As String = ""
+
+			Select Case Mode
+				Case EnumUserFolderElement.Root
+					Element = (Convert.ToInt32(UserID) And BYTE_OFFSET).ToString("000")
+				Case EnumUserFolderElement.SubFolder
+					Element = UserID.ToString("00").Substring(UserID.ToString("00").Length - SUBFOLDER_SEED_LENGTH, SUBFOLDER_SEED_LENGTH)
+			End Select
+
+			Return Element
+		End Function
+
+#End Region
+
+		''' <summary>
+		''' This results in a core FileInfo object associated with a fileID provided via ProfileAvatar. 
+		''' </summary>
+		''' <value></value>
+		''' <returns>A file stored in the DotNetNuke File system (ie. Files/Folders tables).</returns>
+		''' <remarks>This is utilized for GenerateThumbnail method, stored here since we cache it and avoid the call multiple times.</remarks>
+		Public ReadOnly Property AvatarCoreFile() As FileInfo
+			Get
+				If ProfileAvatar IsNot Nothing Then
+					Try
+						Dim FileID As Integer = CInt(ProfileAvatar.Trim())
+						Dim objController As New FileController()
+
+						Return objController.GetFileById(FileID, PortalID)
+					Catch ex As Exception
+						LogException(ex)
+						Return Nothing
+					End Try
+				Else
+					Return Nothing
 				End If
-				Return _AvatarComplete
 			End Get
 		End Property
 
@@ -263,29 +369,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' Determines if the user has unread Private Messages in their Inbox.
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public ReadOnly Property UserHasNewMessages() As Boolean
-			Get
-				If UserID > 0 Then
-					Dim ctlPMReads As New ForumPMReadsController
-					Dim i As Integer = 0
-					i = ctlPMReads.GetUserNewPMCount(UserID)
-					If i > 0 Then
-						Return True
-					Else
-						Return False
-					End If
-				Else
-					Return False
-				End If
-			End Get
-		End Property
-
-		''' <summary>
 		''' If the user is online or not. 
 		''' </summary>
 		''' <value></value>
@@ -305,11 +388,11 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' Gets the avatar from the user's profile.
+		''' Gets the avatar from the user's profile (which is stored in the UserProfile table). 
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
-		''' <remarks></remarks>
+		''' <remarks>This can be stored as a fileid (as a string) or as an actual file name.</remarks>
 		Public ReadOnly Property ProfileAvatar() As String
 			Get
 				If Not Me.IsSuperUser Then
@@ -318,6 +401,18 @@ Namespace DotNetNuke.Modules.Forum
 				Else
 					Return Nothing
 				End If
+			End Get
+		End Property
+
+		''' <summary>
+		''' This returns the core profile page, available as of DNN Core 5.3. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks>We store this here because it never changes, once set, and is cached (vs. repeatededly calculating the path).</remarks>
+		Public ReadOnly Property UserCoreProfileLink() As String
+			Get
+				Return DotNetNuke.Common.Globals.UserProfileURL(UserID)
 			End Get
 		End Property
 
@@ -451,21 +546,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' The last time the user posted. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property LastActivity() As DateTime
-			Get
-				Return _LastActivity
-			End Get
-			Set(ByVal Value As DateTime)
-				_LastActivity = Value
-			End Set
-		End Property
-
-		''' <summary>
 		''' If the user is moderated, they are not 'trusted' 
 		''' </summary>
 		''' <value></value>
@@ -564,36 +644,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' If the user allows Private Messages to be sent to him/her
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks>You can only send PM's if you can receive PM's</remarks>
-		Public Property EnablePM() As Boolean
-			Get
-				Return _EnablePM
-			End Get
-			Set(ByVal Value As Boolean)
-				_EnablePM = Value
-			End Set
-		End Property
-
-		''' <summary>
-		''' If the user wants to receive an email each time they get a private message. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property EnablePMNotifications() As Boolean
-			Get
-				Return _EnablePMNotifications
-			End Get
-			Set(ByVal Value As Boolean)
-				_EnablePMNotifications = Value
-			End Set
-		End Property
-
-		''' <summary>
 		''' Text/HTML preference for email notifications. 
 		''' </summary>
 		''' <value></value>
@@ -668,37 +718,6 @@ Namespace DotNetNuke.Modules.Forum
 			End Set
 		End Property
 
-		'CP - Everything here and below should be per moduleID
-		''' <summary>
-		''' Allows users to enable/disable their website shown in their profile and in posts view.
-		''' </summary>
-		''' <value></value>
-		''' <returns>True if the user allows their website address to be displayed, false otherwise.</returns>
-		''' <remarks>Default = True</remarks>
-		Public Property EnableProfileWeb() As Boolean
-			Get
-				Return _EnableProfileWeb
-			End Get
-			Set(ByVal Value As Boolean)
-				_EnableProfileWeb = Value
-			End Set
-		End Property
-
-		''' <summary>
-		''' Allows users to enable/disable their region shown in their profile and in posts view.
-		''' </summary>
-		''' <value></value>
-		''' <returns>True if the user allows their region address to be displayed, false otherwise.</returns>
-		''' <remarks>Default = False</remarks>
-		Public Property EnableProfileRegion() As Boolean
-			Get
-				Return _EnableProfileRegion
-			End Get
-			Set(ByVal Value As Boolean)
-				_EnableProfileRegion = Value
-			End Set
-		End Property
-
 		''' <summary>
 		''' If the user wants to receive notifications to all their threads replied to by default. If enbled, this will automaticly check the notify box on post add but they can remove it.
 		''' </summary>
@@ -753,21 +772,6 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 			Set(ByVal Value As Integer)
 				_TotalRecords = Value
-			End Set
-		End Property
-
-		''' <summary>
-		''' Users biography. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks>Should be replaced with DNN Profile Biography when issue with html is solved in DNN core</remarks>
-		Public Property Biography() As String
-			Get
-				Return _Biography
-			End Get
-			Set(ByVal Value As String)
-				_Biography = Value
 			End Set
 		End Property
 

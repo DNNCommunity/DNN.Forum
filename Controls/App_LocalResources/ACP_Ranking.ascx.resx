@@ -162,12 +162,6 @@
   <data name="lblTitle.Text" xml:space="preserve">
     <value>Ranking Management</value>
   </data>
-  <data name="lblCount.Text" xml:space="preserve">
-    <value>Count:</value>
-  </data>
-  <data name="lblRankTitle.Text" xml:space="preserve">
-    <value>Title:</value>
-  </data>
   <data name="plEigthRank.Help" xml:space="preserve">
     <value>Number of posts that are required before a user becomes 8th ranked poster status.&lt;br&gt;&lt;b&gt;NOTE&lt;/b&gt;&lt;br&gt;If left blank, default localized value of: '8th Level Poster' will be shown.</value>
   </data>

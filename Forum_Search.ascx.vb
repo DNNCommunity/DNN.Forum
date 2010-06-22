@@ -132,15 +132,12 @@ Namespace DotNetNuke.Modules.Forum
 					rdpTo.SelectedDate = Date.Today
 
 					With Me.rcbThreadStatus
-						Dim ctlLists As New DotNetNuke.Common.Lists.ListController
-						Dim colThreadStatus As DotNetNuke.Common.Lists.ListEntryInfoCollection = ctlLists.GetListEntryInfoCollection("ThreadStatus")
 						rcbThreadStatus.Items.Clear()
 
-						For Each entry As DotNetNuke.Common.Lists.ListEntryInfo In colThreadStatus
-							Dim statusEntry As New Telerik.Web.UI.RadComboBoxItem(Localization.GetString(entry.Text, objConfig.SharedResourceFile), entry.Value)
-							rcbThreadStatus.Items.Add(statusEntry)
-						Next
-						rcbThreadStatus.Items.Insert(1, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("AnyStatus", LocalResourceFile), "-1"))
+						rcbThreadStatus.Items.Insert(0, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("AnyStatus", LocalResourceFile), "-1"))
+						rcbThreadStatus.Items.Insert(1, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Unanswered", objConfig.SharedResourceFile), "1"))
+						rcbThreadStatus.Items.Insert(2, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Answered", objConfig.SharedResourceFile), "2"))
+						rcbThreadStatus.Items.Insert(3, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Informative", objConfig.SharedResourceFile), "3"))
 					End With
 
 					' Treeview forum viewer

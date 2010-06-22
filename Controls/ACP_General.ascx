@@ -40,16 +40,6 @@
 				          <asp:checkbox id="chkAggregatedForums" runat="server" CssClass="Forum_NormalTextBox" EnableViewState="false" />
 				     </td>
 			     </tr>
-			     <tr>
-				     <td width="35%">
-				          <span class="Forum_Row_AdminText">
-							<dnn:label id="plTimeZone" runat="server" controlname="chkTimeZone" Suffix=":"></dnn:label>
-					     </span>
-					</td>
-				     <td align="left">
-					     <asp:checkbox id="chkTimeZone" runat="server" CssClass="Forum_NormalTextBox" EnableViewState="false" />
-					</td>
-			     </tr>
 				<tr>
 				     <td width="35%">
 				          <span class="Forum_Row_AdminText">

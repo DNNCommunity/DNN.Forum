@@ -41,7 +41,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
 			BindAliases()
 			txtName.Text = objConfig.Name
-			chkTimeZone.Checked = objConfig.EnableTimeZone
 			chkAggregatedForums.Checked = objConfig.AggregatedForums
 			chkEnableThreadStatus.Checked = objConfig.EnableThreadStatus
 			chkEnablePostAbuse.Checked = objConfig.EnablePostAbuse
@@ -86,11 +85,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				Dim ctlModule As New Entities.Modules.ModuleController
 				ctlModule.UpdateModuleSetting(ModuleId, "Name", txtName.Text)
 				ctlModule.UpdateModuleSetting(ModuleId, "AggregatedForums", chkAggregatedForums.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "EnableTimeZone", chkTimeZone.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, "EnableThreadStatus", chkEnableThreadStatus.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, "EnablePostAbuse", chkEnablePostAbuse.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, "DisableHTMLPosting", chkDisableHTMLPosting.Checked.ToString)
-
 				ctlModule.UpdateModuleSetting(ModuleId, "PrimaryAlias", ddlPrimaryAlias.SelectedValue.ToString())
 
 				Config.ResetForumConfig(ModuleId)

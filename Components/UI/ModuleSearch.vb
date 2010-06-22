@@ -194,7 +194,6 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 
 				If Not HttpContext.Current.Request.Params("body") Is Nothing Then
-
 					'[skeel] added support for words out of context
 					body = HttpContext.Current.Request.Params("body")
 					If body.Length > 0 AndAlso body <> " " Then
@@ -241,14 +240,9 @@ Namespace DotNetNuke.Modules.Forum
 				Term.AddSearchTerm("Replies", CompareOperator.GreaterThanOrEqualTo, "0")
 			End If
 
-			'[Skeel] Threads I've started
+			' I have reverted this back to just simple threads involving user
 			If Not HttpContext.Current.Request.Params("mythreads") Is Nothing Then
-				subject = HttpContext.Current.Request.Params("mythreads")
-				If subject.Length > 0 AndAlso subject <> " " Then
-					'Term.AddSearchTerm("StartedByUserID", CompareOperator.Contains, HttpUtility.UrlDecode(subject.Trim()))
-					Term.AddSearchTerm("StartedByUserID", CompareOperator.Equal, HttpUtility.UrlDecode(subject.Trim()))
-					myThreads = True
-				End If
+				myThreads = True
 			End If
 
 			'[Skeel] Lastest x Hours
@@ -275,7 +269,6 @@ Namespace DotNetNuke.Modules.Forum
 				' Complex language support
 				SearchTerms = SearchTerms.Replace(":semi:", ";")
 			End If
-
 		End Sub
 
 #End Region
@@ -317,7 +310,7 @@ Namespace DotNetNuke.Modules.Forum
 						.ItemCount = objConfig.RatingScale
 
 						.ID = "trcRating" + thread.ThreadID.ToString()
-						.Value = thread.Rating
+						.Value = CDec(thread.Rating)
 						'AddHandler trcRating.Command, AddressOf trcRating_Rate
 					End With
 					hsThreadRatings.Add(thread.ThreadID, trcRating)
@@ -655,7 +648,7 @@ Namespace DotNetNuke.Modules.Forum
 					RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
 					RenderCellBegin(wr, "Forum_NormalBold", "", "100%", "right", "", "", "") '<td>
 					If myThreads Then
-						wr.Write(String.Format(Localization.GetString("MyStartedThreads", objConfig.SharedResourceFile), SearchCount) & ":")
+						wr.Write("&nbsp;")
 					Else
 						'LatestHours
 						wr.Write(String.Format(Localization.GetString("SearchResult", objConfig.SharedResourceFile), SearchCount) & ":")
@@ -1000,7 +993,13 @@ Namespace DotNetNuke.Modules.Forum
 
 				RenderDivBegin(wr, "", "Forum_LastPostText")	   ' <div>
 				wr.Write(ForumControl.LocalizedText("by") & " ")
-				url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, SearchItem.LastApprovedUser.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, SearchItem.LastApprovedUser.Username)
+
+				If Not objConfig.EnableExternalProfile Then
+					url = SearchItem.LastApprovedUser.UserCoreProfileLink
+				Else
+					url = Utilities.Links.UserExternalProfileLink(SearchItem.LastApprovedUser.UserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, SearchItem.LastApprovedUser.Username)
+				End If
+
 				RenderLinkButton(wr, url, SearchItem.LastApprovedUser.SiteAlias, "Forum_LastPostText") ' <a/>
 				RenderDivEnd(wr) ' </div>
 				RenderCellEnd(wr) ' </td>
@@ -1059,7 +1058,12 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			'link to user profile, always display in both view
-			url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, author.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, author.Username)
+			If Not objConfig.EnableExternalProfile Then
+				url = author.UserCoreProfileLink
+			Else
+				url = Utilities.Links.UserExternalProfileLink(author.UserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, author.Username)
+			End If
+
 			RenderTitleLinkButton(wr, url, author.SiteAlias, "Forum_Profile", ForumControl.LocalizedText("ViewProfile"))
 
 			RenderCellEnd(wr) ' </td>
@@ -1150,7 +1154,6 @@ Namespace DotNetNuke.Modules.Forum
 			If NoResults = True Then Exit Sub
 
 			RenderRowBegin(wr) ' <tr>
-
 			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")		 ' <td><img/></td>
 
 			RenderCellBegin(wr, "", "", "100%", "", "middle", "", "") ' <td>
@@ -1165,7 +1168,6 @@ Namespace DotNetNuke.Modules.Forum
 			RenderImage(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "")	' <img/>
 			RenderCellEnd(wr) ' </td>
 
-
 			' xml link (for single forum syndication)
 			If (objConfig.EnableRSS) AndAlso (Aggregated = True) Then
 				RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
@@ -1178,7 +1180,6 @@ Namespace DotNetNuke.Modules.Forum
 				wr.RenderEndTag() ' </A>
 				RenderCellEnd(wr) ' </td>
 			End If
-
 
 			RenderCellBegin(wr, "", "", "100%", "right", "middle", "", "") ' <td>
 			RenderSearchPaging(wr)
@@ -1267,10 +1268,8 @@ Namespace DotNetNuke.Modules.Forum
 			If h.QueryString("aggregated") <> String.Empty Then
 				str.Append("&aggregated=1")
 			End If
-
-			' [skeel] 9/1/2009 added support for new search types
 			If h.QueryString("mythreads") <> String.Empty Then
-				str.Append("&mythreads=" & h.QueryString("mythreads"))
+				str.Append("&mythreads=1")
 			End If
 			If h.QueryString("latesthours") <> String.Empty Then
 				str.Append("&latesthours=" & h.QueryString("latesthours"))
@@ -1439,159 +1438,152 @@ Namespace DotNetNuke.Modules.Forum
 			Dim str As String = HttpUtility.HtmlDecode(strBody)
 			Try
 
-				' Here we handle any instances of Quotes and Code tags
-				Dim mRegOptions As RegexOptions = RegexOptions.IgnoreCase Or RegexOptions.Multiline Or RegexOptions.Singleline
-				Dim mQuoteAuthor As New Regex("\[quote=""(?<author>[^\]]*)\""](?<text>(.*?))\[/quote\]", mRegOptions)
-				Dim mQuote As New Regex("\[quote\](?<text>(.*?))\[/quote\]", mRegOptions)
-				Dim mCode As New Regex("\[code\](?<code>(.*?))\[/code\]", mRegOptions)
-				Dim mImage As New Regex("<img[^>]*>", mRegOptions)
+				If strBody IsNot Nothing Then
+					' Here we handle any instances of Quotes and Code tags
+					Dim mRegOptions As RegexOptions = RegexOptions.IgnoreCase Or RegexOptions.Multiline Or RegexOptions.Singleline
+					Dim mQuoteAuthor As New Regex("\[quote=""(?<author>[^\]]*)\""](?<text>(.*?))\[/quote\]", mRegOptions)
+					Dim mQuote As New Regex("\[quote\](?<text>(.*?))\[/quote\]", mRegOptions)
+					Dim mCode As New Regex("\[code\](?<code>(.*?))\[/code\]", mRegOptions)
+					Dim mImage As New Regex("<img[^>]*>", mRegOptions)
 
-				Dim strTmpName As String = String.Format("{0} " & Localization.GetString("ForumTextWrote.Text", objConfig.SharedResourceFile).Trim() & ": ""{1}""</div>", "${author}", "${text}")
-				While mQuoteAuthor.IsMatch(str)
-					str = mQuoteAuthor.Replace(str, strTmpName)
-				End While
-
-				Dim strTmp As String = String.Format("{0}: ""{1}""", Localization.GetString("ForumTextQuote.Text", objConfig.SharedResourceFile).Trim(), "${text}")
-				While mQuote.IsMatch(str)
-					str = mQuote.Replace(str, strTmp)
-				End While
-
-				Dim strTmpCode As String = String.Format("{0}: ""{1}""", Localization.GetString("ForumTextCode.Text", objConfig.SharedResourceFile).Trim(), "${code}")
-				While mCode.IsMatch(str)
-					str = mCode.Replace(str, strTmpCode)
-				End While
-
-				' Any inline attachments?
-				If objConfig.EnableAttachment = True And str.ToLower.IndexOf("[attachment") >= 0 Then
-					Dim mAttach As New Regex("\[attachment\](?<file>(.*?))\[/attachment\]", mRegOptions)
-					While mAttach.IsMatch(str)
-
-						For Each mMatch As Match In mAttach.Matches(str)
-							Dim strExtension As String = Replace(IO.Path.GetExtension(mMatch.Groups(1).ToString), ".", "")
-							If InStr("," & Common.glbImageFileTypes.ToLower, "," & strExtension.ToLower) > 0 Then
-								'Image -> tag it!
-								str = str.Replace(mMatch.Groups(0).ToString, Localization.GetString("ImageTag", objConfig.SharedResourceFile))
-							Else
-								'File -> display the filename with quotes
-								str = str.Replace(mMatch.Groups(0).ToString, """" & mMatch.Groups(1).ToString & """")
-							End If
-						Next
+					Dim strTmpName As String = String.Format("{0} " & Localization.GetString("ForumTextWrote.Text", objConfig.SharedResourceFile).Trim() & ": ""{1}""</div>", "${author}", "${text}")
+					While mQuoteAuthor.IsMatch(str)
+						str = mQuoteAuthor.Replace(str, strTmpName)
 					End While
-				End If
 
-				' Replace all instances of <img> with the image tag
-				While mImage.IsMatch(str)
-					str = mImage.Replace(str, Localization.GetString("ImageTag", objConfig.SharedResourceFile))
-				End While
+					Dim strTmp As String = String.Format("{0}: ""{1}""", Localization.GetString("ForumTextQuote.Text", objConfig.SharedResourceFile).Trim(), "${text}")
+					While mQuote.IsMatch(str)
+						str = mQuote.Replace(str, strTmp)
+					End While
 
-				' Then we need to decode the text and then strip all the remaining html
-				str = Utilities.ForumUtils.StripHTML(str)
+					Dim strTmpCode As String = String.Format("{0}: ""{1}""", Localization.GetString("ForumTextCode.Text", objConfig.SharedResourceFile).Trim(), "${code}")
+					While mCode.IsMatch(str)
+						str = mCode.Replace(str, strTmpCode)
+					End While
 
-				'Now let's handle old type quotes
-				If str.IndexOf(Config.QUOTE_OPEN) > 0 Then
-					str = str.Replace(Config.QUOTE_OPEN, " "" ")
-					str = str.Replace(Config.QUOTE_CLOSE, " "" ")
-				End If
+					' Any inline attachments?
+					If objConfig.EnableAttachment = True And str.ToLower.IndexOf("[attachment") >= 0 Then
+						Dim mAttach As New Regex("\[attachment\](?<file>(.*?))\[/attachment\]", mRegOptions)
+						While mAttach.IsMatch(str)
 
-				'..and naughty words...
-				If objConfig.EnableBadWordFilter Then
-					str = Utilities.ForumUtils.FormatProhibitedWord(str, CreatedDate, PortalID)
-				End If
-
-				'Let's find out if the search contained the body
-				If Not HttpContext.Current.Request.QueryString("body") Is Nothing Then
-
-					Dim SearchArray() As String = SplitSearchString(CStr(HttpContext.Current.Request.QueryString("body")))
-					Dim strWord As String
-					Dim Count As Integer = 0
-					Dim FoundWord As Boolean = False
-
-					If Len(str) > 300 Then
-
-						'So what part of the body do we display?
-						For Each strWord In SearchArray
-
-							If FoundWord = False Then
-								strWord = strWord.Trim()
-
-								Dim pos As Integer = str.IndexOf(strWord, StringComparison.OrdinalIgnoreCase)
-								If pos >= 0 Then
-									'Start?
-									If pos < 150 Then
-										str = Left(str, 297) & "..."
-									Else
-										'What's the length?
-										Dim posEnd As Integer = Len(strBody)
-										'middle?
-										If pos + 147 < posEnd Then
-											str = "..." & str.Substring((pos - 147), 297) & "..."
-										Else
-											'Right
-											str = "..." & str.Substring((posEnd - 297), 297)
-										End If
-
-									End If
-									'Ok - We found at least one word
-									FoundWord = True
+							For Each mMatch As Match In mAttach.Matches(str)
+								Dim strExtension As String = Replace(IO.Path.GetExtension(mMatch.Groups(1).ToString), ".", "")
+								If InStr("," & Common.glbImageFileTypes.ToLower, "," & strExtension.ToLower) > 0 Then
+									'Image -> tag it!
+									str = str.Replace(mMatch.Groups(0).ToString, Localization.GetString("ImageTag", objConfig.SharedResourceFile))
+								Else
+									'File -> display the filename with quotes
+									str = str.Replace(mMatch.Groups(0).ToString, """" & mMatch.Groups(1).ToString & """")
 								End If
-							End If
-
-						Next
-
+							Next
+						End While
 					End If
 
-					'Markup the words and count instances
-					For Each strWord In SearchArray
+					' Replace all instances of <img> with the image tag
+					While mImage.IsMatch(str)
+						str = mImage.Replace(str, Localization.GetString("ImageTag", objConfig.SharedResourceFile))
+					End While
 
-						strWord = strWord.Trim()
-						'Count the instances of this specific word in the reduced body
-						Dim iWord As Long = UBound(Split(str.ToLower, strWord.ToLower))
+					' Then we need to decode the text and then strip all the remaining html
+					str = Utilities.ForumUtils.StripHTML(str)
 
-						If iWord > 0 Then
+					'Now let's handle old type quotes
+					If str.IndexOf(Config.QUOTE_OPEN) > 0 Then
+						str = str.Replace(Config.QUOTE_OPEN, " "" ")
+						str = str.Replace(Config.QUOTE_CLOSE, " "" ")
+					End If
 
-							Dim i As Integer = 0
-							Dim LastPos As Integer = 0
+					'..and naughty words...
+					If objConfig.EnableBadWordFilter Then
+						str = Utilities.ForumUtils.FormatProhibitedWord(str, CreatedDate, PortalID)
+					End If
 
-							Do While i < iWord
+					'Let's find out if the search contained the body
+					If Not HttpContext.Current.Request.QueryString("body") Is Nothing Then
 
-								Dim pos As Integer = str.IndexOf(strWord, LastPos, StringComparison.OrdinalIgnoreCase)
+						Dim SearchArray() As String = SplitSearchString(CStr(HttpContext.Current.Request.QueryString("body")))
+						Dim strWord As String
+						Dim Count As Integer = 0
+						Dim FoundWord As Boolean = False
 
-								If pos >= 0 Then
-									'This is nessary to keep case sensitivity
-									Dim origStr As String = str.Substring(pos, strWord.Length)
-									str = str.Remove(pos, strWord.Length)
-									str = str.Insert(pos, "<span class=""Forum_Markup"">" & origStr & "</span>")
-									LastPos = pos + strWord.Length + 27 'length of span string 
+						If Len(str) > 300 Then
+
+							'So what part of the body do we display?
+							For Each strWord In SearchArray
+
+								If FoundWord = False Then
+									strWord = strWord.Trim()
+
+									Dim pos As Integer = str.IndexOf(strWord, StringComparison.OrdinalIgnoreCase)
+									If pos >= 0 Then
+										'Start?
+										If pos < 150 Then
+											str = Left(str, 297) & "..."
+										Else
+											'What's the length?
+											Dim posEnd As Integer = Len(strBody)
+											'middle?
+											If pos + 147 < posEnd Then
+												str = "..." & str.Substring((pos - 147), 297) & "..."
+											Else
+												'Right
+												str = "..." & str.Substring((posEnd - 297), 297)
+											End If
+
+										End If
+										'Ok - We found at least one word
+										FoundWord = True
+									End If
 								End If
-								i = i + 1
-							Loop
+
+							Next
+
 						End If
 
-						'Add to the hit counter, based on the full body 
-						Dim iCount As Long = UBound(Split(strBody.ToLower, strWord.ToLower))
-						Count = Count + CInt(iCount)
+						'Markup the words and count instances
+						For Each strWord In SearchArray
 
-					Next
+							strWord = strWord.Trim()
+							'Count the instances of this specific word in the reduced body
+							Dim iWord As Long = UBound(Split(str.ToLower, strWord.ToLower))
 
-					'Add the hit count
-					str = "<b>[" & Localization.GetString("Hits", objConfig.SharedResourceFile) & ": " & CStr(Count) & "]</b> " & str
+							If iWord > 0 Then
 
-					' We could easily dispay the emoticons, but let's keep the search clean!
-					'If objConfig.EnableEmoticons = True Then
-					'Dim ctlEmoticon As New EmoticonController
-					'str = ctlEmoticon.ProcessEmoticons(str, objConfig.ModuleID)
-					'End If
+								Dim i As Integer = 0
+								Dim LastPos As Integer = 0
 
-				Else
-					'Search was on author, subject or date range only
-					If Len(str) > 300 Then
-						str = Left(str, 297) & "..."
+								Do While i < iWord
+
+									Dim pos As Integer = str.IndexOf(strWord, LastPos, StringComparison.OrdinalIgnoreCase)
+
+									If pos >= 0 Then
+										'This is nessary to keep case sensitivity
+										Dim origStr As String = str.Substring(pos, strWord.Length)
+										str = str.Remove(pos, strWord.Length)
+										str = str.Insert(pos, "<span class=""Forum_Markup"">" & origStr & "</span>")
+										LastPos = pos + strWord.Length + 27 'length of span string 
+									End If
+									i = i + 1
+								Loop
+							End If
+
+							'Add to the hit counter, based on the full body 
+							Dim iCount As Long = UBound(Split(strBody.ToLower, strWord.ToLower))
+							Count = Count + CInt(iCount)
+
+						Next
+
+						'Add the hit count
+						str = "<b>[" & Localization.GetString("Hits", objConfig.SharedResourceFile) & ": " & CStr(Count) & "]</b> " & str
+					Else
+						'Search was on author, subject or date range only
+						If Len(str) > 300 Then
+							str = Left(str, 297) & "..."
+						End If
 					End If
 				End If
 
-				'Return the string
 				Return str
-
 			Catch ex As Exception
 				LogException(ex)
 				If Len(str) > 300 Then
@@ -1599,7 +1591,6 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 				Return str
 			End Try
-
 		End Function
 
 		''' <summary>

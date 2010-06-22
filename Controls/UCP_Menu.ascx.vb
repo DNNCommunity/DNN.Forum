@@ -52,8 +52,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		Dim ctlProfile As String = "UCP_Profile.ascx"
 		Dim ctlAvatar As String = "UCP_Avatar.ascx"
 		Dim ctlSignature As String = "UCP_Signature.ascx"
-		Dim ctlInbox As String = "PM_Inbox.ascx"
-		Dim ctlOutbox As String = "PM_Outbox.ascx"
 		Dim cmdOverview As LinkButton
 		Dim cmdTracking As LinkButton
 		Dim cmdBookmark As LinkButton
@@ -61,9 +59,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		Dim cmdProfile As LinkButton
 		Dim cmdAvatar As LinkButton
 		Dim cmdSignature As LinkButton
-		Dim cmdPMInbox As LinkButton
-		Dim cmdPMOutbox As LinkButton
-		'Dim cmdPMThread As LinkButton
 
 		''' <summary>
 		''' The various sections of the menu that can be expanded/collapsed.
@@ -73,7 +68,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 			ControlPanel = 1
 			ForumSettings = 2
 			ProfileManager = 3
-			PrivateMessaging = 4
 		End Enum
 
 		''' <summary>
@@ -247,10 +241,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 					ControlToLoad = ctlAvatar
 				Case UserAjaxControl.Signature
 					ControlToLoad = ctlSignature
-				Case UserAjaxControl.Inbox
-					ControlToLoad = ctlInbox
-				Case UserAjaxControl.Outbox
-					ControlToLoad = ctlOutbox
 				Case Else
 					ControlToLoad = ctlOverview
 			End Select
@@ -361,10 +351,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 						ExpandSection = ExpandMenuSection.ProfileManager
 					Case ctlSignature
 						ExpandSection = ExpandMenuSection.ProfileManager
-					Case ctlInbox
-						ExpandSection = ExpandMenuSection.PrivateMessaging
-					Case ctlOutbox
-						ExpandSection = ExpandMenuSection.PrivateMessaging
 				End Select
 
 				'Lets build the menu structure
@@ -598,84 +584,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 				wr.RenderEndTag() ' </table>
 				wr.RenderEndTag() ' </div>
 
-				' Fourth Menu section, contains PM system
-				Dim cntForumUser As New ForumUserController
-				Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, objConfig.ModuleID, PortalID)
-
-				If ProfileUser.EnablePM And objConfig.EnablePMSystem Then
-					GenerateMenuSection(wr, Localization.GetString("PMInformation", Me.LocalResourceFile), IsExpanded(4, ExpandSection), 80)
-
-					wr.AddAttribute(HtmlTextWriterAttribute.Cellpadding, "0")
-					wr.AddAttribute(HtmlTextWriterAttribute.Cellspacing, "0")
-					wr.AddAttribute(HtmlTextWriterAttribute.Align, "left")
-					wr.RenderBeginTag(HtmlTextWriterTag.Table) ' <table>
-
-					'Inbox
-					wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>
-					wr.AddAttribute(HtmlTextWriterAttribute.Width, "20")
-					wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
-
-					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
-					wr.AddAttribute(HtmlTextWriterAttribute.Src, objConfig.GetThemeImageURL("inbox.") & "gif")
-					wr.AddAttribute(HtmlTextWriterAttribute.Alt, Localization.GetString("Inbox", Me.LocalResourceFile))
-					wr.AddAttribute(HtmlTextWriterAttribute.Title, Localization.GetString("Inbox", Me.LocalResourceFile))
-					wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <img> 
-					wr.RenderEndTag() ' </img>
-					wr.RenderEndTag() ' </td>
-
-					wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
-					wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
-					cmdPMInbox.RenderControl(wr)
-					wr.RenderEndTag() ' </td>
-					wr.RenderEndTag() ' </tr>
-
-					'Outbox
-					wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>
-					wr.AddAttribute(HtmlTextWriterAttribute.Width, "20")
-					wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
-
-					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
-					wr.AddAttribute(HtmlTextWriterAttribute.Src, objConfig.GetThemeImageURL("outbox.") & "gif")
-					wr.AddAttribute(HtmlTextWriterAttribute.Alt, Localization.GetString("Outbox", Me.LocalResourceFile))
-					wr.AddAttribute(HtmlTextWriterAttribute.Title, Localization.GetString("Outbox", Me.LocalResourceFile))
-					wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <img> 
-					wr.RenderEndTag() ' </img>
-					wr.RenderEndTag() ' </td>
-
-					wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
-					wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
-					cmdPMOutbox.RenderControl(wr)
-					wr.RenderEndTag() ' </td>
-					wr.RenderEndTag() ' </tr>
-
-					'[skeel] Sent Item goes here, when implemented
-
-					'New Message
-					wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>
-					wr.AddAttribute(HtmlTextWriterAttribute.Width, "20")
-					wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
-
-					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
-					wr.AddAttribute(HtmlTextWriterAttribute.Src, objConfig.GetThemeImageURL("newmessage.") & "gif")
-					wr.AddAttribute(HtmlTextWriterAttribute.Alt, Localization.GetString("Newmessage", Me.LocalResourceFile))
-					wr.AddAttribute(HtmlTextWriterAttribute.Title, Localization.GetString("Newmessage", Me.LocalResourceFile))
-					wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <img> 
-					wr.RenderEndTag() ' </img>
-					wr.RenderEndTag() ' </td>
-
-					wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
-					wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
-
-					url = Utilities.Links.NewPMLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, objConfig.ModuleID)
-					RenderLinkButton(wr, url, Localization.GetString("New", Me.LocalResourceFile), "Forum_Link")
-
-					wr.RenderEndTag() ' </td>
-					wr.RenderEndTag() ' </tr>
-
-					'Close Section
-					wr.RenderEndTag() ' </table>
-					wr.RenderEndTag() ' </div>
-				End If
 				'Section end, close the div.
 				wr.RenderEndTag() ' </div>
 			Catch ex As Exception
@@ -794,62 +702,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 				.EnableViewState = False
 			End With
 			Controls.Add(cmdSignature)
-
-			Dim strInbox As String = Localization.GetString("Inbox", Me.LocalResourceFile)
-			Dim strOutbox As String = Localization.GetString("Outbox", Me.LocalResourceFile)
-
-			Dim PMController As New PMController
-			Dim PMInfo As PMCountInfo
-			Dim cntForumUser As New ForumUserController
-
-			Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleID, PortalID)
-
-			PMInfo = PMController.PMGetMessageStatus(ProfileUser.UserID, PortalID)
-
-			If Not PMInfo Is Nothing Then
-				If PMInfo.Inbox > 0 Then strInbox += " (" & CStr(PMInfo.Inbox) & ")"
-				If PMInfo.Outbox > 0 Then strOutbox += " (" & CStr(PMInfo.Outbox) & ")"
-			End If
-
-			Me.cmdPMInbox = New LinkButton
-			With cmdPMInbox
-				.CssClass = "Forum_Link"
-				.ID = "cmdPMInbox"
-				.Text = strInbox
-				.CommandArgument = (CInt(UserAjaxControl.Inbox)).ToString()
-				.CausesValidation = False
-				AddHandler cmdPMInbox.Click, AddressOf PageButton_Click
-				'Commented it out to be able to get items on postback
-				'.EnableViewState = False
-			End With
-			Controls.Add(cmdPMInbox)
-
-			Me.cmdPMOutbox = New LinkButton
-			With cmdPMOutbox
-				.CssClass = "Forum_Link"
-				.ID = "cmdPMOutbox"
-				.Text = strOutbox
-				.CommandArgument = (CInt(UserAjaxControl.Outbox)).ToString()
-				'If PMInfo.Outbox = 0 Then
-				'	.Enabled = False
-				'End If
-				.CausesValidation = False
-				AddHandler cmdPMOutbox.Click, AddressOf PageButton_Click
-				.EnableViewState = False
-			End With
-			Controls.Add(cmdPMOutbox)
-
-			'Me.cmdPMThread = New LinkButton
-			'With cmdPMThread
-			'	.CssClass = "Forum_Link"
-			'	.ID = "cmdPMThread"
-			'	.Text = Localization.GetString("Thread", Me.LocalResourceFile)
-			'	.CommandArgument = (CInt(UserAjaxControl.Thread)).ToString()
-			'    .CausesValidation = False
-			'	AddHandler cmdPMThread.Click, AddressOf PageButton_Click
-			'	.EnableViewState = False
-			'End With
-			'Controls.Add(cmdPMThread)
 		End Sub
 
 #End Region

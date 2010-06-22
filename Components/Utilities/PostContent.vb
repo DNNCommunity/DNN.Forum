@@ -81,22 +81,19 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 			Select Case ParserInfo
 				Case 1
 					'Emoticon
-					FormatEmoticons(objConfig)
 				Case 2
 					'BBCode
 					FormatBBCode(objConfig)
 				Case 3
 					'Emoticons + BBCode
-					FormatEmoticons(objConfig)
 					FormatBBCode(objConfig)
 				Case 5
-					FormatEmoticons(objConfig)
+
 				Case 6
 					'BBCode
 					FormatBBCode(objConfig)
 				Case 7
 					'Emoticons + BBCode
-					FormatEmoticons(objConfig)
 					FormatBBCode(objConfig)
 				Case Else
 					'Do nothing
@@ -120,13 +117,11 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 				Case 8, 12 'Inline
 					FormatInlineAttachment(lstAttachments, objConfig, IsAuthenticated)
 				Case 9 'Emoticons + Inline
-					FormatEmoticons(objConfig)
 					FormatInlineAttachment(lstAttachments, objConfig, IsAuthenticated)
 				Case 10 'BBCode + Inline
 					FormatBBCode(objConfig)
 					FormatInlineAttachment(lstAttachments, objConfig, IsAuthenticated)
 				Case 11, 15 'Emoticons + BBCode + Inline
-					FormatEmoticons(objConfig)
 					FormatBBCode(objConfig)
 					FormatInlineAttachment(lstAttachments, objConfig, IsAuthenticated)
 				Case Else
@@ -444,15 +439,6 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		End Sub
 
 		''' <summary>
-		''' Replaces emoticon codes with emoticon images
-		''' </summary>
-		''' <remarks>[skeel] 1/8/2009 created</remarks>
-		Private Sub FormatEmoticons(ByVal objConfig As Config)
-			Dim ctlEmoticon As New EmoticonController
-			mText = ctlEmoticon.ProcessEmoticons(mText, objConfig.ModuleID)
-		End Sub
-
-		''' <summary>
 		''' Replaces inline attachments with html code
 		''' </summary>
 		''' <param name="lstAttachments"></param>
@@ -634,12 +620,11 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 				sb.Append("[quote=""" & parentPoster & """]" & mText & "[/quote]")
 			Else
 				sb.Append("<div class=""Quote""><em>" & parentPoster & " " & Localization.GetString("ForumTextWrote.Text", objConfig.SharedResourceFile).Trim() & ":</em><br/>" & mText & "</div>")
-				sb.Append("<div></div>")
+				sb.Append("<p>&nbsp;</p>")
 			End If
 
 			mText = sb.ToString()
 			Return mText
-
 		End Function
 
 #End Region

@@ -47,66 +47,26 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
 			Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
 			Dim cntForumUser As New ForumUserController
-
 			Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
-			'[skeel] get visibility settings
-			Dim ProfileProp As ProfilePropertyDefinition
-			Dim WebVisibility As UserVisibilityMode
-			Dim RegionVisibility As UserVisibilityMode
-			'Dim BiographyVisibility As UserVisibilityMode
-			Dim EmailVisibility As UserVisibilityMode
-			Dim IMVisibility As UserVisibilityMode
-
-			For Each ProfileProp In ProfileUser.Profile.ProfileProperties
-				Select Case ProfileProp.PropertyName
-					Case "Website"
-						WebVisibility = ProfileProp.Visibility
-					Case "Region"
-						RegionVisibility = ProfileProp.Visibility
-					Case "Biography"
-						'BiographyVisibility = ProfileProp.Visibility
-					Case "Email"
-						EmailVisibility = ProfileProp.Visibility
-					Case "IM"
-						IMVisibility = ProfileProp.Visibility
-				End Select
-			Next
+			rdpLiftBan.MinDate = Date.Now()
 
 			With ProfileUser
 				txtUserID.Text = .UserID.ToString
 				lblUserName.Text = .Username
 				lblDisplayName.Text = .SiteAlias
-				lblWebsite.Text = .Profile.Website
-				visWebsite.Text = Localization.GetString("Visibility", Me.LocalResourceFile) & ": " & WebVisibility.ToString
 				hlEmail.Text = .Email
 				hlEmail.NavigateUrl = "mailto:" & .Email
-				visEmail.Text = Localization.GetString("Visibility", Me.LocalResourceFile) & ": " & EmailVisibility.ToString
-				chkEnableProfileWeb.Checked = .EnableProfileWeb
-				chkEnableProfileRegion.Checked = .EnableProfileRegion
-				visRegion.Text = Localization.GetString("Visibility", Me.LocalResourceFile) & ": " & RegionVisibility.ToString
-				lblRegion.Text = .Profile.Region
-
-				'txtBiography.Text = HttpUtility.HtmlDecode(.Biography)
-				'visBiography.Text = Localization.GetString("Visibility", Me.LocalResourceFile) & ": " & BiographyVisibility.ToString
-				'visBiography.Visible = False
-
 				' Impersontation would go here.
 				chkIsTrusted.Checked = .IsTrusted
 				chkLockTrust.Checked = .LockTrust
 				chkIsBanned.Checked = .IsBanned
-				txtLiftBanDate.Text = .LiftBanDate.ToShortDateString()
+				rdpLiftBan.SelectedDate = .LiftBanDate
 			End With
 
 			If objConfig.EnableUserBanning And Security.IsForumAdmin Then
 				rowUserBanning.Visible = True
-				With Me.cmdCalBanDate
-					.ImageUrl = objConfig.GetThemeImageURL("s_calendar.") & objConfig.ImageExtension
-					.NavigateUrl = CType(DotNetNuke.Common.Utilities.Calendar.InvokePopupCal(txtLiftBanDate), String)
-					.ToolTip = Localization.GetString("cmdCalBanDate", LocalResourceFile)
-				End With
-
-				txtLiftBanDate.Text = DateAdd(DateInterval.Day, 7, Date.Today).ToShortDateString
+				rdpLiftBan.SelectedDate = DateAdd(DateInterval.Day, 7, Date.Today)
 			Else
 				rowUserBanning.Visible = False
 			End If
@@ -117,8 +77,10 @@ Namespace DotNetNuke.Modules.Forum.UCP
 				rowLiftBanDate.Visible = False
 			End If
 
+			rowTrust.Visible = Security.IsForumModerator
+			rowLockTrust.Visible = Security.IsForumAdmin
+
 			ViewState("Alias") = ProfileUser.SiteAlias
-			EnableControls(Security)
 		End Sub
 
 #End Region
@@ -144,18 +106,15 @@ Namespace DotNetNuke.Modules.Forum.UCP
 					Dim PreviouslyBanned As Boolean
 					.UserID = .UserID
 					.PortalID = PortalId
-					.EnableProfileWeb = chkEnableProfileWeb.Checked
-					.EnableProfileRegion = chkEnableProfileRegion.Checked
 					.IsTrusted = chkIsTrusted.Checked
 					.LockTrust = chkLockTrust.Checked
-					.Biography = HttpUtility.HtmlEncode(txtBiography.Text)
 
 					PreviouslyBanned = .IsBanned
 
 					.IsBanned = chkIsBanned.Checked
 					If chkIsBanned.Checked Then
-						If txtLiftBanDate.Text.Trim() <> String.Empty Then
-							.LiftBanDate = CDate(txtLiftBanDate.Text)
+						If rdpLiftBan.SelectedDate < Date.Now() Then
+							.LiftBanDate = CDate(rdpLiftBan.SelectedDate)
 						End If
 						If Not PreviouslyBanned Then
 							.StartBanDate = Date.Now()
@@ -194,18 +153,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 			Else
 				rowLiftBanDate.Visible = False
 			End If
-		End Sub
-
-#End Region
-
-#Region "Private Methods"
-
-		''' <summary>
-		''' Shows/Hides controls depending on module settings and user configuration.
-		''' </summary>
-		''' <remarks></remarks>
-		Private Sub EnableControls(ByVal objSecurity As Forum.ModuleSecurity)
-			tblAdmin.Visible = objSecurity.IsForumAdmin
 		End Sub
 
 #End Region

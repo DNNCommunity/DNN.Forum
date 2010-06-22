@@ -63,9 +63,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					rowDefaults.Visible = False
 					'End
 
-					' Register scripts
-					Utilities.ForumUtils.RegisterPageScripts(Page, objConfig)
-
 					BindEmailTemplates()
 					BindSingleTemplate()
 				End If

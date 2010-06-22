@@ -147,17 +147,8 @@
   <data name="GeneralSettings.Text" xml:space="preserve">
     <value>Control Panel</value>
   </data>
-  <data name="Inbox.Text" xml:space="preserve">
-    <value>Inbox</value>
-  </data>
   <data name="New.Text" xml:space="preserve">
     <value>New Message</value>
-  </data>
-  <data name="Outbox.Text" xml:space="preserve">
-    <value>Outbox</value>
-  </data>
-  <data name="PMInformation.Text" xml:space="preserve">
-    <value>Private Messages</value>
   </data>
   <data name="ProfileSettings.Text" xml:space="preserve">
     <value>Profile</value>

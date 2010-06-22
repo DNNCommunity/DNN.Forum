@@ -43,11 +43,11 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Controls"
 
-		Private ddlDateFilter As Telerik.Web.UI.RadComboBox
+		Private ddlDateFilter As DotNetNuke.Web.UI.WebControls.DnnComboBox
 		Private cmdRead As LinkButton
 		Private chkEmail As CheckBox
 		Private txtForumSearch As TextBox
-		Private cmdForumSearch As System.Web.UI.WebControls.ImageButton
+		Private cmdForumSearch As ImageButton
 		Private trcRating As Telerik.Web.UI.RadRating
 		Private cmdForumSubscribers As LinkButton
 
@@ -177,7 +177,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="e"></param>
 		''' <remarks>
 		''' </remarks>
-		Protected Sub ddlDateFilter_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+		Protected Sub ddlDateFilter_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs)
 			Dim dFilter As String = ddlDateFilter.SelectedItem.Value
 
 			If Not HttpContext.Current.Request.QueryString("noreply") Is Nothing Then
@@ -202,7 +202,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="e"></param>
 		''' <remarks>
 		''' </remarks>
-		Protected Sub cmdRead_Clicked(ByVal sender As Object, ByVal e As System.EventArgs)
+		Protected Sub cmdRead_Clicked(ByVal sender As Object, ByVal e As EventArgs)
 			Dim userThreadController As New UserThreadsController
 			userThreadController.MarkAll(CurrentForumUser.UserID, ForumId, True)
 		End Sub
@@ -214,7 +214,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="e"></param>
 		''' <remarks>
 		''' </remarks>
-		Protected Sub chkEmail_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+		Protected Sub chkEmail_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
 			Dim ctlTracking As New TrackingController
 			ctlTracking.TrackingForumCreateDelete(ForumId, CurrentForumUser.UserID, CType(sender, CheckBox).Checked, ModuleID)
 		End Sub
@@ -225,12 +225,12 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
 		''' <remarks></remarks>
-		Protected Sub cmdForumSearch_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs)
+		Protected Sub cmdForumSearch_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs)
 			url = Utilities.Links.ContainerSingleForumSearchLink(TabID, ForumId, txtForumSearch.Text)
 			MyBase.BasePage.Response.Redirect(url, False)
 		End Sub
 
-		Protected Sub cmdForumSubscribers_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+		Protected Sub cmdForumSubscribers_Click(ByVal sender As Object, ByVal e As EventArgs)
 			url = Utilities.Links.ForumEmailSubscribers(TabID, ModuleID, ForumId)
 			HttpContext.Current.Response.Redirect(url, False)
 		End Sub
@@ -397,7 +397,7 @@ Namespace DotNetNuke.Modules.Forum
 				End With
 			End If
 
-			ddlDateFilter = New Telerik.Web.UI.RadComboBox
+			ddlDateFilter = New DotNetNuke.Web.UI.WebControls.DnnComboBox
 			With ddlDateFilter
 				'.CssClass = "Forum_NormalTextBox"
 				.Skin = "WebBlue"
@@ -446,7 +446,7 @@ Namespace DotNetNuke.Modules.Forum
 					.ItemCount = objConfig.RatingScale
 
 					.ID = "trcRating" + thread.ThreadID.ToString()
-					.Value = thread.Rating
+					.Value = CDec(thread.Rating)
 					'AddHandler trcRating.Command, AddressOf trcRating_Rate
 				End With
 				hsThreadRatings.Add(thread.ThreadID, trcRating)
@@ -557,17 +557,19 @@ Namespace DotNetNuke.Modules.Forum
 			Try
 				ddlDateFilter.Items.Clear()
 
-				For Each entry As DotNetNuke.Common.Lists.ListEntryInfo In DotNetNuke.Modules.Forum.Utilities.ForumUtils.GetTrackingDurationList
-					If CurrentForumUser.UserID > 0 Then
-						Dim dateEntry As New Telerik.Web.UI.RadComboBoxItem(Localization.GetString(entry.Text, ForumControl.objConfig.SharedResourceFile), entry.Value)
-						ddlDateFilter.Items.Add(dateEntry)
-					Else
-						Dim dateEntry As New Telerik.Web.UI.RadComboBoxItem(Localization.GetString(entry.Text, ForumControl.objConfig.SharedResourceFile), entry.Value)
-						If Not CInt(dateEntry.Value) = -1 Then
-							ddlDateFilter.Items.Add(dateEntry)
-						End If
-					End If
-				Next
+				ddlDateFilter.Items.Insert(0, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Today", objConfig.SharedResourceFile), "0"))
+				ddlDateFilter.Items.Insert(1, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastThreeDays", objConfig.SharedResourceFile), "3"))
+				ddlDateFilter.Items.Insert(2, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastWeek", objConfig.SharedResourceFile), "7"))
+				ddlDateFilter.Items.Insert(3, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastTwoWeek", objConfig.SharedResourceFile), "14"))
+				ddlDateFilter.Items.Insert(4, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastMonth", objConfig.SharedResourceFile), "30"))
+				ddlDateFilter.Items.Insert(5, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastThreeMonth", objConfig.SharedResourceFile), "92"))
+				ddlDateFilter.Items.Insert(6, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastYear", objConfig.SharedResourceFile), "365"))
+				ddlDateFilter.Items.Insert(7, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("AllDays", objConfig.SharedResourceFile), "3650"))
+
+				If CurrentForumUser.UserID > 0 Then
+					ddlDateFilter.Items.Insert(0, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("LastVisit", objConfig.SharedResourceFile), "-1"))
+				End If
+
 				Dim dateFilter As Integer = 1000
 
 				' create child control date filter dropdownlist
@@ -992,7 +994,13 @@ Namespace DotNetNuke.Modules.Forum
 
 						RenderDivBegin(wr, "", "Forum_NormalSmall") ' <div>
 						wr.Write(String.Format("{0}&nbsp;", ForumControl.LocalizedText("by")))
-						url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.StartedByUserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, thread.StartedByUser.Username)
+
+						If Not objConfig.EnableExternalProfile Then
+							url = thread.StartedByUser.UserCoreProfileLink
+						Else
+							url = Utilities.Links.UserExternalProfileLink(thread.StartedByUserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, thread.StartedByUser.Username)
+						End If
+
 						RenderLinkButton(wr, url, thread.StartedByUser.SiteAlias, "Forum_NormalSmall") ' <a/>
 
 						' correct logic to handle posts per page per user
@@ -1154,7 +1162,13 @@ Namespace DotNetNuke.Modules.Forum
 
 						RenderDivBegin(wr, "", "Forum_LastPostText")	' <div>
 						wr.Write(ForumControl.LocalizedText("by") & " ")
-						url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, thread.LastApprovedUser.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, CurrentForumUser.Username)
+
+						If Not objConfig.EnableExternalProfile Then
+							url = thread.LastApprovedUser.UserCoreProfileLink
+						Else
+							url = Utilities.Links.UserExternalProfileLink(thread.LastApprovedUser.UserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, CurrentForumUser.Username)
+						End If
+
 						RenderLinkButton(wr, url, thread.LastApprovedUser.SiteAlias, "Forum_LastPostText") ' <a/>
 						RenderDivEnd(wr) ' </div>
 						RenderCellEnd(wr) ' </td>

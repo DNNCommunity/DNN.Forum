@@ -30,7 +30,7 @@ Imports System.Reflection
 <Assembly: AssemblyDescription("Open Source Web Application Framework's Forum Module")> 
 <Assembly: AssemblyCompany("DotNetNuke Corporation")> 
 <Assembly: AssemblyProduct("http://www.dotnetnuke.com")> 
-<Assembly: AssemblyCopyright("DotNetNuke® is copyright 2002-2009 by DotNetNuke Corporation. All Rights Reserved.")> 
+<Assembly: AssemblyCopyright("DotNetNuke® is copyright 2002-2010 by DotNetNuke Corporation. All Rights Reserved.")> 
 <Assembly: AssemblyTrademark("DotNetNuke")> 
 <Assembly: CLSCompliant(True)> 
 
@@ -44,4 +44,4 @@ Imports System.Reflection
 ' You can specify all the values or you can default the Build and Revision Numbers 
 ' by using the '*' as shown below:
 
-<Assembly: AssemblyVersion("04.05.08.*")> 
+<Assembly: AssemblyVersion("04.06.00.*")> 

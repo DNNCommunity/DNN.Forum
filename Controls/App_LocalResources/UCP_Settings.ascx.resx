@@ -156,29 +156,11 @@
   <data name="plClearReads.Help" xml:space="preserve">
     <value>When checked, this will clear all read status for all forums and threads for this user.</value>
   </data>
-  <data name="plEnablePM.Text" xml:space="preserve">
-    <value>Enable Private Messages</value>
-  </data>
-  <data name="plEnablePM.Help" xml:space="preserve">
-    <value>If checked, you are able to receive private messages.  </value>
-  </data>
   <data name="cmdClearReads.Text" xml:space="preserve">
     <value>Clear Read Status</value>
   </data>
-  <data name="plEnablePMNotifications.Text" xml:space="preserve">
-    <value>Receive PM Emails</value>
-  </data>
-  <data name="plEnablePMNotifications.Help" xml:space="preserve">
-    <value>If checked, you will receive an email when a user sends you a private message.</value>
-  </data>
   <data name="plEmailFormat.Text" xml:space="preserve">
     <value>Email Format</value>
-  </data>
-  <data name="plEnableMemberList.Help" xml:space="preserve">
-    <value>If checked, your profile will be listed in the Member List Directory.</value>
-  </data>
-  <data name="plEnableMemberList.Text" xml:space="preserve">
-    <value>Directory Listing</value>
   </data>
   <data name="plEnableDefaultPostNotify.Help" xml:space="preserve">
     <value>If checked, users will receive notification of replies in threads they have posted in. They always have the option of disabling this at time of post. </value>
@@ -197,5 +179,8 @@
   </data>
   <data name="lblTitle.Text" xml:space="preserve">
     <value>User Forum Settings</value>
+  </data>
+  <data name="plEmailFormat.Help" xml:space="preserve">
+    <value>The format email notification will be sent, HTML or Text.</value>
   </data>
 </root>

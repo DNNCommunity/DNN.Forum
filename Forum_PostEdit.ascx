@@ -1,9 +1,8 @@
 <%@ Register TagPrefix="dnn" TagName="TextEditor" Src="~/controls/TextEditor.ascx"%>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
-<%@ Register TagPrefix="forum" TagName="Emoticon" Src="~/DesktopModules/Forum/controls/EmoticonControl.ascx" %>
 <%@ Register TagPrefix="forum" TagName="Attachment" Src="~/DesktopModules/Forum/controls/AttachmentControl.ascx" %>
-<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 <%@ Control language="vb" CodeBehind="Forum_PostEdit.ascx.vb" AutoEventWireup="True" Inherits="DotNetNuke.Modules.Forum.PostEdit" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
 <asp:Literal ID="litCSSLoad" runat="server" />
 <asp:Panel ID="pnlContainer" runat="server">
     <table class="Forum_SearchContainer" cellspacing="0" cellpadding="0" width="100%" align="center">
@@ -19,10 +18,10 @@
 			                            <table width="100%" cellpadding="0" cellspacing="0" border="0">
 				                            <tr>
 					                            <td>
-					                                <asp:image id="imgAltHeader" runat="server"></asp:image>
+					                                <asp:image id="imgAltHeader" runat="server" />
 					                            </td>
 					                            <td align="left" width="100%">&nbsp;
-					                                <asp:label id="lblPostHeader" Runat="server" resourcekey="lblPostHeader" CssClass="Forum_HeaderText"></asp:label>
+					                                <asp:label id="lblPostHeader" Runat="server" resourcekey="lblPostHeader" CssClass="Forum_HeaderText" />
 					                            </td>
 				                            </tr>
 			                            </table>
@@ -39,7 +38,7 @@
 			                </span>
 		                </td>
 		                <td class="Forum_Row_AdminR" align="left" width="80%">
-			                <asp:dropdownlist id="ddlForum" runat="server" CssClass="Forum_NormalTextBox" Width="350px"></asp:dropdownlist>
+			                <asp:dropdownlist id="ddlForum" runat="server" CssClass="Forum_NormalTextBox" Width="350px" />
 		                </td>
 	                </tr>
 				    <tr id="rowSubject" runat="server">
@@ -49,25 +48,15 @@
 			                </span>
 		                </td>
 		                <td class="Forum_Row_AdminR" align="left" width="80%">
-		                    <asp:textbox id="txtSubject" runat="server" cssclass="Forum_NormalTextBox" width="350px" maxlength="100"></asp:textbox>
-		                    <asp:requiredfieldvalidator id="valSubject" runat="server" resourcekey="valSubject" CssClass="NormalRed" ControlToValidate="txtSubject"></asp:requiredfieldvalidator>
+		                    <asp:textbox id="txtSubject" runat="server" cssclass="Forum_NormalTextBox" width="350px" maxlength="100" />
+		                    <asp:requiredfieldvalidator id="valSubject" runat="server" resourcekey="valSubject" CssClass="NormalRed" ControlToValidate="txtSubject" />
 		                </td>
 	                </tr>
 				    <tr>
 		                <td class="Forum_Row_Admin" valign="top" align="left" width="100%" colspan="2">
-		                	<span class="Forum_Row_AdminText">
+						<div style="min-height: 300px;">
 							<dnn:texteditor id="teContent" runat="server" width="100%" height="250px"></dnn:texteditor>
-		                    </span>
-		                </td>
-	                </tr>
-				    <tr id="rowEmoticon" runat="server" width="200px">
-	                    <td class="Forum_Row_AdminL" valign="top">
-		                    <span class="Forum_Row_AdminText">
-		                        <dnn:label id="plEmoticon" runat="server" suffix=":" controlname="ctlEmoticon"></dnn:label>
-			                </span>
-		                </td>
-		                <td class="Forum_Row_AdminR" align="left" width="80%">
-			                <forum:Emoticon id="ctlEmoticon" runat="server" DisplayType="User" ></forum:Emoticon>
+		                    </div>
 		                </td>
 	                </tr>
 				    <tr id="rowAttachments" runat="server" width="200px">
@@ -117,7 +106,7 @@
                             </span>
                         </td>
                         <td align="left" class="Forum_Row_AdminR" width="80%">
-                            <asp:dropdownlist id="ddlThreadStatus" runat="server" CssClass="Forum_NormalTextBox" Width="350px" AutoPostBack="true" />
+						<asp:dropdownlist id="ddlThreadStatus" runat="server" CssClass="Forum_NormalTextBox" Width="350px" AutoPostBack="true" />
                         </td>
                     </tr>
 	                <tr>
@@ -134,10 +123,10 @@
 			                            <table width="100%" cellpadding="0" cellspacing="0" border="0">
 				                            <tr>
 					                            <td>
-					                                <asp:image id="imgAltHeaderPoll" runat="server"></asp:image>
+					                                <asp:image id="imgAltHeaderPoll" runat="server" />
 					                            </td>
 					                            <td align="left" width="100%">&nbsp;
-					                                <asp:label id="lblPostPollHeader" Runat="server" resourcekey="lblPostPollHeader" CssClass="Forum_AltHeaderText"></asp:label>
+					                                <asp:label id="lblPostPollHeader" Runat="server" resourcekey="lblPostPollHeader" CssClass="Forum_AltHeaderText" />
 					                            </td>
 				                            </tr>
 			                            </table>
@@ -154,7 +143,7 @@
                             </span>
                         </td>
                         <td align="left" class="Forum_Row_AdminR" width="80%">
-                            <asp:TextBox ID="txtQuestion" runat="server" CssClass="Forum_NormalTextBox" Height="50px" MaxLength="500" TextMode="MultiLine" Width="350px"></asp:TextBox>
+                            <asp:TextBox ID="txtQuestion" runat="server" CssClass="Forum_NormalTextBox" Height="50px" MaxLength="500" TextMode="MultiLine" Width="350px" />
                             <asp:TextBox ID="txtPollID" runat="server" Visible="false" /> 
                         </td>
                     </tr>
@@ -196,9 +185,9 @@
                             </span>
                         </td>
                         <td align="left" class="Forum_Row_AdminR" width="80%">
-                            <asp:TextBox runat="server" ID="txtAddAnswer" CssClass="Forum_NormalTextBox" Width="300px" MaxLength="200"></asp:TextBox>
-                            <asp:LinkButton ID="cmdAddAnswer" runat="server" CausesValidation="False" CssClass="CommandButton" resourcekey="cmdAddAnswer"></asp:LinkButton>
-                            <asp:Label ID="lblNoAnswer" runat="server" CssClass="NormalRed" Visible="False" resourcekey="lblNoAnswer"></asp:Label>
+                            <asp:TextBox runat="server" ID="txtAddAnswer" CssClass="Forum_NormalTextBox" Width="300px" MaxLength="200" />
+                            <asp:LinkButton ID="cmdAddAnswer" runat="server" CausesValidation="False" CssClass="CommandButton" resourcekey="cmdAddAnswer" />
+                            <asp:Label ID="lblNoAnswer" runat="server" CssClass="NormalRed" Visible="False" resourcekey="lblNoAnswer" />
                         </td>
                     </tr>
                     <tr valign="top">
@@ -208,7 +197,7 @@
                             </span>
                         </td>
                         <td align="left" class="Forum_Row_AdminR" width="80%">
-                            <asp:TextBox ID="txtTakenMessage" runat="server" CssClass="Forum_NormalTextBox" Height="50px" MaxLength="500" TextMode="MultiLine" Width="350px"></asp:TextBox>
+                            <asp:TextBox ID="txtTakenMessage" runat="server" CssClass="Forum_NormalTextBox" Height="50px" MaxLength="500" TextMode="MultiLine" Width="350px" />
                         </td>
                     </tr>
                     <tr>
@@ -231,10 +220,10 @@
                             <table cellpadding="0" cellspacing="0" border="0" id="PollEndDate">
                                 <tr>
                                     <td>
-                                        <asp:TextBox ID="txtEndDate" runat="server" CssClass="Forum_NormalTextBox" Width="150px"></asp:TextBox>
+                                        <asp:TextBox ID="txtEndDate" runat="server" CssClass="Forum_NormalTextBox" Width="150px" />
                                     </td>
                                     <td>
-                                        &nbsp;<asp:HyperLink ID="cmdCalEndDate" runat="server" resourcekey="cmdCalEndDate"></asp:HyperLink>
+                                        &nbsp;<asp:HyperLink ID="cmdCalEndDate" runat="server" resourcekey="cmdCalEndDate" />
                                     </td>
                                 </tr>
                             </table>
@@ -259,7 +248,7 @@
 											    <asp:image id="imgAltHeaderPreview" runat="server" />
 											</td>
 											<td align="left" width="100%">&nbsp;
-											    <asp:label id="lblPreviewHead" Runat="server" resourcekey="lblPreviewHead" CssClass="Forum_HeaderText"></asp:label>
+											    <asp:label id="lblPreviewHead" Runat="server" resourcekey="lblPreviewHead" CssClass="Forum_HeaderText" />
 											</td>
 										</tr>
 									</table>
@@ -294,16 +283,16 @@
 	    </tr>
 	<tr>
 	        <td align="center" width="100%">
-			  <asp:linkbutton cssclass="CommandButton" id="cmdBackToForum" runat="server" resourcekey="cmdBackToForum"></asp:linkbutton>
-	            <asp:linkbutton cssclass="CommandButton" id="cmdSubmit" runat="server" resourcekey="cmdSubmit"></asp:linkbutton>&nbsp;
-	            <asp:linkbutton cssclass="CommandButton" id="cmdPreview" runat="server" resourcekey="cmdPreview" CausesValidation="false"></asp:linkbutton>
-	            <asp:linkbutton cssclass="CommandButton" id="cmdBackToEdit" runat="server" resourcekey="cmdReturnToEdit" CausesValidation="False"></asp:linkbutton>&nbsp;
-	            <asp:linkbutton cssclass="CommandButton" id="cmdCancel" runat="server" resourcekey="cmdCancel" CausesValidation="False"></asp:linkbutton>
+			  <asp:linkbutton cssclass="CommandButton" id="cmdBackToForum" runat="server" resourcekey="cmdBackToForum" />
+	            <asp:linkbutton cssclass="CommandButton" id="cmdSubmit" runat="server" resourcekey="cmdSubmit" />&nbsp;
+	            <asp:linkbutton cssclass="CommandButton" id="cmdPreview" runat="server" resourcekey="cmdPreview" CausesValidation="false" />
+	            <asp:linkbutton cssclass="CommandButton" id="cmdBackToEdit" runat="server" resourcekey="cmdReturnToEdit" CausesValidation="False" />&nbsp;
+	            <asp:linkbutton cssclass="CommandButton" id="cmdCancel" runat="server" resourcekey="cmdCancel" CausesValidation="False" />
 		   </td>
 	    </tr>
 	<tr>
 		<td align="center" width="100%">
-			<asp:label id="lblInfo" Runat="server" CssClass="NormalRed"></asp:label>
+			<asp:label id="lblInfo" Runat="server" CssClass="NormalRed" />
 		</td>
 	</tr>
 	<tr>
@@ -324,7 +313,7 @@
 				                                    <asp:image id="imgAltHeaderReply" runat="server" />
 				                                </td>
 				                                <td align="left" width="100%">&nbsp;
-				                                    <asp:label id="lblPostReplyHeader" Runat="server" resourcekey="lblPostReplyHeader" CssClass="Forum_HeaderText"></asp:label>&nbsp;
+				                                    <asp:label id="lblPostReplyHeader" Runat="server" resourcekey="lblPostReplyHeader" CssClass="Forum_HeaderText" />&nbsp;
 				                                    <asp:HyperLink id="hlAuthor" runat="server" CssClass="Forum_HeaderText" Target="_blank" />
 				                                </td>
 			                                </tr>

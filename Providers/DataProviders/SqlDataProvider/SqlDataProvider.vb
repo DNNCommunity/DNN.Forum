@@ -42,7 +42,7 @@ Namespace DotNetNuke.Modules.Forum
 		Private _objectQualifier As String
 		Private _databaseOwner As String
 		Private _moduleDataPrefix As String = "Forum_"
-		Private _fullModuleQualifier As String = DatabaseOwner + ObjectQualifier + _moduleDataPrefix
+		Private _fullModuleQualifier As String
 
 #End Region
 
@@ -73,6 +73,8 @@ Namespace DotNetNuke.Modules.Forum
 			If _databaseOwner <> String.Empty And _databaseOwner.EndsWith(".") = False Then
 				_databaseOwner += "."
 			End If
+
+			_fullModuleQualifier = _databaseOwner + _objectQualifier + _moduleDataPrefix
 		End Sub
 
 #End Region
@@ -125,26 +127,6 @@ Namespace DotNetNuke.Modules.Forum
 
 		Public Overrides Sub Attachment_Update(ByVal objAttachment As AttachmentInfo)
 			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "Attachment_Update", objAttachment.AttachmentID, objAttachment.FileID, objAttachment.PostID, objAttachment.UserID, objAttachment.LocalFileName, objAttachment.Inline)
-		End Sub
-
-#End Region
-
-#Region "Emoticons"
-
-		Public Overrides Function Emoticon_GetAll(ByVal ModuleID As Integer, ByVal IsDefault As Boolean) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Emoticon_GetAll", ModuleID, IsDefault), IDataReader)
-		End Function
-
-		Public Overrides Sub Emoticon_Update(ByVal objEmoticon As EmoticonInfo)
-			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "Emoticon_Update", objEmoticon.ID, objEmoticon.Code, objEmoticon.Emoticon, objEmoticon.SortOrder, objEmoticon.ToolTip, objEmoticon.IsDefault, objEmoticon.ModuleID)
-		End Sub
-
-		Public Overrides Sub Emoticon_Delete(ByVal ID As Integer)
-			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "Emoticon_Delete", ID)
-		End Sub
-
-		Public Overrides Sub Emoticon_SetOrder(ByVal ID As Integer, ByVal ModuleID As Integer, ByVal MoveUp As Boolean)
-			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "Emoticon_SetOrder", ID, ModuleID, MoveUp)
 		End Sub
 
 #End Region
@@ -437,90 +419,6 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-#Region "Private Messaging"
-
-#Region "Posts"
-
-		Public Overrides Function PMGetAll(ByVal PMThreadID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal Descending As Boolean) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "PM_GetAll", PMThreadID, PageIndex, PageSize, Descending), IDataReader)
-		End Function
-
-		Public Overrides Function PMGet(ByVal PMID As Integer) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "PM_Get", PMID), IDataReader)
-		End Function
-
-		Public Overrides Function PMAdd(ByVal ParentPMID As Integer, ByVal PMFromUserID As Integer, ByVal RemoteAddr As String, ByVal Subject As String, ByVal Body As String, ByVal PMToUserID As Integer, ByVal PortalID As Integer) As Integer
-			Try
-				Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "PM_Add", ParentPMID, PMFromUserID, RemoteAddr, Subject, Body, PMToUserID, PortalID), Integer)
-			Catch Ex As Exception ' duplicate
-				DotNetNuke.Services.Exceptions.LogException(Ex)
-				Return Nothing
-			End Try
-		End Function
-
-		Public Overrides Sub PMDelete(ByVal PMID As Integer, ByVal PMThreadID As Integer)
-			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "PM_Delete", PMID, PMThreadID)
-		End Sub
-
-		Public Overrides Sub PMUpdate(ByVal PMID As Integer, ByVal Subject As String, ByVal Body As String)
-			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "PM_Update", PMID, Subject, Body)
-		End Sub
-
-#End Region
-
-#Region "Threads"
-
-		Public Overrides Function PMThreadGet(ByVal PMThreadID As Integer) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "PM_ThreadGet", PMThreadID), IDataReader)
-		End Function
-
-		Public Overrides Function PMThreadGetAll(ByVal UserID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer, ByVal PortalId As Integer) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "PM_ThreadGetAll", UserID, PageSize, PageIndex, PortalId), IDataReader)
-		End Function
-
-		Public Overrides Sub PMThreadDelete(ByVal PMThreadID As Integer, ByVal UserID As Integer)
-			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "PM_ThreadDelete", PMThreadID, UserID)
-		End Sub
-
-		Public Overrides Function PMThreadGetOutBox(ByVal UserID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer, ByVal PortalId As Integer) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "PM_ThreadGetOutBox", UserID, PageSize, PageIndex, PortalId), IDataReader)
-		End Function
-
-#End Region
-
-#Region "Reads/Views"
-
-		Public Overrides Function PMReadsGet(ByVal UserID As Integer, ByVal PMThreadID As Integer) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "PM_ReadsGet", UserID, PMThreadID), IDataReader)
-		End Function
-
-		Public Overrides Sub PMReadsAdd(ByVal UserID As Integer, ByVal PMThreadID As Integer, ByVal LastVisitDate As Date, ByVal PortalID As Integer)
-			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "PM_ReadsAdd", UserID, PMThreadID, LastVisitDate, PortalID)
-		End Sub
-
-		Public Overrides Sub PMReadsUpdate(ByVal UserID As Integer, ByVal PMThreadID As Integer, ByVal LastVisitDate As Date)
-			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "PM_ReadsUpdate", UserID, PMThreadID, GetNull(LastVisitDate))
-		End Sub
-
-		Public Overrides Function PMGetUserNewMessageCount(ByVal UserID As Integer, ByVal PortalID As Integer) As Integer
-			Return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "PM_GetUserNewMessageCount", UserID, PortalID))
-		End Function
-
-		Public Overrides Function PMGetMessageStatus(ByVal UserId As Integer, ByVal PortalId As Integer) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "PM_GetMessageStatus", UserId, PortalId), IDataReader)
-		End Function
-#End Region
-
-#Region "Users"
-
-		Public Overrides Function PMUsersGet(ByVal PortalId As Integer, ByVal NameToMatch As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal ByUsername As Boolean, ByVal Specific As Boolean) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "PM_UsersGet", PortalId, NameToMatch, PageIndex, PageSize, ByUsername, Specific), IDataReader)
-		End Function
-
-#End Region
-
-#End Region
-
 #Region "Users"
 
 		Public Overrides Function UserGet(ByVal UserID As Integer, ByVal PortalID As Integer) As IDataReader
@@ -762,11 +660,6 @@ Namespace DotNetNuke.Modules.Forum
 			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Subscriptions_ForumModerator", ForumID, ModuleID), IDataReader)
 		End Function
 
-		Public Overrides Function GetPrivateMessageDistributionList(ByVal PMID As Integer) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Subscriptions_PrivateMessage", PMID), IDataReader)
-		End Function
-
-
 		'Not in db yet, so not implemented
 		Public Overrides Function GetSingleUserDistribution(ByVal ForumID As Integer, ByVal ModuleID As Integer) As IDataReader
 			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Subscriptions_ForumModerator", ForumID, ModuleID), IDataReader)
@@ -934,22 +827,6 @@ Namespace DotNetNuke.Modules.Forum
 			Catch
 				Return False
 			End Try
-		End Function
-
-#End Region
-
-#Region "Upgrade"
-
-		Public Overrides Function Upgrade_GetForumPerms() As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Upgrade_GetForumPerms"), IDataReader)
-		End Function
-
-		Public Overrides Function Upgrade_GetPermByKey(ByVal PermKey As String) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Upgrade_GetPermByKey", PermKey), IDataReader)
-		End Function
-
-		Public Overrides Function Upgrade_GetForumMods() As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Upgrade_GetForumMods"), IDataReader)
 		End Function
 
 #End Region

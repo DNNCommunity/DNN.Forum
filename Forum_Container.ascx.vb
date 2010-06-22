@@ -71,14 +71,13 @@ Namespace DotNetNuke.Modules.Forum
 		''' 	[Administrator]	9/9/2006	Created
 		''' </history>
 		Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-			'' load the css file
-			'litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
+			' load the css file
+			litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
 
 			If DotNetNuke.Framework.AJAX.IsInstalled Then
 				DotNetNuke.Framework.AJAX.RegisterScriptManager()
-				'DotNetNuke.Framework.AJAX.WrapUpdatePanelControl(pnlContainer, False)
 			End If
-			''
+
 			If Not (Request.QueryString("groupid") Is Nothing) Then
 				_GroupID = Int32.Parse(Request.QueryString("groupid"))
 			End If
@@ -130,9 +129,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>We have to load the javascript files on every load of this control.</remarks>
 		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 			Try
-				' load the css file
-				litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
-
 				' Redirect to user's default forum if user access forum via menu
 				Dim objModules As Entities.Modules.ModuleController = New Entities.Modules.ModuleController
 
@@ -150,9 +146,6 @@ Namespace DotNetNuke.Modules.Forum
 						End If
 					End If
 				Next
-
-				' Register the javascript files used by this module. 
-				Utilities.ForumUtils.RegisterPageScripts(Me.Page, objConfig)
 			Catch exc As Exception
 				ProcessModuleLoadException(Me, exc)
 			End Try

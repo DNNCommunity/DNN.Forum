@@ -1,455 +1,385 @@
 <dotnetnuke type="Package" version="5.0">
-  <packages>
-    <package name="DNN_Forum" type="Module" version="04.05.08">
-      <friendlyName>Forum</friendlyName>
-      <description>
-        The core forum module for DotNetNuke.
-      </description>
-      <owner>
-        <name>Forum Module Project</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>http://www.dotnetnuke.com/Development/Forge/ModuleForums/tabid/820/Default.aspx</url>
-        <email>chris.paterra@dotnetnuke.com</email>
-      </owner>
-	  <license src="License.txt"></license>
-	  <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
-	  <dependencies>
-        <dependency type="CoreVersion">05.01.01</dependency>
-      </dependencies>
-      <components>
-        <component type="Script">	  
-          <scripts>
-            <basePath>DesktopModules\Forum\Providers\DataProviders\SqlDataProvider</basePath>
-            <script type="Install">
-              <path />
-              <name>03.00.00.SqlDataProvider</name>
-              <version>03.00.00</version>
-            </script>
-			<script type="Install">
-              <path />
-              <name>03.00.10.SqlDataProvider</name>
-              <version>03.00.10</version>
-            </script>
-			<script type="Install">
-              <path />
-              <name>03.00.11.SqlDataProvider</name>
-              <version>03.00.11</version>
-            </script>
-			<script type="Install">
-              <path />
-              <name>03.00.12.SqlDataProvider</name>
-              <version>03.00.12</version>
-            </script>
-			<script type="Install">
-              <path />
-              <name>03.10.01.SqlDataProvider</name>
-              <version>03.10.01</version>
-            </script>
-			<script type="Install">
-              <path />
-              <name>03.10.02.SqlDataProvider</name>
-              <version>03.10.02</version>
-            </script>
-			<script type="Install">
-              <path />
-              <name>03.10.03.SqlDataProvider</name>
-              <version>03.10.03</version>
-            </script>
-			<script type="Install">
-              <path />
-              <name>03.10.04.SqlDataProvider</name>
-              <version>03.10.04</version>
-            </script>
-			<script type="Install">
-              <path />
-              <name>03.10.05.SqlDataProvider</name>
-              <version>03.10.05</version>
-            </script>
-			<script type="Install">
-              <path />
-              <name>03.20.00.SqlDataProvider</name>
-              <version>03.20.00</version>
-            </script>
-			<script type="Install">
-              <path />
-              <name>03.20.01.SqlDataProvider</name>
-              <version>03.20.01</version>
-            </script>
-			<script type="Install">
-              <path />
-              <name>03.20.02.SqlDataProvider</name>
-              <version>03.20.02</version>
-            </script>
-			<script type="Install">
-              <path />
-              <name>03.20.03.SqlDataProvider</name>
-              <version>03.20.03</version>
-            </script>
-			<script type="Install">
-              <path />
-              <name>03.20.04.SqlDataProvider</name>
-              <version>03.20.04</version>
-            </script>
-			<script type="Install">
-              <path />
-              <name>03.20.07.SqlDataProvider</name>
-              <version>03.20.07</version>
-            </script>
-			<script type="Install">
-              <path />
-              <name>04.03.00.SqlDataProvider</name>
-              <version>04.03.00</version>
-            </script>
-			<script type="Install">
-              <path />
-              <name>04.03.04.SqlDataProvider</name>
-              <version>04.03.04</version>
-            </script>
-			<script type="Install">
-              <path />
-              <name>04.04.02.SqlDataProvider</name>
-              <version>04.04.02</version>
-            </script>
-			<script type="Install">
-              <path />
-              <name>04.04.03.SqlDataProvider</name>
-              <version>04.04.03</version>
-            </script>
-			<script type="Install">
-              <path />
-              <name>04.04.04.SqlDataProvider</name>
-              <version>04.04.04</version>
-            </script>
-			<script type="Install">
-              <path />
-              <name>04.04.05.SqlDataProvider</name>
-              <version>04.04.05</version>
-            </script>
-			<script type="Install">
-              <path />
-              <name>04.05.00.SqlDataProvider</name>
-              <version>04.05.00</version>
-            </script>
-			<script type="Install">
-              <path />
-              <name>04.05.02.SqlDataProvider</name>
-              <version>04.05.02</version>
-            </script>
-			<script type="Install">
-              <path />
-              <name>04.05.03.SqlDataProvider</name>
-              <version>04.05.03</version>
-            </script>
-		  <script type="Install">
-              <path />
-              <name>04.05.05.SqlDataProvider</name>
-              <version>04.05.05</version>
-            </script>
-            <script type="UnInstall">
-              <path />
-              <name>Uninstall.SqlDataProvider</name>
-              <version>04.05.08</version>
-            </script>
-          </scripts>
-        </component>			
-        <component type="Module">
-          <desktopModule>
-            <moduleName>DNN_Forum</moduleName>
-            <foldername>Forum</foldername>
-            <businessControllerClass>DotNetNuke.Modules.Forum.ThreadController, DotNetNuke.Modules.Forum</businessControllerClass>
-            <supportedFeatures>
-              <supportedFeature type="Searchable" />
-            </supportedFeatures>
-            <moduleDefinitions>
-              <moduleDefinition>			
-                <friendlyName>Forum</friendlyName>
-                <defaultCacheTime>-1</defaultCacheTime>
-                <moduleControls>
-                  <moduleControl>
-                    <controlKey />
-                    <controlSrc>DesktopModules/Forum/Forum_Container.ascx</controlSrc>
-                    <supportsPartialRendering>True</supportsPartialRendering>
-                    <controlTitle />
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl>http://www.dotnetnuke.com/default.aspx?tabid=787</helpUrl>
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>	
-                  <moduleControl>
-                    <controlKey>ForumEdit</controlKey>
-                    <controlSrc>DesktopModules/Forum/Controls/ACP_ForumEdit.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle>Edit Forum</controlTitle>
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>	
-				  <moduleControl>
-                    <controlKey>ForumManage</controlKey>
-                    <controlSrc>DesktopModules/Forum/Controls/ACP_ForumManage.ascx</controlSrc>
-                    <supportsPartialRendering>True</supportsPartialRendering>
-                    <controlTitle>Manage Forum</controlTitle>
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>	
-				  <moduleControl>
-                    <controlKey>ForumSearch</controlKey>
-                    <controlSrc>DesktopModules/Forum/Forum_Search.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle>Search Forum</controlTitle>
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>	
-				  <moduleControl>
-                    <controlKey>PostDelete</controlKey>
-                    <controlSrc>DesktopModules/Forum/Forum_PostDelete.ascx</controlSrc>
-                    <supportsPartialRendering>True</supportsPartialRendering>
-                    <controlTitle>Delete Post</controlTitle>
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>	
-				  <moduleControl>
-                    <controlKey>PostEdit</controlKey>
-                    <controlSrc>DesktopModules/Forum/Forum_PostEdit.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle>Edit Post</controlTitle>
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>	
-				  <moduleControl>
-                    <controlKey>PostModerate</controlKey>
-                    <controlSrc>DesktopModules/Forum/Forum_PostModerate.ascx</controlSrc>
-                    <supportsPartialRendering>True</supportsPartialRendering>
-                    <controlTitle>Moderate Post</controlTitle>
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>	
-				  <moduleControl>
-                    <controlKey>MCP</controlKey>
-                    <controlSrc>DesktopModules/Forum/MCP.ascx</controlSrc>
-                    <supportsPartialRendering>True</supportsPartialRendering>
-                    <controlTitle>Moderator Control Panel</controlTitle>
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>	
-				  <moduleControl>
-                    <controlKey>PostReport</controlKey>
-                    <controlSrc>DesktopModules/Forum/Forum_PostReport.ascx</controlSrc>
-                    <supportsPartialRendering>True</supportsPartialRendering>
-                    <controlTitle>Report Post</controlTitle>
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>	 
-				  <moduleControl>
-                    <controlKey>ThreadMove</controlKey>
-                    <controlSrc>DesktopModules/Forum/Forum_ThreadMove.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle>Move Thread</controlTitle>
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>	
-				  <moduleControl>
-                    <controlKey>UCP</controlKey>
-                    <controlSrc>DesktopModules/Forum/UCP.ascx</controlSrc>
-                    <supportsPartialRendering>True</supportsPartialRendering>
-                    <controlTitle>User Control Panel</controlTitle>
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>	
-				  <moduleControl>
-                    <controlKey>Settings</controlKey>
-                    <controlSrc>DesktopModules/Forum/Forum_ModuleSettings.ascx</controlSrc>
-                    <supportsPartialRendering>True</supportsPartialRendering>
-                    <controlTitle>Forum Settings</controlTitle>
-                    <controlType>Edit</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>	
-				  <moduleControl>
-                    <controlKey>ACP</controlKey>
-                    <controlSrc>DesktopModules/Forum/ACP.ascx</controlSrc>
-                    <supportsPartialRendering>True</supportsPartialRendering>
-                    <controlTitle>Admin Control Panel</controlTitle>
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>	  
-				  <moduleControl>
-                    <controlKey>ContentRemoved</controlKey>
-                    <controlSrc>DesktopModules/Forum/Forum_ContentRemoved.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle>Content Removed</controlTitle>
-                    <controlType>Anonymous</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>
-				  <moduleControl>
-                    <controlKey>PMEdit</controlKey>
-                    <controlSrc>DesktopModules/Forum/PM_Edit.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle>Send Private Message</controlTitle>
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>
-				  <moduleControl>
-                    <controlKey>MemberList</controlKey>
-                    <controlSrc>DesktopModules/Forum/Forum_MemberList.ascx</controlSrc>
-                    <supportsPartialRendering>True</supportsPartialRendering>
-                    <controlTitle>Member List</controlTitle>
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>
-				  <moduleControl>
-                    <controlKey>EmailTemplates</controlKey>
-                    <controlSrc>DesktopModules/Forum/Controls/ACP_EmailTemplate.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle>Email Templates</controlTitle>
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>
-				  <moduleControl>
-                    <controlKey>ThreadSplit</controlKey>
-                    <controlSrc>DesktopModules/Forum/Forum_ThreadSplit.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle>Split Thread</controlTitle>
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>
-				  <moduleControl>
-                    <controlKey>PublicProfile</controlKey>
-                    <controlSrc>DesktopModules/Forum/PublicProfile.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle>User Profile</controlTitle>
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>
-				  <moduleControl>
-                    <controlKey>PMThread</controlKey>
-                    <controlSrc>DesktopModules/Forum/PM_Thread.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle>Private Message Thread</controlTitle>
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>
-				  <moduleControl>
-                    <controlKey>Emoticon</controlKey>
-                    <controlSrc>DesktopModules/Forum/Controls/ACP_Emoticon.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle>Emoticon Management</controlTitle>
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>
-				  <moduleControl>
-                    <controlKey>RoleAvatar</controlKey>
-                    <controlSrc>DesktopModules/Forum/Controls/ACP_RoleAvatar.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle>Role Avatar Management</controlTitle>
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>  
-                </moduleControls>
-                <permissions>
-                  <permission code="FORUM_MODULE" key="FORUMADMIN" name="Forum Administrator" />
-                  <permission code="FORUM_MODULE" key="FORUMGLBMOD" name="Global Moderator" />
-                </permissions>
-              </moduleDefinition>
-            </moduleDefinitions>
-          </desktopModule>				   
-        </component>
-        <component type="Assembly">
-          <assemblies>
-            <assembly>
-              <name>DotNetNuke.Modules.Forum.dll</name>
-			  <sourceFileName>DotNetNuke.Modules.Forum.dll</sourceFileName>
-			  <version>04.05.07</version>
-            </assembly>
-          </assemblies>
-        </component>
-        <component type="ResourceFile">
-          <resourceFiles>
-            <basePath>DesktopModules\Forum</basePath>
-            <resourceFile>
-              <name>Resources.zip</name>
-              <!-- Without this, the resources file must be in DesktopModules\Forum in the ZIP file too -->
-              <sourceFileName>Resources.zip</sourceFileName>
-            </resourceFile>
-          </resourceFiles>
-        </component>
-        <component type="File">
-            <files>
-              <basePath>DesktopModules\Forum\Documentation</basePath>
-              <file>
-                <name>License.txt</name>
-              </file>
-              <file>
-                <name>ReleaseNotes.txt</name>
-              </file>
-            </files>
-          </component>
-        <component type="Cleanup">
-          <files>
-			<basePath>Install\Module</basePath>
-            <file>
-              <name>Forum_03.20.08_Install.resources</name>
-            </file>
-            <file>
-              <name>Forum_03.20.09_Install.resources</name>
-            </file>
-            <file>
-              <name>Forum_04.04.03_Install.resources</name>
-            </file>
-            <file>
-              <name>Forum_04.05.03_Install.resources</name>
-            </file>
-          </files>
-        </component>
-		<component type="Cleanup">
-          <files>
-			<basePath>DesktopModules\Forum</basePath>
-            <file>
-              <name>Resources.zip</name>
-            </file>
-          </files>
-        </component>			
-      </components>
-    </package>
-  </packages>
+	<packages>
+		<package name="DNN_Forum" type="Module" version="04.06.00">
+			<friendlyName>Forum</friendlyName>
+			<description>The core forum module for DotNetNuke.</description>
+			<owner>
+				<name>Forum Module Project</name>
+				<organization>DotNetNuke Corporation</organization>
+				<url>http://www.dotnetnuke.com/Development/Forge/ModuleForums/tabid/820/Default.aspx</url>
+				<email>chris.paterra@dotnetnuke.com</email>
+			</owner>
+			<license src="License.txt"></license>
+			<releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+			<dependencies>
+				<dependency type="CoreVersion">05.04.01</dependency>
+			</dependencies>
+			<components>
+				<component type="Script">	  
+					<scripts>
+						<basePath>DesktopModules\Forum\Providers\DataProviders\SqlDataProvider</basePath>
+						<script type="Install">
+							<name>03.00.00.SqlDataProvider</name>
+							<version>03.00.00</version>
+						</script>
+						<script type="Install">
+							<name>03.00.10.SqlDataProvider</name>
+							<version>03.00.10</version>
+						</script>
+						<script type="Install">
+							<name>03.00.11.SqlDataProvider</name>
+							<version>03.00.11</version>
+						</script>
+						<script type="Install">
+							<name>03.00.12.SqlDataProvider</name>
+							<version>03.00.12</version>
+						</script>
+						<script type="Install">
+							<name>03.10.01.SqlDataProvider</name>
+							<version>03.10.01</version>
+						</script>
+						<script type="Install">
+							<name>03.10.02.SqlDataProvider</name>
+							<version>03.10.02</version>
+						</script>
+						<script type="Install">
+							<name>03.10.03.SqlDataProvider</name>
+							<version>03.10.03</version>
+						</script>
+						<script type="Install">
+							<name>03.10.04.SqlDataProvider</name>
+							<version>03.10.04</version>
+						</script>
+						<script type="Install">
+							<name>03.10.05.SqlDataProvider</name>
+							<version>03.10.05</version>
+						</script>
+						<script type="Install">
+							<name>03.20.00.SqlDataProvider</name>
+							<version>03.20.00</version>
+						</script>
+						<script type="Install">
+							<name>03.20.01.SqlDataProvider</name>
+							<version>03.20.01</version>
+						</script>
+						<script type="Install">
+							<name>03.20.02.SqlDataProvider</name>
+							<version>03.20.02</version>
+						</script>
+						<script type="Install">
+							<name>03.20.03.SqlDataProvider</name>
+							<version>03.20.03</version>
+						</script>
+						<script type="Install">
+							<name>03.20.04.SqlDataProvider</name>
+							<version>03.20.04</version>
+						</script>
+						<script type="Install">
+							<name>03.20.07.SqlDataProvider</name>
+							<version>03.20.07</version>
+						</script>
+						<script type="Install">
+							<name>04.03.00.SqlDataProvider</name>
+							<version>04.03.00</version>
+						</script>
+						<script type="Install">
+							<name>04.03.04.SqlDataProvider</name>
+							<version>04.03.04</version>
+						</script>
+						<script type="Install">
+							<name>04.04.02.SqlDataProvider</name>
+							<version>04.04.02</version>
+						</script>
+						<script type="Install">
+							<name>04.04.03.SqlDataProvider</name>
+							<version>04.04.03</version>
+						</script>
+						<script type="Install">
+							<name>04.04.04.SqlDataProvider</name>
+							<version>04.04.04</version>
+						</script>
+						<script type="Install">
+							<name>04.04.05.SqlDataProvider</name>
+							<version>04.04.05</version>
+						</script>
+						<script type="Install">
+							<name>04.05.00.SqlDataProvider</name>
+							<version>04.05.00</version>
+						</script>
+						<script type="Install">
+							<name>04.05.02.SqlDataProvider</name>
+							<version>04.05.02</version>
+						</script>
+						<script type="Install">
+							<name>04.05.03.SqlDataProvider</name>
+							<version>04.05.03</version>
+						</script>
+						<script type="Install">
+							<name>04.05.05.SqlDataProvider</name>
+							<version>04.05.05</version>
+						</script>
+						<script type="Install">
+							<name>04.06.00.SqlDataProvider</name>
+							<version>04.06.00</version>
+						</script>
+						<script type="UnInstall">
+							<name>Uninstall.SqlDataProvider</name>
+							<version>04.06.00</version>
+						</script>
+					</scripts>
+				</component>			
+				<component type="Module">
+					<desktopModule>
+						<moduleName>DNN_Forum</moduleName>
+						<foldername>Forum</foldername>
+						<businessControllerClass>DotNetNuke.Modules.Forum.ThreadController, DotNetNuke.Modules.Forum</businessControllerClass>
+						<supportedFeatures>
+							<supportedFeature type="Searchable" />
+						</supportedFeatures>
+						<moduleDefinitions>
+							<moduleDefinition>			
+								<friendlyName>Forum</friendlyName>
+								<defaultCacheTime>-1</defaultCacheTime>
+								<moduleControls>
+									<moduleControl>
+										<controlKey />
+										<controlSrc>DesktopModules/Forum/Forum_Container.ascx</controlSrc>
+										<supportsPartialRendering>True</supportsPartialRendering>
+										<controlTitle />
+										<controlType>View</controlType>
+										<iconFile />
+										<helpUrl>http://www.dotnetnuke.com/default.aspx?tabid=787</helpUrl>
+										<viewOrder>0</viewOrder>
+									</moduleControl>	
+									<moduleControl>
+										<controlKey>ForumEdit</controlKey>
+										<controlSrc>DesktopModules/Forum/Controls/ACP_ForumEdit.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>Edit Forum</controlTitle>
+										<controlType>View</controlType>
+										<iconFile />
+										<helpUrl />
+										<viewOrder>0</viewOrder>
+									</moduleControl>	
+									<moduleControl>
+										<controlKey>ForumManage</controlKey>
+										<controlSrc>DesktopModules/Forum/Controls/ACP_ForumManage.ascx</controlSrc>
+										<supportsPartialRendering>True</supportsPartialRendering>
+										<controlTitle>Manage Forum</controlTitle>
+										<controlType>View</controlType>
+										<iconFile />
+										<helpUrl />
+										<viewOrder>0</viewOrder>
+									</moduleControl>	
+									<moduleControl>
+										<controlKey>ForumSearch</controlKey>
+										<controlSrc>DesktopModules/Forum/Forum_Search.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>Search Forum</controlTitle>
+										<controlType>View</controlType>
+										<iconFile />
+										<helpUrl />
+										<viewOrder>0</viewOrder>
+									</moduleControl>	
+									<moduleControl>
+										<controlKey>PostDelete</controlKey>
+										<controlSrc>DesktopModules/Forum/Forum_PostDelete.ascx</controlSrc>
+										<supportsPartialRendering>True</supportsPartialRendering>
+										<controlTitle>Delete Post</controlTitle>
+										<controlType>View</controlType>
+										<iconFile />
+										<helpUrl />
+										<viewOrder>0</viewOrder>
+									</moduleControl>	
+									<moduleControl>
+										<controlKey>PostEdit</controlKey>
+										<controlSrc>DesktopModules/Forum/Forum_PostEdit.ascx</controlSrc>
+										<supportsPartialRendering>True</supportsPartialRendering>
+										<controlTitle>Edit Post</controlTitle>
+										<controlType>View</controlType>
+										<iconFile />
+										<helpUrl />
+										<viewOrder>0</viewOrder>
+									</moduleControl>	
+									<moduleControl>
+										<controlKey>PostModerate</controlKey>
+										<controlSrc>DesktopModules/Forum/Forum_PostModerate.ascx</controlSrc>
+										<supportsPartialRendering>True</supportsPartialRendering>
+										<controlTitle>Moderate Post</controlTitle>
+										<controlType>View</controlType>
+										<iconFile />
+										<helpUrl />
+										<viewOrder>0</viewOrder>
+									</moduleControl>	
+									<moduleControl>
+										<controlKey>MCP</controlKey>
+										<controlSrc>DesktopModules/Forum/MCP.ascx</controlSrc>
+										<supportsPartialRendering>True</supportsPartialRendering>
+										<controlTitle>Moderator Control Panel</controlTitle>
+										<controlType>View</controlType>
+										<iconFile />
+										<helpUrl />
+										<viewOrder>0</viewOrder>
+									</moduleControl>	
+									<moduleControl>
+										<controlKey>PostReport</controlKey>
+										<controlSrc>DesktopModules/Forum/Forum_PostReport.ascx</controlSrc>
+										<supportsPartialRendering>True</supportsPartialRendering>
+										<controlTitle>Report Post</controlTitle>
+										<controlType>View</controlType>
+										<iconFile />
+										<helpUrl />
+										<viewOrder>0</viewOrder>
+									</moduleControl>	 
+									<moduleControl>
+										<controlKey>ThreadMove</controlKey>
+										<controlSrc>DesktopModules/Forum/Forum_ThreadMove.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>Move Thread</controlTitle>
+										<controlType>View</controlType>
+										<iconFile />
+										<helpUrl />
+										<viewOrder>0</viewOrder>
+									</moduleControl>	
+									<moduleControl>
+										<controlKey>UCP</controlKey>
+										<controlSrc>DesktopModules/Forum/UCP.ascx</controlSrc>
+										<supportsPartialRendering>True</supportsPartialRendering>
+										<controlTitle>User Control Panel</controlTitle>
+										<controlType>View</controlType>
+										<iconFile />
+										<helpUrl />
+										<viewOrder>0</viewOrder>
+									</moduleControl>	
+									<moduleControl>
+										<controlKey>Settings</controlKey>
+										<controlSrc>DesktopModules/Forum/Forum_ModuleSettings.ascx</controlSrc>
+										<supportsPartialRendering>True</supportsPartialRendering>
+										<controlTitle>Forum Settings</controlTitle>
+										<controlType>Edit</controlType>
+										<iconFile />
+										<helpUrl />
+										<viewOrder>0</viewOrder>
+									</moduleControl>	
+									<moduleControl>
+										<controlKey>ACP</controlKey>
+										<controlSrc>DesktopModules/Forum/ACP.ascx</controlSrc>
+										<supportsPartialRendering>True</supportsPartialRendering>
+										<controlTitle>Admin Control Panel</controlTitle>
+										<controlType>View</controlType>
+										<iconFile />
+										<helpUrl />
+										<viewOrder>0</viewOrder>
+									</moduleControl>	  
+									<moduleControl>
+										<controlKey>ContentRemoved</controlKey>
+										<controlSrc>DesktopModules/Forum/Forum_ContentRemoved.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>Content Removed</controlTitle>
+										<controlType>Anonymous</controlType>
+										<iconFile />
+										<helpUrl />
+										<viewOrder>0</viewOrder>
+									</moduleControl>
+									<moduleControl>
+										<controlKey>EmailTemplates</controlKey>
+										<controlSrc>DesktopModules/Forum/Controls/ACP_EmailTemplate.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>Email Templates</controlTitle>
+										<controlType>View</controlType>
+										<iconFile />
+										<helpUrl />
+										<viewOrder>0</viewOrder>
+									</moduleControl>
+									<moduleControl>
+										<controlKey>ThreadSplit</controlKey>
+										<controlSrc>DesktopModules/Forum/Forum_ThreadSplit.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>Split Thread</controlTitle>
+										<controlType>View</controlType>
+										<iconFile />
+										<helpUrl />
+										<viewOrder>0</viewOrder>
+									</moduleControl>
+									<moduleControl>
+										<controlKey>PublicProfile</controlKey>
+										<controlSrc>DesktopModules/Forum/PublicProfile.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>User Profile</controlTitle>
+										<controlType>View</controlType>
+										<iconFile />
+										<helpUrl />
+										<viewOrder>0</viewOrder>
+									</moduleControl>
+									<moduleControl>
+										<controlKey>RoleAvatar</controlKey>
+										<controlSrc>DesktopModules/Forum/Controls/ACP_RoleAvatar.ascx</controlSrc>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<controlTitle>Role Avatar Management</controlTitle>
+										<controlType>View</controlType>
+										<iconFile />
+										<helpUrl />
+										<viewOrder>0</viewOrder>
+									</moduleControl>  
+								</moduleControls>
+								<permissions>
+									<permission code="FORUM_MODULE" key="FORUMADMIN" name="Forum Administrator" />
+									<permission code="FORUM_MODULE" key="FORUMGLBMOD" name="Global Moderator" />
+								</permissions>
+							</moduleDefinition>
+						</moduleDefinitions>
+					</desktopModule>				   
+				</component>
+				<component type="Assembly">
+					<assemblies>
+						<assembly>
+							<name>DotNetNuke.Modules.Forum.dll</name>
+							<sourceFileName>DotNetNuke.Modules.Forum.dll</sourceFileName>
+							<version>04.06.00</version>
+						</assembly>
+					</assemblies>
+				</component>
+				<component type="ResourceFile">
+					<resourceFiles>
+						<basePath>DesktopModules\Forum</basePath>
+						<resourceFile>
+							<name>Resources.zip</name>
+							<sourceFileName>Resources.zip</sourceFileName>
+						</resourceFile>
+					</resourceFiles>
+				</component>
+				<component type="File">
+					<files>
+						<basePath>DesktopModules\Forum\Documentation</basePath>
+						<file>
+							<name>License.txt</name>
+						</file>
+						<file>
+							<name>ReleaseNotes.txt</name>
+						</file>
+					</files>
+				</component>
+				<component type="Cleanup">
+					<files>
+						<file>
+							<path>Install\Module</path>
+							<name>Forum_03.20.08_Install.resources</name>
+						</file>
+						<file>
+							<path>Install\Module</path>
+							<name>Forum_03.20.09_Install.resources</name>
+						</file>
+						<file>
+							<path>Install\Module</path>
+							<name>Forum_04.04.03_Install.resources</name>
+						</file>
+						<file>
+							<path>Install\Module</path>
+							<name>Forum_04.05.03_Install.resources</name>
+						</file>
+					</files>
+				</component>		
+			</components>
+		</package>
+	</packages>
 </dotnetnuke>

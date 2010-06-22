@@ -150,14 +150,6 @@ Namespace DotNetNuke.Modules.Forum
 				Catch
 				End Try
 				Try
-					objForumUser.Biography = Convert.ToString(dr("Biography"))
-				Catch
-				End Try
-				Try
-					objForumUser.EnableProfileRegion = Convert.ToBoolean(dr("EnableProfileRegion"))
-				Catch
-				End Try
-				Try
 					objForumUser.IsTrusted = Convert.ToBoolean(dr("IsTrusted"))
 				Catch
 				End Try
@@ -182,14 +174,6 @@ Namespace DotNetNuke.Modules.Forum
 				Catch
 				End Try
 				Try
-					objForumUser.EnablePM = Convert.ToBoolean(dr("EnablePM"))
-				Catch
-				End Try
-				Try
-					objForumUser.EnablePMNotifications = Convert.ToBoolean(dr("EnablePMNotifications"))
-				Catch
-				End Try
-				Try
 					objForumUser.EmailFormat = Convert.ToInt32(dr("EmailFormat"))
 				Catch
 				End Try
@@ -206,10 +190,6 @@ Namespace DotNetNuke.Modules.Forum
 				Catch
 				End Try
 				Try
-					objForumUser.LastActivity = Convert.ToDateTime(dr("LastActivity"))
-				Catch
-				End Try
-				Try
 					objForumUser.LockTrust = Convert.ToBoolean(dr("LockTrust"))
 				Catch
 				End Try
@@ -222,19 +202,11 @@ Namespace DotNetNuke.Modules.Forum
 				Catch
 				End Try
 				Try
-					objForumUser.EnableProfileWeb = Convert.ToBoolean(dr("EnableProfileWeb"))
-				Catch
-				End Try
-				Try
 					objForumUser.EnableDefaultPostNotify = Convert.ToBoolean(dr("EnableDefaultPostNotify"))
 				Catch
 				End Try
 				Try
 					objForumUser.EnableSelfNotifications = Convert.ToBoolean(dr("EnableSelfNotifications"))
-				Catch
-				End Try
-				Try
-					objForumUser.Biography = Convert.ToString(dr("Biography"))
 				Catch
 				End Try
 				Try
@@ -249,9 +221,7 @@ Namespace DotNetNuke.Modules.Forum
 			Else
 				objForumUser.Username = "anonymous"
 				objForumUser.DisplayName = "anonymous"
-				objForumUser.EnablePM = False
 				objForumUser.PostCount = 0
-				objForumUser.EnableProfileWeb = False
 				objForumUser.IsDeleted = True
 			End If
 
@@ -357,7 +327,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="User"></param>
 		''' <remarks></remarks>
 		Public Sub UserAdd(ByVal User As ForumUser)
-			DotNetNuke.Modules.Forum.DataProvider.Instance().UserAdd(User.UserID, User.UserAvatar, User.Avatar, User.SystemAvatars, User.Signature, User.IsTrusted, User.EnableDisplayInMemberList, User.EnableOnlineStatus, User.ThreadsPerPage, User.PostsPerPage, False, User.EnablePM, User.EnablePMNotifications, User.PortalID)
+			DotNetNuke.Modules.Forum.DataProvider.Instance().UserAdd(User.UserID, User.UserAvatar, User.Avatar, User.SystemAvatars, User.Signature, User.IsTrusted, User.EnableDisplayInMemberList, User.EnableOnlineStatus, User.ThreadsPerPage, User.PostsPerPage, False, False, False, User.PortalID)
 		End Sub
 
 		''' <summary>
@@ -375,7 +345,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="objUser"></param>		
 		''' <remarks></remarks>
 		Public Sub UserUpdate(ByVal objUser As ForumUser)
-			DotNetNuke.Modules.Forum.DataProvider.Instance().UserUpdate(objUser.UserID, objUser.UserAvatar, objUser.Avatar, objUser.SystemAvatars, objUser.Signature, objUser.IsTrusted, objUser.EnableDisplayInMemberList, objUser.EnableOnlineStatus, objUser.ThreadsPerPage, objUser.PostsPerPage, objUser.EnableModNotification, False, objUser.EnablePM, objUser.EnablePMNotifications, objUser.EmailFormat, objUser.PortalID, objUser.LockTrust, objUser.EnableProfileWeb, objUser.EnableProfileRegion, objUser.EnableDefaultPostNotify, objUser.EnableSelfNotifications, objUser.IsBanned, objUser.LiftBanDate, objUser.Biography, objUser.StartBanDate)
+			DotNetNuke.Modules.Forum.DataProvider.Instance().UserUpdate(objUser.UserID, objUser.UserAvatar, objUser.Avatar, objUser.SystemAvatars, objUser.Signature, objUser.IsTrusted, objUser.EnableDisplayInMemberList, objUser.EnableOnlineStatus, objUser.ThreadsPerPage, objUser.PostsPerPage, objUser.EnableModNotification, False, False, False, objUser.EmailFormat, objUser.PortalID, objUser.LockTrust, False, False, objUser.EnableDefaultPostNotify, objUser.EnableSelfNotifications, objUser.IsBanned, objUser.LiftBanDate, "Empty Bio", objUser.StartBanDate)
 			DataCache.RemoveCache(String.Concat(FORUM_USER_CACHE_KEY_PREFIX & objUser.UserID.ToString & "-" & objUser.PortalID.ToString))
 		End Sub
 
@@ -796,7 +766,6 @@ Namespace DotNetNuke.Modules.Forum
 				.UserID = -1
 				.Username = "anonymous"
 				.DisplayName = "anonymous"
-				.EnablePM = False
 				.IsTrusted = False
 				.EnableSelfNotifications = False
 				.EnableModNotification = False
@@ -835,10 +804,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			fUser.ThreadsPerPage = myConfig.ThreadsPerPage
 			fUser.PostsPerPage = myConfig.PostsPerPage
-			fUser.EnableDisplayInMemberList = myConfig.EnableMemberList
 			fUser.EnableOnlineStatus = myConfig.EnableUsersOnline
-			fUser.EnablePM = myConfig.EnablePMSystem
-			fUser.EnablePMNotifications = myConfig.MailNotification
 			fUser.IsTrusted = myConfig.TrustNewUsers
 			fUser.EnableModNotification = myConfig.MailNotification
 			fUser.EnableSelfNotifications = False

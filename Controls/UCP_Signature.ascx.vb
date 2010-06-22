@@ -48,11 +48,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 			With ProfileUser
 				txtSignature.Text = Server.HtmlDecode(.Signature)
 			End With
-
-			btnPreview.ToolTip = Localization.GetString("Preview", LocalResourceFile)
-			btnEdit.ToolTip = Localization.GetString("Edit", LocalResourceFile)
-			btnEdit.ImageUrl = imgEditSrc()
-			btnPreview.ImageUrl = imgPreviewSrc()
 		End Sub
 
 #End Region
@@ -113,7 +108,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' <history>
 		''' 	[cpaterra]	7/13/2005	Created
 		''' </history>
-		Protected Sub btnPreview_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles btnPreview.Click
+		Protected Sub cmdPreview_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdPreview.Click
 			Dim Signature As Utilities.PostContent = New Utilities.PostContent(Server.HtmlDecode(txtSignature.Text), objConfig)
 			lblSignature.Text = "<HR><br />" & Signature.ProcessHtml()
 			EnablePreview(True)
@@ -129,7 +124,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' <history>
 		''' 	[cpaterra]	7/13/2005	Created
 		''' </history>
-		Protected Sub btnEdit_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles btnEdit.Click
+		Protected Sub cmdEdit_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdEdit.Click
 			EnablePreview(False)
 		End Sub
 
@@ -143,14 +138,11 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' <param name="IsPreview"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[Administrator]	3/24/2006	Created
-		''' </history>
 		Private Sub EnablePreview(ByVal IsPreview As Boolean)
 			lblSignature.Visible = IsPreview
-			btnEdit.Visible = IsPreview
+			cmdEdit.Visible = IsPreview
 			txtSignature.Visible = Not IsPreview
-			btnPreview.Visible = Not IsPreview
+			cmdPreview.Visible = Not IsPreview
 		End Sub
 
 #End Region

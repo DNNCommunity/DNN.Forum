@@ -180,21 +180,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			End Select
 		End Sub
 
-		'''' <summary>
-		'''' Updates the email settings in the database
-		'''' </summary>
-		'''' <param name="sender"></param>
-		'''' <param name="e"></param>
-		'''' <remarks>
-		'''' </remarks>
-		'Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
-		'	Try
-
-		'	Catch exc As Exception
-		'		ProcessModuleLoadException(Me, exc)
-		'	End Try
-		'End Sub
-
 #End Region
 
 #Region "Private Methods"

@@ -10,7 +10,7 @@
      <tr>
 		<td class="Forum_UCP_HeaderInfo">
 			<div>
-				<telerik:RadGrid ID="rgTaskDetails" runat="server" AutoGenerateColumns="false" AllowSorting="false" Skin="Web20" AllowPaging="true" PageSize="20" >
+				<telerik:RadGrid ID="rgTaskDetails" runat="server" AutoGenerateColumns="false" AllowSorting="false" AllowPaging="true" PageSize="20" >
 					<ClientSettings AllowColumnsReorder="false" EnableRowHoverStyle="true">
 						<Resizing AllowColumnResize="true" />
 					</ClientSettings>
@@ -39,9 +39,6 @@
 					</MasterTableView>
 				</telerik:RadGrid>
 			</div>
-		     <div align="center">
-	               <asp:linkbutton class="CommandButton" id="cmdUpdate" runat="server" resourcekey="cmdUpdate" EnableViewState="false" />
-	          </div>
 		</td>
      </tr>
 </table>

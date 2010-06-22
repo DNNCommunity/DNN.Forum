@@ -63,9 +63,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				If Not Page.IsPostBack Then
 					litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
 					BindData()
-
-					' Register scripts
-					Utilities.ForumUtils.RegisterPageScripts(Page, objConfig)
 				End If
 
 				'[skeel] enable menu

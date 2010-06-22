@@ -59,7 +59,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Dim ctlPopStatus As String = "ACP_PopStatus.ascx"
 		Dim ctlEmailSettings As String = "ACP_Email.ascx"
 		Dim ctlEmailTemplate As String = "ACP_EmailTemplate.ascx"
-		Dim ctlEmoticon As String = "ACP_Emoticon.ascx"
 		Dim ctlEmailQueue As String = "ACP_EmailQueue.ascx"
 		Dim ctlEmailQueueTaskDetail As String = "ACP_EmailQueueTaskDetail.ascx"
 		Dim ctlEmailSubscribers As String = "ACP_EmailSubscribers.ascx"
@@ -266,8 +265,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					ControlToLoad = ctlEmailTemplate
 				Case AdminAjaxControl.EmailQueue
 					ControlToLoad = ctlEmailQueue
-				Case AdminAjaxControl.Emoticon
-					ControlToLoad = ctlEmoticon
 				Case AdminAjaxControl.EmailQueueTaskDetail
 					ControlToLoad = ctlEmailQueueTaskDetail
 				Case AdminAjaxControl.EmailSubscribers
@@ -404,8 +401,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					Case ctlRating
 						ExpandSection = ExpandMenuSection.Content
 					Case ctlPopStatus
-						ExpandSection = ExpandMenuSection.Content
-					Case ctlEmoticon
 						ExpandSection = ExpandMenuSection.Content
 					Case ctlEmailSettings
 						ExpandSection = ExpandMenuSection.Email
@@ -818,40 +813,12 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.RenderEndTag() ' </div>
 
 				'Fourth Menu section, Content
-				If objConfig.EnableEmoticons = True Then
-					GenerateMenuSection(wr, Localization.GetString("ContentSection", Me.LocalResourceFile), IsExpanded(4, ExpandSection), 120)
-				Else
-					GenerateMenuSection(wr, Localization.GetString("ContentSection", Me.LocalResourceFile), IsExpanded(4, ExpandSection), 100)
-				End If
+				GenerateMenuSection(wr, Localization.GetString("ContentSection", Me.LocalResourceFile), IsExpanded(4, ExpandSection), 100)
+
 				wr.AddAttribute(HtmlTextWriterAttribute.Cellpadding, "0")
 				wr.AddAttribute(HtmlTextWriterAttribute.Cellspacing, "0")
 				wr.AddAttribute(HtmlTextWriterAttribute.Align, "left")
 				wr.RenderBeginTag(HtmlTextWriterTag.Table) ' <table>
-
-				'Emoticons
-				If objConfig.EnableEmoticons Then
-					' CP - Commented out until emoticon support is added back in. 
-					'wr.RenderBeginTag(HtmlTextWriterTag.Tr) ' <tr>
-					'wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
-					'wr.RenderBeginTag(HtmlTextWriterTag.Td) '<td> 
-
-					'If ControlToLoad = ctlEmoticon Then
-					'    wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
-					'    wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
-					'    wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
-					'    wr.AddAttribute(HtmlTextWriterAttribute.Title, imgSelectedToolTip)
-					'    wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <img> 
-					'    wr.RenderEndTag() ' </img>
-					'End If
-					'wr.RenderEndTag() ' </td>
-
-					'wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
-					'wr.RenderBeginTag(HtmlTextWriterTag.Td) '<td> 
-					'url = Utils.ACPEmoticonManagerLink(objConfig.TabID, ModuleID)
-					'RenderLinkButton(wr, url, Localization.GetString("cmdEmoticon", Me.LocalResourceFile), "Forum_Link")
-					'wr.RenderEndTag() ' </td>
-					'wr.RenderEndTag() ' </tr>
-				End If
 
 				'Filter Main
 				wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>

@@ -20,11 +20,8 @@
 Option Strict On
 Option Explicit On
 
-Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Modules.Forum.Utilities
-Imports DotNetNuke.Framework.Providers
-Imports DotNetNuke.Entities.Modules
-Imports DotNetNuke.Entities.Users
+Imports DotNetNuke.Entities.Portals
 
 Namespace DotNetNuke.Modules.Forum
 
@@ -55,7 +52,6 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _DisplayPosterRegion As Boolean = False
 		Dim _ForumMemberName As Integer = ForumDisplayName.Username
 		Dim _ForumSkin As String = DefaultTheme
-		Dim _EnableTimeZone As Boolean = True
 		Dim _EnableThreadStatus As Boolean = True
 		Dim _IconBarAsImages As Boolean = False
 		Dim _EnableQuickReply As Boolean = False
@@ -104,7 +100,6 @@ Namespace DotNetNuke.Modules.Forum
 		'Thread Ratings
 		Dim _EnableRatings As Boolean = True
 		Dim _RatingScale As Integer = 10
-
 		' Syndication
 		Dim _EnableRSS As Boolean = True
 		Dim _RSSThreadsPerFeed As Integer = DefaultRSSThreadsPerFeed
@@ -114,43 +109,26 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _FilterSubject As Boolean = False
 		' Community
 		Dim _EnableUsersOnline As Boolean = DefaultEnableUsersOnline
-		Dim _EnablePMSystem As Boolean = False
-		Dim _EnableMemberList As Boolean = True
-		' External Directory
-		Dim _EnableExternalDirectory As Boolean = False
-		Dim _ExternalDirectoryPage As Integer = 0
-		Dim _ExternalDirectoryParamName As String = String.Empty
-		Dim _ExternalDirectoryParamValue As String = String.Empty
-		' External Profile
 		Dim _EnableExternalProfile As Boolean = False
 		Dim _ExternalProfilePage As Integer = 0
 		Dim _ExternalProfileParam As String = String.Empty
 		Dim _ExternalProfileParamName As String = String.Empty
 		Dim _ExternalProfileParamValue As String = String.Empty
-
-		Dim _EnableExternalPM As Boolean = False
-		Dim _ExternalPMPage As Integer = 0
-		Dim _ExternalPMParam As String = String.Empty
-
 		Dim _EnablePostAbuse As Boolean = True
 		Dim _ImageExtension As String = "gif"
 		Dim _DisableHTMLPosting As Boolean = False
 		Dim _TrustNewUsers As Boolean = False
 		Dim _AutoLockTrust As Boolean = False
-		Dim _EnableEmoticons As Boolean = False
-		Dim _EmoticonPath As String = "Forums/Emoticons/"
-		Dim _EmoticonMaxFileSize As Integer = 32
 		' Attachments
 		Dim _AttachmentPath As String = "Forums/Attachments/"
 		Dim _CompleteAttachmentURI As String = String.Empty
 		Dim _AnonDownloads As Boolean = True
-		Dim _EnableInlineAttachments As Boolean = False
 		Dim _MaxAttachmentSize As Integer = 256
 		' User Avatar
 		Dim _EnableUserAvatar As Boolean = True
 		Dim _EnableProfileAvatar As Boolean = False
+		Dim _EnableProfileUserFolders As Boolean = True
 		Dim _AvatarProfilePropName As String = String.Empty
-
 		Dim _EnableUserAvatarPool As Boolean = False
 		Dim _UserAvatarPoolPath As String = "Forums/PoolAvatar/"
 		Dim _UserAvatarPath As String = "Forums/UserAvatar/"
@@ -167,13 +145,10 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _NoFollowWeb As Boolean = False
 		Dim _OverrideTitle As Boolean = True
 		Dim _NoFollowLatestThreads As Boolean = True
-		' Post Rendering
-		Dim _DefaultHtmlEditorProvider As String = String.Empty
-		Dim _LoadScripts As Boolean = True
-
+		'' Post Rendering
+		'Dim _LoadScripts As Boolean = True
 		' Prepare to retire treeview (vs. flatview)
 		Dim _EnableTreeView As Boolean = True
-
 		Dim _PrimaryAlias As String
 
 #End Region
@@ -476,24 +451,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' Gets the name of the default HtmlEditor Provider 
-		''' </summary>
-		''' <value></value>
-		''' <returns>Default HtmlEditor Provider as string</returns>
-		''' <remarks>Used to identify the editor used in DNN in relation to Emoticons and Inline 
-		''' placement of Post Attachments</remarks>
-		Public ReadOnly Property DefaultHtmlEditorProvider() As String
-			Get
-				If _DefaultHtmlEditorProvider = String.Empty Then
-					Dim ProviderType As String = "htmlEditor"
-					Dim ProviderConfig As ProviderConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType)
-					_DefaultHtmlEditorProvider = ProviderConfig.DefaultProvider
-				End If
-				Return _DefaultHtmlEditorProvider
-			End Get
-		End Property
-
-		''' <summary>
 		''' This is used to disable treeview option in postview for new installs (since we are going to retire it). When false, drop down list will not appear in posts UI. (This only hides it in new installs, available in all upgrades. 
 		''' </summary>
 		''' <value></value>
@@ -546,18 +503,6 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property AggregatedForums() As Boolean
 			Get
 				Return _AggregatedForums
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets if per user timezone option is enabled. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>True if per user timezones are enabled, false otherwise.</returns>
-		''' <remarks>Handles time localizing.</remarks>
-		Public ReadOnly Property EnableTimeZone() As Boolean
-			Get
-				Return _EnableTimeZone
 			End Get
 		End Property
 
@@ -658,18 +603,6 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property ImageExtension() As String
 			Get
 				Return _ImageExtension
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets if js scripts should be loaded
-		''' </summary>
-		''' <value></value>
-		''' <returns>True if javascript loading is enabled, false otherwise.</returns>
-		''' <remarks>Needed for png js fix ONLY</remarks>
-		Public ReadOnly Property LoadScripts() As Boolean
-			Get
-				Return _LoadScripts
 			End Get
 		End Property
 
@@ -848,79 +781,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' Gets if Private Messaging is enabled. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>True if private messaging is enabled, false otherwise.</returns>
-		''' <remarks>Default is true for new installs, false for upgrades.</remarks>
-		Public ReadOnly Property EnablePMSystem() As Boolean
-			Get
-				Return _EnablePMSystem
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets if the member list (directory) is enabled. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>True if the member directory listing is enabled, false otherwise.</returns>
-		''' <remarks>Enabled by default for new installs.</remarks>
-		Public ReadOnly Property EnableMemberList() As Boolean
-			Get
-				Return _EnableMemberList
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets if the module permits an external member directory.
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public ReadOnly Property EnableExternalDirectory() As Boolean
-			Get
-				Return _EnableExternalDirectory
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets the external member directory page.
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public ReadOnly Property ExternalDirectoryPage() As Integer
-			Get
-				Return _ExternalDirectoryPage
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets the URL param name for external member directories.
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public ReadOnly Property ExternalDirectoryParamName() As String
-			Get
-				Return _ExternalDirectoryParamName
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets the URL param value for external member directories.
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public ReadOnly Property ExternalDirectoryParamValue() As String
-			Get
-				Return _ExternalDirectoryParamValue
-			End Get
-		End Property
-
-		''' <summary>
-		''' Ges if the module supports an external profile page.
+		''' Gets if the module supports an external profile page.
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
@@ -944,7 +805,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' 
+		''' Deterines if a username should be passed for external user profile modules.
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
@@ -988,42 +849,6 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property ExternalProfileParamValue() As String
 			Get
 				Return _ExternalProfileParamValue
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets if the module allows build in emiticons. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>True if Emoticons are enabled, false otherwise.</returns>
-		''' <remarks>False by default.</remarks>
-		Public ReadOnly Property EnableEmoticons() As Boolean
-			Get
-				Return _EnableEmoticons
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets the Emoticons file path. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>The path to emoticons.</returns>
-		''' <remarks>Relative to Portals/PortalID/ Directory</remarks>
-		Public ReadOnly Property EmoticonPath() As String
-			Get
-				Return _EmoticonPath
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets the emoticon file size in KB. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>The maximum file size for emoticons.</returns>
-		''' <remarks>Size is in KB.</remarks>
-		Public ReadOnly Property EmoticonMaxFileSize() As Integer
-			Get
-				Return _EmoticonMaxFileSize
 			End Get
 		End Property
 
@@ -1076,18 +901,6 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property MaxAttachmentSize() As Integer
 			Get
 				Return _MaxAttachmentSize
-			End Get
-		End Property
-
-		''' <summary>
-		''' If users are permitted to place attachmetns inline for forum posts (typically used for images/video). 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks>NOT IMPLEMENTED</remarks>
-		Public ReadOnly Property EnableInlineAttachments() As Boolean
-			Get
-				Return _EnableInlineAttachments
 			End Get
 		End Property
 
@@ -1680,6 +1493,18 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
+		''' Determines if user folders (part of 5.3 and greater) should be used for profile avatar paths. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property EnableProfileUserFolders() As Boolean
+			Get
+				Return _EnableProfileUserFolders
+			End Get
+		End Property
+
+		''' <summary>
 		''' Gets the profile property name for avatars.
 		''' </summary>
 		''' <value></value>
@@ -1869,9 +1694,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Private Sub New(ByVal ModuleID As Integer)
 			_ModuleID = ModuleID
-			Dim ctlModule As New ModuleController
+			Dim ctlModule As New Entities.Modules.ModuleController
 			' Grab settings from the database
-			Dim cntModule As New ModuleController
+			Dim cntModule As New Entities.Modules.ModuleController
 			Dim settings As Hashtable = cntModule.GetModuleSettings(ModuleID)
 
 			If settings.Count > 0 Then
@@ -1888,7 +1713,7 @@ Namespace DotNetNuke.Modules.Forum
 						Dim settings2 As Hashtable = cntModule.GetModuleSettings(ModuleID)
 						' This should ensure we don't overwrite things
 						If Not settings2.Count > 0 Then
-							mUserID = UserController.GetCurrentUserInfo.UserID
+							mUserID = Users.UserController.GetCurrentUserInfo.UserID
 							ForumPreConfig.PreConfig(_ModuleID, _portalSettings.PortalId, mUserID)
 
 							Dim newsettings As Hashtable = cntModule.GetModuleSettings(ModuleID)
@@ -2077,18 +1902,12 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 			End If
 
-			If Not settings("EnableTimeZone") Is Nothing Then
-				If Not settings("EnableTimeZone").ToString = String.Empty Then
-					_EnableTimeZone = CBool(GetValue(settings("EnableTimeZone"), CStr(_EnableTimeZone)))
-				End If
-			End If
-
 			If Not settings("DisplayPosterLocation") Is Nothing Then
 				If Not settings("DisplayPosterLocation").ToString = String.Empty Then
 					_DisplayPosterLocation = _
 					 CType( _
 					  [Enum].Parse(GetType(ShowPosterLocation), _
-								 CStr(GetValue(settings("DisplayPosterLocation"), _DisplayPosterLocation.ToString))),  _
+					    CStr(GetValue(settings("DisplayPosterLocation"), _DisplayPosterLocation.ToString))),  _
 					  ShowPosterLocation)
 				End If
 			End If
@@ -2119,88 +1938,9 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 			End If
 
-			If Not settings("EnablePMSystem") Is Nothing Then
-				If Not settings("EnablePMSystem").ToString = String.Empty Then
-					_EnablePMSystem = CBool(GetValue(settings("EnablePMSystem"), CStr(_EnablePMSystem)))
-				End If
-			End If
-
-			If Not settings("EnableMemberList") Is Nothing Then
-				If Not settings("EnableMemberList").ToString = String.Empty Then
-					_EnableMemberList = CBool(GetValue(settings("EnableMemberList"), CStr(_EnableMemberList)))
-				End If
-			End If
-
-			' Community - External Profile
-			If Not settings("EnableExternalProfile") Is Nothing Then
-				If Not settings("EnableExternalProfile").ToString = String.Empty Then
-					_EnableExternalProfile = CBool(GetValue(settings("EnableExternalProfile"), CStr(_EnableExternalProfile)))
-				End If
-			End If
-
-			If Not settings("ExternalProfilePage") Is Nothing Then
-				If Not settings("ExternalProfilePage").ToString = String.Empty Then
-					_ExternalProfilePage = CInt(GetValue(settings("ExternalProfilePage"), CStr(_ExternalProfilePage)))
-				End If
-			End If
-
-			If Not settings("ExternalProfileParam") Is Nothing Then
-				If Not settings("ExternalProfileParam").ToString = String.Empty Then
-					_ExternalProfileParam = CStr(GetValue(settings("ExternalProfileParam"), CStr(_ExternalProfileParam)))
-				End If
-			End If
-
-			If Not settings("ExternalProfileParamName") Is Nothing Then
-				If Not settings("ExternalProfileParamName").ToString = String.Empty Then
-					_ExternalProfileParamName = CStr(GetValue(settings("ExternalProfileParamName"), CStr(_ExternalProfileParamName)))
-				End If
-			End If
-
 			If Not settings("ExternalProfileParamValue") Is Nothing Then
 				If Not settings("ExternalProfileParamValue").ToString = String.Empty Then
 					_ExternalProfileParamValue = CStr(GetValue(settings("ExternalProfileParamValue"), CStr(_ExternalProfileParamValue)))
-				End If
-			End If
-
-			' Community - External Directory
-			If Not settings("EnableExternalDirectory") Is Nothing Then
-				If Not settings("EnableExternalDirectory").ToString = String.Empty Then
-					_EnableExternalDirectory = CBool(GetValue(settings("EnableExternalDirectory"), CStr(_EnableExternalDirectory)))
-				End If
-			End If
-
-			If Not settings("ExternalDirectoryPage") Is Nothing Then
-				If Not settings("ExternalDirectoryPage").ToString = String.Empty Then
-					_ExternalDirectoryPage = CInt(GetValue(settings("ExternalDirectoryPage"), CStr(_ExternalDirectoryPage)))
-				End If
-			End If
-
-			If Not settings("ExternalDirectoryParamName") Is Nothing Then
-				If Not settings("ExternalDirectoryParamName").ToString = String.Empty Then
-					_ExternalDirectoryParamName = CStr(GetValue(settings("ExternalDirectoryParamName"), CStr(_ExternalDirectoryParamName)))
-				End If
-			End If
-
-			If Not settings("ExternalDirectoryParamValue") Is Nothing Then
-				If Not settings("ExternalDirectoryParamValue").ToString = String.Empty Then
-					_ExternalDirectoryParamValue = CStr(GetValue(settings("ExternalDirectoryParamValue"), CStr(_ExternalDirectoryParamValue)))
-				End If
-			End If
-
-			' Community - Emoticons
-			If Not settings("EmoticonPath") Is Nothing Then
-				If Not settings("EmoticonPath").ToString = String.Empty Then
-					_EmoticonPath = CStr(GetValue(settings("EmoticonPath"), _EmoticonPath))
-				End If
-			End If
-			If Not settings("EnableEmoticons") Is Nothing Then
-				If Not settings("EnableEmoticons").ToString = String.Empty Then
-					_EnableEmoticons = CBool(GetValue(settings("EnableEmoticons"), CStr(_EnableEmoticons)))
-				End If
-			End If
-			If Not settings("EmoticonMaxFileSize") Is Nothing Then
-				If Not settings("EmoticonMaxFileSize").ToString = String.Empty Then
-					_EmoticonMaxFileSize = CInt(GetValue(settings("EmoticonMaxFileSize"), CStr(_EmoticonMaxFileSize)))
 				End If
 			End If
 
@@ -2271,16 +2011,16 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 			End If
 
-			If Not settings("EnableInlineAttachments") Is Nothing Then
-				If Not settings("EnableInlineAttachments").ToString = String.Empty Then
-					_EnableInlineAttachments = CBool(GetValue(settings("EnableInlineAttachments"), CStr(_EnableInlineAttachments)))
-				End If
-			End If
-
 			'Avatar properties
 			If Not settings("EnableUserAvatar") Is Nothing Then
 				If Not settings("EnableUserAvatar").ToString = String.Empty Then
 					_EnableUserAvatar = CBool(GetValue(settings("EnableUserAvatar"), CStr(_EnableUserAvatar)))
+				End If
+			End If
+
+			If Not settings("EnableProfileUserFolders") Is Nothing Then
+				If Not settings("EnableProfileUserFolders").ToString = String.Empty Then
+					_EnableProfileUserFolders = CBool(GetValue(settings("EnableProfileUserFolders"), CStr(_EnableProfileUserFolders)))
 				End If
 			End If
 
@@ -2444,12 +2184,6 @@ Namespace DotNetNuke.Modules.Forum
 			If Not settings("Rank_0_Title") Is Nothing Then
 				If Not settings("Rank_0_Title").ToString = String.Empty Then
 					_Rank_0_Title = CStr(GetValue(settings("Rank_0_Title"), _Rank_0_Title))
-				End If
-			End If
-
-			If Not settings("LoadScripts") Is Nothing Then
-				If Not settings("LoadScripts").ToString = String.Empty Then
-					_LoadScripts = CBool(GetValue(settings("LoadScripts"), CStr(_LoadScripts)))
 				End If
 			End If
 

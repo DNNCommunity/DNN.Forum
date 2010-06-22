@@ -384,29 +384,6 @@ Namespace DotNetNuke.Modules.Forum
 					Else
 						FromFriendlyName = objConfig.EmailAddressDisplayName
 					End If
-				Case ForumEmailType.UserPMReceived
-					ContentType = ForumContentTypeID.PRIVATEMESSAGE
-					Priority = System.Net.Mail.MailPriority.Normal
-					ForumEmailTypeID = ForumEmailType.UserPMReceived
-
-					Dim ctlPM As New PMController
-					Dim objPMInfo As New PMInfo
-					objPMInfo = ctlPM.PMGet(ContentID)
-					DistroContentID = objPMInfo.PMID
-
-					'Grab keywords based on content type, this is stored in cache
-					Keywords = ForumKeywordInfo.GetKeywordsHash(ContentType)
-
-					' We first have to pass to the keyword rendering. This is going to take the hashtable, replaces its replacementvar's based on the email content type
-					If Not Keywords Is Nothing Then
-						SetKeywords = RenderKeywords(Keywords, objPMInfo, ContentType, URL, ProfileURL, Notes, objConfig.CurrentPortalSettings.ActiveTab.TabID)
-					End If
-
-					DistroCall = "Forum_Subscriptions_PrivateMessage"
-					DistroParams = DistroContentID.ToString
-					DistroIsSproc = True
-					EmailFromAddress = objConfig.AutomatedEmailAddress
-					FromFriendlyName = objConfig.EmailAddressDisplayName
 				Case ForumEmailType.UserPostApproved
 					ContentType = ForumContentTypeID.POST
 					Priority = System.Net.Mail.MailPriority.Normal
@@ -856,36 +833,6 @@ Namespace DotNetNuke.Modules.Forum
 
 						If Keywords.ContainsKey("[NOTES]") Then
 							Keywords.Item("[NOTES]") = Notes
-						End If
-					End If
-
-				Case ForumContentTypeID.PRIVATEMESSAGE
-					Dim objPMInfo As PMInfo = CType(objInfo, PMInfo)
-
-					If Not Keywords Is Nothing Then
-						If Keywords.ContainsKey("[POSTURL]") Then
-							Keywords.Item("[POSTURL]") = PostUrl
-						End If
-
-						If Keywords.ContainsKey("[PROFILELINK]") Then
-							Keywords.Item("[PROFILELINK]") = ProfileUrl
-						End If
-
-						If Keywords.ContainsKey("[POSTSUBJECT]") Then
-							Keywords.Item("[POSTSUBJECT]") = objPMInfo.Subject
-						End If
-
-						If Keywords.ContainsKey("[DATEPOSTED]") Then
-							Keywords.Item("[DATEPOSTED]") = objPMInfo.CreatedDate
-						End If
-
-						If Keywords.ContainsKey("[POSTAUTHOR]") Then
-							Dim cntForumUser As New ForumUserController
-							Keywords.Item("[POSTAUTHOR]") = cntForumUser.GetForumUser(objPMInfo.PMFromUserID, False, ModuleID, PortalID).SiteAlias
-						End If
-
-						If Keywords.ContainsKey("[POSTBODY]") Then
-							Keywords.Item("[POSTBODY]") = objPMInfo.Body
 						End If
 					End If
 

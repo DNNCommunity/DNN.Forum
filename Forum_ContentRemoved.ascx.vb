@@ -70,9 +70,6 @@ Namespace DotNetNuke.Modules.Forum
 				imgHeadSpacer2.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
 				imgFootSpacer.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
 				imgFootSpacer2.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
-
-				' Register scripts
-				Utilities.ForumUtils.RegisterPageScripts(Page, objConfig)
 			End If
 		End Sub
 

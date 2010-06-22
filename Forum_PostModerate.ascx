@@ -7,9 +7,9 @@
 			<td width="100%">
 				<table cellspacing="0" cellpadding="0" width="100%" border="0">
 					<tr>
-						<td class="Forum_HeaderCapLeft"><asp:image id="imgHeadSpacer" runat="server"></asp:image></td>
-						<td class="Forum_Header" align="left"><asp:hyperlink id="hlForum" CssClass="Forum_HeaderText" Runat="server" Target="_blank"></asp:hyperlink></td>
-						<td class="Forum_HeaderCapRight"><asp:image id="imgHeadSpacer2" runat="server"></asp:image></td>
+						<td class="Forum_HeaderCapLeft"><asp:image id="imgHeadSpacer" runat="server" /></td>
+						<td class="Forum_Header" align="left"><asp:hyperlink id="hlForum" CssClass="Forum_HeaderText" Runat="server" Target="_blank" /></td>
+						<td class="Forum_HeaderCapRight"><asp:image id="imgHeadSpacer2" runat="server" /></td>
 					</tr>
 				</table>
 			</td>
@@ -96,10 +96,10 @@
 	    									                    <tr>
 											                        <td align="center">
 											                            <br />
-											                            <asp:Label ID="lblQuestion" runat="server" CssClass="Forum_Normal"></asp:Label><br />
-											                            <asp:RadioButtonList ID="rblstAnswers" runat="server" CssClass="Forum_NormalTextBox"></asp:RadioButtonList><br />
-											                            <asp:Label ID="lblEndDate" runat="server" CssClass="Forum_Normal"></asp:Label><br />
-											                            <asp:Label ID="lblTakenMessage" runat="server" CssClass="Forum_Normal"></asp:Label>
+											                            <asp:Label ID="lblQuestion" runat="server" CssClass="Forum_Normal" /><br />
+											                            <asp:RadioButtonList ID="rblstAnswers" runat="server" CssClass="Forum_NormalTextBox" /><br />
+											                            <asp:Label ID="lblEndDate" runat="server" CssClass="Forum_Normal" /><br />
+											                            <asp:Label ID="lblTakenMessage" runat="server" CssClass="Forum_Normal" />
 											                        </td>
 											                    </tr>
 											                </table>
@@ -119,7 +119,7 @@
 			<td class="Forum_Row_Admin_Foot" width="100%">
 				<table cellspacing="0" cellpadding="0" width="100%" border="0">
 					<tr>
-						<td align="center" width="100%"><asp:linkbutton id="cmdBack" runat="server" CssClass="CommandButton" resourcekey="cmdCancel"></asp:linkbutton></td>
+						<td align="center" width="100%"><asp:linkbutton id="cmdBack" runat="server" CssClass="CommandButton" resourcekey="cmdCancel" /></td>
 					</tr>
 				</table>
 			</td>

@@ -128,9 +128,6 @@ Namespace DotNetNuke.Modules.Forum
 
 					imgHeadSpacerL.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
 					imgHeadSpacerR.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
-
-					' Register scripts
-					Utilities.ForumUtils.RegisterPageScripts(Page, objConfig)
 				End If
 
 			Catch exc As Exception

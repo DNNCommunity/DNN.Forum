@@ -236,9 +236,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					'Else
 					'	cmdEmail.Enabled = False
 					'End If
-
-					' Register scripts
-					Utilities.ForumUtils.RegisterPageScripts(Page, objConfig)
 				End If
 			Catch exc As Exception
 				ProcessModuleLoadException(Me, exc)
@@ -322,8 +319,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			ForumController.ResetForumInfoCache(CurrentParentID)
 
 			' Update group info in cache in case the forum moved
-			Dim cntGroup As New GroupController
-			cntGroup.ResetCachedGroup(Convert.ToInt32(ddlGroup.SelectedValue), ModuleId)
+			GroupInfo.ResetGroupInfo(Convert.ToInt32(ddlGroup.SelectedValue))
 
 			' Go Back to forum/group management screen
 			Response.Redirect(Utilities.Links.ACPForumsManageLink(TabId, ModuleId, CType(ddlGroup.SelectedValue, Integer)), False)
@@ -396,8 +392,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			'update the cached values
 			ForumController.ResetForumInfoCache(ForumID)
 			' Update the group info so it knows there is a new forum
-			Dim cntGroup As New GroupController
-			cntGroup.ResetCachedGroup(Convert.ToInt32(ddlGroup.SelectedValue), ModuleId)
+			GroupInfo.ResetGroupInfo(Convert.ToInt32(ddlGroup.SelectedValue))
 
 			' Go Back to forum/group management screen
 			Response.Redirect(Utilities.Links.ACPForumsManageLink(TabId, ModuleId, CType(ddlGroup.SelectedValue, Integer)), False)
@@ -835,7 +830,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			Dim cntGroup As New GroupController
 
 			With ddlGroup
-				.DataSource = cntGroup.GetCachedModuleGroups(ModuleId)
+				.DataSource = cntGroup.GroupsGetByModuleID(ModuleId)
 				.DataTextField = "Name"
 				.DataValueField = "GroupID"
 				.DataBind()
@@ -848,29 +843,23 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <remarks>Entires in Lists table.
 		''' </remarks>
 		Private Sub BindLists()
-			Dim ctlLists As New DotNetNuke.Common.Lists.ListController
-			Dim ForumTypes As DotNetNuke.Common.Lists.ListEntryInfoCollection = ctlLists.GetListEntryInfoCollection("ForumType")
 			ddlForumType.Items.Clear()
+			ddlForumType.Items.Insert(0, New ListItem(Localization.GetString("Normal", objConfig.SharedResourceFile), "0"))
+			ddlForumType.Items.Insert(1, New ListItem(Localization.GetString("Notification", objConfig.SharedResourceFile), "1"))
+			ddlForumType.Items.Insert(2, New ListItem(Localization.GetString("Link", objConfig.SharedResourceFile), "2"))
 
-			For Each entry As DotNetNuke.Common.Lists.ListEntryInfo In ForumTypes
-				Dim ForumType As New ListItem(Localization.GetString(entry.Text, objConfig.SharedResourceFile), entry.Value)
-				ddlForumType.Items.Add(ForumType)
-			Next
-
-			Dim ForumBehaviors As DotNetNuke.Common.Lists.ListEntryInfoCollection = ctlLists.GetListEntryInfoCollection("ForumBehavior")
 			ddlForumBehavior.Items.Clear()
-
-			For Each entry As DotNetNuke.Common.Lists.ListEntryInfo In ForumBehaviors
-				Dim ForumBehavior As New ListItem(Localization.GetString(entry.Text, objConfig.SharedResourceFile), entry.Value)
-				ddlForumBehavior.Items.Add(ForumBehavior)
-			Next
+			ddlForumBehavior.Items.Insert(0, New ListItem(Localization.GetString("PublicModerated", objConfig.SharedResourceFile), "0"))
+			ddlForumBehavior.Items.Insert(1, New ListItem(Localization.GetString("PublicModeratedPostRestricted", objConfig.SharedResourceFile), "1"))
+			ddlForumBehavior.Items.Insert(2, New ListItem(Localization.GetString("PublicUnModerated", objConfig.SharedResourceFile), "2"))
+			ddlForumBehavior.Items.Insert(3, New ListItem(Localization.GetString("PublicUnModeratedPostRestricted", objConfig.SharedResourceFile), "3"))
+			ddlForumBehavior.Items.Insert(4, New ListItem(Localization.GetString("PrivateModerated", objConfig.SharedResourceFile), "4"))
+			ddlForumBehavior.Items.Insert(5, New ListItem(Localization.GetString("PrivateModeratedPostRestricted", objConfig.SharedResourceFile), "5"))
+			ddlForumBehavior.Items.Insert(6, New ListItem(Localization.GetString("PrivateUnModerated", objConfig.SharedResourceFile), "6"))
+			ddlForumBehavior.Items.Insert(7, New ListItem(Localization.GetString("PrivateUnModeratedPostRestricted", objConfig.SharedResourceFile), "7"))
 
 			' CP - Changes
-			'Dim ForumEmailAuths As DotNetNuke.Common.Lists.ListEntryInfoCollection = ctlLists.GetListEntryInfoCollection("ForumEmailAuth")
-			'For Each entry As DotNetNuke.Common.Lists.ListEntryInfo In ForumEmailAuths
-			'	Dim ForumEmailAuth As New ListItem(Localization.GetString(entry.Text, objConfig.SharedResourceFile), entry.Value)
-			'	ddlForumBehavior.Items.Add(ForumEmailAuth)
-			'Next
+			' ddlForumBehavior.Items.Insert(8, New ListItem(Localization.GetString("EmailAuth", objConfig.SharedResourceFile), "8"))
 			' End Changes
 		End Sub
 

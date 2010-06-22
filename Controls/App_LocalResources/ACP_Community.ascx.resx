@@ -129,18 +129,6 @@
   <data name="plTrustNewUsers.Text" xml:space="preserve">
     <value>Trust New Users</value>
   </data>
-  <data name="plEnablePMSystem.Text" xml:space="preserve">
-    <value>Private Messaging</value>
-  </data>
-  <data name="plEnablePMSystem.Help" xml:space="preserve">
-    <value>If checked, the forum will allow users to send private messages to one another.  </value>
-  </data>
-  <data name="plEnableMemberList.Text" xml:space="preserve">
-    <value>Member List</value>
-  </data>
-  <data name="plEnableMemberList.Help" xml:space="preserve">
-    <value>If checked, users will be able to view a list of members of the forum.</value>
-  </data>
   <data name="plNameDisplay.Help" xml:space="preserve">
     <value>This is the format the sites users will appear to users of this forum module. </value>
   </data>
@@ -170,24 +158,6 @@
   </data>
   <data name="lblUpdateDone.Text" xml:space="preserve">
     <value>Updated Successfully!</value>
-  </data>
-  <data name="plEmoticonPath.Help" xml:space="preserve">
-    <value>The emoticon path is located in the &lt;strong&gt;portal root directory&lt;/strong&gt;.&lt;br&gt;ie. domain.com/Portals/0/</value>
-  </data>
-  <data name="plEmoticonPath.Text" xml:space="preserve">
-    <value>Emoticon Path</value>
-  </data>
-  <data name="plEnableEmoticons.Help" xml:space="preserve">
-    <value>If checked, you're able to upload and define codes for emoticons, eg. :-) that will be rendered as the equivalent emoticon image</value>
-  </data>
-  <data name="plEnableEmoticons.Text" xml:space="preserve">
-    <value>Emoticon Support</value>
-  </data>
-  <data name="plEmoticonMaxFileSize.Help" xml:space="preserve">
-    <value>The file size (in KB) that emoticon uploads are limited to. </value>
-  </data>
-  <data name="plEmoticonMaxFileSize.Text" xml:space="preserve">
-    <value>Emoticon Max Size</value>
   </data>
   <data name="plEnableExtDirectory.Help" xml:space="preserve">
     <value>If checked, users will be navigated to an outside module to view a list of community members.</value>

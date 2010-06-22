@@ -142,25 +142,6 @@ Namespace DotNetNuke.Modules.Forum.WebControls
 		End Property
 
 		''' <summary>
-		''' Do we allow Inline placement of Attachments?
-		''' </summary>
-		''' <value></value>
-		''' <returns>Boolean value</returns>
-		''' <remarks></remarks>
-		Private Property AllowInline() As Boolean
-			Get
-				If Not ViewState("AllowInline") Is Nothing Then
-					Return CBool(ViewState("AllowInline"))
-				Else
-					Return False
-				End If
-			End Get
-			Set(ByVal value As Boolean)
-				ViewState("AllowInline") = CStr(value)
-			End Set
-		End Property
-
-		''' <summary>
 		''' ModuleId
 		''' </summary>
 		''' <value></value>
@@ -239,8 +220,6 @@ Namespace DotNetNuke.Modules.Forum.WebControls
 			'Localization (needed because of AJAX)
 			cmdDelete.ToolTip = Localization.GetString("Delete", Me.LocalResourceFile)
 			cmdUpload.Text = Localization.GetString("Upload", Me.LocalResourceFile)
-			plInline.Text = Localization.GetString("plInline", Me.LocalResourceFile) & ":"
-			plInline.HelpText = Localization.GetString("plInline.Help", Me.LocalResourceFile)
 			plUpload.Text = Localization.GetString("plUpload", Me.LocalResourceFile) & ":"
 			plUpload.HelpText = Localization.GetString("plUpload.Help", Me.LocalResourceFile)
 			plAttachments.Text = Localization.GetString("plAttachments", Me.LocalResourceFile) & ":"
@@ -277,12 +256,6 @@ Namespace DotNetNuke.Modules.Forum.WebControls
 						End If
 					Next
 				End If
-
-				' For this combination, we need the javascript rewritten on all page loads
-				If objConfig.EnableEmoticons = False And AllowInline = True Then
-					GenerateJavascript(objConfig.DefaultHtmlEditorProvider.ToLower)
-				End If
-
 			End If
 		End Sub
 
@@ -368,22 +341,7 @@ Namespace DotNetNuke.Modules.Forum.WebControls
 			If lstAttachments.SelectedIndex = -1 Then Exit Sub
 			Dim doDelete As Boolean = False
 			Try
-
-				'First we need to make sure there is not an inline placement with the current item
-				If AllowInline = True Then
-					Dim myEditor As DotNetNuke.UI.UserControls.TextEditor
-					myEditor = CType(Parent.FindControl("teContent"), DotNetNuke.UI.UserControls.TextEditor)
-					If Not myEditor Is Nothing Then
-						If myEditor.Text.ToLower.IndexOf("[attachment]" & lstAttachments.SelectedItem.Text.ToLower & "[/attachment]") >= 0 Then
-							lblMessage.Text = String.Format(Localization.GetString("DeleteError", Me.LocalResourceFile), lstAttachments.SelectedItem.Text)
-							doDelete = False
-						Else
-							doDelete = True
-						End If
-					End If
-				Else
-					doDelete = True
-				End If
+				doDelete = True
 
 				'Okay, we can go a head and delete
 				If doDelete = True Then
@@ -412,30 +370,10 @@ Namespace DotNetNuke.Modules.Forum.WebControls
 		''' </summary>
 		''' <remarks></remarks>
 		Public Sub LoadInitialView()
-
 			'Not get the host filefilter
 			FileFilter = Entities.Host.Host.GetHostSettingsDictionary("FileExtensions").ToString()
-
-			'Do we support inline placement?
-			Select Case objConfig.DefaultHtmlEditorProvider.ToLower
-
-				Case "fckhtmleditorprovider", "radeditorprovider"
-					AllowInline = True
-				Case Else
-					'Unsupported provider..
-					AllowInline = False
-			End Select
-
-			If AllowInline = True Then
-				GenerateJavascript(objConfig.DefaultHtmlEditorProvider.ToLower)
-				hypInline.Text = Localization.GetString("Inline", Me.LocalResourceFile)
-				hypInline.Attributes.Add("onclick", "javascript:AddInlineItem()")
-				hypInline.NavigateUrl = "javascript:void(0)"
-			End If
-
 			'Bind the lists
 			BindFileList()
-
 		End Sub
 
 #End Region
@@ -447,9 +385,7 @@ Namespace DotNetNuke.Modules.Forum.WebControls
 		''' </summary>
 		''' <remarks></remarks>
 		Private Sub BindFileList()
-
 			lstAttachments.Items.Clear()
-			ddlInline.Items.Clear()
 
 			Dim cntAttachment As New AttachmentController
 			Dim lstFiles As List(Of AttachmentInfo)
@@ -474,123 +410,7 @@ Namespace DotNetNuke.Modules.Forum.WebControls
 				lstAttachments.Items.Add(lstItem)
 
 				lstAttachmentIDs += objFile.AttachmentID.ToString() + ";"
-
-				Dim InlineItem As New ListItem
-				InlineItem.Text = objFile.LocalFileName
-				InlineItem.Value = objFile.LocalFileName
-				ddlInline.Items.Add(InlineItem)
-
 			Next
-
-			'No need to show inline unless there is something to place..
-			If AllowInline = True And lstAttachments.Items.Count > 0 Then
-				rowInline.Visible = True
-				rowInlineHelp.Visible = True
-			Else
-				rowInline.Visible = False
-				rowInlineHelp.Visible = False
-			End If
-
-		End Sub
-
-		''' <summary>
-		''' Generates the nessary javascript to place attachments inline the post body.
-		''' Requires the name of the default HtmlEditorProvider, in order to generate a
-		''' working script. 
-		''' </summary>
-		''' <param name="HtmlProvider"></param>
-		''' <remarks></remarks>
-		Private Sub GenerateJavascript(ByVal HtmlProvider As String)
-
-			If objConfig.DisableHTMLPosting = True And litScript.Text <> String.Empty Then
-				Exit Sub
-			End If
-
-
-			'Are we posting or sending a Private Message?
-			Dim strControl As String = String.Empty
-			Select Case Request.QueryString("ctl").ToString.ToLower()
-				Case "postedit"
-					strControl = "Forum_PostEdit"
-				Case "pm_edit"
-					strControl = "PM_Edit"
-			End Select
-
-			'Start javascript
-			Dim sb As New StringBuilder
-			sb.Append("<script language=""javascript"" type=""text/javascript"">")
-
-			If objConfig.EnableEmoticons = False Then
-
-				' We are alone - get the TextEditor Object
-				Dim teContent As DotNetNuke.UI.UserControls.TextEditor
-				teContent = CType(Parent.FindControl("teContent"), DotNetNuke.UI.UserControls.TextEditor)
-
-				' Do we really need to continue?
-				If EditorMode = teContent.Mode And litScript.Text <> String.Empty Then
-					Exit Sub
-				End If
-
-				If objConfig.DisableHTMLPosting = True Then
-					' Same script regardless the editor provider, we have the 'textarea' object now
-					Dim strScript As String = Utilities.ForumUtils.GenerateEditorJavascript(ModuleId, strControl)
-					sb.Append(strScript)
-
-					'Now we need to add some attributes to the textarea object
-					Dim txtDesktopHTML As TextBox
-					txtDesktopHTML = CType(teContent.FindControl("txtDesktopHTML"), TextBox)
-					txtDesktopHTML.Attributes.Add("onclick", "storepos(this);")
-					txtDesktopHTML.Attributes.Add("onselect", "storepos(this);")
-					txtDesktopHTML.Attributes.Add("onkeyup", "storepos(this);")
-				Else
-
-					' What Mode is the RichText editor running?
-					Select Case teContent.Mode.ToUpper
-
-						Case "RICH"
-							' Get the editor instance and add script related to the insert of the emoticon code
-							Select Case HtmlProvider
-								Case "fckhtmleditorprovider"
-									sb.AppendLine("function AddText(code) { var FCK = FCKeditorAPI.GetInstance('dnn_ctr" & CStr(ModuleId) & "_" & strControl & "_teContent_teContent'); FCK.InsertHtml(' ' + code + ' '); }")
-
-								Case "radeditorprovider"
-									'dnn_ctr389_EditHTML_teContent_teContent
-									sb.AppendLine("function AddText(code) { $find('dnn_ctr" & CStr(ModuleId) & "_" & strControl & "_teContent_teContent').pasteHtml(code); } ")
-							End Select
-
-						Case Else
-							' User is running BASIC mode, we need a script for that!
-							Dim strScript As String = Utilities.ForumUtils.GenerateEditorJavascript(ModuleId, strControl)
-							sb.Append(strScript)
-
-							'Now we need to add some attributes to the textarea object
-							Dim txtDesktopHTML As TextBox
-							txtDesktopHTML = CType(teContent.FindControl("txtDesktopHTML"), TextBox)
-							txtDesktopHTML.Attributes.Add("onclick", "storepos(this);")
-							txtDesktopHTML.Attributes.Add("onselect", "storepos(this);")
-							txtDesktopHTML.Attributes.Add("onkeyup", "storepos(this);")
-					End Select
-
-					' Save to ViewState
-					EditorMode = teContent.Mode.ToUpper
-
-				End If
-
-			End If
-
-			' Either EmoticonControl is currently present and have written a nice javascript we can use
-			' or we just wrote our own. Lets add the function to place the attachment inline.
-			sb.Append("function AddInlineItem() { ")
-			sb.Append("var ddi = document.getElementById('dnn_ctr" & CStr(ModuleId) & "_" & strControl & "_ctlAttachment_ddlInline').selectedIndex; ")
-			sb.Append("if ( ddi != null ) { ")
-			sb.Append("var ddv = document.getElementById('dnn_ctr" & CStr(ModuleId) & "_" & strControl & "_ctlAttachment_ddlInline')[ddi].value; ")
-			sb.Append("if ( ddv != -1 ) { ")
-			sb.Append("AddText(' [attachment]' + ddv + '[/attachment] '); } } }")
-
-			'Close Javascript
-			sb.Append("</script>")
-			litScript.Text = sb.ToString
-
 		End Sub
 
 #End Region

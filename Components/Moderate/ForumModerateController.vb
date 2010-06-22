@@ -80,12 +80,11 @@ Namespace DotNetNuke.Modules.Forum
 		''' <history>
 		''' 	[cpaterra]	12/3/2005	Created
 		''' </history>
-		Public Sub ModeratePostApprove(ByVal PostID As Integer, ByVal ApprovedBy As Integer, ByVal Notes As String, ByVal ForumID As Integer, ByVal ParentID As Integer, ByVal ModuleID As Integer)
+		Public Sub ModeratePostApprove(ByVal PostID As Integer, ByVal ApprovedBy As Integer, ByVal Notes As String, ByVal ForumID As Integer, ByVal ParentID As Integer)
 			Dim GroupID As Integer
 			GroupID = DotNetNuke.Modules.Forum.DataProvider.Instance().ModeratePostApprove(PostID, ApprovedBy, Notes)
 			' Reset Group Info
-			Dim cntGroup As New GroupController
-			cntGroup.ResetCachedGroup(GroupID, ModuleID)
+			GroupInfo.ResetGroupInfo(GroupID)
 			' Reset Forum Info
 
 			ForumController.ResetForumInfoCache(ForumID)

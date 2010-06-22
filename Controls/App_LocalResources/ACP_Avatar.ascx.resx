@@ -216,4 +216,10 @@
   <data name="plProfileAvatarPropertyName.Text" xml:space="preserve">
     <value>Profile Property</value>
   </data>
+  <data name="plEnableProfileUserFolders.Help" xml:space="preserve">
+    <value>If checked, the system will utilize the core profile image control. This means the path to the image will utilize user folders.</value>
+  </data>
+  <data name="plEnableProfileUserFolders.Text" xml:space="preserve">
+    <value>Enable User Folders</value>
+  </data>
 </root>

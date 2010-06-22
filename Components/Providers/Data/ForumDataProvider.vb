@@ -64,15 +64,6 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-#Region "Emoticons"
-
-		Public MustOverride Function Emoticon_GetAll(ByVal ModuleID As Integer, ByVal IsDefault As Boolean) As IDataReader
-		Public MustOverride Sub Emoticon_Update(ByVal objEmoticon As EmoticonInfo)
-		Public MustOverride Sub Emoticon_Delete(ByVal ID As Integer)
-		Public MustOverride Sub Emoticon_SetOrder(ByVal ID As Integer, ByVal ModuleID As Integer, ByVal MoveUp As Boolean)
-
-#End Region
-
 #Region "RoleAvatar"
 
 		Public MustOverride Function RoleAvatar_GetAll(ByVal PortalID As Integer) As IDataReader
@@ -169,45 +160,6 @@ Namespace DotNetNuke.Modules.Forum
 #Region "ReportedUsers"
 
 		Public MustOverride Function GetReportedUsers(ByVal PortalID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
-
-#End Region
-
-#Region "PrivateMessaging"
-
-#Region "Posts"
-
-		Public MustOverride Function PMGetAll(ByVal PMThreadID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal Descending As Boolean) As IDataReader
-		Public MustOverride Function PMGet(ByVal PMID As Integer) As IDataReader
-		Public MustOverride Function PMAdd(ByVal ParentPMID As Integer, ByVal PMFromUserID As Integer, ByVal RemoteAddr As String, ByVal Subject As String, ByVal Body As String, ByVal PMToUserID As Integer, ByVal PortalID As Integer) As Integer
-		Public MustOverride Sub PMDelete(ByVal PMID As Integer, ByVal PMThreadID As Integer)
-		Public MustOverride Sub PMUpdate(ByVal PMID As Integer, ByVal Subject As String, ByVal Body As String)
-
-#End Region
-
-#Region "Threads"
-
-		Public MustOverride Function PMThreadGet(ByVal PMThreadID As Integer) As IDataReader
-		Public MustOverride Function PMThreadGetAll(ByVal UserID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer, ByVal PortalId As Integer) As IDataReader
-		Public MustOverride Sub PMThreadDelete(ByVal PMThreadID As Integer, ByVal UserID As Integer)
-		Public MustOverride Function PMThreadGetOutBox(ByVal UserID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer, ByVal PortalId As Integer) As IDataReader
-
-#End Region
-
-#Region "Reads/Views"
-
-		Public MustOverride Function PMReadsGet(ByVal UserID As Integer, ByVal PMThreadID As Integer) As IDataReader
-		Public MustOverride Sub PMReadsAdd(ByVal UserID As Integer, ByVal PMThreadID As Integer, ByVal LastVisitDate As Date, ByVal PortalID As Integer)
-		Public MustOverride Sub PMReadsUpdate(ByVal UserID As Integer, ByVal PMThreadID As Integer, ByVal LastVisitDate As Date)
-		Public MustOverride Function PMGetUserNewMessageCount(ByVal UserID As Integer, ByVal PortalID As Integer) As Integer
-		Public MustOverride Function PMGetMessageStatus(ByVal UserId As Integer, ByVal PortalId As Integer) As IDataReader
-
-#End Region
-
-#Region "Users"
-
-		Public MustOverride Function PMUsersGet(ByVal PortalId As Integer, ByVal NameToMatch As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal ByUsername As Boolean, ByVal Specific As Boolean) As IDataReader
-
-#End Region
 
 #End Region
 
@@ -317,7 +269,6 @@ Namespace DotNetNuke.Modules.Forum
 
 		' Distribution Lists
 		Public MustOverride Function GetNewThreadDistributionList(ByVal ThreadID As Integer) As IDataReader
-		Public MustOverride Function GetPrivateMessageDistributionList(ByVal PMID As Integer) As IDataReader
 		Public MustOverride Function GetModeratorDistributionList(ByVal ForumID As Integer, ByVal ModuleID As Integer) As IDataReader
 
 		'GetThreadMovedDisbributionList - Not implemented in db yet
@@ -389,14 +340,6 @@ Namespace DotNetNuke.Modules.Forum
 		Public MustOverride Function BookmarkThreadGet(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal ForumMemberName As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As IDataReader
 		Public MustOverride Sub BookmarkCreateDelete(ByVal ForumID As Integer, ByVal UserID As Integer, ByVal Add As Boolean, ByVal ModuleID As Integer)
 		Public MustOverride Function BookmarkCheck(ByVal UserID As Integer, ByVal ThreadID As Integer, ByVal ModuleID As Integer) As Boolean
-
-#End Region
-
-#Region "Upgrade"
-
-		Public MustOverride Function Upgrade_GetForumPerms() As IDataReader
-		Public MustOverride Function Upgrade_GetPermByKey(ByVal PermKey As String) As IDataReader
-		Public MustOverride Function Upgrade_GetForumMods() As IDataReader
 
 #End Region
 

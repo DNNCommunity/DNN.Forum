@@ -123,15 +123,11 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </summary>
 		''' <remarks>Uses lists localized items to determine options.</remarks>
 		Private Sub BindMemberNameTypes()
-			' Use new Lists feature to provide DisplayPosterLocation entries (localization support)
-			Dim ctlLists As New DotNetNuke.Common.Lists.ListController
-			Dim LocationDisplayTypes As DotNetNuke.Common.Lists.ListEntryInfoCollection = ctlLists.GetListEntryInfoCollection("ForumMemberName")
 			ddlNameDisplay.ClearSelection()
 
-			For Each entry As DotNetNuke.Common.Lists.ListEntryInfo In LocationDisplayTypes
-				Dim LocationEntryType As New ListItem(Localization.GetString(entry.Text, objConfig.SharedResourceFile), entry.Value)
-				ddlNameDisplay.Items.Add(LocationEntryType)
-			Next
+			ddlNameDisplay.Items.Insert(0, New ListItem(Localization.GetString("Username", objConfig.SharedResourceFile), "0"))
+			ddlNameDisplay.Items.Insert(1, New ListItem(Localization.GetString("DisplayName", objConfig.SharedResourceFile), "1"))
+
 			' Now Bind the items
 			ddlNameDisplay.Items.FindByValue(objConfig.ForumMemberName.ToString).Selected = True
 		End Sub

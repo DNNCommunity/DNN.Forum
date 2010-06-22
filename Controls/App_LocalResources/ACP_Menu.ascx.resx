@@ -198,9 +198,6 @@
   <data name="cmdRoleAvatar.Text" xml:space="preserve">
     <value>Role Avatars</value>
   </data>
-  <data name="cmdEmoticon.Text" xml:space="preserve">
-    <value>Emoticons</value>
-  </data>
   <data name="cmdEmailQueueTaskDetail.Text" xml:space="preserve">
     <value>Queue Tasks</value>
   </data>

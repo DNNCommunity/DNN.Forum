@@ -39,7 +39,7 @@ function pageLoad()
 					<dnn:label id="plSubject" runat="server" controlname="txttxtSubject" Suffix=":"></dnn:label>
 				</span></td>
 			<td class="Forum_Row_AdminR" align="left">
-				<asp:textbox id="txtSubject" runat="server" width="250" cssclass="Forum_NormalTextBox"></asp:textbox>
+				<asp:textbox id="txtSubject" runat="server" width="250" cssclass="Forum_NormalTextBox" />
 			</td>
 		</tr>
 		<tr>
@@ -49,7 +49,7 @@ function pageLoad()
 				</span>
 			</td>
 			<td class="Forum_Row_AdminR" align="left">
-				<asp:textbox id="txtOldForum" runat="server" ReadOnly="True" width="250" cssclass="Forum_NormalTextBox"></asp:textbox>
+				<asp:textbox id="txtOldForum" runat="server" ReadOnly="True" width="250" cssclass="Forum_NormalTextBox" />
 			</td>
 		</tr>
         <tr>
@@ -69,9 +69,9 @@ function pageLoad()
 				</span>
 			</td>
 			<td class="Forum_Row_AdminR">
-				<telerik:RadTreeView ID="rtvForums" runat="server" Skin="Web20" CheckBoxes="true" OnClientNodeChecked="clientNodeChecked" />
+				<telerik:RadTreeView ID="rtvForums" runat="server" CheckBoxes="true" OnClientNodeChecked="clientNodeChecked" />
 				<br/>
-				<asp:label id="lblErrorMsg" Runat="server" CssClass="NormalRed"></asp:label>
+				<asp:label id="lblErrorMsg" Runat="server" CssClass="NormalRed" />
 			</td>
 		</tr>
 		<tr>
@@ -81,7 +81,7 @@ function pageLoad()
 				</span>
 			</td>
 			<td class="Forum_Row_AdminR" width="75%">
-				<asp:checkbox id="chkEmailUsers" runat="server" CssClass="Forum_NormalTextBox"></asp:checkbox>
+				<asp:checkbox id="chkEmailUsers" runat="server" CssClass="Forum_NormalTextBox" />
 			</td>
 		</tr>
 		<td colspan="2" class="Forum_Row_Admin_Foot" >&nbsp;</td>
@@ -139,7 +139,7 @@ function pageLoad()
 											<td id="PostCreatedDetails" class="Forum_PostButtonsBox" width="75%" align="right">
 											    <table>
 											        <tr>
-											            <td align="Left">
+											            <td align="left">
 											                <asp:CheckBox ID="chkThreadToSplit" runat="server" resourcekey="IncludePostSplit" CssClass="Forum_Normal" Enabled='<%# EnabledSelector(CType(DataBinder.Eval(Container.DataItem, "PostID"), Integer), CType(DataBinder.Eval(Container.DataItem, "ThreadID"), Integer)) %>' TextAlign="Left" />
 											            </td>
 											            <td>
@@ -168,9 +168,9 @@ function pageLoad()
         </tr>
 		<tr>
 			<td align="center" width="100%" colspan="2">
-                <asp:linkbutton cssclass="CommandButton" id="cmdCancel" runat="server" resourcekey="cmdCancel"></asp:linkbutton>&nbsp;
-							<asp:linkbutton cssclass="CommandButton" id="cmdMove" runat="server" resourcekey="cmdMove"></asp:linkbutton></td>
-
+				 <asp:linkbutton cssclass="CommandButton" id="cmdCancel" runat="server" resourcekey="cmdCancel" />&nbsp;
+				<asp:linkbutton cssclass="CommandButton" id="cmdMove" runat="server" resourcekey="cmdMove" />
+			</td>
 		</tr>
 	</table>
 </asp:Panel>

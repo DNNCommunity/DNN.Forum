@@ -66,7 +66,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns>The moduleID being accessed by the user.</returns>
 		''' <remarks>PortalModulebase attribute picked up from the Basecontrol object.</remarks>
-		Protected ReadOnly Property ModuleID() As Integer
+		Protected Overloads ReadOnly Property ModuleID() As Integer
 			Get
 				Return MyBase.BaseControl.ModuleID
 			End Get
@@ -78,7 +78,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns>The PortalID being accessed by the user.</returns>
 		''' <remarks>PortalModulebase attribute picked up from the Basecontrol object.</remarks>
-		Protected ReadOnly Property PortalID() As Integer
+		Protected Overloads ReadOnly Property PortalID() As Integer
 			Get
 				Return MyBase.BaseControl.PortalID
 			End Get
@@ -90,7 +90,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns>An object containing all configuration options for a forum module instance.</returns>
 		''' <remarks>This is all the forum configuration settings needed for the various dynamically generated UI's.</remarks>
-		Protected ReadOnly Property objConfig() As Config
+		Protected Overloads ReadOnly Property objConfig() As Config
 			Get
 				Return DotNetNuke.Modules.Forum.Config.GetForumConfig(ModuleID)
 			End Get
@@ -102,7 +102,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns>The TabID being accessed by the user.</returns>
 		''' <remarks>PortalModulebase attribute picked up from the Basecontrol object.</remarks>
-		Protected ReadOnly Property TabID() As Integer
+		Protected Overloads ReadOnly Property TabID() As Integer
 			Get
 				Return MyBase.BaseControl.TabID
 			End Get

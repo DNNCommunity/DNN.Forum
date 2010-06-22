@@ -95,9 +95,6 @@ Namespace DotNetNuke.Modules.Forum
 					imgHeadSpacer.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
 
 					BindList()
-
-					' Register scripts
-					Utilities.ForumUtils.RegisterPageScripts(Page, objConfig)
 				End If
 			Catch exc As Exception
 				ProcessModuleLoadException(Me, exc)
@@ -287,7 +284,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim ctlForum As New ForumController
 			Dim forum As ForumInfo = ctlForum.GetForumInfoCache(ForumID)
 			Dim ctlForumModerate As New ModerateController
-			ctlForumModerate.ModeratePostApprove(PostID, UserID, Notes, ForumID, forum.ParentId, ModuleId)
+			ctlForumModerate.ModeratePostApprove(PostID, UserID, Notes, ForumID, forum.ParentId)
 
 			If objConfig.MailNotification Then
 				' send notification mail to author
@@ -310,7 +307,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim ctlForum As New ForumController
 			Dim forum As ForumInfo = ctlForum.GetForumInfoCache(ForumID)
 			Dim ctlForumModerate As New ModerateController
-			ctlForumModerate.ModeratePostApprove(PostID, UserID, Notes, ForumID, forum.ParentId, ModuleId)
+			ctlForumModerate.ModeratePostApprove(PostID, UserID, Notes, ForumID, forum.ParentId)
 		End Sub
 
 #End Region
@@ -329,7 +326,11 @@ Namespace DotNetNuke.Modules.Forum
 			Dim cntForumUser As New ForumUserController
 
 			Dim objUser As ForumUser = cntForumUser.GetForumUser(UserId, False, ModuleId, PortalId)
-			url = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, UserId, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, objUser.Username)
+			If Not objConfig.EnableExternalProfile Then
+				url = objUser.UserCoreProfileLink
+			Else
+				url = Utilities.Links.UserExternalProfileLink(UserId, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, objUser.Username)
+			End If
 
 			Return url
 		End Function

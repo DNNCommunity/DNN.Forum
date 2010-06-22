@@ -28,7 +28,7 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	Public MustInherit Class PostEdit
+	Partial  Class PostEdit
 		Inherits ForumModuleBase
 		Implements DotNetNuke.Entities.Modules.IActionable
 
@@ -67,6 +67,12 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		''' 'This call is required by the Web Form Designer.
 		Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+			litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
+
+			If DotNetNuke.Framework.AJAX.IsInstalled Then
+				DotNetNuke.Framework.AJAX.RegisterScriptManager()
+			End If
+
 			For Each column As DataGridColumn In dgAnswers.Columns
 				If column.GetType() Is GetType(DotNetNuke.UI.WebControls.ImageCommandColumn) Then
 					Dim imageColumn As DotNetNuke.UI.WebControls.ImageCommandColumn = CType(column, DotNetNuke.UI.WebControls.ImageCommandColumn)
@@ -137,7 +143,7 @@ Namespace DotNetNuke.Modules.Forum
 				End With
 
 				If Page.IsPostBack = False Then
-					litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
+
 					Localization.LocalizeDataGrid(dgAnswers, Me.LocalResourceFile)
 
 					txtPollID.Text = "-1"
@@ -311,10 +317,8 @@ Namespace DotNetNuke.Modules.Forum
 						Dim objGroups As New GroupController
 						Dim arrForums As List(Of ForumInfo)
 
-						For Each objGroup As GroupInfo In objGroups.GetCachedModuleGroups(ModuleId)
-							Dim cntForum As New ForumController
-							arrForums = cntForum.AuthorizedForums(objGroup.GroupID, ModuleId, objConfig, UserId, True)
-
+						For Each objGroup As GroupInfo In objGroups.GroupsGetByModuleID(ModuleId)
+							arrForums = objGroup.AuthorizedForums(UserId, True)
 							If arrForums.Count > 0 Then
 								For Each objForum In arrForums
 									ddlForum.Items.Add(New ListItem(objGroup.Name & " - " & objForum.Name, objForum.ForumID.ToString))
@@ -378,8 +382,6 @@ Namespace DotNetNuke.Modules.Forum
 								rowNotify.Visible = True
 							End If
 						End If
-						'Display Emoticons?
-						rowEmoticon.Visible = objConfig.EnableEmoticons
 					End If
 
 					If Not Request.UrlReferrer Is Nothing Then
@@ -405,160 +407,167 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Protected Sub cmdSubmit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSubmit.Click
 			Try
-				If Page.IsValid Then
-					Dim objLoggedOnUserID As Integer = -1
 
-					Dim ParentPostID As Integer = 0
-					Dim PostID As Integer = -1
-					Dim PollID As Integer = -1
-					Dim ThreadIconID As Integer = -1 ' NOT IMPLEMENTED
-					Dim RemoteAddress As String = "0.0.0.0"
-					Dim ThreadStatus As Forum.ThreadStatus
-					Dim URLPostID As Integer = -1
-					'Dim IsModerated As Boolean = False
-					Dim IsQuote As Boolean = False
-
-					If Request.IsAuthenticated = False Then
-						' CP - Consider a way to save subject, body, etc so user can comeback and post if they timed out.
-						HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
-						Exit Sub
+				If Len(teContent.Text) = 0 Then
+					If ViewState("PostContent") IsNot Nothing Then
+						teContent.Text = ViewState("PostContent").ToString()
 					Else
-						objLoggedOnUserID = Users.UserController.GetCurrentUserInfo.UserID
-					End If
-					Dim cntForumUser As New ForumUserController
-					Dim objForumUser As ForumUser = cntForumUser.GetForumUser(objLoggedOnUserID, False, ModuleId, PortalId)
-					Dim objAction As New PostAction
-
-					' Validation (from UI)
-					If Len(teContent.Text) = 0 Then
 						lblInfo.Text = Localization.GetString(Forum.PostMessage.PostInvalidBody.ToString() + ".Text", LocalResourceFile)
 						lblInfo.Visible = True
 						Exit Sub
 					End If
-					If Len(txtSubject.Text) = 0 Then
-						lblInfo.Text = Localization.GetString(Forum.PostMessage.PostInvalidSubject.ToString() + ".Text", LocalResourceFile)
-						lblInfo.Visible = True
-						Exit Sub
-					End If
-					If ddlForum.SelectedItem Is Nothing Or ddlForum.SelectedItem.Value = "-1" Then
-						lblInfo.Text = Localization.GetString(Forum.PostMessage.ForumDoesntExist.ToString() + ".Text", LocalResourceFile)
-						lblInfo.Visible = True
-						Exit Sub
-					End If
+				End If
 
-					If (Not Request.QueryString("action") Is Nothing) Then
-						objAction = CType([Enum].Parse(GetType(PostAction), Request.QueryString("action"), True), PostAction)
-					End If
+				Dim objLoggedOnUserID As Integer = -1
 
-					If Not Request.QueryString("postid") Is Nothing Then
-						URLPostID = Integer.Parse(Request.QueryString("postid"))
-					End If
+				Dim ParentPostID As Integer = 0
+				Dim PostID As Integer = -1
+				Dim PollID As Integer = -1
+				Dim ThreadIconID As Integer = -1 ' NOT IMPLEMENTED
+				Dim RemoteAddress As String = "0.0.0.0"
+				Dim ThreadStatus As Forum.ThreadStatus
+				Dim URLPostID As Integer = -1
+				'Dim IsModerated As Boolean = False
+				Dim IsQuote As Boolean = False
 
-					Dim cntForum As New ForumController
-					Dim objForum As ForumInfo = cntForum.GetForumInfoCache(Integer.Parse(ddlForum.SelectedItem.Value))
-					Dim objModSecurity As New Forum.ModuleSecurity(ModuleId, TabId, objForum.ForumID, objLoggedOnUserID)
-
-					Select Case objAction
-						Case PostAction.Edit
-							Dim cntPost As New PostController
-							Dim objEditPost As New PostInfo
-
-							objEditPost = cntPost.PostGet(URLPostID, PortalId)
-
-							ParentPostID = objEditPost.ParentPostID
-							PostID = objEditPost.PostID
-
-							' if polls are enabled, make sure db is properly setup
-							If objForum.AllowPolls And PollID > 0 Then
-								If Not HandlePoll(PollID, False) Then
-									Exit Sub
-								End If
-							End If
-						Case PostAction.New
-							' not sure this is correct (first line below)
-							ParentPostID = URLPostID
-
-							If objForum.AllowPolls And PollID > 0 Then
-								If Not HandlePoll(PollID, False) Then
-									Return
-								End If
-							ElseIf objForum.AllowPolls Then
-								OrphanPollCleanup()
-							End If
-						Case PostAction.Quote
-							Dim cntPost As New PostController
-							Dim objReplyToPost As New PostInfo
-
-							objReplyToPost = cntPost.PostGet(URLPostID, PortalId)
-
-							ParentPostID = URLPostID
-							IsQuote = True
-						Case Else	  ' reply
-							Dim cntPost As New PostController
-							Dim objReplyToPost As New PostInfo
-
-							objReplyToPost = cntPost.PostGet(URLPostID, PortalId)
-
-							ParentPostID = URLPostID
-					End Select
-
-					If ParentPostID = 0 And objForum.AllowPolls Then
-						PollID = CType(txtPollID.Text, Integer)
-					End If
-
-					If Not Request.ServerVariables("REMOTE_ADDR") Is Nothing Then
-						RemoteAddress = Request.ServerVariables("REMOTE_ADDR")
-					End If
-
-					If ddlThreadStatus.SelectedIndex > 0 Then
-						ThreadStatus = CType(ddlThreadStatus.SelectedValue, Forum.ThreadStatus)
-					Else
-						ThreadStatus = Forum.ThreadStatus.NotSet
-					End If
-
-					Dim cntPostConnect As New PostConnector
-					Dim PostMessage As PostMessage
-
-					PostMessage = cntPostConnect.SubmitInternalPost(TabId, ModuleId, PortalId, objLoggedOnUserID, txtSubject.Text, teContent.Text, objForum.ForumID, ParentPostID, PostID, chkIsPinned.Checked, chkIsClosed.Checked, chkNotify.Checked, ThreadStatus, ctlAttachment.lstAttachmentIDs, RemoteAddress, PollID, ThreadIconID, IsQuote)
-
-					Select Case PostMessage
-						Case PostMessage.PostApproved
-							Dim ReturnURL As String = NavigateURL()
-
-							If objModSecurity.IsModerator Then
-								If Not ViewState("UrlReferrer") Is Nothing Then
-									ReturnURL = (CType(ViewState("UrlReferrer"), String))
-								Else
-									ReturnURL = Utilities.Links.ContainerViewForumLink(TabId, objForum.ForumID, False)
-								End If
-							Else
-								If Not objAction = PostAction.New Then
-									ReturnURL = Utilities.Links.ContainerViewPostLink(TabId, objForum.ForumID, URLPostID)
-								Else
-									ReturnURL = Utilities.Links.ContainerViewForumLink(TabId, objForum.ForumID, False)
-								End If
-							End If
-
-							Response.Redirect(ReturnURL, False)
-						Case PostMessage.PostModerated
-							tblNewPost.Visible = False
-							tblOldPost.Visible = False
-							tblPreview.Visible = False
-							cmdCancel.Visible = False
-							cmdBackToEdit.Visible = False
-							cmdSubmit.Visible = False
-							cmdPreview.Visible = False
-							cmdBackToForum.Visible = True
-							rowModerate.Visible = True
-							tblPoll.Visible = False
-						Case Else
-							lblInfo.Visible = True
-							lblInfo.Text = Localization.GetString(PostMessage.ToString() + ".Text", LocalResourceFile)
-					End Select
+				If Request.IsAuthenticated = False Then
+					' CP - Consider a way to save subject, body, etc so user can comeback and post if they timed out.
+					HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
+					Exit Sub
 				Else
+					objLoggedOnUserID = Users.UserController.GetCurrentUserInfo.UserID
+				End If
+				Dim cntForumUser As New ForumUserController
+				Dim objForumUser As ForumUser = cntForumUser.GetForumUser(objLoggedOnUserID, False, ModuleId, PortalId)
+				Dim objAction As New PostAction
+
+				' Validation (from UI)
+				If Len(teContent.Text) = 0 Then
+					lblInfo.Text = Localization.GetString(Forum.PostMessage.PostInvalidBody.ToString() + ".Text", LocalResourceFile)
 					lblInfo.Visible = True
 					Exit Sub
 				End If
+				If Len(txtSubject.Text) = 0 Then
+					lblInfo.Text = Localization.GetString(Forum.PostMessage.PostInvalidSubject.ToString() + ".Text", LocalResourceFile)
+					lblInfo.Visible = True
+					Exit Sub
+				End If
+				If ddlForum.SelectedItem Is Nothing Or ddlForum.SelectedItem.Value = "-1" Then
+					lblInfo.Text = Localization.GetString(Forum.PostMessage.ForumDoesntExist.ToString() + ".Text", LocalResourceFile)
+					lblInfo.Visible = True
+					Exit Sub
+				End If
+
+				If (Not Request.QueryString("action") Is Nothing) Then
+					objAction = CType([Enum].Parse(GetType(PostAction), Request.QueryString("action"), True), PostAction)
+				End If
+
+				If Not Request.QueryString("postid") Is Nothing Then
+					URLPostID = Integer.Parse(Request.QueryString("postid"))
+				End If
+
+				Dim cntForum As New ForumController
+				Dim objForum As ForumInfo = cntForum.GetForumInfoCache(Integer.Parse(ddlForum.SelectedItem.Value))
+				Dim objModSecurity As New Forum.ModuleSecurity(ModuleId, TabId, objForum.ForumID, objLoggedOnUserID)
+
+				Select Case objAction
+					Case PostAction.Edit
+						Dim cntPost As New PostController
+						Dim objEditPost As New PostInfo
+
+						objEditPost = cntPost.PostGet(URLPostID, PortalId)
+
+						ParentPostID = objEditPost.ParentPostID
+						PostID = objEditPost.PostID
+
+						' if polls are enabled, make sure db is properly setup
+						If objForum.AllowPolls And PollID > 0 Then
+							If Not HandlePoll(PollID, False) Then
+								Exit Sub
+							End If
+						End If
+					Case PostAction.New
+						' not sure this is correct (first line below)
+						ParentPostID = URLPostID
+
+						If objForum.AllowPolls And PollID > 0 Then
+							If Not HandlePoll(PollID, False) Then
+								Return
+							End If
+						ElseIf objForum.AllowPolls Then
+							OrphanPollCleanup()
+						End If
+					Case PostAction.Quote
+						Dim cntPost As New PostController
+						Dim objReplyToPost As New PostInfo
+
+						objReplyToPost = cntPost.PostGet(URLPostID, PortalId)
+
+						ParentPostID = URLPostID
+						IsQuote = True
+					Case Else	  ' reply
+						Dim cntPost As New PostController
+						Dim objReplyToPost As New PostInfo
+
+						objReplyToPost = cntPost.PostGet(URLPostID, PortalId)
+
+						ParentPostID = URLPostID
+				End Select
+
+				If ParentPostID = 0 And objForum.AllowPolls Then
+					PollID = CType(txtPollID.Text, Integer)
+				End If
+
+				If Not Request.ServerVariables("REMOTE_ADDR") Is Nothing Then
+					RemoteAddress = Request.ServerVariables("REMOTE_ADDR")
+				End If
+
+				If ddlThreadStatus.SelectedIndex > 0 Then
+					ThreadStatus = CType(ddlThreadStatus.SelectedValue, Forum.ThreadStatus)
+				Else
+					ThreadStatus = Forum.ThreadStatus.NotSet
+				End If
+
+				Dim cntPostConnect As New PostConnector
+				Dim PostMessage As PostMessage
+
+				PostMessage = cntPostConnect.SubmitInternalPost(TabId, ModuleId, PortalId, objLoggedOnUserID, txtSubject.Text, teContent.Text, objForum.ForumID, ParentPostID, PostID, chkIsPinned.Checked, chkIsClosed.Checked, chkNotify.Checked, ThreadStatus, ctlAttachment.lstAttachmentIDs, RemoteAddress, PollID, ThreadIconID, IsQuote)
+
+				Select Case PostMessage
+					Case PostMessage.PostApproved
+						Dim ReturnURL As String = NavigateURL()
+
+						If objModSecurity.IsModerator Then
+							If Not ViewState("UrlReferrer") Is Nothing Then
+								ReturnURL = (CType(ViewState("UrlReferrer"), String))
+							Else
+								ReturnURL = Utilities.Links.ContainerViewForumLink(TabId, objForum.ForumID, False)
+							End If
+						Else
+							If Not objAction = PostAction.New Then
+								ReturnURL = Utilities.Links.ContainerViewPostLink(TabId, objForum.ForumID, URLPostID)
+							Else
+								ReturnURL = Utilities.Links.ContainerViewForumLink(TabId, objForum.ForumID, False)
+							End If
+						End If
+
+						Response.Redirect(ReturnURL, False)
+					Case PostMessage.PostModerated
+						tblNewPost.Visible = False
+						tblOldPost.Visible = False
+						tblPreview.Visible = False
+						cmdCancel.Visible = False
+						cmdBackToEdit.Visible = False
+						cmdSubmit.Visible = False
+						cmdPreview.Visible = False
+						cmdBackToForum.Visible = True
+						rowModerate.Visible = True
+						tblPoll.Visible = False
+					Case Else
+						lblInfo.Visible = True
+						lblInfo.Text = Localization.GetString(PostMessage.ToString() + ".Text", LocalResourceFile)
+				End Select
+
 			Catch exc As Exception
 				ProcessModuleLoadException(Me, exc)
 			End Try
@@ -645,6 +654,8 @@ Namespace DotNetNuke.Modules.Forum
 					tblPoll.Visible = False
 				End If
 
+				ViewState("PostContent") = teContent.Text
+
 			Catch exc As Exception
 				ProcessModuleLoadException(Me, exc)
 			End Try
@@ -666,13 +677,17 @@ Namespace DotNetNuke.Modules.Forum
 			cmdBackToEdit.Visible = False
 			tblNewPost.Visible = True
 
-			If Not ViewState("DisplayOldPost") Is Nothing Then
-				tblOldPost.Visible = True
-			End If
-			If Not ViewState("DisplayPoll") Is Nothing Then
-				tblPoll.Visible = True
+			If ViewState("PostContent") IsNot Nothing Then
+				teContent.Text = ViewState("PostContent").ToString()
 			End If
 
+			If ViewState("DisplayOldPost") IsNot Nothing Then
+				tblOldPost.Visible = True
+			End If
+
+			If ViewState("DisplayPoll") IsNot Nothing Then
+				tblPoll.Visible = True
+			End If
 		End Sub
 
 		''' <summary>
@@ -1185,7 +1200,11 @@ Namespace DotNetNuke.Modules.Forum
 				End With
 
 				hlAuthor.Text = objParentPost.Author.SiteAlias
-				hlAuthor.NavigateUrl = Utilities.Links.UserPublicProfileLink(TabId, ModuleId, objParentPost.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, objParentPost.Author.Username)
+				If Not objConfig.EnableExternalProfile Then
+					hlAuthor.NavigateUrl = objParentPost.Author.UserCoreProfileLink
+				Else
+					hlAuthor.NavigateUrl = Utilities.Links.UserExternalProfileLink(objParentPost.UserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, objParentPost.Author.Username)
+				End If
 				hlAuthor.ToolTip = Localization.GetString("ReplyToToolTip", Me.LocalResourceFile)
 
 				If objAction = PostAction.Reply Then
@@ -1288,14 +1307,12 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <remarks></remarks>
 		Private Sub BindThreadStatus()
-			Dim ctlLists As New DotNetNuke.Common.Lists.ListController
-			Dim colThreadStatus As DotNetNuke.Common.Lists.ListEntryInfoCollection = ctlLists.GetListEntryInfoCollection("ThreadStatus")
 			ddlThreadStatus.Items.Clear()
 
-			For Each entry As DotNetNuke.Common.Lists.ListEntryInfo In colThreadStatus
-				Dim statusEntry As New ListItem(Localization.GetString(entry.Text, objConfig.SharedResourceFile), entry.Value)
-				ddlThreadStatus.Items.Add(statusEntry)
-			Next
+			ddlThreadStatus.Items.Insert(0, New ListItem(Localization.GetString("NoneSpecified", LocalResourceFile), "0"))
+			ddlThreadStatus.Items.Insert(1, New ListItem(Localization.GetString("Unanswered", LocalResourceFile), "1"))
+			ddlThreadStatus.Items.Insert(2, New ListItem(Localization.GetString("Answered", LocalResourceFile), "2"))
+			ddlThreadStatus.Items.Insert(3, New ListItem(Localization.GetString("Informative", LocalResourceFile), "3"))
 
 			'polling changes
 			Try

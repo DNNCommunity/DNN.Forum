@@ -63,7 +63,7 @@
 						</tr>
 					</table>
 				</telerik:RadPageView>
-				<telerik:RadPageView ID="rpvThreads" runat="server">
+				<telerik:RadPageView ID="rpvThreads" runat="server" >
 					<table cellspacing="0" cellpadding="0" width="100%">
 						<tr>
 						<td>

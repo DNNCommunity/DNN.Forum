@@ -8,31 +8,30 @@
 		</td>
 	</tr>
 	<tr>
-		<td>
-			<table id="tblAvatar" cellspacing="0" cellpadding="2" width="100%">
+		<td class="Forum_UCP_HeaderInfo">
+			<table border="0" cellpadding="0" cellspacing="0" width="100%">
 				<tr id="rowUserAvatar" runat="server">
-					<td class="Forum_Row_AdminL" width="175" valign="top">
+					<td width="35%">
 						<span class="Forum_Row_AdminText">
 							<dnn:label id="plAvatar" runat="server" suffix=":" controlname="ctlUserAvatar"></dnn:label>
 						</span>
 					</td>
-					<td class="Forum_Row_AdminR" align="left" valign="top">
+					<td align="left">
 						<forum:avatarcontrol id="ctlUserAvatar" runat="server"></forum:avatarcontrol>
 					</td>
 				</tr>
 				<tr id="rowSystemAvatar" runat="server">
-					<td class="Forum_Row_AdminL" width="175" valign="top">
+					<td width="35%">
 						<span class="Forum_Row_AdminText">
 							<dnn:label id="plSystemAvatarsLookup" runat="server" controlname="ctlSystemAvatar" suffix=":"></dnn:label>
 						</span>
 					</td>
-					<td align="left" class="Forum_Row_AdminR" valign="top">
+					<td align="left">
 						<forum:avatarcontrol id="ctlSystemAvatar" runat="server"></forum:avatarcontrol>
 					</td>
 				</tr>
 			</table>
-			<div class="Forum_Row_Admin_Foot" align="center">
-				<br />
+			<div align="center">
 				<asp:LinkButton class="CommandButton" ID="cmdUpdate" runat="server" resourcekey="cmdUpdate" EnableViewState="false" />
 			</div>
 			<div align="center">
@@ -40,8 +39,4 @@
 			</div>
 		</td>
 	</tr>
- </table>
-
-
-
-            
+</table>

@@ -218,7 +218,7 @@ Namespace DotNetNuke.Modules.Forum
 				Dim arrThread As List(Of ThreadInfo)
 				Dim objThread As ThreadInfo
 
-				arrThread = cntThread.ThreadListGetCached(ModuleId, ForumID, mForumConfig.RSSThreadsPerFeed, (ThreadsPage - 1), "", forum.ParentGroup.PortalID, 0)
+				arrThread = cntThread.ThreadListGetCached(ModuleId, ForumID, mForumConfig.RSSThreadsPerFeed, (ThreadsPage - 1), "", forum.PortalID, 0)
 
 				For Each objThread In arrThread
 					Dim bodyForumText As New Utilities.PostContent(server.HtmlDecode(objThread.Body), mForumConfig)
@@ -245,7 +245,7 @@ Namespace DotNetNuke.Modules.Forum
 				Dim objSearch As SearchInfo
 
 				'Temp variables
-				Dim StartDate As DateTime = DateAdd(DateInterval.Year, -20, DateTime.Today)
+				Dim StartDate As DateTime = DateAdd(DateInterval.Year, -1, DateTime.Today)
 				Dim EndDate As DateTime = DateAdd(DateInterval.Day, 1, DateTime.Today)
 
 				arrSearch = cntSearch.SearchGetResults(" ", ThreadsPage - 1, mForumConfig.RSSThreadsPerFeed, -1, ModuleId, StartDate, EndDate, -1)

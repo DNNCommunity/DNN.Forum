@@ -11,10 +11,10 @@
 		<td class="Forum_UCP_HeaderInfo">
 			<div>
 				<div align="center">
-					<telerik:RadComboBox ID="rcbForums" runat="server" Skin="Web20" Width="250" DataTextField="Name" DataValueField="ForumID" AutoPostBack="true" /> <br /><br />
+					<telerik:RadComboBox ID="rcbForums" runat="server" Width="250" DataTextField="Name" DataValueField="ForumID" AutoPostBack="true" /> <br /><br />
 					<asp:TextBox ID="txtThreadID" runat="server" Width="50" Visible="false" />
 				</div>
-				<telerik:RadGrid ID="rgForums" runat="server" AutoGenerateColumns="false" AllowSorting="true" Skin="Web20" AllowPaging="true" PageSize="20" >
+				<telerik:RadGrid ID="rgForums" runat="server" AutoGenerateColumns="false" AllowSorting="true" AllowPaging="true" PageSize="20" >
 					<ClientSettings AllowColumnsReorder="false" EnableRowHoverStyle="true">
 						<Resizing AllowColumnResize="true" />
 					</ClientSettings>
@@ -30,7 +30,7 @@
 						</Columns>
 					</MasterTableView>
 				</telerik:RadGrid>
-				<telerik:RadGrid ID="rgThreads" runat="server" AutoGenerateColumns="false" AllowSorting="true" Skin="Web20" AllowPaging="true" PageSize="20" >
+				<telerik:RadGrid ID="rgThreads" runat="server" AutoGenerateColumns="false" AllowSorting="true" AllowPaging="true" PageSize="20" >
 					<ClientSettings AllowColumnsReorder="false" EnableRowHoverStyle="true">
 						<Resizing AllowColumnResize="true" />
 					</ClientSettings>

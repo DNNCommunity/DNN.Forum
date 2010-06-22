@@ -134,23 +134,6 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		End Function
 
 		''' <summary>
-		''' Navigates the user to the emoticons manager page. 
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="ModuleID"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Shared Function ACPEmoticonManagerLink(ByVal TabId As Integer, ByVal ModuleID As Integer) As String
-			Dim url As String
-			Dim params As String()
-
-			params = New String(0) {"mid=" & ModuleID.ToString}
-			url = NavigateURL(TabId, ForumPage.Emoticon.ToString, params)
-
-			Return url
-		End Function
-
-		''' <summary>
 		''' Navigates the user to the forum admin control panel area.
 		''' </summary>
 		''' <param name="TabId"></param>
@@ -470,7 +453,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 			Dim url As String
 			Dim params As String()
 
-			params = New String(1) {"mythreads=" & UserID.ToString, "scope=threadsearch"}
+			params = New String(2) {"authors=" & UserID.ToString, "scope=threadsearch", "mythreads=1"}
 			url = NavigateURL(TabId, "", params)
 
 			Return url
@@ -674,28 +657,23 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <summary>
 		''' Navigates user to a specific user's profile view.
 		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="ModuleID"></param>
 		''' <param name="UserId"></param>
+		''' <param name="UserParam"></param>
+		''' <param name="ExtProfilePageID"></param>
+		''' <param name="UseName"></param>
+		''' <param name="ProfileName"></param>
 		''' <returns></returns>
-		''' <remarks></remarks>
-		Shared Function UserPublicProfileLink(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal UserId As Integer, ByVal IsExternal As Boolean, ByVal UserParam As String, ByVal ExtProfilePageID As Integer, ByVal UseName As Boolean, ByVal ProfileName As String) _
-		 As String
-
+		''' <remarks>Core Profile Links should not be rendered from this function, instead handle via ForumUserInfo Object.</remarks>
+		Shared Function UserExternalProfileLink(ByVal UserId As Integer, ByVal UserParam As String, ByVal ExtProfilePageID As Integer, ByVal UseName As Boolean, ByVal ProfileName As String) As String
 			Dim url As String
 			Dim params As String()
 
-			If IsExternal Then
-				If UseName Then
-					params = New String(0) {UserParam + "=" + ProfileName}
-					url = NavigateURL(ExtProfilePageID, "", params)
-				Else
-					params = New String(0) {UserParam + "=" + UserId.ToString}
-					url = NavigateURL(ExtProfilePageID, "", params)
-				End If
+			If UseName Then
+				params = New String(0) {UserParam + "=" + ProfileName}
+				url = NavigateURL(ExtProfilePageID, "", params)
 			Else
-				params = New String(1) {"mid=" & ModuleID.ToString, "userid=" & UserId.ToString}
-				url = NavigateURL(TabId, ForumPage.PublicProfile.ToString, params)
+				params = New String(0) {UserParam + "=" + UserId.ToString}
+				url = NavigateURL(ExtProfilePageID, "", params)
 			End If
 
 			Return url
@@ -820,121 +798,6 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 
 #End Region
 
-#Region "Private Messaging"
-
-		''' <summary>
-		''' Navigates user to the PMAdd page where they can reply/quote to an existing PMThreadID.
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="ModuleID"></param>
-		''' <param name="PMID"></param>
-		''' <param name="PMAction"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Shared Function NewPMReplyLink(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal PMID As Integer, _
-			   ByVal PMAction As String) As String
-			Dim url As String
-			Dim params As String()
-
-			params = New String(2) {"mid=" & ModuleID.ToString, "pmid=" & PMID, "pmaction=" & PMAction}
-			url = NavigateURL(TabId, ForumPage.PMEdit.ToString, params)
-
-			Return url
-		End Function
-
-		''' <summary>
-		''' Navigates user to the PMAdd page where they can send a PM to a specific user
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="ModuleID"></param>
-		''' <returns></returns>
-		''' <remarks>Added by Skeel</remarks>
-		Shared Function NewPMLink(ByVal TabId As Integer, ByVal ModuleID As Integer) As String
-			Dim url As String
-			Dim params As String()
-
-			params = New String(1) {"mid=" & ModuleID.ToString, "pmaction=new"}
-			url = NavigateURL(TabId, ForumPage.PMEdit.ToString, params)
-
-			Return url
-		End Function
-
-		''' <summary>
-		''' Navigates user to a specific PM for editing
-		''' </summary>
-		''' <param name="PMId"></param>
-		''' <param name="TabId"></param>
-		''' <param name="ModuleID"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Shared Function PMEditLink(ByVal PMId As Integer, ByVal TabId As Integer, ByVal ModuleID As Integer) As String
-			Dim url As String
-			Dim params As String()
-
-			params = New String(2) {"mid=" & ModuleID, "pmid=" & PMId, "pmaction=edit"}
-			url = NavigateURL(TabId, ForumPage.PMEdit.ToString, params)
-
-			Return url
-		End Function
-
-		''' <summary>
-		''' Navigates user to the AddPM page where user can start a new PMThread with the user being passed in here.
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="ModuleID"></param>
-		''' <param name="UserID"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Shared Function PMUserLink(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal UserID As Integer) As String
-			Dim params As String()
-			Dim url As String
-			params = New String(1) {"mid=" & ModuleID.ToString, "userid=" & UserID.ToString}
-			url = NavigateURL(TabId, ForumPage.PMEdit.ToString, params)
-
-			Return url
-		End Function
-
-		''' <summary>
-		''' Navigates user to view all posts attached to a single PMThreadID.
-		''' This is the PMThread page, not Inbox.
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="ModuleID"></param>
-		''' <param name="PMThreadID"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Shared Function PMThreadLink(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal PMThreadID As Integer) _
-		 As String
-			Dim url As String
-			Dim params As String()
-
-			params = New String(1) {"mid=" & ModuleID.ToString, "pmthreadid=" & PMThreadID}
-			url = NavigateURL(TabId, ForumPage.PMThread.ToString, params)
-
-			Return url
-		End Function
-
-		''' <summary>
-		''' Navigates user to view a specific PM from the Outbox.
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="ModuleID"></param>
-		''' <param name="PMID"></param>
-		''' <returns></returns>
-		''' <remarks>Added by Skeel</remarks>
-		Shared Function PMThreadLinkFromOutbox(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal PMThreadID As Integer, _
-			   ByVal PMID As Integer) As String
-			Dim url As String
-			Dim params As String()
-
-			params = New String(2) {"mid=" & ModuleID.ToString, "pmthreadid=" & PMThreadID, "pmid=" & PMID}
-			url = NavigateURL(TabId, ForumPage.PMThread.ToString, params)
-
-			Return url
-		End Function
-
-#End Region
-
 #Region "UCP Links"
 
 		''' <summary>
@@ -946,7 +809,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks>Added by Skeel</remarks>
 		Shared Function UCP_AdminLinks(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal UserId As Integer, _
-			   ByVal UserControl As UserAjaxControl) As String
+		    ByVal UserControl As UserAjaxControl) As String
 			Dim url As String
 			Dim params As String()
 
@@ -970,7 +833,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks>Added by Skeel</remarks>
 		Shared Function UCP_UserLinks(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal UserControl As UserAjaxControl, _
-			  ByVal SiteSettings As PortalSettings) As String
+		   ByVal SiteSettings As PortalSettings) As String
 			Dim url As String
 			Dim params As String()
 

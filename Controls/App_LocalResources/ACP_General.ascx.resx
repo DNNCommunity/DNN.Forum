@@ -129,12 +129,6 @@
   <data name="plAggregatedForums.Help" xml:space="preserve">
     <value>Select whether you would like to provide an aggregated view of threads in all public forums.</value>
   </data>
-  <data name="plTimeZone.Text" xml:space="preserve">
-    <value>Enable User Timezones</value>
-  </data>
-  <data name="plTimeZone.Help" xml:space="preserve">
-    <value>If checked, users will see the time in their default format based on culture as well as adjusted to their local timezone.&lt;br&gt;&lt;b&gt;&lt;Tip&gt;&lt;/b&gt;&lt;br&gt;You must have the country resource pack installed for users to see in their local format. </value>
-  </data>
   <data name="plSearchIndexDate.Text" xml:space="preserve">
     <value>Date Last Indexed</value>
   </data>

@@ -21,6 +21,7 @@ Option Strict On
 Option Explicit On
 
 Imports DotNetNuke.Entities.Users
+Imports DotNetNuke.Services.FileSystem
 
 Namespace DotNetNuke.Modules.Forum
 
@@ -54,18 +55,18 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Controls"
 
 		Private trcRating As Telerik.Web.UI.RadRating
-		Private ddlViewDescending As Telerik.Web.UI.RadComboBox
+		Private ddlViewDescending As DotNetNuke.Web.UI.WebControls.DnnComboBox
 		Private chkEmail As CheckBox
-		Private ddlThreadStatus As Telerik.Web.UI.RadComboBox
-		Private cmdThreadAnswer As System.Web.UI.WebControls.LinkButton
+		Private ddlThreadStatus As DotNetNuke.Web.UI.WebControls.DnnComboBox
+		Private cmdThreadAnswer As LinkButton
 		Private txtForumSearch As TextBox
-		Private cmdForumSearch As System.Web.UI.WebControls.ImageButton
+		Private cmdForumSearch As ImageButton
 		Private hsThreadAnswers As New Hashtable
 		Private rblstPoll As RadioButtonList
 		Private cmdVote As LinkButton
-		Private cmdBookmark As System.Web.UI.WebControls.ImageButton '[skeel] added
-		Private txtQuickReply As System.Web.UI.WebControls.TextBox
-		Private cmdSubmit As System.Web.UI.WebControls.LinkButton
+		Private cmdBookmark As ImageButton	'[skeel] added
+		Private txtQuickReply As TextBox
+		Private cmdSubmit As LinkButton
 		Private cmdThreadSubscribers As LinkButton
 
 #End Region
@@ -152,7 +153,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public ReadOnly Property HostForum() As ForumInfo
+		Public ReadOnly Property ParentForum() As ForumInfo
 			Get
 				Return _HostForum
 			End Get
@@ -523,7 +524,7 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			_HostForum = ThreadInfo.HostForum
-			_ForumID = HostForum.ForumID
+			_ForumID = ParentForum.ForumID
 
 			' Make sure the forum is active 
 			If Not _HostForum.IsActive Then
@@ -532,7 +533,7 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			' User might access this page by typing url so better check permission on parent forum
-			If Not (HostForum.PublicView) Then
+			If Not (ParentForum.PublicView) Then
 				' The forum is private, see if we have proper view perms here
 				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
 
@@ -571,7 +572,7 @@ Namespace DotNetNuke.Modules.Forum
 			' display tracking option only if user authenticated
 			If CurrentForumUser.UserID > 0 Then
 				' Thread Status Dropdownlist
-				Me.ddlThreadStatus = New Telerik.Web.UI.RadComboBox
+				Me.ddlThreadStatus = New DotNetNuke.Web.UI.WebControls.DnnComboBox
 				With ddlThreadStatus
 					.Skin = "WebBlue"
 					.ID = "lstThreadStatus"
@@ -593,7 +594,7 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			' Forum view (newest to oldest/oldest to newest) dropdownlist
-			ddlViewDescending = New Telerik.Web.UI.RadComboBox
+			ddlViewDescending = New DotNetNuke.Web.UI.WebControls.DnnComboBox
 			With ddlViewDescending
 				.Skin = "WebBlue"
 				.ID = "lstViewDescending"
@@ -844,8 +845,8 @@ Namespace DotNetNuke.Modules.Forum
 			Try
 				Dim ctlPost As New PostController
 
-				'' Use new Lists feature to provide rate entries (localization support)
-				Dim ctlLists As New DotNetNuke.Common.Lists.ListController
+				' '' Use new Lists feature to provide rate entries (localization support)
+				'Dim ctlLists As New DotNetNuke.Common.Lists.ListController
 
 				If objConfig.EnableRatings Then
 					BindRating()
@@ -857,10 +858,10 @@ Namespace DotNetNuke.Modules.Forum
 						ddlThreadStatus.Visible = True
 						ddlThreadStatus.Items.Clear()
 
-						For Each entry As DotNetNuke.Common.Lists.ListEntryInfo In Utilities.ForumUtils.GetThreadStatusList
-							Dim statusEntry As New Telerik.Web.UI.RadComboBoxItem(Localization.GetString(entry.Text, ForumControl.objConfig.SharedResourceFile), entry.Value)
-							ddlThreadStatus.Items.Add(statusEntry)
-						Next
+						ddlThreadStatus.Items.Insert(0, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("NoneSpecified", objConfig.SharedResourceFile), "0"))
+						ddlThreadStatus.Items.Insert(1, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Unanswered", objConfig.SharedResourceFile), "1"))
+						ddlThreadStatus.Items.Insert(2, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Answered", objConfig.SharedResourceFile), "2"))
+						ddlThreadStatus.Items.Insert(3, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Informative", objConfig.SharedResourceFile), "3"))
 					Else
 						ddlThreadStatus.Visible = False
 					End If
@@ -948,7 +949,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <remarks></remarks>
 		Private Sub BindRating()
-			trcRating.Value = ThreadInfo.Rating
+			trcRating.Value = CDec(ThreadInfo.Rating)
 			trcRating.ToolTip = ThreadInfo.RatingText
 
 			If Not CurrentForumUser.UserID > 0 Then
@@ -1105,7 +1106,7 @@ Namespace DotNetNuke.Modules.Forum
 			' new thread button
 			'Remove LoggedOnUserID limitation if wishing to implement Anonymous Posting
 			If (CurrentForumUser.UserID > 0) And (Not ForumId = -1) Then
-				If Not HostForum.PublicPosting Then
+				If Not ParentForum.PublicPosting Then
 					Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
 
 					If objSecurity.IsAllowedToStartRestrictedThread Then
@@ -1551,8 +1552,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>
 		''' </remarks>
 		Private Sub RenderPost(ByVal wr As HtmlTextWriter, ByVal Post As PostInfo, ByVal PostCountIsEven As Boolean, ByVal ShowDetails As Boolean)
-			Dim authorCellClass As String = String.Empty
-			Dim bodyCellClass As String = String.Empty
+			Dim authorCellClass As String
+			Dim bodyCellClass As String
 
 			' these classes to set bg color of cells
 			If PostCountIsEven Then
@@ -1571,10 +1572,12 @@ Namespace DotNetNuke.Modules.Forum
 				RenderRowBegin(wr) ' <tr>
 				RenderCellBegin(wr, "", "", "100%", "left", "middle", "2", "")	'<td>
 				'[skeel] Check if first new post and add bookmark used for navigation
-				If HttpContext.Current.Request.IsAuthenticated And newpost = False Then
-					If Post.NewPost(CurrentForumUser.UserID) Then
-						RenderPostBookmark(wr, "unread")
-						newpost = True
+				If HttpContext.Current.Request IsNot Nothing Then
+					If HttpContext.Current.Request.IsAuthenticated And newpost = False Then
+						If Post.NewPost(CurrentForumUser.UserID) Then
+							RenderPostBookmark(wr, "unread")
+							newpost = True
+						End If
 					End If
 				End If
 
@@ -1593,11 +1596,15 @@ Namespace DotNetNuke.Modules.Forum
 				' start post status image
 				RenderCellBegin(wr, "Forum_Header", "", "1%", "left", "", "", "") '<td>
 				' display "new" image if this post is new since last time user visited the thread
-				If HttpContext.Current.Request.IsAuthenticated Then
-					If Post.NewPost(CurrentForumUser.UserID) Then
-						RenderImage(wr, objConfig.GetThemeImageURL("s_new.") & objConfig.ImageExtension, ForumControl.LocalizedText("UnreadPost"), "")
+				If HttpContext.Current.Request IsNot Nothing Then
+					If HttpContext.Current.Request.IsAuthenticated Then
+						If Post.NewPost(CurrentForumUser.UserID) Then
+							RenderImage(wr, objConfig.GetThemeImageURL("s_new.") & objConfig.ImageExtension, ForumControl.LocalizedText("UnreadPost"), "")
+						Else
+							RenderImage(wr, objConfig.GetThemeImageURL("s_old.") & objConfig.ImageExtension, ForumControl.LocalizedText("ReadPost"), "")
+						End If
 					Else
-						RenderImage(wr, objConfig.GetThemeImageURL("s_old.") & objConfig.ImageExtension, ForumControl.LocalizedText("ReadPost"), "")
+						RenderImage(wr, objConfig.GetThemeImageURL("s_new.") & objConfig.ImageExtension, ForumControl.LocalizedText("UnreadPost"), "")
 					End If
 				Else
 					RenderImage(wr, objConfig.GetThemeImageURL("s_new.") & objConfig.ImageExtension, ForumControl.LocalizedText("UnreadPost"), "")
@@ -1695,7 +1702,12 @@ Namespace DotNetNuke.Modules.Forum
 				RenderRowBegin(wr) '<tr> 
 
 				'link to user profile, always display in both views
-				_url = Utilities.Links.UserPublicProfileLink(TabID, ModuleID, author.UserID, objConfig.EnableExternalProfile, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, author.Username)
+				If Not objConfig.EnableExternalProfile Then
+					_url = author.UserCoreProfileLink
+				Else
+					_url = Utilities.Links.UserExternalProfileLink(author.UserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, author.Username)
+				End If
+
 				RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td>
 
 				' display user online status
@@ -1747,18 +1759,17 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 
 					' display user avatar
-					If objConfig.EnableUserAvatar AndAlso (Not author.AvatarComplete = String.Empty) Then
-						If author.AvatarComplete <> String.Empty Then
-							RenderRowBegin(wr) ' <tr> (start avatar row)
-							RenderCellBegin(wr, "Forum_UserAvatar", "", "", "", "top", "", "") ' <td>
-							wr.Write("<br />")
-							If objConfig.EnableProfileAvatar And author.UserID > 0 Then
+					If objConfig.EnableUserAvatar AndAlso (author.AvatarComplete IsNot Nothing) Then
+						RenderRowBegin(wr) ' <tr> (start avatar row)
+						RenderCellBegin(wr, "Forum_UserAvatar", "", "", "", "top", "", "") ' <td>
+						wr.Write("<br />")
+						If objConfig.EnableProfileAvatar And author.UserID > 0 Then
+							If Not author.IsSuperUser Then
 								Dim WebVisibility As UserVisibilityMode
 								WebVisibility = author.Profile.ProfileProperties(objConfig.AvatarProfilePropName).Visibility
 
 								Select Case WebVisibility
 									Case UserVisibilityMode.AdminOnly
-
 										If objSecurity.IsForumAdmin Then
 											RenderProfileAvatar(author, wr)
 										End If
@@ -1769,15 +1780,15 @@ Namespace DotNetNuke.Modules.Forum
 											RenderProfileAvatar(author, wr)
 										End If
 								End Select
-							Else
-								If author.UserID > 0 Then
-									RenderImage(wr, author.AvatarComplete, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "")
-								End If
 							End If
-
-							RenderCellEnd(wr) ' </td>
-							RenderRowEnd(wr) ' </tr>
+						Else
+							If author.UserID > 0 Then
+								RenderImage(wr, author.AvatarComplete, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "")
+							End If
 						End If
+
+						RenderCellEnd(wr) ' </td>
+						RenderRowEnd(wr) ' </tr>
 					End If
 
 					' display system avatars (ie. DNN Core avatar)
@@ -1824,7 +1835,6 @@ Namespace DotNetNuke.Modules.Forum
 
 						Select Case WebSiteVisibility
 							Case UserVisibilityMode.AdminOnly
-
 								If objSecurity.IsForumAdmin Then
 									RenderWebSiteLink(author, wr)
 								End If
@@ -1842,7 +1852,6 @@ Namespace DotNetNuke.Modules.Forum
 
 						Select Case CountryVisibility
 							Case UserVisibilityMode.AdminOnly
-
 								If objSecurity.IsForumAdmin Then
 									RenderCountry(author, wr)
 								End If
@@ -1882,12 +1891,28 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Private Sub RenderProfileAvatar(ByVal author As ForumUser, ByVal wr As HtmlTextWriter)
 			' This needs to be rendered w/ specified size
-			Dim rbiProfileAvatar As New Telerik.Web.UI.RadBinaryImage
-			rbiProfileAvatar.Width = objConfig.UserAvatarWidth
-			rbiProfileAvatar.Height = objConfig.UserAvatarHeight
-			rbiProfileAvatar.ImageUrl = author.AvatarComplete
+			If objConfig.EnableProfileUserFolders Then
+				' The link click below (duplicated from core profile page) presents some serious issues under volume. 
+				'imgUserProfileAvatar.ImageUrl = DotNetNuke.Common.Globals.LinkClick("fileid=" & author.AvatarFile.FileId.ToString(), PortalSettings.ActiveTab.TabID, Null.NullInteger)
+				If author.AvatarCoreFile IsNot Nothing Then
+					Dim imgUserProfileAvatar As New Image
 
-			rbiProfileAvatar.RenderControl(wr)
+					imgUserProfileAvatar.ImageUrl = author.AvatarComplete
+					DotNetNuke.Web.UI.Utilities.CreateThumbnail(author.AvatarCoreFile, imgUserProfileAvatar, objConfig.UserAvatarWidth, objConfig.UserAvatarHeight)
+
+					imgUserProfileAvatar.RenderControl(wr)
+					imgUserProfileAvatar.Visible = True
+				End If
+			Else
+				' If we are here, file stored as name and not id (in UserProfile table).
+				Dim rbiProfileAvatar As New Telerik.Web.UI.RadBinaryImage
+				rbiProfileAvatar.Width = objConfig.UserAvatarWidth
+				rbiProfileAvatar.Height = objConfig.UserAvatarHeight
+				rbiProfileAvatar.ImageUrl = author.AvatarComplete
+
+				rbiProfileAvatar.RenderControl(wr)
+			End If
+
 			' Below is for use when no Telerik integration is going on. (Uncomment line below, comment out lines above)
 			'RenderImage(wr, author.AvatarComplete, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "", objConfig.UserAvatarWidth.ToString(), objConfig.UserAvatarHeight.ToString())
 		End Sub
@@ -2462,7 +2487,7 @@ Namespace DotNetNuke.Modules.Forum
 			If (CurrentForumUser.UserID > 0) And (Not ForumId = -1) Then
 				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
 
-				If Not HostForum.PublicPosting Then
+				If Not ParentForum.PublicPosting Then
 					If objSecurity.IsAllowedToStartRestrictedThread Then
 
 						RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0")	'<Table>            
@@ -2735,7 +2760,7 @@ Namespace DotNetNuke.Modules.Forum
 		Private Sub RenderQuickReply(ByVal wr As HtmlTextWriter)
 			If objConfig.EnableQuickReply Then
 				If (CurrentForumUser.UserID > 0) And (Not ForumId = -1) Then
-					If Not HostForum.PublicPosting Then
+					If Not ParentForum.PublicPosting Then
 						If CurrentForumUser.IsBanned = False And ThreadInfo.IsClosed = False Then
 							Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
 							If objSecurity.IsAllowedToPostRestrictedReply Then
@@ -2799,14 +2824,6 @@ Namespace DotNetNuke.Modules.Forum
 
 						RenderCellBegin(wr, "Forum_ReplyCell", "", "", "", "", "", "")
 						RenderLinkButton(wr, _url, ForumControl.LocalizedText("Delete"), "Forum_Link")
-						RenderCellEnd(wr)
-					End If
-
-					'[skeel] added PM
-					If CurrentForumUser.UserID > 0 AndAlso CurrentForumUser.EnablePM AndAlso Post.Author.EnablePM AndAlso Post.Author.UserID <> CurrentForumUser.UserID Then
-						_url = Utilities.Links.PMUserLink(TabID, ModuleID, Post.Author.UserID)
-						RenderCellBegin(wr, "Forum_ReplyCell", "", "", "", "", "", "")
-						RenderTitleLinkButton(wr, _url, ForumControl.LocalizedText("PM"), "Forum_Link", ForumControl.LocalizedText("PMTooltip"))
 						RenderCellEnd(wr)
 					End If
 

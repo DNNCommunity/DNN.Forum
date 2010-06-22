@@ -31,7 +31,6 @@ Namespace DotNetNuke.Modules.Forum
 	''' <remarks></remarks>
 	Public Class ThreadController
 		Implements DotNetNuke.Entities.Modules.ISearchable
-		Implements DotNetNuke.Entities.Modules.IUpgradeable
 		Implements IEmailQueueable
 
 #Region "Private Members"
@@ -197,7 +196,7 @@ Namespace DotNetNuke.Modules.Forum
 			For Each objPost As PostInfo In arrPost
 				' we need to make sure we delete the threadid last (because of split and possibly move). 
 				If Not objPost.PostID = ThreadID Then
-					cntPost.PostDelete(objPost.PostID, objPost.ParentThread.HostForum.ModuleID, Notes, PortalID, objPost.ParentThread.HostForum.GroupID, True, objPost.ParentThread.HostForum.ParentId)
+					cntPost.PostDelete(objPost.PostID, objPost.ModuleId, Notes, PortalID, objPost.ParentThread.HostForum.GroupID, True, objPost.ParentThread.HostForum.ParentId)
 				Else
 					objThreadPost = objPost
 				End If
@@ -206,7 +205,7 @@ Namespace DotNetNuke.Modules.Forum
 			' we deleted all posts in the thread but the threadid one
 			If Not objThreadPost Is Nothing Then
 				' not sure how this would happen, but just to be safe
-				cntPost.PostDelete(objThreadPost.PostID, objThreadPost.ParentThread.HostForum.ModuleID, Notes, PortalID, objThreadPost.ParentThread.HostForum.GroupID, True, objThreadPost.ParentThread.HostForum.ParentId)
+				cntPost.PostDelete(objThreadPost.PostID, objThreadPost.ModuleId, Notes, PortalID, objThreadPost.ParentThread.HostForum.GroupID, True, objThreadPost.ParentThread.HostForum.ParentId)
 			End If
 		End Sub
 
@@ -517,38 +516,6 @@ Namespace DotNetNuke.Modules.Forum
 
 			' return the search item collection
 			Return SearchItemCollection
-		End Function
-
-		''' <summary>
-		''' This should be called by IUpgradeable during an upgrade process.
-		''' If an upgrade is happened, it will fire off for the versions affected.
-		''' </summary>
-		''' <param name="Version"></param>
-		''' <returns></returns>
-		''' <remarks>
-		''' </remarks>
-		Public Function UpgradeModule(ByVal Version As String) As String Implements Entities.Modules.IUpgradeable.UpgradeModule
-			Dim strSuccess As Boolean = False
-
-			If Version = "04.03.04" Then
-				Dim objUpgrade As New UpgradeLogic
-				objUpgrade.TransferPermissions()
-			End If
-
-			If Version = "04.04.02" Then
-				'Handle perms stuff here
-				Dim ModuleDefId As Integer = -1
-				Dim objUpgrade As New UpgradeLogic
-
-				'	ModuleDefId = objUpgrade.InitPermissions()
-
-				' This should always happen
-				If ModuleDefId > -1 Then
-					objUpgrade.AddLists(ModuleDefId)
-				End If
-			End If
-
-			Return "Done"
 		End Function
 
 		''' <summary>

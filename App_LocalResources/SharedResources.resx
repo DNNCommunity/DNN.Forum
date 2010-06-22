@@ -378,9 +378,6 @@
   <data name="HostTemplates.Text" xml:space="preserve">
     <value>Host Templates</value>
   </data>
-  <data name="ModeratorPMBlock.Text" xml:space="preserve">
-    <value>Moderator PM Block Email</value>
-  </data>
   <data name="ModeratorPostAbuse.Text" xml:space="preserve">
     <value>Moderator Post Abuse Email</value>
   </data>
@@ -410,9 +407,6 @@
   </data>
   <data name="UserNewThread.Text" xml:space="preserve">
     <value>User New Thread Email</value>
-  </data>
-  <data name="UserPMReceived.Text" xml:space="preserve">
-    <value>User PM Received Email</value>
   </data>
   <data name="UserPostAbuse.Text" xml:space="preserve">
     <value>User Post Abuse Warning Email</value>
@@ -566,9 +560,6 @@
   </data>
   <data name="ViewUnreadThreads.Text" xml:space="preserve">
     <value>View unread threads</value>
-  </data>
-  <data name="MyStartedThreads.Text" xml:space="preserve">
-    <value>Thread's I have started</value>
   </data>
   <data name="MyThreads.Text" xml:space="preserve">
     <value>My Threads</value>

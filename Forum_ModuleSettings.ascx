@@ -30,9 +30,9 @@ function pageLoad()
 </script>
 <table cellspacing="0" cellpadding="2" border="0">
 	<tr>
-		<td class="SubHead" width="178"><dnn:label id="plGroup" runat="server" controlname="cboGroup" suffix=":"></dnn:label></td>
+		<td class="SubHead" width="178"><dnn:label id="plGroup" runat="server" controlname="cboGroup" suffix=":" /></td>
 		<td valign="top">
-			<asp:DropDownList ID="cboGroup" Runat="server" CssClass="NormalTextBox" DataTextField="Name" DataValueField="GroupID" AutoPostBack="True"></asp:DropDownList>
+			<asp:DropDownList ID="cboGroup" Runat="server" CssClass="NormalTextBox" DataTextField="Name" DataValueField="GroupID" AutoPostBack="True" />
 		</td>
 	</tr>
     <tr id="rowDefaultForum" runat="server">

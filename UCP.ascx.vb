@@ -40,9 +40,6 @@ Namespace DotNetNuke.Modules.Forum
 		Dim ctlProfile As String = "UCP_Profile.ascx"
 		Dim ctlAvatar As String = "UCP_Avatar.ascx"
 		Dim ctlSignature As String = "UCP_Signature.ascx"
-		Dim ctlInbox As String = "PM_Inbox.ascx"
-		Dim ctlOutbox As String = "PM_Outbox.ascx"
-		' Dim ctlSent As String = "PM_Sent.ascx"
 		Dim _CtlToLoad As String
 
 #End Region
@@ -71,11 +68,13 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
 		''' <remarks></remarks>
-		Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+		Protected Sub Page_Init(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Init
 			If DotNetNuke.Framework.AJAX.IsInstalled Then
 				DotNetNuke.Framework.AJAX.RegisterScriptManager()
 				DotNetNuke.Framework.AJAX.WrapUpdatePanelControl(pnlContainer, False)
 			End If
+
+			litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
 		End Sub
 
 		''' <summary>
@@ -85,7 +84,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="e"></param>
 		''' <remarks>
 		''' </remarks>
-		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+		Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
 			Try
 				Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
 
@@ -102,8 +101,6 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 
 				If Not Page.IsPostBack Then
-					litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
-
 					' CP - Check the URL here to see if we should load a specific control (ie. view = x)
 					If Not Request.QueryString("view") Is Nothing Then
 						Dim strTempControl As String
@@ -122,17 +119,10 @@ Namespace DotNetNuke.Modules.Forum
 								UCPmenu.ControlToLoad = ctlAvatar
 							Case CStr(UserAjaxControl.Signature)
 								UCPmenu.ControlToLoad = ctlSignature
-							Case CStr(UserAjaxControl.Inbox)
-								UCPmenu.ControlToLoad = ctlInbox
-							Case CStr(UserAjaxControl.Outbox)
-								UCPmenu.ControlToLoad = ctlOutbox
-								' PM Sent
 							Case Else
 								UCPmenu.ControlToLoad = ctlOverview
 						End Select
 					End If
-					' Register scripts
-					Utilities.ForumUtils.RegisterPageScripts(Page, objConfig)
 				End If
 
 				UCPmenu.PortalID = PortalId
@@ -155,7 +145,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
 		''' <remarks>[skeel] reset viewstate, another control was requested loaded</remarks>
-		Protected Sub UCPmenu_MenuClicked(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles UCPmenu.MenuClicked
+		Protected Sub UCPmenu_MenuClicked(ByVal sender As Object, ByVal e As EventArgs) Handles UCPmenu.MenuClicked
 			ViewState("CtlToLoad") = String.Empty
 			Dim objControl As Entities.Modules.PortalModuleBase
 			objControl = LoadForumControl(UCPmenu.ControlToLoad)

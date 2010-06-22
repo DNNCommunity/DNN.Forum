@@ -144,23 +144,11 @@
   <data name="plDisplayPosterLocation.Help" xml:space="preserve">
     <value>The selected item determines who sees the posters country of origin.</value>
   </data>
-  <data name="plPerUserTheme.Help" xml:space="preserve">
-    <value>If checked, users can choose any themes available for the module to override your set theme above. This only ovverrides users who are logged in.</value>
-  </data>
-  <data name="plPerUserTheme.Text" xml:space="preserve">
-    <value>Enable Per User Themes</value>
-  </data>
   <data name="plImageExtension.Help" xml:space="preserve">
     <value>Temporary setting to control image extension used in forum theme.</value>
   </data>
   <data name="plImageExtension.Text" xml:space="preserve">
     <value>Theme Image Extension</value>
-  </data>
-  <data name="plEnableScripts.Help" xml:space="preserve">
-    <value>If checked, the png javascript fix will be enabled to support transparent png files&lt;br&gt;&lt;b&gt;NOTE&lt;/b&gt;&lt;br&gt;This only affects IE 5.5 and IE 6 users.</value>
-  </data>
-  <data name="plEnableScripts.Text" xml:space="preserve">
-    <value>Enable PNG Script</value>
   </data>
   <data name="plEnableIconBarAsImages.Help" xml:space="preserve">
     <value>If checked, the forum theme will render icons instead of text links for the navigation toolbar at the top of most forum user interfaces.</value>

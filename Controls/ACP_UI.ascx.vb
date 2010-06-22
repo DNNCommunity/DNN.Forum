@@ -44,7 +44,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			txtThreadPageCount.Text = objConfig.PostPagesCount.ToString()
 			txtImageExtension.Text = objConfig.ImageExtension
 			txtMaxPostImageWidth.Text = objConfig.MaxPostImageWidth.ToString
-			chkEnableScripts.Checked = objConfig.LoadScripts
 			chkEnableIconBarAsImages.Checked = objConfig.IconBarAsImages
 			chkDisplayPosterRegion.Checked = objConfig.DisplayPosterRegion
 			chkEnableQuickReply.Checked = objConfig.EnableQuickReply
@@ -90,7 +89,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				ctlModule.UpdateModuleSetting(ModuleId, "PostPagesCount", txtThreadPageCount.Text)
 				ctlModule.UpdateModuleSetting(ModuleId, "ForumSkin", ddlSkins.SelectedItem.Value)
 				ctlModule.UpdateModuleSetting(ModuleId, "ImageExtension", txtImageExtension.Text)
-				ctlModule.UpdateModuleSetting(ModuleId, "LoadScripts", chkEnableScripts.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, "IconBarAsImages", chkEnableIconBarAsImages.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, "DisplayPosterLocation", ddlDisplayPosterLocation.SelectedItem.Value)
 				ctlModule.UpdateModuleSetting(ModuleId, "DisplayPosterRegion", chkDisplayPosterRegion.Checked.ToString)
@@ -136,15 +134,12 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </summary>
 		''' <remarks>Uses lists localized items to determine options.</remarks>
 		Private Sub BindPosterLocation()
-			' Use new Lists feature to provide DisplayPosterLocation entries (localization support)
-			Dim ctlLists As New DotNetNuke.Common.Lists.ListController
-			Dim LocationDisplayTypes As DotNetNuke.Common.Lists.ListEntryInfoCollection = ctlLists.GetListEntryInfoCollection("DisplayPosterLocation")
 			ddlDisplayPosterLocation.ClearSelection()
 
-			For Each entry As DotNetNuke.Common.Lists.ListEntryInfo In LocationDisplayTypes
-				Dim LocationEntryType As New ListItem(Localization.GetString(entry.Text, objConfig.SharedResourceFile), entry.Value)
-				ddlDisplayPosterLocation.Items.Add(LocationEntryType)
-			Next
+			ddlDisplayPosterLocation.Items.Insert(0, New ListItem(Localization.GetString("None", objConfig.SharedResourceFile), "0"))
+			ddlDisplayPosterLocation.Items.Insert(1, New ListItem(Localization.GetString("ToAdmin", objConfig.SharedResourceFile), "1"))
+			ddlDisplayPosterLocation.Items.Insert(2, New ListItem(Localization.GetString("ToAll", objConfig.SharedResourceFile), "2"))
+
 			' Now Bind the items
 			ddlDisplayPosterLocation.Items.FindByValue(objConfig.DisplayPosterLocation.ToString).Selected = True
 		End Sub

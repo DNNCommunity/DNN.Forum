@@ -82,7 +82,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			objMod = mc.GetModule(moduleId, tabId, False)
 
-			If Not objMod Is Nothing Then
+			If objMod IsNot Nothing Then
 				mp = objMod.ModulePermissions
 
 				' Next 3 items only apply for currently logged in user accessing the class (CP - Modified 7/8)
@@ -95,32 +95,23 @@ Namespace DotNetNuke.Modules.Forum
 
 				If ForumId > -1 Then
 					' For forum specific perms, we need to hook into the forum permission controller
-					Dim fi As New DotNetNuke.Modules.Forum.ForumInfo
 					Dim cntForum As New ForumController
 
 					Dim fp As DotNetNuke.Modules.Forum.ForumPermissionCollection = cntForum.GetForumInfoCache(ForumId).ForumPermissions
 
-					HasPrivateViewPerms = ForumPermissionController.HasForumPermission(fp, _HasPrivateViewPerms, UserID, objMod.PortalID, moduleId)
-					HasRestrictedStartThreadPerms = ForumPermissionController.HasForumPermission(fp, _HasRestrictedStartThreadPerms, UserID, objMod.PortalID, moduleId)
-					HasRestrictedPostReplyPerms = ForumPermissionController.HasForumPermission(fp, _HasRestrictedPostReplyPerms, UserID, objMod.PortalID, moduleId)
-					HasForumModeratePerms = ForumPermissionController.HasForumPermission(fp, _HasForumModeratePerms, UserID, objMod.PortalID, moduleId)
-					HasAddAttachmentPerms = ForumPermissionController.HasForumPermission(fp, _HasAddAttachmentPerms, UserID, objMod.PortalID, moduleId)
-					HasPinThreadPerms = ForumPermissionController.HasForumPermission(fp, _HasPinThreadPerms, UserID, objMod.PortalID, moduleId)
-					HasLockThreadPerms = ForumPermissionController.HasForumPermission(fp, _HasLockThreadPerms, UserID, objMod.PortalID, moduleId)
-					HasUnmoderatedPerms = ForumPermissionController.HasForumPermission(fp, _HasUnmoderatedPermission, UserID, objMod.PortalID, moduleId)
+					If fp IsNot Nothing Then
+						HasPrivateViewPerms = ForumPermissionController.HasForumPermission(fp, _HasPrivateViewPerms, UserID, objMod.PortalID, moduleId)
+						HasRestrictedStartThreadPerms = ForumPermissionController.HasForumPermission(fp, _HasRestrictedStartThreadPerms, UserID, objMod.PortalID, moduleId)
+						HasRestrictedPostReplyPerms = ForumPermissionController.HasForumPermission(fp, _HasRestrictedPostReplyPerms, UserID, objMod.PortalID, moduleId)
+						HasForumModeratePerms = ForumPermissionController.HasForumPermission(fp, _HasForumModeratePerms, UserID, objMod.PortalID, moduleId)
+						HasAddAttachmentPerms = ForumPermissionController.HasForumPermission(fp, _HasAddAttachmentPerms, UserID, objMod.PortalID, moduleId)
+						HasPinThreadPerms = ForumPermissionController.HasForumPermission(fp, _HasPinThreadPerms, UserID, objMod.PortalID, moduleId)
+						HasLockThreadPerms = ForumPermissionController.HasForumPermission(fp, _HasLockThreadPerms, UserID, objMod.PortalID, moduleId)
+						HasUnmoderatedPerms = ForumPermissionController.HasForumPermission(fp, _HasUnmoderatedPermission, UserID, objMod.PortalID, moduleId)
 
-					If HasForumAdminPermission Then
-						' make sure the user has view perms (we only have to worry about this on the specific forum level?)
-						' we could potentially tie attach/pin/lock to mods in general here if desired
-						If HasPrivateViewPerms And (cntForum.GetForumInfoCache(ForumId).PublicView = False) Then
-							HasForumModeratePerms = True
-							HasUnmoderatedPerms = True
-							'Else
-							'	' the user is not an admin or they don't have view perms. We should make sure that (as backup) this isn't a p
-						End If
-					Else
-						If HasGlobalModPermission Then
-							' This needs to be here so we ignore any user trust settings (this trumps those)
+						If HasForumAdminPermission Then
+							' make sure the user has view perms (we only have to worry about this on the specific forum level?)
+							' we could potentially tie attach/pin/lock to mods in general here if desired
 							If HasPrivateViewPerms And (cntForum.GetForumInfoCache(ForumId).PublicView = False) Then
 								HasForumModeratePerms = True
 								HasUnmoderatedPerms = True
@@ -128,10 +119,19 @@ Namespace DotNetNuke.Modules.Forum
 								'	' the user is not an admin or they don't have view perms. We should make sure that (as backup) this isn't a p
 							End If
 						Else
-							' we know the user is not forum admin or global mod
+							If HasGlobalModPermission Then
+								' This needs to be here so we ignore any user trust settings (this trumps those)
+								If HasPrivateViewPerms And (cntForum.GetForumInfoCache(ForumId).PublicView = False) Then
+									HasForumModeratePerms = True
+									HasUnmoderatedPerms = True
+									'Else
+									'	' the user is not an admin or they don't have view perms. We should make sure that (as backup) this isn't a p
+								End If
+							Else
+								' we know the user is not forum admin or global mod
+							End If
 						End If
 					End If
-
 				Else
 					If HasForumAdminPermission Then
 						HasModeratePermisson = True
@@ -146,14 +146,16 @@ Namespace DotNetNuke.Modules.Forum
 							Dim arrAllForums As List(Of ForumInfo)
 							arrAllForums = objForumCnt.GetModuleForums(moduleId)
 
-							If arrAllForums.Count > 0 Then
+							If arrAllForums IsNot Nothing Then
 								For Each objForum As ForumInfo In arrAllForums
 									'CP - Use to see if user is a moderator in any forum. 
-									Dim Security As New Forum.ModuleSecurity(moduleId, tabId, objForum.ForumID, UserID)
-									If Security.IsForumModerator Then
-										HasModeratePermisson = True
-										HasUnmoderatedPerms = True
-										Exit For
+									If objForum IsNot Nothing Then
+										Dim Security As New Forum.ModuleSecurity(moduleId, tabId, objForum.ForumID, UserID)
+										If Security.IsForumModerator Then
+											HasModeratePermisson = True
+											HasUnmoderatedPerms = True
+											Exit For
+										End If
 									End If
 								Next
 							End If

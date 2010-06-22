@@ -2,13 +2,6 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <asp:Panel ID="pnlContainer" runat="server">
 	<table id="tblAttachment" runat="server" cellpadding="0" cellspacing="0">
-	    <tr id="rowInlineHelp" runat="server">
-		   <td colspan="2"><dnn:label id="plInline" runat="server" CssClass="Forum_Row_AdminText" Suffix=":" controlname="ddlInline"></dnn:label></td>
-	    </tr>
-	    <tr id="rowInline" runat="server">
-		   <td><asp:DropDownList ID="ddlInline" runat="server" CssClass="Forum_NormalTextBox" Width="300px" /></td>
-		   <td>&nbsp;<asp:HyperLink ID="hypInline" runat="server" CssClass="CommandButton" /><asp:Literal ID="litScript" runat="server" /></td>
-	    </tr>
 	    <tr>
 		   <td colspan="2"><dnn:label id="plAttachments" runat="server" CssClass="Forum_Row_AdminText" Suffix=":" controlname="lstAttachments"></dnn:label></td>
 	    </tr>

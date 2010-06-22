@@ -8,7 +8,9 @@
             <td class="Forum_UCP_Right"><asp:PlaceHolder ID="phUserControl" runat="server" /></td>
         </tr>
         <tr>
-		<td align="center" colspan="2"><asp:LinkButton ID="cmdHome" runat="server" CssClass="CommandButton" resourcekey="cmdHome"></asp:LinkButton></td>
+		<td align="center" colspan="2">
+			<asp:LinkButton ID="cmdHome" runat="server" CssClass="CommandButton" resourcekey="cmdHome" />
+		</td>
         </tr>
     </table>
 </asp:Panel>

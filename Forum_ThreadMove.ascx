@@ -39,7 +39,7 @@ function pageLoad()
 				</span>
 			</td>
 			<td class="Forum_Row_AdminR" align="left">
-				<asp:textbox id="txtSubject" runat="server" ReadOnly="True" width="250" cssclass="Forum_NormalTextBox"></asp:textbox>
+				<asp:textbox id="txtSubject" runat="server" ReadOnly="True" width="250" cssclass="Forum_NormalTextBox" />
 			</td>
 		</tr>
 		<tr>
@@ -48,7 +48,7 @@ function pageLoad()
 					<dnn:label id="plOldForum" runat="server" controlname="txtOldForum" Suffix=":"></dnn:label>
 				</span></td>
 			<td class="Forum_Row_AdminR" align="left">
-				<asp:textbox id="txtOldForum" runat="server" ReadOnly="True" width="250" cssclass="Forum_NormalTextBox"></asp:textbox>
+				<asp:textbox id="txtOldForum" runat="server" ReadOnly="True" width="250" cssclass="Forum_NormalTextBox" />
 			</td>
 		</tr>
 		<tr id="rowForum" runat="server">
@@ -58,9 +58,9 @@ function pageLoad()
 				</span>
 			</td>
 			<td class="Forum_Row_AdminR">
-				<telerik:RadTreeView ID="rtvForums" runat="server" Skin="Web20" CheckBoxes="true" OnClientNodeChecked="clientNodeChecked" />
+				<telerik:RadTreeView ID="rtvForums" runat="server" CheckBoxes="true" OnClientNodeChecked="clientNodeChecked" />
 				<br/>
-				<asp:label id="lblErrorMsg" Runat="server" CssClass="NormalRed"></asp:label></td>
+				<asp:label id="lblErrorMsg" Runat="server" CssClass="NormalRed" /></td>
 		</tr>
 		<tr>
 			<td class="Forum_Row_AdminL">
@@ -68,13 +68,13 @@ function pageLoad()
 					<dnn:label id="plEmailUsers" runat="server" controlname="chkEmailUsers" Suffix=":"></dnn:label>
 				</span></td>
 			<td class="Forum_Row_AdminR">
-				<asp:checkbox id="chkEmailUsers" runat="server" CssClass="Forum_NormalTextBox"></asp:checkbox>
+				<asp:checkbox id="chkEmailUsers" runat="server" CssClass="Forum_NormalTextBox" />
 			</td>
 		</tr>
 		<tr>
 			<td class="Forum_Row_Admin_Foot" align="center" colspan="2">
-				<asp:linkbutton cssclass="CommandButton" id="cmdCancel" runat="server" resourcekey="cmdCancel"></asp:linkbutton>&nbsp;
-				<asp:linkbutton cssclass="CommandButton" id="cmdMove" runat="server" resourcekey="cmdMove"></asp:linkbutton>
+				<asp:linkbutton cssclass="CommandButton" id="cmdCancel" runat="server" resourcekey="cmdCancel" />&nbsp;
+				<asp:linkbutton cssclass="CommandButton" id="cmdMove" runat="server" resourcekey="cmdMove" />
 			</td>
 		</tr>
 	</table>

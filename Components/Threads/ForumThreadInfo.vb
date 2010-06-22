@@ -132,7 +132,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property StartedByUser() As ForumUser
 			Get
 				Dim cntForumUser As New ForumUserController
-				Return cntForumUser.GetForumUser(StartedByUserID, False, HostForum.ModuleID, HostForum.ParentGroup.PortalID)
+				Return cntForumUser.GetForumUser(StartedByUserID, False, ModuleID, PortalID)
 			End Get
 		End Property
 
@@ -145,7 +145,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property LastApprovedUser() As ForumUser
 			Get
 				Dim cntForumUser As New ForumUserController
-				Return cntForumUser.GetForumUser(LastApprovedPost.Author.UserID, False, HostForum.ModuleID, HostForum.ParentGroup.PortalID)
+				Return cntForumUser.GetForumUser(LastApprovedPost.Author.UserID, False, ModuleID, PortalID)
 			End Get
 		End Property
 
@@ -166,31 +166,56 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 		End Property
 
+		''' <summary>
+		''' The moduleID of the forum containing this thread.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property ModuleID() As Integer
+			Get
+				Return HostForum.ModuleID
+			End Get
+		End Property
+
+		''' <summary>
+		''' The PortalID of the forum containing this thread.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property PortalID() As Integer
+			Get
+				Dim _portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings
+				Return _portalSettings.PortalId
+			End Get
+		End Property
+
 #End Region
 
 #Region "Thread Specific ReadOnly Cached Properties"
 
-		'''' <summary>
-		'''' The forum that contains the thread.
-		'''' </summary>
-		'''' <value></value>
-		'''' <returns></returns>
-		'''' <remarks></remarks>
-		'Public ReadOnly Property ParentForum() As ForumInfo
-		'	Get
-		'		Dim objForum As ForumInfo = New ForumInfo
+		''' <summary>
+		''' The forum that contains the thread.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property ParentForum() As ForumInfo
+			Get
+				Dim objForum As ForumInfo = New ForumInfo
 
-		'		If ForumID > 0 Then
-		'			Dim cntForum As New ForumController
-		'			objForum = cntForum.GetForumInfoCache(ForumID)
-		'		Else
-		'			objForum.ModuleID = HostForum.ModuleID
-		'			objForum.ForumID = ForumID
-		'		End If
+				If ForumID > 0 Then
+					Dim cntForum As New ForumController
+					objForum = cntForum.GetForumInfoCache(ForumID)
+				Else
+					objForum.ModuleID = ModuleID
+					objForum.ForumID = ForumID
+				End If
 
-		'		Return objForum
-		'	End Get
-		'End Property
+				Return objForum
+			End Get
+		End Property
 
 		''' <summary>
 		''' The tooltip to load based on the threads rating
@@ -202,10 +227,10 @@ Namespace DotNetNuke.Modules.Forum
 			Get
 				If RatingCount = 0 Then
 					'Return "No rating"
-					Return Localization.GetString("RatingNoRating.Text", HostForum.ParentGroup.objConfig.SharedResourceFile)
+					Return Localization.GetString("RatingNoRating.Text", ParentForum.ParentGroup.objConfig.SharedResourceFile)
 				Else
 					'Return String.Format("{0} out of 10 stars - based on {1} rate(s)", Rating, RatingCount)
-					Return String.Format(Localization.GetString("RatingHaveRating.Text", HostForum.ParentGroup.objConfig.SharedResourceFile), Rating, RatingCount)
+					Return String.Format(Localization.GetString("RatingHaveRating.Text", ParentForum.ParentGroup.objConfig.SharedResourceFile), Rating, RatingCount)
 				End If
 			End Get
 		End Property
@@ -221,13 +246,13 @@ Namespace DotNetNuke.Modules.Forum
 				Dim strImage As String = String.Empty
 				Select Case ThreadStatus
 					Case ThreadStatus.Answered
-						strImage = "status_answered." & HostForum.ParentGroup.objConfig.ImageExtension
+						strImage = "status_answered." & ParentForum.ParentGroup.objConfig.ImageExtension
 					Case ThreadStatus.Unanswered
-						strImage = "status_unanswered." & HostForum.ParentGroup.objConfig.ImageExtension
+						strImage = "status_unanswered." & ParentForum.ParentGroup.objConfig.ImageExtension
 					Case ThreadStatus.Info
-						strImage = "status_info." & HostForum.ParentGroup.objConfig.ImageExtension
+						strImage = "status_info." & ParentForum.ParentGroup.objConfig.ImageExtension
 					Case ThreadStatus.Poll
-						strImage = "status_poll." & HostForum.ParentGroup.objConfig.ImageExtension
+						strImage = "status_poll." & ParentForum.ParentGroup.objConfig.ImageExtension
 					Case Else
 						strImage = "status_spacer.gif"
 				End Select
@@ -246,13 +271,13 @@ Namespace DotNetNuke.Modules.Forum
 				Dim strText As String = String.Empty
 				Select Case ThreadStatus
 					Case ThreadStatus.Answered
-						strText = Localization.GetString("StatusAnswered.Text", HostForum.ParentGroup.objConfig.SharedResourceFile)
+						strText = Localization.GetString("StatusAnswered.Text", ParentForum.ParentGroup.objConfig.SharedResourceFile)
 					Case ThreadStatus.Unanswered
-						strText = Localization.GetString("StatusUnanswered.Text", HostForum.ParentGroup.objConfig.SharedResourceFile)
+						strText = Localization.GetString("StatusUnanswered.Text", ParentForum.ParentGroup.objConfig.SharedResourceFile)
 					Case ThreadStatus.Info
-						strText = Localization.GetString("StatusInfo.Text", HostForum.ParentGroup.objConfig.SharedResourceFile)
+						strText = Localization.GetString("StatusInfo.Text", ParentForum.ParentGroup.objConfig.SharedResourceFile)
 					Case ThreadStatus.Poll
-						strText = Localization.GetString("StatusPoll.Text", HostForum.ParentGroup.objConfig.SharedResourceFile)
+						strText = Localization.GetString("StatusPoll.Text", ParentForum.ParentGroup.objConfig.SharedResourceFile)
 					Case Else
 						strText = String.Empty
 				End Select
@@ -281,7 +306,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property IsPopular() As Boolean
 			Get
-				Return (TotalPosts > HostForum.ParentGroup.objConfig.PopularThreadReply) OrElse (Views > HostForum.ParentGroup.objConfig.PopularThreadView)
+				Return (TotalPosts > ParentForum.ParentGroup.objConfig.PopularThreadReply) OrElse (Views > ParentForum.ParentGroup.objConfig.PopularThreadView)
 			End Get
 		End Property
 
@@ -293,7 +318,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property LastApprovedPost() As PostInfo
 			Get
-				Return PostInfo.GetPostInfo(LastApprovedPostID, HostForum.ParentGroup.PortalID)
+				Return PostInfo.GetPostInfo(LastApprovedPostID, PortalID)
 			End Get
 		End Property
 
@@ -308,8 +333,8 @@ Namespace DotNetNuke.Modules.Forum
 				Dim strBody As String = LastApprovedPost.Body
 				Dim strTrimedBody As String = String.Empty
 				strTrimedBody = Utilities.ForumUtils.FormatToolTip(Utilities.ForumUtils.TrimString(strBody, 100))
-				If HostForum.ParentGroup.objConfig.EnableBadWordFilter Then
-					strTrimedBody = Utilities.ForumUtils.FormatProhibitedWord(strTrimedBody, LastApprovedPost.CreatedDate, HostForum.ParentGroup.PortalID)
+				If ParentForum.ParentGroup.objConfig.EnableBadWordFilter Then
+					strTrimedBody = Utilities.ForumUtils.FormatProhibitedWord(strTrimedBody, LastApprovedPost.CreatedDate, PortalID)
 				End If
 				Return strTrimedBody
 			End Get

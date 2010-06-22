@@ -54,7 +54,7 @@
 		</tr>
 				<tr>
 			<td align="center" colspan="2">
-				<asp:Label ID="lblAlreadyReported" runat="server" CssClass="NormalRed" Visible="False" resourcekey="lblAlreadyReported"></asp:Label>
+				<asp:Label ID="lblAlreadyReported" runat="server" CssClass="NormalRed" Visible="False" resourcekey="lblAlreadyReported" />
 			</td>
 		</tr>
 	</table>

@@ -67,9 +67,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				If Page.IsPostBack = False Then
 					litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
 
-					' Register scripts
-					Utilities.ForumUtils.RegisterPageScripts(Page, objConfig)
-
 					imgAddGroup.ImageUrl = objConfig.GetThemeImageURL("s_add.") & objConfig.ImageExtension
 					imgAddGroup.ToolTip = Localization.GetString("AddGroup", LocalResourceFile)
 					BindGroupList()
@@ -111,8 +108,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				End If
 
 				Dim groupID As Integer = Int32.Parse(argument)
-				Dim cntGroup As New GroupController
-				Dim objGroup As GroupInfo = cntGroup.GetCachedGroup(groupID)
+				Dim ctlGroup As New GroupController
+				Dim objGroup As GroupInfo = GroupInfo.GetGroupInfo(groupID)
 
 				Select Case cmd.ToLower
 					Case "close"
@@ -121,14 +118,15 @@ Namespace DotNetNuke.Modules.Forum.ACP
 						lstGroup.SelectedIndex = e.Item.ItemIndex
 						lstGroup.EditItemIndex = -1
 					Case "delete"
-						cntGroup.GroupDelete(groupID, ModuleId)
+						ctlGroup.GroupDelete(groupID, ModuleId)
 					Case "up"
-						cntGroup.GroupSortOrderUpdate(groupID, True, ModuleId)
+						ctlGroup.GroupSortOrderUpdate(groupID, True)
 					Case "down"
-						cntGroup.GroupSortOrderUpdate(groupID, False, ModuleId)
+						ctlGroup.GroupSortOrderUpdate(groupID, False)
 					Case "add"
 						Utilities.Links.ForumEditLink(TabId, ModuleId, -1, groupID)
 				End Select
+				ctlGroup.ResetAllGroupsByModuleID(ModuleId)
 				BindGroupList()
 			Catch exc As Exception
 				ProcessModuleLoadException(Me, exc)
@@ -173,12 +171,18 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
 			Dim cntGroup As New GroupController
 			Dim objGroup As GroupInfo
-
-			objGroup = cntGroup.GetCachedGroup(GroupID)
+			objGroup = cntGroup.GroupGet(GroupID)
 
 			Dim txtGroupName As TextBox = CType(e.Item.Controls(0).FindControl("txtGroupName"), TextBox)
 
 			cntGroup.GroupUpdate(CType(GroupID, Integer), txtGroupName.Text, UserId, objGroup.SortOrder, ModuleId)
+
+			' Reset the module groups
+			Dim objGrpCnt As New GroupController
+			objGrpCnt.ResetAllGroupsByModuleID(ModuleId)
+
+			' Remove the updated group from cache
+			GroupInfo.ResetGroupInfo(CType(GroupID, Integer))
 
 			lstGroup.EditItemIndex = -1
 			lstGroup.SelectedIndex = -1
@@ -200,10 +204,10 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				Dim objTempGroup As GroupInfo = CType(item.DataItem, GroupInfo)
 				Dim GroupID As Integer = objTempGroup.GroupID
 				Dim cntGroup As New GroupController
-				Dim GroupCount As Integer = cntGroup.GetCachedModuleGroups(ModuleId).Count
+				Dim GroupCount As Integer = cntGroup.GroupsGetByModuleID(ModuleId).Count
 
 				Dim objGroup As New GroupInfo
-				objGroup = cntGroup.GetCachedGroup(GroupID)
+				objGroup = cntGroup.GroupGet(GroupID)
 
 				imgColumnControl = item.Controls(0).FindControl("imgExpand")
 				If TypeOf imgColumnControl Is System.Web.UI.WebControls.ImageButton Then
@@ -288,7 +292,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				Dim cntGroup As New GroupController
 
 				Dim objGroup As New GroupInfo
-				objGroup = cntGroup.GetCachedGroup(GroupID)
+				objGroup = cntGroup.GroupGet(GroupID)
 
 				imgColumnControl = item.Controls(0).FindControl("imgHeadSpacerL")
 				If TypeOf imgColumnControl Is System.Web.UI.WebControls.Image Then
@@ -338,7 +342,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				Dim cntGroup As New GroupController
 
 				Dim objGroup As New GroupInfo
-				objGroup = cntGroup.GetCachedGroup(GroupID)
+				objGroup = cntGroup.GroupGet(GroupID)
 
 				imgColumnControl = item.Controls(0).FindControl("imgCloseGroup")
 				If TypeOf imgColumnControl Is System.Web.UI.WebControls.ImageButton Then
@@ -409,7 +413,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				Dim GroupID As Integer = objForum.GroupID
 				Dim cntGroup As New GroupController
 				Dim objGroup As New GroupInfo
-				objGroup = cntGroup.GetCachedGroup(GroupID)
+				objGroup = cntGroup.GroupGet(GroupID)
 
 				imgColumnControl = item.Controls(0).FindControl("imgSpacer")
 				If TypeOf imgColumnControl Is System.Web.UI.WebControls.Image Then
@@ -700,17 +704,19 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <remarks></remarks>
 		Protected Sub imgAddGroup_Click(ByVal sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles imgAddGroup.Click
 			If txtAddGroup.Text <> String.Empty Then
-				Dim cntGroup As New GroupController
-				Dim GroupID As Integer = -1
+				Dim ctlGroup As New GroupController
 
-				GroupID = cntGroup.GroupAdd(txtAddGroup.Text, PortalId, ModuleId, UserId)
+				Dim GroupID As Integer = -1
+				GroupID = ctlGroup.GroupAdd(txtAddGroup.Text, PortalId, ModuleId, UserId)
 
 				' Reset the module groups
-				cntGroup.ResetCachedGroup(GroupID, ModuleId)
+				Dim objGrpCnt As New GroupController
+				objGrpCnt.ResetAllGroupsByModuleID(ModuleId)
 
 				' Re-bind
 				lblvalAddGroup.Visible = False
 				txtAddGroup.Text = String.Empty
+
 				lstGroup.SelectedIndex = -1
 				lstGroup.EditItemIndex = -1
 
@@ -774,7 +780,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <remarks></remarks>
 		Private Sub BindGroupList()
 			Dim ctlGroup As New GroupController
-			Dim Group As List(Of GroupInfo) = ctlGroup.GetCachedModuleGroups(ModuleId)
+			Dim Group As List(Of GroupInfo) = ctlGroup.GroupsGetByModuleID(ModuleId)
 
 			lstGroup.DataSource = Group
 			lstGroup.DataBind()
