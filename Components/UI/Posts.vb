@@ -1716,11 +1716,9 @@ Namespace DotNetNuke.Modules.Forum
 					RenderRowBegin(wr) ' <tr>
 					RenderCellBegin(wr, "", "", "", "", "middle", "", "")	' <td> 
 					If authorOnline Then
-						Dim imgURL As String = objConfig.GetThemeImageURL("s_online.") & objConfig.ImageExtension
-						RenderImage(wr, imgURL, ForumControl.LocalizedText("imgOnline"), "")
+						RenderImage(wr, objConfig.GetThemeImageURL("s_online.") & objConfig.ImageExtension, ForumControl.LocalizedText("imgOnline"), "")
 					Else
-						Dim imgURL As String = objConfig.GetThemeImageURL("s_offline.") & objConfig.ImageExtension
-						RenderImage(wr, imgURL, ForumControl.LocalizedText("imgOffline"), "")
+						RenderImage(wr, objConfig.GetThemeImageURL("s_offline.") & objConfig.ImageExtension, ForumControl.LocalizedText("imgOffline"), "")
 					End If
 					RenderCellEnd(wr) ' </td>
 
@@ -1728,10 +1726,32 @@ Namespace DotNetNuke.Modules.Forum
 					wr.Write("&nbsp;")
 					RenderTitleLinkButton(wr, _url, author.SiteAlias, "Forum_Profile", ForumControl.LocalizedText("ViewProfile"))
 					RenderCellEnd(wr) ' </td>
+
+					If objSecurity.IsModerator Then
+						RenderCellBegin(wr, "", "", "", "", "middle", "", "")	 ' <td>
+						wr.Write("&nbsp;")
+						RenderImageButton(wr, Utilities.Links.UCP_AdminLinks(TabID, ModuleID, author.UserID, UserAjaxControl.Profile), objConfig.GetThemeImageURL("s_edit.") & objConfig.ImageExtension, ForumControl.LocalizedText("EditProfile"), "")
+						RenderCellEnd(wr) ' </td>
+					End If
+
 					RenderRowEnd(wr) ' </tr>
 					RenderTableEnd(wr) ' </table>
 				Else
+					RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "") ' <table>
+					RenderRowBegin(wr) ' <tr>
+					RenderCellBegin(wr, "", "", "", "", "middle", "", "")	' <td> 
 					RenderTitleLinkButton(wr, _url, author.SiteAlias, "Forum_Profile", ForumControl.LocalizedText("ViewProfile"))
+					RenderCellEnd(wr) ' </td>
+
+					If objSecurity.IsModerator Then
+						RenderCellBegin(wr, "", "", "", "", "middle", "", "")	 ' <td>
+						wr.Write("&nbsp;")
+						RenderImageButton(wr, Utilities.Links.UCP_AdminLinks(TabID, ModuleID, author.UserID, UserAjaxControl.Profile), objConfig.GetThemeImageURL("s_edit.") & objConfig.ImageExtension, ForumControl.LocalizedText("EditProfile"), "")
+						RenderCellEnd(wr) ' </td>
+					End If
+
+					RenderRowEnd(wr) ' </tr>
+					RenderTableEnd(wr) ' </table>
 				End If
 
 				RenderCellEnd(wr) ' </td>
