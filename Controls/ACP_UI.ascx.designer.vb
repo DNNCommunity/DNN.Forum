@@ -240,24 +240,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected WithEvents ddlDisplayPosterLocation As Global.System.Web.UI.WebControls.DropDownList
 
 		'''<summary>
-		'''plEnableIconBarAsImages control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plEnableIconBarAsImages As Global.DotNetNuke.UI.UserControls.LabelControl
-
-		'''<summary>
-		'''chkEnableIconBarAsImages control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkEnableIconBarAsImages As Global.System.Web.UI.WebControls.CheckBox
-
-		'''<summary>
 		'''plDisplayPosterRegion control.
 		'''</summary>
 		'''<remarks>

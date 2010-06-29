@@ -30,7 +30,7 @@ A.Forum_BreadCrumb:hover{color:#006396;}
 /* Text used in Forum_Header areas */
 div.Forum_HeaderText, div a.Forum_HeaderText:Link, div a.Forum_HeaderText:visited, div a.Forum_HeaderText:active, div a.Forum_HeaderText:hover{font: normal bold 10px  Helvetica, Arial, San-Serif;color:#fff;text-transform:uppercase;}											
 /* PseudoClasses used in Forum_Header areas */
-a.Forum_HeaderText:link, a.Forum_HeaderText:visited; a.Forum_HeaderText:active, a.Forum_HeaderText:hover{text-decoration:underline;}
+a.Forum_HeaderText:link, a.Forum_HeaderText:visited, a.Forum_HeaderText:active, a.Forum_HeaderText:hover{text-decoration:underline;}
 a.Forum_HeaderText:hover{color:#ff0000;}
 
 /* These cap classes handle the left and rigt of colums 1px wide (only in forum admin HEADER area)  Remove all BLOG mentions*/
@@ -239,7 +239,8 @@ User Settings, Search  (Admin, editable stuff) */
 /* Used for all ADMIN SECTION HEAD rows only:D */
 .Forum_Admin_SectionHead					
 { 
-	font-family: normal bold 12px Helvetica, Arial, sans-serif;
+	font-family: normal bold Helvetica, Arial, sans-serif;
+	font-size:12px;
 	color: #999;			
 	font-variant:small-caps;
 	border-left: #B8D7F3 0px solid;	

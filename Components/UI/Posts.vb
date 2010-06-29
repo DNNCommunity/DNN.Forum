@@ -357,9 +357,11 @@ Namespace DotNetNuke.Modules.Forum
 			If Len(txtQuickReply.Text) > 0 Then
 				Dim RemoteAddress As String = "0.0.0.0"
 				Dim strSubject As String = Utilities.ForumUtils.SetReplySubject(ThreadInfo.Subject)
-				'If Not Request.ServerVariables("REMOTE_ADDR") Is Nothing Then
-				'	RemoteAddress = Request.ServerVariables("REMOTE_ADDR")
-				'End If
+
+				If Not HttpContext.Current.Request.UserHostAddress Is Nothing Then
+					RemoteAddress = HttpContext.Current.Request.UserHostAddress
+				End If
+
 				Dim cntPostConnect As New PostConnector
 				Dim PostMessage As PostMessage
 
@@ -1727,7 +1729,9 @@ Namespace DotNetNuke.Modules.Forum
 					RenderTitleLinkButton(wr, _url, author.SiteAlias, "Forum_Profile", ForumControl.LocalizedText("ViewProfile"))
 					RenderCellEnd(wr) ' </td>
 
-					If objSecurity.IsModerator Then
+					Dim objSecurity2 As New Forum.ModuleSecurity(ModuleID, TabID, -1, CurrentForumUser.UserID)
+
+					If objSecurity2.IsModerator Then
 						RenderCellBegin(wr, "", "", "", "", "middle", "", "")	 ' <td>
 						wr.Write("&nbsp;")
 						RenderImageButton(wr, Utilities.Links.UCP_AdminLinks(TabID, ModuleID, author.UserID, UserAjaxControl.Profile), objConfig.GetThemeImageURL("s_edit.") & objConfig.ImageExtension, ForumControl.LocalizedText("EditProfile"), "")
@@ -1743,7 +1747,9 @@ Namespace DotNetNuke.Modules.Forum
 					RenderTitleLinkButton(wr, _url, author.SiteAlias, "Forum_Profile", ForumControl.LocalizedText("ViewProfile"))
 					RenderCellEnd(wr) ' </td>
 
-					If objSecurity.IsModerator Then
+					Dim objSecurity2 As New Forum.ModuleSecurity(ModuleID, TabID, -1, CurrentForumUser.UserID)
+
+					If objSecurity2.IsModerator Then
 						RenderCellBegin(wr, "", "", "", "", "middle", "", "")	 ' <td>
 						wr.Write("&nbsp;")
 						RenderImageButton(wr, Utilities.Links.UCP_AdminLinks(TabID, ModuleID, author.UserID, UserAjaxControl.Profile), objConfig.GetThemeImageURL("s_edit.") & objConfig.ImageExtension, ForumControl.LocalizedText("EditProfile"), "")

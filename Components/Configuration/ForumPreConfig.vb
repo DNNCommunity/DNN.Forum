@@ -56,7 +56,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			ctlModule.UpdateModuleSetting(ModuleId, "Name", "Forum")
 			Dim mSourceDirectory As String = ApplicationPath & "/DesktopModules/Forum"
-			ctlModule.UpdateModuleSetting(ModuleId, "ForumSkin", "Default")
+			ctlModule.UpdateModuleSetting(ModuleId, "ForumSkin", "Blue")
 			ctlModule.UpdateModuleSetting(ModuleId, "EnableUserSkin", "False")
 			ctlModule.UpdateModuleSetting(ModuleId, "EnableTimeZone", "True")
 			' mail notifications

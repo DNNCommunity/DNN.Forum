@@ -53,7 +53,6 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _ForumMemberName As Integer = ForumDisplayName.Username
 		Dim _ForumSkin As String = DefaultTheme
 		Dim _EnableThreadStatus As Boolean = True
-		Dim _IconBarAsImages As Boolean = False
 		Dim _EnableQuickReply As Boolean = False
 		Dim _EnableUserSignatures As Boolean = True
 		Dim _EnableModSigUpdates As Boolean = True
@@ -603,18 +602,6 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property ImageExtension() As String
 			Get
 				Return _ImageExtension
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets if the UI should show icons or links for navigation menu of module.
-		''' </summary>
-		''' <value></value>
-		''' <returns>True if the icon toolbar should load images, false it will load text Utilities.Links.</returns>
-		''' <remarks>The default is false.</remarks>
-		Public ReadOnly Property IconBarAsImages() As Boolean
-			Get
-				Return _IconBarAsImages
 			End Get
 		End Property
 
@@ -2184,12 +2171,6 @@ Namespace DotNetNuke.Modules.Forum
 			If Not settings("Rank_0_Title") Is Nothing Then
 				If Not settings("Rank_0_Title").ToString = String.Empty Then
 					_Rank_0_Title = CStr(GetValue(settings("Rank_0_Title"), _Rank_0_Title))
-				End If
-			End If
-
-			If Not settings("IconBarAsImages") Is Nothing Then
-				If Not settings("IconBarAsImages").ToString = String.Empty Then
-					_IconBarAsImages = CBool(GetValue(settings("IconBarAsImages"), CStr(_IconBarAsImages)))
 				End If
 			End If
 

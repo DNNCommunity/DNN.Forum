@@ -280,7 +280,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' If the user is a moderator of at least one forum in the module instance.
 		''' </summary>
 		''' <returns>True if the user is a moderator in the forum instance, false otherwise.</returns>
-		''' <remarks>This should be used when determining if the user is a moderator anywhere in this module instance (ie. not a specific forum).</remarks>
+		''' <remarks>This should be used when determining if the user is a moderator anywhere in this module instance (ie. not a specific forum). This has a flaw as it only works if -1 is passed in.</remarks>
 		Public Function IsModerator() As Boolean
 			If HasGlobalModPermission Or HasForumAdminPermission Or HasEditModPermission Or HasModeratePermisson Then
 				Return True

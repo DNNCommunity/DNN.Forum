@@ -44,7 +44,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			txtThreadPageCount.Text = objConfig.PostPagesCount.ToString()
 			txtImageExtension.Text = objConfig.ImageExtension
 			txtMaxPostImageWidth.Text = objConfig.MaxPostImageWidth.ToString
-			chkEnableIconBarAsImages.Checked = objConfig.IconBarAsImages
 			chkDisplayPosterRegion.Checked = objConfig.DisplayPosterRegion
 			chkEnableQuickReply.Checked = objConfig.EnableQuickReply
 
@@ -89,7 +88,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				ctlModule.UpdateModuleSetting(ModuleId, "PostPagesCount", txtThreadPageCount.Text)
 				ctlModule.UpdateModuleSetting(ModuleId, "ForumSkin", ddlSkins.SelectedItem.Value)
 				ctlModule.UpdateModuleSetting(ModuleId, "ImageExtension", txtImageExtension.Text)
-				ctlModule.UpdateModuleSetting(ModuleId, "IconBarAsImages", chkEnableIconBarAsImages.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, "DisplayPosterLocation", ddlDisplayPosterLocation.SelectedItem.Value)
 				ctlModule.UpdateModuleSetting(ModuleId, "DisplayPosterRegion", chkDisplayPosterRegion.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, "DisplayPosterRegion", chkDisplayPosterRegion.Checked.ToString)

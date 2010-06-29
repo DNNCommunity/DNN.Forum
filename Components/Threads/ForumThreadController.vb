@@ -20,6 +20,9 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Services.Sitemap
+Imports DotNetNuke.Entities.Portals
+
 Namespace DotNetNuke.Modules.Forum
 
 #Region "ThreadController"
@@ -30,6 +33,7 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks></remarks>
 	Public Class ThreadController
+		Inherits SitemapProvider
 		Implements DotNetNuke.Entities.Modules.ISearchable
 		Implements IEmailQueueable
 
@@ -543,6 +547,30 @@ Namespace DotNetNuke.Modules.Forum
 			EmailQueueTask = New EmailQueueTaskInfo(EmailFromAddress, FromFriendlyName, EmailPriority, EmailHTMLBody, EmailTextBody, EmailSubject, PortalID, QueuePriority, ModuleID, EnableFriendlyToName, DistroCall, DistroIsSproc, DistroParams, ScheduleStartDate, PersonalizeEmail, Attachment)
 
 			Return EmailQueueTask
+		End Function
+
+		Public Overrides Function GetUrls(ByVal portalId As Integer, ByVal ps As PortalSettings, ByVal version As String) As List(Of SitemapUrl)
+			Dim blogUrl As SitemapUrl
+			Dim urls As New List(Of SitemapUrl)
+
+			'Dim blog As New EntryController
+			'Dim entries As ArrayList = blog.ListAllEntriesByPortal(portalId, False, False)
+
+			'For Each entry As EntryInfo In entries
+			'	blogUrl = GetThreadUrls(entry, ps.PortalAlias.HTTPAlias)
+			'	urls.Add(blogUrl)
+			'Next
+			Return urls
+		End Function
+
+		Private Function GetThreadUrls(ByVal objEntry As ThreadInfo, ByVal portalAlias As String) As SitemapUrl
+			Dim pageUrl As New SitemapUrl
+			'pageUrl.Url = objEntry.PermaLink
+			pageUrl.Priority = 0.5
+			'pageUrl.LastModified = objEntry.AddedDate
+			pageUrl.ChangeFrequency = SitemapChangeFrequency.Weekly
+
+			Return pageUrl
 		End Function
 
 #End Region

@@ -570,11 +570,7 @@ Namespace DotNetNuke.Modules.Forum
 			RenderDivBegin(wr, "divForumIconsCol", "Forum_IconsCol") ' <div>
 
 			For Each Action As Entities.Modules.Actions.ModuleAction In ForumControl.NavigatorActions
-				If objConfig.IconBarAsImages Then
-					RenderCssLinkButton(wr, Action.Url, Action.Title, Utilities.ForumUtils.GetActionCss(Action.Title, ForumControl, CurrentForumUser), objConfig)
-				Else
-					RenderLinkButton(wr, Action.Url, Action.Title, "Forum_ToolbarLink")
-				End If
+				RenderLinkButton(wr, Action.Url, Action.Title, "Forum_ToolbarLink")
 			Next
 
 			RenderDivEnd(wr) ' </div> divForumIconsCol

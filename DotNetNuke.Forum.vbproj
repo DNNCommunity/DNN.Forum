@@ -642,8 +642,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="My Project\ForumClassDiagram.cd">
-      <SubType>
-      </SubType>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Providers\DataProviders\SqlDataProvider\03.00.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.00.10.SqlDataProvider" />

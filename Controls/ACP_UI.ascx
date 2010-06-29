@@ -91,16 +91,6 @@
 				<tr>
 					<td width="35%">
 						<span class="Forum_Row_AdminText">
-							<dnn:Label ID="plEnableIconBarAsImages" runat="server" ControlName="chkEnableIconBarAsImages" Suffix=":"></dnn:Label>
-						</span>
-					</td>
-					<td align="left">
-						<asp:checkbox id="chkEnableIconBarAsImages" runat="server" CssClass="Forum_NormalTextBox" />
-					</td>
-				</tr>
-				<tr>
-					<td width="35%">
-						<span class="Forum_Row_AdminText">
 							<dnn:Label ID="plDisplayPosterRegion" runat="server" ControlName="chkDisplayPosterRegion" Suffix=":"></dnn:Label>
 						</span>
 					</td>
