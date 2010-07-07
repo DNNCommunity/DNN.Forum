@@ -125,7 +125,7 @@
  </value>
   </data>
   <data name="plEmail.Text" xml:space="preserve">
-    <value>Display Email Address</value>
+    <value>Email Address</value>
   </data>
   <data name="plEmail.Help" xml:space="preserve">
     <value>If checked, users will be able to view the email address in the user profile screen.</value>

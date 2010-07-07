@@ -1785,7 +1785,7 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 
 					' display user avatar
-					If objConfig.EnableUserAvatar AndAlso (author.AvatarComplete IsNot Nothing) Then
+					If objConfig.EnableUserAvatar AndAlso (String.IsNullOrEmpty(author.AvatarComplete) = False) Then
 						RenderRowBegin(wr) ' <tr> (start avatar row)
 						RenderCellBegin(wr, "Forum_UserAvatar", "", "", "", "top", "", "") ' <td>
 						wr.Write("<br />")
