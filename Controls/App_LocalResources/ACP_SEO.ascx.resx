@@ -124,7 +124,7 @@
     <value>Updated Successfully!</value>
   </data>
   <data name="NumericValidation.ErrorMessage" xml:space="preserve">
-    <value>Needs to be numeric!</value>
+    <value>Value must be between 0 and 1.0. </value>
   </data>
   <data name="plNoFollowWeb.Help" xml:space="preserve">
     <value>If checked, indicates that the destination of user website hyperlinks SHOULD NOT be afforded any additional weight or ranking by user agents which perform link analysis upon web pages (e.g. search engines).&lt;br&gt;&lt;b&gt;NOTE&lt;/b&gt;&lt;br&gt;This applies to user profile page website links as well as user website links in posts.</value>

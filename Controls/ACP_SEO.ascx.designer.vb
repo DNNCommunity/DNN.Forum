@@ -123,6 +123,15 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected WithEvents txtSitemapPriority As Global.System.Web.UI.WebControls.TextBox
 
 		'''<summary>
+		'''valNumeric control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents valNumeric As Global.System.Web.UI.WebControls.RangeValidator
+
+		'''<summary>
 		'''cmdUpdate control.
 		'''</summary>
 		'''<remarks>

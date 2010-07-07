@@ -56,7 +56,8 @@
 						</span>
 				   </td>
 				   <td  valign="middle" align="left">
-					  <asp:TextBox ID="txtSitemapPriority" runat="server" MaxLength="5" Width="50px" />
+					  <asp:TextBox ID="txtSitemapPriority" runat="server" MaxLength="6" Width="50px" />
+					  <asp:RangeValidator ID="valNumeric" runat="server" ControlToValidate="txtSitemapPriority" MaximumValue="1.0" MinimumValue="0" Type="Double" resourcekey="NumericValidation.ErrorMessage" Display="Dynamic" CssClass="NormalRed"/>
 				   </td>
 			    </tr>
 	          </table>

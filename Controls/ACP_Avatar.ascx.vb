@@ -42,10 +42,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			BindProfileProperties()
 
 			chkEnableUserAvatar.Checked = objConfig.EnableUserAvatar
-			EnableUserAvatar(objConfig.EnableUserAvatar)
 			chkEnableProfileAvatar.Checked = objConfig.EnableProfileAvatar
 			chkEnableProfileUserFolders.Checked = objConfig.EnableProfileUserFolders
-			EnableProfileAvatar(objConfig.EnableProfileAvatar, objConfig.EnableProfileUserFolders)
 			ddlProfileAvatarPropertyName.SelectedValue = objConfig.AvatarProfilePropName.ToString()
 			txtUserAvatarPath.Text = objConfig.UserAvatarPath
 			txtUserAvatarWidth.Text = objConfig.UserAvatarWidth.ToString()
@@ -57,6 +55,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			txtSystemAvatarPath.Text = objConfig.SystemAvatarPath
 			chkEnableRoleAvatar.Checked = objConfig.EnableRoleAvatar
 			txtRoleAvatarPath.Text = objConfig.RoleAvatarPath
+
+			EnableUserAvatar(chkEnableUserAvatar.Checked)
+			EnableProfileAvatar(chkEnableProfileAvatar.Checked)
 
 			If chkEnableUserAvatarPool.Checked Then
 				rowUserAvatarPoolPath.Visible = True
@@ -204,7 +205,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <param name="e"></param>
 		''' <remarks></remarks>
 		Protected Sub chkEnableProfileAvatar_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkEnableProfileAvatar.CheckedChanged
-			EnableProfileAvatar(chkEnableProfileAvatar.Checked, chkEnableProfileUserFolders.Checked)
+			EnableProfileAvatar(chkEnableProfileAvatar.Checked)
 		End Sub
 
 		''' <summary>
@@ -214,7 +215,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <param name="e"></param>
 		''' <remarks></remarks>
 		Protected Sub chkEnableProfileUserFolders_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkEnableProfileUserFolders.CheckedChanged
-			EnableProfileAvatar(chkEnableProfileAvatar.Checked, chkEnableProfileUserFolders.Checked)
+			rowUserAvatarPath.Visible = Not chkEnableProfileUserFolders.Checked
 		End Sub
 
 #End Region
@@ -226,21 +227,19 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </summary>
 		''' <param name="Enabled"></param>
 		''' <remarks></remarks>
-		Private Sub EnableProfileAvatar(ByVal Enabled As Boolean, ByVal EnableProfileUserFolders As Boolean)
+		Private Sub EnableProfileAvatar(ByVal Enabled As Boolean)
 			rowProfileAvatarPropertyName.Visible = Enabled
-			rowUserAvatarPath.Visible = Enabled
+			rowUserAvatarDimentions.Visible = Not Enabled
 			rowUserAvatarSizeLimit.Visible = Not Enabled
+			rowUserAvatarPath.Visible = Not Enabled
 
 			If Enabled Then
 				rowUserAvatarPoolPath.Visible = False
 				chkEnableUserAvatarPool.Checked = False
 				rowUserAvatarPoolEnable.Visible = False
 
-				If EnableProfileUserFolders Then
-					rowEnableProfileUserFolders.Visible = True
-					rowUserAvatarPath.Visible = False
-					rowUserAvatarSizeLimit.Visible = False
-				End If
+				rowEnableProfileUserFolders.Visible = Enabled
+				rowUserAvatarPath.Visible = Not chkEnableProfileUserFolders.Checked
 			Else
 				rowUserAvatarPoolEnable.Visible = True
 				rowEnableProfileUserFolders.Visible = False
@@ -268,10 +267,11 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Private Sub EnableUserAvatar(ByVal Enabled As Boolean)
 			rowUserAvatarDimentions.Visible = Enabled
 			rowUserAvatarPath.Visible = Enabled
-			rowUserAvatarSizeLimit.Visible = Enabled
 			rowEnableProfileAvatar.Visible = Enabled
 			rowEnableProfileUserFolders.Visible = Enabled
 			rowProfileAvatarPropertyName.Visible = False
+
+
 		End Sub
 
 #End Region

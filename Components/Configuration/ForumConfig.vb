@@ -143,6 +143,10 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _NoFollowWeb As Boolean = False
 		Dim _OverrideTitle As Boolean = True
 		Dim _NoFollowLatestThreads As Boolean = True
+		' new seo
+		Dim _OverrideDescription As Boolean = True
+		Dim _SitemapPriority As Double = 0.5
+
 		'' Post Rendering
 		'Dim _LoadScripts As Boolean = True
 		' Prepare to retire treeview (vs. flatview)
@@ -867,6 +871,30 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property NoFollowLatestThreads() As Boolean
 			Get
 				Return _NoFollowLatestThreads
+			End Get
+		End Property
+
+		''' <summary>
+		''' Determines if the meta description will be overriden. This will get form description for Threads view, First post body (summary, 150 limit) with HTML stripped  when in Posts view. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property OverrideDescription() As Boolean
+			Get
+				Return _OverrideDescription
+			End Get
+		End Property
+
+		''' <summary>
+		''' This determines the sitemap priority for SEO generated pages. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks>Using Core, values should be between 1.0 and .1.</remarks>
+		Public ReadOnly Property SitemapPriority() As Double
+			Get
+				Return _SitemapPriority
 			End Get
 		End Property
 
@@ -2117,6 +2145,18 @@ Namespace DotNetNuke.Modules.Forum
 			If Not settings("NoFollowLatestThreads") Is Nothing Then
 				If Not settings("NoFollowLatestThreads").ToString = String.Empty Then
 					_NoFollowLatestThreads = CBool(GetValue(settings("NoFollowLatestThreads"), CStr(_NoFollowLatestThreads)))
+				End If
+			End If
+
+			If Not settings("OverrideDescription") Is Nothing Then
+				If Not settings("OverrideDescription").ToString = String.Empty Then
+					_OverrideDescription = CBool(GetValue(settings("OverrideDescription"), CStr(_OverrideDescription)))
+				End If
+			End If
+
+			If Not settings("SitemapPriority") Is Nothing Then
+				If Not settings("SitemapPriority").ToString = String.Empty Then
+					_SitemapPriority = CType(GetValue(settings("SitemapPriority"), CStr(_SitemapPriority)), Double)
 				End If
 			End If
 

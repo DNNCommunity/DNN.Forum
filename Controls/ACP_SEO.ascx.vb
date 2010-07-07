@@ -39,10 +39,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
 			chkNoFollowWeb.Checked = objConfig.NoFollowWeb
 			chkOverrideTitle.Checked = objConfig.OverrideTitle
+			chkOverrideDescription.Checked = objConfig.OverrideDescription
 			chkNoFollowLatestThreads.Checked = objConfig.NoFollowLatestThreads
-
-			'chkOverrideTitle.Checked = objConfig.OverrideTitle
-			'chkOverrideTitle.Checked = objConfig.OverrideTitle
+			txtSitemapPriority.Text = objConfig.SitemapPriority.ToString()
 		End Sub
 
 #End Region
@@ -62,10 +61,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				Dim ctlModule As New Entities.Modules.ModuleController
 				ctlModule.UpdateModuleSetting(ModuleId, "NoFollowWeb", chkNoFollowWeb.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, "OverrideTitle", chkOverrideTitle.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, "OverrideDescription", chkOverrideDescription.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, "NoFollowLatestThreads", chkNoFollowLatestThreads.Checked.ToString)
-
-				'ctlModule.UpdateModuleSetting(ModuleId, "OverrideTitle", chkOverrideTitle.Checked.ToString)
-				'ctlModule.UpdateModuleSetting(ModuleId, "OverrideTitle", chkOverrideTitle.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, "SitemapPriority", txtSitemapPriority.Text)
 
 				Config.ResetForumConfig(ModuleId)
 
