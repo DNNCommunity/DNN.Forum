@@ -9,17 +9,6 @@
      <tr>
 		<td class="Forum_UCP_HeaderInfo">    
 			<table id="tblGeneral" cellspacing="0" cellpadding="0" width="100%" runat="server">
-			     <tr>
-				     <td width="35%">
-				          <span class="Forum_Row_AdminText">
-				               <dnn:label id="plForumName" runat="server" Suffix=":" controlname="txtName"></dnn:label>
-					     </span>
-				     </td>
-				     <td align="left">
-				          <asp:textbox id="txtName" runat="server" cssclass="Forum_NormalTextBox" Columns="26" width="250px" EnableViewState="false" />
-				          <asp:RequiredFieldValidator ID="valName" runat="server" ErrorMessage="*" CssClass="NormalRed" Display="Dynamic" ControlToValidate="txtName" EnableViewState="false" />
-				     </td>
-			     </tr>
 			     <tr id="rowPrimaryAlias" runat="server" visible="false">
 				     <td width="35%">
 				          <span class="Forum_Row_AdminText">

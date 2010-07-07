@@ -33,33 +33,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected WithEvents tblGeneral As Global.System.Web.UI.HtmlControls.HtmlTable
 
 		'''<summary>
-		'''plForumName control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plForumName As Global.DotNetNuke.UI.UserControls.LabelControl
-
-		'''<summary>
-		'''txtName control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtName As Global.System.Web.UI.WebControls.TextBox
-
-		'''<summary>
-		'''valName control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valName As Global.System.Web.UI.WebControls.RequiredFieldValidator
-
-		'''<summary>
 		'''rowPrimaryAlias control.
 		'''</summary>
 		'''<remarks>

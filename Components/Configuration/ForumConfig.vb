@@ -39,19 +39,18 @@ Namespace DotNetNuke.Modules.Forum
 		Private Const ForumConfigCacheTimeout As Integer = 20
 		' General Configuration
 		Dim _ModuleID As Integer
-		Dim _Name As String = DefaultName
 		Dim _HasConfiguration As Boolean = False
 		Dim _SourceDirectory As String = DefaultSourceDirectory
 		Dim _EnableAttachment As Boolean = False
 		Dim _AggregatedForums As Boolean = False
-		Dim _ThreadsPerPage As Integer = DefaultThreadsPerPage
-		Dim _PostsPerPage As Integer = DefaultPostsPerPage
+		Dim _ThreadsPerPage As Integer = 10
+		Dim _PostsPerPage As Integer = 5
 		Dim _PostPagesCount As Integer = 3
 		Dim _MaxPostImageWidth As Integer = 500
 		Dim _DisplayPosterLocation As Integer = ShowPosterLocation.None
 		Dim _DisplayPosterRegion As Boolean = False
 		Dim _ForumMemberName As Integer = ForumDisplayName.Username
-		Dim _ForumSkin As String = DefaultTheme
+		Dim _ForumSkin As String = "Blue"
 		Dim _EnableThreadStatus As Boolean = True
 		Dim _EnableQuickReply As Boolean = False
 		Dim _EnableUserSignatures As Boolean = True
@@ -63,15 +62,15 @@ Namespace DotNetNuke.Modules.Forum
 		'Email
 		Dim _MailNotification As Boolean = True
 		Dim _EnablePerForumFrom As Boolean = False
-		Dim _AutomatedEmailAddress As String = DefaultEmailAddress
+		Dim _AutomatedEmailAddress As String = "you@domain.com"
 		Dim _EmailAddressDisplayName As String = String.Empty
 		Dim _EnableEmailQueueTask As Boolean = False
 		Dim _EnableEditEmails As Boolean = False
 		Dim _EnableListServer As Boolean = False
 		Dim _ListServerFolder As String = "Forums/ListServer/"
 		'Stats & Rankings
-		Dim _PopularThreadView As Integer = DefaultPopularThreadView
-		Dim _PopularThreadReply As Integer = DefaultPopularThreadReply
+		Dim _PopularThreadView As Integer = 200
+		Dim _PopularThreadReply As Integer = 10
 		' Poster Rankings
 		Dim _Ranking As Boolean = True
 		Dim _EnableRankingImage As Boolean = True
@@ -98,11 +97,11 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _Rank_0_Title As String = String.Empty
 		'Thread Ratings
 		Dim _EnableRatings As Boolean = True
-		Dim _RatingScale As Integer = 10
+		Dim _RatingScale As Integer = 5
 		' Syndication
 		Dim _EnableRSS As Boolean = True
-		Dim _RSSThreadsPerFeed As Integer = DefaultRSSThreadsPerFeed
-		Dim _RSSUpdateInterval As Integer = DefaultRSSUpdateInterval
+		Dim _RSSThreadsPerFeed As Integer = 20
+		Dim _RSSUpdateInterval As Integer = 30
 		' Bad word filtering
 		Dim _EnableBadWordFilter As Boolean = True
 		Dim _FilterSubject As Boolean = False
@@ -114,7 +113,7 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _ExternalProfileParamName As String = String.Empty
 		Dim _ExternalProfileParamValue As String = String.Empty
 		Dim _EnablePostAbuse As Boolean = True
-		Dim _ImageExtension As String = "gif"
+		Dim _ImageExtension As String = "png"
 		Dim _DisableHTMLPosting As Boolean = False
 		Dim _TrustNewUsers As Boolean = False
 		Dim _AutoLockTrust As Boolean = False
@@ -125,9 +124,9 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _MaxAttachmentSize As Integer = 256
 		' User Avatar
 		Dim _EnableUserAvatar As Boolean = True
-		Dim _EnableProfileAvatar As Boolean = False
+		Dim _EnableProfileAvatar As Boolean = True
 		Dim _EnableProfileUserFolders As Boolean = True
-		Dim _AvatarProfilePropName As String = String.Empty
+		Dim _AvatarProfilePropName As String = "Photo"
 		Dim _EnableUserAvatarPool As Boolean = False
 		Dim _UserAvatarPoolPath As String = "Forums/PoolAvatar/"
 		Dim _UserAvatarPath As String = "Forums/UserAvatar/"
@@ -135,7 +134,7 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _UserAvatarHeight As Integer = 128
 		Dim _UserAvatarMaxSize As Integer = 64
 		' System Avatar
-		Dim _EnableSystemAvatar As Boolean = True
+		Dim _EnableSystemAvatar As Boolean = False
 		Dim _SystemAvatarPath As String = "Forums/SystemAvatar/"
 		' Role Avatar
 		Dim _EnableRoleAvatar As Boolean = False
@@ -147,7 +146,7 @@ Namespace DotNetNuke.Modules.Forum
 		'' Post Rendering
 		'Dim _LoadScripts As Boolean = True
 		' Prepare to retire treeview (vs. flatview)
-		Dim _EnableTreeView As Boolean = True
+		Dim _EnableTreeView As Boolean = False
 		Dim _PrimaryAlias As String
 
 #End Region
@@ -213,18 +212,6 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Public Shared ReadOnly Properties"
 
 		''' <summary>
-		''' Gets the default value for the default forum module name. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>A string representing hte forum module's DEFAULT name.</returns>
-		''' <remarks>The name of the forum used in breadcrumb navigation.</remarks>
-		Public Shared ReadOnly Property DefaultName() As String
-			Get
-				Return "Forum"
-			End Get
-		End Property
-
-		''' <summary>
 		''' Gets the default value for the forum source directory path. 
 		''' </summary>
 		''' <value></value>
@@ -233,102 +220,6 @@ Namespace DotNetNuke.Modules.Forum
 		Public Shared ReadOnly Property DefaultSourceDirectory() As String
 			Get
 				Return ApplicationPath & "/DesktopModules/Forum"
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets the default value for the forum theme to apply.
-		''' </summary>
-		''' <value></value>
-		''' <returns>The default forum theme to apply.</returns>
-		''' <remarks>As of 4.4.0 only a single theme will be distributed with the module.</remarks>
-		Public Shared ReadOnly Property DefaultTheme() As String
-			Get
-				Return "Default"
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets the default value for the from email address for all outgoing email sends from this module. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>The default email address to apply for outgoing emails.</returns>
-		''' <remarks>This shouldn't be necessary as default configuration grabs admin email address.</remarks>
-		Public Shared ReadOnly Property DefaultEmailAddress() As String
-			Get
-				Return "forum@YOURDOMAIN.com"
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets the default value for the number of threads per page. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>The number of threads per page to display in thread and search views as well as PM thread list.</returns>
-		''' <remarks>Any registered user has their own value.</remarks>
-		Public Shared ReadOnly Property DefaultThreadsPerPage() As Integer
-			Get
-				Return 10
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets the default value for the number of posts per page. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>The number of posts per page to display in Posts view.</returns>
-		''' <remarks>Any registered user has their own value.</remarks>
-		Public Shared ReadOnly Property DefaultPostsPerPage() As Integer
-			Get
-				Return 5
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets the default value for the number of views required to mark a thread as 'poplular'. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>The number of views a thread should have before being marked as 'hot'.</returns>
-		''' <remarks>Works as an Or type situation w/ number of thread replies.</remarks>
-		Public Shared ReadOnly Property DefaultPopularThreadView() As Integer
-			Get
-				Return 200
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets the default value for number of replies required to mark a thread as 'popular'. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>The number of replies a thread should have before being marked as 'hot'.</returns>
-		''' <remarks>Works as an Or type situation w/ the number of thread views.</remarks>
-		Public Shared ReadOnly Property DefaultPopularThreadReply() As Integer
-			Get
-				Return 10
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets the default value for the RSS Threads per page. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>The number of threads to list per RSS feed.</returns>
-		''' <remarks>Uses module's own RSS page.</remarks>
-		Public Shared ReadOnly Property DefaultRSSThreadsPerFeed() As Integer
-			Get
-				Return 20
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets Default value for RSS update Interval. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>The number of minutes between updates of RSS feeds.</returns>
-		''' <remarks>Users module's RSS page.</remarks>
-		Public Shared ReadOnly Property DefaultRSSUpdateInterval() As Integer
-			Get
-				Return 30
 			End Get
 		End Property
 
@@ -480,18 +371,6 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 #Region "General Settings"
-
-		''' <summary>
-		''' Gets the name of the module. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>The name of the forum module instance.</returns>
-		''' <remarks>Used in breadcrumb navigation.</remarks>
-		Public ReadOnly Property Name() As String
-			Get
-				Return _Name
-			End Get
-		End Property
 
 		''' <summary>
 		''' Gets if Aggregated Forum should be shown. 
@@ -1717,12 +1596,6 @@ Namespace DotNetNuke.Modules.Forum
 				End Try
 			End If
 
-			If Not settings("Name") Is Nothing Then
-				If Not settings("Name").ToString = String.Empty Then
-					_Name = CStr(GetValue(settings("Name"), CStr(_Name)))
-				End If
-			End If
-
 			If Not settings("SourceDirectory") Is Nothing Then
 				If Not settings("SourceDirectory").ToString = String.Empty Then
 					_SourceDirectory = CStr(GetValue(settings("SourceDirectory"), CStr(_SourceDirectory)))
@@ -2247,12 +2120,12 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 			End If
 
-			' This is to prepare for removal. Only new installs will not have treeview available (via drop down) in posts UI.
-			If Not settings("EnableTreeView") Is Nothing Then
-				If Not settings("EnableTreeView").ToString = String.Empty Then
-					_EnableTreeView = CBool(GetValue(settings("EnableTreeView"), CStr(_EnableTreeView)))
-				End If
-			End If
+			'' This is to prepare for removal. Only new installs will not have treeview available (via drop down) in posts UI.
+			'If Not settings("EnableTreeView") Is Nothing Then
+			'	If Not settings("EnableTreeView").ToString = String.Empty Then
+			'		_EnableTreeView = CBool(GetValue(settings("EnableTreeView"), CStr(_EnableTreeView)))
+			'	End If
+			'End If
 
 			If Not settings("PrimaryAlias") Is Nothing Then
 				If Not settings("PrimaryAlias").ToString = String.Empty Then

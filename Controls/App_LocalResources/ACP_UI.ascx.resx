@@ -150,12 +150,6 @@
   <data name="plImageExtension.Text" xml:space="preserve">
     <value>Theme Image Extension</value>
   </data>
-  <data name="plEnableIconBarAsImages.Help" xml:space="preserve">
-    <value>If checked, the forum theme will render icons instead of text links for the navigation toolbar at the top of most forum user interfaces.</value>
-  </data>
-  <data name="plEnableIconBarAsImages.Text" xml:space="preserve">
-    <value>Enable Toolbar Icons</value>
-  </data>
   <data name="lblTitle.Text" xml:space="preserve">
     <value>User Interface</value>
   </data>
@@ -169,7 +163,7 @@
     <value>Thread Page Count</value>
   </data>
   <data name="plDisplayPosterRegion.Help" xml:space="preserve">
-    <value>The selected item determines who sees the posters region of origin.</value>
+    <value>If checked, the 'Region' profile property will be displayed for all post authors. It should be noted, the visiblity of this is determined by what the user has set in their profile. </value>
   </data>
   <data name="plDisplayPosterRegion.Text" xml:space="preserve">
     <value>Display Region</value>

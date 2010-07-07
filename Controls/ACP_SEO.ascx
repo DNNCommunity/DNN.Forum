@@ -29,6 +29,16 @@
 					  <asp:checkbox id="chkOverrideTitle" runat="server" CssClass="Forum_NormalTextBox" EnableViewState="false" />
 				   </td>
 			    </tr>
+			    	<tr>
+				   <td width="35%">
+                  			<span class="Forum_Row_AdminText">
+	                			<dnn:label id="plOverrideDescription" runat="server" Suffix=":" controlname="chkOverrideDescription"></dnn:label>
+						</span>
+				   </td>
+				   <td  valign="middle" align="left">
+					  <asp:checkbox id="chkOverrideDescription" runat="server" CssClass="Forum_NormalTextBox" EnableViewState="false" />
+				   </td>
+			    </tr>
 				<tr>
 				   <td width="35%">
                   			<span class="Forum_Row_AdminText">
@@ -37,6 +47,16 @@
 				   </td>
 				   <td  valign="middle" align="left">
 					  <asp:checkbox id="chkNoFollowLatestThreads" runat="server" CssClass="Forum_NormalTextBox" EnableViewState="false" />
+				   </td>
+			    </tr>
+			    	<tr>
+				   <td width="35%">
+                  			<span class="Forum_Row_AdminText">
+	                			<dnn:label id="plSitemapPriority" runat="server" Suffix=":" controlname="txtSitemapPriority"></dnn:label>
+						</span>
+				   </td>
+				   <td  valign="middle" align="left">
+					  <asp:TextBox ID="txtSitemapPriority" runat="server" MaxLength="5" Width="50px" />
 				   </td>
 			    </tr>
 	          </table>

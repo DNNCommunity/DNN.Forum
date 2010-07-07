@@ -1015,13 +1015,42 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.RenderEndTag() ' </td>
 				wr.RenderEndTag() ' </tr>
 
-				'Email Queue
-				If Users.UserController.GetCurrentUserInfo.IsSuperUser Then
+				If objConfig.EnableEmailQueueTask Then
+					'Email Queue
+					If Users.UserController.GetCurrentUserInfo.IsSuperUser Then
+						wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>
+						wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
+						wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
+
+						If ControlToLoad = ctlEmailQueue Then
+							wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
+							wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
+							wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
+							wr.AddAttribute(HtmlTextWriterAttribute.Title, imgSelectedToolTip)
+							wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <img> 
+							wr.RenderEndTag() ' </img>
+						End If
+						wr.RenderEndTag() ' </td>
+
+						wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
+						wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
+						If EnableAjax Then
+							cmdEmailQueue.RenderControl(wr)
+						Else
+							url = Utilities.Links.ACPControlLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID, AdminAjaxControl.EmailQueue)
+							RenderLinkButton(wr, url, Localization.GetString("cmdEmailQueue", Me.LocalResourceFile), "Forum_Link")
+						End If
+
+						wr.RenderEndTag() ' </td>
+						wr.RenderEndTag() ' </tr>
+					End If
+
+					' Queue Task Detail
 					wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>
 					wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 					wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-					If ControlToLoad = ctlEmailQueue Then
+					If ControlToLoad = ctlEmailQueueTaskDetail Then
 						wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 						wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 						wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -1034,42 +1063,15 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
 					wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 					If EnableAjax Then
-						cmdEmailQueue.RenderControl(wr)
+						cmdEmailQueueTaskDetail.RenderControl(wr)
 					Else
-						url = Utilities.Links.ACPControlLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID, AdminAjaxControl.EmailQueue)
-						RenderLinkButton(wr, url, Localization.GetString("cmdEmailQueue", Me.LocalResourceFile), "Forum_Link")
+						url = Utilities.Links.ACPControlLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID, AdminAjaxControl.EmailQueueTaskDetail)
+						RenderLinkButton(wr, url, Localization.GetString("cmdEmailQueueTaskDetail", Me.LocalResourceFile), "Forum_Link")
 					End If
 
 					wr.RenderEndTag() ' </td>
 					wr.RenderEndTag() ' </tr>
 				End If
-
-				' Queue Task Detail
-				wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>
-				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
-				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
-
-				If ControlToLoad = ctlEmailQueueTaskDetail Then
-					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
-					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
-					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
-					wr.AddAttribute(HtmlTextWriterAttribute.Title, imgSelectedToolTip)
-					wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <img> 
-					wr.RenderEndTag() ' </img>
-				End If
-				wr.RenderEndTag() ' </td>
-
-				wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
-				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
-				If EnableAjax Then
-					cmdEmailQueueTaskDetail.RenderControl(wr)
-				Else
-					url = Utilities.Links.ACPControlLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID, AdminAjaxControl.EmailQueueTaskDetail)
-					RenderLinkButton(wr, url, Localization.GetString("cmdEmailQueueTaskDetail", Me.LocalResourceFile), "Forum_Link")
-				End If
-
-				wr.RenderEndTag() ' </td>
-				wr.RenderEndTag() ' </tr>
 
 				' Email Subscribers
 				wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>

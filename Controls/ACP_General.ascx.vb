@@ -40,7 +40,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <remarks></remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
 			BindAliases()
-			txtName.Text = objConfig.Name
 			chkAggregatedForums.Checked = objConfig.AggregatedForums
 			chkEnableThreadStatus.Checked = objConfig.EnableThreadStatus
 			chkEnablePostAbuse.Checked = objConfig.EnablePostAbuse
@@ -83,7 +82,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			Try
 				' Update settings in the database
 				Dim ctlModule As New Entities.Modules.ModuleController
-				ctlModule.UpdateModuleSetting(ModuleId, "Name", txtName.Text)
 				ctlModule.UpdateModuleSetting(ModuleId, "AggregatedForums", chkAggregatedForums.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, "EnableThreadStatus", chkEnableThreadStatus.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, "EnablePostAbuse", chkEnablePostAbuse.Checked.ToString)

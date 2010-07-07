@@ -599,7 +599,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public Property ThreadsPerPage() As Integer
 			Get
 				If Not _ThreadsPerPage > 0 Then
-					Return Forum.Config.DefaultThreadsPerPage
+					Return objConfig.ThreadsPerPage
 				Else
 					Return _ThreadsPerPage
 				End If
@@ -618,7 +618,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public Property PostsPerPage() As Integer
 			Get
 				If Not _PostsPerPage > 0 Then
-					Return Forum.Config.DefaultPostsPerPage
+					Return objConfig.PostsPerPage
 				Else
 					Return _PostsPerPage
 				End If

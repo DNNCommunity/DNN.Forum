@@ -144,4 +144,16 @@
   <data name="plNoFollowLatestThreads.Text" xml:space="preserve">
     <value>Latest Threads No Follow</value>
   </data>
+  <data name="plOverrideDescription.Help" xml:space="preserve">
+    <value>If checked, the page meta description set by DotNetNuke will be overriden with the initial post content at the thread level (when view posts). If in forum view (ie. lists of threads) the description of the forum will be set here. </value>
+  </data>
+  <data name="plOverrideDescription.Text" xml:space="preserve">
+    <value>Override Page Description</value>
+  </data>
+  <data name="plSitemapPriority.Help" xml:space="preserve">
+    <value>This will set the priority level in the sitemap provider (values of 1.0 to .1 work here). </value>
+  </data>
+  <data name="plSitemapPriority.Text" xml:space="preserve">
+    <value>Sitemap Priority</value>
+  </data>
 </root>

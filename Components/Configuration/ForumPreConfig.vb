@@ -53,53 +53,13 @@ Namespace DotNetNuke.Modules.Forum
 		Public Shared Sub PreConfig(ByVal ModuleId As Integer, ByVal PortalId As Integer, ByVal UserId As Integer)
 			Dim ctlModule As New DotNetNuke.Entities.Modules.ModuleController
 			Dim _portalSettings As Portals.PortalSettings = Portals.PortalController.GetCurrentPortalSettings
-
-			ctlModule.UpdateModuleSetting(ModuleId, "Name", "Forum")
 			Dim mSourceDirectory As String = ApplicationPath & "/DesktopModules/Forum"
-			ctlModule.UpdateModuleSetting(ModuleId, "ForumSkin", "Blue")
-			ctlModule.UpdateModuleSetting(ModuleId, "EnableUserSkin", "False")
-			ctlModule.UpdateModuleSetting(ModuleId, "EnableTimeZone", "True")
-			' mail notifications
-			ctlModule.UpdateModuleSetting(ModuleId, "MailNotification", "True")
+
 			If Not _portalSettings.Email Is Nothing Then
 				ctlModule.UpdateModuleSetting(ModuleId, "AutomatedEmailAddress", _portalSettings.Email)
 			Else
-				ctlModule.UpdateModuleSetting(ModuleId, "AutomatedEmailAddress", "forum@YOURDOMAIN.com")
+				ctlModule.UpdateModuleSetting(ModuleId, "AutomatedEmailAddress", "you@domain.com")
 			End If
-			ctlModule.UpdateModuleSetting(ModuleId, "EnablePerForumFrom", "False")
-			ctlModule.UpdateModuleSetting(ModuleId, "EnableListServer", "False")
-			ctlModule.UpdateModuleSetting(ModuleId, "ListServerFolder", "Forums/ListServer/")
-
-			' New
-			ctlModule.UpdateModuleSetting(ModuleId, "IconBarAsImages", "True")
-			ctlModule.UpdateModuleSetting(ModuleId, "EnableAttachment", "False")
-			ctlModule.UpdateModuleSetting(ModuleId, "AggregatedForums", "False")
-			ctlModule.UpdateModuleSetting(ModuleId, "ThreadsPerPage", "10")
-			ctlModule.UpdateModuleSetting(ModuleId, "PostsPerPage", "5")
-			ctlModule.UpdateModuleSetting(ModuleId, "PopularThreadView", "200")
-			ctlModule.UpdateModuleSetting(ModuleId, "PopularThreadReply", "10")
-			' Rankings
-			ctlModule.UpdateModuleSetting(ModuleId, "Ranking", "True")
-			ctlModule.UpdateModuleSetting(ModuleId, "FirstRankPosts", "1000")
-			ctlModule.UpdateModuleSetting(ModuleId, "SecondRankPosts", "900")
-			ctlModule.UpdateModuleSetting(ModuleId, "ThirdRankPosts", "800")
-			ctlModule.UpdateModuleSetting(ModuleId, "FourthRankPosts", "700")
-			ctlModule.UpdateModuleSetting(ModuleId, "FifthRankPosts", "600")
-			ctlModule.UpdateModuleSetting(ModuleId, "SixthRankPosts", "500")
-			ctlModule.UpdateModuleSetting(ModuleId, "SeventhRankPosts", "400")
-			ctlModule.UpdateModuleSetting(ModuleId, "EigthRankPosts", "300")
-			ctlModule.UpdateModuleSetting(ModuleId, "NinthRankPosts", "200")
-			ctlModule.UpdateModuleSetting(ModuleId, "TenthRankPosts", "100")
-			' RSS
-			ctlModule.UpdateModuleSetting(ModuleId, "EnableRSS", "False")
-			ctlModule.UpdateModuleSetting(ModuleId, "RSSThreadsPerFeed", "20")
-			ctlModule.UpdateModuleSetting(ModuleId, "RSSUpdateInterval", "30")
-			' Bad Word Filter
-			ctlModule.UpdateModuleSetting(ModuleId, "EnableBadWordFilter", "True")
-			ctlModule.UpdateModuleSetting(ModuleId, "FilterSubject", "False")
-			ctlModule.UpdateModuleSetting(ModuleId, "EnableRatings", "True")
-			' Rating
-			ctlModule.UpdateModuleSetting(ModuleId, "RatingScale", "5")
 
 			' Users online module integration
 			Dim Enabled As Boolean
@@ -115,34 +75,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			'Community
 			ctlModule.UpdateModuleSetting(ModuleId, "EnableUsersOnline", Enabled.ToString)
-
-			' User Country displayed in posts area (next to subject, user alias)
-			ctlModule.UpdateModuleSetting(ModuleId, "DisplayPosterLocation", "0")
-
-			' Anon Attach
-			ctlModule.UpdateModuleSetting(ModuleId, "AnonDownloads", "True")
-			ctlModule.UpdateModuleSetting(ModuleId, "EnableThreadStatus", "True")
-			ctlModule.UpdateModuleSetting(ModuleId, "EnablePostAbuse", "True")
-			ctlModule.UpdateModuleSetting(ModuleId, "DisableHTMLPosting", "False")
-			ctlModule.UpdateModuleSetting(ModuleId, "TrustNewUsers", "False")
-			ctlModule.UpdateModuleSetting(ModuleId, "ImageExtension", "png")
-			ctlModule.UpdateModuleSetting(ModuleId, "EnableUserAvatar", "True")
-			ctlModule.UpdateModuleSetting(ModuleId, "EnableUserAvatarPool", "False")
-			ctlModule.UpdateModuleSetting(ModuleId, "UserAvatarPoolPath", "Forums/PoolAvatar/")
-			ctlModule.UpdateModuleSetting(ModuleId, "UserAvatarPath", "Forums/UserAvatar/")
-			ctlModule.UpdateModuleSetting(ModuleId, "UserAvatarWidth", "128")
-			ctlModule.UpdateModuleSetting(ModuleId, "UserAvatarHeight", "128")
-			ctlModule.UpdateModuleSetting(ModuleId, "UserAvatarMaxSize", "64")
-			ctlModule.UpdateModuleSetting(ModuleId, "EnableSystemAvatar", "True")
-			ctlModule.UpdateModuleSetting(ModuleId, "SystemAvatarPath", "Forums/SystemAvatar/")
-			ctlModule.UpdateModuleSetting(ModuleId, "EnableRoleAvatar", "False")
-			ctlModule.UpdateModuleSetting(ModuleId, "RoleAvatarPath", "Forums/RoleAvatar/")
 			ctlModule.UpdateModuleSetting(ModuleId, "EmailAddressDisplayName", _portalSettings.PortalName & " " & Localization.GetString("Forum", mSourceDirectory & "/App_LocalResources/SharedResources.resx"))
-			ctlModule.UpdateModuleSetting(ModuleId, "PostEditWindow", "0")
-			ctlModule.UpdateModuleSetting(ModuleId, "NoFollowLatestThreads", "True")
-
-			' Prepare to retire treeview (vs. flatview)
-			ctlModule.UpdateModuleSetting(ModuleId, "EnableTreeView", "False")
 
 			SetupDefaultGroup(ModuleId, PortalId, UserId, mSourceDirectory)
 		End Sub

@@ -126,30 +126,6 @@
   <data name="NumericValidation.ErrorMessage" xml:space="preserve">
     <value>Needs to be numeric!</value>
   </data>
-  <data name="plTrustNewUsers.Text" xml:space="preserve">
-    <value>Trust New Users</value>
-  </data>
-  <data name="plNameDisplay.Help" xml:space="preserve">
-    <value>This is the format the sites users will appear to users of this forum module. </value>
-  </data>
-  <data name="plNameDisplay.Text" xml:space="preserve">
-    <value>Member Name Display</value>
-  </data>
-  <data name="plTrustNewUsers.Help" xml:space="preserve">
-    <value>If checked, all new forum users will be trusted by default. This means they will not require moderation in moderated forums.&lt;br&gt;&lt;b&gt;NOTE&lt;/b&gt;&lt;br&gt;This will not update existing users status. It only affects users who have not visited a forum module per portal install.</value>
-  </data>
-  <data name="plAutoLockTrust.Help" xml:space="preserve">
-    <value>If checked, only administrators and not moderators can change the status of a user's trust level for newly created forum users.&lt;br&gt;&lt;b&gt;NOTE&lt;/b&gt;&lt;br&gt;User trust level locking is controlled on a per users basis.</value>
-  </data>
-  <data name="plAutoLockTrust.Text" xml:space="preserve">
-    <value>Lock New User Trust Setting</value>
-  </data>
-  <data name="plEnableModSigUpdates.Help" xml:space="preserve">
-    <value>If checked, moderators will be able to update users signatures from the user profile area viewable by all users.</value>
-  </data>
-  <data name="plEnableModSigUpdates.Text" xml:space="preserve">
-    <value>Moderator Signature Edits</value>
-  </data>
   <data name="PostEditWindow.ErrorMessage" xml:space="preserve">
     <value>Value must be between 0 and 60</value>
   </data>
@@ -159,35 +135,11 @@
   <data name="lblUpdateDone.Text" xml:space="preserve">
     <value>Updated Successfully!</value>
   </data>
-  <data name="plEnableExtDirectory.Help" xml:space="preserve">
-    <value>If checked, users will be navigated to an outside module to view a list of community members.</value>
-  </data>
-  <data name="plEnableExtDirectory.Text" xml:space="preserve">
-    <value>Enable External Directory</value>
-  </data>
   <data name="plEnableExtProfilePage.Help" xml:space="preserve">
-    <value>If checked, users will be navigated to an outside module to view a user's community profile.</value>
+    <value>If checked, users will be navigated to an outside module to view a user's community profile. If this is not checked, profiles will use the core profile page per user. </value>
   </data>
   <data name="plEnableExtProfilePage.Text" xml:space="preserve">
     <value>Enable External Profile</value>
-  </data>
-  <data name="plExtDirectoryPageID.Help" xml:space="preserve">
-    <value>The page which houses the directory module.</value>
-  </data>
-  <data name="plExtDirectoryPageID.Text" xml:space="preserve">
-    <value>Directory Page</value>
-  </data>
-  <data name="plExtDirectoryParamName.Help" xml:space="preserve">
-    <value>The URL parameter name that will be passed in combination with the value for external directory pages.</value>
-  </data>
-  <data name="plExtDirectoryParamName.Text" xml:space="preserve">
-    <value>Directory Parameter Name</value>
-  </data>
-  <data name="plExtDirectoryParamValue.Help" xml:space="preserve">
-    <value>The URL parameter value that will be passed in combination with the name for external directory pages.</value>
-  </data>
-  <data name="plExtDirectoryParamValue.Text" xml:space="preserve">
-    <value>Directory Parameter Value</value>
   </data>
   <data name="plExtProfilePageID.Help" xml:space="preserve">
     <value>The page which houses the profile module.</value>

@@ -661,6 +661,8 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 			Return strTextToRemove
 		End Function
 
+#End Region
+
 #Region "BreadCrumbs"
 
 		''' <summary>
@@ -687,8 +689,8 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 						'[skeel] Support for full breadcrumb in group and parent forum view
 						Dim Completed As Boolean = False
 
-						'Forum Home
-						sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), objConfig.Name, imageURL))
+						'Forum Home 
+						sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), Localization.GetString("Home", objConfig.SharedResourceFile), imageURL))
 
 						'Are we displaying a Group?
 						Try
@@ -722,7 +724,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 						Dim objForumInfo As ForumInfo
 						objForumInfo = CType(InfoObject, ForumInfo)
 						'Forum Home
-						sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), objConfig.Name, imageURL))
+						sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), Localization.GetString("Home", objConfig.SharedResourceFile), imageURL))
 						If objForumInfo.ForumID = -1 And objConfig.AggregatedForums Then
 							' Render Group Name
 							sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(TabID, -1, False), Localization.GetString("Aggregate", objConfig.SharedResourceFile), imageURL))
@@ -740,7 +742,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 
 					Case ForumScope.Unread
 						'Forum Home
-						sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), objConfig.Name, imageURL))
+						sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), Localization.GetString("Home", objConfig.SharedResourceFile), imageURL))
 						'Unread Threads
 						sb = sb.Append(GetBreadCrumb("", Localization.GetString("UnreadThreads", objConfig.SharedResourceFile), imageURL))
 
@@ -748,7 +750,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 						Dim objThreadInfo As ThreadInfo
 						objThreadInfo = CType(InfoObject, ThreadInfo)
 						'Forum Home
-						sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), objConfig.Name, imageURL))
+						sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), Localization.GetString("Home", objConfig.SharedResourceFile), imageURL))
 						' Render Group Name
 						sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objThreadInfo.HostForum.GroupID), TrimString(objThreadInfo.HostForum.ParentGroup.Name, 15), imageURL))
 
@@ -770,12 +772,12 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 					Case ForumScope.ThreadSearch
 						If (Not InfoObject Is Nothing) And objConfig.AggregatedForums Then
 							'Forum Home
-							sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), objConfig.Name, imageURL))
+							sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), Localization.GetString("Home", objConfig.SharedResourceFile), imageURL))
 							' Render Aggregated Group Name
 							sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(TabID, -1, False), Localization.GetString("Aggregate", objConfig.SharedResourceFile), imageURL))
 						Else
 							'Forum Home
-							sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), objConfig.Name, imageURL))
+							sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), Localization.GetString("Home", objConfig.SharedResourceFile), imageURL))
 							'Search
 							sb = sb.Append(GetBreadCrumb(Utilities.Links.SearchPageLink(TabID, ModuleID), Localization.GetString("Search", objConfig.SharedResourceFile), imageURL))
 							'Results
@@ -784,7 +786,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 
 					Case Else
 						'Forum Home
-						sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), objConfig.Name, imageURL))
+						sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), Localization.GetString("Home", objConfig.SharedResourceFile), imageURL))
 				End Select
 			Catch ex As Exception
 				LogException(ex)
@@ -826,8 +828,6 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 
 			Return sb.ToString
 		End Function
-
-#End Region
 
 #End Region
 

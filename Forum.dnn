@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DNN_Forum" type="Module" version="04.06.00">
+		<package name="DNN_Forum" type="Module" version="04.06.01">
 			<friendlyName>Forum</friendlyName>
 			<description>The core forum module for DotNetNuke.</description>
 			<owner>
@@ -119,12 +119,12 @@
 							<version>04.05.05</version>
 						</script>
 						<script type="Install">
-							<name>04.06.00.SqlDataProvider</name>
-							<version>04.06.00</version>
+							<name>04.06.01.SqlDataProvider</name>
+							<version>04.06.01</version>
 						</script>
 						<script type="UnInstall">
 							<name>Uninstall.SqlDataProvider</name>
-							<version>04.06.00</version>
+							<version>04.06.01</version>
 						</script>
 					</scripts>
 				</component>			

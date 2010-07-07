@@ -600,4 +600,7 @@
   <data name="cmdSubmit.Text" xml:space="preserve">
     <value>Submit</value>
   </data>
+  <data name="Home.Text" xml:space="preserve">
+    <value>Home</value>
+  </data>
 </root>

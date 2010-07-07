@@ -23,11 +23,9 @@ Option Explicit On
 Namespace DotNetNuke.Modules.Forum.ACP
 
 	''' <summary>
-	''' This is the General Settings area from Forum Administration.
-	''' Set basic configuration items for this forum module. (mod settings)
+	''' This is the SEO section for the module. Items related to SEO that are configured per module are set here. 
 	''' </summary>
-	''' <remarks>The majority of how the module operates is set here.
-	''' </remarks>
+	''' <remarks></remarks>
 	Partial Public Class SEO
 		Inherits ForumModuleBase
 		Implements Utilities.AjaxLoader.IPageLoad
@@ -42,6 +40,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			chkNoFollowWeb.Checked = objConfig.NoFollowWeb
 			chkOverrideTitle.Checked = objConfig.OverrideTitle
 			chkNoFollowLatestThreads.Checked = objConfig.NoFollowLatestThreads
+
+			'chkOverrideTitle.Checked = objConfig.OverrideTitle
+			'chkOverrideTitle.Checked = objConfig.OverrideTitle
 		End Sub
 
 #End Region
@@ -55,9 +56,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <param name="e"></param>
 		''' <remarks>Saves the module settings shown in this view.
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	7/13/2005	Created
-		''' </history>
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
 				' Update settings in the database
@@ -65,6 +63,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				ctlModule.UpdateModuleSetting(ModuleId, "NoFollowWeb", chkNoFollowWeb.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, "OverrideTitle", chkOverrideTitle.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, "NoFollowLatestThreads", chkNoFollowLatestThreads.Checked.ToString)
+
+				'ctlModule.UpdateModuleSetting(ModuleId, "OverrideTitle", chkOverrideTitle.Checked.ToString)
+				'ctlModule.UpdateModuleSetting(ModuleId, "OverrideTitle", chkOverrideTitle.Checked.ToString)
 
 				Config.ResetForumConfig(ModuleId)
 
