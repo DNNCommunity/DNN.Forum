@@ -20,6 +20,8 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Modules.Forum.Utilities
+
 Namespace DotNetNuke.Modules.Forum.ACP
 
 	''' <summary>
@@ -41,7 +43,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
 			If DotNetNuke.Framework.AJAX.IsInstalled Then
 				DotNetNuke.Framework.AJAX.RegisterScriptManager()
-				DotNetNuke.Framework.AJAX.WrapUpdatePanelControl(pnlContainer, True)
 			End If
 		End Sub
 
@@ -52,9 +53,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		'''' <param name="e"></param>
 		'''' <remarks>
 		'''' </remarks>
-		'''' <history>
-		'''' 	[cpaterra]	7/13/2005	Created
-		'''' </history>
 		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 			Try
 				Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
@@ -65,7 +63,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				End If
 
 				If Page.IsPostBack = False Then
-					litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
+					Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
+					ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
 					imgAddGroup.ImageUrl = objConfig.GetThemeImageURL("s_add.") & objConfig.ImageExtension
 					imgAddGroup.ToolTip = Localization.GetString("AddGroup", LocalResourceFile)
@@ -593,9 +592,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <param name="e"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	7/13/2005	Created
-		''' </history>
 		Protected Sub EditForum_Click(ByVal Sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs)
 			Try
 				Dim ForumID As Integer = Int32.Parse(CType(Sender, ImageButton).CommandArgument)
@@ -612,9 +608,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <param name="e"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	7/13/2005	Created
-		''' </history>
 		Protected Sub DeleteForum_Click(ByVal Sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs)
 			Try
 				Dim str As String = CType(Sender, ImageButton).CommandArgument
@@ -637,9 +630,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <param name="e"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	7/13/2005	Created
-		''' </history>
 		Protected Sub ForumUp_Click(ByVal Sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs)
 			Try
 				Dim forumID As Integer = Int32.Parse(CType(Sender, ImageButton).CommandArgument)
@@ -662,9 +652,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <param name="e"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	7/13/2005	Created
-		''' </history>
 		Protected Sub ForumDown_Click(ByVal Sender As System.Object, ByVal e As System.Web.UI.ImageClickEventArgs)
 			Try
 				Dim forumID As Integer = Int32.Parse(CType(Sender, ImageButton).CommandArgument)
@@ -724,6 +711,16 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			Else
 				lblvalAddGroup.Visible = True
 			End If
+		End Sub
+
+		''' <summary>
+		''' Return users back to the Forum Home page.
+		''' </summary>
+		''' <param name="sender"></param>
+		''' <param name="e"></param>
+		''' <remarks></remarks>
+		Protected Sub cmdHome_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdHome.Click
+			Response.Redirect(NavigateURL(), True)
 		End Sub
 
 #End Region

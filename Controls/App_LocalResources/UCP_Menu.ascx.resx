@@ -138,9 +138,6 @@
   <data name="cmdUserSettings.Text" xml:space="preserve">
     <value>Edit Settings</value>
   </data>
-  <data name="ForumHome.Text" xml:space="preserve">
-    <value>Forum Home</value>
-  </data>
   <data name="ForumSettings.Text" xml:space="preserve">
     <value>Forum Settings</value>
   </data>

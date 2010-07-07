@@ -1,5 +1,4 @@
 <%@ Control Language="vb" AutoEventWireup="false" Codebehind="Forum_ContentRemoved.ascx.vb" Inherits="DotNetNuke.Modules.Forum.ContentRemoved" %>
-<asp:Literal ID="litCSSLoad" runat="server" />
 <table class="Forum_Container" id="tblMain" cellspacing="0" cellpadding="0" width="100%"
 	align="center">
 	<tr>

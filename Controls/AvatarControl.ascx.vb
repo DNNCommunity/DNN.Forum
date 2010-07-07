@@ -303,7 +303,6 @@ Namespace DotNetNuke.Modules.Forum
 				Catch ex As Exception
 					DotNetNuke.Services.Exceptions.LogException(ex)
 				End Try
-
 			Catch ex As Exception
 				DotNetNuke.Services.Exceptions.LogException(ex)
 			End Try
@@ -562,7 +561,7 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-#Region " Interfaces "
+#Region "Interfaces"
 
 		''' <summary>
 		''' This runs only the first time the control is loaded via Ajax. 
@@ -579,14 +578,6 @@ Namespace DotNetNuke.Modules.Forum
 				Case AvatarControlType.System
 					trAvatarPool.Visible = False
 					trFileUpload.Visible = True
-
-					'Check if any avatars are available from the pool
-					Dim tmpArray As ArrayList = Common.Globals.GetFileList(PortalId, FileFilter, False, BaseFolder, False)
-					If tmpArray.Count > 0 Then
-						trAvatarPool.Visible = True
-					Else
-						trAvatarPool.Visible = False
-					End If
 				Case AvatarControlType.User
 					' Allow user avatar upload?
 					trFileUpload.Visible = objConfig.EnableUserAvatar
@@ -604,7 +595,6 @@ Namespace DotNetNuke.Modules.Forum
 						' we know it is a user avatar AND pool is disabled
 						trAvatarPool.Visible = False
 					End If
-
 			End Select
 
 			'Localization
@@ -632,7 +622,6 @@ Namespace DotNetNuke.Modules.Forum
 			lbl.Text = ImageName
 
 			If ImageName <> "spacer.gif" Then
-
 				'If AvatarType = AvatarControlType.System Then
 				imgb.ImageUrl = PortalSettings.HomeDirectory + BaseFolder + ImageName
 				'Else
@@ -654,7 +643,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <remarks>Added by skeel</remarks>
 		Private Sub dlAvatarPool_UpdateCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataListCommandEventArgs) Handles dlAvatarPool.UpdateCommand
-
 			Dim lbl As Label = CType(e.Item.FindControl("lblImageName"), Label)
 
 			If AvatarType = UserAvatarType.UserAvatar Then
@@ -675,17 +663,14 @@ Namespace DotNetNuke.Modules.Forum
 				Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
 				If ProfileUser.UserAvatar = UserAvatarType.UserAvatar Then
-
 					DeleteUploadedAvatarAndSaveProfile()
-
 				Else
 					'[skeel] Let's update the profile now, 
 					With ProfileUser
-
 						.UserAvatar = UserAvatarType.PoolAvatar
 						.Avatar = Images
-
 					End With
+
 					Dim ctlUser As New ForumUserController
 					ctlUser.Update(ProfileUser)
 					ForumUserController.ResetForumUser(ProfileUserID, PortalId)
@@ -721,7 +706,6 @@ Namespace DotNetNuke.Modules.Forum
 			Dim arr As ArrayList = Common.Globals.GetFileList(PortalId, FileFilter, NoneSpecified, Folder, False)
 			BottomPager.TotalRecords = arr.Count
 
-
 			Dim dsTemp As DataSet = New DataSet()
 			Dim Tables As DataTable = New DataTable()
 			dsTemp.Tables.Add(Tables)
@@ -730,13 +714,11 @@ Namespace DotNetNuke.Modules.Forum
 			dsTemp.Tables(0).Columns.Add("Value", System.Type.GetType("System.String"))
 
 			Dim str As Common.FileItem
-
 			Dim i As Integer = 0
 			Dim intFrom As Integer = (CurrentPage - 1) * PageSize
 			Dim intTo As Integer = (intFrom + PageSize) - 1
 
 			For Each str In arr
-
 				If i >= intFrom And i <= intTo Then
 					Dim myRow As DataRow = dsTemp.Tables(0).NewRow
 					myRow(0) = str.Text
@@ -748,7 +730,6 @@ Namespace DotNetNuke.Modules.Forum
 
 			'Fill up with blank images for the sake of layout
 			If dsTemp.Tables(0).Rows.Count < PageSize Then
-
 				Dim add As Integer = (PageSize - dsTemp.Tables(0).Rows.Count)
 				i = 1
 				Do While i <= add
@@ -758,7 +739,6 @@ Namespace DotNetNuke.Modules.Forum
 					dsTemp.Tables(0).Rows.Add(myRow)
 					i = i + 1
 				Loop
-
 			End If
 
 			dlAvatarPool.DataSource = dsTemp

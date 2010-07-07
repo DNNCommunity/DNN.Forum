@@ -1,6 +1,7 @@
 <%@ Control Language="vb" AutoEventWireup="false" Explicit="true" Codebehind="MCP_ReportedPost.ascx.vb" Inherits="DotNetNuke.Modules.Forum.MCP.ReportedPost" %>
 <%@ Register TagPrefix="dnnforum" Namespace="DotNetNuke.Modules.Forum.WebControls" Assembly="DotNetNuke.Modules.Forum" %>
-<asp:Panel ID="pnlReportedPost" runat="server">
+<div class="MCP-ReportedPost">
+	<asp:Panel ID="pnlReportedPost" runat="server">
     <asp:datagrid ID="dgReportedPost" runat="server" DataKeyField="ForumID" Width="100%" AutoGenerateColumns="false" CssClass="Forum_Grid" GridLines="None" >
 	    <HeaderStyle CssClass="Forum_Grid_Header" HorizontalAlign="Center"/>
 	    <ItemStyle CssClass="Forum_Grid_Row_Alt" />
@@ -26,7 +27,7 @@
      </asp:datagrid>
      <dnnforum:AjaxPager ID="BottomPager" runat="server" Width="100%"/>
 </asp:Panel>
-<asp:Panel ID="pnlPostDetails" runat="server">
+	<asp:Panel ID="pnlPostDetails" runat="server">
    <asp:datagrid ID="dgPostReportDetails" runat="server" DataKeyField="PostReportedID" Width="100%" AutoGenerateColumns="false" CssClass="Forum_Grid" GridLines="None" >
 	    <HeaderStyle CssClass="Forum_Grid_Header" HorizontalAlign="Center"/>
 	    <ItemStyle CssClass="Forum_Grid_Row_Alt" />
@@ -52,7 +53,7 @@
      </asp:datagrid>
      <dnnforum:AjaxPager ID="DetailPager" runat="server" Width="100%"/>
 </asp:Panel>
-<asp:Panel ID="pnlNoItems" runat="server">
+	<asp:Panel ID="pnlNoItems" runat="server">
     <table cellpadding="0" cellspacing ="0" width="100%">
         <tr>
 		    <td class="Forum_UCP_Header">
@@ -66,6 +67,4 @@
 		 </tr>
     </table>
 </asp:Panel>   
-
-
-            
+</div>

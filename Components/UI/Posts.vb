@@ -301,7 +301,7 @@ Namespace DotNetNuke.Modules.Forum
 		Protected Sub cmdThreadSubscribers_Click(ByVal sender As Object, ByVal e As System.EventArgs)
 			Dim url As String
 			url = Utilities.Links.ThreadEmailSubscribers(TabID, ModuleID, ForumId, ThreadId)
-			HttpContext.Current.Response.Redirect(url, False)
+			MyBase.BasePage.Response.Redirect(url, False)
 		End Sub
 
 		''' <summary>
@@ -342,8 +342,6 @@ Namespace DotNetNuke.Modules.Forum
 			If txtForumSearch.Text.Trim <> String.Empty Then
 				_url = Utilities.Links.ContainerSingleForumSearchLink(TabID, ForumId, txtForumSearch.Text)
 				MyBase.BasePage.Response.Redirect(_url, False)
-			Else
-				' inform the user that they need to specify something for search
 			End If
 		End Sub
 
@@ -402,8 +400,9 @@ Namespace DotNetNuke.Modules.Forum
 
 				Dim ctlPost As New PostController
 				_PostCollection = ctlPost.PostGetAll(ThreadId, PostPage, CurrentForumUser.PostsPerPage, False, ForumControl.Descending, PortalID)
+				' we need to redirect the user here to make sure the page is redrawn.
 			Else
-				' there is no content
+				' there is no quick reply message entered, yet they clicked submit. Show end user. 
 			End If
 		End Sub
 
@@ -514,15 +513,11 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 			End If
 
-			'CP - Handle Page Title
-			If objConfig.OverrideTitle Then
-				MyBase.BasePage.Title = ThreadInfo.Subject & " - " & ThreadInfo.HostForum.Name & " - " & Me.BaseControl.PortalName
-			End If
-
 			' If the thread info is nothing, it is probably a deleted thread
 			If ThreadInfo Is Nothing Then
-				' Redirect user to No Content page
-				HttpContext.Current.Response.Redirect(Utilities.Links.NoContentLink(TabID, ModuleID), False)
+				' we should consider setting type of redirect here?
+
+				MyBase.BasePage.Response.Redirect(Utilities.Links.NoContentLink(TabID, ModuleID), True)
 			End If
 
 			_HostForum = ThreadInfo.HostForum
@@ -530,8 +525,9 @@ Namespace DotNetNuke.Modules.Forum
 
 			' Make sure the forum is active 
 			If Not _HostForum.IsActive Then
-				' Redirect user to No Content page
-				HttpContext.Current.Response.Redirect(Utilities.Links.NoContentLink(TabID, ModuleID), False)
+				' we should consider setting type of redirect here?
+
+				MyBase.BasePage.Response.Redirect(Utilities.Links.NoContentLink(TabID, ModuleID), True)
 			End If
 
 			' User might access this page by typing url so better check permission on parent forum
@@ -540,9 +536,21 @@ Namespace DotNetNuke.Modules.Forum
 				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
 
 				If Not objSecurity.IsAllowedToViewPrivateForum Then
-					HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
+					' we should consider setting type of redirect here?
+
+					MyBase.BasePage.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
 				End If
 			End If
+
+			'We are past knowing the user should be here, let's handle SEO oriented things
+			If objConfig.OverrideTitle Then
+				MyBase.BasePage.Title = ThreadInfo.Subject & " - " & ThreadInfo.HostForum.Name & " - " & Me.BaseControl.PortalName
+			End If
+
+			If objConfig.OverrideDescription Then
+				MyBase.BasePage.Description = ThreadInfo.Subject + "," + ThreadInfo.HostForum.Name + "," + Me.BaseControl.PortalName
+			End If
+			' Consider add metakeywords via applied tags, when taxonomy is integrated
 
 			If _PostPage > 0 Then
 				_PostPage = _PostPage - 1

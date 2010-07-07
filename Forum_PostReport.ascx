@@ -1,9 +1,7 @@
 <%@ Control language="vb" CodeBehind="Forum_PostReport.ascx.vb" AutoEventWireup="false" Explicit="True" Inherits="DotNetNuke.Modules.Forum.PostReport" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
-<asp:Literal ID="litCSSLoad" runat="server" />
-<asp:Panel ID="pnlContainer" runat="server">
-	<table class="" id="tblMain" cellspacing="0" cellpadding="0" width="100%"
-		align="center">
+<div class="Post-Report">
+	<table class="Forum_SearchContainer" id="tblMain" cellspacing="0" cellpadding="0" width="100%" align="center" >
 		<tr>
 			<td align="left" colspan="2">
 				<table cellspacing="0" cellpadding="0" border="0" width="100%">
@@ -49,7 +47,7 @@
 		<tr>
 			<td class="Forum_Row_Admin_Foot" align="center" colspan="2">
 				<asp:linkbutton cssclass="CommandButton" id="cmdCancel" runat="server" resourcekey="cmdCancel" CausesValidation="False" />&nbsp;
-				<asp:linkbutton cssclass="CommandButton" id="cmdReport" runat="server" resourcekey="cmdReport" />
+				<asp:linkbutton cssclass="CommandButton primary-action" id="cmdReport" runat="server" resourcekey="cmdReport" />
 			</td>
 		</tr>
 				<tr>
@@ -58,4 +56,4 @@
 			</td>
 		</tr>
 	</table>
-</asp:Panel>
+</div>

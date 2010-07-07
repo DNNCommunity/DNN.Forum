@@ -15,24 +15,6 @@ Namespace DotNetNuke.Modules.Forum
 	Partial Public Class PostEdit
 
 		'''<summary>
-		'''litCSSLoad control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents litCSSLoad As Global.System.Web.UI.WebControls.Literal
-
-		'''<summary>
-		'''pnlContainer control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents pnlContainer As Global.System.Web.UI.WebControls.Panel
-
-		'''<summary>
 		'''tblNewPost control.
 		'''</summary>
 		'''<remarks>
@@ -537,15 +519,6 @@ Namespace DotNetNuke.Modules.Forum
 		Protected WithEvents cmdSubmit As Global.System.Web.UI.WebControls.LinkButton
 
 		'''<summary>
-		'''cmdPreview control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdPreview As Global.System.Web.UI.WebControls.LinkButton
-
-		'''<summary>
 		'''cmdBackToEdit control.
 		'''</summary>
 		'''<remarks>
@@ -562,6 +535,15 @@ Namespace DotNetNuke.Modules.Forum
 		'''To modify move field declaration from designer file to code-behind file.
 		'''</remarks>
 		Protected WithEvents cmdCancel As Global.System.Web.UI.WebControls.LinkButton
+
+		'''<summary>
+		'''cmdPreview control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents cmdPreview As Global.System.Web.UI.WebControls.LinkButton
 
 		'''<summary>
 		'''lblInfo control.

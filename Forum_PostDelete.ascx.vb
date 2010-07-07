@@ -20,6 +20,8 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Modules.Forum.Utilities
+
 Namespace DotNetNuke.Modules.Forum
 
 	''' <summary>
@@ -27,9 +29,6 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	''' <history>
-	''' 	[cpaterra]	7/13/2005	Created
-	''' </history>
 	Public MustInherit Class PostDelete
 		Inherits ForumModuleBase
 		Implements Entities.Modules.IActionable
@@ -69,7 +68,6 @@ Namespace DotNetNuke.Modules.Forum
 			' Ajax
 			If DotNetNuke.Framework.AJAX.IsInstalled Then
 				DotNetNuke.Framework.AJAX.RegisterScriptManager()
-				DotNetNuke.Framework.AJAX.WrapUpdatePanelControl(pnlContainer, True)
 				DotNetNuke.Framework.AJAX.RegisterPostBackControl(cmdCancel)
 				'DotNetNuke.Framework.AJAX.RegisterPostBackControl(cmdDelete)
 			End If
@@ -127,7 +125,8 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 
 					If Not Page.IsPostBack Then
-						litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
+						Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
+						ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
 						PopulatePost(PostID, _IsThreadDelete)
 						PopulateTemplateDDL()

@@ -18,7 +18,9 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 Option Strict On
-Option Explicit On 
+Option Explicit On
+
+Imports DotNetNuke.Modules.Forum.Utilities
 
 Namespace DotNetNuke.Modules.Forum
 
@@ -186,7 +188,8 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 
 				If Page.IsPostBack = False Then
-					litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
+					Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
+					ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
 					txtSubject.Text = objPostInfo.Subject
 					txtSubject.Enabled = True

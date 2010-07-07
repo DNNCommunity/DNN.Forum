@@ -240,8 +240,11 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
 				rowEnableProfileUserFolders.Visible = Enabled
 				rowUserAvatarPath.Visible = Not chkEnableProfileUserFolders.Checked
+
+				chkEnableUserAvatarPool.Checked = False
 			Else
 				rowUserAvatarPoolEnable.Visible = True
+
 				rowEnableProfileUserFolders.Visible = False
 			End If
 		End Sub
@@ -271,7 +274,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			rowEnableProfileUserFolders.Visible = Enabled
 			rowProfileAvatarPropertyName.Visible = False
 
-
+			If Not Enabled Then
+				chkEnableUserAvatarPool.Checked = False
+			End If
 		End Sub
 
 #End Region

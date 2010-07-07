@@ -20,7 +20,6 @@
         <td>
             <asp:LinkButton ID="cmdBrowsePool" runat="server" CssClass="CommandButton" CausesValidation="false" resourcekey="cmdViewPool" />
         </td>
-    
     </tr>
     <tr>
         <td id="trFileUpload" runat="server">

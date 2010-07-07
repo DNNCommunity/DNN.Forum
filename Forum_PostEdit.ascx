@@ -3,8 +3,7 @@
 <%@ Register TagPrefix="forum" TagName="Attachment" Src="~/DesktopModules/Forum/controls/AttachmentControl.ascx" %>
 <%@ Control language="vb" CodeBehind="Forum_PostEdit.ascx.vb" AutoEventWireup="True" Inherits="DotNetNuke.Modules.Forum.PostEdit" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
-<asp:Literal ID="litCSSLoad" runat="server" />
-<asp:Panel ID="pnlContainer" runat="server">
+<div class="Post-Edit">
     <table class="Forum_SearchContainer" cellspacing="0" cellpadding="0" width="100%" align="center">
 	    <tr>
 	        <td>
@@ -284,10 +283,10 @@
 	<tr>
 	        <td align="center" width="100%">
 			  <asp:linkbutton cssclass="CommandButton" id="cmdBackToForum" runat="server" resourcekey="cmdBackToForum" />
-	            <asp:linkbutton cssclass="CommandButton" id="cmdSubmit" runat="server" resourcekey="cmdSubmit" />&nbsp;
-	            <asp:linkbutton cssclass="CommandButton" id="cmdPreview" runat="server" resourcekey="cmdPreview" CausesValidation="false" />
-	            <asp:linkbutton cssclass="CommandButton" id="cmdBackToEdit" runat="server" resourcekey="cmdReturnToEdit" CausesValidation="False" />&nbsp;
-	            <asp:linkbutton cssclass="CommandButton" id="cmdCancel" runat="server" resourcekey="cmdCancel" CausesValidation="False" />
+	            <asp:linkbutton cssclass="CommandButton primary-action" id="cmdSubmit" runat="server" resourcekey="cmdSubmit" />
+	            <asp:linkbutton cssclass="CommandButton" id="cmdBackToEdit" runat="server" resourcekey="cmdReturnToEdit" CausesValidation="False" />
+	            <asp:linkbutton cssclass="CommandButton" id="cmdCancel" runat="server" resourcekey="cmdCancel" CausesValidation="False" />&nbsp;
+			  <asp:linkbutton cssclass="CommandButton" id="cmdPreview" runat="server" resourcekey="cmdPreview" CausesValidation="false" />
 		   </td>
 	    </tr>
 	<tr>
@@ -341,4 +340,4 @@
 		</td>
 	</tr>
 </table>
-</asp:Panel>
+</div>

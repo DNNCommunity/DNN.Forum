@@ -20,6 +20,8 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Modules.Forum.Utilities
+
 Namespace DotNetNuke.Modules.Forum.ACP
 
 	''' <summary>
@@ -131,7 +133,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
 			If DotNetNuke.Framework.AJAX.IsInstalled Then
 				DotNetNuke.Framework.AJAX.RegisterScriptManager()
-				DotNetNuke.Framework.AJAX.WrapUpdatePanelControl(pnlContainer, True)
 				DotNetNuke.Framework.AJAX.RegisterPostBackControl(cmdAdd)
 				DotNetNuke.Framework.AJAX.RegisterPostBackControl(cmdDelete)
 				DotNetNuke.Framework.AJAX.RegisterPostBackControl(cmdUpdate)
@@ -161,7 +162,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				ACPmenu.EnableAjax = False
 
 				If Not Page.IsPostBack Then
-					litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
+					Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
+					ForumUtils.LoadCssFile(DefaultPage, objConfig)
+
 					BuildTabs()
 					SetURLController()
 					BindGroup()
@@ -487,6 +490,16 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected Sub ddlForumBehavior_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ddlForumBehavior.SelectedIndexChanged
 			HandleForumBehavior()
 			SetupForumPermsGrid(False)
+		End Sub
+
+		''' <summary>
+		''' Return users back to the Forum Home page.
+		''' </summary>
+		''' <param name="sender"></param>
+		''' <param name="e"></param>
+		''' <remarks></remarks>
+		Protected Sub cmdHome_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdHome.Click
+			Response.Redirect(NavigateURL(), True)
 		End Sub
 
 #End Region

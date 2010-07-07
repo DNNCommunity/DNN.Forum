@@ -399,4 +399,7 @@
   <data name="plEmailPort.Text" xml:space="preserve">
     <value>Email Port</value>
   </data>
+  <data name="cmdHome.Text" xml:space="preserve">
+    <value>Home</value>
+  </data>
 </root>

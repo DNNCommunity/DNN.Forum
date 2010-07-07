@@ -15,15 +15,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 	Partial Public Class EmailTemplate
 
 		'''<summary>
-		'''litCSSLoad control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents litCSSLoad As Global.System.Web.UI.WebControls.Literal
-
-		'''<summary>
 		'''ACPmenu control.
 		'''</summary>
 		'''<remarks>
@@ -184,5 +175,14 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		'''To modify move field declaration from designer file to code-behind file.
 		'''</remarks>
 		Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
+
+		'''<summary>
+		'''cmdHome control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents cmdHome As Global.System.Web.UI.WebControls.LinkButton
 	End Class
 End Namespace

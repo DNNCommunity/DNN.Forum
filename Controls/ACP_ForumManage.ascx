@@ -1,10 +1,9 @@
 <%@ Control Inherits="DotNetNuke.Modules.Forum.ACP.ForumManage" CodeBehind="ACP_ForumManage.ascx.vb" language="vb" AutoEventWireup="false" Explicit="true" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="forum" TagName="ACPmenu" src="~/DesktopModules/Forum/Controls/ACP_Menu.ascx" %>
-<asp:Literal ID="litCSSLoad" runat="server" />
-<asp:Panel ID="pnlContainer" runat="server">
-    <table cellpadding="0" cellspacing="0" width="100%" border="0">
-        <tr valign="top">
+<div class="ACP-ForumManage">
+    <table cellpadding="0" cellspacing="0" width="100%" border="0" class="Forum_SearchContainer" >
+		<tr valign="top">
             <td class="Forum_UCP_Left">
 			<forum:ACPmenu ID="ACPmenu" runat="server" />
 		  </td>
@@ -197,6 +196,9 @@
                      </tr>
                 </table>
             </td>
-        </tr>
+		</tr>
+		<tr>
+			<td align="center" colspan="2"><asp:LinkButton ID="cmdHome" runat="server" CssClass="CommandButton" resourcekey="cmdHome" /></td>
+		</tr>
     </table>
-</asp:Panel>
+</div>

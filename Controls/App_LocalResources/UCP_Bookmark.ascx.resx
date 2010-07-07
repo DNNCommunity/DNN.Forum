@@ -130,7 +130,7 @@
     <value>View Profile</value>
   </data>
   <data name="cmdRemove.Text" xml:space="preserve">
-    <value>Remove Selected Bookmarks</value>
+    <value>Remove</value>
   </data>
   <data name="LastPost.Header" xml:space="preserve">
     <value>Last Post</value>

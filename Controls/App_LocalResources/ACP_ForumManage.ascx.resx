@@ -177,4 +177,7 @@
   <data name="imgGroupUp.Text" xml:space="preserve">
     <value>Move Up</value>
   </data>
+  <data name="cmdHome.Text" xml:space="preserve">
+    <value>Home</value>
+  </data>
 </root>

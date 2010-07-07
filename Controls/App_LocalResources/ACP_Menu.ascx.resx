@@ -180,9 +180,6 @@
   <data name="EmailSection.Text" xml:space="preserve">
     <value>Email</value>
   </data>
-  <data name="ForumHome.Text" xml:space="preserve">
-    <value>Forum Home</value>
-  </data>
   <data name="UserSection.Text" xml:space="preserve">
     <value>Users</value>
   </data>

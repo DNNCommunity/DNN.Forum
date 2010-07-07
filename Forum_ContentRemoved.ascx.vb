@@ -20,6 +20,8 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Modules.Forum.Utilities
+
 Namespace DotNetNuke.Modules.Forum
 
 	''' <summary>
@@ -59,7 +61,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 			If Not Page.IsPostBack Then
-				litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
+				Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
+				ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
 				' Store the referrer for returning to where the user came from
 				If Not Request.UrlReferrer Is Nothing Then

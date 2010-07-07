@@ -18,7 +18,9 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 Option Strict On
-Option Explicit On 
+Option Explicit On
+
+Imports DotNetNuke.Modules.Forum.Utilities
 
 Namespace DotNetNuke.Modules.Forum
 
@@ -71,10 +73,7 @@ Namespace DotNetNuke.Modules.Forum
 		Protected Sub Page_Init(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Init
 			If DotNetNuke.Framework.AJAX.IsInstalled Then
 				DotNetNuke.Framework.AJAX.RegisterScriptManager()
-				DotNetNuke.Framework.AJAX.WrapUpdatePanelControl(pnlContainer, False)
 			End If
-
-			litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
 		End Sub
 
 		''' <summary>
@@ -101,6 +100,9 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 
 				If Not Page.IsPostBack Then
+					Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
+					ForumUtils.LoadCssFile(DefaultPage, objConfig)
+
 					' CP - Check the URL here to see if we should load a specific control (ie. view = x)
 					If Not Request.QueryString("view") Is Nothing Then
 						Dim strTempControl As String

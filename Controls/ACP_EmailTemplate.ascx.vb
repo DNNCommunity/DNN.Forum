@@ -20,6 +20,8 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Modules.Forum.Utilities
+
 Namespace DotNetNuke.Modules.Forum.ACP
 
 	''' <summary>
@@ -48,7 +50,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				End If
 
 				If Page.IsPostBack = False Then
-					litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
+					Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
+					ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
 					Dim ModuleTemplates As New ListItem(Localization.GetString("ModuleTemplates", objConfig.SharedResourceFile), "0")
 					Dim HostTemplates As New ListItem(Localization.GetString("HostTemplates", objConfig.SharedResourceFile), "1")
@@ -85,9 +88,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <param name="e"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	7/13/2005	Created
-		''' </history>
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
 				Dim objTemplateCnt As New ForumEmailTemplateController
@@ -122,9 +122,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <param name="e"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	8/20/2006	Created
-		''' </history>
 		Protected Sub ddlEmailTemplate_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ddlEmailTemplate.SelectedIndexChanged
 			BindSingleTemplate()
 		End Sub
@@ -136,14 +133,17 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <param name="e"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	8/20/2006	Created
-		''' </history>
 		Protected Sub rblstDefaults_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rblstDefaults.SelectedIndexChanged
 			BindEmailTemplates()
 			BindSingleTemplate()
 		End Sub
 
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="sender"></param>
+		''' <param name="e"></param>
+		''' <remarks></remarks>
 		Protected Sub dlKeywords_ItemDataBound(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataListItemEventArgs) Handles dlKeywords.ItemDataBound
 			Dim item As DataListItem = e.Item
 
@@ -168,6 +168,16 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			End If
 		End Sub
 
+		''' <summary>
+		''' Return users back to the Forum Home page.
+		''' </summary>
+		''' <param name="sender"></param>
+		''' <param name="e"></param>
+		''' <remarks></remarks>
+		Protected Sub cmdHome_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdHome.Click
+			Response.Redirect(NavigateURL(), True)
+		End Sub
+
 #End Region
 
 #Region "Private Methods"
@@ -177,9 +187,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </summary>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	8/20/2006	Created
-		''' </history>
 		Private Sub BindEmailTemplates()
 			Try
 				Dim objTemplateCnt As New ForumEmailTemplateController
@@ -251,9 +258,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </summary>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	8/20/2006	Created
-		''' </history>
 		Private Sub BindSingleTemplate()
 			Dim objTemplateCnt As New ForumEmailTemplateController
 			Dim objTemplateInfo As ForumEmailTemplateInfo

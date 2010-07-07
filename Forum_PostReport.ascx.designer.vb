@@ -15,24 +15,6 @@ Namespace DotNetNuke.Modules.Forum
 	Partial Public Class PostReport
 
 		'''<summary>
-		'''litCSSLoad control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents litCSSLoad As Global.System.Web.UI.WebControls.Literal
-
-		'''<summary>
-		'''pnlContainer control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents pnlContainer As Global.System.Web.UI.WebControls.Panel
-
-		'''<summary>
 		'''imgHeadSpacerL control.
 		'''</summary>
 		'''<remarks>

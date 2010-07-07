@@ -18,7 +18,9 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 Option Strict On
-Option Explicit On 
+Option Explicit On
+
+Imports DotNetNuke.Modules.Forum.Utilities
 
 Namespace DotNetNuke.Modules.Forum
 
@@ -31,22 +33,6 @@ Namespace DotNetNuke.Modules.Forum
 	Public Class SearchPage
 		Inherits ForumModuleBase
 		Implements Entities.Modules.IActionable
-
-#Region "Optional Interfaces"
-
-		''' <summary>
-		''' Gets a list of module actions available to the user to provide it to DNN core.
-		''' </summary>
-		''' <value></value>
-		''' <returns>The collection of module actions available to the user</returns>
-		''' <remarks></remarks>
-		Public ReadOnly Property ModuleActions() As Entities.Modules.Actions.ModuleActionCollection Implements Entities.Modules.IActionable.ModuleActions
-			Get
-				Return Utilities.ForumUtils.PerUserModuleActions(objConfig, Me)
-			End Get
-		End Property
-
-#End Region
 
 #Region "Properties"
 
@@ -106,7 +92,8 @@ Namespace DotNetNuke.Modules.Forum
 		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 			Try
 				If Not Page.IsPostBack Then
-					litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
+					Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
+					ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
 					''[skeel]
 					'If ForumConfig.AggregatedForums = False Then
@@ -278,9 +265,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="e"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	2/11/2006	Created
-		''' </history>
 		Protected Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
 			If Not ViewState("UrlReferrer") Is Nothing Then
 				Response.Redirect(CType(ViewState("UrlReferrer"), String), False)
@@ -347,6 +331,22 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 #End Region
+
+#End Region
+
+#Region "Optional Interfaces"
+
+		''' <summary>
+		''' Gets a list of module actions available to the user to provide it to DNN core.
+		''' </summary>
+		''' <value></value>
+		''' <returns>The collection of module actions available to the user</returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property ModuleActions() As Entities.Modules.Actions.ModuleActionCollection Implements Entities.Modules.IActionable.ModuleActions
+			Get
+				Return Utilities.ForumUtils.PerUserModuleActions(objConfig, Me)
+			End Get
+		End Property
 
 #End Region
 

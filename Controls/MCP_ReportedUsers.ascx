@@ -1,6 +1,7 @@
 <%@ Control Language="vb" AutoEventWireup="false" Explicit="true" Codebehind="MCP_ReportedUsers.ascx.vb" Inherits="DotNetNuke.Modules.Forum.MCP.ReportedUsers" %>
 <%@ Register TagPrefix="dnnforum" Namespace="DotNetNuke.Modules.Forum.WebControls" Assembly="DotNetNuke.Modules.Forum" %>
-<asp:Panel ID="pnlReportedUsers" runat="server">
+<div class="MCP-ReportedUsers">
+	<asp:Panel ID="pnlReportedUsers" runat="server">
     <asp:datagrid ID="dgReportedUsers" runat="server" DataKeyField="UserID" Width="100%" AutoGenerateColumns="false" CssClass="Forum_Grid" CellPadding="0" CellSpacing="0" GridLines="None" >
 	    <HeaderStyle CssClass="Forum_Grid_Header" HorizontalAlign="Center"/>
 	    <ItemStyle CssClass="Forum_Grid_Row_Alt" />
@@ -24,7 +25,7 @@
      </asp:datagrid>
      <dnnforum:AjaxPager ID="BottomPager" runat="server" Width="100%"/>
 </asp:Panel>
-<asp:Panel ID="pnlNoItems" runat="server">
+	<asp:Panel ID="pnlNoItems" runat="server">
     <table cellpadding="0" cellspacing ="0" width="100%">
 		<tr>
 			<td class="Forum_UCP_Header">
@@ -38,3 +39,4 @@
 		</tr>
     </table>
 </asp:Panel>
+</div>

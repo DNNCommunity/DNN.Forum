@@ -213,6 +213,41 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 			Return _objectQualifier
 		End Function
 
+		''' <summary>
+		''' This is used to load the stylesheet associated with the set forum theme. 
+		''' </summary>
+		''' <remarks>This loads into the head area of the page, instead of inline as part of the module (Proper format, necessary for Ajax). Mimics how containers load stylesheets.</remarks>
+		Public Shared Sub LoadCssFile(ByVal DefaultPage As CDefault, ByVal objConfig As Forum.Config)
+			' load the css file
+			Dim blnUpdateCache As Boolean = False
+
+			Dim ID As String
+			Dim objCSSCache As Hashtable = Nothing
+
+			If DotNetNuke.Entities.Host.Host.PerformanceSetting <> Common.Globals.PerformanceSettings.NoCaching Then
+				objCSSCache = CType(DataCache.GetCache("CSS"), Hashtable)
+			End If
+			If objCSSCache Is Nothing Then
+				objCSSCache = New Hashtable
+			End If
+
+			' module theme style sheet
+			ID = CreateValidID(objConfig.ThemeImageFolder)
+			If objCSSCache.ContainsKey(ID) = False Then
+				objCSSCache(ID) = objConfig.Css
+				blnUpdateCache = True
+			End If
+			If objCSSCache(ID).ToString <> "" Then
+				DefaultPage.AddStyleSheet(ID, objCSSCache(ID).ToString)
+			End If
+
+			If DotNetNuke.Entities.Host.Host.PerformanceSetting <> Common.Globals.PerformanceSettings.NoCaching Then
+				If blnUpdateCache Then
+					DataCache.SetCache("CSS", objCSSCache)
+				End If
+			End If
+		End Sub
+
 #End Region
 
 #Region "File System"

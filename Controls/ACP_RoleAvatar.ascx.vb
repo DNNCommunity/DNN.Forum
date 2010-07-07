@@ -20,6 +20,8 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Modules.Forum.Utilities
+
 Namespace DotNetNuke.Modules.Forum.ACP
 
 	''' <summary>
@@ -41,7 +43,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
 			If DotNetNuke.Framework.AJAX.IsInstalled Then
 				DotNetNuke.Framework.AJAX.RegisterScriptManager()
-				DotNetNuke.Framework.AJAX.WrapUpdatePanelControl(pnlContainer, True)
 			End If
 		End Sub
 
@@ -61,7 +62,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				End If
 
 				If Not Page.IsPostBack Then
-					litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
+					Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
+					ForumUtils.LoadCssFile(DefaultPage, objConfig)
+
 					BindData()
 				End If
 

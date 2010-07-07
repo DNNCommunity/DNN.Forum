@@ -192,7 +192,7 @@ Namespace DotNetNuke.Modules.Forum
 				Forum.ForumUserController.ResetForumUser(CurrentForumUser.UserID, PortalID)
 			End If
 
-			HttpContext.Current.Response.Redirect(url, False)
+			MyBase.BasePage.Response.Redirect(url, False)
 		End Sub
 
 		''' <summary>
@@ -232,7 +232,7 @@ Namespace DotNetNuke.Modules.Forum
 
 		Protected Sub cmdForumSubscribers_Click(ByVal sender As Object, ByVal e As EventArgs)
 			url = Utilities.Links.ForumEmailSubscribers(TabID, ModuleID, ForumId)
-			HttpContext.Current.Response.Redirect(url, False)
+			MyBase.BasePage.Response.Redirect(url, False)
 		End Sub
 
 #End Region
@@ -264,21 +264,32 @@ Namespace DotNetNuke.Modules.Forum
 
 				' Make sure the forum is not disabled
 				If Not _ParentForum.IsActive Then
-					HttpContext.Current.Response.Redirect(Utilities.Links.NoContentLink(TabID, ModuleID), False)
-				End If
+					' we should consider setting type of redirect here?
 
-				If objConfig.OverrideTitle Then
-					Me.BaseControl.BasePage.Title = _ParentForum.Name & " - " & Me.BaseControl.PortalName
+					MyBase.BasePage.Response.Redirect(Utilities.Links.NoContentLink(TabID, ModuleID), True)
 				End If
 
 				' User might access this page by typing url so better check permission on parent forum
 				If Not (_ParentForum.PublicView) Then
 					' The forum is private, see if we have proper view perms here
 					If Not objSecurity.IsAllowedToViewPrivateForum Then
-						HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
+						' we should consider setting type of redirect here?
+
+						MyBase.BasePage.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
 					End If
 				End If
 			End If
+
+			'We are past knowing the user should be here, let's handle SEO oriented things
+			If objConfig.OverrideTitle Then
+				Me.BaseControl.BasePage.Title = _ParentForum.Name & " - " & Me.BaseControl.PortalName
+			End If
+
+			If objConfig.OverrideDescription Then
+
+				MyBase.BasePage.Description = "," + _ParentForum.Name + "," + Me.BaseControl.PortalName
+			End If
+			' Consider add metakeywords via applied tags, when taxonomy is integrated
 
 			' We need to make sure the user's thread pagesize can handle this 
 			'(problem is, a link can be posted by one user w/ page size of 5 pointing to page 2, if logged in user has pagesize set to 15, there is no page 2)

@@ -154,7 +154,7 @@
 									<moduleControl>
 										<controlKey>ForumEdit</controlKey>
 										<controlSrc>DesktopModules/Forum/Controls/ACP_ForumEdit.ascx</controlSrc>
-										<supportsPartialRendering>False</supportsPartialRendering>
+										<supportsPartialRendering>True</supportsPartialRendering>
 										<controlTitle>Edit Forum</controlTitle>
 										<controlType>View</controlType>
 										<iconFile />
@@ -174,7 +174,7 @@
 									<moduleControl>
 										<controlKey>ForumSearch</controlKey>
 										<controlSrc>DesktopModules/Forum/Forum_Search.ascx</controlSrc>
-										<supportsPartialRendering>False</supportsPartialRendering>
+										<supportsPartialRendering>True</supportsPartialRendering>
 										<controlTitle>Search Forum</controlTitle>
 										<controlType>View</controlType>
 										<iconFile />
@@ -234,7 +234,7 @@
 									<moduleControl>
 										<controlKey>ThreadMove</controlKey>
 										<controlSrc>DesktopModules/Forum/Forum_ThreadMove.ascx</controlSrc>
-										<supportsPartialRendering>False</supportsPartialRendering>
+										<supportsPartialRendering>True</supportsPartialRendering>
 										<controlTitle>Move Thread</controlTitle>
 										<controlType>View</controlType>
 										<iconFile />
@@ -274,7 +274,7 @@
 									<moduleControl>
 										<controlKey>ContentRemoved</controlKey>
 										<controlSrc>DesktopModules/Forum/Forum_ContentRemoved.ascx</controlSrc>
-										<supportsPartialRendering>False</supportsPartialRendering>
+										<supportsPartialRendering>True</supportsPartialRendering>
 										<controlTitle>Content Removed</controlTitle>
 										<controlType>Anonymous</controlType>
 										<iconFile />
@@ -284,7 +284,7 @@
 									<moduleControl>
 										<controlKey>EmailTemplates</controlKey>
 										<controlSrc>DesktopModules/Forum/Controls/ACP_EmailTemplate.ascx</controlSrc>
-										<supportsPartialRendering>False</supportsPartialRendering>
+										<supportsPartialRendering>True</supportsPartialRendering>
 										<controlTitle>Email Templates</controlTitle>
 										<controlType>View</controlType>
 										<iconFile />
@@ -294,7 +294,7 @@
 									<moduleControl>
 										<controlKey>ThreadSplit</controlKey>
 										<controlSrc>DesktopModules/Forum/Forum_ThreadSplit.ascx</controlSrc>
-										<supportsPartialRendering>False</supportsPartialRendering>
+										<supportsPartialRendering>True</supportsPartialRendering>
 										<controlTitle>Split Thread</controlTitle>
 										<controlType>View</controlType>
 										<iconFile />
@@ -304,7 +304,7 @@
 									<moduleControl>
 										<controlKey>PublicProfile</controlKey>
 										<controlSrc>DesktopModules/Forum/PublicProfile.ascx</controlSrc>
-										<supportsPartialRendering>False</supportsPartialRendering>
+										<supportsPartialRendering>True</supportsPartialRendering>
 										<controlTitle>User Profile</controlTitle>
 										<controlType>View</controlType>
 										<iconFile />
@@ -314,7 +314,7 @@
 									<moduleControl>
 										<controlKey>RoleAvatar</controlKey>
 										<controlSrc>DesktopModules/Forum/Controls/ACP_RoleAvatar.ascx</controlSrc>
-										<supportsPartialRendering>False</supportsPartialRendering>
+										<supportsPartialRendering>True</supportsPartialRendering>
 										<controlTitle>Role Avatar Management</controlTitle>
 										<controlType>View</controlType>
 										<iconFile />

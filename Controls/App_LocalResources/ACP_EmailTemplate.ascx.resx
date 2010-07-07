@@ -171,4 +171,7 @@
   <data name="plAvailableKeywords.Text" xml:space="preserve">
     <value>Available Keywords</value>
   </data>
+  <data name="cmdHome.Text" xml:space="preserve">
+    <value>Home</value>
+  </data>
 </root>

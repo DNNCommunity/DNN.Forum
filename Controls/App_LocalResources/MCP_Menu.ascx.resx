@@ -120,9 +120,6 @@
   <data name="cmdOverview.Text" xml:space="preserve">
     <value>Overview</value>
   </data>
-  <data name="ForumHome.Text" xml:space="preserve">
-    <value>Forum Home</value>
-  </data>
   <data name="GeneralSettings.Text" xml:space="preserve">
     <value>Control Panel</value>
   </data>

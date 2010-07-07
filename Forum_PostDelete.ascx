@@ -1,8 +1,7 @@
 <%@ Control language="vb" CodeBehind="Forum_PostDelete.ascx.vb" AutoEventWireup="false" Explicit="True" Inherits="DotNetNuke.Modules.Forum.PostDelete" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
-<asp:Literal ID="litCSSLoad" runat="server" />
-<asp:Panel ID="pnlContainer" runat="server">
-	<table class="" id="tblMain" cellspacing="0" cellpadding="0" width="100%" align="center">
+<div class="Post-Delete">
+	<table class="Forum_SearchContainer" id="tblMain" cellspacing="0" cellpadding="0" width="100%" align="center">
 		<tr>
 			<td class="Forum_Row_AdminL" valign="top">
 				<span class="Forum_Row_AdminText">
@@ -64,9 +63,9 @@
 		</tr>
 		<tr>
 			<td class="Forum_Row_Admin_Foot" align="center" colspan="2">
-				<asp:linkbutton cssclass="CommandButton" id="cmdCancel" runat="server" resourcekey="cmdCancel" CausesValidation="False" />&nbsp;
-				<asp:linkbutton cssclass="CommandButton" id="cmdDelete" runat="server" resourcekey="cmdDelete" />
+				<asp:linkbutton cssclass="CommandButton primary-action" id="cmdDelete" runat="server" resourcekey="cmdDelete" />&nbsp;
+				<asp:linkbutton cssclass="CommandButton" id="cmdCancel" runat="server" resourcekey="cmdCancel" CausesValidation="False" />
 			</td>
 		</tr>
 	</table>
-</asp:Panel>
+</div>

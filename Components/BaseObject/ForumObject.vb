@@ -27,9 +27,6 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks>All dynamically generated UI's inherit from this class. (Threads, Posts, Forums, Search) This is essentially our PortalModuleBase for those controls.
 	''' </remarks>
-	''' <history>
-	''' 	[cpaterra]	7/13/2005	Created
-	''' </history>
 	Public Class ForumObject
 		Inherits ForumBaseObject
 

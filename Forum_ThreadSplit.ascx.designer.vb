@@ -15,24 +15,6 @@ Namespace DotNetNuke.Modules.Forum
 	Partial Public Class ThreadSplit
 
 		'''<summary>
-		'''litCSSLoad control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents litCSSLoad As Global.System.Web.UI.WebControls.Literal
-
-		'''<summary>
-		'''pnlContainer control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents pnlContainer As Global.System.Web.UI.WebControls.Panel
-
-		'''<summary>
 		'''plSubject control.
 		'''</summary>
 		'''<remarks>
@@ -150,15 +132,6 @@ Namespace DotNetNuke.Modules.Forum
 		Protected WithEvents dlPostsForThread As Global.System.Web.UI.WebControls.DataList
 
 		'''<summary>
-		'''cmdCancel control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdCancel As Global.System.Web.UI.WebControls.LinkButton
-
-		'''<summary>
 		'''cmdMove control.
 		'''</summary>
 		'''<remarks>
@@ -166,5 +139,14 @@ Namespace DotNetNuke.Modules.Forum
 		'''To modify move field declaration from designer file to code-behind file.
 		'''</remarks>
 		Protected WithEvents cmdMove As Global.System.Web.UI.WebControls.LinkButton
+
+		'''<summary>
+		'''cmdCancel control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents cmdCancel As Global.System.Web.UI.WebControls.LinkButton
 	End Class
 End Namespace

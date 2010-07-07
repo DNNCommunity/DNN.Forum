@@ -2,13 +2,13 @@
 <%@ Control language="vb" CodeBehind="ACP_EmailTemplate.ascx.vb" AutoEventWireup="false" Explicit="true" Inherits="DotNetNuke.Modules.Forum.ACP.EmailTemplate" %>
 <%@ Register TagPrefix="dnn" TagName="TextEditor" Src="~/controls/TextEditor.ascx"%>
 <%@ Register TagPrefix="forum" TagName="ACPmenu" src="~/DesktopModules/Forum/Controls/ACP_Menu.ascx" %>
-<asp:Literal ID="litCSSLoad" runat="server" />
-<table cellpadding="0" cellspacing="0" width="100%" border="0">
-	<tr valign="top">
-		<td class="Forum_UCP_Left">
+<div class="ACP-EmailTemplate">
+	<table cellpadding="0" cellspacing="0" width="100%" border="0" class="Forum_SearchContainer" >
+		<tr valign="top">
+			<td class="Forum_UCP_Left">
 			<forum:ACPmenu ID="ACPmenu" runat="server" />
 		</td>
-		<td class="Forum_UCP_Right">
+			<td class="Forum_UCP_Right">
 			<table cellpadding="0" cellspacing="0" width="100%" border="0">
 				<tr>
 					<td class="Forum_UCP_Header">
@@ -91,7 +91,7 @@
 							</tr>
 						</table>
 						<div align="center">
-							<asp:linkbutton class="CommandButton" id="cmdUpdate" runat="server" resourcekey="cmdUpdate" />
+							<asp:linkbutton class="CommandButton primary-action" id="cmdUpdate" runat="server" resourcekey="cmdUpdate" />
 						</div>
 						<div align="center">
 							<asp:Label ID="lblUpdateDone" runat="server" CssClass="NormalRed" Visible="false" resourcekey="lblUpdateDone" />
@@ -100,5 +100,9 @@
 				</tr>
 			</table>
 		</td>
-	</tr>
-</table>
+		</tr>
+		<tr>
+			<td align="center" colspan="2"><asp:LinkButton ID="cmdHome" runat="server" CssClass="CommandButton" resourcekey="cmdHome" /></td>
+		</tr>
+	</table>
+</div>

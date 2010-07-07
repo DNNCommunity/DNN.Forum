@@ -6,9 +6,8 @@
 <%@ Control language="vb" CodeBehind="ACP_ForumEdit.ascx.vb" AutoEventWireup="false" Explicit="true" Inherits="DotNetNuke.Modules.Forum.ACP.ForumEdit" %>
 <%@ Register TagPrefix="DNN" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke.WebControls" %>
 <%@ Register assembly="Telerik.Web.UI" namespace="Telerik.Web.UI" tagprefix="telerik" %>
-<asp:Literal ID="litCSSLoad" runat="server" />
-<asp:Panel ID="pnlContainer" runat="server">
-    <table cellpadding="0" cellspacing="0" width="100%" border="0">
+<div class="ACP-ForumEdit">
+    <table cellpadding="0" cellspacing="0" width="100%" border="0" class="Forum_SearchContainer" >
         <tr valign="top">
             <td class="Forum_UCP_Left"><forum:ACPmenu ID="ACPmenu" runat="server" /></td>
             <td class="Forum_UCP_Right">
@@ -319,8 +318,8 @@
 							</telerik:RadPageView>
 				   		</telerik:RadMultiPage>
 						<div class="Forum_Row_Admin_Foot" align="center">
-							  <asp:linkbutton class="CommandButton" id="cmdAdd" runat="server" resourcekey="cmdAdd" />
-							  <asp:linkbutton class="CommandButton" id="cmdUpdate" runat="server" resourcekey="cmdUpdate" />&nbsp;
+							  <asp:linkbutton class="CommandButton primary-action" id="cmdAdd" runat="server" resourcekey="cmdAdd" />
+							  <asp:linkbutton class="CommandButton primary-action" id="cmdUpdate" runat="server" resourcekey="cmdUpdate" />&nbsp;
 							  <asp:linkbutton class="CommandButton" id="cmdDelete" runat="server" resourcekey="cmdDelete" CausesValidation="false" />
 						</div>
                         </td>
@@ -328,5 +327,10 @@
                 </table>
             </td>
         </tr>
+	   <tr>
+		<td align="center" colspan="2">
+			<asp:LinkButton ID="cmdHome" runat="server" CssClass="CommandButton" resourcekey="cmdHome" />
+		</td>
+	   </tr>
     </table>
-</asp:Panel>
+</div>

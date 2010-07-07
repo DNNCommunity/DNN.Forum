@@ -133,10 +133,10 @@
     <value>View Profile</value>
   </data>
   <data name="cmdForumRemove.Text" xml:space="preserve">
-    <value>Remove Selected Forums</value>
+    <value>Remove</value>
   </data>
   <data name="cmdThreadRemove.Text" xml:space="preserve">
-    <value>Remove Selected Threads</value>
+    <value>Remove</value>
   </data>
   <data name="LastPost.Header" xml:space="preserve">
     <value>Last Post</value>

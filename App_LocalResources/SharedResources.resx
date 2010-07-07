@@ -324,9 +324,6 @@
   <data name="Username.Text" xml:space="preserve">
     <value>Username</value>
   </data>
-  <data name="ForumHome.Text" xml:space="preserve">
-    <value>Forum Home</value>
-  </data>
   <data name="Inbox.Text" xml:space="preserve">
     <value>Inbox</value>
   </data>
@@ -601,6 +598,9 @@
     <value>Submit</value>
   </data>
   <data name="Home.Text" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="ForumHome.Text" xml:space="preserve">
     <value>Home</value>
   </data>
 </root>

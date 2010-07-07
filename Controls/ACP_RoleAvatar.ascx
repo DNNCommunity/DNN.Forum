@@ -1,8 +1,7 @@
 <%@ Control Language="vb" Codebehind="ACP_RoleAvatar.ascx.vb" AutoEventWireup="false" Explicit="true" Inherits="DotNetNuke.Modules.Forum.ACP.RoleAvatar" %>
 <%@ Register TagPrefix="forum" TagName="AvatarControl" Src="~/DesktopModules/Forum/Controls/AvatarControl.ascx" %>
 <%@ Register TagPrefix="forum" TagName="ACPmenu" src="~/DesktopModules/Forum/Controls/ACP_Menu.ascx" %>
-<asp:Literal ID="litCSSLoad" runat="server" />
-<asp:Panel ID="pnlContainer" runat="server" />
+<div class="ACP-RoleAvatar">
 	<table cellpadding="0" cellspacing="0" width="100%" border="0" class="Forum_SearchContainer">
 		<tr valign="top">
 			<td class="Forum_UCP_Left"><forum:ACPmenu ID="ACPmenu" runat="server" /></td>
@@ -59,4 +58,4 @@
 			</td>
 		</tr>
 	</table>
-</asp:Panel>
+</div>

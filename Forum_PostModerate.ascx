@@ -1,6 +1,6 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Control language="vb" CodeBehind="Forum_PostModerate.ascx.vb" AutoEventWireup="true" Inherits="DotNetNuke.Modules.Forum.PostModerate" %>
-<asp:Literal ID="litCSSLoad" runat="server" />
+<div class="Post-Moderate">
 	<table class="Forum_Container" id="tblMain" cellspacing="0" cellpadding="0" width="100%"
 		align="center">
 		<tr>
@@ -125,3 +125,4 @@
 			</td>
 		</tr>
 	</table>
+</div>

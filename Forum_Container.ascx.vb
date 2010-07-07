@@ -20,6 +20,8 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Modules.Forum.Utilities
+
 Namespace DotNetNuke.Modules.Forum
 
 	''' <summary>
@@ -127,7 +129,8 @@ Namespace DotNetNuke.Modules.Forum
 		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 			Try
 				If Page.IsPostBack = False Then
-					LoadCssFile()
+					Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
+					ForumUtils.LoadCssFile(DefaultPage, objConfig)
 				End If
 
 				' Redirect to user's default forum if user access forum via menu
@@ -150,46 +153,6 @@ Namespace DotNetNuke.Modules.Forum
 			Catch exc As Exception
 				ProcessModuleLoadException(Me, exc)
 			End Try
-
-		End Sub
-
-#End Region
-
-#Region "Private Methods"
-
-		''' <summary>
-		''' This is used to load the stylesheet associated with the set forum theme. 
-		''' </summary>
-		''' <remarks>This loads into the head area of the page, instead of inline as part of the module (Proper format, necessary for Ajax). Mimics how containers load stylesheets.</remarks>
-		Private Sub LoadCssFile()
-			' load the css file
-			Dim blnUpdateCache As Boolean = False
-			Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
-			Dim ID As String
-			Dim objCSSCache As Hashtable = Nothing
-
-			If DotNetNuke.Entities.Host.Host.PerformanceSetting <> Common.Globals.PerformanceSettings.NoCaching Then
-				objCSSCache = CType(DataCache.GetCache("CSS"), Hashtable)
-			End If
-			If objCSSCache Is Nothing Then
-				objCSSCache = New Hashtable
-			End If
-
-			' module theme style sheet
-			ID = CreateValidID(objConfig.ThemeImageFolder)
-			If objCSSCache.ContainsKey(ID) = False Then
-				objCSSCache(ID) = objConfig.Css
-				blnUpdateCache = True
-			End If
-			If objCSSCache(ID).ToString <> "" Then
-				DefaultPage.AddStyleSheet(ID, objCSSCache(ID).ToString)
-			End If
-
-			If DotNetNuke.Entities.Host.Host.PerformanceSetting <> Common.Globals.PerformanceSettings.NoCaching Then
-				If blnUpdateCache Then
-					DataCache.SetCache("CSS", objCSSCache)
-				End If
-			End If
 		End Sub
 
 #End Region

@@ -15,15 +15,6 @@ Namespace DotNetNuke.Modules.Forum
 	Partial Public Class SearchPage
 
 		'''<summary>
-		'''litCSSLoad control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents litCSSLoad As Global.System.Web.UI.WebControls.Literal
-
-		'''<summary>
 		'''plPostDates control.
 		'''</summary>
 		'''<remarks>

@@ -3,35 +3,34 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnnforum" Namespace="DotNetNuke.Modules.Forum.WebControls" Assembly="DotNetNuke.Modules.Forum" %>
 <%@ Register assembly="Telerik.Web.UI" namespace="Telerik.Web.UI" tagprefix="telerik" %>
-<asp:Literal ID="litCSSLoad" runat="server" />
 <script type="text/javascript" language="javascript">
-var oldNode;
-function clientNodeChecked(sender, eventArgs)
-{
-   var node = eventArgs.get_node();
+	var oldNode;
+	function clientNodeChecked(sender, eventArgs)
+	{
+	   var node = eventArgs.get_node();
    
-   if(oldNode != null)
-   {
-       oldNode.set_checked(false);
-   }
+	   if(oldNode != null)
+	   {
+		  oldNode.set_checked(false);
+	   }
    
-   node.set_checked(true);
-   oldNode = node;
-}
+	   node.set_checked(true);
+	   oldNode = node;
+	}
 
-function pageLoad()
-{
-	var tree = $find("<%= rtvForums.ClientID  %>");
-   var checkedNodes = tree.get_checkedNodes();
-   if (checkedNodes)
-   {
-//this will ensure the correct behavior even if a node is checked server-side
-       oldNode = checkedNodes[0];
-   }
-}
+	function pageLoad()
+	{
+		var tree = $find("<%= rtvForums.ClientID  %>");
+	   var checkedNodes = tree.get_checkedNodes();
+	   if (checkedNodes)
+	   {
+	//this will ensure the correct behavior even if a node is checked server-side
+		  oldNode = checkedNodes[0];
+	   }
+	}
 </script>
-<asp:Panel ID="pnlContainer" runat="server">
-	<table class="" id="tblMain" cellspacing="0" cellpadding="0" width="100%"
+<div class="Thread-Split">
+	<table class="Forum_SearchContainer" id="tblMain" cellspacing="0" cellpadding="0" width="100%"
 		align="center">
 		<tr>
 			<td class="Forum_Row_AdminL">
@@ -168,9 +167,9 @@ function pageLoad()
         </tr>
 		<tr>
 			<td align="center" width="100%" colspan="2">
-				 <asp:linkbutton cssclass="CommandButton" id="cmdCancel" runat="server" resourcekey="cmdCancel" />&nbsp;
-				<asp:linkbutton cssclass="CommandButton" id="cmdMove" runat="server" resourcekey="cmdMove" />
+				<asp:linkbutton cssclass="CommandButton primary-action" id="cmdMove" runat="server" resourcekey="cmdMove" />&nbsp;
+				<asp:linkbutton cssclass="CommandButton" id="cmdCancel" runat="server" resourcekey="cmdCancel" />
 			</td>
 		</tr>
 	</table>
-</asp:Panel>
+</div>

@@ -20,6 +20,8 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Modules.Forum.Utilities
+
 Namespace DotNetNuke.Modules.Forum
 
 	''' <summary>
@@ -85,9 +87,10 @@ Namespace DotNetNuke.Modules.Forum
 					HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
 				End If
 
-				litCSSLoad.Text = "<link href='" & objConfig.Css & "' type='text/css' rel='stylesheet' />"
-
 				If Not Page.IsPostBack Then
+					Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
+					ForumUtils.LoadCssFile(DefaultPage, objConfig)
+
 					hlForum.Text = mForumInfo.Name
 					hlForum.NavigateUrl = Utilities.Links.ContainerViewForumLink(TabId, mForumID, False)
 

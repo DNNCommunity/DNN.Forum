@@ -27,9 +27,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	''' <history>
-	''' 	[skeel]	11/28/2008	Created
-	''' </history>
 	Partial Public Class Avatar
 		Inherits ForumModuleBase
 		Implements Utilities.AjaxLoader.IPageLoad
@@ -43,25 +40,17 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
 			Dim objSecurity As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
 			Dim cntForumUser As New ForumUserController
-
 			Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
-			If objSecurity.IsForumAdmin = True AndAlso objConfig.EnableSystemAvatar Then
-				rowSystemAvatar.Visible = True
-				ctlSystemAvatar.Images = ProfileUser.SystemAvatars
-				ctlSystemAvatar.LoadInitialView()
-			Else
-				rowSystemAvatar.Visible = False
+			If objSecurity.IsForumAdmin Then
+				If objConfig.EnableSystemAvatar Then
+					ctlSystemAvatar.Security = objSecurity
+					ctlSystemAvatar.AvatarType = AvatarControlType.System
+				End If
 			End If
 
-			'[skeel] we remove the update function for users as the 
-			' avatar control handles the updates for them
-			If objSecurity.IsForumAdmin = True Then
-				cmdUpdate.Visible = True
-			Else
-
-				cmdUpdate.Visible = False
-			End If
+			ctlUserAvatar.Security = objSecurity
+			ctlUserAvatar.AvatarType = AvatarControlType.User
 
 			' Hide the avatar if we are using profile avatars. 
 			If objConfig.EnableProfileAvatar Then
@@ -72,33 +61,18 @@ Namespace DotNetNuke.Modules.Forum.UCP
 			If ProfileUser.UserAvatar = UserAvatarType.PoolAvatar Then
 				ctlUserAvatar.IsPoolAvatar = True
 			End If
+
+			If (rowUserAvatar.Visible = False) And (rowSystemAvatar.Visible = False) Then
+				cmdUpdate.Visible = False
+			End If
+
 			ctlUserAvatar.LoadInitialView()
+			ctlSystemAvatar.LoadInitialView()
 		End Sub
 
 #End Region
 
 #Region "Event Handlers"
-
-		''' <summary>
-		''' There are several items we want to make sure are handled on every page load of this control. 
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
-		Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-			Dim objSecurity As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
-			Dim cntForumUser As New ForumUserController
-
-			Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
-
-			If objSecurity.IsForumAdmin = True AndAlso objConfig.EnableSystemAvatar Then
-				ctlSystemAvatar.Security = objSecurity
-				ctlSystemAvatar.AvatarType = AvatarControlType.System
-			End If
-
-			ctlUserAvatar.Security = objSecurity
-			ctlUserAvatar.AvatarType = AvatarControlType.User
-		End Sub
 
 		''' <summary>
 		''' Updates the users Forum settings
@@ -107,9 +81,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' <param name="e">System.EventArgs</param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	7/13/2005	Created
-		''' </history>
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
 				ForumUserController.ResetForumUser(ProfileUserID, PortalId)
