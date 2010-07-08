@@ -180,4 +180,7 @@
   <data name="cmdHome.Text" xml:space="preserve">
     <value>Home</value>
   </data>
+  <data name="lblNoRecords.Text" xml:space="preserve">
+    <value>No Records</value>
+  </data>
 </root>
