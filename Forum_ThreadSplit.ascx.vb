@@ -227,21 +227,6 @@ Namespace DotNetNuke.Modules.Forum
 			End Try
 		End Sub
 
-		'''' <summary>
-		'''' Populates one level of the forum treeview when needed(by groupid)
-		'''' </summary>
-		'''' <param name="source">Object</param>
-		'''' <param name="e">UI.WebControls.DNNTreeEventArgs</param>
-		'''' <remarks>
-		'''' </remarks>
-		'Protected Sub ForumTree_PopulateOnDemand(ByVal source As Object, ByVal e As UI.WebControls.DNNTreeEventArgs) Handles ForumTree.PopulateOnDemand
-		'	Dim groupController As New GroupController
-		'	Dim strKey As String = e.Node.Key.Substring(1)			  'trim off type
-		'	Dim objGroup As GroupInfo = groupController.GroupGet(CInt(strKey))
-
-		'	ForumTreeview.AddForums(objGroup, e.Node, objConfig, UserId)
-		'End Sub
-
 		''' <summary>
 		''' Moves the thread to a new forum, unless user is attempting to move
 		''' the thread to the same forum.
@@ -379,9 +364,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="objThreadInfo">ThreadInfo</param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	9/25/2006	Created
-		''' </history>
 		Private Sub SelectDefaultForumTree(ByVal objThreadInfo As ThreadInfo)
 			Dim SelectedForumID As Integer
 			SelectedForumID = objThreadInfo.ForumID

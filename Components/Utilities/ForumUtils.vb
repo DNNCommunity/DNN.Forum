@@ -304,7 +304,6 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 			' This abstract provider should handle core token replacement (like system messages, with portalinfo and userinfo specific information) THIS SHOULD BE CONTROLLED VIA boolean to avoid doing this processing when its not necessary which increases performance)
 
 			If objConfig.EnableEmailQueueTask Then
-
 				' Handle sending post deleted to user separate (because post will be removed and there is no way to get the recipient using queue since post will be gone from db)
 				If EmailType = ForumEmailType.UserPostDeleted Then
 					Dim sprocName As String = forumMail.DistroCall
@@ -345,7 +344,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 				Dim DistroCnt As New ForumEmailDistributionController
 				Dim arrEmails As List(Of ForumEmailDistributionInfo)
 
-				arrEmails = DistroCnt.GetEmailsToSend(sprocName, params, 0)
+				arrEmails = removeDuplicates(DistroCnt.GetEmailsToSend(sprocName, params, 0))
 
 				' Used to maintain list of who received (NOT FINISHED)
 				Dim arrSentEmails As New List(Of ForumEmailDistributionInfo)
@@ -395,6 +394,24 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 			End If
 
 			Return mailURL
+		End Function
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="inputList"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Shared Function removeDuplicates(ByVal inputList As List(Of ForumEmailDistributionInfo)) As List(Of ForumEmailDistributionInfo)
+			Dim uniqueStore As New Dictionary(Of ForumEmailDistributionInfo, Integer)
+			Dim finalList As New List(Of ForumEmailDistributionInfo)
+			For Each currValue As ForumEmailDistributionInfo In inputList
+				If Not uniqueStore.ContainsKey(currValue) Then
+					uniqueStore.Add(currValue, 0)
+					finalList.Add(currValue)
+				End If
+			Next
+			Return finalList
 		End Function
 
 #End Region

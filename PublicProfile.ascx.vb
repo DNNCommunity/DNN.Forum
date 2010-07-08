@@ -42,8 +42,11 @@ Namespace DotNetNuke.Modules.Forum
 			Try
 				If Request.QueryString("userid") IsNot Nothing Then
 					Dim profileUserID As Integer = CInt(Request.QueryString("userid").ToLower)
+					Dim url As String = DotNetNuke.Common.Globals.UserProfileURL(profileUserID)
 
-					Response.Redirect(DotNetNuke.Common.Globals.UserProfileURL(profileUserID), True)
+					Response.AddHeader("Location", url)
+					Response.StatusCode = 301
+					Response.Redirect(url, True)
 				Else
 					Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
 				End If

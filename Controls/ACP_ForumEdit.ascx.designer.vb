@@ -618,13 +618,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected WithEvents valDisplay As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
 		'''<summary>
-		'''row6 control.
+		'''rowSubsribeByDefault control.
 		'''</summary>
 		'''<remarks>
 		'''Auto-generated field.
 		'''To modify move field declaration from designer file to code-behind file.
 		'''</remarks>
-		Protected WithEvents row6 As Global.System.Web.UI.HtmlControls.HtmlTableRow
+		Protected WithEvents rowSubsribeByDefault As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
 		'''<summary>
 		'''plNotifyByDefault control.
@@ -645,13 +645,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected WithEvents chkNotifyByDefault As Global.System.Web.UI.WebControls.CheckBox
 
 		'''<summary>
-		'''row7 control.
+		'''rowEmailStatusChange control.
 		'''</summary>
 		'''<remarks>
 		'''Auto-generated field.
 		'''To modify move field declaration from designer file to code-behind file.
 		'''</remarks>
-		Protected WithEvents row7 As Global.System.Web.UI.HtmlControls.HtmlTableRow
+		Protected WithEvents rowEmailStatusChange As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
 		'''<summary>
 		'''plEmailStatusChange control.
