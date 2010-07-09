@@ -69,7 +69,6 @@ Namespace DotNetNuke.Modules.Forum
 			If DotNetNuke.Framework.AJAX.IsInstalled Then
 				DotNetNuke.Framework.AJAX.RegisterScriptManager()
 				DotNetNuke.Framework.AJAX.RegisterPostBackControl(cmdCancel)
-				'DotNetNuke.Framework.AJAX.RegisterPostBackControl(cmdDelete)
 			End If
 
 			If Not Request.QueryString("threadid") Is Nothing Then
@@ -111,6 +110,9 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 				End If
 
+				Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
+				ForumUtils.LoadCssFile(DefaultPage, objConfig)
+
 				If ForumID > 0 Then
 					Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, ForumID, UserId)
 
@@ -125,9 +127,6 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 
 					If Not Page.IsPostBack Then
-						Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
-						ForumUtils.LoadCssFile(DefaultPage, objConfig)
-
 						PopulatePost(PostID, _IsThreadDelete)
 						PopulateTemplateDDL()
 

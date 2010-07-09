@@ -29,9 +29,6 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	''' <history>
-	''' 	[cpaterra]	12/13/2006	Created
-	''' </history>
 	Public MustInherit Class PostReport
 		Inherits ForumModuleBase
 		Implements Entities.Modules.IActionable
@@ -73,7 +70,6 @@ Namespace DotNetNuke.Modules.Forum
 			If DotNetNuke.Framework.AJAX.IsInstalled Then
 				DotNetNuke.Framework.AJAX.RegisterScriptManager()
 				DotNetNuke.Framework.AJAX.RegisterPostBackControl(cmdCancel)
-				'DotNetNuke.Framework.AJAX.RegisterPostBackControl(cmdDelete)
 			End If
 		End Sub
 
@@ -115,10 +111,10 @@ Namespace DotNetNuke.Modules.Forum
 					HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
 				End If
 
-				If Page.IsPostBack = False Then
-					Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
-					ForumUtils.LoadCssFile(DefaultPage, objConfig)
+				Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
+				ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
+				If Page.IsPostBack = False Then
 					PopulatePost(_PostInfo)
 					PopulateTemplateDDL()
 

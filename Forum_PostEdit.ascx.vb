@@ -69,10 +69,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		''' 'This call is required by the Web Form Designer.
 		Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-			If Page.IsPostBack = False Then
-				Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
-				ForumUtils.LoadCssFile(DefaultPage, objConfig)
-			End If
+			Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
+			ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
 			If DotNetNuke.Framework.AJAX.IsInstalled Then
 				DotNetNuke.Framework.AJAX.RegisterScriptManager()

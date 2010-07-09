@@ -32,9 +32,6 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	''' <history>
-	''' 	[cpaterra]	12/4/2005	Created
-	''' </history>
 	Public Class ForumUser
 		Inherits DotNetNuke.Entities.Users.UserInfo
 
@@ -62,13 +59,10 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _IsTrusted As Boolean = False
 		Dim _EnableThreadTracking As Boolean = False
 		Dim _EnableDisplayUnreadThreadsOnly As Boolean = False
-		Dim _EnableDisplayInMemberList As Boolean = False
-		Dim _EnablePrivateMessages As Boolean = True
 		Dim _EnableOnlineStatus As Boolean = True
 		Dim _ThreadsPerPage As Integer = -1
 		Dim _PostsPerPage As Integer = -1
 		Dim _LastActivity As DateTime = Now
-		Dim _FlatView As Boolean = True
 		Dim _ViewDescending As Boolean = False
 		Dim _EnableModNotification As Boolean = True
 		Dim _EmailFormat As Integer
@@ -83,13 +77,10 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _LiftBanDate As Date = Date.Now()
 		Dim _TrackingDuration As Integer = 1000
 		Dim _EnableProfileWeb As Boolean = True
-		Dim _EnableProfileRegion As Boolean = False
 		Dim _EnableDefaultPostNotify As Boolean = True
 		Dim _EnableSelfNotifications As Boolean = True
 		Dim _TotalRecords As Integer
 		Dim _IsDeleted As Boolean = False
-		Dim _UserWebsite As String
-		Dim _Biography As String
 		Dim _StartBanDate As Date
 
 #End Region
@@ -132,7 +123,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property UserWebsite() As String
 			Get
-				_UserWebsite = Me.Profile.Website
+				Dim _UserWebsite As String = Me.Profile.Website
 				If Not _UserWebsite Is Nothing Then
 					If _UserWebsite.Length > 0 AndAlso (Not _UserWebsite.StartsWith("http")) Then
 						_UserWebsite = "http://" & _UserWebsite
@@ -451,7 +442,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' If the user has an avatar image assigned.  
+		''' Determines the type of user avatar image assigned. 
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
@@ -557,21 +548,6 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 			Set(ByVal Value As Boolean)
 				_IsTrusted = Value
-			End Set
-		End Property
-
-		''' <summary>
-		''' if the user's profile shows in the memberlist. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property EnableDisplayInMemberList() As Boolean
-			Get
-				Return _EnableDisplayInMemberList
-			End Get
-			Set(ByVal Value As Boolean)
-				_EnableDisplayInMemberList = Value
 			End Set
 		End Property
 

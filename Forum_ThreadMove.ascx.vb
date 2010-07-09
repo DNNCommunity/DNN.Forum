@@ -106,13 +106,12 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="e"></param>
 		''' <remarks></remarks>
 		Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-			'' Ajax
-			'If DotNetNuke.Framework.AJAX.IsInstalled Then
-			'    DotNetNuke.Framework.AJAX.RegisterScriptManager()
-			'    DotNetNuke.Framework.AJAX.WrapUpdatePanelControl(pnlContainer, True)
-			'    DotNetNuke.Framework.AJAX.RegisterPostBackControl(cmdCancel)
-			'    DotNetNuke.Framework.AJAX.RegisterPostBackControl(cmdMove)
-			'End If
+			' Ajax
+			If DotNetNuke.Framework.AJAX.IsInstalled Then
+				DotNetNuke.Framework.AJAX.RegisterScriptManager()
+				DotNetNuke.Framework.AJAX.RegisterPostBackControl(cmdCancel)
+				DotNetNuke.Framework.AJAX.RegisterPostBackControl(cmdMove)
+			End If
 		End Sub
 
 		''' <summary>
@@ -153,10 +152,10 @@ Namespace DotNetNuke.Modules.Forum
 					HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
 				End If
 
-				If Page.IsPostBack = False Then
-					Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
-					ForumUtils.LoadCssFile(DefaultPage, objConfig)
+				Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
+				ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
+				If Page.IsPostBack = False Then
 					txtSubject.Text = _ThreadInfo.Subject
 					txtOldForum.Text = _ThreadInfo.HostForum.Name
 

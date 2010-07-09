@@ -28,7 +28,6 @@ Namespace DotNetNuke.Modules.Forum
 	''' to be changeable at the page level. This means you can copy existing versions of the module
 	''' based on (ModuleID) and display things different based on the page settings for this ModuleID. 
 	''' </summary>
-	''' <remarks>[cpaterra] - As of 11/2006 this is thought to be feature complete.</remarks>
 	Public MustInherit Class ModuleSettings
 		Inherits Entities.Modules.ModuleSettingsBase
 

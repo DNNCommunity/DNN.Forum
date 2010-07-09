@@ -87,10 +87,10 @@ Namespace DotNetNuke.Modules.Forum
 					HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
 				End If
 
-				If Not Page.IsPostBack Then
-					Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
-					ForumUtils.LoadCssFile(DefaultPage, objConfig)
+				Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
+				ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
+				If Not Page.IsPostBack Then
 					hlForum.Text = mForumInfo.Name
 					hlForum.NavigateUrl = Utilities.Links.ContainerViewForumLink(TabId, mForumID, False)
 

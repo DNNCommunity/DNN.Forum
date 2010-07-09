@@ -69,9 +69,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="e">The event arguement.</param>
 		''' <remarks>The event arguement and the object are not used. ObjectID needs to be reconsidered.
 		''' </remarks>
-		''' <history>
-		''' 	[Administrator]	9/9/2006	Created
-		''' </history>
 		Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
 			If DotNetNuke.Framework.AJAX.IsInstalled Then
 				DotNetNuke.Framework.AJAX.RegisterScriptManager()
@@ -128,10 +125,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>We have to load the javascript files on every load of this control.</remarks>
 		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 			Try
-				If Page.IsPostBack = False Then
-					Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
-					ForumUtils.LoadCssFile(DefaultPage, objConfig)
-				End If
+				Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
+				ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
 				' Redirect to user's default forum if user access forum via menu
 				Dim objModules As Entities.Modules.ModuleController = New Entities.Modules.ModuleController

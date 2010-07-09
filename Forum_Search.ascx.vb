@@ -91,10 +91,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' </history>
 		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 			Try
-				If Not Page.IsPostBack Then
-					Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
-					ForumUtils.LoadCssFile(DefaultPage, objConfig)
+				Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
+				ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
+				If Not Page.IsPostBack Then
 					''[skeel]
 					'If ForumConfig.AggregatedForums = False Then
 					'    'SearchPosts
@@ -127,14 +127,8 @@ Namespace DotNetNuke.Modules.Forum
 						rcbThreadStatus.Items.Insert(3, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Informative", objConfig.SharedResourceFile), "3"))
 					End With
 
-					' Treeview forum viewer
 					InitializeTextSuggest()
-					'ForumTreeview.InitializeTree(objConfig, ForumTree)
-					'ForumTreeview.SetTreeDefaults(objConfig, ForumTree, True)
-					'ForumTreeview.PopulateTree(objConfig, ForumTree, UserId)
 					ForumTreeview.PopulateTelerikTree(objConfig, rtvForums, UserId)
-					' Register scripts (broke DNNTree if loaded)
-					'Utils.RegisterPageScripts(Page, ForumConfig)
 				End If
 
 				SelectedForumIds = String.Empty

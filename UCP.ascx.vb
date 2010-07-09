@@ -99,10 +99,10 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 				End If
 
-				If Not Page.IsPostBack Then
-					Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
-					ForumUtils.LoadCssFile(DefaultPage, objConfig)
+				Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
+				ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
+				If Not Page.IsPostBack Then
 					' CP - Check the URL here to see if we should load a specific control (ie. view = x)
 					If Not Request.QueryString("view") Is Nothing Then
 						Dim strTempControl As String

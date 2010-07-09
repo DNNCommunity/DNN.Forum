@@ -60,10 +60,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>
 		''' </remarks>
 		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-			If Not Page.IsPostBack Then
-				Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
-				ForumUtils.LoadCssFile(DefaultPage, objConfig)
+			Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
+			ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
+			If Not Page.IsPostBack Then
 				' Store the referrer for returning to where the user came from
 				If Not Request.UrlReferrer Is Nothing Then
 					ViewState("UrlReferrer") = Request.UrlReferrer.ToString()
