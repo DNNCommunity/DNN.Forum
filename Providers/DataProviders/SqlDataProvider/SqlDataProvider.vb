@@ -425,8 +425,8 @@ Namespace DotNetNuke.Modules.Forum
 			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "User_Get", UserID, PortalID), IDataReader)
 		End Function
 
-		Public Overrides Sub UserUpdate(ByVal UserId As Integer, ByVal UserAvatar As Integer, ByVal Avatar As String, ByVal AdditionalAvatars As String, ByVal Signature As String, ByVal IsTrusted As Boolean, ByVal EnableDisplayInMemberList As Boolean, ByVal EnableOnlineStatus As Boolean, ByVal ThreadsPerPage As Integer, ByVal PostsPerPage As Integer, ByVal EnableModNotification As Boolean, ByVal EnablePublicEmail As Boolean, ByVal EnablePM As Boolean, ByVal EnablePMNotifications As Boolean, ByVal EmailFormat As Integer, ByVal PortalID As Integer, ByVal LockTrust As Boolean, ByVal EnableProfileWeb As Boolean, ByVal EnableProfileRegion As Boolean, ByVal EnableDefaultPostNotify As Boolean, ByVal EnableSelfNotifications As Boolean, ByVal IsBanned As Boolean, ByVal LiftBanDate As Date, ByVal Biography As String, ByVal StartBanDate As Date)
-			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "User_Update", UserId, UserAvatar, Avatar, AdditionalAvatars, Signature, IsTrusted, EnableDisplayInMemberList, EnableOnlineStatus, ThreadsPerPage, PostsPerPage, EnableModNotification, EnablePublicEmail, EnablePM, EnablePMNotifications, EmailFormat, PortalID, LockTrust, EnableProfileWeb, EnableProfileRegion, EnableDefaultPostNotify, EnableSelfNotifications, IsBanned, GetNull(LiftBanDate), Biography, GetNull(StartBanDate))
+		Public Overrides Sub UserUpdate(ByVal UserId As Integer, ByVal UserAvatar As Integer, ByVal Avatar As String, ByVal AdditionalAvatars As String, ByVal Signature As String, ByVal IsTrusted As Boolean, ByVal EnableOnlineStatus As Boolean, ByVal ThreadsPerPage As Integer, ByVal PostsPerPage As Integer, ByVal EnableModNotification As Boolean, ByVal EnablePublicEmail As Boolean, ByVal EmailFormat As Integer, ByVal PortalID As Integer, ByVal LockTrust As Boolean, ByVal EnableProfileWeb As Boolean, ByVal EnableDefaultPostNotify As Boolean, ByVal EnableSelfNotifications As Boolean, ByVal IsBanned As Boolean, ByVal LiftBanDate As Date, ByVal StartBanDate As Date)
+			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "User_Update", UserId, UserAvatar, Avatar, AdditionalAvatars, Signature, IsTrusted, EnableOnlineStatus, ThreadsPerPage, PostsPerPage, EnableModNotification, EnablePublicEmail, EmailFormat, PortalID, LockTrust, EnableProfileWeb, EnableDefaultPostNotify, EnableSelfNotifications, IsBanned, GetNull(LiftBanDate), GetNull(StartBanDate))
 		End Sub
 
 		' Requires db rename (to include _, Search) - Used only for search user lookup control
@@ -434,12 +434,8 @@ Namespace DotNetNuke.Modules.Forum
 			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "UserGetAll", PortalID, PageIndex, PageSize), IDataReader)
 		End Function
 
-		Public Overrides Function UserGetMultiPortal(ByVal UserID As Integer) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "User_GetMultiPortal", UserID), IDataReader)
-		End Function
-
-		Public Overrides Sub UserAdd(ByVal UserId As Integer, ByVal UserAvatar As Integer, ByVal Avatar As String, ByVal AdditionalAvatars As String, ByVal Signature As String, ByVal IsTrusted As Boolean, ByVal EnableDisplayInMemberList As Boolean, ByVal EnableOnlineStatus As Boolean, ByVal ThreadsPerPage As Integer, ByVal PostsPerPage As Integer, ByVal EnablePublicEmail As Boolean, ByVal EnablePM As Boolean, ByVal EnablePMNotifications As Boolean, ByVal PortalID As Integer)
-			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "User_Add", UserId, UserAvatar, Avatar, AdditionalAvatars, Signature, IsTrusted, EnableDisplayInMemberList, EnableOnlineStatus, ThreadsPerPage, PostsPerPage, EnablePublicEmail, EnablePM, EnablePMNotifications, PortalID)
+		Public Overrides Sub UserAdd(ByVal UserId As Integer, ByVal UserAvatar As Integer, ByVal Avatar As String, ByVal AdditionalAvatars As String, ByVal Signature As String, ByVal IsTrusted As Boolean, ByVal EnableOnlineStatus As Boolean, ByVal ThreadsPerPage As Integer, ByVal PostsPerPage As Integer, ByVal EnablePublicEmail As Boolean, ByVal PortalID As Integer)
+			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "User_Add", UserId, UserAvatar, Avatar, AdditionalAvatars, Signature, IsTrusted, EnableOnlineStatus, ThreadsPerPage, PostsPerPage, EnablePublicEmail, PortalID)
 		End Sub
 		' Requires db rename (to include _)
 		Public Overrides Sub UserViewUpdate(ByVal UserId As Integer, ByVal FlatView As Boolean, ByVal ViewDescending As Boolean)

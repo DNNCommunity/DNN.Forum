@@ -85,9 +85,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="e"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[skeel]	12/14/2008	Created
-		''' </history>
 		Private Sub cmdRead_Clicked(ByVal sender As Object, ByVal e As System.EventArgs)
 			Try
 				Dim ctlThread As New ThreadController
@@ -103,7 +100,7 @@ Namespace DotNetNuke.Modules.Forum
 			Catch ex As Exception
 				LogException(ex)
 			End Try
-
+			' TODO: May remove this. 
 			'Well since there are no more unread threads, we'll send the user to forum home
 			HttpContext.Current.Response.Redirect(Utilities.Links.ContainerForumHome(TabID), True)
 		End Sub

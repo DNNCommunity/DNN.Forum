@@ -648,7 +648,6 @@
     <None Include="Providers\DataProviders\SqlDataProvider\03.00.10.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.00.11.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.00.12.SqlDataProvider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\03.10.01.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.10.02.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.10.03.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.10.04.SqlDataProvider" />

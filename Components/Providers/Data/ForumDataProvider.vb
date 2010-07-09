@@ -29,9 +29,6 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	''' <history>
-	''' 	[cpaterra]	7/13/2005	Created
-	''' </history>
 	Public MustInherit Class DataProvider
 
 #Region "Shared/Static Methods"
@@ -176,9 +173,8 @@ Namespace DotNetNuke.Modules.Forum
 
 		Public MustOverride Function UserGetAll(ByVal PortalID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
 		Public MustOverride Function UserGet(ByVal UsersID As Integer, ByVal PortalID As Integer) As IDataReader
-		Public MustOverride Function UserGetMultiPortal(ByVal UsersID As Integer) As IDataReader
-		Public MustOverride Sub UserAdd(ByVal UserId As Integer, ByVal UserAvatar As Integer, ByVal Avatar As String, ByVal AdditionalAvatars As String, ByVal Signature As String, ByVal IsTrusted As Boolean, ByVal EnableDisplayInMemberList As Boolean, ByVal EnableOnlineStatus As Boolean, ByVal ThreadsPerPage As Integer, ByVal PostsPerPage As Integer, ByVal EnablePublicEmail As Boolean, ByVal EnablePM As Boolean, ByVal EnablePMNotifications As Boolean, ByVal PortalID As Integer)
-		Public MustOverride Sub UserUpdate(ByVal UserId As Integer, ByVal UserAvatar As Integer, ByVal Avatar As String, ByVal AdditionalAvatars As String, ByVal Signature As String, ByVal IsTrusted As Boolean, ByVal EnableDisplayInMemberList As Boolean, ByVal EnableOnlineStatus As Boolean, ByVal ThreadsPerPage As Integer, ByVal PostsPerPage As Integer, ByVal EnableModNotification As Boolean, ByVal EnablePublicEmail As Boolean, ByVal EnablePM As Boolean, ByVal EnablePMNotifications As Boolean, ByVal EmailFormat As Integer, ByVal PortalID As Integer, ByVal LockTrust As Boolean, ByVal EnableProfileWeb As Boolean, ByVal EnableProfileRegion As Boolean, ByVal EnableDefaultPostNotify As Boolean, ByVal EnableSelfNotifications As Boolean, ByVal IsBanned As Boolean, ByVal LiftBanDate As Date, ByVal Biography As String, ByVal StartBanDate As Date)
+		Public MustOverride Sub UserAdd(ByVal UserId As Integer, ByVal UserAvatar As Integer, ByVal Avatar As String, ByVal AdditionalAvatars As String, ByVal Signature As String, ByVal IsTrusted As Boolean, ByVal EnableOnlineStatus As Boolean, ByVal ThreadsPerPage As Integer, ByVal PostsPerPage As Integer, ByVal EnablePublicEmail As Boolean, ByVal PortalID As Integer)
+		Public MustOverride Sub UserUpdate(ByVal UserId As Integer, ByVal UserAvatar As Integer, ByVal Avatar As String, ByVal AdditionalAvatars As String, ByVal Signature As String, ByVal IsTrusted As Boolean, ByVal EnableOnlineStatus As Boolean, ByVal ThreadsPerPage As Integer, ByVal PostsPerPage As Integer, ByVal EnableModNotification As Boolean, ByVal EnablePublicEmail As Boolean, ByVal EmailFormat As Integer, ByVal PortalID As Integer, ByVal LockTrust As Boolean, ByVal EnableProfileWeb As Boolean, ByVal EnableDefaultPostNotify As Boolean, ByVal EnableSelfNotifications As Boolean, ByVal IsBanned As Boolean, ByVal LiftBanDate As Date, ByVal StartBanDate As Date)
 		Public MustOverride Sub UserViewUpdate(ByVal UserId As Integer, ByVal FlatView As Boolean, ByVal ViewDescending As Boolean)
 
 		Public MustOverride Function GetBannedUsers(ByVal PortalID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader

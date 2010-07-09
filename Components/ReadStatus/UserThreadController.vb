@@ -29,9 +29,6 @@ Namespace DotNetNuke.Modules.Forum
     ''' </summary>
     ''' <remarks>
     ''' </remarks>
-    ''' <history>
-    ''' 	[jmathis]	12/3/2005	Created
-    ''' </history>
 	Public Class UserThreadsController
 
 #Region "Private Members"
@@ -51,9 +48,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[jmathis]	12/3/2005	Created
-		''' </history>
 		Private Function GetUserThreadRead(ByVal UserID As Integer, ByVal ThreadID As Integer) As UserThreadsInfo
 			Return CType(CBO.FillObject(DataProvider.Instance().GetUserThreads(UserID, ThreadID), GetType(UserThreadsInfo)), UserThreadsInfo)
 		End Function
@@ -112,9 +106,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="objUserThreads"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[jmathis]	12/3/2005	Created
-		''' </history>
 		Public Sub Add(ByVal objUserThreads As UserThreadsInfo)
 			DataProvider.Instance().AddUserThreads(objUserThreads.UserID, objUserThreads.ThreadID, objUserThreads.LastVisitDate)
 		End Sub
@@ -125,9 +116,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="objUserThreads"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[jmathis]	12/3/2005	Created
-		''' </history>
 		Public Sub Update(ByVal objUserThreads As UserThreadsInfo)
 			DataProvider.Instance().UpdateUserThreads(objUserThreads.UserID, objUserThreads.ThreadID, objUserThreads.LastVisitDate)
 		End Sub
@@ -139,9 +127,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="forumID"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[jmathis]	12/3/2005	Created
-		''' </history>
 		Public Sub DeleteAllByForum(ByVal userID As Integer, ByVal forumID As Integer)
 			DataProvider.Instance().DeleteUserThreadsByForum(userID, forumID)
 		End Sub
@@ -154,9 +139,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="read"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[jmathis]	12/3/2005	Created
-		''' </history>
 		Public Sub MarkAll(ByVal userID As Integer, ByVal forumID As Integer, ByVal read As Boolean)
 			DeleteAllByForum(userID, forumID)
 
@@ -192,9 +174,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns>Integer</returns>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[skeel]	11/28/2008	Created
-		''' </history>
 		Public Function GetPostIndexFirstUnread(ByVal ThreadID As Integer, ByVal LastVisitDate As Date, ByVal ViewDecending As Boolean) As Integer
 			Return DotNetNuke.Modules.Forum.DataProvider.Instance().ReadsGetFirstUnread(ThreadID, LastVisitDate, ViewDecending)
 		End Function

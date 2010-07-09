@@ -323,7 +323,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="User"></param>
 		''' <remarks></remarks>
 		Public Sub UserAdd(ByVal User As ForumUser)
-			DotNetNuke.Modules.Forum.DataProvider.Instance().UserAdd(User.UserID, User.UserAvatar, User.Avatar, User.SystemAvatars, User.Signature, User.IsTrusted, False, User.EnableOnlineStatus, User.ThreadsPerPage, User.PostsPerPage, False, False, False, User.PortalID)
+			DotNetNuke.Modules.Forum.DataProvider.Instance().UserAdd(User.UserID, User.UserAvatar, User.Avatar, User.SystemAvatars, User.Signature, User.IsTrusted, User.EnableOnlineStatus, User.ThreadsPerPage, User.PostsPerPage, False, User.PortalID)
 		End Sub
 
 		''' <summary>
@@ -341,7 +341,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="objUser"></param>		
 		''' <remarks></remarks>
 		Public Sub UserUpdate(ByVal objUser As ForumUser)
-			DotNetNuke.Modules.Forum.DataProvider.Instance().UserUpdate(objUser.UserID, objUser.UserAvatar, objUser.Avatar, objUser.SystemAvatars, objUser.Signature, objUser.IsTrusted, False, objUser.EnableOnlineStatus, objUser.ThreadsPerPage, objUser.PostsPerPage, objUser.EnableModNotification, False, False, False, objUser.EmailFormat, objUser.PortalID, objUser.LockTrust, False, False, objUser.EnableDefaultPostNotify, objUser.EnableSelfNotifications, objUser.IsBanned, objUser.LiftBanDate, "Empty Bio", objUser.StartBanDate)
+			DotNetNuke.Modules.Forum.DataProvider.Instance().UserUpdate(objUser.UserID, objUser.UserAvatar, objUser.Avatar, objUser.SystemAvatars, objUser.Signature, objUser.IsTrusted, objUser.EnableOnlineStatus, objUser.ThreadsPerPage, objUser.PostsPerPage, objUser.EnableModNotification, False, objUser.EmailFormat, objUser.PortalID, objUser.LockTrust, False, objUser.EnableDefaultPostNotify, objUser.EnableSelfNotifications, objUser.IsBanned, objUser.LiftBanDate, objUser.StartBanDate)
 			DataCache.RemoveCache(String.Concat(FORUM_USER_CACHE_KEY_PREFIX & objUser.UserID.ToString & "-" & objUser.PortalID.ToString))
 		End Sub
 

@@ -29,9 +29,6 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks>This tracks if a forum has new posts for a specific user. 
 	''' </remarks>
-	''' <history>
-	''' 	[jmathis]	12/3/2005	Created
-	''' </history>
 	Public Class UserForumsController
 
 #Region "Private Members"
@@ -51,9 +48,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[jmathis]	12/3/2005	Created
-		''' </history>
 		Private Function GetUserForumRead(ByVal UserID As Integer, ByVal ForumID As Integer) As UserForumsInfo
 			Return CType(CBO.FillObject(DataProvider.Instance().GetUserForums(UserID, ForumID), GetType(UserForumsInfo)), UserForumsInfo)
 		End Function
@@ -72,9 +66,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[jmathis]	12/3/2005	Created
-		''' </history>
 		Public Function GetCachedUserForumRead(ByVal UserID As Integer, ByVal ForumID As Integer) As UserForumsInfo
 			Dim keyID As String = FORUM_USERFORUMREADS_CACHE_KEY_PREFIX & UserID.ToString & "-" & ForumID
 			Dim timeOut As Int32 = UserForumReadsCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
@@ -99,9 +90,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="UserID"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	12/4/2005	Created
-		''' </history>
 		Public Shared Sub ResetUserForumReadCache(ByVal UserID As Integer, ByVal ForumID As Integer)
 			Dim keyID As String = FORUM_USERFORUMREADS_CACHE_KEY_PREFIX & UserID.ToString & "-" & ForumID
 			DataCache.RemoveCache(keyID)
@@ -117,9 +105,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' Placed in this controller for performance issues,
 		''' as it's used in conjunction with forum reads
 		''' </remarks>
-		''' <history>
-		''' 	[skeel]	12/15/2008	Created
-		''' </history>
 		Public Function GetSubForumIDs(ByVal ParentForumId As Integer) As IDataReader
 			Return DataProvider.Instance().GetSubForumIDs(ParentForumId)
 		End Function
@@ -130,9 +115,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="objUserForums"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[jmathis]	12/3/2005	Created
-		''' </history>
 		Public Sub Add(ByVal objUserForums As UserForumsInfo)
 			DataProvider.Instance().AddUserForums(objUserForums.UserID, objUserForums.ForumID, objUserForums.LastVisitDate)
 		End Sub
@@ -143,9 +125,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="objUserForums"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[jmathis]	12/3/2005	Created
-		''' </history>
+
 		Public Sub Update(ByVal objUserForums As UserForumsInfo)
 			DataProvider.Instance().UpdateUserForums(objUserForums.UserID, objUserForums.ForumID, objUserForums.LastVisitDate)
 		End Sub
@@ -157,9 +137,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="forumID"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[jmathis]	12/3/2005	Created
-		''' </history>
 		Public Sub Delete(ByVal userID As Integer, ByVal forumID As Integer)
 			DataProvider.Instance().DeleteUserForums(userID, forumID)
 		End Sub
