@@ -100,6 +100,7 @@
 				<include name="**/*.aspx" />
 				<exclude name="**/DNNDebug.aspx" />
 				<exclude name="**/Resources.zip" />
+				<exclude name="**/_ReSharper.DotNetNuke.Forum/**/*" />
 				<exclude name="**/Install/**/*" />
 				<exclude name="**/_sgbak/*" />
 				<exclude name="**/thumbs.db" />
@@ -165,7 +166,8 @@
 				<exclude name="**/thumbs.db" />
 				<exclude name="**/*.zip" />
 				<exclude name="**/packages/*" />
-				<exclude name="**/ResourceZip/*" />	
+				<exclude name="**/ResourceZip/*" />
+				<exclude name="**/_ReSharper.DotNetNuke.Forum/**/*" />
 				<exclude name="**/temp/*" />
 				<exclude name="**/Themes/DNN/**/*" />
 				<exclude name="**/Themes/Empires/**/*" />
