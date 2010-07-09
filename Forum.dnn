@@ -23,56 +23,16 @@
 							<version>03.00.00</version>
 						</script>
 						<script type="Install">
-							<name>03.00.10.SqlDataProvider</name>
-							<version>03.00.10</version>
-						</script>
-						<script type="Install">
-							<name>03.00.11.SqlDataProvider</name>
-							<version>03.00.11</version>
-						</script>
-						<script type="Install">
-							<name>03.00.12.SqlDataProvider</name>
-							<version>03.00.12</version>
-						</script>
-						<script type="Install">
 							<name>03.10.02.SqlDataProvider</name>
 							<version>03.10.02</version>
-						</script>
-						<script type="Install">
-							<name>03.10.03.SqlDataProvider</name>
-							<version>03.10.03</version>
-						</script>
-						<script type="Install">
-							<name>03.10.04.SqlDataProvider</name>
-							<version>03.10.04</version>
 						</script>
 						<script type="Install">
 							<name>03.10.05.SqlDataProvider</name>
 							<version>03.10.05</version>
 						</script>
 						<script type="Install">
-							<name>03.20.00.SqlDataProvider</name>
-							<version>03.20.00</version>
-						</script>
-						<script type="Install">
-							<name>03.20.01.SqlDataProvider</name>
-							<version>03.20.01</version>
-						</script>
-						<script type="Install">
 							<name>03.20.02.SqlDataProvider</name>
 							<version>03.20.02</version>
-						</script>
-						<script type="Install">
-							<name>03.20.03.SqlDataProvider</name>
-							<version>03.20.03</version>
-						</script>
-						<script type="Install">
-							<name>03.20.04.SqlDataProvider</name>
-							<version>03.20.04</version>
-						</script>
-						<script type="Install">
-							<name>03.20.07.SqlDataProvider</name>
-							<version>03.20.07</version>
 						</script>
 						<script type="Install">
 							<name>04.03.00.SqlDataProvider</name>

@@ -221,7 +221,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public MustOverride Function GetUserThreads(ByVal userID As Integer, ByVal threadID As Integer) As IDataReader
 		Public MustOverride Sub AddUserThreads(ByVal userID As Integer, ByVal threadID As Integer, ByVal lastVisitDate As Date)
 		Public MustOverride Sub UpdateUserThreads(ByVal userID As Integer, ByVal threadID As Integer, ByVal lastVisitDate As Date)
-		Public MustOverride Sub DeleteUserThreads(ByVal userID As Integer, ByVal threadID As Integer)
+		'Public MustOverride Sub DeleteUserThreads(ByVal userID As Integer, ByVal threadID As Integer)
 		Public MustOverride Sub DeleteUserThreadsByForum(ByVal userID As Integer, ByVal forumID As Integer)
 		Public MustOverride Function ReadsGetFirstUnread(ByVal ThreadID As Integer, ByVal LastVisitDate As Date, ByVal ViewDecending As Boolean) As Integer
 

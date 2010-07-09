@@ -474,11 +474,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		POST = 1
 		''' <summary>
-		''' A private message post or thread.
-		''' </summary>
-		''' <remarks></remarks>
-		PRIVATEMESSAGE = 2
-		''' <summary>
 		''' A communication between moderators.
 		''' </summary>
 		''' <remarks></remarks>

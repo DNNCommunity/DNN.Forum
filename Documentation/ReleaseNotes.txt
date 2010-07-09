@@ -1,4 +1,4 @@
-<h3>Forum 4.6.0</h3>
+<h3>Forum 4.6.1</h3>
 <p class="Contributor">
 	DotNetNuke&reg; <br />
 	<a href="mailto:support@dotnetnuke.com">support@dotnetnuke.com</a><br />
@@ -8,7 +8,7 @@
 <div class="License">
 	<h3>About the Core Forum</h3>
 	<p class="Owner">
-		<b>Version 4.6.0</b><br /><br />
+		<b>Version 4.6.1</b><br /><br />
 		This version of the module is a beta. It requires DotNetNuke Core 5.4.1 or greater. The module is now tightly integrated with the core user profile to determine visibility of profile items displayed in the module as well as for displaying a member's profile.
 		Also, because private messaging has also been added to the core it has been removed from the module itself. 
 		FYI: Developers should be aware that the module uses Visual Studio 2010 only. 

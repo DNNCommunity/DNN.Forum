@@ -506,14 +506,6 @@ Namespace DotNetNuke.Modules.Forum
 					If Keywords.Contains("[POSTSUBJECT]") Then
 						FinalSubject = FinalSubject.Replace("[POSTSUBJECT]", Keywords.Item("[POSTSUBJECT]").ToString)
 					End If
-				Case ForumContentTypeID.PRIVATEMESSAGE
-					FinalSubject = SubjectToParse
-					If Keywords.Contains("[POSTURL]") Then
-						FinalSubject = FinalSubject.Replace("[POSTURL]", Keywords.Item("[POSTURL]").ToString)
-					End If
-					If Keywords.Contains("[POSTSUBJECT]") Then
-						FinalSubject = FinalSubject.Replace("[POSTSUBJECT]", Keywords.Item("[POSTSUBJECT]").ToString)
-					End If
 				Case ForumContentTypeID.MODERATORCOMMUNICATION
 					If Keywords.Contains("[FORUMNAME]") Then
 						FinalSubject = SubjectToParse.Replace("[FORUMNAME]", Keywords.Item("[FORUMNAME]").ToString)
@@ -604,26 +596,6 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 					If Keywords.Contains("[POSTSUBJECT]") Then
 						msgBody = msgBody.Replace("[POSTSUBJECT]", Keywords.Item("[POSTSUBJECT]").ToString)
-					End If
-				Case ForumContentTypeID.PRIVATEMESSAGE
-					msgBody = BodyToParse
-					If Keywords.Contains("[POSTURL]") Then
-						msgBody = msgBody.Replace("[POSTURL]", Keywords.Item("[POSTURL]").ToString)
-					End If
-					If Keywords.Contains("[PROFILELINK]") Then
-						msgBody = msgBody.Replace("[PROFILELINK]", Keywords.Item("[PROFILELINK]").ToString)
-					End If
-					If Keywords.Contains("[POSTBODY]") Then
-						msgBody = msgBody.Replace("[POSTBODY]", Keywords.Item("[POSTBODY]").ToString)
-					End If
-					If Keywords.Contains("[POSTSUBJECT]") Then
-						msgBody = msgBody.Replace("[POSTSUBJECT]", Keywords.Item("[POSTSUBJECT]").ToString)
-					End If
-					If Keywords.Contains("[DATEPOSTED]") Then
-						msgBody = msgBody.Replace("[DATEPOSTED]", Keywords.Item("[DATEPOSTED]").ToString)
-					End If
-					If Keywords.Contains("[POSTAUTHOR]") Then
-						msgBody = msgBody.Replace("[POSTAUTHOR]", Keywords.Item("[POSTAUTHOR]").ToString)
 					End If
 				Case ForumContentTypeID.MODERATORCOMMUNICATION
 					If Keywords.Contains("[FORUMNAME]") Then

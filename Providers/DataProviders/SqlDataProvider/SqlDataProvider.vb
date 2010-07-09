@@ -543,9 +543,9 @@ Namespace DotNetNuke.Modules.Forum
 			SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & "Forum_UserThreadsUpdate", userID, threadID, GetNull(lastVisitDate))
 		End Sub
 
-		Public Overrides Sub DeleteUserThreads(ByVal userID As Integer, ByVal threadID As Integer)
-			SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & "Forum_UserThreadsDelete", userID, threadID)
-		End Sub
+		'Public Overrides Sub DeleteUserThreads(ByVal userID As Integer, ByVal threadID As Integer)
+		'	SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & "Forum_UserThreadsDelete", userID, threadID)
+		'End Sub
 
 		Public Overrides Sub DeleteUserThreadsByForum(ByVal userID As Integer, ByVal forumID As Integer)
 			SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner & ObjectQualifier & "Forum_UserThreadsDeleteByForum", userID, forumID)
