@@ -32,31 +32,31 @@ Namespace DotNetNuke.Modules.Forum
     ''' <history>
     ''' 	[jmathis]	12/3/2005	Created
     ''' </history>
-    Public Class UserThreadsController
+	Public Class UserThreadsController
 
 #Region "Private Members"
 
-        Private Const FORUM_USERTHREADREADS_CACHE_KEY_PREFIX As String = "Forum_UserThreadReads-"
-        Private Const UserThreadReadsCacheTimeout As Integer = 20
+		Private Const FORUM_USERTHREADREADS_CACHE_KEY_PREFIX As String = "Forum_UserThreadReads-"
+		Private Const UserThreadReadsCacheTimeout As Integer = 20
 
 #End Region
 
 #Region "Private Methods"
 
-        ''' <summary>
-        ''' Gets the thread read status for a single thread for a single user
-        ''' </summary>
-        ''' <param name="userID"></param>
-        ''' <param name="threadID"></param>
-        ''' <returns></returns>
-        ''' <remarks>
-        ''' </remarks>
-        ''' <history>
-        ''' 	[jmathis]	12/3/2005	Created
-        ''' </history>
-        Private Function GetUserThreadRead(ByVal UserID As Integer, ByVal ThreadID As Integer) As UserThreadsInfo
-            Return CType(CBO.FillObject(DataProvider.Instance().GetUserThreads(UserID, ThreadID), GetType(UserThreadsInfo)), UserThreadsInfo)
-        End Function
+		''' <summary>
+		''' Gets the thread read status for a single thread for a single user
+		''' </summary>
+		''' <param name="userID"></param>
+		''' <param name="threadID"></param>
+		''' <returns></returns>
+		''' <remarks>
+		''' </remarks>
+		''' <history>
+		''' 	[jmathis]	12/3/2005	Created
+		''' </history>
+		Private Function GetUserThreadRead(ByVal UserID As Integer, ByVal ThreadID As Integer) As UserThreadsInfo
+			Return CType(CBO.FillObject(DataProvider.Instance().GetUserThreads(UserID, ThreadID), GetType(UserThreadsInfo)), UserThreadsInfo)
+		End Function
 
 #End Region
 
@@ -64,144 +64,144 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Caching"
 
-        ''' <summary>
-        ''' Gets a single row of data for a threadid/userid combination.
-        ''' </summary>
-        ''' <param name="UserID">The UserID being checked in the db.</param>
-        ''' <param name="ThreadID">The ForumID being checked in the db.</param>
-        ''' <returns></returns>
-        ''' <remarks>
-        ''' </remarks>
-        Public Function GetCachedUserThreadRead(ByVal UserID As Integer, ByVal ThreadID As Integer) As UserThreadsInfo
-            Dim keyID As String = FORUM_USERTHREADREADS_CACHE_KEY_PREFIX & UserID.ToString & "-" & ThreadID
+		''' <summary>
+		''' Gets a single row of data for a threadid/userid combination.
+		''' </summary>
+		''' <param name="UserID">The UserID being checked in the db.</param>
+		''' <param name="ThreadID">The ForumID being checked in the db.</param>
+		''' <returns></returns>
+		''' <remarks>
+		''' </remarks>
+		Public Function GetCachedUserThreadRead(ByVal UserID As Integer, ByVal ThreadID As Integer) As UserThreadsInfo
+			Dim keyID As String = FORUM_USERTHREADREADS_CACHE_KEY_PREFIX & UserID.ToString & "-" & ThreadID
 			Dim timeOut As Int32 = UserThreadReadsCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
 
-            Dim objUserThread As New UserThreadsInfo
-            objUserThread = CType(DataCache.GetCache(keyID), UserThreadsInfo)
+			Dim objUserThread As New UserThreadsInfo
+			objUserThread = CType(DataCache.GetCache(keyID), UserThreadsInfo)
 
-            If objUserThread Is Nothing Then
-                objUserThread = GetUserThreadRead(UserID, ThreadID)
+			If objUserThread Is Nothing Then
+				objUserThread = GetUserThreadRead(UserID, ThreadID)
 
-                If timeOut > 0 And objUserThread IsNot Nothing Then
+				If timeOut > 0 And objUserThread IsNot Nothing Then
 					DataCache.SetCache(keyID, objUserThread, TimeSpan.FromMinutes(timeOut))
-                End If
-            End If
+				End If
+			End If
 
-            Return objUserThread
-        End Function
+			Return objUserThread
+		End Function
 
-        ''' <summary>
-        ''' Resets the cached user thread 
-        ''' </summary>
-        ''' <param name="UserID"></param>
-        ''' <remarks>
-        ''' </remarks>
-        ''' <history>
-        ''' 	[cpaterra]	12/4/2005	Created
-        ''' </history>
-        Public Shared Sub ResetUserThreadReadCache(ByVal UserID As Integer, ByVal ThreadID As Integer)
-            Dim keyID As String = FORUM_USERTHREADREADS_CACHE_KEY_PREFIX & UserID.ToString & "-" & ThreadID
-            DataCache.RemoveCache(keyID)
-        End Sub
+		''' <summary>
+		''' Resets the cached user thread 
+		''' </summary>
+		''' <param name="UserID"></param>
+		''' <remarks>
+		''' </remarks>
+		''' <history>
+		''' 	[cpaterra]	12/4/2005	Created
+		''' </history>
+		Public Shared Sub ResetUserThreadReadCache(ByVal UserID As Integer, ByVal ThreadID As Integer)
+			Dim keyID As String = FORUM_USERTHREADREADS_CACHE_KEY_PREFIX & UserID.ToString & "-" & ThreadID
+			DataCache.RemoveCache(keyID)
+		End Sub
 
 #End Region
 
-        ''' <summary>
-        ''' Adds a read status
-        ''' </summary>
-        ''' <param name="objUserThreads"></param>
-        ''' <remarks>
-        ''' </remarks>
-        ''' <history>
-        ''' 	[jmathis]	12/3/2005	Created
-        ''' </history>
-        Public Sub Add(ByVal objUserThreads As UserThreadsInfo)
-            DataProvider.Instance().AddUserThreads(objUserThreads.UserID, objUserThreads.ThreadID, objUserThreads.LastVisitDate)
-        End Sub
+		''' <summary>
+		''' Adds a read status
+		''' </summary>
+		''' <param name="objUserThreads"></param>
+		''' <remarks>
+		''' </remarks>
+		''' <history>
+		''' 	[jmathis]	12/3/2005	Created
+		''' </history>
+		Public Sub Add(ByVal objUserThreads As UserThreadsInfo)
+			DataProvider.Instance().AddUserThreads(objUserThreads.UserID, objUserThreads.ThreadID, objUserThreads.LastVisitDate)
+		End Sub
 
-        ''' <summary>
-        ''' Updates a read status
-        ''' </summary>
-        ''' <param name="objUserThreads"></param>
-        ''' <remarks>
-        ''' </remarks>
-        ''' <history>
-        ''' 	[jmathis]	12/3/2005	Created
-        ''' </history>
-        Public Sub Update(ByVal objUserThreads As UserThreadsInfo)
-            DataProvider.Instance().UpdateUserThreads(objUserThreads.UserID, objUserThreads.ThreadID, objUserThreads.LastVisitDate)
-        End Sub
+		''' <summary>
+		''' Updates a read status
+		''' </summary>
+		''' <param name="objUserThreads"></param>
+		''' <remarks>
+		''' </remarks>
+		''' <history>
+		''' 	[jmathis]	12/3/2005	Created
+		''' </history>
+		Public Sub Update(ByVal objUserThreads As UserThreadsInfo)
+			DataProvider.Instance().UpdateUserThreads(objUserThreads.UserID, objUserThreads.ThreadID, objUserThreads.LastVisitDate)
+		End Sub
 
-        ''' <summary>
-        ''' Deletes all threads from db table for thread read status for a single user
-        ''' </summary>
-        ''' <param name="userID"></param>
-        ''' <param name="forumID"></param>
-        ''' <remarks>
-        ''' </remarks>
-        ''' <history>
-        ''' 	[jmathis]	12/3/2005	Created
-        ''' </history>
-        Public Sub DeleteAllByForum(ByVal userID As Integer, ByVal forumID As Integer)
-            DataProvider.Instance().DeleteUserThreadsByForum(userID, forumID)
-        End Sub
+		''' <summary>
+		''' Deletes all threads from db table for thread read status for a single user
+		''' </summary>
+		''' <param name="userID"></param>
+		''' <param name="forumID"></param>
+		''' <remarks>
+		''' </remarks>
+		''' <history>
+		''' 	[jmathis]	12/3/2005	Created
+		''' </history>
+		Public Sub DeleteAllByForum(ByVal userID As Integer, ByVal forumID As Integer)
+			DataProvider.Instance().DeleteUserThreadsByForum(userID, forumID)
+		End Sub
 
-        ''' <summary>
-        ''' Marks all threads in a forum as read for a single user
-        ''' </summary>
-        ''' <param name="userID"></param>
-        ''' <param name="forumID"></param>
-        ''' <param name="read"></param>
-        ''' <remarks>
-        ''' </remarks>
-        ''' <history>
-        ''' 	[jmathis]	12/3/2005	Created
-        ''' </history>
-        Public Sub MarkAll(ByVal userID As Integer, ByVal forumID As Integer, ByVal read As Boolean)
-            DeleteAllByForum(userID, forumID)
+		''' <summary>
+		''' Marks all threads in a forum as read for a single user
+		''' </summary>
+		''' <param name="userID"></param>
+		''' <param name="forumID"></param>
+		''' <param name="read"></param>
+		''' <remarks>
+		''' </remarks>
+		''' <history>
+		''' 	[jmathis]	12/3/2005	Created
+		''' </history>
+		Public Sub MarkAll(ByVal userID As Integer, ByVal forumID As Integer, ByVal read As Boolean)
+			DeleteAllByForum(userID, forumID)
 
-            If read Then
-                Dim threadController As New ThreadController
-                Dim forumThreads As ArrayList = threadController.GetByForum(userID, forumID)
-                For Each forumThread As ThreadInfo In forumThreads
-                    Dim userThread As New UserThreadsInfo
-                    With userThread
-                        .UserID = userID
-                        .ThreadID = forumThread.ThreadID
-                        .LastVisitDate = Now
-                    End With
-                    Add(userThread)
-                    ResetUserThreadReadCache(userID, forumThread.ThreadID)
-                Next
+			If read Then
+				Dim threadController As New ThreadController
+				Dim forumThreads As ArrayList = threadController.GetByForum(userID, forumID)
+				For Each forumThread As ThreadInfo In forumThreads
+					Dim userThread As New UserThreadsInfo
+					With userThread
+						.UserID = userID
+						.ThreadID = forumThread.ThreadID
+						.LastVisitDate = Now
+					End With
+					Add(userThread)
+					ResetUserThreadReadCache(userID, forumThread.ThreadID)
+				Next
 
-                Dim userForum As New UserForumsInfo
-                With userForum
-                    .UserID = userID
-                    .ForumID = forumID
-                    .LastVisitDate = Now
-                End With
-            End If
-        End Sub
+				Dim userForum As New UserForumsInfo
+				With userForum
+					.UserID = userID
+					.ForumID = forumID
+					.LastVisitDate = Now
+				End With
+			End If
+		End Sub
 
-        ''' <summary>
-        ''' Gets the Post index number for the first unread Post  
-        ''' </summary>
-        ''' <param name="ThreadID"></param>
-        ''' <param name="LastVisitDate"></param>
-        ''' <param name="ViewDecending"></param>
-        ''' <returns>Integer</returns>
-        ''' <remarks>
-        ''' </remarks>
-        ''' <history>
-        ''' 	[skeel]	11/28/2008	Created
-        ''' </history>
-        Public Function GetPostIndexFirstUnread(ByVal ThreadID As Integer, ByVal LastVisitDate As Date, ByVal ViewDecending As Boolean) As Integer
+		''' <summary>
+		''' Gets the Post index number for the first unread Post  
+		''' </summary>
+		''' <param name="ThreadID"></param>
+		''' <param name="LastVisitDate"></param>
+		''' <param name="ViewDecending"></param>
+		''' <returns>Integer</returns>
+		''' <remarks>
+		''' </remarks>
+		''' <history>
+		''' 	[skeel]	11/28/2008	Created
+		''' </history>
+		Public Function GetPostIndexFirstUnread(ByVal ThreadID As Integer, ByVal LastVisitDate As Date, ByVal ViewDecending As Boolean) As Integer
 			Return DotNetNuke.Modules.Forum.DataProvider.Instance().ReadsGetFirstUnread(ThreadID, LastVisitDate, ViewDecending)
 		End Function
 
 #End Region
 
-    End Class
+	End Class
 
 #End Region
 
