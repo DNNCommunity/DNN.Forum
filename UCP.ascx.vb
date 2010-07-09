@@ -87,7 +87,7 @@ Namespace DotNetNuke.Modules.Forum
 			Try
 				Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
 
-				If Not Security.IsForumAdmin = True Then
+				If Not Security.IsForumModerator = True Then
 					If Request.IsAuthenticated Then
 						If Not (ProfileUserID = CurrentForumUser.UserID) Then
 							' they don't belong here

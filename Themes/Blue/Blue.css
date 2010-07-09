@@ -598,11 +598,11 @@ A.Forum_ib_aggregate:link, A.Forum_ib_aggregate:visited, A.Forum_ib_aggregate:ac
 .Forum_Grid_Row{background-color: #E8E8E8; font-size: 11px;font-family: Helvetica, Arial, San-Serif;color: #403F3F;	}
 /* Subject/Name Column in group, threads views (odd) */
 .Forum_Grid_Row_Alt{background-color: #eee; font-size: 11px;font-family: Helvetica, Arial, San-Serif;color: #403F3F;	}
-/* Used in grid ascx files (PM_Inbox/UCP_Bookmark/ probably UCP_Tracking) */
+/* Used in grid ascx files (UCP_Bookmark/ probably UCP_Tracking) */
 .Forum_Grid_Left{border-right: 1px solid #B8D7F3;}
-/* Used in grid ascx files (PM_Inbox, outbox, reported posts, ) */
+/* Used in grid ascx files (reported posts, ) */
 .Forum_Grid_Middle{border-right: 1px solid #B8D7F3;text-align: center;}
-/* Used in grid ascx files (PM_Inbox ) */
+/* Used in grid ascx files */
 .Forum_Grid_Right{border-right: 1px solid #B8D7F3;text-align: center;}
 .PagerContainerTable{border-top: #B8D7F3 1px solid;width: 100%;background: url(images/pb_footer_bg.jpg) top left repeat-x;	height:26px;font-size: 11px;font-family: Helvetica, Arial, San-Serif;}
 .PagerInfoCell{padding-right:6px;padding-left:6px;padding-bottom:3px;padding-top:3px;font-weight:bold;color:#ffc30d;}

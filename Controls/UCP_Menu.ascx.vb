@@ -28,9 +28,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	''' <history>
-	''' 	[skeel]	11/11/2008	Created
-	''' </history>
 	Partial Public Class Menu
 		Inherits System.Web.UI.UserControl
 
@@ -501,7 +498,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 					cmdProfile.RenderControl(wr)
 				Else
 					' link to core profile.
-					wr.AddAttribute(HtmlTextWriterAttribute.Href, DotNetNuke.Common.Globals.ProfileURL(ProfileUserID))
+					wr.AddAttribute(HtmlTextWriterAttribute.Href, DotNetNuke.Common.Globals.UserProfileURL(ProfileUserID))
 					wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_Link")
 					wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
 					wr.Write(Localization.GetString("cmdProfile", Me.LocalResourceFile))

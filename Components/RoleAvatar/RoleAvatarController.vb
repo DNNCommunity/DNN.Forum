@@ -243,7 +243,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Public Function GetUsersRoleAvatars(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer) As String
-			Dim strAvatars As String
+			Dim strAvatars As String = String.Empty
 			Dim colRoleAvatars As List(Of RoleAvatarInfo)
 
 			colRoleAvatars = GetUsersRoleAvatars(PortalID, UserID)

@@ -82,7 +82,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns>Set to return PostID but having issues with that part.</returns>
 		''' <remarks></remarks>
 		Public Function AddressPostReport(ByVal PostReportedID As Integer, ByVal UserID As Integer, ByVal PortalID As Integer) As Integer
-			Dim PostID As Integer = DotNetNuke.Modules.Forum.DataProvider.Instance().AddressPostReport(PostReportedID, UserID, PortalID)
+			Return DotNetNuke.Modules.Forum.DataProvider.Instance().AddressPostReport(PostReportedID, UserID, PortalID)
 		End Function
 
 #End Region

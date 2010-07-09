@@ -372,7 +372,6 @@
       <DependentUpon>MCP_Menu.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Controls\Paging\AjaxPager.vb" />
     <Compile Include="Controls\ACP_Menu.ascx.designer.vb">
       <DependentUpon>ACP_Menu.ascx</DependentUpon>
     </Compile>
@@ -410,6 +409,9 @@
     </Compile>
     <Compile Include="Controls\DataGrid\ForumPermissionsGrid.vb" />
     <Compile Include="Controls\DataGrid\PermissionsGrid.vb" />
+    <Compile Include="Controls\Paging\AjaxPager.vb">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Controls\Paging\PagingControl.vb">
       <SubType>Code</SubType>
     </Compile>

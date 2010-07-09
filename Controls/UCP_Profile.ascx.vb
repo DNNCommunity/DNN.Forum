@@ -31,9 +31,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	''' <history>
-	''' 	[skeel]	11/28/2008	Created
-	''' </history>
 	Partial Public Class Profile
 		Inherits ForumModuleBase
 		Implements Utilities.AjaxLoader.IPageLoad
@@ -66,7 +63,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 
 			If objConfig.EnableUserBanning And Security.IsForumAdmin Then
 				rowUserBanning.Visible = True
-				rdpLiftBan.SelectedDate = DateAdd(DateInterval.Day, 7, Date.Today)
+				'rdpLiftBan.SelectedDate = DateAdd(DateInterval.Day, 7, Date.Today)
 			Else
 				rowUserBanning.Visible = False
 			End If
@@ -94,9 +91,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' <param name="e">System.EventArgs</param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	7/13/2005	Created
-		''' </history>
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
 				Dim cntForumUser As New ForumUserController

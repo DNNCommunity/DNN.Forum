@@ -549,8 +549,16 @@ Namespace DotNetNuke.Modules.Forum
 			Return EmailQueueTask
 		End Function
 
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="portalId"></param>
+		''' <param name="ps"></param>
+		''' <param name="version"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
 		Public Overrides Function GetUrls(ByVal portalId As Integer, ByVal ps As PortalSettings, ByVal version As String) As List(Of SitemapUrl)
-			Dim blogUrl As SitemapUrl
+			'Dim blogUrl As SitemapUrl
 			Dim urls As New List(Of SitemapUrl)
 
 			'Dim blog As New EntryController
@@ -563,6 +571,13 @@ Namespace DotNetNuke.Modules.Forum
 			Return urls
 		End Function
 
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="objEntry"></param>
+		''' <param name="portalAlias"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
 		Private Function GetThreadUrls(ByVal objEntry As ThreadInfo, ByVal portalAlias As String) As SitemapUrl
 			Dim pageUrl As New SitemapUrl
 			'pageUrl.Url = objEntry.PermaLink
