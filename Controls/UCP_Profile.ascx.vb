@@ -20,17 +20,13 @@
 Option Strict On
 Option Explicit On
 
-Imports DotNetNuke.Entities.Profile
-Imports DotNetNuke.Entities.Users
-
 Namespace DotNetNuke.Modules.Forum.UCP
 
 	''' <summary>
 	''' This is the users "Edit Profile" page and also the page used for administrators of
 	''' the module to change forum user settings. This is the forum users profile.
 	''' </summary>
-	''' <remarks>
-	''' </remarks>
+	''' <remarks></remarks>
 	Partial Public Class Profile
 		Inherits ForumModuleBase
 		Implements Utilities.AjaxLoader.IPageLoad

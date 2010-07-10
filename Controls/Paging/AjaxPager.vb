@@ -26,7 +26,6 @@ Imports System.Web.UI
 Imports System.Web.UI.WebControls
 Imports System.Text
 Imports System.Collections.Generic
-Imports System.Collections
 
 Namespace DotNetNuke.Modules.Forum.WebControls
 

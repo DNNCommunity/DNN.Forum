@@ -20,8 +20,6 @@
 Option Strict On
 Option Explicit On
 
-Imports Telerik.Web.UI
-
 Namespace DotNetNuke.Modules.Forum.ACP
 
 	''' <summary>

@@ -20,8 +20,6 @@
 Option Strict On
 Option Explicit On
 
-Imports DotNetNuke.Entities.Profile
-
 Namespace DotNetNuke.Modules.Forum.ACP
 
 	''' <summary>

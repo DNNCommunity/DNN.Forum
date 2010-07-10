@@ -21,7 +21,6 @@ Option Strict On
 Option Explicit On
 
 Imports DotNetNuke.Entities.Users
-Imports DotNetNuke.Services.FileSystem
 
 Namespace DotNetNuke.Modules.Forum
 
