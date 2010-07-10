@@ -51,8 +51,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks>
 		''' </remarks>
-		Public Function ModerateForumGetByModeratorThreads(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer) As List(Of PostModerationInfo)
-			Return CBO.FillCollection(Of PostModerationInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ModerateForumGetByModeratorThreads(UserID, ModuleID, PortalID))
+		Public Function ModerateForumGetByModeratorThreads(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer) As List(Of ForumInfo)
+			Return CBO.FillCollection(Of ForumInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ModerateForumGetByModeratorThreads(UserID, ModuleID, PortalID))
 		End Function
 
 		''' <summary>

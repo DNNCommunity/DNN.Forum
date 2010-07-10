@@ -192,7 +192,6 @@
     <Compile Include="Components\Entities\KeywordInfo.vb" />
     <Compile Include="Components\Entities\PollInfo.vb" />
     <Compile Include="Components\Entities\PostInfo.vb" />
-    <Compile Include="Components\Entities\PostModerationInfo.vb" />
     <Compile Include="Components\Entities\PostReportedInfo.vb" />
     <Compile Include="Components\Entities\PostSearchInfo.vb" />
     <Compile Include="Components\Entities\RoleAvatarInfo.vb" />
@@ -886,9 +885,7 @@
     <Content Include="Themes\Blue\images\sublevel.png" />
     <Content Include="Themes\Blue\images\s_add.png" />
     <Content Include="Themes\Blue\images\s_attachment.png" />
-    <Content Include="Themes\Blue\images\s_calendar.png" />
     <Content Include="Themes\Blue\images\s_cancel.png" />
-    <Content Include="Themes\Blue\images\s_delete .png" />
     <Content Include="Themes\Blue\images\s_delete.png" />
     <Content Include="Themes\Blue\images\s_down.png" />
     <Content Include="Themes\Blue\images\s_edit.png" />
@@ -921,12 +918,8 @@
     <Content Include="Themes\Blue\images\s_postunread.png" />
     <Content Include="Themes\Blue\images\s_postunreadplus.png" />
     <Content Include="Themes\Blue\images\s_postuunreadplus.png" />
-    <Content Include="Themes\Blue\images\s_preview.png" />
-    <Content Include="Themes\Blue\images\s_remove.png" />
     <Content Include="Themes\Blue\images\s_rss.png" />
-    <Content Include="Themes\Blue\images\s_save.png" />
     <Content Include="Themes\Blue\images\s_spacer.png" />
-    <Content Include="Themes\Blue\images\s_subscribe.png" />
     <Content Include="Themes\Blue\images\s_up.png" />
     <Content Include="Themes\Blue\images\s_update.png" />
     <Content Include="Themes\Blue\images\thread_newest.png" />

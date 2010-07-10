@@ -62,7 +62,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		Protected Sub dgModQueue_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles dgModQueue.ItemDataBound
 			If e.Item.ItemType <> ListItemType.AlternatingItem AndAlso e.Item.ItemType <> ListItemType.Item Then Exit Sub
 
-			Dim dataItem As PostModerationInfo = CType(e.Item.DataItem, PostModerationInfo)
+			Dim dataItem As ForumInfo = CType(e.Item.DataItem, ForumInfo)
 
 			Dim img As System.Web.UI.WebControls.Image
 			Dim hl As HyperLink
@@ -92,7 +92,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		''' <remarks></remarks>
 		Private Sub BindData()
 			Dim ctlModerate As New PostModerationController
-			Dim arrPostsToModerate As List(Of PostModerationInfo)
+			Dim arrPostsToModerate As List(Of ForumInfo)
 
 			arrPostsToModerate = ctlModerate.ModerateForumGetByModeratorThreads(CurrentForumUser.UserID, ModuleId, PortalId)
 
