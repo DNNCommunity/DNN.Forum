@@ -140,6 +140,7 @@
       <DependentUpon>ACP.ascx</DependentUpon>
     </Compile>
     <Compile Include="Components\BaseControl\BaseControl.vb" />
+    <Compile Include="Components\Configuration\Configuration.vb" />
     <Compile Include="Components\Configuration\Constants.vb" />
     <Compile Include="Components\BaseControl\DNNForum.vb" />
     <Compile Include="Components\BaseControl\ForumModuleBase.vb">
@@ -152,8 +153,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Components\Bookmark\ForumBookmark.vb" />
-    <Compile Include="Components\Configuration\ForumConfig.vb" />
-    <Compile Include="Components\Configuration\ForumEnum.vb" />
+    <Compile Include="Components\Configuration\Enums.vb" />
     <Compile Include="Components\Configuration\ForumPreConfig.vb" />
     <Compile Include="Components\Controllers\AnswerController.vb" />
     <Compile Include="Components\Controllers\AttachmentController.vb" />
