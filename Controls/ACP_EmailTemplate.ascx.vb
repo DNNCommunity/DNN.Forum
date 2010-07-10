@@ -90,8 +90,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </remarks>
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
-				Dim objTemplateCnt As New ForumEmailTemplateController
-				Dim objTemplateInfo As New ForumEmailTemplateInfo
+				Dim objTemplateCnt As New EmailTemplateController
+				Dim objTemplateInfo As New EmailTemplateInfo
 
 				objTemplateInfo.EmailSubject = txtEmailSubject.Text
 				objTemplateInfo.EmailTemplateID = CType(ddlEmailTemplate.SelectedValue, Integer)
@@ -153,7 +153,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				imgColumnControl = item.Controls(0).FindControl("lblToken")
 				If TypeOf imgColumnControl Is System.Web.UI.WebControls.Label Then
 					Dim lblToken As Label = CType(imgColumnControl, System.Web.UI.WebControls.Label)
-					Dim objKeyword As ForumKeywordInfo = CType(item.DataItem, ForumKeywordInfo)
+					Dim objKeyword As KeywordInfo = CType(item.DataItem, KeywordInfo)
 
 					lblToken.Text = objKeyword.Token
 				End If
@@ -161,7 +161,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				imgColumnControl = item.Controls(0).FindControl("lblDescription")
 				If TypeOf imgColumnControl Is System.Web.UI.WebControls.Label Then
 					Dim lblDescription As Label = CType(imgColumnControl, System.Web.UI.WebControls.Label)
-					Dim objKeyword As ForumKeywordInfo = CType(item.DataItem, ForumKeywordInfo)
+					Dim objKeyword As KeywordInfo = CType(item.DataItem, KeywordInfo)
 
 					lblDescription.Text = objKeyword.Description
 				End If
@@ -189,7 +189,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </remarks>
 		Private Sub BindEmailTemplates()
 			Try
-				Dim objTemplateCnt As New ForumEmailTemplateController
+				Dim objTemplateCnt As New EmailTemplateController
 				Dim arrTemplates As ArrayList
 				Dim tempModuleID As Integer
 
@@ -207,7 +207,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				If arrTemplates.Count > 0 Then
 					BindTemplateList(arrTemplates)
 				Else
-					Dim objEmailTemplateInfo As New ForumEmailTemplateInfo
+					Dim objEmailTemplateInfo As New EmailTemplateInfo
 					Dim arrDefaultTemplates As ArrayList
 					'Get Default templates
 					arrDefaultTemplates = objTemplateCnt.GetDefaultEmailTemplates()
@@ -215,7 +215,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					If arrDefaultTemplates.Count > 0 Then
 						' for each default template, create one specific to this module
 						For Each objEmailTemplateInfo In arrDefaultTemplates
-							Dim NewTemplateInfo As New ForumEmailTemplateInfo
+							Dim NewTemplateInfo As New EmailTemplateInfo
 							NewTemplateInfo.EmailSubject = objEmailTemplateInfo.EmailSubject
 							NewTemplateInfo.ForumTemplateTypeID = objEmailTemplateInfo.ForumTemplateTypeID
 							NewTemplateInfo.HTMLBody = objEmailTemplateInfo.HTMLBody
@@ -247,7 +247,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <param name="arrTemplates"></param>
 		''' <remarks></remarks>
 		Private Sub BindTemplateList(ByVal arrTemplates As ArrayList)
-			For Each objEmailTemplate As ForumEmailTemplateInfo In arrTemplates
+			For Each objEmailTemplate As EmailTemplateInfo In arrTemplates
 				Dim HostTemplates As New ListItem(Localization.GetString(objEmailTemplate.EmailTemplateName, objConfig.SharedResourceFile), objEmailTemplate.EmailTemplateID.ToString)
 				ddlEmailTemplate.Items.Add(HostTemplates)
 			Next
@@ -259,8 +259,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <remarks>
 		''' </remarks>
 		Private Sub BindSingleTemplate()
-			Dim objTemplateCnt As New ForumEmailTemplateController
-			Dim objTemplateInfo As ForumEmailTemplateInfo
+			Dim objTemplateCnt As New EmailTemplateController
+			Dim objTemplateInfo As EmailTemplateInfo
 			Dim tempTemplateID As Integer = CType(ddlEmailTemplate.SelectedValue, Integer)
 
 			objTemplateInfo = objTemplateCnt.GetEmailTemplate(tempTemplateID)

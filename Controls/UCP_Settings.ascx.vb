@@ -40,7 +40,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' <remarks></remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
 			Dim cntForumUser As New ForumUserController
-			Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
+			Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 			Dim objSecurity As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
 
 			ddlEmailFormat.Items.Clear()
@@ -86,7 +86,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
 				Dim cntForumUser As New ForumUserController
-				Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
+				Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
 				With ProfileUser
 					.EnableOnlineStatus = chkOnlineStatus.Checked

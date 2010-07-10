@@ -22,13 +22,11 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region " AttachmentInfo "
-
-    ''' <summary>
-    ''' A single instance of the AttachmentInfo Object.
-    ''' </summary>
-    ''' <remarks>Added by Skeel</remarks>
-    Public Class AttachmentInfo
+	''' <summary>
+	''' A single instance of the AttachmentInfo Object.
+	''' </summary>
+	''' <remarks>Added by Skeel</remarks>
+	Public Class AttachmentInfo
 
 #Region " Private Members "
 
@@ -233,38 +231,36 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region " Private Methods "
 
-        ''' <summary>
-        ''' Formats an integer value presumed as bytes to bytes/KB/MB/GB
-        ''' </summary>
-        ''' <param name="Bytes"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Function FormatBytes(ByVal Bytes As Integer) As String
+		''' <summary>
+		''' Formats an integer value presumed as bytes to bytes/KB/MB/GB
+		''' </summary>
+		''' <param name="Bytes"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Function FormatBytes(ByVal Bytes As Integer) As String
 
 			Dim strBytes As String = String.Empty
-            Try
-                If Bytes >= 1073741824 Then
-                    strBytes = Format(Bytes / 1024 / 1024 / 1024, "#0.00") & " GB"
-                ElseIf Bytes >= 1048576 Then
-                    strBytes = Format(Bytes / 1024 / 1024, "#0.00") & " MB"
-                ElseIf Bytes >= 1024 Then
-                    strBytes = Format(Bytes / 1024, "#0.00") & " KB"
-                ElseIf Bytes < 1024 Then
-                    strBytes = Fix(Bytes) & " Bytes"
-                End If
-            Catch ex As Exception
-                strBytes = "0 Bytes"
-            End Try
+			Try
+				If Bytes >= 1073741824 Then
+					strBytes = Format(Bytes / 1024 / 1024 / 1024, "#0.00") & " GB"
+				ElseIf Bytes >= 1048576 Then
+					strBytes = Format(Bytes / 1024 / 1024, "#0.00") & " MB"
+				ElseIf Bytes >= 1024 Then
+					strBytes = Format(Bytes / 1024, "#0.00") & " KB"
+				ElseIf Bytes < 1024 Then
+					strBytes = Fix(Bytes) & " Bytes"
+				End If
+			Catch ex As Exception
+				strBytes = "0 Bytes"
+			End Try
 
-            Return strBytes
+			Return strBytes
 
-        End Function
+		End Function
 
-
-#End Region
-
-    End Class
 
 #End Region
+
+	End Class
 
 End Namespace

@@ -24,8 +24,6 @@ Imports DotNetNuke.Entities.Modules
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "ThreadInfo"
-
 	''' <summary>
 	''' A cached instance of a thread info object.
 	''' </summary>
@@ -72,7 +70,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 #End Region
-		
+
 #Region "Public Properties"
 
 		''' <summary>
@@ -81,7 +79,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public ReadOnly Property StartedByUser() As ForumUser
+		Public ReadOnly Property StartedByUser() As ForumUserInfo
 			Get
 				Dim cntForumUser As New ForumUserController
 				Return cntForumUser.GetForumUser(StartedByUserID, False, ModuleID, PortalID)
@@ -94,7 +92,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public ReadOnly Property LastApprovedUser() As ForumUser
+		Public ReadOnly Property LastApprovedUser() As ForumUserInfo
 			Get
 				Dim cntForumUser As New ForumUserController
 				Return cntForumUser.GetForumUser(LastApprovedPost.Author.UserID, False, ModuleID, PortalID)
@@ -667,7 +665,5 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 	End Class
-
-#End Region
 
 End Namespace

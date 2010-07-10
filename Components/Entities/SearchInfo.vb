@@ -66,7 +66,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns>A forum user who last had an approved post in a thread.</returns>
 		''' <remarks></remarks>
-		Public ReadOnly Property LastApprovedUser() As ForumUser
+		Public ReadOnly Property LastApprovedUser() As ForumUserInfo
 			Get
 				Dim cntForumUser As New ForumUserController
 				Return cntForumUser.GetForumUser(LastApprovedPost.UserID, False, ModuleID, PortalID)

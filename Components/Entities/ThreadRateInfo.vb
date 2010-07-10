@@ -22,8 +22,6 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "ThreadRateInfo"
-
 	''' <summary>
 	''' All properties associated with the Forum_ThreadRating table in the data store. 
 	''' </summary>
@@ -99,7 +97,5 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 	End Class
-
-#End Region
 
 End Namespace

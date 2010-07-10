@@ -41,7 +41,7 @@ Namespace DotNetNuke.Modules.Forum
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function GetKeywordsByType(ByVal ContentTypeID As Integer) As ArrayList
-            Return CBO.FillCollection(DataProvider.Instance().GetKeywordsByType(ContentTypeID), GetType(ForumKeywordInfo))
+			Return CBO.FillCollection(DataProvider.Instance().GetKeywordsByType(ContentTypeID), GetType(KeywordInfo))
         End Function
 
     End Class

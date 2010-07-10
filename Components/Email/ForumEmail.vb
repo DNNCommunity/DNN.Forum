@@ -22,16 +22,11 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "ForumEmail"
-
 	''' <summary>
 	''' Constructs an outgoing email for all types of email communication. 
 	''' </summary>
 	''' <remarks>The is used for tasks or emails that are not being tasked.
 	''' </remarks>
-	''' <history>
-	'''  [cpaterra] 8/27/2006 Heavily modified to use new email template system.
-	''' </history>
 	Public Class ForumEmail
 		Inherits EmailQueueTaskInfo
 
@@ -104,7 +99,7 @@ Namespace DotNetNuke.Modules.Forum
 					objForum = cntForum.GetForumInfoCache(objPostInfo.ForumID)
 
 					'Grab keywords based on content type, this is stored in cache
-					Keywords = ForumKeywordInfo.GetKeywordsHash(ContentType)
+					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
 
 					' We first have to pass to the keyword rendering. This is going to take the hashtable, replaces its replacementvar's based on the email content type
 					If Not Keywords Is Nothing Then
@@ -142,7 +137,7 @@ Namespace DotNetNuke.Modules.Forum
 					objForum = cntForum.GetForumInfoCache(objPostInfo.ForumID)
 
 					'Grab keywords based on content type, this is stored in cache
-					Keywords = ForumKeywordInfo.GetKeywordsHash(ContentType)
+					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
 
 					' We first have to pass to the keyword rendering. This is going to take the hashtable, replaces its replacementvar's based on the email content type
 					If Not Keywords Is Nothing Then
@@ -180,7 +175,7 @@ Namespace DotNetNuke.Modules.Forum
 					objForum = cntForum.GetForumInfoCache(objPostInfo.ForumID)
 
 					'Grab keywords based on content type, this is stored in cache
-					Keywords = ForumKeywordInfo.GetKeywordsHash(ContentType)
+					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
 
 					' We first have to pass to the keyword rendering. This is going to take the hashtable, replaces its replacementvar's based on the email content type
 					If Not Keywords Is Nothing Then
@@ -217,7 +212,7 @@ Namespace DotNetNuke.Modules.Forum
 					objForum = cntForum.GetForumInfoCache(objPostInfo.ForumID)
 
 					'Grab keywords based on content type, this is stored in cache
-					Keywords = ForumKeywordInfo.GetKeywordsHash(ContentType)
+					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
 
 					' We first have to pass to the keyword rendering. This is going to take hashtable, replaces its replacementvar's based on the email content type
 					If Not Keywords Is Nothing Then
@@ -250,7 +245,7 @@ Namespace DotNetNuke.Modules.Forum
 					DistroContentID = objPostInfo.ForumID
 
 					'Grab keywords based on content type, this is stored in cache
-					Keywords = ForumKeywordInfo.GetKeywordsHash(ContentType)
+					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
 
 					' We first have to pass to the keyword rendering. This is going to take the hashtable, replaces its replacementvar's based on the email content type
 					If Not Keywords Is Nothing Then
@@ -273,7 +268,7 @@ Namespace DotNetNuke.Modules.Forum
 					DistroContentID = objPostInfo.PostID
 
 					'Grab keywords based on content type, this is stored in cache
-					Keywords = ForumKeywordInfo.GetKeywordsHash(ContentType)
+					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
 
 					' We first have to pass to the keyword rendering. This is going to take the hashtable, replaces its replacementvar's based on the email content type
 					If Not Keywords Is Nothing Then
@@ -298,7 +293,7 @@ Namespace DotNetNuke.Modules.Forum
 					DistroContentID = objPostInfo.PostID
 
 					'Grab keywords based on content type, this is stored in cache
-					Keywords = ForumKeywordInfo.GetKeywordsHash(ContentType)
+					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
 
 					' We first have to pass to the keyword rendering. This is going to take the hashtable, replaces its replacementvar's based on the email content type
 					If Not Keywords Is Nothing Then
@@ -325,7 +320,7 @@ Namespace DotNetNuke.Modules.Forum
 					objForum = cntForum.GetForumInfoCache(objPostInfo.ForumID)
 
 					'Grab keywords based on content type, this is stored in cache
-					Keywords = ForumKeywordInfo.GetKeywordsHash(ContentType)
+					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
 
 					' We first have to pass to the keyword rendering. This is going to take the hashtable, replaces its replacementvar's based on the email content type
 					If Not Keywords Is Nothing Then
@@ -362,7 +357,7 @@ Namespace DotNetNuke.Modules.Forum
 					objForum = cntForum.GetForumInfoCache(objPostInfo.ForumID)
 
 					'Grab keywords based on content type, this is stored in cache
-					Keywords = ForumKeywordInfo.GetKeywordsHash(ContentType)
+					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
 
 					' We first have to pass to the keyword rendering. This is going to take the hashtable, replaces its replacementvar's based on the email content type
 					If Not Keywords Is Nothing Then
@@ -399,7 +394,7 @@ Namespace DotNetNuke.Modules.Forum
 					objForum = cntForum.GetForumInfoCache(objPostInfo.ForumID)
 
 					'Grab keywords based on content type, this is stored in cache
-					Keywords = ForumKeywordInfo.GetKeywordsHash(ContentType)
+					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
 
 					' We first have to pass to the keyword rendering. This is going to take hashtable, replaces its replacementvar's based on the email content type
 					If Not Keywords Is Nothing Then
@@ -426,8 +421,8 @@ Namespace DotNetNuke.Modules.Forum
 			End Select
 
 			'Get the templates here, pass to subject and body for replacement
-			Dim objETempCnt As New ForumEmailTemplateController
-			Dim objETempInfo As New ForumEmailTemplateInfo
+			Dim objETempCnt As New EmailTemplateController
+			Dim objETempInfo As New EmailTemplateInfo
 			Dim arrTemplates As ArrayList
 			arrTemplates = objETempCnt.GetEmailTemplatesByModuleID(objConfig.ModuleID)
 
@@ -436,7 +431,7 @@ Namespace DotNetNuke.Modules.Forum
 				objETempInfo = objETempCnt.GetEmailTemplateForMail(objConfig.ModuleID, ForumEmailTypeID)
 			Else
 				' duplicate defaults
-				Dim objEmailTemplateInfo As New ForumEmailTemplateInfo
+				Dim objEmailTemplateInfo As New EmailTemplateInfo
 				Dim arrDefaultTemplates As ArrayList
 				'Get Default templates
 				arrDefaultTemplates = objETempCnt.GetDefaultEmailTemplates()
@@ -444,7 +439,7 @@ Namespace DotNetNuke.Modules.Forum
 				If arrDefaultTemplates.Count > 0 Then
 					' for each default template, create one specific to this module
 					For Each objEmailTemplateInfo In arrDefaultTemplates
-						Dim NewTemplateInfo As New ForumEmailTemplateInfo
+						Dim NewTemplateInfo As New EmailTemplateInfo
 						NewTemplateInfo.EmailSubject = objEmailTemplateInfo.EmailSubject
 						NewTemplateInfo.ForumTemplateTypeID = objEmailTemplateInfo.ForumTemplateTypeID
 						NewTemplateInfo.HTMLBody = objEmailTemplateInfo.HTMLBody
@@ -863,7 +858,5 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 	End Class
-
-#End Region
 
 End Namespace

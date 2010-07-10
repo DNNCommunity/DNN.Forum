@@ -448,7 +448,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public Sub New(ByVal forum As DNNForum)
 			MyBase.New(forum)
 
-			Dim user As ForumUser = CurrentForumUser
+			Dim user As ForumUserInfo = CurrentForumUser
 
 			If Not HttpContext.Current.Request.QueryString("postid") Is Nothing Then
 				' If a specific postid is in the url
@@ -887,7 +887,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					' display tracking option only if user is authenticated and the forum module allows tracking
 					If objConfig.MailNotification Then
-						Dim objForumUser As ForumUser = CurrentForumUser
+						Dim objForumUser As ForumUserInfo = CurrentForumUser
 						' check to see if the user is tracking at the module level (not implemented)
 						If Not objForumUser.TrackedModule Then
 							' check to see if the user is tracking at the forum level
@@ -1703,7 +1703,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Private Sub RenderAuthor(ByVal wr As HtmlTextWriter, ByVal Post As PostInfo, ByVal PostCountIsEven As Boolean, ByVal ShowDetails As Boolean)
 			If Not Post Is Nothing Then
-				Dim author As ForumUser = Post.Author
+				Dim author As ForumUserInfo = Post.Author
 				Dim authorOnline As Boolean = (author.EnableOnlineStatus AndAlso author.IsOnline AndAlso (ForumControl.objConfig.EnableUsersOnline))
 				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
 
@@ -1925,7 +1925,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="author"></param>
 		''' <param name="wr"></param>
 		''' <remarks></remarks>
-		Private Sub RenderProfileAvatar(ByVal author As ForumUser, ByVal wr As HtmlTextWriter)
+		Private Sub RenderProfileAvatar(ByVal author As ForumUserInfo, ByVal wr As HtmlTextWriter)
 			' This needs to be rendered w/ specified size
 			If objConfig.EnableProfileUserFolders Then
 				' The link click below (duplicated from core profile page) presents some serious issues under volume. 
@@ -1959,7 +1959,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="author"></param>
 		''' <param name="wr"></param>
 		''' <remarks></remarks>
-		Private Sub RenderWebSiteLink(ByVal author As ForumUser, ByVal wr As HtmlTextWriter)
+		Private Sub RenderWebSiteLink(ByVal author As ForumUserInfo, ByVal wr As HtmlTextWriter)
 			If Len(author.UserWebsite) > 0 Then
 				wr.Write("<br />")
 				RenderLinkButton(wr, author.UserWebsite, Replace(author.UserWebsite, "http://", ""), "Forum_Profile", "", True, objConfig.NoFollowWeb)
@@ -1972,7 +1972,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="author"></param>
 		''' <param name="wr"></param>
 		''' <remarks></remarks>
-		Private Sub RenderCountry(ByVal author As ForumUser, ByVal wr As HtmlTextWriter)
+		Private Sub RenderCountry(ByVal author As ForumUserInfo, ByVal wr As HtmlTextWriter)
 			If objConfig.DisplayPosterRegion And Len(author.Profile.Region) > 0 Then
 				wr.Write("<br />" & ForumControl.LocalizedText("Region") & ": " & author.Profile.Region)
 			End If
@@ -1987,7 +1987,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ShowDetails"></param>
 		''' <remarks></remarks>
 		Private Sub RenderPostHeader(ByVal wr As HtmlTextWriter, ByVal Post As PostInfo, ByVal PostCountIsEven As Boolean, ByVal ShowDetails As Boolean)
-			Dim user As ForumUser = CurrentForumUser
+			Dim user As ForumUserInfo = CurrentForumUser
 			Dim detailCellClass As String = String.Empty
 			Dim buttonCellClass As String = String.Empty
 			Dim strSubject As String = String.Empty
@@ -2151,7 +2151,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="PostCountIsEven"></param>
 		''' <remarks></remarks>
 		Private Sub RenderPostBody(ByVal wr As HtmlTextWriter, ByVal Post As PostInfo, ByVal PostCountIsEven As Boolean)
-			Dim author As ForumUser = Post.Author
+			Dim author As ForumUserInfo = Post.Author
 			Dim cleanBody As String = String.Empty
 			Dim cleanSignature As String = String.Empty
 			Dim attachmentClass As String = String.Empty
@@ -2821,8 +2821,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>
 		''' </remarks>
 		Private Sub RenderCommands(ByVal wr As HtmlTextWriter, ByVal Post As PostInfo)
-			Dim user As ForumUser = CurrentForumUser
-			Dim author As ForumUser = Post.Author
+			Dim user As ForumUserInfo = CurrentForumUser
+			Dim author As ForumUserInfo = Post.Author
 			Dim HostThread As ThreadInfo = Post.ParentThread
 			Dim HostForum As ForumInfo = HostThread.HostForum
 

@@ -334,7 +334,7 @@ Namespace DotNetNuke.Modules.Forum
 			If arrTemplates.Count > 0 Then
 				BindTemplateList(arrTemplates)
 			Else
-				Dim objTemplateInfo As New ForumTemplateInfo
+				Dim objTemplateInfo As New TemplateInfo
 				Dim arrDefaultTemplates As ArrayList
 				'Get Default templates
 				arrDefaultTemplates = objTempCnt.TemplatesGetDefaults(ForumTemplateTypes.DeletePost)
@@ -342,7 +342,7 @@ Namespace DotNetNuke.Modules.Forum
 				If arrDefaultTemplates.Count > 0 Then
 					' for each default template, create one specific to this module
 					For Each objTemplateInfo In arrDefaultTemplates
-						Dim NewTemplateInfo As New ForumTemplateInfo
+						Dim NewTemplateInfo As New TemplateInfo
 
 						NewTemplateInfo.TemplateName = objTemplateInfo.TemplateName
 						NewTemplateInfo.TemplateValue = objTemplateInfo.TemplateValue
@@ -367,7 +367,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="arrTemplates"></param>
 		''' <remarks></remarks>
 		Private Sub BindTemplateList(ByVal arrTemplates As ArrayList)
-			For Each objForumTemplate As ForumTemplateInfo In arrTemplates
+			For Each objForumTemplate As TemplateInfo In arrTemplates
 				Dim AvailableTemplates As New ListItem(Localization.GetString(objForumTemplate.TemplateName, objConfig.SharedResourceFile), objForumTemplate.TemplateID.ToString)
 				ddlDeleteTemplate.Items.Add(AvailableTemplates)
 			Next
@@ -380,7 +380,7 @@ Namespace DotNetNuke.Modules.Forum
 		Private Sub BindDeleteTemplateBody()
 			' get the single template
 			Dim objTempCnt As New ForumTemplateController
-			Dim objTemplate As ForumTemplateInfo
+			Dim objTemplate As TemplateInfo
 			objTemplate = objTempCnt.TemplatesGetSingle(CType(ddlDeleteTemplate.SelectedValue, Integer))
 
 			Dim Reason As String = objTemplate.TemplateValue

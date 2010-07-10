@@ -22,16 +22,11 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "PostSearch"
-
 	''' <summary>
 	''' All properties associated with the Forum_Posts and Forum_Threads table that are used in ISearchable implementation.
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	''' <history>
-	''' 	[cpaterra]	7/13/2005	Created
-	''' </history>
 	Public Class PostSearchInfo
 
 #Region "Private Members"
@@ -183,7 +178,5 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 	End Class
-
-#End Region
 
 End Namespace

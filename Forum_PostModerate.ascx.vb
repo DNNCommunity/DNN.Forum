@@ -328,7 +328,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim url As String
 			Dim cntForumUser As New ForumUserController
 
-			Dim objUser As ForumUser = cntForumUser.GetForumUser(UserId, False, ModuleId, PortalId)
+			Dim objUser As ForumUserInfo = cntForumUser.GetForumUser(UserId, False, ModuleId, PortalId)
 			If Not objConfig.EnableExternalProfile Then
 				url = objUser.UserCoreProfileLink
 			Else
@@ -412,7 +412,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Protected Function FormatUserAlias(ByVal UserID As Integer) As String
-			Dim objUser As ForumUser
+			Dim objUser As ForumUserInfo
 			Dim cntForumUser As New ForumUserController
 
 			objUser = cntForumUser.GetForumUser(UserID, False, ModuleId, PortalId)
@@ -427,7 +427,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Protected Function FormatUserPostCount(ByVal UserID As Integer) As String
-			Dim objUser As ForumUser
+			Dim objUser As ForumUserInfo
 			Dim cntForumUser As New ForumUserController
 
 			objUser = cntForumUser.GetForumUser(UserID, False, ModuleId, PortalId)
@@ -444,7 +444,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Protected Function FormatJoinedDate(ByVal UserID As Integer) As String
 			Dim strCreatedDate As String = String.Empty
-			Dim objUser As ForumUser
+			Dim objUser As ForumUserInfo
 			Dim cntForumUser As New ForumUserController
 
 			objUser = cntForumUser.GetForumUser(UserID, False, ModuleId, PortalId)

@@ -53,13 +53,13 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>(UpdateLastVisit)This is only true if called from Forum_Container, BaseObject could possibly be used
 		''' later on but i didn't know the impact of this without investigation
 		''' </remarks>
-		Public Function GetForumUser(ByVal UserID As Integer, ByVal UpdateLastVisit As Boolean, ByVal ModuleID As Integer, ByVal PortalID As Integer) As ForumUser
+		Public Function GetForumUser(ByVal UserID As Integer, ByVal UpdateLastVisit As Boolean, ByVal ModuleID As Integer, ByVal PortalID As Integer) As ForumUserInfo
 			If UserID > 0 Then
 				Dim cacheKey As String = FORUM_USER_CACHE_KEY_PREFIX & UserID.ToString & "-" & PortalID.ToString
 				Dim timeOut As Int32 = ForumUserInfoCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
-				Dim objForumUser As ForumUser	'As New ForumUser(ModuleID)
+				Dim objForumUser As ForumUserInfo	'As New ForumUser(ModuleID)
 
-				objForumUser = TryCast(DataCache.GetCache(cacheKey), ForumUser)
+				objForumUser = TryCast(DataCache.GetCache(cacheKey), ForumUserInfo)
 
 				If objForumUser Is Nothing Then
 					Return UserCheck(UserID, PortalID, ModuleID)
@@ -100,8 +100,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns>ForumUser</returns>
 		''' <remarks>
 		''' </remarks>
-		Friend Function FillForumUserInfo(ByVal dr As IDataReader, ByVal PortalID As Integer, ByVal ModuleID As Integer) As ForumUser
-			Dim objForumUser As New ForumUser(ModuleID)
+		Friend Function FillForumUserInfo(ByVal dr As IDataReader, ByVal PortalID As Integer, ByVal ModuleID As Integer) As ForumUserInfo
+			Dim objForumUser As New ForumUserInfo(ModuleID)
 			Dim UserID As Integer = -1
 			' portalid and issuperuser must be set first because they are used by the progressive hydration 
 			Try
@@ -298,7 +298,7 @@ Namespace DotNetNuke.Modules.Forum
 			Try
 				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().UserGetAll(PortalId, PageIndex, PageSize)
 				While dr.Read
-					Dim objUserInfo As ForumUser = FillForumUserInfo(dr, PortalId, ModuleID)
+					Dim objUserInfo As ForumUserInfo = FillForumUserInfo(dr, PortalId, ModuleID)
 					objUsers.Add(objUserInfo)
 				End While
 				dr.NextResult()
@@ -322,7 +322,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <param name="User"></param>
 		''' <remarks></remarks>
-		Public Sub UserAdd(ByVal User As ForumUser)
+		Public Sub UserAdd(ByVal User As ForumUserInfo)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().UserAdd(User.UserID, User.UserAvatar, User.Avatar, User.SystemAvatars, User.Signature, User.IsTrusted, User.EnableOnlineStatus, User.ThreadsPerPage, User.PostsPerPage, False, User.PortalID)
 		End Sub
 
@@ -331,7 +331,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <remarks>
 		''' </remarks>
-		Public Sub Update(ByVal objUser As ForumUser)
+		Public Sub Update(ByVal objUser As ForumUserInfo)
 			UserUpdate(objUser)
 		End Sub
 
@@ -340,7 +340,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <param name="objUser"></param>		
 		''' <remarks></remarks>
-		Public Sub UserUpdate(ByVal objUser As ForumUser)
+		Public Sub UserUpdate(ByVal objUser As ForumUserInfo)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().UserUpdate(objUser.UserID, objUser.UserAvatar, objUser.Avatar, objUser.SystemAvatars, objUser.Signature, objUser.IsTrusted, objUser.EnableOnlineStatus, objUser.ThreadsPerPage, objUser.PostsPerPage, objUser.EnableModNotification, False, objUser.EmailFormat, objUser.PortalID, objUser.LockTrust, False, objUser.EnableDefaultPostNotify, objUser.EnableSelfNotifications, objUser.IsBanned, objUser.LiftBanDate, objUser.StartBanDate)
 			DataCache.RemoveCache(String.Concat(FORUM_USER_CACHE_KEY_PREFIX & objUser.UserID.ToString & "-" & objUser.PortalID.ToString))
 		End Sub
@@ -392,14 +392,14 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ModuleID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Function MembersGetByUsername(ByVal PortalId As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUser)
-			Dim objUsers As New List(Of ForumUser)
+		Public Function MembersGetByUsername(ByVal PortalId As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUserInfo)
+			Dim objUsers As New List(Of ForumUserInfo)
 			Dim dr As IDataReader = Nothing
 
 			Try
 				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().MembersGetByUsername(PortalId, Filter, PageIndex, PageSize)
 				While dr.Read
-					Dim objUserInfo As ForumUser = FillForumUserInfo(dr, PortalId, ModuleID)
+					Dim objUserInfo As ForumUserInfo = FillForumUserInfo(dr, PortalId, ModuleID)
 					objUsers.Add(objUserInfo)
 				End While
 				dr.NextResult()
@@ -425,14 +425,14 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ModuleID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Function MembersGetByDisplayName(ByVal PortalId As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUser)
-			Dim objUsers As New List(Of ForumUser)
+		Public Function MembersGetByDisplayName(ByVal PortalId As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUserInfo)
+			Dim objUsers As New List(Of ForumUserInfo)
 			Dim dr As IDataReader = Nothing
 
 			Try
 				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().MembersGetByDisplayName(PortalId, Filter, PageIndex, PageSize)
 				While dr.Read
-					Dim objUserInfo As ForumUser = FillForumUserInfo(dr, PortalId, ModuleID)
+					Dim objUserInfo As ForumUserInfo = FillForumUserInfo(dr, PortalId, ModuleID)
 					objUsers.Add(objUserInfo)
 				End While
 				dr.NextResult()
@@ -457,14 +457,14 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ModuleID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Function MembersGetAll(ByVal PortalId As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUser)
-			Dim objUsers As New List(Of ForumUser)
+		Public Function MembersGetAll(ByVal PortalId As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUserInfo)
+			Dim objUsers As New List(Of ForumUserInfo)
 			Dim dr As IDataReader = Nothing
 
 			Try
 				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().MembersGetAll(PortalId, PageIndex, PageSize)
 				While dr.Read
-					Dim objUserInfo As ForumUser = FillForumUserInfo(dr, PortalId, ModuleID)
+					Dim objUserInfo As ForumUserInfo = FillForumUserInfo(dr, PortalId, ModuleID)
 					objUsers.Add(objUserInfo)
 				End While
 				dr.NextResult()
@@ -490,14 +490,14 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ModuleID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Function MembersGetByEmail(ByVal PortalId As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUser)
-			Dim objUsers As New List(Of ForumUser)
+		Public Function MembersGetByEmail(ByVal PortalId As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUserInfo)
+			Dim objUsers As New List(Of ForumUserInfo)
 			Dim dr As IDataReader = Nothing
 
 			Try
 				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().MembersGetByEmail(PortalId, Filter, PageIndex, PageSize)
 				While dr.Read
-					Dim objUserInfo As ForumUser = FillForumUserInfo(dr, PortalId, ModuleID)
+					Dim objUserInfo As ForumUserInfo = FillForumUserInfo(dr, PortalId, ModuleID)
 					objUsers.Add(objUserInfo)
 				End While
 				dr.NextResult()
@@ -524,14 +524,14 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ModuleID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Function MembersGetByProfileProp(ByVal PortalId As Integer, ByVal PropertyName As String, ByVal PropertyValue As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUser)
-			Dim objUsers As New List(Of ForumUser)
+		Public Function MembersGetByProfileProp(ByVal PortalId As Integer, ByVal PropertyName As String, ByVal PropertyValue As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUserInfo)
+			Dim objUsers As New List(Of ForumUserInfo)
 			Dim dr As IDataReader = Nothing
 
 			Try
 				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().MembersGetByProfileProp(PortalId, PropertyName, PropertyValue, PageIndex, PageSize)
 				While dr.Read
-					Dim objUserInfo As ForumUser = FillForumUserInfo(dr, PortalId, ModuleID)
+					Dim objUserInfo As ForumUserInfo = FillForumUserInfo(dr, PortalId, ModuleID)
 					objUsers.Add(objUserInfo)
 				End While
 				dr.NextResult()
@@ -557,14 +557,14 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ModuleID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Function MembersGetOnline(ByVal PortalId As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUser)
-			Dim objUsers As New List(Of ForumUser)
+		Public Function MembersGetOnline(ByVal PortalId As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUserInfo)
+			Dim objUsers As New List(Of ForumUserInfo)
 			Dim dr As IDataReader = Nothing
 
 			Try
 				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().MembersGetOnline(PortalId)
 				While dr.Read
-					Dim objUserInfo As ForumUser = FillForumUserInfo(dr, PortalId, ModuleID)
+					Dim objUserInfo As ForumUserInfo = FillForumUserInfo(dr, PortalId, ModuleID)
 					objUsers.Add(objUserInfo)
 				End While
 				dr.NextResult()
@@ -593,14 +593,14 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="TotalRecords"></param>
 		''' <returns>A collection of banned forum users. </returns>
 		''' <remarks></remarks>
-		Public Function GetBannedUsers(ByVal PortalId As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal ModuleID As Integer, ByRef TotalRecords As Integer) As List(Of ForumUser)
-			Dim objUsers As New List(Of ForumUser)
+		Public Function GetBannedUsers(ByVal PortalId As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal ModuleID As Integer, ByRef TotalRecords As Integer) As List(Of ForumUserInfo)
+			Dim objUsers As New List(Of ForumUserInfo)
 			Dim dr As IDataReader = Nothing
 
 			Try
 				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().GetBannedUsers(PortalId, PageIndex, PageSize)
 				While dr.Read
-					Dim objUserInfo As ForumUser = FillForumUserInfo(dr, PortalId, ModuleID)
+					Dim objUserInfo As ForumUserInfo = FillForumUserInfo(dr, PortalId, ModuleID)
 					objUsers.Add(objUserInfo)
 				End While
 				dr.NextResult()
@@ -706,9 +706,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ModuleID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Private Function UserGet(ByVal PortalID As Integer, ByVal UserId As Integer, ByVal ModuleID As Integer) As ForumUser
+		Private Function UserGet(ByVal PortalID As Integer, ByVal UserId As Integer, ByVal ModuleID As Integer) As ForumUserInfo
 			Dim cacheKey As String = FORUM_USER_CACHE_KEY_PREFIX & UserId.ToString & "-" & PortalID.ToString
-			Return CBO.GetCachedObject(Of ForumUser)(New CacheItemArgs(cacheKey, 5, DataCache.PortalDesktopModuleCachePriority, PortalID, UserId, ModuleID), AddressOf UserGetCallBack)
+			Return CBO.GetCachedObject(Of ForumUserInfo)(New CacheItemArgs(cacheKey, 5, DataCache.PortalDesktopModuleCachePriority, PortalID, UserId, ModuleID), AddressOf UserGetCallBack)
 		End Function
 
 		''' <summary>
@@ -717,11 +717,11 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="cacheItemArgs"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Private Function UserGetCallBack(ByVal cacheItemArgs As CacheItemArgs) As ForumUser
+		Private Function UserGetCallBack(ByVal cacheItemArgs As CacheItemArgs) As ForumUserInfo
 			Dim portalID As Integer = DirectCast(cacheItemArgs.ParamList(0), Integer)
 			Dim userID As Integer = DirectCast(cacheItemArgs.ParamList(1), Integer)
 			Dim moduleID As Integer = DirectCast(cacheItemArgs.ParamList(2), Integer)
-			Dim objUserInfo As ForumUser
+			Dim objUserInfo As ForumUserInfo
 			Dim dr As IDataReader = Nothing
 			Try
 				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().UserGet(userID, portalID)
@@ -755,8 +755,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ModuleID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Private Function SetAnonymousUser(ByVal ModuleID As Integer) As ForumUser
-			Dim fUser As New ForumUser(ModuleID)
+		Private Function SetAnonymousUser(ByVal ModuleID As Integer) As ForumUserInfo
+			Dim fUser As New ForumUserInfo(ModuleID)
 
 			With fUser
 				.UserID = -1
@@ -789,9 +789,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="PortalID"></param>
 		''' <param name="ModuleID"></param>
 		''' <remarks></remarks>
-		Private Function SetForumUser(ByVal UserID As Integer, ByVal PortalID As Integer, ByVal ModuleID As Integer) As ForumUser
+		Private Function SetForumUser(ByVal UserID As Integer, ByVal PortalID As Integer, ByVal ModuleID As Integer) As ForumUserInfo
 			Dim cntForumUser As New ForumUserController
-			Dim fUser As New ForumUser(ModuleID)
+			Dim fUser As New ForumUserInfo(ModuleID)
 
 			fUser.PortalID = PortalID
 			fUser.UserID = UserID
@@ -819,12 +819,12 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ModuleID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Private Function UserCheck(ByVal UserID As Integer, ByVal PortalID As Integer, ByVal ModuleID As Integer) As ForumUser
+		Private Function UserCheck(ByVal UserID As Integer, ByVal PortalID As Integer, ByVal ModuleID As Integer) As ForumUserInfo
 			Dim cacheKey As String = FORUM_USER_CACHE_KEY_PREFIX & UserID.ToString & "-" & PortalID.ToString
 			Dim timeOut As Int32 = ForumUserInfoCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
 
 			Dim cntForumUser As New ForumUserController
-			Dim fUser As New ForumUser(ModuleID)
+			Dim fUser As New ForumUserInfo(ModuleID)
 			fUser = cntForumUser.UserGet(PortalID, UserID, ModuleID)
 
 			'' we could not find this forum user 

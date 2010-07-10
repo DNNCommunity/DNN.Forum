@@ -308,7 +308,7 @@ Namespace DotNetNuke.Modules.Forum
 		Private Sub PopulateList(ByVal objNodes As UI.WebControls.DNNNodeCollection, ByVal strText As String)
 			Dim o As UI.WebControls.DNNNode
 			Dim arrUsers As ArrayList
-			Dim objForumUser As ForumUser
+			Dim objForumUser As ForumUserInfo
 			Dim objUserCnt As New ForumUserController
 
 			arrUsers = objUserCnt.UserGetAll(PortalId, strText, 10, 0, 100, ModuleId)

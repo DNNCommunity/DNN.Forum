@@ -151,7 +151,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					txtPollID.Text = "-1"
 					Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, securityForumID, UserId)
-					Dim objForumUser As ForumUser = Nothing
+					Dim objForumUser As ForumUserInfo = Nothing
 					Dim objLoggedOnUserID As Integer = -1
 
 					' Before we do anything, see if the user is logged in and has permission to be here
@@ -441,7 +441,7 @@ Namespace DotNetNuke.Modules.Forum
 					objLoggedOnUserID = Users.UserController.GetCurrentUserInfo.UserID
 				End If
 				Dim cntForumUser As New ForumUserController
-				Dim objForumUser As ForumUser = cntForumUser.GetForumUser(objLoggedOnUserID, False, ModuleId, PortalId)
+				Dim objForumUser As ForumUserInfo = cntForumUser.GetForumUser(objLoggedOnUserID, False, ModuleId, PortalId)
 				Dim objAction As New PostAction
 
 				' Validation (from UI)

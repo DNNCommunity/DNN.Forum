@@ -22,8 +22,6 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "ThreadSearchInfo"
-
 	''' <summary>
 	''' All properites associated with the Forum_Threads and Forum_Posts tables exposed to module's search
 	''' </summary>
@@ -207,7 +205,5 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 	End Class
-
-#End Region
 
 End Namespace

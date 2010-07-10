@@ -40,7 +40,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
 			Dim objSecurity As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
 			Dim cntForumUser As New ForumUserController
-			Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
+			Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
 			If objSecurity.IsForumAdmin Then
 				If objConfig.EnableSystemAvatar Then
@@ -86,7 +86,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 				ForumUserController.ResetForumUser(ProfileUserID, PortalId)
 				Dim cntForumUser As New ForumUserController
 
-				Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
+				Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
 				With ProfileUser
 

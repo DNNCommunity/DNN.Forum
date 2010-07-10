@@ -151,7 +151,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public ReadOnly Property Author(ByVal ModuleID As Integer, ByVal PortalID As Integer) As ForumUser
+		Public ReadOnly Property Author(ByVal ModuleID As Integer, ByVal PortalID As Integer) As ForumUserInfo
 			Get
 				Dim cntForumUser As New ForumUserController
 				Return cntForumUser.GetForumUser(UserID, False, ModuleID, PortalID)
@@ -258,7 +258,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public ReadOnly Property Author(ByVal ModuleID As Integer, ByVal PortalID As Integer) As ForumUser
+		Public ReadOnly Property Author(ByVal ModuleID As Integer, ByVal PortalID As Integer) As ForumUserInfo
 			Get
 				Dim cntForumUser As New ForumUserController
 				Return cntForumUser.GetForumUser(UserID, False, ModuleID, PortalID)

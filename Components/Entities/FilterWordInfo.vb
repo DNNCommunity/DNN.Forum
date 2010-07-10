@@ -22,132 +22,128 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "FilterWord"
-
-    ''' <summary>
-    ''' All properties associated with the Forum_FilterWords Word items. 
-    ''' </summary>
-    ''' <remarks>Portal specific.</remarks>
-    Public Class FilterWordInfo
+	''' <summary>
+	''' All properties associated with the Forum_FilterWords Word items. 
+	''' </summary>
+	''' <remarks>Portal specific.</remarks>
+	Public Class FilterWordInfo
 
 #Region "Private Members"
 
-        Private mItemID As Integer
-        Private mPortalID As Integer
+		Private mItemID As Integer
+		Private mPortalID As Integer
 		Private mBadWord As String = String.Empty
 		Private mReplacedWord As String = String.Empty
-        Private mCreatedBy As Integer
-        Private mCreatedOn As DateTime
+		Private mCreatedBy As Integer
+		Private mCreatedOn As DateTime
 
 #End Region
 
 #Region "Constructors"
 
-        ''' <summary>
-        ''' Instantiates the class.
-        ''' </summary>
-        ''' <remarks></remarks>
-        Sub New()
-        End Sub
+		''' <summary>
+		''' Instantiates the class.
+		''' </summary>
+		''' <remarks></remarks>
+		Sub New()
+		End Sub
 
 #End Region
 
 #Region "Public Properties"
 
-        ''' <summary>
-        ''' The PK of the filter item.
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property ItemID() As Integer
-            Get
-                Return mItemID
-            End Get
-            Set(ByVal Value As Integer)
-                mItemID = Value
-            End Set
-        End Property
+		''' <summary>
+		''' The PK of the filter item.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property ItemID() As Integer
+			Get
+				Return mItemID
+			End Get
+			Set(ByVal Value As Integer)
+				mItemID = Value
+			End Set
+		End Property
 
-        ''' <summary>
-        ''' The PortalID the filter item belongs to.
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property PortalID() As Integer
-            Get
-                Return mPortalID
-            End Get
-            Set(ByVal Value As Integer)
-                mPortalID = Value
-            End Set
-        End Property
+		''' <summary>
+		''' The PortalID the filter item belongs to.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property PortalID() As Integer
+			Get
+				Return mPortalID
+			End Get
+			Set(ByVal Value As Integer)
+				mPortalID = Value
+			End Set
+		End Property
 
-        ''' <summary>
-        ''' The word to filter.
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property BadWord() As String
-            Get
-                Return mBadWord
-            End Get
-            Set(ByVal Value As String)
-                mBadWord = Value
-            End Set
-        End Property
+		''' <summary>
+		''' The word to filter.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property BadWord() As String
+			Get
+				Return mBadWord
+			End Get
+			Set(ByVal Value As String)
+				mBadWord = Value
+			End Set
+		End Property
 
-        ''' <summary>
-        ''' String to replace the filtered word with.
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property ReplacedWord() As String
-            Get
-                Return mReplacedWord
-            End Get
-            Set(ByVal Value As String)
-                mReplacedWord = Value
-            End Set
-        End Property
+		''' <summary>
+		''' String to replace the filtered word with.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property ReplacedWord() As String
+			Get
+				Return mReplacedWord
+			End Get
+			Set(ByVal Value As String)
+				mReplacedWord = Value
+			End Set
+		End Property
 
-        ''' <summary>
-        ''' Who created the filter item.
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property CreatedBy() As Integer
-            Get
-                Return mCreatedBy
-            End Get
-            Set(ByVal Value As Integer)
-                mCreatedBy = Value
-            End Set
-        End Property
+		''' <summary>
+		''' Who created the filter item.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property CreatedBy() As Integer
+			Get
+				Return mCreatedBy
+			End Get
+			Set(ByVal Value As Integer)
+				mCreatedBy = Value
+			End Set
+		End Property
 
-        ''' <summary>
-        ''' Date the item was created on.
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property CreatedOn() As DateTime
-            Get
-                Return mCreatedOn
-            End Get
-            Set(ByVal Value As DateTime)
-                mCreatedOn = Value
-            End Set
-        End Property
-
-#End Region
-
-    End Class
+		''' <summary>
+		''' Date the item was created on.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property CreatedOn() As DateTime
+			Get
+				Return mCreatedOn
+			End Get
+			Set(ByVal Value As DateTime)
+				mCreatedOn = Value
+			End Set
+		End Property
 
 #End Region
+
+	End Class
 
 End Namespace

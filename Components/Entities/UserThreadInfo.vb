@@ -22,109 +22,102 @@ Option Strict On
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "UserThreadsInfo"
-
-    ''' <summary>
-    ''' Creates a custom business object that represents one row of data from the Forum_UserThreads table.
-    ''' </summary>
-    ''' <remarks>
-    ''' </remarks>
-    ''' <history>
-    ''' 	[jmathis]	12/3/2005	Created
-    ''' </history>
-    Public Class UserThreadsInfo
+	''' <summary>
+	''' Creates a custom business object that represents one row of data from the Forum_UserThreads table.
+	''' </summary>
+	''' <remarks>
+	''' </remarks>
+	Public Class UserThreadsInfo
 
 #Region "Private Members"
 
-        Dim _userID As Integer
-        Dim _threadID As Integer
-        Dim _lastVisitDate As Date
+		Dim _userID As Integer
+		Dim _threadID As Integer
+		Dim _lastVisitDate As Date
 
 #End Region
 
 #Region "Constructors"
 
-        ''' <summary>
-        ''' Instantiates the class
-        ''' </summary>
-        ''' <remarks>
-        ''' </remarks>
-        ''' <history>
-        ''' 	[jmathis]	12/3/2005	Created
-        ''' </history>
-        Public Sub New()
-        End Sub
+		''' <summary>
+		''' Instantiates the class
+		''' </summary>
+		''' <remarks>
+		''' </remarks>
+		''' <history>
+		''' 	[jmathis]	12/3/2005	Created
+		''' </history>
+		Public Sub New()
+		End Sub
 
-        ''' <summary>
-        ''' Instantiates the class
-        ''' </summary>
-        ''' <param name="userID"></param>
-        ''' <param name="threadID"></param>
-        ''' <param name="lastVisitDate"></param>
-        ''' <remarks>
-        ''' </remarks>
-        ''' <history>
-        ''' 	[jmathis]	12/3/2005	Created
-        ''' </history>
-        Public Sub New(ByVal userID As Integer, ByVal threadID As Integer, ByVal lastVisitDate As Date)
-            Me.UserID = userID
-            Me.ThreadID = threadID
-            Me.LastVisitDate = lastVisitDate
-        End Sub
+		''' <summary>
+		''' Instantiates the class
+		''' </summary>
+		''' <param name="userID"></param>
+		''' <param name="threadID"></param>
+		''' <param name="lastVisitDate"></param>
+		''' <remarks>
+		''' </remarks>
+		''' <history>
+		''' 	[jmathis]	12/3/2005	Created
+		''' </history>
+		Public Sub New(ByVal userID As Integer, ByVal threadID As Integer, ByVal lastVisitDate As Date)
+			Me.UserID = userID
+			Me.ThreadID = threadID
+			Me.LastVisitDate = lastVisitDate
+		End Sub
 
 #End Region
 
 #Region "Public Properties"
 
-        ''' <summary>
-        ''' The userID of whom we are tracking. 
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property UserID() As Integer
-            Get
-                Return _userID
-            End Get
-            Set(ByVal Value As Integer)
-                _userID = Value
-            End Set
-        End Property
+		''' <summary>
+		''' The userID of whom we are tracking. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property UserID() As Integer
+			Get
+				Return _userID
+			End Get
+			Set(ByVal Value As Integer)
+				_userID = Value
+			End Set
+		End Property
 
-        ''' <summary>
-        ''' The ThreadID we are tracking. 
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property ThreadID() As Integer
-            Get
-                Return _threadID
-            End Get
-            Set(ByVal Value As Integer)
-                _threadID = Value
-            End Set
-        End Property
+		''' <summary>
+		''' The ThreadID we are tracking. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property ThreadID() As Integer
+			Get
+				Return _threadID
+			End Get
+			Set(ByVal Value As Integer)
+				_threadID = Value
+			End Set
+		End Property
 
-        ''' <summary>
-        ''' The last visit date to the thread for the user. 
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property LastVisitDate() As Date
-            Get
-                Return _lastVisitDate
-            End Get
-            Set(ByVal Value As Date)
-                _lastVisitDate = Value
-            End Set
-        End Property
-
-#End Region
-
-    End Class
+		''' <summary>
+		''' The last visit date to the thread for the user. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property LastVisitDate() As Date
+			Get
+				Return _lastVisitDate
+			End Get
+			Set(ByVal Value As Date)
+				_lastVisitDate = Value
+			End Set
+		End Property
 
 #End Region
+
+	End Class
 
 End Namespace

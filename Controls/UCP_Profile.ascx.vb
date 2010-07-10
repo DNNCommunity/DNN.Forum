@@ -44,7 +44,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
 			Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
 			Dim cntForumUser As New ForumUserController
-			Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
+			Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
 			rdpLiftBan.MinDate = Date.Now()
 
@@ -94,7 +94,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
 				Dim cntForumUser As New ForumUserController
-				Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
+				Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
 				With ProfileUser
 					Dim PreviouslyBanned As Boolean

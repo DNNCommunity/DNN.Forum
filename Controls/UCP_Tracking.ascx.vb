@@ -159,7 +159,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 			lbl = CType(e.Item.FindControl("lblLastPostInfo"), Label)
 
 			Dim cntForumUser As New ForumUserController
-			Dim objUser As ForumUser = cntForumUser.GetForumUser(dataItem.LastApprovedPosterID, False, ModuleId, PortalId)
+			Dim objUser As ForumUserInfo = cntForumUser.GetForumUser(dataItem.LastApprovedPosterID, False, ModuleId, PortalId)
 			lbl.Text = LastPostDetails(dataItem.ForumID, dataItem.LastApprovedPostCreatedDate, objUser, dataItem.LastApprovedPostID)
 		End Sub
 
@@ -210,7 +210,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 			lbl = CType(e.Item.FindControl("lblLastPostInfo"), Label)
 
 			Dim cntForumUser As New ForumUserController
-			Dim LAUser As ForumUser = cntForumUser.GetForumUser(dataItem.LastApprovedPosterID, False, ModuleId, PortalId)
+			Dim LAUser As ForumUserInfo = cntForumUser.GetForumUser(dataItem.LastApprovedPosterID, False, ModuleId, PortalId)
 			lbl.Text = LastPostDetails(dataItem.ForumID, dataItem.LastApprovedPostCreatedDate, LAUser, dataItem.LastApprovedPostID)
 		End Sub
 
@@ -350,8 +350,8 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' <param name="LastApprovedPostID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Private Function LastPostDetails(ByVal ForumID As Integer, ByVal LastPostDate As DateTime, ByVal LastApprovedUser As ForumUser, ByVal LastApprovedPostID As Integer) As String
-			Dim objUser As ForumUser
+		Private Function LastPostDetails(ByVal ForumID As Integer, ByVal LastPostDate As DateTime, ByVal LastApprovedUser As ForumUserInfo, ByVal LastApprovedPostID As Integer) As String
+			Dim objUser As ForumUserInfo
 			Dim str As String
 			Dim cntForumUser As New ForumUserController
 

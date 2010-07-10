@@ -329,7 +329,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>Added by Skeel</remarks>
 		Private Sub DeleteUploadedAvatarAndSaveProfile()
 			Dim cntForumUser As New ForumUserController
-			Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
+			Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
 			'Get the parent folder
 			Dim ParentFolderName As String = PortalSettings.HomeDirectoryMapPath
@@ -495,7 +495,7 @@ Namespace DotNetNuke.Modules.Forum
 				'to ensure uploaded avatars are always deleted when not in use
 				If AvatarType = AvatarControlType.User Then
 					Dim cntForumUser As New ForumUserController
-					Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
+					Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
 					With ProfileUser
 						.UserAvatar = UserAvatarType.UserAvatar
@@ -660,7 +660,7 @@ Namespace DotNetNuke.Modules.Forum
 			If AvatarType = AvatarControlType.User Then
 				'[skeel] At this point, we need to check if the current avatar needs to be deleted
 				Dim cntForumUser As New ForumUserController
-				Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
+				Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
 				If ProfileUser.UserAvatar = UserAvatarType.UserAvatar Then
 					DeleteUploadedAvatarAndSaveProfile()

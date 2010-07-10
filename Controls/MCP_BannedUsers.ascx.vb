@@ -66,7 +66,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		Protected Sub dgBannedUsers_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles dgBannedUsers.ItemDataBound
 			If e.Item.ItemType <> ListItemType.AlternatingItem AndAlso e.Item.ItemType <> ListItemType.Item Then Exit Sub
 
-			Dim dataItem As ForumUser = CType(e.Item.DataItem, ForumUser)
+			Dim dataItem As ForumUserInfo = CType(e.Item.DataItem, ForumUserInfo)
 			Dim hl As HyperLink
 			Dim lbl As Label
 			Dim img As Image
@@ -126,7 +126,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		''' </history>
 		Private Sub BindData(ByVal PageSize As Integer, ByVal CurrentPage As Integer)
 			Dim cntUser As New ForumUserController
-			Dim arrUsers As New List(Of ForumUser)
+			Dim arrUsers As New List(Of ForumUserInfo)
 			Dim TotalRecords As Integer
 
 			arrUsers = cntUser.GetBannedUsers(PortalId, CurrentPage - 1, PageSize, ModuleId, TotalRecords)

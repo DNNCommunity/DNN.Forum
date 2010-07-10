@@ -22,138 +22,131 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "ForumTemplateInfo"
-
-    ''' <summary>
-    ''' An instance of the ForumTemplateInfo object. This object is used for all non-email templates.
-    ''' </summary>
-    ''' <remarks>
-    ''' </remarks>
-    ''' <history>
-    ''' 	[cpaterra]	11/28/2005	Created
-    ''' </history>
-    Public Class ForumTemplateInfo
+	''' <summary>
+	''' An instance of the ForumTemplateInfo object. This object is used for all non-email templates.
+	''' </summary>
+	''' <remarks>
+	''' </remarks>
+	Public Class TemplateInfo
 
 #Region "Private Members"
 
-        'Private Const ForumTemplateInfoCacheKeyPrefix As String = "Forum_ForumTemplateInfo"
-        Private _TemplateID As Integer
-        Private _TemplateName As String
-        Private _TemplateValue As String
-        Private _ForumTemplateTypeID As Integer
-        Private _ModuleID As Integer
-        Private _IsActive As Boolean
+		'Private Const ForumTemplateInfoCacheKeyPrefix As String = "Forum_ForumTemplateInfo"
+		Private _TemplateID As Integer
+		Private _TemplateName As String
+		Private _TemplateValue As String
+		Private _ForumTemplateTypeID As Integer
+		Private _ModuleID As Integer
+		Private _IsActive As Boolean
 
 #End Region
 
 #Region "Public Properties"
 
-        ''' <summary>
-        ''' The TemplateID of the item.
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property TemplateID() As Integer
-            Get
-                Return _TemplateID
-            End Get
-            Set(ByVal Value As Integer)
-                _TemplateID = Value
-            End Set
-        End Property
+		''' <summary>
+		''' The TemplateID of the item.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property TemplateID() As Integer
+			Get
+				Return _TemplateID
+			End Get
+			Set(ByVal Value As Integer)
+				_TemplateID = Value
+			End Set
+		End Property
 
-        ''' <summary>
-        ''' The name of the template.
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property TemplateName() As String
-            Get
-                Return _TemplateName
-            End Get
-            Set(ByVal Value As String)
-                _TemplateName = Value
-            End Set
-        End Property
+		''' <summary>
+		''' The name of the template.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property TemplateName() As String
+			Get
+				Return _TemplateName
+			End Get
+			Set(ByVal Value As String)
+				_TemplateName = Value
+			End Set
+		End Property
 
-        ''' <summary>
-        ''' The value of the template. 
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property TemplateValue() As String
-            Get
-                Return _TemplateValue
-            End Get
-            Set(ByVal Value As String)
-                _TemplateValue = Value
-            End Set
-        End Property
+		''' <summary>
+		''' The value of the template. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property TemplateValue() As String
+			Get
+				Return _TemplateValue
+			End Get
+			Set(ByVal Value As String)
+				_TemplateValue = Value
+			End Set
+		End Property
 
-        ''' <summary>
-        ''' The Type of template.
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property ForumTemplateTypeID() As Integer
-            Get
-                Return _ForumTemplateTypeID
-            End Get
-            Set(ByVal Value As Integer)
-                _ForumTemplateTypeID = Value
-            End Set
-        End Property
+		''' <summary>
+		''' The Type of template.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property ForumTemplateTypeID() As Integer
+			Get
+				Return _ForumTemplateTypeID
+			End Get
+			Set(ByVal Value As Integer)
+				_ForumTemplateTypeID = Value
+			End Set
+		End Property
 
-        ''' <summary>
-        ''' The ModuleID the template is for.
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property ModuleID() As Integer
-            Get
-                Return _ModuleID
-            End Get
-            Set(ByVal Value As Integer)
-                _ModuleID = Value
-            End Set
-        End Property
+		''' <summary>
+		''' The ModuleID the template is for.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property ModuleID() As Integer
+			Get
+				Return _ModuleID
+			End Get
+			Set(ByVal Value As Integer)
+				_ModuleID = Value
+			End Set
+		End Property
 
-        ''' <summary>
-        ''' If the template is active or not.
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns>True if the template is active, false otherwise.</returns>
-        ''' <remarks></remarks>
-        Public Property IsActive() As Boolean
-            Get
-                Return _IsActive
-            End Get
-            Set(ByVal Value As Boolean)
-                _IsActive = Value
-            End Set
-        End Property
+		''' <summary>
+		''' If the template is active or not.
+		''' </summary>
+		''' <value></value>
+		''' <returns>True if the template is active, false otherwise.</returns>
+		''' <remarks></remarks>
+		Public Property IsActive() As Boolean
+			Get
+				Return _IsActive
+			End Get
+			Set(ByVal Value As Boolean)
+				_IsActive = Value
+			End Set
+		End Property
 
 #End Region
 
 #Region "Constructor"
 
-        ''' <summary>
-        ''' Instantiates the class.
-        ''' </summary>
-        ''' <remarks></remarks>
-        Public Sub New()
-            MyBase.New()
-        End Sub
+		''' <summary>
+		''' Instantiates the class.
+		''' </summary>
+		''' <remarks></remarks>
+		Public Sub New()
+			MyBase.New()
+		End Sub
 
 #End Region
 
-    End Class
-
-#End Region
+	End Class
 
 End Namespace

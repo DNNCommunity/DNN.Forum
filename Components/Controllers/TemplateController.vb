@@ -42,47 +42,47 @@ Namespace DotNetNuke.Modules.Forum
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function TemplatesGetByType(ByVal ModuleID As Integer, ByVal ForumTemplateTypeID As Integer) As ArrayList
-            Return CBO.FillCollection(DataProvider.Instance().TemplatesGetByType(ModuleID, ForumTemplateTypeID), GetType(ForumTemplateInfo))
-        End Function
+			Return CBO.FillCollection(DataProvider.Instance().TemplatesGetByType(ModuleID, ForumTemplateTypeID), GetType(TemplateInfo))
+		End Function
 
-        ''' <summary>
-        ''' Retrieves a collection of forum templates from the Forum_Templates table in the data store based on the template type.
-        ''' </summary>
-        ''' <param name="ForumTemplateTypeID">The template type to retrieve default templates for.</param>
-        ''' <returns>A collection of templates.</returns>
-        ''' <remarks></remarks>
-        Public Function TemplatesGetDefaults(ByVal ForumTemplateTypeID As Integer) As ArrayList
-            Return CBO.FillCollection(DataProvider.Instance().TemplatesGetDefaults(ForumTemplateTypeID), GetType(ForumTemplateInfo))
-        End Function
+		''' <summary>
+		''' Retrieves a collection of forum templates from the Forum_Templates table in the data store based on the template type.
+		''' </summary>
+		''' <param name="ForumTemplateTypeID">The template type to retrieve default templates for.</param>
+		''' <returns>A collection of templates.</returns>
+		''' <remarks></remarks>
+		Public Function TemplatesGetDefaults(ByVal ForumTemplateTypeID As Integer) As ArrayList
+			Return CBO.FillCollection(DataProvider.Instance().TemplatesGetDefaults(ForumTemplateTypeID), GetType(TemplateInfo))
+		End Function
 
-        ''' <summary>
-        ''' Adds a row to the Forum_Templates table in the data store. 
-        ''' </summary>
-        ''' <param name="objForumTemplate">The template object to add to the data store.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Function TemplatesAddForModuleID(ByVal objForumTemplate As ForumTemplateInfo) As Integer
-            Return CType(DataProvider.Instance().TemplatesAddForModuleID(objForumTemplate.TemplateName, objForumTemplate.TemplateValue, objForumTemplate.ForumTemplateTypeID, objForumTemplate.ModuleID, objForumTemplate.IsActive), Integer)
-        End Function
+		''' <summary>
+		''' Adds a row to the Forum_Templates table in the data store. 
+		''' </summary>
+		''' <param name="objForumTemplate">The template object to add to the data store.</param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Function TemplatesAddForModuleID(ByVal objForumTemplate As TemplateInfo) As Integer
+			Return CType(DataProvider.Instance().TemplatesAddForModuleID(objForumTemplate.TemplateName, objForumTemplate.TemplateValue, objForumTemplate.ForumTemplateTypeID, objForumTemplate.ModuleID, objForumTemplate.IsActive), Integer)
+		End Function
 
-        ''' <summary>
-        ''' Updates a template in the data store.
-        ''' </summary>
-        ''' <param name="objForumTemplate">The ForumTemplateInfo object to update in the data store.</param>
-        ''' <remarks></remarks>
-        Public Sub TemplatesUpdate(ByVal objForumTemplate As ForumTemplateInfo)
-            DataProvider.Instance().TemplatesUpdate(objForumTemplate.TemplateID, objForumTemplate.TemplateName, objForumTemplate.TemplateValue, objForumTemplate.ForumTemplateTypeID, objForumTemplate.ModuleID, objForumTemplate.IsActive)
-        End Sub
+		''' <summary>
+		''' Updates a template in the data store.
+		''' </summary>
+		''' <param name="objForumTemplate">The ForumTemplateInfo object to update in the data store.</param>
+		''' <remarks></remarks>
+		Public Sub TemplatesUpdate(ByVal objForumTemplate As TemplateInfo)
+			DataProvider.Instance().TemplatesUpdate(objForumTemplate.TemplateID, objForumTemplate.TemplateName, objForumTemplate.TemplateValue, objForumTemplate.ForumTemplateTypeID, objForumTemplate.ModuleID, objForumTemplate.IsActive)
+		End Sub
 
-        ''' <summary>
-        ''' Retrieves a single ForumTemplateInfo object from the data store.
-        ''' </summary>
-        ''' <param name="TemplateID">The template PK value to retrieve from the data store.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Function TemplatesGetSingle(ByVal TemplateID As Integer) As ForumTemplateInfo
-            Return CType(CBO.FillObject(DataProvider.Instance().TemplatesGetSingle(TemplateID), GetType(ForumTemplateInfo)), ForumTemplateInfo)
-        End Function
+		''' <summary>
+		''' Retrieves a single ForumTemplateInfo object from the data store.
+		''' </summary>
+		''' <param name="TemplateID">The template PK value to retrieve from the data store.</param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Function TemplatesGetSingle(ByVal TemplateID As Integer) As TemplateInfo
+			Return CType(CBO.FillObject(DataProvider.Instance().TemplatesGetSingle(TemplateID), GetType(TemplateInfo)), TemplateInfo)
+		End Function
 
     End Class
 

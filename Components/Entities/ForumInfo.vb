@@ -224,7 +224,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public ReadOnly Property MostRecentPostAuthor() As ForumUser
+		Public ReadOnly Property MostRecentPostAuthor() As ForumUserInfo
 			Get
 				Dim cntForumUser As New ForumUserController
 				Return cntForumUser.GetForumUser(MostRecentPostAuthorID, False, ModuleID, PortalID)

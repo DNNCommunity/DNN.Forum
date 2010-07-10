@@ -367,7 +367,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			If CurrentForumUser.UserID > 0 Then
 				Dim cntForumUser As New ForumUserController
-				Dim forumUser As ForumUser
+				Dim forumUser As ForumUserInfo
 				forumUser = cntForumUser.GetForumUser(CurrentForumUser.UserID, False, ForumControl.ModuleID, PortalID)
 
 				If InThreadView Then
@@ -1030,7 +1030,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>
 		''' </remarks>
 		Private Sub RenderAuthor(ByVal wr As HtmlTextWriter, ByVal SearchItem As SearchResult, ByVal PostCountIsEven As Boolean)
-			Dim author As ForumUser = SearchItem.Author
+			Dim author As ForumUserInfo = SearchItem.Author
 			Dim authorOnline As Boolean = (author.EnableOnlineStatus AndAlso author.IsOnline AndAlso (ForumControl.objConfig.EnableUsersOnline))
 
 			' table to display integrated media, user alias, poster rank, avatar, homepage, and number of posts.

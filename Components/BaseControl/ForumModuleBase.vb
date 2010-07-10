@@ -37,7 +37,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public ReadOnly Property CurrentForumUser() As ForumUser
+		Public ReadOnly Property CurrentForumUser() As ForumUserInfo
 			Get
 				Dim cntForumUser As New ForumUserController
 				Return cntForumUser.GetForumUser(Users.UserController.GetCurrentUserInfo.UserID, False, ModuleId, PortalId)

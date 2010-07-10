@@ -63,7 +63,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <param name="objConfig">The forum module configuratoin.</param>
 		''' <returns>The poster ranking value.</returns>
 		''' <remarks></remarks>
-		Public Shared Function GetRank(ByVal User As ForumUser, ByVal objConfig As Forum.Config) As PosterRank
+		Public Shared Function GetRank(ByVal User As ForumUserInfo, ByVal objConfig As Forum.Config) As PosterRank
 			If Not objConfig.Ranking Then
 			Else
 				If User.PostCount >= objConfig.FirstRankPosts Then Return PosterRank.First
@@ -1012,7 +1012,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <param name="ActionTitle"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Shared Function GetActionCss(ByVal ActionTitle As String, ByVal ForumControl As Forum.DNNForum, ByVal CurrentForumUser As ForumUser) As String
+		Shared Function GetActionCss(ByVal ActionTitle As String, ByVal ForumControl As Forum.DNNForum, ByVal CurrentForumUser As ForumUserInfo) As String
 			Dim CssClass As String = String.Empty
 			Select Case ActionTitle
 				Case ForumControl.LocalizedText("Administration")

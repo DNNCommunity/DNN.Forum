@@ -470,7 +470,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Protected Function PostCount(ByVal UserID As Integer) As String
-			Dim objUser As ForumUser
+			Dim objUser As ForumUserInfo
 			Dim cntForumUser As New ForumUserController
 
 			objUser = cntForumUser.GetForumUser(UserID, False, ModuleId, PortalId)
@@ -485,7 +485,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Protected Function UserAlias(ByVal UserID As Integer) As String
-			Dim objUser As ForumUser
+			Dim objUser As ForumUserInfo
 			Dim cntForumUser As New ForumUserController
 
 			objUser = cntForumUser.GetForumUser(UserID, False, ModuleId, PortalId)
@@ -584,7 +584,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Protected Function FormatJoinedDate(ByVal UserID As Integer) As String
 			Dim strCreatedDate As String = String.Empty
-			Dim objUser As ForumUser
+			Dim objUser As ForumUserInfo
 			Dim cntForumUser As New ForumUserController
 
 			objUser = cntForumUser.GetForumUser(UserID, False, ModuleId, PortalId)

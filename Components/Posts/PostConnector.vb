@@ -211,7 +211,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim cntForum As New ForumController
 			Dim objForum As New ForumInfo
 			Dim cntForumUser As New ForumUserController
-			Dim objForumUser As ForumUser
+			Dim objForumUser As ForumUserInfo
 
 			objConfig = Forum.Config.GetForumConfig(ModuleID)
 			objForum = cntForum.GetForumInfoCache(ForumID)
@@ -341,7 +341,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' for security reasons as well as bad words (if enabled), and calls all parsing (for image replacement, etc.).
 		''' </summary>
 		''' <remarks>All permissions and validation checks should be done prior to this method.</remarks>
-		Private Function PostToDatabase(ByVal TabID As Integer, ByVal objConfig As Forum.Config, ByVal PortalID As Integer, ByVal objForumUser As ForumUser, ByVal PostSubject As String, ByVal PostBody As String, ByVal objForum As ForumInfo, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal IsPinned As Boolean, ByVal IsClosed As Boolean, ByVal ReplyNotify As Boolean, ByVal Status As Forum.ThreadStatus, ByVal lstAttachmentFileIDs As String, ByVal RemoteAddress As String, ByVal PollID As Integer, ByVal ThreadIconID As Integer, ByVal ParentThreadID As Integer, ByVal objAction As PostAction, ByVal IsModerated As Boolean) As Integer
+		Private Function PostToDatabase(ByVal TabID As Integer, ByVal objConfig As Forum.Config, ByVal PortalID As Integer, ByVal objForumUser As ForumUserInfo, ByVal PostSubject As String, ByVal PostBody As String, ByVal objForum As ForumInfo, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal IsPinned As Boolean, ByVal IsClosed As Boolean, ByVal ReplyNotify As Boolean, ByVal Status As Forum.ThreadStatus, ByVal lstAttachmentFileIDs As String, ByVal RemoteAddress As String, ByVal PollID As Integer, ByVal ThreadIconID As Integer, ByVal ParentThreadID As Integer, ByVal objAction As PostAction, ByVal IsModerated As Boolean) As Integer
 			Dim objSecurity As New PortalSecurity
 			Dim newPostID As Integer
 			Dim objNewPost As New PostInfo

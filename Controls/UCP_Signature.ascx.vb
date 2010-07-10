@@ -43,7 +43,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' <remarks></remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
 			Dim cntForumUser As New ForumUserController
-			Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
+			Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
 			With ProfileUser
 				txtSignature.Text = Server.HtmlDecode(.Signature)
@@ -67,7 +67,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
 				Dim cntForumUser As New ForumUserController
-				Dim ProfileUser As ForumUser = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
+				Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
 				With ProfileUser
 					Dim Signature As String = txtSignature.Text

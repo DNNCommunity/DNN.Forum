@@ -24,15 +24,13 @@ Imports DotNetNuke.Services.FileSystem
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "ForumUser"
-
 	''' <summary>
 	''' Everything necessary for a Forum User, all based on PortalID.
 	''' This means a forum user profile is specific to a portal instance.
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	Public Class ForumUser
+	Public Class ForumUserInfo
 		Inherits DotNetNuke.Entities.Users.UserInfo
 
 #Region "Constructors"
@@ -769,7 +767,5 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 	End Class
-
-#End Region
 
 End Namespace

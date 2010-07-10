@@ -22,16 +22,11 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "PostInfo"
-
 	''' <summary>
 	''' Creates an instance of the post info object
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	''' <history>
-	''' 	[cpaterra]	7/13/2005	Created
-	''' </history>
 	Public Class PostInfo
 
 #Region "Private Members"
@@ -163,7 +158,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public ReadOnly Property Author() As ForumUser
+		Public ReadOnly Property Author() As ForumUserInfo
 			Get
 				Dim cntForumUser As New ForumUserController
 				Return cntForumUser.GetForumUser(UserID, False, ModuleId, ParentThread.PortalID)
@@ -176,7 +171,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks>Returns anonymous user if it wasn't updated. </remarks>
-		Public ReadOnly Property LastModifiedAuthor() As ForumUser
+		Public ReadOnly Property LastModifiedAuthor() As ForumUserInfo
 			Get
 				Dim cntForumUser As New ForumUserController
 				Return cntForumUser.GetForumUser(UpdatedByUser, False, ModuleId, ParentThread.PortalID)
@@ -561,7 +556,5 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 	End Class
-
-#End Region
 
 End Namespace

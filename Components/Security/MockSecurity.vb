@@ -47,7 +47,7 @@ Namespace DotNetNuke.Modules.Forum
 						If objModulePermission.PermissionKey = (DotNetNuke.Modules.Forum.PermissionKeys.FORUMADMIN.ToString) Then
 							' if we are looking for admin, lets just take care of hosts here (since they aren't in a role)
 							Dim cntUsers As New ForumUserController
-							Dim objUser As ForumUser = cntUsers.GetForumUser(UserID, False, ModuleID, PortalID)
+							Dim objUser As ForumUserInfo = cntUsers.GetForumUser(UserID, False, ModuleID, PortalID)
 
 							If objUser IsNot Nothing Then
 								If objUser.IsSuperUser Then
@@ -87,7 +87,7 @@ Namespace DotNetNuke.Modules.Forum
 				Dim IsInRole As Boolean = False
 				Dim cntUsers As New ForumUserController
 
-				Dim objUser As ForumUser = cntUsers.GetForumUser(UserID, False, ModuleID, PortalID)
+				Dim objUser As ForumUserInfo = cntUsers.GetForumUser(UserID, False, ModuleID, PortalID)
 				Dim role As String
 
 				For Each role In roles.Split(New Char() {";"c})

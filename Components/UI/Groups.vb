@@ -513,7 +513,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="Count"></param>
 		''' <remarks>
 		''' </remarks>
-		Public Sub RenderForum(ByVal wr As HtmlTextWriter, ByVal objForum As ForumInfo, ByVal CurrentForumUser As ForumUser, Optional ByVal Count As Integer = 0)
+		Public Sub RenderForum(ByVal wr As HtmlTextWriter, ByVal objForum As ForumInfo, ByVal CurrentForumUser As ForumUserInfo, Optional ByVal Count As Integer = 0)
 			Try
 				Dim fPostsPerPage As Integer = CurrentForumUser.PostsPerPage
 				Dim fPage As Page = Me.ForumControl.DNNPage

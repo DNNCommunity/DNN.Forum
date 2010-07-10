@@ -141,7 +141,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 			lbl = CType(e.Item.FindControl("lblLastPostInfo"), Label)
 
 			Dim cntForumUser As New ForumUserController
-			Dim objUser As ForumUser = cntForumUser.GetForumUser(dataItem.LastApprovedPosterID, False, ModuleId, PortalId)
+			Dim objUser As ForumUserInfo = cntForumUser.GetForumUser(dataItem.LastApprovedPosterID, False, ModuleId, PortalId)
 			lbl.Text = LastPostDetails(dataItem.ForumID, dataItem.LastApprovedPostCreatedDate, objUser, dataItem.LastApprovedPostID)
 		End Sub
 
@@ -170,7 +170,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' <param name="LastApprovedPostID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Protected Function LastPostDetails(ByVal ForumID As Integer, ByVal LastPostDate As DateTime, ByVal LastApprovedUser As ForumUser, ByVal LastApprovedPostID As Integer) As String
+		Protected Function LastPostDetails(ByVal ForumID As Integer, ByVal LastPostDate As DateTime, ByVal LastApprovedUser As ForumUserInfo, ByVal LastApprovedPostID As Integer) As String
 			Dim str As String
 
 			str = "<span class=""Forum_LastPostText""><a href=""" & Utilities.Links.ContainerViewPostLink(TabId, ForumID, LastApprovedPostID) & """ class=""Forum_LastPostText"">" & Utilities.ForumUtils.GetCreatedDateInfo(LastPostDate, objConfig, "Forum_LastPostText") & "</a><br />"
