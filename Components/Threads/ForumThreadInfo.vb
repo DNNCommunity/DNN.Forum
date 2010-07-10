@@ -37,8 +37,6 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Members"
 
-		Private Const ThreadInfoCacheKeyPrefix As String = "Forum_ThreadInfo"
-		Private Const ThreadInfoCacheTimeout As Integer = 20
 		Private _CreatedDate As DateTime
 		Private _StartedByUserID As Integer
 		Private _LastApprovedPostID As Integer
@@ -48,7 +46,6 @@ Namespace DotNetNuke.Modules.Forum
 		Private _ThreadID As Integer
 		Private _Replies As Integer
 		Private _Views As Integer
-		Private _ObjectID As Integer
 		Private _IsPinned As Boolean
 		Private _PinnedDate As DateTime
 		Private _IsClosed As Boolean
@@ -74,52 +71,8 @@ Namespace DotNetNuke.Modules.Forum
 
 		End Sub
 
-		'Private Sub New(ByVal ThreadID As Integer)
-		'End Sub
-
 #End Region
-
-#Region "Public Caching Methods"
-
-		''' <summary>
-		''' This attempts to load from cache first, if not found loads into cache
-		''' </summary>
-		''' <param name="ThreadID"></param>
-		''' <returns>ThreadInfo object</returns>
-		''' <remarks>
-		''' </remarks>
-		Public Shared Function GetThreadInfo(ByVal ThreadID As Integer) As ThreadInfo
-			Dim strCacheKey As String = ThreadInfoCacheKeyPrefix & CStr(ThreadID)
-			Dim objThread As ThreadInfo = CType(DataCache.GetCache(strCacheKey), ThreadInfo)
-
-			If objThread Is Nothing Then
-				'thread caching settings
-				Dim timeOut As Int32 = ThreadInfoCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
-
-				Dim ctlThread As New ThreadController
-				objThread = ctlThread.ThreadGet(ThreadID)
-
-				'Cache Thread if timeout > 0 and Thread is not null
-				If timeOut > 0 And objThread IsNot Nothing Then
-					DataCache.SetCache(strCacheKey, objThread, TimeSpan.FromMinutes(timeOut))
-				End If
-			End If
-
-			Return objThread
-		End Function
-
-		''' <summary>
-		''' Resets the cached thread to nothing
-		''' </summary>
-		''' <param name="ThreadID"></param>
-		''' <remarks></remarks>
-		Public Shared Sub ResetThreadInfo(ByVal ThreadID As Integer)
-			Dim strCacheKey As String = ThreadInfoCacheKeyPrefix & ThreadID.ToString
-			DataCache.RemoveCache(strCacheKey)
-		End Sub
-
-#End Region
-
+		
 #Region "Public Properties"
 
 		''' <summary>
@@ -148,8 +101,6 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 		End Property
 
-#Region "Module Specific ReadOnly Cached References"
-
 		''' <summary>
 		''' The forum containing this thread
 		''' </summary>
@@ -163,18 +114,6 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 		End Property
 
-		' ''' <summary>
-		' ''' The moduleID of the forum containing this thread.
-		' ''' </summary>
-		' ''' <value></value>
-		' ''' <returns></returns>
-		' ''' <remarks></remarks>
-		'Public ReadOnly Property ModuleID() As Integer
-		'	Get
-		'		Return HostForum.ModuleID
-		'	End Get
-		'End Property
-
 		''' <summary>
 		''' The PortalID of the forum containing this thread.
 		''' </summary>
@@ -187,10 +126,6 @@ Namespace DotNetNuke.Modules.Forum
 				Return _portalSettings.PortalId
 			End Get
 		End Property
-
-#End Region
-
-#Region "Thread Specific ReadOnly Cached Properties"
 
 		''' <summary>
 		''' The forum that contains the thread.
@@ -337,8 +272,6 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 		End Property
 
-#End Region
-
 		''' <summary>
 		''' Date thread was created (based on original post info)
 		''' </summary>
@@ -474,20 +407,20 @@ Namespace DotNetNuke.Modules.Forum
 			End Set
 		End Property
 
-		''' <summary>
-		''' Reserved for 3rd party module integration.
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property ObjectID() As Integer
-			Get
-				Return _ObjectID
-			End Get
-			Set(ByVal Value As Integer)
-				_ObjectID = Value
-			End Set
-		End Property
+		' ''' <summary>
+		' ''' Reserved for 3rd party module integration.
+		' ''' </summary>
+		' ''' <value></value>
+		' ''' <returns></returns>
+		' ''' <remarks></remarks>
+		'Public Property ObjectID() As Integer
+		'	Get
+		'		Return _ObjectID
+		'	End Get
+		'	Set(ByVal Value As Integer)
+		'		_ObjectID = Value
+		'	End Set
+		'End Property
 
 		''' <summary>
 		''' Determines if the thread is pinned or not. 
@@ -688,34 +621,28 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="dr"></param>
 		''' <remarks></remarks>
 		Public Overrides Sub Fill(ByVal dr As System.Data.IDataReader)
-			'Call the base classes fill method to populate base class proeprties
-			MyBase.FillInternal(dr)
+			''Call the base classes fill method to populate base class proeprties
+			'MyBase.FillInternal(dr)
 
-			'TabOrder = Null.SetNullInteger(dr("TabOrder"))
-			'PortalID = Null.SetNullInteger(dr("PortalID"))
-			'TabName = Null.SetNullString(dr("TabName"))
-			'IsVisible = Null.SetNullBoolean(dr("IsVisible"))
-			'ParentId = Null.SetNullInteger(dr("ParentId"))
-			'Level = Null.SetNullInteger(dr("Level"))
-			'IconFile = Null.SetNullString(dr("IconFile"))
-			'IconFileLarge = Null.SetNullString(dr("IconFileLarge"))
-			'DisableLink = Null.SetNullBoolean(dr("DisableLink"))
-			'Title = Null.SetNullString(dr("Title"))
-			'Description = Null.SetNullString(dr("Description"))
-			'KeyWords = Null.SetNullString(dr("KeyWords"))
-			'IsDeleted = Null.SetNullBoolean(dr("IsDeleted"))
-			'Url = Null.SetNullString(dr("Url"))
-			'SkinSrc = Null.SetNullString(dr("SkinSrc"))
-			'ContainerSrc = Null.SetNullString(dr("ContainerSrc"))
-			'TabPath = Null.SetNullString(dr("TabPath"))
-			'StartDate = Null.SetNullDateTime(dr("StartDate"))
-			'EndDate = Null.SetNullDateTime(dr("EndDate"))
-			'HasChildren = Null.SetNullBoolean(dr("HasChildren"))
-			'RefreshInterval = Null.SetNullInteger(dr("RefreshInterval"))
-			'PageHeadText = Null.SetNullString(dr("PageHeadText"))
-			'IsSecure = Null.SetNullBoolean(dr("IsSecure"))
-			'PermanentRedirect = Null.SetNullBoolean(dr("PermanentRedirect"))
-			'SiteMapPriority = Null.SetNullSingle(dr("SiteMapPriority"))
+			ForumID = Null.SetNullInteger(dr("ForumID"))
+			Subject = Null.SetNullString(dr("Subject"))
+			Body = Null.SetNullString(dr("Body"))
+			CreatedDate = Null.SetNullDateTime(dr("CreatedDate"))
+			StartedByUserID = Null.SetNullInteger(dr("StartedByUserID"))
+			ThreadID = Null.SetNullInteger(dr("ThreadID"))
+			Replies = Null.SetNullInteger(dr("Replies"))
+			Views = Null.SetNullInteger(dr("Views"))
+			LastApprovedPostID = Null.SetNullInteger(dr("LastApprovedPostID"))
+			IsPinned = Null.SetNullBoolean(dr("IsPinned"))
+			PinnedDate = Null.SetNullDateTime(dr("PinnedDate"))
+			IsClosed = Null.SetNullBoolean(dr("IsClosed"))
+			Rating = Convert.ToDouble(Null.SetNull(dr("Rating"), Rating))
+			RatingCount = Null.SetNullInteger(dr("RatingCount"))
+			NextThreadID = Null.SetNullInteger(dr("NextThreadID"))
+			PreviousThreadID = Null.SetNullInteger(dr("PreviousThreadID"))
+			ThreadStatus = CType(Null.SetNull(dr("ThreadStatus"), ThreadStatus), ThreadStatus)
+			PollID = Null.SetNullInteger(dr("PollID"))
+			TotalRecords = Null.SetNullInteger(dr("TotalRecords"))
 
 			'BreadCrumbs = Nothing
 			'Panes = Nothing
@@ -730,10 +657,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Overrides Property KeyID() As Integer
 			Get
-				Return TabID
+				Return ThreadID
 			End Get
 			Set(ByVal value As Integer)
-				TabID = value
+				ThreadID = value
 			End Set
 		End Property
 

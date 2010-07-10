@@ -152,6 +152,7 @@ Namespace DotNetNuke.Modules.Forum
 				Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
 				Dim objPostInfo As New PostInfo
 				Dim ctlPost As New PostController
+				Dim cntThread As New ThreadController()
 
 				If Request.IsAuthenticated Then
 					If Not Request.QueryString("postid") Is Nothing Then
@@ -161,7 +162,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						objPostInfo = ctlPost.PostGet(_PostID, PortalId)
 						_ThreadID = objPostInfo.ThreadID
-						_ThreadInfo = ThreadInfo.GetThreadInfo(_ThreadID)
+						_ThreadInfo = cntThread.GetThreadInfo(_ThreadID)
 						_OldForumID = _ThreadInfo.ForumID
 						_ForumInfo = cntForum.GetForumInfoCache(_OldForumID)
 
@@ -298,8 +299,8 @@ Namespace DotNetNuke.Modules.Forum
 					PostInfo.ResetPostInfo(_PostID)
 
 					' reset cache of both threads in case anyone happen to visit one during the split processing
-					ThreadInfo.ResetThreadInfo(_ThreadID)
-					ThreadInfo.ResetThreadInfo(_PostID)
+					ThreadController.ResetThreadInfo(_ThreadID)
+					ThreadController.ResetThreadInfo(_PostID)
 
 					ThreadController.ResetThreadListCached(newForumID, ModuleId)
 					ThreadController.ResetThreadListCached(_OldForumID, ModuleId)

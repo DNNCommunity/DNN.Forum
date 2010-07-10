@@ -102,7 +102,8 @@ Namespace DotNetNuke.Modules.Forum
 						Dim objThread As New ThreadInfo
 
 						ThreadID = Int32.Parse(Request.QueryString("threadid"))
-						objThread = ThreadInfo.GetThreadInfo(ThreadID)
+						Dim cntThread As New ThreadController()
+						objThread = cntThread.GetThreadInfo(ThreadID)
 						ForumID = objThread.ForumID
 						' we will get info for first post, since we are deleting the thread
 						PostID = ThreadID
@@ -172,7 +173,7 @@ Namespace DotNetNuke.Modules.Forum
 							Dim ThreadID As Integer
 
 							ThreadID = Int32.Parse(Request.QueryString("threadid"))
-							objThread = ThreadInfo.GetThreadInfo(ThreadID)
+							objThread = cntThread.GetThreadInfo(ThreadID)
 							ForumID = objThread.ForumID
 						Else
 							Exit Sub
@@ -195,7 +196,7 @@ Namespace DotNetNuke.Modules.Forum
 						' Delete thread (SEND MAIL BEFORE DELETE, we need the thread still in the db)
 						cntThread.ThreadDelete(objThread.ThreadID, PortalId, Notes)
 
-						ThreadInfo.ResetThreadInfo(objThread.ThreadID)
+						ThreadController.ResetThreadInfo(objThread.ThreadID)
 						ForumController.ResetForumInfoCache(objThread.ForumID)
 
 						' We need to clear all users who posted in the thread. (Otherwise cached user objects will not reflect proper post count) KNOWN ISSUE
@@ -250,7 +251,7 @@ Namespace DotNetNuke.Modules.Forum
 						cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objPost.ParentThread.HostForum.GroupID, False, objPost.ParentThread.HostForum.ParentId)
 
 						PostInfo.ResetPostInfo(objPost.PostID)
-						ThreadInfo.ResetThreadInfo(ThreadID)
+						ThreadController.ResetThreadInfo(ThreadID)
 						ForumController.ResetForumInfoCache(ForumID)
 						ForumUserController.ResetForumUser(AuthorID, PortalId)
 

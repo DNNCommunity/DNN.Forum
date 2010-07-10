@@ -419,11 +419,11 @@ Namespace DotNetNuke.Modules.Forum
 
 					PostInfo.ResetPostInfo(newPostID)
 					_emailType = ForumEmailType.UserPostEdited
-					ThreadInfo.ResetThreadInfo(ParentThreadID)
+					ThreadController.ResetThreadInfo(ParentThreadID)
 				Case Else	  ' Reply/Quote
 					' we are clearing out attachments (empty string) as this method is now legacy
 					newPostID = ctlPost.PostAdd(ParentPostID, objForum.ForumID, objForumUser.UserID, RemoteAddress, ReplyNotify, PostSubject, PostBody, IsPinned, _PinnedDate, IsClosed, _ObjectID, "", PortalID, ThreadIconID, PollID, IsModerated, objForum.GroupID, ParentPostID, ParsingType)
-					ThreadInfo.ResetThreadInfo(ParentThreadID)
+					ThreadController.ResetThreadInfo(ParentThreadID)
 					_emailType = ForumEmailType.UserPostAdded
 			End Select
 

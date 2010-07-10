@@ -214,7 +214,7 @@ Namespace DotNetNuke.Modules.Forum
 				ctlThread.ThreadStatusChange(ThreadId, CurrentForumUser.UserID, ThreadStatus, 0, ModeratorID, PortalID)
 			End If
 
-			Forum.ThreadInfo.ResetThreadInfo(ThreadId)
+			ThreadController.ResetThreadInfo(ThreadId)
 		End Sub
 
 		''' <summary>
@@ -227,7 +227,7 @@ Namespace DotNetNuke.Modules.Forum
 		Protected Sub chkEmail_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
 			Dim ctlTracking As New TrackingController
 			ctlTracking.TrackingThreadCreateDelete(ForumId, _ThreadID, CurrentForumUser.UserID, chkEmail.Checked, ModuleID)
-			Forum.ThreadInfo.ResetThreadInfo(_ThreadID)
+			ThreadController.ResetThreadInfo(_ThreadID)
 		End Sub
 
 		''' <summary>
@@ -244,7 +244,7 @@ Namespace DotNetNuke.Modules.Forum
 				ctlThread.ThreadRateAdd(ThreadId, CurrentForumUser.UserID, rate)
 			End If
 
-			Forum.ThreadInfo.ResetThreadInfo(ThreadId)
+			ThreadController.ResetThreadInfo(ThreadId)
 		End Sub
 
 		''' <summary>
@@ -432,7 +432,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				ctlThread.ThreadStatusChange(ThreadId, objPostInfo.UserID, ThreadStatus.Answered, answerPostID, ModeratorID, PortalID)
 
-				Forum.ThreadInfo.ResetThreadInfo(ThreadId)
+				ThreadController.ResetThreadInfo(ThreadId)
 			End If
 		End Sub
 
@@ -458,7 +458,8 @@ Namespace DotNetNuke.Modules.Forum
 				Dim objPost As PostInfo = objPostCnt.PostGet(PostId, PortalID)
 				_ThreadID = objPost.ThreadID
 				' we need to determine which page to return based on number of posts in this thread, the users posts per page count, and their asc/desc view, where this post is
-				_ThreadInfo = Modules.Forum.ThreadInfo.GetThreadInfo(ThreadId)
+				Dim cntThread As New ThreadController()
+				_ThreadInfo = cntThread.GetThreadInfo(ThreadId)
 				Dim TotalPosts As Integer = _ThreadInfo.Replies + 1
 				Dim FlatSortOrder As Integer = objPost.FlatSortOrder
 				Dim userPostsPerPage As Integer = 1
@@ -483,7 +484,8 @@ Namespace DotNetNuke.Modules.Forum
 			Else
 				If Not HttpContext.Current.Request.QueryString("threadid") Is Nothing Then
 					_ThreadID = Int32.Parse(HttpContext.Current.Request.QueryString("threadid"))
-					_ThreadInfo = Modules.Forum.ThreadInfo.GetThreadInfo(ThreadId)
+					Dim cntThread As New ThreadController()
+					_ThreadInfo = cntThread.GetThreadInfo(ThreadId)
 
 					' We need to make sure the user's thread pagesize can handle this 
 					'(problem is, a link can be posted by one user w/ page size of 5 pointing to page 2, if logged in user has pagesize set to 15, there is no page 2)
@@ -761,7 +763,7 @@ Namespace DotNetNuke.Modules.Forum
 					userThreadController.Add(userThread)
 					UserThreadsController.ResetUserThreadReadCache(userThread.UserID, userThread.ThreadID)
 				End If
-				Forum.ThreadInfo.ResetThreadInfo(ThreadId)
+				ThreadController.ResetThreadInfo(ThreadId)
 			End If
 		End Sub
 

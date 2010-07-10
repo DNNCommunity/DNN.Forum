@@ -82,13 +82,14 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 			Try
+				Dim cntThread As New ThreadController()
 
 				If Not Request.QueryString("postid") Is Nothing Then
 					Dim objThread As New ThreadInfo
 					_PostID = Int32.Parse(Request.QueryString("postid"))
 					_PostInfo = PostInfo.GetPostInfo(_PostID, PortalId)
 					_ThreadID = _PostInfo.ThreadID
-					objThread = ThreadInfo.GetThreadInfo(_ThreadID)
+					objThread = cntThread.GetThreadInfo(_ThreadID)
 					_ForumID = objThread.ForumID
 				Else
 					' they don't belong here
@@ -140,9 +141,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="e"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	5/31/2005	Created
-		''' </history>
 		Protected Sub cmdReport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdReport.Click
 			Try
 				' Get most recent info on this post
@@ -189,8 +187,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
-		''' <remarks>
-		''' </remarks>
+		''' <remarks></remarks>
 		Protected Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
 			Try
 				If Not ViewState("UrlReferrer") Is Nothing Then

@@ -39,8 +39,8 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Members"
 
-		Private Const ThreadListCacheKeyPrefix As String = "Forum_ThreadList"
-		Private Const ThreadListCacheTimeout As Integer = 20
+		Private Const THREAD_KEY As String = Constants.CACHE_KEY_PREFIX + "THREAD_"
+		Private Const RSS_KEY As String = Constants.CACHE_KEY_PREFIX + "RSS_"
 
 #End Region
 
@@ -62,12 +62,12 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns>A cached list of threads.</returns>
 		''' <remarks>Other aspects do not use this because of pagesize/pageindex variance. (also reason we use moduleid for cache key here)</remarks>
 		Public Function ThreadListGetCached(ByVal ModuleID As Integer, ByVal ForumID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer, ByVal Filter As String, ByVal PortalID As Integer, ByRef TotalRecords As Integer) As List(Of ThreadInfo)
-			Dim strCacheKey As String = ThreadListCacheKeyPrefix & ForumID.ToString() & ModuleID.ToString()
+			Dim strCacheKey As String = RSS_KEY & ForumID.ToString() & ModuleID.ToString()
 			Dim objThreads As List(Of ThreadInfo) = CType(DataCache.GetCache(strCacheKey), List(Of ThreadInfo))
 
 			If objThreads Is Nothing Then
 				'thread caching settings
-				Dim timeOut As Int32 = ThreadListCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
+				Dim timeOut As Int32 = Constants.CACHE_TIMEOUT * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
 
 				objThreads = ThreadGetAll(ModuleID, ForumID, PageSize, PageIndex, Filter, PortalID)
 
@@ -87,7 +87,44 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ModuleID"></param>
 		''' <remarks></remarks>
 		Public Shared Sub ResetThreadListCached(ByVal ForumID As Integer, ByVal ModuleID As Integer)
-			Dim strCacheKey As String = ThreadListCacheKeyPrefix & ForumID.ToString() & ModuleID.ToString()
+			Dim strCacheKey As String = RSS_KEY & ForumID.ToString() & ModuleID.ToString()
+			DataCache.RemoveCache(strCacheKey)
+		End Sub
+
+		''' <summary>
+		''' This attempts to load from cache first, if not found loads into cache
+		''' </summary>
+		''' <param name="ThreadID"></param>
+		''' <returns>ThreadInfo object</returns>
+		''' <remarks>
+		''' </remarks>
+		Public Function GetThreadInfo(ByVal ThreadID As Integer) As ThreadInfo
+			Dim strCacheKey As String = THREAD_KEY & CStr(ThreadID)
+			Dim objThread As ThreadInfo = CType(DataCache.GetCache(strCacheKey), ThreadInfo)
+
+			If objThread Is Nothing Then
+				'thread caching settings
+				Dim timeOut As Int32 = Constants.CACHE_TIMEOUT * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
+
+				Dim ctlThread As New ThreadController
+				objThread = ctlThread.ThreadGet(ThreadID)
+
+				'Cache Thread if timeout > 0 and Thread is not null
+				If timeOut > 0 And objThread IsNot Nothing Then
+					DataCache.SetCache(strCacheKey, objThread, TimeSpan.FromMinutes(timeOut))
+				End If
+			End If
+
+			Return objThread
+		End Function
+
+		''' <summary>
+		''' Resets the cached thread to nothing
+		''' </summary>
+		''' <param name="ThreadID"></param>
+		''' <remarks></remarks>
+		Public Shared Sub ResetThreadInfo(ByVal ThreadID As Integer)
+			Dim strCacheKey As String = THREAD_KEY & ThreadID.ToString
 			DataCache.RemoveCache(strCacheKey)
 		End Sub
 
@@ -103,28 +140,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks>Added by Skeel</remarks>
 		Public Function ThreadGetUnread(ByVal ModuleId As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer, ByVal LoggedOnUserID As Integer) As List(Of ThreadInfo)
-			Dim objThreads As New List(Of ThreadInfo)
-			Dim dr As IDataReader = Nothing
-			Try
-				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadGetUnread(ModuleId, PageSize, PageIndex, LoggedOnUserID)
-				While dr.Read
-					Dim objThreadInfo As ThreadInfo = FillThreadInfo(dr)
-					objThreads.Add(objThreadInfo)
-				End While
-				dr.NextResult()
-				'If dr.Read Then
-				'    TotalRecords = Convert.ToInt32(dr("TotalRecords"))
-				'End If
-
-			Catch ex As Exception
-				LogException(ex)
-			Finally
-				If Not dr Is Nothing Then
-					dr.Close()
-				End If
-			End Try
-
-			Return objThreads
+			Return CBO.FillCollection(Of ThreadInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadGetUnread(ModuleId, PageSize, PageIndex, LoggedOnUserID))
 		End Function
 
 		''' <summary>
@@ -138,28 +154,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Public Function ThreadGetAll(ByVal ModuleId As Integer, ByVal ForumId As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer, ByVal Filter As String, ByVal PortalID As Integer) As List(Of ThreadInfo)
-			Dim objThreads As New List(Of ThreadInfo)
-			Dim dr As IDataReader = Nothing
-			Try
-				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadGetAll(ModuleId, ForumId, PageSize, PageIndex, Filter, PortalID)
-				While dr.Read
-					Dim objThreadInfo As ThreadInfo = FillThreadInfo(dr)
-					objThreads.Add(objThreadInfo)
-				End While
-				dr.NextResult()
-				'If dr.Read Then
-				'    TotalRecords = Convert.ToInt32(dr("TotalRecords"))
-				'End If
-
-			Catch ex As Exception
-				LogException(ex)
-			Finally
-				If Not dr Is Nothing Then
-					dr.Close()
-				End If
-			End Try
-
-			Return objThreads
+			Return CBO.FillCollection(Of ThreadInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadGetAll(ModuleId, ForumId, PageSize, PageIndex, Filter, PortalID))
 		End Function
 
 		''' <summary>
@@ -363,106 +358,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 #End Region
-
-#End Region
-
-#Region "Custom Hydrator"
-
-		''' <summary>
-		''' Hydrates the threadinfo object
-		''' </summary>
-		''' <param name="dr"></param>
-		''' <returns></returns>
-		''' <remarks>
-		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	2/3/2006	Created
-		''' </history>
-		Private Function FillThreadInfo(ByVal dr As IDataReader) As ThreadInfo
-			Dim objThreadInfo As New ThreadInfo
-			Try
-				objThreadInfo.ForumID = Convert.ToInt32(Null.SetNull(dr("ForumID"), objThreadInfo.ForumID))
-			Catch
-			End Try
-			Try
-				objThreadInfo.Subject = Convert.ToString(Null.SetNull(dr("Subject"), objThreadInfo.Subject))
-			Catch
-			End Try
-			Try
-				objThreadInfo.Body = Convert.ToString(Null.SetNull(dr("Body"), objThreadInfo.Body))
-			Catch
-			End Try
-			Try
-				objThreadInfo.CreatedDate = Convert.ToDateTime(Null.SetNull(dr("CreatedDate"), objThreadInfo.CreatedDate))
-			Catch
-			End Try
-			Try
-				objThreadInfo.StartedByUserID = Convert.ToInt32(Null.SetNull(dr("StartedByUserID"), objThreadInfo.StartedByUserID))
-			Catch
-			End Try
-			Try
-				objThreadInfo.ThreadID = Convert.ToInt32(Null.SetNull(dr("ThreadID"), objThreadInfo.ThreadID))
-			Catch
-			End Try
-			Try
-				objThreadInfo.Replies = Convert.ToInt32(Null.SetNull(dr("Replies"), objThreadInfo.Replies))
-			Catch
-			End Try
-			Try
-				objThreadInfo.Views = Convert.ToInt32(Null.SetNull(dr("Views"), objThreadInfo.Views))
-			Catch
-			End Try
-			Try
-				objThreadInfo.LastApprovedPostID = Convert.ToInt32(Null.SetNull(dr("LastApprovedPostID"), objThreadInfo.LastApprovedPostID))
-			Catch
-			End Try
-			Try
-				objThreadInfo.ObjectID = Convert.ToInt32(Null.SetNull(dr("ObjectID"), objThreadInfo.ObjectID))
-			Catch
-			End Try
-			Try
-				objThreadInfo.IsPinned = Convert.ToBoolean(Null.SetNull(dr("IsPinned"), objThreadInfo.IsPinned))
-			Catch
-			End Try
-			Try
-				objThreadInfo.PinnedDate = Convert.ToDateTime(Null.SetNull(dr("PinnedDate"), objThreadInfo.PinnedDate))
-			Catch
-			End Try
-			Try
-				objThreadInfo.IsClosed = Convert.ToBoolean(Null.SetNull(dr("IsClosed"), objThreadInfo.IsClosed))
-			Catch ex As Exception
-			End Try
-			Try
-				objThreadInfo.Rating = Convert.ToDouble(Null.SetNull(dr("Rating"), objThreadInfo.Rating))
-			Catch ex As Exception
-			End Try
-			Try
-				objThreadInfo.RatingCount = Convert.ToInt32(Null.SetNull(dr("RatingCount"), objThreadInfo.RatingCount))
-			Catch ex As Exception
-			End Try
-			Try
-				objThreadInfo.NextThreadID = Convert.ToInt32(Null.SetNull(dr("NextThreadID"), objThreadInfo.NextThreadID))
-			Catch ex As Exception
-			End Try
-			Try
-				objThreadInfo.PreviousThreadID = Convert.ToInt32(Null.SetNull(dr("PreviousThreadID"), objThreadInfo.PreviousThreadID))
-			Catch ex As Exception
-			End Try
-			Try
-				objThreadInfo.ThreadStatus = CType(Null.SetNull(dr("ThreadStatus"), objThreadInfo.ThreadStatus), ThreadStatus)
-			Catch ex As Exception
-			End Try
-			Try
-				objThreadInfo.PollID = Convert.ToInt32(Null.SetNull(dr("PollID"), objThreadInfo.PollID))
-			Catch ex As Exception
-			End Try
-			Try
-				objThreadInfo.TotalRecords = Convert.ToInt32(Null.SetNull(dr("TotalRecords"), objThreadInfo.TotalRecords))
-			Catch ex As Exception
-			End Try
-
-			Return objThreadInfo
-		End Function
 
 #End Region
 

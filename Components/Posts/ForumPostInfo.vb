@@ -152,7 +152,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property ParentThread() As ThreadInfo
 			Get
-				Return ThreadInfo.GetThreadInfo(ThreadID)
+				Dim cntThread As New ThreadController()
+				Return cntThread.GetThreadInfo(ThreadID)
 			End Get
 		End Property
 

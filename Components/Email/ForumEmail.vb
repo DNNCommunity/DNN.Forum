@@ -721,7 +721,8 @@ Namespace DotNetNuke.Modules.Forum
 					Dim cntForum As New ForumController
 					Dim objPost As PostInfo = CType(objInfo, PostInfo)
 					'user -1 for userid, so we never get a value of IsTracked (important to not rely on userid specifically here)
-					Dim objThread As ThreadInfo = ThreadInfo.GetThreadInfo(objPost.ThreadID)
+					Dim cntThread As New ThreadController()
+					Dim objThread As ThreadInfo = cntThread.GetThreadInfo(objPost.ThreadID)
 					Dim objForum As ForumInfo = cntForum.GetForumInfoCache(objThread.ForumID)
 
 					If Not Keywords Is Nothing Then
@@ -763,7 +764,8 @@ Namespace DotNetNuke.Modules.Forum
 					Dim cntForum As New ForumController
 					Dim objPost As PostInfo = CType(objInfo, PostInfo)
 					'user -1 for userid, so we never get a value of IsTracked (important to not rely on userid specifically here)
-					Dim objThread As ThreadInfo = ThreadInfo.GetThreadInfo(objPost.ThreadID)
+					Dim cntThread As New ThreadController()
+					Dim objThread As ThreadInfo = cntThread.GetThreadInfo(objPost.ThreadID)
 					Dim objForum As ForumInfo = cntForum.GetForumInfoCache(objThread.ForumID)
 
 					If Not Keywords Is Nothing Then
@@ -812,7 +814,8 @@ Namespace DotNetNuke.Modules.Forum
 					Dim cntForum As New ForumController
 					Dim objPost As PostInfo = CType(objInfo, PostInfo)
 					'user -1 for userid, so we never get a value of IsTracked (important to not rely on userid specifically here)
-					Dim objThread As ThreadInfo = ThreadInfo.GetThreadInfo(objPost.ThreadID)
+					Dim cntThread As New ThreadController()
+					Dim objThread As ThreadInfo = cntThread.GetThreadInfo(objPost.ThreadID)
 					Dim objForum As ForumInfo = cntForum.GetForumInfoCache(objThread.ForumID)
 
 					If Not Keywords Is Nothing Then

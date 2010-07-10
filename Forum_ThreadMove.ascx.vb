@@ -124,13 +124,14 @@ Namespace DotNetNuke.Modules.Forum
 		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 			Try
 				Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
+				Dim cntThread As New ThreadController()
 				Dim objPostInfo As New PostInfo
 				Dim ctlPost As New PostController
 
 				If Request.IsAuthenticated Then
 					If Not Request.QueryString("threadid") Is Nothing Then
 						_ThreadID = Int32.Parse(Request.QueryString("threadid"))
-						_ThreadInfo = ThreadInfo.GetThreadInfo(_ThreadID)
+						_ThreadInfo = cntThread.GetThreadInfo(_ThreadID)
 						_OldForumID = _ThreadInfo.ForumID
 					Else
 						If Not Request.QueryString("postid") Is Nothing Then
@@ -138,7 +139,7 @@ Namespace DotNetNuke.Modules.Forum
 
 							objPostInfo = ctlPost.PostGet(_PostID, PortalId)
 							_ThreadID = objPostInfo.ThreadID
-							_ThreadInfo = ThreadInfo.GetThreadInfo(_ThreadID)
+							_ThreadInfo = cntThread.GetThreadInfo(_ThreadID)
 							_OldForumID = _ThreadInfo.ForumID
 						End If
 					End If
@@ -194,10 +195,11 @@ Namespace DotNetNuke.Modules.Forum
 					newForumID = iID
 					Exit For
 				Next
+				Dim cntThread As New ThreadController()
 
 				If Not Request.QueryString("threadid") Is Nothing Then
 					_ThreadID = Int32.Parse(Request.QueryString("threadid"))
-					_ThreadInfo = ThreadInfo.GetThreadInfo(_ThreadID)
+					_ThreadInfo = cntThread.GetThreadInfo(_ThreadID)
 					_OldForumID = _ThreadInfo.ForumID
 					_PostID = _ThreadInfo.LastApprovedPostID
 				Else
@@ -209,7 +211,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						objPostInfo = ctlPost.PostGet(_PostID, PortalId)
 						_ThreadID = objPostInfo.ThreadID
-						_ThreadInfo = ThreadInfo.GetThreadInfo(_ThreadID)
+						_ThreadInfo = cntThread.GetThreadInfo(_ThreadID)
 						_OldForumID = _ThreadInfo.ForumID
 					End If
 				End If
@@ -241,7 +243,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						ForumController.ResetForumInfoCache(newForumID)
 						ForumController.ResetForumInfoCache(_OldForumID)
-						ThreadInfo.ResetThreadInfo(_ThreadID)
+						ThreadController.ResetThreadInfo(_ThreadID)
 
 						ThreadController.ResetThreadListCached(newForumID, ModuleId)
 						ThreadController.ResetThreadListCached(_OldForumID, ModuleId)
