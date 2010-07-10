@@ -40,7 +40,7 @@ Namespace DotNetNuke.Modules.Forum
 		Private Const dublinCore As String = "http://purl.org/dc/elements/1.1/"
 		'writer.WriteAttributeString("xmlns:trackback", "http://madskills.com/public/xml/rss/module/trackback/")
 
-		Private mForumConfig As Forum.Config
+		Private mForumConfig As Forum.Configuration
 		Private mThreadsPage As Integer
 		Private mCreationTime As DateTime
 
@@ -138,7 +138,7 @@ Namespace DotNetNuke.Modules.Forum
 			MyBase.New()
 
 			Dim forum As New ForumInfo
-			mForumConfig = Config.GetForumConfig(ModuleId)
+			mForumConfig = Configuration.GetForumConfig(ModuleId)
 
 			' If Not an Aggregated forum
 			If ForumID <> -1 Then

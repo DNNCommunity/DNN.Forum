@@ -64,7 +64,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				ctlModule.UpdateModuleSetting(ModuleId, "EnableRatings", chkRatings.Checked.ToString())
 				ctlModule.UpdateModuleSetting(ModuleId, "RatingScale", txtRatingScale.Text)
 
-				Config.ResetForumConfig(ModuleId)
+				Configuration.ResetForumConfig(ModuleId)
 
 				lblUpdateDone.Visible = True
 			Catch exc As Exception

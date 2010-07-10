@@ -82,7 +82,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
 				Utilities.ForumUtils.CheckFolder(txtAttachmentPath.Text.Trim())
 
-				Config.ResetForumConfig(ModuleId)
+				Configuration.ResetForumConfig(ModuleId)
 
 				lblUpdateDone.Visible = True
 			Catch exc As Exception

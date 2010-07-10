@@ -130,7 +130,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				ctlModule.UpdateModuleSetting(ModuleId, "EnableRoleAvatar", chkEnableRoleAvatar.Checked.ToString())
 				ctlModule.UpdateModuleSetting(ModuleId, "RoleAvatarPath", txtRoleAvatarPath.Text)
 
-				Config.ResetForumConfig(ModuleId)
+				Configuration.ResetForumConfig(ModuleId)
 
 				If RefreshMenu = True Then
 					'Force reload of the menu as EnableRoleAvatar has been changed

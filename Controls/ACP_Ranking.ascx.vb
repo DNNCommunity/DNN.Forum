@@ -136,7 +136,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				ctlModule.UpdateModuleSetting(ModuleId, "Rank_10_Title", txt10thTitle.Text)
 				ctlModule.UpdateModuleSetting(ModuleId, "Rank_0_Title", txtNoRankTitle.Text)
 
-				Config.ResetForumConfig(ModuleId)
+				Configuration.ResetForumConfig(ModuleId)
 
 				lblUpdateDone.Visible = True
 			Catch exc As Exception

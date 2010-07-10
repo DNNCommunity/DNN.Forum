@@ -64,7 +64,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				ctlModule.UpdateModuleSetting(ModuleId, "RSSThreadsPerFeed", txtRSSThreadsPerFeed.Text)
 				ctlModule.UpdateModuleSetting(ModuleId, "RSSUpdateInterval", txtTTL.Text)
 
-				Config.ResetForumConfig(ModuleId)
+				Configuration.ResetForumConfig(ModuleId)
 
 				lblUpdateDone.Visible = True
 			Catch exc As Exception

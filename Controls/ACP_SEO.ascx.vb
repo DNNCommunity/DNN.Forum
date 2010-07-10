@@ -65,7 +65,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				ctlModule.UpdateModuleSetting(ModuleId, "NoFollowLatestThreads", chkNoFollowLatestThreads.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, "SitemapPriority", txtSitemapPriority.Text)
 
-				Config.ResetForumConfig(ModuleId)
+				Configuration.ResetForumConfig(ModuleId)
 
 				lblUpdateDone.Visible = True
 			Catch exc As Exception

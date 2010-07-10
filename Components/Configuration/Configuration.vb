@@ -31,7 +31,7 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks>This holds all the base settings (TabModuleSettings) used for the module. It applies defaults if they are not available.
 	''' </remarks>
-	Public Class Config
+	Public Class Configuration
 
 #Region "Private Members"
 
@@ -174,15 +174,15 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns>A specific ModuleID's cached TabModuleSettings (defaults applied if not in settings)</returns>
 		''' <remarks>This allows us access and assigning defaults for new items to help in upgrade scenarios and to allow further expansion.
 		''' </remarks>
-		Public Shared Function GetForumConfig(ByVal ModuleID As Integer) As Config
+		Public Shared Function GetForumConfig(ByVal ModuleID As Integer) As Configuration
 			Dim strCacheKey As String = Constants.CACHE_KEY_PREFIX & CStr(ModuleID)
-			Dim objConfig As Config = CType(DataCache.GetCache(strCacheKey), Config)
+			Dim objConfig As Configuration = CType(DataCache.GetCache(strCacheKey), Configuration)
 
 			If objConfig Is Nothing Then
 				'config caching settings
 				Dim timeOut As Int32 = Constants.CACHE_TIMEOUT * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
 
-				objConfig = New Config(ModuleID)
+				objConfig = New Configuration(ModuleID)
 
 				'Cache Config if timeout > 0 and Config is not null
 				If timeOut > 0 And objConfig IsNot Nothing Then

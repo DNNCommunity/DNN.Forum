@@ -36,7 +36,7 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Private Members"
 
 		Private mForumID As Integer = 0
-		Private mForumConfig As Forum.Config
+		Private mForumConfig As Forum.Configuration
 		Private mThreadsPage As Integer = 1
 		Private mTabId As Integer = 0
 		Private mModuleId As Integer = 0
@@ -69,7 +69,7 @@ Namespace DotNetNuke.Modules.Forum
 						mModuleId = Int32.Parse(Request.QueryString("mid"))
 					End If
 
-					mForumConfig = Config.GetForumConfig(mModuleId)
+					mForumConfig = Configuration.GetForumConfig(mModuleId)
 
 					If Not Request.QueryString("threadspage") Is Nothing Then
 						mThreadsPage = Int32.Parse(Request.QueryString("threadspage"))

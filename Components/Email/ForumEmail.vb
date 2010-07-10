@@ -77,7 +77,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <history>
 		''' 	[cpaterra]	8/27/2006	Created
 		''' </history>
-		Public Sub GenerateEmail(ByVal Notes As String, ByVal emailType As ForumEmailType, ByVal ContentID As Integer, ByVal objConfig As Forum.Config, ByVal URL As String, ByVal ProfileURL As String, ByVal PortalID As Integer)
+		Public Sub GenerateEmail(ByVal Notes As String, ByVal emailType As ForumEmailType, ByVal ContentID As Integer, ByVal objConfig As Forum.Configuration, ByVal URL As String, ByVal ProfileURL As String, ByVal PortalID As Integer)
 			Dim ContentType As ForumContentTypeID
 			Dim ForumEmailTypeID As Integer
 			Dim Keywords As New Hashtable
@@ -559,7 +559,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="objConfig">The forum module's configuration.</param>
 		''' <param name="HTML">True, if the content should be HTML formatted.</param>
 		''' <remarks></remarks>
-		Private Function GenerateBody(ByVal Notes As String, ByVal ContentType As ForumContentTypeID, ByVal Keywords As Hashtable, ByVal BodyToParse As String, ByVal objConfig As Forum.Config, ByVal HTML As Boolean) As String
+		Private Function GenerateBody(ByVal Notes As String, ByVal ContentType As ForumContentTypeID, ByVal Keywords As Hashtable, ByVal BodyToParse As String, ByVal objConfig As Forum.Configuration, ByVal HTML As Boolean) As String
 			Dim server As HttpServerUtility = HttpContext.Current.Server
 			Dim msgBody As String = String.Empty
 			Dim finalBody As String = String.Empty
@@ -671,7 +671,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns>The formated HTML body for the outgoing emails.</returns>
 		''' <remarks>Could be cleaned up.
 		''' </remarks>
-		Protected Function FormatHTMLBody(ByVal Body As Object, ByVal objConfig As Forum.Config) As String
+		Protected Function FormatHTMLBody(ByVal Body As Object, ByVal objConfig As Forum.Configuration) As String
 			Dim formatedBody As String = String.Empty
 			If Not IsDBNull(Body) Then
 				Dim bodyForumText As Utilities.PostContent = New Utilities.PostContent(HttpContext.Current.Server.HtmlDecode(CType(Body, String)), objConfig)
@@ -688,7 +688,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="objConfig">The forum module's configuration.</param>
 		''' <returns>The formated text email body.</returns>
 		''' <remarks></remarks>
-		Protected Function FormatTextBody(ByVal Body As Object, ByVal objConfig As Forum.Config) As String
+		Protected Function FormatTextBody(ByVal Body As Object, ByVal objConfig As Forum.Configuration) As String
 			Dim formatedBody As String = String.Empty
 			If Not IsDBNull(Body) Then
 				Dim bodyForumText As Utilities.PostContent = New Utilities.PostContent(HttpContext.Current.Server.HtmlDecode(CType(Body, String)), objConfig)

@@ -67,9 +67,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public ReadOnly Property objConfig() As Forum.Config
+		Public ReadOnly Property objConfig() As Forum.Configuration
 			Get
-				Return Config.GetForumConfig(ModuleId)
+				Return Configuration.GetForumConfig(ModuleId)
 			End Get
 		End Property
 

@@ -87,9 +87,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns>An object containing all configuration options for a forum module instance.</returns>
 		''' <remarks>This is all the forum configuration settings needed for the various dynamically generated UI's.</remarks>
-		Protected Overloads ReadOnly Property objConfig() As Config
+		Protected Overloads ReadOnly Property objConfig() As Configuration
 			Get
-				Return DotNetNuke.Modules.Forum.Config.GetForumConfig(ModuleID)
+				Return DotNetNuke.Modules.Forum.Configuration.GetForumConfig(ModuleID)
 			End Get
 		End Property
 

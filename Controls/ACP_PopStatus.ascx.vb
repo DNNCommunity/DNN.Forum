@@ -62,7 +62,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				Dim ctlModule As New Entities.Modules.ModuleController
 				ctlModule.UpdateModuleSetting(ModuleId, "PopularThreadView", txtPopularThreadView.Text)
 				ctlModule.UpdateModuleSetting(ModuleId, "PopularThreadReply", txtPopularThreadReply.Text)
-				Config.ResetForumConfig(ModuleId)
+				Configuration.ResetForumConfig(ModuleId)
 
 				lblUpdateDone.Visible = True
 			Catch exc As Exception

@@ -88,7 +88,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				ctlModule.UpdateModuleSetting(ModuleId, "DisableHTMLPosting", chkDisableHTMLPosting.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, "PrimaryAlias", ddlPrimaryAlias.SelectedValue.ToString())
 
-				Config.ResetForumConfig(ModuleId)
+				Configuration.ResetForumConfig(ModuleId)
 
 				lblUpdateDone.Visible = True
 			Catch exc As Exception

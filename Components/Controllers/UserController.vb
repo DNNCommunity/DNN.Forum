@@ -795,8 +795,8 @@ Namespace DotNetNuke.Modules.Forum
 
 			fUser.PortalID = PortalID
 			fUser.UserID = UserID
-			Dim myConfig As Forum.Config
-			myConfig = Config.GetForumConfig(ModuleID)
+			Dim myConfig As Forum.Configuration
+			myConfig = Configuration.GetForumConfig(ModuleID)
 
 			fUser.ThreadsPerPage = myConfig.ThreadsPerPage
 			fUser.PostsPerPage = myConfig.PostsPerPage

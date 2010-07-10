@@ -35,7 +35,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 
 		Dim _LocalResourceFile As String = String.Empty
 		Dim _DefaultControlToLoad As String = "UCP_Main.ascx"
-		Dim _objConfig As Forum.Config
+		Dim _objConfig As Forum.Configuration
 		Dim _ProfileUserID As Integer
 		Dim _CurrentUserID As Integer
 		Dim _PortalID As Integer
@@ -99,11 +99,11 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Property objConfig() As Forum.Config
+		Public Property objConfig() As Forum.Configuration
 			Get
 				Return _objConfig
 			End Get
-			Set(ByVal value As Forum.Config)
+			Set(ByVal value As Forum.Configuration)
 				_objConfig = value
 			End Set
 		End Property

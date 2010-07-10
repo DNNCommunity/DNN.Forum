@@ -107,7 +107,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				' Not implemented (YET): NOTE: Don't forget to create folder in DNN File System too. 
 				'ctlModule.UpdateModuleSetting(ModuleId, "ListServerFolder", txtListServerFolder.Text)
 
-				Config.ResetForumConfig(ModuleId)
+				Configuration.ResetForumConfig(ModuleId)
 
 				lblUpdateDone.Visible = True
 			Catch exc As Exception

@@ -64,7 +64,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <param name="text"></param>
 		''' <param name="objConfig"></param>
 		''' <remarks></remarks>
-		Public Sub New(ByVal [text] As String, ByVal objConfig As Config)
+		Public Sub New(ByVal [text] As String, ByVal objConfig As Configuration)
 			mText = [text]
 			objConfig = objConfig
 		End Sub
@@ -76,7 +76,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <param name="objConfig"></param>
 		''' <param name="ParserInfo"></param>
 		''' <remarks>[skeel] 8/1/2009 created</remarks>
-		Public Sub New(ByVal [text] As String, ByVal objConfig As Config, ByVal ParserInfo As Integer)
+		Public Sub New(ByVal [text] As String, ByVal objConfig As Configuration, ByVal ParserInfo As Integer)
 			mText = [text]
 			Select Case ParserInfo
 				Case 1
@@ -109,8 +109,8 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <param name="lstAttachments"></param>
 		''' <param name="IsAuthenticated"></param>
 		''' <remarks>[skeel] 8/1/2009 created</remarks>
-		Public Sub New(ByVal [text] As String, ByVal objConfig As Config, ByVal ParserInfo As Integer, _
-					 ByVal lstAttachments As List(Of AttachmentInfo), ByVal IsAuthenticated As Boolean)
+		Public Sub New(ByVal [text] As String, ByVal objConfig As Configuration, ByVal ParserInfo As Integer, _
+		    ByVal lstAttachments As List(Of AttachmentInfo), ByVal IsAuthenticated As Boolean)
 			mText = [text]
 
 			Select Case ParserInfo
@@ -208,8 +208,8 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 			Dim previousQuoteOpen As Boolean = False
 
 			While indexQuoteOpen >= 0 OrElse indexQuoteClose >= 0
-				indexQuoteOpen = mText.IndexOf(Config.QUOTE_OPEN, index)
-				indexQuoteClose = mText.IndexOf(Config.QUOTE_CLOSE, index)
+				indexQuoteOpen = mText.IndexOf(Configuration.QUOTE_OPEN, index)
+				indexQuoteClose = mText.IndexOf(Configuration.QUOTE_CLOSE, index)
 
 				If indexQuoteOpen >= 0 OrElse indexQuoteClose >= 0 Then
 					If indexQuoteOpen >= 0 AndAlso (indexQuoteOpen < indexQuoteClose OrElse indexQuoteClose = -1) Then
@@ -217,14 +217,14 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 							level += 1
 						End If
 						array.Add(New QuoteHelper(True, indexQuoteOpen, level))
-						index = indexQuoteOpen + Config.QUOTE_OPEN.Length
+						index = indexQuoteOpen + Configuration.QUOTE_OPEN.Length
 						previousQuoteOpen = True
 					ElseIf indexQuoteClose >= 0 AndAlso (indexQuoteClose < indexQuoteOpen OrElse indexQuoteOpen = -1) Then
 						If index > 0 AndAlso Not previousQuoteOpen Then
 							level -= 1
 						End If
 						array.Add(New QuoteHelper(False, indexQuoteClose, level))
-						index = indexQuoteClose + Config.QUOTE_CLOSE.Length
+						index = indexQuoteClose + Configuration.QUOTE_CLOSE.Length
 						previousQuoteOpen = False
 					End If
 				End If
@@ -292,7 +292,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' removes quote layout from new version quotes
 		''' </summary>
 		''' <remarks>Added by Skeel</remarks>
-		Private Sub ProcessStripQuotes(ByVal objConfig As Config)
+		Private Sub ProcessStripQuotes(ByVal objConfig As Configuration)
 			'Replace &#160; with <space>, only need to do this once..
 			If regCounter = 0 Then
 				mText = mText.Replace("&#160;", " ")
@@ -301,42 +301,42 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 			'Handle Quotes with names
 			Dim _
 			 strExpresson As String = "\<div class=[""]Quote[""]><em>(\w+)\ " & _
-								 Localization.GetString("ForumTextWrote.Text", objConfig.SharedResourceFile).Trim & _
-								 "(?::|)\<\/em>\<br \/>([^\]]+)(\<\/div>)"
+				 Localization.GetString("ForumTextWrote.Text", objConfig.SharedResourceFile).Trim & _
+				 "(?::|)\<\/em>\<br \/>([^\]]+)(\<\/div>)"
 			Dim regExp As Regex = New Regex(strExpresson)
 			mText = regExp.Replace(mText, "[quote=""$1""]$2[/quote]")
 
 			'Handle Quotes without names
 			strExpresson = "\<div class=[""]Quote[""]><em>" & _
-						Localization.GetString("Quote.Text", objConfig.SharedResourceFile).Trim & _
-						"(?::|)\<\/em>\<br \/>([^\]]+)<\/div>"
+			   Localization.GetString("Quote.Text", objConfig.SharedResourceFile).Trim & _
+			   "(?::|)\<\/em>\<br \/>([^\]]+)<\/div>"
 			regExp = New Regex(strExpresson)
 			mText = regExp.Replace(mText, "[quote]$1[/quote]")
 
 			'Now we need to check if there were quotes beside each other
 			strExpresson = "\<\/div>([^\]]+)<div class=[""]Quote[""]><em>(\w+)\ " & _
-						Localization.GetString("ForumTextWrote.Text", objConfig.SharedResourceFile).Trim & _
-						"(?::|)\<\/em>\<br \/>"
+			   Localization.GetString("ForumTextWrote.Text", objConfig.SharedResourceFile).Trim & _
+			   "(?::|)\<\/em>\<br \/>"
 			regExp = New Regex(strExpresson)
 			mText = regExp.Replace(mText, "[/quote]$1[quote=""$2""]")
 
 			'And the same for quotes without names..
 			strExpresson = "\<\/div>([^\]]+)<div class=[""]Quote[""]><em>" & _
-						Localization.GetString("Quote.Text", objConfig.SharedResourceFile).Trim & "(?::|)\<\/em>\<br \/>"
+			   Localization.GetString("Quote.Text", objConfig.SharedResourceFile).Trim & "(?::|)\<\/em>\<br \/>"
 			regExp = New Regex(strExpresson)
 			mText = regExp.Replace(mText, "[/quote]$1[quote]")
 
 			'And the final scenario
 			strExpresson = "\<div class=[""]Quote[""]><em>(\w+)\ " & _
-						Localization.GetString("ForumTextWrote.Text", objConfig.SharedResourceFile).Trim & _
-						"(?::|)\<\/em>\<br \/>([^\]]+]+[^\]]+)\<\/div>"
+			   Localization.GetString("ForumTextWrote.Text", objConfig.SharedResourceFile).Trim & _
+			   "(?::|)\<\/em>\<br \/>([^\]]+]+[^\]]+)\<\/div>"
 			regExp = New Regex(strExpresson)
 			mText = regExp.Replace(mText, "[quote=""$1""]$2[/quote]")
 
 			'And the final scenario without name
 			strExpresson = "\<div class=[""]Quote[""]><em>" & _
-						Localization.GetString("Quote.Text", objConfig.SharedResourceFile).Trim & _
-						"(?::|)\<\/em>\<br \/>([^\]]+]+[^\]]+)\<\/div>"
+			   Localization.GetString("Quote.Text", objConfig.SharedResourceFile).Trim & _
+			   "(?::|)\<\/em>\<br \/>([^\]]+]+[^\]]+)\<\/div>"
 			regExp = New Regex(strExpresson)
 			mText = regExp.Replace(mText, "[quote=""$1""]$2[/quote]")
 
@@ -354,7 +354,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' 
 		''' </summary>
 		''' <remarks></remarks>
-		Private Sub FormatStripQuotes(ByVal objConfig As Config)
+		Private Sub FormatStripQuotes(ByVal objConfig As Configuration)
 			'[skeel] run the new style quotes first!
 			regCounter = 0
 			ProcessStripQuotes(objConfig)
@@ -389,7 +389,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 						If length > 0 Then
 							sb.Append(mText.Substring(startIndex, length))
 						End If
-						startIndex = helperClose.Index + Config.QUOTE_CLOSE.Length
+						startIndex = helperClose.Index + Configuration.QUOTE_CLOSE.Length
 					End If
 				Else
 					index += 1
@@ -408,14 +408,14 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' Replaces quote/code tags with equilevant html code
 		''' </summary>
 		''' <remarks>[skeel] 1/8/2009 created</remarks>
-		Private Sub FormatBBCode(ByVal objConfig As Config)
+		Private Sub FormatBBCode(ByVal objConfig As Configuration)
 
 			Dim _
 			 strTmpName As String = _
 			  String.Format( _
-						  "<div class=""Quote""><em>{0} " & _
-						  Localization.GetString("ForumTextWrote.Text", objConfig.SharedResourceFile).Trim() & _
-						  ":</em><br />{1}</div>", "${author}", "${text}")
+				"<div class=""Quote""><em>{0} " & _
+				Localization.GetString("ForumTextWrote.Text", objConfig.SharedResourceFile).Trim() & _
+				":</em><br />{1}</div>", "${author}", "${text}")
 			While mQuoteAuthor.IsMatch(mText)
 				mText = mQuoteAuthor.Replace(mText, strTmpName)
 			End While
@@ -423,7 +423,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 			Dim _
 			 strTmp As String = _
 			  String.Format("<div class=""Quote""><em>{0}:</em><br />{1}</div>", _
-						  Localization.GetString("ForumTextQuote.Text", objConfig.SharedResourceFile).Trim(), "${text}")
+				Localization.GetString("ForumTextQuote.Text", objConfig.SharedResourceFile).Trim(), "${text}")
 			While mQuote.IsMatch(mText)
 				mText = mQuote.Replace(mText, strTmp)
 			End While
@@ -431,7 +431,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 			Dim _
 			 strTmpCode As String = _
 			  String.Format("<div class=""Code""><em>{0}:</em><br />{1}</div>", _
-						  Localization.GetString("ForumTextCode.Text", objConfig.SharedResourceFile).Trim(), "${code}")
+				Localization.GetString("ForumTextCode.Text", objConfig.SharedResourceFile).Trim(), "${code}")
 			While mCode.IsMatch(mText)
 				mText = mCode.Replace(mText, strTmpCode)
 			End While
@@ -444,8 +444,8 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <param name="lstAttachments"></param>
 		''' <param name="objConfig"></param>
 		''' <remarks>[skeel] 1/8/2009 created</remarks>
-		Private Sub FormatInlineAttachment(ByVal lstAttachments As List(Of AttachmentInfo), ByVal objConfig As Config, _
-									 ByVal IsAuthenticated As Boolean)
+		Private Sub FormatInlineAttachment(ByVal lstAttachments As List(Of AttachmentInfo), ByVal objConfig As Configuration, _
+			   ByVal IsAuthenticated As Boolean)
 			Dim strBasePath As String = objConfig.CompleteAttachmentURI
 			For Each objFile As AttachmentInfo In lstAttachments
 
@@ -463,11 +463,11 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 							Dim f As Decimal = CDec(objConfig.MaxPostImageWidth / w)
 							h = CInt(Math.Ceiling(h * f))
 							strTmp = "<img src=""" & strBasePath & objFile.FileName & """ height=""" & CStr(h) & """ width=""" & _
-								    CStr(objConfig.MaxPostImageWidth) & """ border=""0"" />"
+								CStr(objConfig.MaxPostImageWidth) & """ border=""0"" />"
 						Else
 							' Write the HTML image
 							strTmp = "<img src=""" & strBasePath & objFile.FileName & """ height=""" & CStr(objFile.Height) & """ width=""" & _
-								    CStr(objFile.Width) & """ border=""0"" />"
+								CStr(objFile.Width) & """ border=""0"" />"
 						End If
 					Else
 						' Not an image
@@ -485,25 +485,25 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' Will render an inline attachment
 		''' </summary>
 		''' <remarks>[skeel] 1/9/2009 created</remarks>
-		Private Function RenderNonImageInlineAttachment(ByVal objFile As AttachmentInfo, ByVal objConfig As Config, _
-											    ByVal IsAuthenticated As Boolean) As String
+		Private Function RenderNonImageInlineAttachment(ByVal objFile As AttachmentInfo, ByVal objConfig As Configuration, _
+				   ByVal IsAuthenticated As Boolean) As String
 			Dim sb As New StringBuilder
 
 			'sb.Append("<div class=""Forum_InlineAttachment"">")
 
 			If objConfig.AnonDownloads = False And IsAuthenticated = False Then
 				sb.Append( _
-						 "<span class=""Forum_Link"">[" & Localization.GetString("NoAnonDownloads", objConfig.SharedResourceFile) & _
-						 "]</span>")
+				   "<span class=""Forum_Link"">[" & Localization.GetString("NoAnonDownloads", objConfig.SharedResourceFile) & _
+				   "]</span>")
 			Else
 				Dim _
 				 Url As String = _
 				  LinkClick(CStr("FileID=" & objFile.FileID), objConfig.CurrentPortalSettings.ActiveTab.TabID, objConfig.ModuleID, _
-						   False, True)
+					False, True)
 				sb.Append( _
-						 "<a href=""" & Url.Replace("~/", "") & """ class=""Forum_Link"" title=""" & _
-						 Localization.GetString("DownloadAttachment", objConfig.SharedResourceFile) & """>" & _
-						 objFile.LocalFileName & " (" & objFile.FormattedSize & ")</a>")
+				   "<a href=""" & Url.Replace("~/", "") & """ class=""Forum_Link"" title=""" & _
+				   Localization.GetString("DownloadAttachment", objConfig.SharedResourceFile) & """>" & _
+				   objFile.LocalFileName & " (" & objFile.FormattedSize & ")</a>")
 			End If
 
 			'sb.Append("</div>")
@@ -534,10 +534,10 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 					End If
 					If helper.Open Then
 						FormatQuoteOpen(sb)
-						startIndex = helper.Index + Config.QUOTE_OPEN.Length
+						startIndex = helper.Index + Configuration.QUOTE_OPEN.Length
 					Else
 						FormatQuoteClose(sb)
-						startIndex = helper.Index + Config.QUOTE_CLOSE.Length
+						startIndex = helper.Index + Configuration.QUOTE_CLOSE.Length
 					End If
 				End If
 			Next index
@@ -570,7 +570,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' </summary>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Function ProcessPlainText(ByVal objConfig As Config) As String
+		Public Function ProcessPlainText(ByVal objConfig As Configuration) As String
 			FormatStripQuotes(objConfig)
 			FormatMultiLine()
 			FormatPlainText()
@@ -588,8 +588,8 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <param name="ImageToThumb"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Function ProcessTrimText(ByVal objConfig As Config, Optional ByVal Length As Integer = 100, _
-								   Optional ByVal ImageToThumb As Boolean = False) As String
+		Public Function ProcessTrimText(ByVal objConfig As Configuration, Optional ByVal Length As Integer = 100, _
+			    Optional ByVal ImageToThumb As Boolean = False) As String
 			FormatStripQuotes(objConfig)
 			FormatTrimText(Length)
 			FormatMultiLine()
@@ -613,7 +613,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <param name="objConfig"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Function ProcessQuoteBody(ByVal parentPoster As String, ByVal objConfig As Config) As String
+		Public Function ProcessQuoteBody(ByVal parentPoster As String, ByVal objConfig As Configuration) As String
 			Dim sb As New StringBuilder
 
 			If objConfig.DisableHTMLPosting = True Then

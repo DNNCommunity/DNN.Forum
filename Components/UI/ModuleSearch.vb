@@ -1488,9 +1488,9 @@ Namespace DotNetNuke.Modules.Forum
 					str = Utilities.ForumUtils.StripHTML(str)
 
 					'Now let's handle old type quotes
-					If str.IndexOf(Config.QUOTE_OPEN) > 0 Then
-						str = str.Replace(Config.QUOTE_OPEN, " "" ")
-						str = str.Replace(Config.QUOTE_CLOSE, " "" ")
+					If str.IndexOf(Configuration.QUOTE_OPEN) > 0 Then
+						str = str.Replace(Configuration.QUOTE_OPEN, " "" ")
+						str = str.Replace(Configuration.QUOTE_CLOSE, " "" ")
 					End If
 
 					'..and naughty words...

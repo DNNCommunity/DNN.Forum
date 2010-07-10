@@ -33,7 +33,7 @@ Namespace DotNetNuke.Modules.Forum
 		Private mRoleID As Integer
 		Private mRoleName As String
 		Private mAvatar As String
-		Private mForumConfig As Config
+		Private mForumConfig As Configuration
 
 #End Region
 

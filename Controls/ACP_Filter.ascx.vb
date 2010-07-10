@@ -67,7 +67,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				ctlModule.UpdateModuleSetting(ModuleId, "EnableBadWordFilter", chkBadWord.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, "FilterSubject", chkFilterSubject.Checked.ToString)
 				' Reset configuration (normally cached)
-				Config.ResetForumConfig(ModuleId)
+				Configuration.ResetForumConfig(ModuleId)
 
 				lblUpdateDone.Visible = True
 			Catch exc As Exception	 'Module failed to load

@@ -34,7 +34,7 @@ Namespace DotNetNuke.Modules.Forum.WebControls
 		Private mBaseFolder As String = String.Empty
 		Private mlocalResourceFile As String = String.Empty
 		Private FileFilter As String = String.Empty
-		Private mForumConfig As Forum.Config
+		Private mForumConfig As Forum.Configuration
 
 #End Region
 

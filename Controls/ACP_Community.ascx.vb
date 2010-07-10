@@ -87,7 +87,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				ctlModule.UpdateModuleSetting(ModuleId, "ExternalProfileParamName", txtExtProfileParamName.Text)
 				ctlModule.UpdateModuleSetting(ModuleId, "ExternalProfileParamName", txtExtProfileParamValue.Text)
 
-				Config.ResetForumConfig(ModuleId)
+				Configuration.ResetForumConfig(ModuleId)
 
 				lblUpdateDone.Visible = True
 			Catch exc As Exception

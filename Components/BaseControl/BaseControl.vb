@@ -37,7 +37,7 @@ Namespace DotNetNuke.Modules.Forum
 
 		Private _Initialized As Boolean = False
 		Private _ForumBaseObject As ForumBaseObject
-		Private _Config As Forum.Config
+		Private _Config As Forum.Configuration
 		Private _NavigatorActions As New ArrayList
 		Private _BasePage As DotNetNuke.Framework.CDefault
 		Private _PortalName As String
@@ -252,14 +252,14 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns>The configuration settings pertaining to the module instance.</returns>
 		''' <remarks>This is necessary for every control being loaded in the module.</remarks>
-		Friend Property objConfig() As Forum.Config
+		Friend Property objConfig() As Forum.Configuration
 			Get
 				If _Config Is Nothing Then
-					_Config = Forum.Config.GetForumConfig(ModuleID)
+					_Config = Forum.Configuration.GetForumConfig(ModuleID)
 				End If
 				Return _Config
 			End Get
-			Set(ByVal Value As Forum.Config)
+			Set(ByVal Value As Forum.Configuration)
 				_Config = Value
 			End Set
 

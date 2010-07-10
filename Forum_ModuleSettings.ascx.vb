@@ -46,7 +46,7 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Members"
 
-		Private mForumConfig As Forum.Config
+		Private mForumConfig As Forum.Configuration
 
 #End Region
 
@@ -185,9 +185,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Protected Function ForumConfig() As Forum.Config
+		Protected Function ForumConfig() As Forum.Configuration
 			If mForumConfig Is Nothing Then
-				mForumConfig = DotNetNuke.Modules.Forum.Config.GetForumConfig(ModuleId)
+				mForumConfig = DotNetNuke.Modules.Forum.Configuration.GetForumConfig(ModuleId)
 			End If
 			Return mForumConfig
 		End Function

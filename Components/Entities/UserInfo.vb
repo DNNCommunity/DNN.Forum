@@ -41,7 +41,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ModuleId"></param>
 		''' <remarks></remarks>
 		Public Sub New(ByVal ModuleId As Integer)
-			objConfig = Forum.Config.GetForumConfig(ModuleId)
+			objConfig = Forum.Configuration.GetForumConfig(ModuleId)
 		End Sub
 
 #End Region
@@ -65,7 +65,7 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _EnableModNotification As Boolean = True
 		Dim _EmailFormat As Integer
 		Dim _SiteAlias As String = "Anonymous"
-		Dim _objConfig As Config
+		Dim _objConfig As Configuration
 		Dim _EnablePublicEmail As Boolean = False
 		Dim _AvatarComplete As String = String.Empty
 		Dim _SystemAvatarComplete As String = String.Empty
@@ -415,11 +415,11 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Property objConfig() As Forum.Config
+		Public Property objConfig() As Forum.Configuration
 			Get
 				Return _objConfig
 			End Get
-			Set(ByVal Value As Config)
+			Set(ByVal Value As Configuration)
 				_objConfig = Value
 			End Set
 		End Property

@@ -43,7 +43,7 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-		Public Shared Sub PopulateTelerikTree(ByVal objConfig As Forum.Config, ByVal ForumTree As Telerik.Web.UI.RadTreeView, ByVal UserID As Integer)
+		Public Shared Sub PopulateTelerikTree(ByVal objConfig As Forum.Configuration, ByVal ForumTree As Telerik.Web.UI.RadTreeView, ByVal UserID As Integer)
 			ForumTree.Nodes.Clear()
 
 			Dim cntGroup As New GroupController
@@ -69,7 +69,7 @@ Namespace DotNetNuke.Modules.Forum
 			Next
 		End Sub
 
-		Public Shared Sub AddTelerikForums(ByVal objGroup As GroupInfo, ByVal objNode As Telerik.Web.UI.RadTreeNode, ByVal objConfig As Forum.Config, ByVal UserID As Integer)
+		Public Shared Sub AddTelerikForums(ByVal objGroup As GroupInfo, ByVal objNode As Telerik.Web.UI.RadTreeNode, ByVal objConfig As Forum.Configuration, ByVal UserID As Integer)
 			Dim cntForum As New ForumController
 			Dim arrAuthForums As List(Of ForumInfo) = objGroup.AuthorizedForums(UserID, True)
 			Dim forumNode As Telerik.Web.UI.RadTreeNode
@@ -89,7 +89,7 @@ Namespace DotNetNuke.Modules.Forum
 			Next
 		End Sub
 
-		Public Shared Function AddTelerikNode(ByVal strName As String, ByVal strType As String, ByVal strKey As String, ByVal eImage As eImageType, ByVal objNodes As Telerik.Web.UI.RadTreeNodeCollection, ByVal GroupID As Integer, ByVal objConfig As Forum.Config, ByVal UserID As Integer) As Telerik.Web.UI.RadTreeNode
+		Public Shared Function AddTelerikNode(ByVal strName As String, ByVal strType As String, ByVal strKey As String, ByVal eImage As eImageType, ByVal objNodes As Telerik.Web.UI.RadTreeNodeCollection, ByVal GroupID As Integer, ByVal objConfig As Forum.Configuration, ByVal UserID As Integer) As Telerik.Web.UI.RadTreeNode
 			' CP - COMEBACK - we would add a check here to see if it has any children, if it does we would force an add node for each child in the list (recursion)
 			' take the strKey (forumid) to see if it is a parent.
 			Dim cntForum As New ForumController

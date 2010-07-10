@@ -423,7 +423,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="Text">The string to show as the link.</param>
 		''' <param name="Css">The css class to apply to the link button.</param>
 		''' <remarks>(Similar to a stringbuilder)</remarks>
-		Protected Overloads Sub RenderCssLinkButton(ByVal wr As HtmlTextWriter, ByVal URL As String, ByVal Text As String, ByVal Css As String, ByVal objConfig As Config)
+		Protected Overloads Sub RenderCssLinkButton(ByVal wr As HtmlTextWriter, ByVal URL As String, ByVal Text As String, ByVal Css As String, ByVal objConfig As Configuration)
 			If Css.Length > 0 Then
 				wr.AddAttribute(HtmlTextWriterAttribute.Class, Css)
 			End If
@@ -556,7 +556,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="objConfig">The forum's configuration settings.</param>
 		''' <param name="ForumControl">The forum control loaded by the Forum_Container class that houses the UI being built here.</param>
 		''' <remarks>This is somewhat centralized here as part of refactoring.</remarks>
-		Protected Sub RenderNavBar(ByVal wr As HtmlTextWriter, ByVal objConfig As Forum.Config, ByVal ForumControl As Forum.DNNForum)
+		Protected Sub RenderNavBar(ByVal wr As HtmlTextWriter, ByVal objConfig As Forum.Configuration, ByVal ForumControl As Forum.DNNForum)
 			RenderRowBegin(wr, "NavigationToolbar")	'<tr>
 
 			' left cap

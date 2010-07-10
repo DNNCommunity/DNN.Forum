@@ -32,13 +32,13 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Properties"
 
-		Private _objConfig As Forum.Config
+		Private _objConfig As Forum.Configuration
 
-		Private Property objConfig() As Forum.Config
+		Private Property objConfig() As Forum.Configuration
 			Get
 				Return _objConfig
 			End Get
-			Set(ByVal value As Forum.Config)
+			Set(ByVal value As Forum.Configuration)
 				_objConfig = value
 			End Set
 		End Property
@@ -78,7 +78,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="UserID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Function ProcessPostBody(ByVal PostBody As String, ByVal myConfig As Forum.Config, ByVal PortalID As Integer, ByVal objAction As PostAction, ByVal UserID As Integer) As String
+		Public Function ProcessPostBody(ByVal PostBody As String, ByVal myConfig As Forum.Configuration, ByVal PortalID As Integer, ByVal objAction As PostAction, ByVal UserID As Integer) As String
 			Dim objSecurity As New PortalSecurity
 			Dim ProcessedBody As String
 			Dim fText As Utilities.PostContent
@@ -129,7 +129,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="PortalID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Function ProcessPostSubject(ByVal PostSubject As String, ByVal objConfig As Forum.Config, ByVal PortalID As Integer) As String
+		Public Function ProcessPostSubject(ByVal PostSubject As String, ByVal objConfig As Forum.Configuration, ByVal PortalID As Integer) As String
 			Dim objSecurity As New PortalSecurity
 			Dim ProcessedSubject As String
 
@@ -213,7 +213,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim cntForumUser As New ForumUserController
 			Dim objForumUser As ForumUserInfo
 
-			objConfig = Forum.Config.GetForumConfig(ModuleID)
+			objConfig = Forum.Configuration.GetForumConfig(ModuleID)
 			objForum = cntForum.GetForumInfoCache(ForumID)
 			objForumUser = cntForumUser.GetForumUser(UserID, False, ModuleID, PortalID)
 
@@ -341,7 +341,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' for security reasons as well as bad words (if enabled), and calls all parsing (for image replacement, etc.).
 		''' </summary>
 		''' <remarks>All permissions and validation checks should be done prior to this method.</remarks>
-		Private Function PostToDatabase(ByVal TabID As Integer, ByVal objConfig As Forum.Config, ByVal PortalID As Integer, ByVal objForumUser As ForumUserInfo, ByVal PostSubject As String, ByVal PostBody As String, ByVal objForum As ForumInfo, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal IsPinned As Boolean, ByVal IsClosed As Boolean, ByVal ReplyNotify As Boolean, ByVal Status As Forum.ThreadStatus, ByVal lstAttachmentFileIDs As String, ByVal RemoteAddress As String, ByVal PollID As Integer, ByVal ThreadIconID As Integer, ByVal ParentThreadID As Integer, ByVal objAction As PostAction, ByVal IsModerated As Boolean) As Integer
+		Private Function PostToDatabase(ByVal TabID As Integer, ByVal objConfig As Forum.Configuration, ByVal PortalID As Integer, ByVal objForumUser As ForumUserInfo, ByVal PostSubject As String, ByVal PostBody As String, ByVal objForum As ForumInfo, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal IsPinned As Boolean, ByVal IsClosed As Boolean, ByVal ReplyNotify As Boolean, ByVal Status As Forum.ThreadStatus, ByVal lstAttachmentFileIDs As String, ByVal RemoteAddress As String, ByVal PollID As Integer, ByVal ThreadIconID As Integer, ByVal ParentThreadID As Integer, ByVal objAction As PostAction, ByVal IsModerated As Boolean) As Integer
 			Dim objSecurity As New PortalSecurity
 			Dim newPostID As Integer
 			Dim objNewPost As New PostInfo
@@ -457,7 +457,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="objAction"></param>
 		''' <param name="newPostInfo"></param>
 		''' <remarks></remarks>
-		Private Sub HandleAttachments(ByVal objConfig As Forum.Config, ByVal UserID As Integer, ByVal objAction As Forum.PostAction, ByVal newPostInfo As PostInfo)
+		Private Sub HandleAttachments(ByVal objConfig As Forum.Configuration, ByVal UserID As Integer, ByVal objAction As Forum.PostAction, ByVal newPostInfo As PostInfo)
 			' We start by picking up any previously uploaded files, still not related to a postid
 			Dim cntAttachment As New AttachmentController
 			Dim lstAttachment As List(Of AttachmentInfo) = cntAttachment.GetAllByUserID(UserID)
@@ -522,7 +522,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="PostID"></param>
 		''' <param name="objAction"></param>
 		''' <remarks></remarks>
-		Public Sub HandleThreadStatus(ByVal objConfig As Forum.Config, ByVal objForum As ForumInfo, ByVal UserID As Integer, ByVal Status As Forum.ThreadStatus, ByVal PollID As Integer, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal objAction As Forum.PostAction)
+		Public Sub HandleThreadStatus(ByVal objConfig As Forum.Configuration, ByVal objForum As ForumInfo, ByVal UserID As Integer, ByVal Status As Forum.ThreadStatus, ByVal PollID As Integer, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal objAction As Forum.PostAction)
 			Select Case objAction
 				Case PostAction.New
 					' If thread status is enabled and there is an edit on the first post in a thread, make sure we set the thread status
@@ -563,7 +563,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="TabID"></param>
 		''' <param name="PortalID"></param>
 		''' <remarks></remarks>
-		Private Sub HandleNotifications(ByVal IsModerated As Boolean, ByVal objConfig As Forum.Config, ByVal newPostInfo As PostInfo, ByVal emailType As Forum.ForumEmailType, ByVal TabID As Integer, ByVal PortalID As Integer)
+		Private Sub HandleNotifications(ByVal IsModerated As Boolean, ByVal objConfig As Forum.Configuration, ByVal newPostInfo As PostInfo, ByVal emailType As Forum.ForumEmailType, ByVal TabID As Integer, ByVal PortalID As Integer)
 			' Send notification email & update forum post added info
 			Dim _mailURL As String
 			Dim ProfileUrl As String = Utilities.Links.UCP_UserLinks(TabID, objConfig.ModuleID, UserAjaxControl.Tracking, objConfig.CurrentPortalSettings)
@@ -626,7 +626,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="objOldFile"></param>
 		''' <param name="PostID"></param>
 		''' <remarks></remarks>
-		Private Function CreateThumbnail(ByVal objOldFile As AttachmentInfo, ByVal PostID As Integer, ByVal objConfig As Forum.Config) As String
+		Private Function CreateThumbnail(ByVal objOldFile As AttachmentInfo, ByVal PostID As Integer, ByVal objConfig As Forum.Configuration) As String
 			Dim strMessage As String = String.Empty
 			Try
 
@@ -897,7 +897,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="PostAttachments"></param>
 		''' <param name="objConfig"></param>
 		''' <remarks>Added by Skeel</remarks>
-		Private Function CalculateParseInfo(ByVal PostBody As String, ByVal PostAttachments As List(Of AttachmentInfo), ByVal objConfig As Forum.Config) As Integer
+		Private Function CalculateParseInfo(ByVal PostBody As String, ByVal PostAttachments As List(Of AttachmentInfo), ByVal objConfig As Forum.Configuration) As Integer
 			'Here we handle ParseInfo
 			Dim ParseInfo As Integer = 0
 

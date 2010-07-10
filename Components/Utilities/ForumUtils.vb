@@ -63,7 +63,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <param name="objConfig">The forum module configuratoin.</param>
 		''' <returns>The poster ranking value.</returns>
 		''' <remarks></remarks>
-		Public Shared Function GetRank(ByVal User As ForumUserInfo, ByVal objConfig As Forum.Config) As PosterRank
+		Public Shared Function GetRank(ByVal User As ForumUserInfo, ByVal objConfig As Forum.Configuration) As PosterRank
 			If Not objConfig.Ranking Then
 			Else
 				If User.PostCount >= objConfig.FirstRankPosts Then Return PosterRank.First
@@ -88,7 +88,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <param name="objConfig">The forum module configuration.</param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Shared Function GetRankTitle(ByVal Rank As PosterRank, ByVal objConfig As Forum.Config) As String
+		Public Shared Function GetRankTitle(ByVal Rank As PosterRank, ByVal objConfig As Forum.Configuration) As String
 			Dim RankTitle As String = String.Empty
 
 			Select Case Rank
@@ -217,7 +217,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' This is used to load the stylesheet associated with the set forum theme. 
 		''' </summary>
 		''' <remarks>This loads into the head area of the page, instead of inline as part of the module (Proper format, necessary for Ajax). Mimics how containers load stylesheets.</remarks>
-		Public Shared Sub LoadCssFile(ByVal DefaultPage As CDefault, ByVal objConfig As Forum.Config)
+		Public Shared Sub LoadCssFile(ByVal DefaultPage As CDefault, ByVal objConfig As Forum.Configuration)
 			' load the css file
 			Dim blnUpdateCache As Boolean = False
 
@@ -290,7 +290,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <param name="PortalID">Needed for distro list creation and task</param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Shared Function SendForumMail(ByVal ContentID As Integer, ByVal URL As String, ByVal EmailType As ForumEmailType, ByVal Notes As String, ByVal objConfig As Forum.Config, ByVal ProfileURL As String, ByVal PortalID As Integer) As String
+		Public Shared Function SendForumMail(ByVal ContentID As Integer, ByVal URL As String, ByVal EmailType As ForumEmailType, ByVal Notes As String, ByVal objConfig As Forum.Configuration, ByVal ProfileURL As String, ByVal PortalID As Integer) As String
 			' Cannot inherit from DotNEtNuke.Services.Mail.Mail because it is too limited
 			Dim forumMail As New ForumEmail
 			'handle converting URL for FURLS/NON FURLS
@@ -636,7 +636,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' </summary>
 		''' <param name="PostBody"></param>>
 		''' <remarks>Added by Skeel. This should only be done at display time, so it properly accounts for localization. For no context (and thus no culture/language) we should use the user's profile.</remarks>
-		Shared Function ProcessStripQuotesRender(ByVal PostBody As String, ByVal objConfig As Forum.Config) As String
+		Shared Function ProcessStripQuotesRender(ByVal PostBody As String, ByVal objConfig As Forum.Configuration) As String
 			'Replace &#160; with <space>, only need to do this once..
 			'If regCounter = 0 Then
 			'	PostBody = PostBody.Replace("&#160;", " ")
@@ -728,7 +728,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <param name="ChildGroupView"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Shared Function BreadCrumbs(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal Scope As ForumScope, ByVal InfoObject As Object, ByVal objConfig As Config, ByVal ChildGroupView As Boolean) As String
+		Shared Function BreadCrumbs(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal Scope As ForumScope, ByVal InfoObject As Object, ByVal objConfig As Configuration, ByVal ChildGroupView As Boolean) As String
 			Dim sb As New StringBuilder
 			sb.Append("<table cellpadding=""1"" cellspacing=""1""><tr>")
 			'Only Scope of Threads, Posts need aggregatedview to worry about
@@ -893,7 +893,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <param name="CssClass"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Shared Function GetCreatedDateInfo(ByVal serverPostedDate As DateTime, ByVal objConfig As Forum.Config, ByVal CssClass As String) As String
+		Shared Function GetCreatedDateInfo(ByVal serverPostedDate As DateTime, ByVal objConfig As Forum.Configuration, ByVal CssClass As String) As String
 			Dim strInfo As String
 			Dim userPostedDate As DateTime
 			Dim serverPostDay As DateTime
@@ -934,7 +934,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <returns></returns>
 		''' <remarks>
 		''' </remarks>
-		Shared Function ConvertTimeZone(ByVal value As DateTime, ByVal objConfig As Forum.Config) As DateTime
+		Shared Function ConvertTimeZone(ByVal value As DateTime, ByVal objConfig As Forum.Configuration) As DateTime
 			Dim displayCreatedDate As DateTime = value
 
 			Try
@@ -1046,7 +1046,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		''' <param name="ModBase"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Shared Function PerUserModuleActions(ByVal objConfig As Forum.Config, ByVal ModBase As DotNetNuke.Entities.Modules.PortalModuleBase) As DotNetNuke.Entities.Modules.Actions.ModuleActionCollection
+		Shared Function PerUserModuleActions(ByVal objConfig As Forum.Configuration, ByVal ModBase As DotNetNuke.Entities.Modules.PortalModuleBase) As DotNetNuke.Entities.Modules.Actions.ModuleActionCollection
 			Dim mLoggedOnUserID As Integer = -1
 			mLoggedOnUserID = Users.UserController.GetCurrentUserInfo.UserID
 			Dim Security As New Forum.ModuleSecurity(ModBase.ModuleId, ModBase.TabId, -1, mLoggedOnUserID)

@@ -36,7 +36,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Dim _EnableAjax As Boolean = True
 		Dim _LocalResourceFile As String = String.Empty
 		Dim _DefaultControlToLoad As String = "ACP_Main.ascx"
-		Dim _objConfig As Forum.Config
+		Dim _objConfig As Forum.Configuration
 		Dim _PortalID As Integer
 		Dim _ModuleID As Integer
 		Dim SectionNumber As Integer = 1
@@ -143,11 +143,11 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Property objConfig() As Forum.Config
+		Public Property objConfig() As Forum.Configuration
 			Get
 				Return _objConfig
 			End Get
-			Set(ByVal value As Forum.Config)
+			Set(ByVal value As Forum.Configuration)
 				_objConfig = value
 			End Set
 		End Property
