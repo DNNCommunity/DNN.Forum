@@ -30,9 +30,6 @@ Namespace DotNetNuke.Modules.Forum
     ''' </summary>
     ''' <remarks>This is loaded by BaseControl.vb which is loaded by DNNForum.vb, which is loaded by forum container.
     ''' </remarks>
-    ''' <history>
-    ''' 	[cpaterra]	7/13/2005	Created
-    ''' </history>
 	Public Class ForumBaseObject
 		Inherits ForumModuleBase
 

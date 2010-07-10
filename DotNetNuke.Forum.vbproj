@@ -140,12 +140,12 @@
       <DependentUpon>ACP.ascx</DependentUpon>
     </Compile>
     <Compile Include="Components\BaseControl\BaseControl.vb" />
+    <Compile Include="Components\BaseControl\ModuleBase.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Components\Configuration\Configuration.vb" />
     <Compile Include="Components\Configuration\Constants.vb" />
     <Compile Include="Components\BaseControl\DNNForum.vb" />
-    <Compile Include="Components\BaseControl\ForumModuleBase.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Components\BaseObject\BaseObject.vb">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

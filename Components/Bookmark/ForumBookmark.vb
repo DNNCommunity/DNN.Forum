@@ -22,14 +22,9 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region " ForumBookmark "
-
 	''' <summary>
 	''' Communicates with the Forum_Bookmarks table in the data store.
 	''' </summary>
-	''' <history>
-	''' 	[skeel]	12/1/2008	Created
-	''' </history>
 	Public Class BookmarkController
 
 #Region " Public Methods "
@@ -147,7 +142,5 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 	End Class
-
-#End Region
 
 End Namespace
