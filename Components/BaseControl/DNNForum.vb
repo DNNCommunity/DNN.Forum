@@ -64,8 +64,8 @@ Namespace DotNetNuke.Modules.Forum
 			Select Case ViewType
 				Case ForumScope.Groups
 					ForumBaseObject = New Groups(Me)
-				Case ForumScope.Forums
-					ForumBaseObject = New Forums(Me)
+					'Case ForumScope.Forums
+					'	ForumBaseObject = New Forums(Me)
 				Case ForumScope.Threads
 					ForumBaseObject = New Threads(Me)
 				Case ForumScope.Posts

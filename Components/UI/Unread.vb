@@ -766,9 +766,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="wr"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[skeel]	12/14/2008	Created
-		''' </history>
 		Private Sub RenderBottomBreadCrumbRow(ByVal wr As HtmlTextWriter)
 			RenderRowBegin(wr) '<tr>
 			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
@@ -789,12 +786,14 @@ Namespace DotNetNuke.Modules.Forum
 			RenderRowEnd(wr) ' </tr>
 
 			' Mark As Read linkbutton
-			RenderRowBegin(wr) ' <tr>
-			RenderCellBegin(wr, "", "", "", "right", "", "", "")
-			cmdRead.RenderControl(wr)
-			RenderImage(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
-			RenderCellEnd(wr) ' </td>
-			RenderRowEnd(wr) ' </tr>
+			If objConfig.EnableUserReadManagement Then
+				RenderRowBegin(wr) ' <tr>
+				RenderCellBegin(wr, "", "", "", "right", "", "", "")
+				cmdRead.RenderControl(wr)
+				RenderImage(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
+				RenderCellEnd(wr) ' </td>
+				RenderRowEnd(wr) ' </tr>
+			End If
 
 			RenderTableEnd(wr) ' </table>
 			RenderCellEnd(wr) ' </td>

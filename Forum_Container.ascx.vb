@@ -103,8 +103,6 @@ Namespace DotNetNuke.Modules.Forum
 				Select Case DNNForum.ViewType
 					Case ForumScope.Groups
 						.GenericObjectID = ModuleId
-					Case ForumScope.Forums
-						.GenericObjectID = _GroupID
 					Case ForumScope.Threads
 						.GenericObjectID = _ForumID
 					Case ForumScope.Posts

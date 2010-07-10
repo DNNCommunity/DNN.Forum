@@ -256,7 +256,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>
 		''' </remarks>
 		Private Sub BindList()
-			Dim ctlModerate As New Forum.ModerateController
+			Dim ctlModerate As New Forum.PostModerationController
 			Dim objPosts As New List(Of PostInfo)
 			objPosts = ctlModerate.ModeratePostGet(mForumID)
 
@@ -286,7 +286,7 @@ Namespace DotNetNuke.Modules.Forum
 		Private Sub ApprovePost(ByVal PostID As Integer, ByVal UserID As Integer, ByVal Notes As String, ByVal URL As String, ByVal ProfileURL As String, ByVal ForumID As Integer)
 			Dim ctlForum As New ForumController
 			Dim forum As ForumInfo = ctlForum.GetForumInfoCache(ForumID)
-			Dim ctlForumModerate As New ModerateController
+			Dim ctlForumModerate As New PostModerationController
 			ctlForumModerate.ModeratePostApprove(PostID, UserID, Notes, ForumID, forum.ParentId)
 
 			If objConfig.MailNotification Then
@@ -309,7 +309,7 @@ Namespace DotNetNuke.Modules.Forum
 		Private Sub ApproveMovePost(ByVal PostID As Integer, ByVal UserID As Integer, ByVal Notes As String, ByVal ForumID As Integer)
 			Dim ctlForum As New ForumController
 			Dim forum As ForumInfo = ctlForum.GetForumInfoCache(ForumID)
-			Dim ctlForumModerate As New ModerateController
+			Dim ctlForumModerate As New PostModerationController
 			ctlForumModerate.ModeratePostApprove(PostID, UserID, Notes, ForumID, forum.ParentId)
 		End Sub
 

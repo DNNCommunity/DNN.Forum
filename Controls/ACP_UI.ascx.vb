@@ -47,10 +47,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			chkDisplayPosterRegion.Checked = objConfig.DisplayPosterRegion
 			chkEnableQuickReply.Checked = objConfig.EnableQuickReply
 
-			Dim themesPath As String = System.IO.Path.Combine(Server.MapPath(objConfig.SourceDirectory), "Themes")
-			Dim forumThemePath As String = System.IO.Path.Combine(themesPath, objConfig.ForumTheme)
-
-			If System.IO.Directory.Exists(forumThemePath) Then
+			If System.IO.Directory.Exists(objConfig.ThemeDirectory) Then
 				ddlSkins.Items.FindByValue(objConfig.ForumTheme).Selected = True
 			Else
 				ddlSkins.Items(0).Selected = True

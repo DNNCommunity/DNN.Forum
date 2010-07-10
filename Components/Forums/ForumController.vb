@@ -22,16 +22,11 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "ForumController"
-
 	''' <summary>
 	''' Used to communicate with the data store about Forum specific items. 
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	''' <history>
-	''' 	[cpaterra]	7/13/2005	Created
-	''' </history>
 	Public Class ForumController
 
 #Region "Private Members"
@@ -512,7 +507,5 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 	End Class
-
-#End Region
 
 End Namespace

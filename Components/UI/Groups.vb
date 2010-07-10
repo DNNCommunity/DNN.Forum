@@ -24,8 +24,7 @@ Namespace DotNetNuke.Modules.Forum
 
 	''' <summary>
 	''' This is the initial view seen by the forums module. (Group View)
-	''' All rendering is done in code to create UI and done or called from
-	''' this class.
+	''' All rendering is done in code to create UI or code is called from here (in utilities, for example). 
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
@@ -245,6 +244,120 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 		''' <summary>
+		''' Area which has the +/- similar to section head.  This displays group name
+		''' </summary>
+		''' <param name="wr"></param>
+		''' <param name="Group"></param>
+		''' <remarks>
+		''' </remarks>
+		Private Sub RenderGroupInfo(ByVal wr As HtmlTextWriter, ByVal Group As GroupInfo)
+			' Start row
+			RenderRowBegin(wr) '<tr>
+
+			' This is middle column start - set padding for 4, had Forum_AltHeader as class
+			RenderCellBegin(wr, "", "", "", "left", "middle", "4", "")	'<td>
+
+			' Start table
+			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "left", "", "0") '<Table>            
+			RenderRowBegin(wr) '<tr>
+
+			' space to keep subject from being too close and still allow it to be evenly spaced if it wraps to a new row because it is long
+			wr.AddAttribute(HtmlTextWriterAttribute.Width, "1px")
+			wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_AltHeaderCapLeft")
+			wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
+			'wr.Write("&nbsp;")
+			RenderImage(wr, objConfig.GetThemeImageURL("alt_headfoot_height.gif"), "", "")
+			RenderCellEnd(wr) ' </td>
+
+			' group name  with link
+			RenderCellBegin(wr, "Forum_AltHeader", "", "100%", "left", "middle", "", "") '<td>
+			Dim GroupLinkURL As String
+			wr.Write("&nbsp;")
+			GroupLinkURL = Utilities.Links.ContainerSingleGroupLink(TabID, Group.GroupID)
+
+			RenderLinkButton(wr, GroupLinkURL, Group.Name, "Forum_AltHeaderText")
+
+			'wr.Write(Group.Name)
+			RenderCellEnd(wr) ' </td>
+
+			wr.AddAttribute(HtmlTextWriterAttribute.Width, "1px")
+			wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_AltHeaderCapRight")
+			wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
+			RenderImage(wr, objConfig.GetThemeImageURL("alt_headfoot_height.gif"), "", "")
+
+			RenderCellEnd(wr) ' </td>
+
+			' Finish middle table
+			RenderRowEnd(wr) ' </Tr>
+			RenderTableEnd(wr) ' </table>
+
+			'end middle column
+			RenderCellEnd(wr) ' </td>
+
+			' End row
+			RenderRowEnd(wr) ' </Tr>
+		End Sub
+
+		''' <summary>
+		''' Area which has the +/- similar to section head.  This displays group name + Parent Forum name
+		''' </summary>
+		''' <param name="wr"></param>
+		''' <param name="Group"></param>
+		''' <remarks>
+		''' </remarks>
+		Private Sub RenderGroupForumInfo(ByVal wr As HtmlTextWriter, ByVal Group As GroupInfo)
+			' Start row
+			RenderRowBegin(wr) '<tr>
+
+			' This is middle column start - set padding for 4, had Forum_AltHeader as class
+			RenderCellBegin(wr, "", "", "", "left", "middle", "4", "")	'<td>
+
+			' Start table
+			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "left", "", "0") '<Table>            
+			RenderRowBegin(wr) '<tr>
+
+			' space to keep subject from being too close and still allow it to be evenly spaced if it wraps to a new row because it is long
+			wr.AddAttribute(HtmlTextWriterAttribute.Width, "1px")
+			wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_AltHeaderCapLeft")
+			wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
+			RenderImage(wr, objConfig.GetThemeImageURL("alt_headfoot_height.gif"), "", "")
+			RenderCellEnd(wr) ' </td>
+
+			' group name with link
+			RenderCellBegin(wr, "Forum_AltHeader", "", "100%", "left", "middle", "", "") '<td>
+			Dim GroupLinkURL As String
+			wr.Write("&nbsp;")
+			GroupLinkURL = Utilities.Links.ContainerSingleGroupLink(TabID, Group.GroupID)
+
+			Dim forum As ForumInfo
+			Dim cntForum As New ForumController
+			forum = cntForum.GetForumInfoCache(mForumId)
+
+
+			RenderLinkButton(wr, GroupLinkURL, Group.Name + " > " & forum.Name, "Forum_AltHeaderText")
+
+			'wr.Write(Group.Name)
+			RenderCellEnd(wr) ' </td>
+
+			wr.AddAttribute(HtmlTextWriterAttribute.Width, "1px")
+			wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_AltHeaderCapRight")
+			wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
+			RenderImage(wr, objConfig.GetThemeImageURL("alt_headfoot_height.gif"), "", "")
+
+			RenderCellEnd(wr) ' </td>
+
+			' Finish middle table
+			RenderRowEnd(wr) ' </Tr>
+			RenderTableEnd(wr) ' </table>
+
+			'end middle column
+			RenderCellEnd(wr) ' </td>
+
+			' End row
+			RenderRowEnd(wr) ' </Tr>
+		End Sub
+
+		''' <summary>
 		''' Same as RenderThreads in ForumThread.vb
 		''' This renders the groups then all available forums for the user to view
 		''' If no forums available to user, the group is not rendered at all and moves to the next.
@@ -376,7 +489,7 @@ Namespace DotNetNuke.Modules.Forum
 
 							' Render a row for each forum in this group exposed to this user
 							For Each objForum As ForumInfo In arrForums
-								objForum.Render(wr, Me.ForumControl, CurrentForumUser, Count)
+								RenderForum(wr, objForum, CurrentForumUser, Count)
 								Count += 1
 							Next
 						End If
@@ -392,120 +505,528 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 		''' <summary>
-		''' Area which has the +/- similar to section head.  This displays group name
+		''' Renders forum group view seen on initial forum display.  This shows all expanded
+		''' forum information. (ie. Forum Name, Threads, Posts, Last Post and status icons)
 		''' </summary>
 		''' <param name="wr"></param>
-		''' <param name="Group"></param>
+		''' <param name="objForum"></param>
+		''' <param name="Count"></param>
 		''' <remarks>
 		''' </remarks>
-		Private Sub RenderGroupInfo(ByVal wr As HtmlTextWriter, ByVal Group As GroupInfo)
-			' Start row
-			RenderRowBegin(wr) '<tr>
+		Public Sub RenderForum(ByVal wr As HtmlTextWriter, ByVal objForum As ForumInfo, ByVal CurrentForumUser As ForumUser, Optional ByVal Count As Integer = 0)
+			Try
+				Dim fPostsPerPage As Integer = CurrentForumUser.PostsPerPage
+				Dim fPage As Page = Me.ForumControl.DNNPage
+				Dim fTabID As Integer = Me.ForumControl.TabID
+				Dim fModuleID As Integer = Me.ForumControl.ModuleID
+				'Dim url As String
+				'Dim objForumInfo As New ForumInfo
 
-			' This is middle column start - set padding for 4, had Forum_AltHeader as class
-			RenderCellBegin(wr, "", "", "", "left", "middle", "4", "")	'<td>
+				If objForum.ForumID = -1 Then
+					'Aggregated Forum (so this is never cached, since it is per user). 
+					objForum.ModuleID = ModuleID
+					objForum.GroupID = -1
+					objForum.ForumID = -1
+					objForum.ForumType = 0
+					objForum.IntegratedModuleID = 0
+					objForum.IntegratedObjects = Nothing
+					objForum.IsActive = objConfig.AggregatedForums
+					objForum.IsIntegrated = False
+					objForum.TotalThreads = 0
+					objForum.TotalPosts = 0
+					objForum.ParentId = 0
+					objForum.SubForums = 0
+					objForum.NotifyByDefault = False
+					objForum.Name = Localization.GetString("AggregatedForumName", objConfig.SharedResourceFile)
+					objForum.Description = Localization.GetString("AggregatedForumDescription", objConfig.SharedResourceFile)
 
-			' Start table
-			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "left", "", "0") '<Table>            
-			RenderRowBegin(wr) '<tr>
+					Dim SearchCollection As New ArrayList
+					Dim cntSearch As New SearchController
+					SearchCollection = cntSearch.SearchGetResults("", 0, 1, CurrentForumUser.UserID, ModuleID, DateAdd(DateInterval.Year, -1, DateTime.Today), DateAdd(DateInterval.Day, 1, DateTime.Today), -1)
 
-			' space to keep subject from being too close and still allow it to be evenly spaced if it wraps to a new row because it is long
-			wr.AddAttribute(HtmlTextWriterAttribute.Width, "1px")
-			wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_AltHeaderCapLeft")
-			wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
-			'wr.Write("&nbsp;")
-			RenderImage(wr, objConfig.GetThemeImageURL("alt_headfoot_height.gif"), "", "")
-			RenderCellEnd(wr) ' </td>
+					For Each objSearch As SearchInfo In SearchCollection
+						If objSearch IsNot Nothing Then
+							objForum.MostRecentPostDate = objSearch.CreatedDate
+							objForum.MostRecentPostID = objSearch.LastPostedPostID
+							objForum.MostRecentPostAuthorID = objSearch.LastApprovedUser.UserID
+							objForum.MostRecentThreadID = objSearch.ThreadID
+						End If
+					Next
+				End If
 
-			' group name  with link
-			RenderCellBegin(wr, "Forum_AltHeader", "", "100%", "left", "middle", "", "") '<td>
-			Dim GroupLinkURL As String
-			wr.Write("&nbsp;")
-			GroupLinkURL = Utilities.Links.ContainerSingleGroupLink(TabID, Group.GroupID)
+				If Not objForum Is Nothing Then
+					wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>   
 
-			RenderLinkButton(wr, GroupLinkURL, Group.Name, "Forum_AltHeaderText")
+					Dim even As Boolean = ForumIsEven(Count)
+					If even Then
+						wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_Row")
+					Else
+						wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_Row_Alt")
+					End If
 
-			'wr.Write(Group.Name)
-			RenderCellEnd(wr) ' </td>
+					'see threads to determine how to build table here
+					' cell holds table for post icon/thread subject
+					wr.AddAttribute(HtmlTextWriterAttribute.Width, "52%")
+					wr.AddAttribute(HtmlTextWriterAttribute.Align, "left")
+					wr.AddAttribute(HtmlTextWriterAttribute.Valign, "top")
+					wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
 
-			wr.AddAttribute(HtmlTextWriterAttribute.Width, "1px")
-			wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_AltHeaderCapRight")
-			wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
-			RenderImage(wr, objConfig.GetThemeImageURL("alt_headfoot_height.gif"), "", "")
+					' table holds post icon/thread subject/number viewing
+					wr.AddAttribute(HtmlTextWriterAttribute.Cellpadding, "0")
+					wr.AddAttribute(HtmlTextWriterAttribute.Cellspacing, "0")
+					wr.AddAttribute(HtmlTextWriterAttribute.Width, "100%")
+					wr.AddAttribute(HtmlTextWriterAttribute.Valign, "top")
+					wr.RenderBeginTag(HtmlTextWriterTag.Table) ' <table>
+					wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>
 
-			RenderCellEnd(wr) ' </td>
+					'status icon column
+					wr.AddAttribute(HtmlTextWriterAttribute.Align, "left")
+					wr.AddAttribute(HtmlTextWriterAttribute.Valign, "top")
+					wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
 
-			' Finish middle table
-			RenderRowEnd(wr) ' </Tr>
-			RenderTableEnd(wr) ' </table>
+					Dim NewWindow As Boolean = False
+					If objForum.ForumType = DotNetNuke.Modules.Forum.ForumType.Link Then
+						Dim objCnt As New DotNetNuke.Common.Utilities.UrlController
+						Dim objURLTrack As New DotNetNuke.Common.Utilities.UrlTrackingInfo
+						Dim TrackClicks As Boolean = False
 
-			'end middle column
-			RenderCellEnd(wr) ' </td>
+						objURLTrack = objCnt.GetUrlTracking(PortalID, objForum.ForumLink, ModuleID)
 
-			' End row
-			RenderRowEnd(wr) ' </Tr>
+						If Not objURLTrack Is Nothing Then
+							TrackClicks = objURLTrack.TrackClicks
+							NewWindow = objURLTrack.NewWindow
+						End If
+
+						url = DotNetNuke.Common.Globals.LinkClick(objForum.ForumLink, objForum.ParentGroup.objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID, TrackClicks)
+
+					Else
+						If objForum.GroupID = -1 Then
+							' aggregated
+							url = Utilities.Links.ContainerAggregatedLink(TabID, False)
+						Else
+							'[Skeel] Check if this is a parent forum
+							If objForum.IsParentForum = True Then
+								'Parent forum, link to group view
+								url = Utilities.Links.ContainerParentForumLink(TabID, objForum.GroupID, objForum.ForumID)
+								'Now let's get the most recent info
+								objForum = ForumGetMostRecentInfo(objForum)
+							Else
+								'Normal Forum, link goes to Thread view
+								url = Utilities.Links.ContainerViewForumLink(TabID, objForum.ForumID, False)
+							End If
+
+						End If
+					End If
+
+					' handle HasNewThreads here (because it's user specific)
+					Dim HasNewThreads As Boolean = True
+
+					' Only worry about user forum reads if the user is logged in (performance reasons)
+					' [skeel] .. and not a link type forum
+					If CurrentForumUser.UserID > 0 And objForum.ForumType <> 2 Then
+						Dim userForumController As New UserForumsController
+
+						'[skeel] added support for subforums
+						If objForum.IsParentForum = True Then
+							'Parent Forum
+							Dim LastVisitDate As Date = Now.AddYears(1)
+							Dim dr As IDataReader = userForumController.GetSubForumIDs(objForum.ForumID)
+							While dr.Read
+								Dim userForum As New UserForumsInfo
+								userForum = userForumController.GetCachedUserForumRead(CurrentForumUser.UserID, CInt(dr("ForumID").ToString))
+								If Not userForum Is Nothing Then
+									If LastVisitDate > userForum.LastVisitDate Then
+										LastVisitDate = userForum.LastVisitDate
+									End If
+								End If
+							End While
+							dr.Close()
+							If Not LastVisitDate < objForum.MostRecentPostDate Then
+								HasNewThreads = False
+							End If
+						Else
+							Dim userForum As New UserForumsInfo
+							If objForum.ForumID = -1 Then
+								'Aggregated Forum
+								'[skeel] at some point we should consider looping through all the threads, but it's
+								'a lot of CPU cycles just to show an icon, so for now we always show it as containing new posts
+							Else
+								'Regular forum
+								userForum = userForumController.GetCachedUserForumRead(CurrentForumUser.UserID, objForum.ForumID)
+							End If
+
+							If Not userForum Is Nothing Then
+								If Not userForum.LastVisitDate < objForum.MostRecentPostDate Then
+									HasNewThreads = False
+								End If
+							End If
+
+						End If
+
+					End If
+
+					' display image depends on new post status 
+					If Not objForum.PublicView Then
+						' See if the forum is a Link Type forum
+						If objForum.ForumType = 2 Then
+							RenderImageButton(wr, url, objConfig.GetThemeImageURL("forum_linktype.") & objConfig.ImageExtension, Me.BaseControl.LocalizedText("imgLinkType") & " " & url, "", NewWindow)
+						Else
+							' See if the forum is moderated
+							If objForum.IsModerated Then
+								If HasNewThreads AndAlso objForum.TotalThreads > 0 Then
+									RenderImageButton(wr, url, objConfig.GetThemeImageURL("forum_private_moderated_new.") & objConfig.ImageExtension, Me.BaseControl.LocalizedText("imgNewPrivateModerated"), "", False)
+								Else
+									RenderImageButton(wr, url, objConfig.GetThemeImageURL("forum_private_moderated.") & objConfig.ImageExtension, Me.BaseControl.LocalizedText("imgPrivateModerated"), "", False)
+								End If
+							Else
+								If HasNewThreads AndAlso objForum.TotalThreads > 0 Then
+									RenderImageButton(wr, url, objConfig.GetThemeImageURL("forum_private_new.") & objConfig.ImageExtension, Me.BaseControl.LocalizedText("imgNewPrivate"), "", False)
+								Else
+									RenderImageButton(wr, url, objConfig.GetThemeImageURL("forum_private.") & objConfig.ImageExtension, Me.BaseControl.LocalizedText("imgPrivate"), "", False)
+								End If
+							End If
+						End If
+					Else
+						' See if the forum is a Link Type forum
+						If objForum.IsParentForum = True Then
+							'[skeel] parent forum
+							If HasNewThreads AndAlso objForum.TotalThreads > 0 Then
+								RenderImageButton(wr, url, objConfig.GetThemeImageURL("forum_parent_new.") & objConfig.ImageExtension, Me.BaseControl.LocalizedText("imgNewUnmoderated"), "", False)
+							Else
+								RenderImageButton(wr, url, objConfig.GetThemeImageURL("forum_parent.") & objConfig.ImageExtension, Me.BaseControl.LocalizedText("imgUnmoderated"), "", False)
+							End If
+						ElseIf objForum.ForumType = 2 Then
+							RenderImageButton(wr, url, objConfig.GetThemeImageURL("forum_linktype.") & objConfig.ImageExtension, Me.BaseControl.LocalizedText("imgLinkType") & " " & url, "", NewWindow)
+						Else
+							If objForum.ForumID = -1 Then
+								RenderImageButton(wr, url, objConfig.GetThemeImageURL("forum_aggregate.") & objConfig.ImageExtension, Me.BaseControl.LocalizedText("imgAggregated"), "", False)
+							Else
+								' Determine if forum is moderated
+								If objForum.IsModerated Then
+									If HasNewThreads AndAlso objForum.TotalThreads > 0 Then
+										RenderImageButton(wr, url, objConfig.GetThemeImageURL("forum_moderated_new.") & objConfig.ImageExtension, Me.BaseControl.LocalizedText("imgNewModerated"), "", False)
+									Else
+										RenderImageButton(wr, url, objConfig.GetThemeImageURL("forum_moderated.") & objConfig.ImageExtension, Me.BaseControl.LocalizedText("imgModerated"), "", False)
+									End If
+								Else
+									If HasNewThreads AndAlso objForum.TotalThreads > 0 Then
+										RenderImageButton(wr, url, objConfig.GetThemeImageURL("forum_unmoderated_new.") & objConfig.ImageExtension, Me.BaseControl.LocalizedText("imgNewUnmoderated"), "", False)
+									Else
+										RenderImageButton(wr, url, objConfig.GetThemeImageURL("forum_unmoderated.") & objConfig.ImageExtension, Me.BaseControl.LocalizedText("imgUnmoderated"), "", False)
+									End If
+								End If
+							End If
+						End If
+					End If
+
+					wr.RenderEndTag() '</td>
+
+					' subject/# currently viewing column
+					wr.AddAttribute(HtmlTextWriterAttribute.Valign, "top")
+					wr.AddAttribute(HtmlTextWriterAttribute.Align, "left")
+					wr.AddAttribute(HtmlTextWriterAttribute.Width, "100%")
+					wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td>
+
+					' table to hold theard subject & reserved area for number of users currently viewing            
+					wr.AddAttribute(HtmlTextWriterAttribute.Width, "100%")
+					wr.AddAttribute(HtmlTextWriterAttribute.Align, "left")
+					wr.AddAttribute(HtmlTextWriterAttribute.Cellspacing, "0")
+					wr.RenderBeginTag(HtmlTextWriterTag.Table) '<table>
+					wr.RenderBeginTag(HtmlTextWriterTag.Tr)	'<tr>
+
+					' Spacing between status icon and subject
+					wr.AddAttribute(HtmlTextWriterAttribute.Width, "1px")
+					wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
+
+					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
+					wr.AddAttribute(HtmlTextWriterAttribute.Src, objConfig.GetThemeImageURL("row_spacer.gif"))
+					wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <Img>
+					wr.RenderEndTag() ' </Img>
+
+					wr.RenderEndTag() '  </td>
+
+					wr.AddAttribute(HtmlTextWriterAttribute.Align, "left")
+					wr.AddAttribute(HtmlTextWriterAttribute.Valign, "top")
+					wr.AddAttribute(HtmlTextWriterAttribute.Width, "100%")
+					wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td>
+
+					If NewWindow Then
+						wr.AddAttribute(HtmlTextWriterAttribute.Target, "_blank")
+					End If
+					wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
+
+					wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_NormalBold")
+					wr.RenderBeginTag(HtmlTextWriterTag.A) ' <A>
+					wr.Write(objForum.Name)
+					wr.RenderEndTag() ' </A>             
+
+					' Display forum description
+					If Len(objForum.Description) > 0 Then
+						wr.Write("<br />")
+						wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_GroupDetails")
+						wr.RenderBeginTag(HtmlTextWriterTag.Span) '<Span>
+						wr.Write(objForum.Description)
+						wr.RenderEndTag() ' </Span>
+					End If
+
+					'[skeel] here we place subforums, if any
+					If objForum.IsParentForum Then
+						wr.Write("<br />")
+						wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_SubForumContainer")
+						wr.RenderBeginTag(HtmlTextWriterTag.Div) '<div>
+						RenderSubForums(wr, objForum.ForumID, objForum.GroupID, "Forum_SubForumLink", objForum.SubForums)
+						wr.RenderEndTag() '</div>
+					End If
+
+					wr.RenderEndTag() ' </td>
+
+					''This is the column where currently viewing number will eventually go
+					'wr.RenderBeginTag(HtmlTextWriterTag.Td) ' <td>
+					'wr.RenderEndTag() ' </td>
+
+					'end table that holds subject/# viewing 
+					wr.RenderEndTag() ' </tr>
+					wr.RenderEndTag() ' </table>
+
+					'End column which holds subject/# viewing table
+					wr.RenderEndTag() ' </td>
+
+					' end table that holds post icon/thread subject/number viewing
+					wr.RenderEndTag() ' </tr>
+					wr.RenderEndTag() ' </table>
+
+					' end column that holds table for post icon/thread subject
+					wr.RenderEndTag() ' </td>
+
+					' Threads column
+					If even Then
+						wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_RowHighlight1")
+					Else
+						wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_RowHighlight1_Alt")
+					End If
+
+					wr.AddAttribute(HtmlTextWriterAttribute.Align, "center")
+					wr.AddAttribute(HtmlTextWriterAttribute.Width, "11%")
+					wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
+
+					wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_Threads")
+					wr.RenderBeginTag(HtmlTextWriterTag.Span) ' <span>
+
+					If objForum.ForumType = 2 Or objForum.ForumID = -1 Then
+						wr.Write("-")
+					Else
+						wr.Write(objForum.TotalThreads.ToString)
+					End If
+
+
+					wr.RenderEndTag() ' </span>
+					wr.RenderEndTag() ' </td>
+
+					If even Then
+						wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_RowHighlight2")
+					Else
+						wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_RowHighlight2_Alt")
+					End If
+
+					'Posts column
+					wr.AddAttribute(HtmlTextWriterAttribute.Align, "center")
+					wr.AddAttribute(HtmlTextWriterAttribute.Width, "11%")
+					wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
+
+					wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_Posts")
+					wr.RenderBeginTag(HtmlTextWriterTag.Span) ' <span>
+					If objForum.ForumType = 2 Or objForum.ForumID = -1 Then
+						wr.Write("-")
+					Else
+						wr.Write(objForum.TotalPosts.ToString)
+					End If
+					wr.RenderEndTag() ' </span>
+					wr.RenderEndTag() ' </td>
+
+					' last Post date info & author
+					If even Then
+						wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_RowHighlight3")
+					Else
+						wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_RowHighlight3_Alt")
+					End If
+
+					wr.AddAttribute(HtmlTextWriterAttribute.Align, "right")
+					wr.AddAttribute(HtmlTextWriterAttribute.Width, "26%")
+					wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
+					wr.AddAttribute(HtmlTextWriterAttribute.Cellpadding, "0")
+					wr.AddAttribute(HtmlTextWriterAttribute.Cellspacing, "0")
+					wr.AddAttribute(HtmlTextWriterAttribute.Align, "right")
+					wr.AddAttribute(HtmlTextWriterAttribute.Width, "100%")
+					wr.RenderBeginTag(HtmlTextWriterTag.Table) ' <table>
+					wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>
+
+					wr.AddAttribute(HtmlTextWriterAttribute.Width, "1px")
+					wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
+					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
+					wr.AddAttribute(HtmlTextWriterAttribute.Src, objConfig.GetThemeImageURL("row_spacer.gif"))
+					wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <Img>
+					wr.RenderEndTag() ' </Img>
+
+					wr.RenderEndTag() '  </td>
+
+					If even Then
+						wr.AddAttribute(HtmlTextWriterAttribute.Class, "")
+					Else
+						wr.AddAttribute(HtmlTextWriterAttribute.Class, "")
+					End If
+
+					wr.AddAttribute(HtmlTextWriterAttribute.Align, "right")
+					wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
+
+					If objForum.ForumType = 2 Then
+						'Link forum
+						wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText")
+						wr.RenderBeginTag(HtmlTextWriterTag.Span) '<span>
+						wr.Write("-")
+						wr.RenderEndTag() ' </span>
+					Else
+						If (objForum.MostRecentPostID > 0) Then
+							'Dim displayCreatedDate As DateTime = ConvertTimeZone(MostRecentPostDate, objConfig)
+							Dim lastPostInfo As New PostInfo
+							lastPostInfo = PostInfo.GetPostInfo(objForum.MostRecentPostID, PortalID)
+
+							Dim strLastPostInfo As String = Utilities.ForumUtils.GetCreatedDateInfo(objForum.MostRecentPostDate, objConfig, "")
+							' shows only first 15 letters of the post subject title
+							Dim truncatedTitle As String
+							If lastPostInfo.Subject.Length > 16 Then
+								truncatedTitle = Left(lastPostInfo.Subject, 15) & "..."
+							Else
+								truncatedTitle = lastPostInfo.Subject
+							End If
+
+							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText")
+							wr.RenderBeginTag(HtmlTextWriterTag.Div) ' <div>
+
+							url = Utilities.Links.ContainerViewPostLink(TabID, objForum.ForumID, objForum.MostRecentPostID)
+							wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
+							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText")
+							wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
+							wr.Write(truncatedTitle)
+							wr.RenderEndTag() '  </A>
+
+							wr.RenderEndTag() ' </div>
+
+							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText")
+							wr.RenderBeginTag(HtmlTextWriterTag.Div) ' <div>
+
+							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText")
+							wr.RenderBeginTag(HtmlTextWriterTag.Span) ' <a>
+							wr.Write(strLastPostInfo)
+							wr.RenderEndTag() '</A>
+
+							wr.RenderEndTag() ' </div>
+
+							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText")
+							wr.RenderBeginTag(HtmlTextWriterTag.Span) ' <span>
+							wr.Write(Me.BaseControl.LocalizedText("by") & " ")
+							wr.RenderEndTag() ' </span>
+
+							If Not objConfig.EnableExternalProfile Then
+								url = objForum.MostRecentPostAuthor.UserCoreProfileLink
+							Else
+								url = Utilities.Links.UserExternalProfileLink(objForum.MostRecentPostAuthorID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, objForum.MostRecentPostAuthor.Username)
+							End If
+
+							wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
+							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText") 'Forum_AliasLink
+							wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
+							wr.Write(objForum.MostRecentPostAuthor.SiteAlias)
+							wr.RenderEndTag() '  </A>
+						Else
+							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText")
+							wr.RenderBeginTag(HtmlTextWriterTag.Span) '<span>
+							wr.Write(Me.BaseControl.LocalizedText("None"))
+							wr.RenderEndTag() ' </span>
+						End If
+					End If
+
+					wr.RenderEndTag() ' </Td>
+
+					wr.AddAttribute(HtmlTextWriterAttribute.Width, "1px")
+					wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
+
+					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
+					wr.AddAttribute(HtmlTextWriterAttribute.Src, objConfig.GetThemeImageURL("row_spacer.gif"))
+					wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <Img>
+					wr.RenderEndTag() ' </Img>
+
+					wr.RenderEndTag() '  </td>
+					wr.RenderEndTag() ' </Tr>
+					wr.RenderEndTag() ' </Table>
+					wr.RenderEndTag() ' </Td>
+					wr.RenderEndTag() ' </Tr>
+
+				End If
+			Catch ex As Exception
+				LogException(ex)
+			End Try
 		End Sub
 
 		''' <summary>
-		''' Area which has the +/- similar to section head.  This displays group name + Parent Forum name
+		''' Renders a list of subforum links
 		''' </summary>
 		''' <param name="wr"></param>
-		''' <param name="Group"></param>
-		''' <remarks>
-		''' </remarks>
-		''' <history>
-		''' 	[skeel]	12/11/2008	Created
-		''' </history>
-		Private Sub RenderGroupForumInfo(ByVal wr As HtmlTextWriter, ByVal Group As GroupInfo)
-			' Start row
-			RenderRowBegin(wr) '<tr>
+		''' <param name="ParentID"></param>
+		''' <remarks>Added by Skeel</remarks>
+		Private Sub RenderSubForums(ByVal wr As HtmlTextWriter, ByVal ParentID As Integer, ByVal GroupId As Integer, ByVal Css As String, ByVal SubForumCount As Integer)
+			Dim Url As String
+			Dim i As Integer = 1
+			Dim SubForum As New ForumInfo
+			Dim forumCtl As New ForumController
+			Dim arrSubForums As List(Of ForumInfo) = forumCtl.ForumGetAllByParentID(ParentID, GroupId, True)
 
-			' This is middle column start - set padding for 4, had Forum_AltHeader as class
-			RenderCellBegin(wr, "", "", "", "left", "middle", "4", "")	'<td>
+			wr.RenderBeginTag(HtmlTextWriterTag.B) '<b>
+			wr.Write(Localization.GetString("SubForums", objConfig.SharedResourceFile) & ": ")
+			wr.RenderEndTag() '</b>
 
-			' Start table
-			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "left", "", "0") '<Table>            
-			RenderRowBegin(wr) '<tr>
+			For Each SubForum In arrSubForums
+				If SubForum.IsActive Then
+					Dim NewWindow As Boolean = False
 
-			' space to keep subject from being too close and still allow it to be evenly spaced if it wraps to a new row because it is long
-			wr.AddAttribute(HtmlTextWriterAttribute.Width, "1px")
-			wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_AltHeaderCapLeft")
-			wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
-			RenderImage(wr, objConfig.GetThemeImageURL("alt_headfoot_height.gif"), "", "")
-			RenderCellEnd(wr) ' </td>
+					If SubForum.ForumType = DotNetNuke.Modules.Forum.ForumType.Link Then
+						Dim objCnt As New DotNetNuke.Common.Utilities.UrlController
+						Dim objURLTrack As New DotNetNuke.Common.Utilities.UrlTrackingInfo
+						Dim TrackClicks As Boolean = False
 
-			' group name with link
-			RenderCellBegin(wr, "Forum_AltHeader", "", "100%", "left", "middle", "", "") '<td>
-			Dim GroupLinkURL As String
-			wr.Write("&nbsp;")
-			GroupLinkURL = Utilities.Links.ContainerSingleGroupLink(TabID, Group.GroupID)
+						objURLTrack = objCnt.GetUrlTracking(PortalID, SubForum.ForumLink, ModuleID)
 
-			Dim forum As ForumInfo
-			Dim cntForum As New ForumController
-			forum = cntForum.GetForumInfoCache(mForumId)
+						If Not objURLTrack Is Nothing Then
+							TrackClicks = objURLTrack.TrackClicks
+							NewWindow = objURLTrack.NewWindow
+						End If
 
+						Url = DotNetNuke.Common.Globals.LinkClick(SubForum.ForumLink, objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID, TrackClicks)
+					Else
+						If SubForum.GroupID = -1 Then
+							' aggregated
+							Url = Utilities.Links.ContainerAggregatedLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, False)
+						Else
+							Url = Utilities.Links.ContainerViewForumLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, SubForum.ForumID, False)
+						End If
+					End If
 
-			RenderLinkButton(wr, GroupLinkURL, Group.Name + " > " & forum.Name, "Forum_AltHeaderText")
+					wr.AddAttribute(HtmlTextWriterAttribute.Href, Url.Replace("~/", ""))
 
-			'wr.Write(Group.Name)
-			RenderCellEnd(wr) ' </td>
+					If Css.Length > 0 Then
+						wr.AddAttribute(HtmlTextWriterAttribute.Class, Css)
+					End If
+					wr.RenderBeginTag(HtmlTextWriterTag.A) '<a>
 
-			wr.AddAttribute(HtmlTextWriterAttribute.Width, "1px")
-			wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_AltHeaderCapRight")
-			wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
-			RenderImage(wr, objConfig.GetThemeImageURL("alt_headfoot_height.gif"), "", "")
+					wr.Write(SubForum.Name)
+					wr.RenderEndTag() ' </a>
 
-			RenderCellEnd(wr) ' </td>
+					If i < SubForumCount Then
+						wr.Write(", ")
+					End If
 
-			' Finish middle table
-			RenderRowEnd(wr) ' </Tr>
-			RenderTableEnd(wr) ' </table>
-
-			'end middle column
-			RenderCellEnd(wr) ' </td>
-
-			' End row
-			RenderRowEnd(wr) ' </Tr>
+					i = i + 1
+				End If
+			Next
 		End Sub
 
 		''' <summary>
@@ -577,6 +1098,43 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			Return sb.ToString
+		End Function
+
+		''' <summary>
+		''' Updates nesseary information to display last post info for a parentforum (subforums container)
+		''' </summary>
+		''' <param name="objForum"></param>
+		''' <returns>An updated ForumInfo object</returns>
+		''' <remarks>Added by Skeel</remarks>
+		Private Function ForumGetMostRecentInfo(ByVal objForum As ForumInfo) As ForumInfo
+			Dim dr As IDataReader = DotNetNuke.Modules.Forum.DataProvider.Instance().ForumGetMostRecentInfo(objForum.ForumID)
+
+			While dr.Read
+				objForum.MostRecentPostAuthorID = CInt(dr("MostRecentPostAuthorID").ToString)
+				objForum.MostRecentPostDate = CDate(dr("MostRecentPostDate").ToString)
+				objForum.MostRecentPostID = CInt(dr("MostRecentPostID").ToString)
+				objForum.MostRecentThreadID = CInt(dr("MostRecentThreadID").ToString)
+			End While
+
+			dr.Close()
+			Return objForum
+		End Function
+
+		''' <summary>
+		''' Determines if thread is even or odd numbered row
+		''' </summary>
+		''' <param name="Count"></param>
+		''' <returns></returns>
+		''' <remarks>
+		''' </remarks>
+		Private Function ForumIsEven(ByVal Count As Integer) As Boolean
+			If Count Mod 2 = 0 Then
+				'even
+				Return True
+			Else
+				'odd
+				Return False
+			End If
 		End Function
 
 #End Region

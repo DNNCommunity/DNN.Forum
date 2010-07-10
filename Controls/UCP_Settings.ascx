@@ -82,7 +82,7 @@
 						<asp:CheckBox ID="chkEnableForumModNotify" runat="server" CssClass="Forum_NormalTextBox" EnableViewState="false" />
 						</td>
 					</tr>
-					<tr>
+					<tr id="rowClearReads" runat="server">
 						<td width="35%">
 							<span class="Forum_Row_AdminText">
 								<dnn:label id="plClearReads" runat="server" controlname="cmdClearReads" suffix=":"></dnn:label>

@@ -48,8 +48,10 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			chkEnableHTMLSignatures.Checked = objConfig.EnableHTMLSignatures
 			txtPostEditWindow.Text = CStr(objConfig.PostEditWindow)
 			chkEnableUserBanning.Checked = objConfig.EnableUserBanning
+			chkUserReadManagement.Checked = objConfig.EnableUserReadManagement
+
 			'CP - COMEBACK: Handle when we are able to impersonate security of other users.
-			chkHideModEdit.Checked = False 'mForumConfig.HideModEdits
+			chkHideModEdit.Checked = False 'objConfig.HideModEdits
 			SetVisibleItems()
 		End Sub
 
@@ -66,21 +68,23 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </remarks>
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
-				' Update settings in the database
 				Dim ctlModule As New Entities.Modules.ModuleController
-				ctlModule.UpdateModuleSetting(ModuleId, "ForumMemberName", ddlNameDisplay.SelectedValue)
-				ctlModule.UpdateModuleSetting(ModuleId, "EnableUserSignatures", chkEnableUserSignatures.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "EnableHTMLSignatures", chkEnableHTMLSignatures.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.MEMBER_NAME_DISPLAY_FORMAT, ddlNameDisplay.SelectedValue)
+
 				If txtPostEditWindow.Text <> String.Empty Then
-					ctlModule.UpdateModuleSetting(ModuleId, "PostEditWindow", txtPostEditWindow.Text)
+					ctlModule.UpdateModuleSetting(ModuleId, Constants.POST_EDIT_WINDOW, txtPostEditWindow.Text)
 				Else
-					ctlModule.UpdateModuleSetting(ModuleId, "PostEditWindow", "0")
+					ctlModule.UpdateModuleSetting(ModuleId, Constants.POST_EDIT_WINDOW, "0")
 				End If
-				ctlModule.UpdateModuleSetting(ModuleId, "TrustNewUsers", chkTrustNewUsers.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "AutoLockTrust", chkAutoLockTrust.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "EnableModSigUpdates", chkEnableModSigUpdates.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "HideModEdits", chkHideModEdit.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "EnableUserBanning", chkEnableUserBanning.Checked.ToString)
+
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.TRUST_NEW_USERS, chkTrustNewUsers.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.AUTO_LOCK_TRUST, chkAutoLockTrust.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_USER_READ_MANAGEMENT, chkUserReadManagement.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_USER_SIGNATURES, chkEnableUserSignatures.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_MOD_SIGNATURE_EDITS, chkEnableModSigUpdates.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_HTML_IN_SIGNATURES, chkEnableHTMLSignatures.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.HIDE_MODERATOR_EDITS, chkHideModEdit.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_USER_BANNING, chkEnableUserBanning.Checked.ToString)
 
 				Config.ResetForumConfig(ModuleId)
 

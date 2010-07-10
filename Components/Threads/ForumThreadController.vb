@@ -320,7 +320,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			If ModeratorUserID > 0 Then
 				' Log moderator action.
-				Dim cntModerate As New ModerateController
+				Dim cntModerate As New PostModerationController
 
 				cntModerate.AddModeratorHistory(ThreadId, PortalID, UserID, "Thread Status Changed.", ModerateAction.ThreadStatusChange)
 			End If

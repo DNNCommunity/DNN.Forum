@@ -17,7 +17,7 @@
 							</span>
 						</td>
 						<td align="left" >
-							<asp:dropdownlist id="ddlNameDisplay" runat="server" cssclass="Forum_NormalTextBox" width="250px" />
+							<asp:dropdownlist id="ddlNameDisplay" runat="server" cssclass="Forum_NormalTextBox" width="150px" />
 						</td>
 					</tr>
 					<tr id="rowEditWindow" runat="server">
@@ -27,7 +27,7 @@
 							</span>
 						</td>
 						<td  valign="middle" align="left">
-							<asp:TextBox id="txtPostEditWindow" runat="server" CssClass="Forum_NormalTextBox" />
+							<asp:TextBox id="txtPostEditWindow" runat="server" CssClass="Forum_NormalTextBox" Width="50px" />
 							<asp:RangeValidator ID="valPostEditWindow" runat="server" CssClass="NormalRed" ControlToValidate="txtPostEditWindow" Display="Dynamic" resourcekey="PostEditWindow.ErrorMessage" MaximumValue="60" MinimumValue="0" Type="Integer" />
 						</td>
 					</tr>
@@ -49,6 +49,16 @@
 						</td>
 						<td align="left" >
 							<asp:CheckBox ID="chkAutoLockTrust" runat="server" CssClass="Forum_NormalTextBox" />
+						</td>
+					</tr>
+					<tr>
+						<td  width="35%">
+							<span class="Forum_Row_AdminText">
+								<dnn:Label ID="plUserReadManagement" runat="server" ControlName="chkUserReadManagement" Suffix=":" ></dnn:Label>
+							</span>
+						</td>
+						<td align="left" >
+							<asp:CheckBox ID="chkUserReadManagement" runat="server" CssClass="Forum_NormalTextBox" />
 						</td>
 					</tr>
 					<tr>

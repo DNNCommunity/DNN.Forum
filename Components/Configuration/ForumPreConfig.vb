@@ -31,9 +31,6 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks>Only fires off when a new module instance is placed on a page.
 	''' </remarks>
-	''' <history>
-	''' 	[cpaterra]	2/11/2006	Created
-	''' </history>
 	Public Class ForumPreConfig
 
 #Region "Public Shared Methods"
@@ -56,15 +53,13 @@ Namespace DotNetNuke.Modules.Forum
 			Dim mSourceDirectory As String = ApplicationPath & "/DesktopModules/Forum"
 
 			If Not _portalSettings.Email Is Nothing Then
-				ctlModule.UpdateModuleSetting(ModuleId, "AutomatedEmailAddress", _portalSettings.Email)
-			Else
-				ctlModule.UpdateModuleSetting(ModuleId, "AutomatedEmailAddress", "you@domain.com")
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.EMAIL_AUTO_FROM_ADDRESS, _portalSettings.Email)
 			End If
 
 			' Users online module integration
 			Dim Enabled As Boolean
-			If Entities.Host.Host.GetHostSettingsDictionary.ContainsKey("DisableUsersOnline") Then
-				If Entities.Host.Host.GetHostSettingsDictionary("DisableUsersOnline").ToString = "Y" Then
+			If Entities.Host.Host.GetHostSettingsDictionary.ContainsKey(Constants.HOST_SETTING_USERS_ONLINE) Then
+				If Entities.Host.Host.GetHostSettingsDictionary(Constants.HOST_SETTING_USERS_ONLINE).ToString = "Y" Then
 					Enabled = False
 				Else
 					Enabled = True
@@ -74,8 +69,8 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			'Community
-			ctlModule.UpdateModuleSetting(ModuleId, "EnableUsersOnline", Enabled.ToString)
-			ctlModule.UpdateModuleSetting(ModuleId, "EmailAddressDisplayName", _portalSettings.PortalName & " " & Localization.GetString("Forum", mSourceDirectory & "/App_LocalResources/SharedResources.resx"))
+			ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_USERS_ONLINE, Enabled.ToString)
+			ctlModule.UpdateModuleSetting(ModuleId, Constants.EMAIL_ADDRESS_DISPLAY_NAME, _portalSettings.PortalName & " " & Localization.GetString("Forum", mSourceDirectory & "/App_LocalResources/SharedResources.resx"))
 
 			SetupDefaultGroup(ModuleId, PortalId, UserId, mSourceDirectory)
 		End Sub

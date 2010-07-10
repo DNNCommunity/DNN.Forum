@@ -123,6 +123,24 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected WithEvents chkAutoLockTrust As Global.System.Web.UI.WebControls.CheckBox
 
 		'''<summary>
+		'''plUserReadManagement control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents plUserReadManagement As Global.DotNetNuke.UI.UserControls.LabelControl
+
+		'''<summary>
+		'''chkUserReadManagement control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents chkUserReadManagement As Global.System.Web.UI.WebControls.CheckBox
+
+		'''<summary>
 		'''plEnableUserSignatures control.
 		'''</summary>
 		'''<remarks>

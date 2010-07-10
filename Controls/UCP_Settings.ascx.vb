@@ -28,9 +28,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	''' <history>
-	''' 	[skeel]	29/11/2008	Created
-	''' </history>
 	Partial Public Class Settings
 		Inherits ForumModuleBase
 		Implements Utilities.AjaxLoader.IPageLoad
@@ -52,8 +49,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 			ddlEmailFormat.Items.Insert(1, New ListItem(Localization.GetString("HTML", objConfig.SharedResourceFile), "1"))
 
 			With ProfileUser
-				' skin
-				' group
 				txtPostsPerPage.Text = .PostsPerPage.ToString
 				txtThreadsPerPage.Text = .ThreadsPerPage.ToString
 				chkOnlineStatus.Checked = .EnableOnlineStatus
@@ -66,6 +61,10 @@ Namespace DotNetNuke.Modules.Forum.UCP
 					rowOnlineStatus.Visible = True
 				Else
 					rowOnlineStatus.Visible = False
+				End If
+
+				If Not objConfig.EnableUserReadManagement Then
+					rowClearReads.Visible = False
 				End If
 			End With
 		End Sub

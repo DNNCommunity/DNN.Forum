@@ -27,9 +27,6 @@ Namespace DotNetNuke.Modules.Forum.MCP
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	''' <history>
-	''' 	[cpaterra]	12/21/2008	Created
-	''' </history>
 	Partial Public Class ModQueue
 		Inherits ForumModuleBase
 		Implements Utilities.AjaxLoader.IPageLoad
@@ -65,7 +62,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		Protected Sub dgModQueue_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles dgModQueue.ItemDataBound
 			If e.Item.ItemType <> ListItemType.AlternatingItem AndAlso e.Item.ItemType <> ListItemType.Item Then Exit Sub
 
-			Dim dataItem As ModerateForumInfo = CType(e.Item.DataItem, ModerateForumInfo)
+			Dim dataItem As PostModerationInfo = CType(e.Item.DataItem, PostModerationInfo)
 
 			Dim img As System.Web.UI.WebControls.Image
 			Dim hl As HyperLink
@@ -92,13 +89,10 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		''' <summary>
 		''' Binds a list of forums with posts to moderate that the logged in user has permissions to approve.
 		''' </summary>
-		''' <remarks>
-		''' </remarks>
-		''' <history>
-		''' </history>
+		''' <remarks></remarks>
 		Private Sub BindData()
-			Dim ctlModerate As New ModerateController
-			Dim arrPostsToModerate As List(Of ModerateForumInfo)
+			Dim ctlModerate As New PostModerationController
+			Dim arrPostsToModerate As List(Of PostModerationInfo)
 
 			arrPostsToModerate = ctlModerate.ModerateForumGetByModeratorThreads(CurrentForumUser.UserID, ModuleId, PortalId)
 

@@ -33,14 +33,11 @@ Namespace DotNetNuke.Modules.Forum
 	''' </remarks>
 	Public Class Config
 
-#Region "Private Vars"
+#Region "Private Members"
 
-		Private Const ForumConfigCacheKeyPrefix As String = "objConfig"
-		Private Const ForumConfigCacheTimeout As Integer = 20
 		' General Configuration
 		Dim _ModuleID As Integer
 		Dim _HasConfiguration As Boolean = False
-		Dim _SourceDirectory As String = DefaultSourceDirectory
 		Dim _EnableAttachment As Boolean = False
 		Dim _AggregatedForums As Boolean = False
 		Dim _ThreadsPerPage As Integer = 10
@@ -146,12 +143,9 @@ Namespace DotNetNuke.Modules.Forum
 		' new seo
 		Dim _OverrideDescription As Boolean = True
 		Dim _SitemapPriority As Double = 0.5
-
-		'' Post Rendering
-		'Dim _LoadScripts As Boolean = True
-		' Prepare to retire treeview (vs. flatview)
-		Dim _EnableTreeView As Boolean = False
-		Dim _PrimaryAlias As String
+		' primary http alias (not implemented)
+		Dim _PrimarySiteAlias As String
+		Dim _EnableUserReadManagement As Boolean = True
 
 #End Region
 
@@ -179,15 +173,14 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ModuleID">The ModuleID we are looking to see if its configuration is cached already.</param>
 		''' <returns>A specific ModuleID's cached TabModuleSettings (defaults applied if not in settings)</returns>
 		''' <remarks>This allows us access and assigning defaults for new items to help in upgrade scenarios and to allow further expansion.
-		''' T This tells the 
 		''' </remarks>
 		Public Shared Function GetForumConfig(ByVal ModuleID As Integer) As Config
-			Dim strCacheKey As String = ForumConfigCacheKeyPrefix & CStr(ModuleID)
+			Dim strCacheKey As String = Constants.CACHE_KEY_PREFIX & CStr(ModuleID)
 			Dim objConfig As Config = CType(DataCache.GetCache(strCacheKey), Config)
 
 			If objConfig Is Nothing Then
 				'config caching settings
-				Dim timeOut As Int32 = ForumConfigCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
+				Dim timeOut As Int32 = Constants.CACHE_TIMEOUT * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
 
 				objConfig = New Config(ModuleID)
 
@@ -207,25 +200,15 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>Should only be used on update's
 		''' </remarks>
 		Public Shared Sub ResetForumConfig(ByVal ModuleID As Integer)
-			Dim strCacheKey As String = ForumConfigCacheKeyPrefix & CStr(ModuleID)
+			Dim strCacheKey As String = Constants.CACHE_KEY_PREFIX & CStr(ModuleID)
 			DataCache.RemoveCache(strCacheKey)
 		End Sub
 
 #End Region
 
-#Region "Public Shared ReadOnly Properties"
+#Region "Public ReadOnly Properties"
 
-		''' <summary>
-		''' Gets the default value for the forum source directory path. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>The full path to the module's directory.</returns>
-		''' <remarks>A string representing hte forum module's DEFAULT name.(POSSIBLE REMOVE)</remarks>
-		Public Shared ReadOnly Property DefaultSourceDirectory() As String
-			Get
-				Return ApplicationPath & "/DesktopModules/Forum"
-			End Get
-		End Property
+#Region "Not Configurable"
 
 		''' <summary>
 		''' Gets the default value to see if users online option is enabled. 
@@ -233,11 +216,11 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns>True if user's online status should be displayed, false otherwise.</returns>
 		''' <remarks>Can only be enabled if the host settings are enabled for it.</remarks>
-		Public Shared ReadOnly Property DefaultEnableUsersOnline() As Boolean
+		Public ReadOnly Property DefaultEnableUsersOnline() As Boolean
 			Get
 				Dim Enabled As Boolean
-				If Entities.Host.Host.GetHostSettingsDictionary.ContainsKey("DisableUsersOnline") Then
-					If Entities.Host.Host.GetHostSettingsDictionary("DisableUsersOnline").ToString = "Y" Then
+				If Entities.Host.Host.GetHostSettingsDictionary.ContainsKey(Constants.HOST_SETTING_USERS_ONLINE) Then
+					If Entities.Host.Host.GetHostSettingsDictionary(Constants.HOST_SETTING_USERS_ONLINE).ToString = "Y" Then
 						Enabled = False
 					Else
 						Enabled = True
@@ -249,11 +232,53 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 		End Property
 
-#End Region
+		''' <summary>
+		''' Gets the default value for the forum source directory path. 
+		''' </summary>
+		''' <value></value>
+		''' <returns>The full path to the module's directory.</returns>
+		''' <remarks>A string representing hte forum module's DEFAULT name.(POSSIBLE REMOVE)</remarks>
+		Public ReadOnly Property SourceDirectory() As String
+			Get
+				Return ApplicationPath & Constants.SOURCE_DIRECTORY
+			End Get
+		End Property
 
-#Region "Public ReadOnly Properties"
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property ThemeBaseDirectory() As String
+			Get
+				Return SourceDirectory + "/Themes"
+			End Get
+		End Property
 
-#Region "Not Configurable"
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property ThemeDirectory() As String
+			Get
+				Return ThemeBaseDirectory + "/" + ForumTheme
+			End Get
+		End Property
+
+		''' <summary>
+		''' Gets the css file for a forum theme. 
+		''' </summary>
+		''' <value></value>
+		''' <returns>The path to the css file for the selected theme.</returns>
+		''' <remarks>Injected into all UI's of module.</remarks>
+		Public ReadOnly Property Css() As String
+			Get
+				Return ThemeDirectory + "/" & ForumTheme.ToLower & ".css"
+			End Get
+		End Property
 
 		''' <summary>
 		''' Gets the ModuleID of the module being accessed. 
@@ -287,19 +312,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>Used for commonly used words across multiple views/controls.</remarks>
 		Public ReadOnly Property SharedResourceFile() As String
 			Get
-				Return _SourceDirectory & "/App_LocalResources/SharedResources.resx"
-			End Get
-		End Property
-
-		''' <summary>
-		''' Gets the css file for a forum theme. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>The path to the css file for the selected theme.</returns>
-		''' <remarks>Injected into all UI's of module.</remarks>
-		Public ReadOnly Property Css() As String
-			Get
-				Return SourceDirectory & "/Themes/" & ForumTheme & "/" & ForumTheme.ToLower & ".css"
+				Return SourceDirectory & "/App_LocalResources/SharedResources.resx"
 			End Get
 		End Property
 
@@ -341,34 +354,6 @@ Namespace DotNetNuke.Modules.Forum
 				Else
 					Return folder
 				End If
-			End Get
-		End Property
-
-		''' <summary>
-		''' This is used to disable treeview option in postview for new installs (since we are going to retire it). When false, drop down list will not appear in posts UI. (This only hides it in new installs, available in all upgrades. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks>This should be removed when treeview support is completely removed. Keep in mind, there is no UI to handle this.</remarks>
-		Public ReadOnly Property EnableTreeView() As Boolean
-			Get
-				Return _EnableTreeView
-			End Get
-		End Property
-
-#End Region
-
-#Region "Hidden Settings"
-
-		''' <summary>
-		''' Gets the directory the module is located in. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>The string path of the module directory.</returns>
-		''' <remarks>Typically /DesktopModules/Forum/</remarks>
-		Public ReadOnly Property SourceDirectory() As String
-			Get
-				Return _SourceDirectory
 			End Get
 		End Property
 
@@ -549,6 +534,18 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property PostEditWindow() As Integer
 			Get
 				Return _PostEditWindow
+			End Get
+		End Property
+
+		''' <summary>
+		''' Determines if users can manage their thread read status (ie. clear read data/mark all read are available if true).
+		''' </summary>
+		''' <value></value>
+		''' <returns>True, if users can manage their own read status. False otherwise.</returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property EnableUserReadManagement() As Boolean
+			Get
+				Return _EnableUserReadManagement
 			End Get
 		End Property
 
@@ -1326,6 +1323,38 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 		End Property
 
+		''' <summary>
+		''' The primary Alias should only be used in email related items. This is used for full URL's that link to images in outgoing emails. 
+		''' </summary>
+		''' <value></value>
+		''' <returns>A full http path for emails images.</returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property PrimaryAlias() As String
+			Get
+				If _PrimarySiteAlias = String.Empty Then
+					' get the primary portal alias
+					Dim pac As New PortalAliasController()
+					Dim aliases As PortalAliasCollection = pac.GetPortalAliasByPortalID(CurrentPortalSettings.PortalId)
+
+					Dim aliasKey As String = String.Empty
+					Dim portalAlias As PortalAliasInfo = Nothing
+
+					If Not aliases Is Nothing AndAlso aliases.Count > 0 Then
+						'get the first portal alias in the list and use that
+						For Each key As String In aliases.Keys
+							aliasKey = key
+							portalAlias = aliases(key)
+
+							_PrimarySiteAlias = portalAlias.HTTPAlias
+							Exit For
+						Next
+					End If
+
+				End If
+				Return _PrimarySiteAlias
+			End Get
+		End Property
+
 #End Region
 
 #Region "Filtering"
@@ -1544,38 +1573,6 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-		''' <summary>
-		''' The primary Alias should only be used in email related items. This is used for full URL's that link to images in outgoing emails. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>A full http path for emails images.</returns>
-		''' <remarks></remarks>
-		Public ReadOnly Property PrimaryAlias() As String
-			Get
-				If _PrimaryAlias = String.Empty Then
-					' get the primary portal alias
-					Dim pac As New PortalAliasController()
-					Dim aliases As PortalAliasCollection = pac.GetPortalAliasByPortalID(CurrentPortalSettings.PortalId)
-
-					Dim aliasKey As String = String.Empty
-					Dim portalAlias As PortalAliasInfo = Nothing
-
-					If Not aliases Is Nothing AndAlso aliases.Count > 0 Then
-						'get the first portal alias in the list and use that
-						For Each key As String In aliases.Keys
-							aliasKey = key
-							portalAlias = aliases(key)
-
-							_PrimaryAlias = portalAlias.HTTPAlias
-							Exit For
-						Next
-					End If
-
-				End If
-				Return _PrimaryAlias
-			End Get
-		End Property
-
 #End Region
 
 #Region "Constructors"
@@ -1624,259 +1621,255 @@ Namespace DotNetNuke.Modules.Forum
 				End Try
 			End If
 
-			If Not settings("SourceDirectory") Is Nothing Then
-				If Not settings("SourceDirectory").ToString = String.Empty Then
-					_SourceDirectory = CStr(GetValue(settings("SourceDirectory"), CStr(_SourceDirectory)))
-				End If
-			End If
-
 			' post attachments
-			If Not settings("EnableAttachment") Is Nothing Then
-				If Not settings("EnableAttachment").ToString = String.Empty Then
-					_EnableAttachment = CBool(GetValue(settings("EnableAttachment"), CStr(_EnableAttachment)))
+			If Not settings(Constants.ENABLE_ATTACHMENT) Is Nothing Then
+				If Not settings(Constants.ENABLE_ATTACHMENT).ToString = String.Empty Then
+					_EnableAttachment = CBool(GetValue(settings(Constants.ENABLE_ATTACHMENT), CStr(_EnableAttachment)))
 				End If
 			End If
 
 			' notification email
-			If Not settings("AutomatedEmailAddress") Is Nothing Then
-				If Not settings("AutomatedEmailAddress").ToString = String.Empty Then
-					_AutomatedEmailAddress = CStr(GetValue(settings("AutomatedEmailAddress"), CStr(_AutomatedEmailAddress)))
+			If Not settings(Constants.EMAIL_AUTO_FROM_ADDRESS) Is Nothing Then
+				If Not settings(Constants.EMAIL_AUTO_FROM_ADDRESS).ToString = String.Empty Then
+					_AutomatedEmailAddress = CStr(GetValue(settings(Constants.EMAIL_AUTO_FROM_ADDRESS), CStr(_AutomatedEmailAddress)))
 				End If
 			End If
 
-			If Not settings("MailNotification") Is Nothing Then
-				If Not settings("MailNotification").ToString = String.Empty Then
-					_MailNotification = CBool(GetValue(settings("MailNotification"), CStr(_MailNotification)))
+			If Not settings(Constants.ENABLE_MAIL_NOTIFICATIONS) Is Nothing Then
+				If Not settings(Constants.ENABLE_MAIL_NOTIFICATIONS).ToString = String.Empty Then
+					_MailNotification = CBool(GetValue(settings(Constants.ENABLE_MAIL_NOTIFICATIONS), CStr(_MailNotification)))
 				End If
 			End If
 
-			If Not settings("EnablePerForumFrom") Is Nothing Then
-				If Not settings("EnablePerForumFrom").ToString = String.Empty Then
-					_EnablePerForumFrom = CBool(GetValue(settings("EnablePerForumFrom"), CStr(_EnablePerForumFrom)))
+			If Not settings(Constants.ENABLE_PER_FORUM_EMAILS) Is Nothing Then
+				If Not settings(Constants.ENABLE_PER_FORUM_EMAILS).ToString = String.Empty Then
+					_EnablePerForumFrom = CBool(GetValue(settings(Constants.ENABLE_PER_FORUM_EMAILS), CStr(_EnablePerForumFrom)))
 				End If
 			End If
 
-			If Not settings("EnableListServer") Is Nothing Then
-				If Not settings("EnableListServer").ToString = String.Empty Then
-					_EnableListServer = CBool(GetValue(settings("EnableListServer"), CStr(_EnableListServer)))
+			' Not implemented
+			If Not settings(Constants.ENABLE_LIST_SERVER) Is Nothing Then
+				If Not settings(Constants.ENABLE_LIST_SERVER).ToString = String.Empty Then
+					_EnableListServer = CBool(GetValue(settings(Constants.ENABLE_LIST_SERVER), CStr(_EnableListServer)))
 				End If
 			End If
 
-			If Not settings("ListServerFolder") Is Nothing Then
-				If Not settings("ListServerFolder").ToString = String.Empty Then
-					_ListServerFolder = CStr(GetValue(settings("ListServerFolder"), CStr(_ListServerFolder)))
+			' Not implemented
+			If Not settings(Constants.LIST_SERVER_FOLDER) Is Nothing Then
+				If Not settings(Constants.LIST_SERVER_FOLDER).ToString = String.Empty Then
+					_ListServerFolder = CStr(GetValue(settings(Constants.LIST_SERVER_FOLDER), CStr(_ListServerFolder)))
 				End If
 			End If
 
-			If Not settings("AggregatedForums") Is Nothing Then
-				If Not settings("AggregatedForums").ToString = String.Empty Then
-					_AggregatedForums = CBool(GetValue(settings("AggregatedForums"), CStr(_AggregatedForums)))
+			If Not settings(Constants.ENABLE_AGGREGATED_FORUM) Is Nothing Then
+				If Not settings(Constants.ENABLE_AGGREGATED_FORUM).ToString = String.Empty Then
+					_AggregatedForums = CBool(GetValue(settings(Constants.ENABLE_AGGREGATED_FORUM), CStr(_AggregatedForums)))
 				End If
 			End If
 
-			If Not settings("ThreadsPerPage") Is Nothing Then
-				If Not settings("ThreadsPerPage").ToString = String.Empty Then
-					_ThreadsPerPage = CInt(GetValue(settings("ThreadsPerPage"), CStr(_ThreadsPerPage)))
+			If Not settings(Constants.THREADS_PER_PAGE) Is Nothing Then
+				If Not settings(Constants.THREADS_PER_PAGE).ToString = String.Empty Then
+					_ThreadsPerPage = CInt(GetValue(settings(Constants.THREADS_PER_PAGE), CStr(_ThreadsPerPage)))
 				End If
 			End If
 
-			If Not settings("PostsPerPage") Is Nothing Then
-				If Not settings("PostsPerPage").ToString = String.Empty Then
-					_PostsPerPage = CInt(GetValue(settings("PostsPerPage"), CStr(_PostsPerPage)))
+			If Not settings(Constants.POSTS_PER_PAGE) Is Nothing Then
+				If Not settings(Constants.POSTS_PER_PAGE).ToString = String.Empty Then
+					_PostsPerPage = CInt(GetValue(settings(Constants.POSTS_PER_PAGE), CStr(_PostsPerPage)))
 				End If
 			End If
 
-			If Not settings("PopularThreadView") Is Nothing Then
-				If Not settings("PopularThreadView").ToString = String.Empty Then
-					_PopularThreadView = CInt(GetValue(settings("PopularThreadView"), CStr(_PopularThreadView)))
+			If Not settings(Constants.POPULAR_THREAD_VIEWS) Is Nothing Then
+				If Not settings(Constants.POPULAR_THREAD_VIEWS).ToString = String.Empty Then
+					_PopularThreadView = CInt(GetValue(settings(Constants.POPULAR_THREAD_VIEWS), CStr(_PopularThreadView)))
 				End If
 			End If
 
-			If Not settings("PopularThreadReply") Is Nothing Then
-				If Not settings("PopularThreadReply").ToString = String.Empty Then
-					_PopularThreadReply = CInt(GetValue(settings("PopularThreadReply"), CStr(_PopularThreadReply)))
+			If Not settings(Constants.POPULAR_THREAD_REPLIES) Is Nothing Then
+				If Not settings(Constants.POPULAR_THREAD_REPLIES).ToString = String.Empty Then
+					_PopularThreadReply = CInt(GetValue(settings(Constants.POPULAR_THREAD_REPLIES), CStr(_PopularThreadReply)))
 				End If
 			End If
 
 			' Ranking post count
-			If Not settings("Ranking") Is Nothing Then
-				If Not settings("Ranking").ToString = String.Empty Then
-					_Ranking = CBool(GetValue(settings("Ranking"), CStr(_Ranking)))
+			If Not settings(Constants.ENABLE_RANKINGS) Is Nothing Then
+				If Not settings(Constants.ENABLE_RANKINGS).ToString = String.Empty Then
+					_Ranking = CBool(GetValue(settings(Constants.ENABLE_RANKINGS), CStr(_Ranking)))
 				End If
 			End If
 
-			If Not settings("FirstRankPosts") Is Nothing Then
-				If Not settings("FirstRankPosts").ToString = String.Empty Then
-					_FirstRankPosts = CInt(GetValue(settings("FirstRankPosts"), CStr(_FirstRankPosts)))
+			If Not settings(Constants.FIRST_RANK) Is Nothing Then
+				If Not settings(Constants.FIRST_RANK).ToString = String.Empty Then
+					_FirstRankPosts = CInt(GetValue(settings(Constants.FIRST_RANK), CStr(_FirstRankPosts)))
 				End If
 			End If
 
-			If Not settings("SecondRankPosts") Is Nothing Then
-				If Not settings("SecondRankPosts").ToString = String.Empty Then
-					_SecondRankPosts = CInt(GetValue(settings("SecondRankPosts"), CStr(_SecondRankPosts)))
+			If Not settings(Constants.SECOND_RANK) Is Nothing Then
+				If Not settings(Constants.SECOND_RANK).ToString = String.Empty Then
+					_SecondRankPosts = CInt(GetValue(settings(Constants.SECOND_RANK), CStr(_SecondRankPosts)))
 				End If
 			End If
 
-			If Not settings("ThirdRankPosts") Is Nothing Then
-				If Not settings("ThirdRankPosts").ToString = String.Empty Then
-					_ThirdRankPosts = CInt(GetValue(settings("ThirdRankPosts"), CStr(_ThirdRankPosts)))
+			If Not settings(Constants.THIRD_RANK) Is Nothing Then
+				If Not settings(Constants.THIRD_RANK).ToString = String.Empty Then
+					_ThirdRankPosts = CInt(GetValue(settings(Constants.THIRD_RANK), CStr(_ThirdRankPosts)))
 				End If
 			End If
 
-			If Not settings("FourthRankPosts") Is Nothing Then
-				If Not settings("FourthRankPosts").ToString = String.Empty Then
-					_FourthRankPosts = CInt(GetValue(settings("FourthRankPosts"), CStr(_FourthRankPosts)))
+			If Not settings(Constants.FOURTH_RANK) Is Nothing Then
+				If Not settings(Constants.FOURTH_RANK).ToString = String.Empty Then
+					_FourthRankPosts = CInt(GetValue(settings(Constants.FOURTH_RANK), CStr(_FourthRankPosts)))
 				End If
 			End If
 
-			If Not settings("FifthRankPosts") Is Nothing Then
-				If Not settings("FifthRankPosts").ToString = String.Empty Then
-					_FifthRankPosts = CInt(GetValue(settings("FifthRankPosts"), CStr(_FifthRankPosts)))
+			If Not settings(Constants.FIFTH_RANK) Is Nothing Then
+				If Not settings(Constants.FIFTH_RANK).ToString = String.Empty Then
+					_FifthRankPosts = CInt(GetValue(settings(Constants.FIFTH_RANK), CStr(_FifthRankPosts)))
 				End If
 			End If
 
-			If Not settings("SixthRankPosts") Is Nothing Then
-				If Not settings("SixthRankPosts").ToString = String.Empty Then
-					_SixthRankPosts = CInt(GetValue(settings("SixthRankPosts"), CStr(_SixthRankPosts)))
+			If Not settings(Constants.SIXTH_RANK) Is Nothing Then
+				If Not settings(Constants.SIXTH_RANK).ToString = String.Empty Then
+					_SixthRankPosts = CInt(GetValue(settings(Constants.SIXTH_RANK), CStr(_SixthRankPosts)))
 				End If
 			End If
 
-			If Not settings("SeventhRankPosts") Is Nothing Then
-				If Not settings("SeventhRankPosts").ToString = String.Empty Then
-					_SeventhRankPosts = CInt(GetValue(settings("SeventhRankPosts"), CStr(_SeventhRankPosts)))
+			If Not settings(Constants.SEVENTH_RANK) Is Nothing Then
+				If Not settings(Constants.SEVENTH_RANK).ToString = String.Empty Then
+					_SeventhRankPosts = CInt(GetValue(settings(Constants.SEVENTH_RANK), CStr(_SeventhRankPosts)))
 				End If
 			End If
 
-			If Not settings("EigthRankPosts") Is Nothing Then
-				If Not settings("EigthRankPosts").ToString = String.Empty Then
-					_EigthRankPosts = CInt(GetValue(settings("EigthRankPosts"), CStr(_EigthRankPosts)))
+			If Not settings(Constants.EIGTH_RANK) Is Nothing Then
+				If Not settings(Constants.EIGTH_RANK).ToString = String.Empty Then
+					_EigthRankPosts = CInt(GetValue(settings(Constants.EIGTH_RANK), CStr(_EigthRankPosts)))
 				End If
 			End If
 
-			If Not settings("NinthRankPosts") Is Nothing Then
-				If Not settings("NinthRankPosts").ToString = String.Empty Then
-					_NinthRankPosts = CInt(GetValue(settings("NinthRankPosts"), CStr(_NinthRankPosts)))
+			If Not settings(Constants.NINTH_RANK) Is Nothing Then
+				If Not settings(Constants.NINTH_RANK).ToString = String.Empty Then
+					_NinthRankPosts = CInt(GetValue(settings(Constants.NINTH_RANK), CStr(_NinthRankPosts)))
 				End If
 			End If
 
-			If Not settings("TenthRankPosts") Is Nothing Then
-				If Not settings("TenthRankPosts").ToString = String.Empty Then
-					_TenthRankPosts = CInt(GetValue(settings("TenthRankPosts"), CStr(_TenthRankPosts)))
+			If Not settings(Constants.TENTH_RANK) Is Nothing Then
+				If Not settings(Constants.TENTH_RANK).ToString = String.Empty Then
+					_TenthRankPosts = CInt(GetValue(settings(Constants.TENTH_RANK), CStr(_TenthRankPosts)))
 				End If
 			End If
 
 			' RSS
-			If Not settings("EnableRSS") Is Nothing Then
-				If Not settings("EnableRSS").ToString = String.Empty Then
-					_EnableRSS = CBool(GetValue(settings("EnableRSS"), CStr(_EnableRSS)))
+			If Not settings(Constants.ENABLE_RSS_FEEDS) Is Nothing Then
+				If Not settings(Constants.ENABLE_RSS_FEEDS).ToString = String.Empty Then
+					_EnableRSS = CBool(GetValue(settings(Constants.ENABLE_RSS_FEEDS), CStr(_EnableRSS)))
 				End If
 			End If
 
-			If Not settings("RSSThreadsPerFeed") Is Nothing Then
-				If Not settings("RSSThreadsPerFeed").ToString = String.Empty Then
-					_RSSThreadsPerFeed = CInt(GetValue(settings("RSSThreadsPerFeed"), CStr(_RSSThreadsPerFeed)))
+			If Not settings(Constants.RSS_FEEDS_PER_PAGE) Is Nothing Then
+				If Not settings(Constants.RSS_FEEDS_PER_PAGE).ToString = String.Empty Then
+					_RSSThreadsPerFeed = CInt(GetValue(settings(Constants.RSS_FEEDS_PER_PAGE), CStr(_RSSThreadsPerFeed)))
 				End If
 			End If
 
-			If Not settings("RSSUpdateInterval") Is Nothing Then
-				If Not settings("RSSUpdateInterval").ToString = String.Empty Then
-					_RSSUpdateInterval = CInt(GetValue(settings("RSSUpdateInterval"), CStr(_RSSUpdateInterval)))
+			If Not settings(Constants.RSS_UPDATE_INTERVAL) Is Nothing Then
+				If Not settings(Constants.RSS_UPDATE_INTERVAL).ToString = String.Empty Then
+					_RSSUpdateInterval = CInt(GetValue(settings(Constants.RSS_UPDATE_INTERVAL), CStr(_RSSUpdateInterval)))
 				End If
 			End If
 
-			If Not settings("ForumSkin") Is Nothing Then
-				If Not settings("ForumSkin").ToString = String.Empty Then
-					_ForumSkin = CStr(GetValue(settings("ForumSkin"), CStr(_ForumSkin)))
+			If Not settings(Constants.FORUM_THEME) Is Nothing Then
+				If Not settings(Constants.FORUM_THEME).ToString = String.Empty Then
+					_ForumSkin = CStr(GetValue(settings(Constants.FORUM_THEME), CStr(_ForumSkin)))
 				End If
 			End If
 
-			If Not settings("DisplayPosterLocation") Is Nothing Then
-				If Not settings("DisplayPosterLocation").ToString = String.Empty Then
+			If Not settings(Constants.DISPLAY_POSTER_LOCATION) Is Nothing Then
+				If Not settings(Constants.DISPLAY_POSTER_LOCATION).ToString = String.Empty Then
 					_DisplayPosterLocation = _
 					 CType( _
 					  [Enum].Parse(GetType(ShowPosterLocation), _
-					    CStr(GetValue(settings("DisplayPosterLocation"), _DisplayPosterLocation.ToString))),  _
+					    CStr(GetValue(settings(Constants.DISPLAY_POSTER_LOCATION), _DisplayPosterLocation.ToString))),  _
 					  ShowPosterLocation)
 				End If
 			End If
 
-			If Not settings("DisplayPosterRegion") Is Nothing Then
-				If Not settings("DisplayPosterRegion").ToString = String.Empty Then
-					_DisplayPosterRegion = CBool(GetValue(settings("DisplayPosterRegion"), CStr(_DisplayPosterRegion)))
+			If Not settings(Constants.DISPLAY_POSTER_REGION) Is Nothing Then
+				If Not settings(Constants.DISPLAY_POSTER_REGION).ToString = String.Empty Then
+					_DisplayPosterRegion = CBool(GetValue(settings(Constants.DISPLAY_POSTER_REGION), CStr(_DisplayPosterRegion)))
 				End If
 			End If
 
 			' Bad words filter
-			If Not settings("EnableBadWordFilter") Is Nothing Then
-				If Not settings("EnableBadWordFilter").ToString = String.Empty Then
-					_EnableBadWordFilter = CBool(GetValue(settings("EnableBadWordFilter"), CStr(_EnableBadWordFilter)))
+			If Not settings(Constants.ENABLE_WORD_FILTER) Is Nothing Then
+				If Not settings(Constants.ENABLE_WORD_FILTER).ToString = String.Empty Then
+					_EnableBadWordFilter = CBool(GetValue(settings(Constants.ENABLE_WORD_FILTER), CStr(_EnableBadWordFilter)))
 				End If
 			End If
 
-			If Not settings("FilterSubject") Is Nothing Then
-				If Not settings("FilterSubject").ToString = String.Empty Then
-					_FilterSubject = CBool(GetValue(settings("FilterSubject"), CStr(_FilterSubject)))
+			If Not settings(Constants.FILTER_SUBJECTS) Is Nothing Then
+				If Not settings(Constants.FILTER_SUBJECTS).ToString = String.Empty Then
+					_FilterSubject = CBool(GetValue(settings(Constants.FILTER_SUBJECTS), CStr(_FilterSubject)))
 				End If
 			End If
 
 			'Community
-			If Not settings("EnableUsersOnline") Is Nothing Then
-				If Not settings("EnableUsersOnline").ToString = String.Empty Then
-					_EnableUsersOnline = CBool(GetValue(settings("EnableUsersOnline"), CStr(_EnableUsersOnline)))
+			If Not settings(Constants.ENABLE_USERS_ONLINE) Is Nothing Then
+				If Not settings(Constants.ENABLE_USERS_ONLINE).ToString = String.Empty Then
+					_EnableUsersOnline = CBool(GetValue(settings(Constants.ENABLE_USERS_ONLINE), CStr(_EnableUsersOnline)))
 				End If
 			End If
 
-			If Not settings("ExternalProfileParamValue") Is Nothing Then
-				If Not settings("ExternalProfileParamValue").ToString = String.Empty Then
-					_ExternalProfileParamValue = CStr(GetValue(settings("ExternalProfileParamValue"), CStr(_ExternalProfileParamValue)))
+			If Not settings(Constants.EXTERNAL_PROFILE_PARAM_VALUE) Is Nothing Then
+				If Not settings(Constants.EXTERNAL_PROFILE_PARAM_VALUE).ToString = String.Empty Then
+					_ExternalProfileParamValue = CStr(GetValue(settings(Constants.EXTERNAL_PROFILE_PARAM_VALUE), CStr(_ExternalProfileParamValue)))
 				End If
 			End If
 
-			If Not settings("EnableRatings") Is Nothing Then
-				If Not settings("EnableRatings").ToString = String.Empty Then
-					_EnableRatings = CBool(GetValue(settings("EnableRatings"), CStr(_EnableRatings)))
+			If Not settings(Constants.ENABLE_RATINGS) Is Nothing Then
+				If Not settings(Constants.ENABLE_RATINGS).ToString = String.Empty Then
+					_EnableRatings = CBool(GetValue(settings(Constants.ENABLE_RATINGS), CStr(_EnableRatings)))
 				End If
 			End If
 
-			If Not settings("EnableThreadStatus") Is Nothing Then
-				If Not settings("EnableThreadStatus").ToString = String.Empty Then
-					_EnableThreadStatus = CBool(GetValue(settings("EnableThreadStatus"), CStr(_EnableThreadStatus)))
+			If Not settings(Constants.ENABLE_THREAD_STATUS) Is Nothing Then
+				If Not settings(Constants.ENABLE_THREAD_STATUS).ToString = String.Empty Then
+					_EnableThreadStatus = CBool(GetValue(settings(Constants.ENABLE_THREAD_STATUS), CStr(_EnableThreadStatus)))
 				End If
 			End If
 
-			If Not settings("EnablePostAbuse") Is Nothing Then
-				If Not settings("EnablePostAbuse").ToString = String.Empty Then
-					_EnablePostAbuse = CBool(GetValue(settings("EnablePostAbuse"), CStr(_EnablePostAbuse)))
+			If Not settings(Constants.ENABLE_POST_ABUSE) Is Nothing Then
+				If Not settings(Constants.ENABLE_POST_ABUSE).ToString = String.Empty Then
+					_EnablePostAbuse = CBool(GetValue(settings(Constants.ENABLE_POST_ABUSE), CStr(_EnablePostAbuse)))
 				End If
 			End If
 
-			If Not settings("DisableHTMLPosting") Is Nothing Then
-				If Not settings("DisableHTMLPosting").ToString = String.Empty Then
-					_DisableHTMLPosting = CBool(GetValue(settings("DisableHTMLPosting"), CStr(_DisableHTMLPosting)))
+			If Not settings(Constants.DISABLE_HTML_POSTING) Is Nothing Then
+				If Not settings(Constants.DISABLE_HTML_POSTING).ToString = String.Empty Then
+					_DisableHTMLPosting = CBool(GetValue(settings(Constants.DISABLE_HTML_POSTING), CStr(_DisableHTMLPosting)))
 				End If
 			End If
 
-			If Not settings("ForumMemberName") Is Nothing Then
-				If Not settings("ForumMemberName").ToString = String.Empty Then
-					_ForumMemberName = CInt(GetValue(settings("ForumMemberName"), CStr(_ForumMemberName)))
+			If Not settings(Constants.MEMBER_NAME_DISPLAY_FORMAT) Is Nothing Then
+				If Not settings(Constants.MEMBER_NAME_DISPLAY_FORMAT).ToString = String.Empty Then
+					_ForumMemberName = CInt(GetValue(settings(Constants.MEMBER_NAME_DISPLAY_FORMAT), CStr(_ForumMemberName)))
 				End If
 			End If
 
-			If Not settings("TrustNewUsers") Is Nothing Then
-				If Not settings("TrustNewUsers").ToString = String.Empty Then
-					_TrustNewUsers = CBool(GetValue(settings("TrustNewUsers"), CStr(_TrustNewUsers)))
+			If Not settings(Constants.TRUST_NEW_USERS) Is Nothing Then
+				If Not settings(Constants.TRUST_NEW_USERS).ToString = String.Empty Then
+					_TrustNewUsers = CBool(GetValue(settings(Constants.TRUST_NEW_USERS), CStr(_TrustNewUsers)))
 				End If
 			End If
 
-			If Not settings("AutoLockTrust") Is Nothing Then
-				If Not settings("AutoLockTrust").ToString = String.Empty Then
-					_AutoLockTrust = CBool(GetValue(settings("AutoLockTrust"), CStr(_AutoLockTrust)))
+			If Not settings(Constants.AUTO_LOCK_TRUST) Is Nothing Then
+				If Not settings(Constants.AUTO_LOCK_TRUST).ToString = String.Empty Then
+					_AutoLockTrust = CBool(GetValue(settings(Constants.AUTO_LOCK_TRUST), CStr(_AutoLockTrust)))
 				End If
 			End If
 
-			If Not settings("ImageExtension") Is Nothing Then
-				If Not settings("ImageExtension").ToString = String.Empty Then
-					_ImageExtension = CStr(GetValue(settings("ImageExtension"), CStr(_ImageExtension)))
+			If Not settings(Constants.IMAGE_EXTENSIONS) Is Nothing Then
+				If Not settings(Constants.IMAGE_EXTENSIONS).ToString = String.Empty Then
+					_ImageExtension = CStr(GetValue(settings(Constants.IMAGE_EXTENSIONS), CStr(_ImageExtension)))
 				End If
 			End If
 
@@ -2160,16 +2153,9 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 			End If
 
-			'' This is to prepare for removal. Only new installs will not have treeview available (via drop down) in posts UI.
-			'If Not settings("EnableTreeView") Is Nothing Then
-			'	If Not settings("EnableTreeView").ToString = String.Empty Then
-			'		_EnableTreeView = CBool(GetValue(settings("EnableTreeView"), CStr(_EnableTreeView)))
-			'	End If
-			'End If
-
 			If Not settings("PrimaryAlias") Is Nothing Then
 				If Not settings("PrimaryAlias").ToString = String.Empty Then
-					_PrimaryAlias = GetValue(settings("PrimaryAlias"), CStr(_PrimaryAlias))
+					_PrimarySiteAlias = GetValue(settings("PrimaryAlias"), CStr(_PrimarySiteAlias))
 				End If
 			End If
 
@@ -2178,6 +2164,13 @@ Namespace DotNetNuke.Modules.Forum
 					_RatingScale = CInt(GetValue(settings("RatingScale"), CStr(_RatingScale)))
 				End If
 			End If
+
+			If Not settings(Constants.ENABLE_USER_READ_MANAGEMENT) Is Nothing Then
+				If Not settings(Constants.ENABLE_USER_READ_MANAGEMENT).ToString = String.Empty Then
+					_EnableUserReadManagement = CBool(GetValue(settings(Constants.ENABLE_USER_READ_MANAGEMENT), CStr(_EnableUserReadManagement)))
+				End If
+			End If
+
 		End Sub
 
 #End Region

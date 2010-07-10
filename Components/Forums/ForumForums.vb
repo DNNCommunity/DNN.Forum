@@ -23,7 +23,7 @@ Option Explicit On
 Namespace DotNetNuke.Modules.Forum
 
     ''' <summary>
-    ''' This object is used in the same way as Groups, Threads, etc w/ the exception that it has no UI to render this logic in. 
+	''' This object is used in the same way as Groups, Threads. 
     ''' </summary>
     ''' <remarks>
     ''' </remarks>

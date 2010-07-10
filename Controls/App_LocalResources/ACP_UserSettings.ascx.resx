@@ -172,9 +172,15 @@
     <value>Value must be between 0 and 60</value>
   </data>
   <data name="lblTitle.Text" xml:space="preserve">
-    <value>User Setting Management</value>
+    <value>User Settings Management</value>
   </data>
   <data name="lblUpdateDone.Text" xml:space="preserve">
     <value>Updated Successfully!</value>
+  </data>
+  <data name="plUserReadManagement.Help" xml:space="preserve">
+    <value>If checked, users will be permitted to mark all threads as read and also clear read status of all thread items. When unchecked, users will not see these links (ie. so community activity reporting can factor in thread reads). </value>
+  </data>
+  <data name="plUserReadManagement.Text" xml:space="preserve">
+    <value>Enable User Read Management</value>
   </data>
 </root>

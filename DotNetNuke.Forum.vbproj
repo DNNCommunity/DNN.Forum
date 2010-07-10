@@ -142,6 +142,7 @@
     <Compile Include="Components\Attachments\AttachmentController.vb" />
     <Compile Include="Components\Attachments\AttachmentInfo.vb" />
     <Compile Include="Components\BaseControl\BaseControl.vb" />
+    <Compile Include="Components\Configuration\Constants.vb" />
     <Compile Include="Components\BaseControl\DNNForum.vb" />
     <Compile Include="Components\BaseControl\ForumModuleBase.vb">
       <SubType>ASPXCodeBehind</SubType>
@@ -168,9 +169,6 @@
     <Compile Include="Components\Email\Queue\IEmailQueueable.vb" />
     <Compile Include="Components\Email\Queue\IEmailQueueableCleanupTask.vb" />
     <Compile Include="Components\Forums\ForumController.vb" />
-    <Compile Include="Components\Forums\ForumForums.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Components\Forums\ForumInfo.vb" />
     <Compile Include="Components\Groups\ForumGroupController.vb" />
     <Compile Include="Components\Groups\ForumGroupInfo.vb" />
@@ -1014,6 +1012,10 @@
       <SubType>Designer</SubType>
     </Content>
     <EmbeddedResource Include="js\forum.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Components\Controllers\" />
+    <Folder Include="Components\Entities\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="'$(Solutions.VSVersion)' == '8.0'" />

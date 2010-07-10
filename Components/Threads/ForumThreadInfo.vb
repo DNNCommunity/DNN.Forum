@@ -20,6 +20,8 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Entities.Modules
+
 Namespace DotNetNuke.Modules.Forum
 
 #Region "ThreadInfo"
@@ -29,10 +31,9 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	''' <history>
-	''' 	[cpaterra]	8/31/2006	Documented
-	''' </history>
 	Public Class ThreadInfo
+		Inherits DotNetNuke.Entities.Content.ContentItem
+		Implements IHydratable
 
 #Region "Private Members"
 
@@ -68,10 +69,13 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Constructors"
 
 		Public Sub New()
+			'initialize the properties that
+			'can be null in the database
+
 		End Sub
 
-		Private Sub New(ByVal ThreadID As Integer)
-		End Sub
+		'Private Sub New(ByVal ThreadID As Integer)
+		'End Sub
 
 #End Region
 
@@ -84,9 +88,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns>ThreadInfo object</returns>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	9/1/2006	Created
-		''' </history>
 		Public Shared Function GetThreadInfo(ByVal ThreadID As Integer) As ThreadInfo
 			Dim strCacheKey As String = ThreadInfoCacheKeyPrefix & CStr(ThreadID)
 			Dim objThread As ThreadInfo = CType(DataCache.GetCache(strCacheKey), ThreadInfo)
@@ -121,8 +122,6 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Public Properties"
 
-#Region "Portal Specific ReadOnly Cached References"
-
 		''' <summary>
 		''' The user who started the thread
 		''' </summary>
@@ -149,8 +148,6 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 		End Property
 
-#End Region
-
 #Region "Module Specific ReadOnly Cached References"
 
 		''' <summary>
@@ -166,17 +163,17 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 		End Property
 
-		''' <summary>
-		''' The moduleID of the forum containing this thread.
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public ReadOnly Property ModuleID() As Integer
-			Get
-				Return HostForum.ModuleID
-			End Get
-		End Property
+		' ''' <summary>
+		' ''' The moduleID of the forum containing this thread.
+		' ''' </summary>
+		' ''' <value></value>
+		' ''' <returns></returns>
+		' ''' <remarks></remarks>
+		'Public ReadOnly Property ModuleID() As Integer
+		'	Get
+		'		Return HostForum.ModuleID
+		'	End Get
+		'End Property
 
 		''' <summary>
 		''' The PortalID of the forum containing this thread.
@@ -341,10 +338,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 #End Region
-
-#Region "Populated from Threads table and Cached as part of this info object"
-
-		' Started by info never changes and the started by info is just the original post info so this is saved at time of new thread creation in db.
 
 		''' <summary>
 		''' Date thread was created (based on original post info)
@@ -686,6 +679,63 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 #End Region
+
+#Region "IHydratable Implementation"
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="dr"></param>
+		''' <remarks></remarks>
+		Public Overrides Sub Fill(ByVal dr As System.Data.IDataReader)
+			'Call the base classes fill method to populate base class proeprties
+			MyBase.FillInternal(dr)
+
+			'TabOrder = Null.SetNullInteger(dr("TabOrder"))
+			'PortalID = Null.SetNullInteger(dr("PortalID"))
+			'TabName = Null.SetNullString(dr("TabName"))
+			'IsVisible = Null.SetNullBoolean(dr("IsVisible"))
+			'ParentId = Null.SetNullInteger(dr("ParentId"))
+			'Level = Null.SetNullInteger(dr("Level"))
+			'IconFile = Null.SetNullString(dr("IconFile"))
+			'IconFileLarge = Null.SetNullString(dr("IconFileLarge"))
+			'DisableLink = Null.SetNullBoolean(dr("DisableLink"))
+			'Title = Null.SetNullString(dr("Title"))
+			'Description = Null.SetNullString(dr("Description"))
+			'KeyWords = Null.SetNullString(dr("KeyWords"))
+			'IsDeleted = Null.SetNullBoolean(dr("IsDeleted"))
+			'Url = Null.SetNullString(dr("Url"))
+			'SkinSrc = Null.SetNullString(dr("SkinSrc"))
+			'ContainerSrc = Null.SetNullString(dr("ContainerSrc"))
+			'TabPath = Null.SetNullString(dr("TabPath"))
+			'StartDate = Null.SetNullDateTime(dr("StartDate"))
+			'EndDate = Null.SetNullDateTime(dr("EndDate"))
+			'HasChildren = Null.SetNullBoolean(dr("HasChildren"))
+			'RefreshInterval = Null.SetNullInteger(dr("RefreshInterval"))
+			'PageHeadText = Null.SetNullString(dr("PageHeadText"))
+			'IsSecure = Null.SetNullBoolean(dr("IsSecure"))
+			'PermanentRedirect = Null.SetNullBoolean(dr("PermanentRedirect"))
+			'SiteMapPriority = Null.SetNullSingle(dr("SiteMapPriority"))
+
+			'BreadCrumbs = Nothing
+			'Panes = Nothing
+			'Modules = Nothing
+		End Sub
+
+		''' <summary>
+		''' Gets/Sets the KeyID, which is the ThreadID.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Overrides Property KeyID() As Integer
+			Get
+				Return TabID
+			End Get
+			Set(ByVal value As Integer)
+				TabID = value
+			End Set
+		End Property
 
 #End Region
 

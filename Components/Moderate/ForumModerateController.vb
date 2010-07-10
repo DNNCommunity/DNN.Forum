@@ -22,8 +22,6 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "ModerateController"
-
 	''' <summary>
 	''' Handles all database calls for moderator auditing and for tasks specific to a moderator
 	''' This does not include post moderation actions where posts are actually approved/rejected, etc. 
@@ -31,10 +29,7 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	''' <history>
-	''' 	[cpaterra]	7/13/2005	Created
-	''' </history>
-	Public Class ModerateController
+	Public Class PostModerationController
 
 #Region "Public Methods"
 
@@ -45,9 +40,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	12/3/2005	Created
-		''' </history>
 		Public Function ModeratePostGet(ByVal ForumID As Integer) As List(Of PostInfo)
 			Return CBO.FillCollection(Of PostInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ModeratePostGet(ForumID))
 		End Function
@@ -59,11 +51,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	12/3/2005	Created
-		''' </history>
-		Public Function ModerateForumGetByModeratorThreads(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer) As List(Of ModerateForumInfo)
-			Return CBO.FillCollection(Of ModerateForumInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ModerateForumGetByModeratorThreads(UserID, ModuleID, PortalID))
+		Public Function ModerateForumGetByModeratorThreads(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer) As List(Of PostModerationInfo)
+			Return CBO.FillCollection(Of PostModerationInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ModerateForumGetByModeratorThreads(UserID, ModuleID, PortalID))
 		End Function
 
 		''' <summary>
@@ -77,16 +66,11 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ParentID"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	12/3/2005	Created
-		''' </history>
 		Public Sub ModeratePostApprove(ByVal PostID As Integer, ByVal ApprovedBy As Integer, ByVal Notes As String, ByVal ForumID As Integer, ByVal ParentID As Integer)
 			Dim GroupID As Integer
 			GroupID = DotNetNuke.Modules.Forum.DataProvider.Instance().ModeratePostApprove(PostID, ApprovedBy, Notes)
-			' Reset Group Info
+			' Reset Cache
 			GroupInfo.ResetGroupInfo(GroupID)
-			' Reset Forum Info
-
 			ForumController.ResetForumInfoCache(ForumID)
 			Dim f As New ForumController
 			f.ClearCache_ForumGetAll(ParentID, GroupID)
@@ -109,7 +93,5 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 	End Class
-
-#End Region
 
 End Namespace

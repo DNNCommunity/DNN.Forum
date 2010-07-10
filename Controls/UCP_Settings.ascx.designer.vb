@@ -204,6 +204,15 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		Protected WithEvents chkEnableForumModNotify As Global.System.Web.UI.WebControls.CheckBox
 
 		'''<summary>
+		'''rowClearReads control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents rowClearReads As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+		'''<summary>
 		'''plClearReads control.
 		'''</summary>
 		'''<remarks>

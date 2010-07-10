@@ -190,7 +190,7 @@
     <value>Invalid value for user avatar size limit.</value>
   </data>
   <data name="lblTitle.Text" xml:space="preserve">
-    <value>Avatar Manager</value>
+    <value>Avatar Management</value>
   </data>
   <data name="lblUpdateDone.Text" xml:space="preserve">
     <value>Updated Successfully!</value>

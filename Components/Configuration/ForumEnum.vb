@@ -140,11 +140,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		[Groups] = 0
 		''' <summary>
-		''' Shows forums within Group view.
-		''' </summary>
-		''' <remarks></remarks>
-		[Forums] = 1
-		''' <summary>
 		''' Shows threads view.
 		''' </summary>
 		''' <remarks></remarks>
