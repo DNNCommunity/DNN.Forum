@@ -87,21 +87,21 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			End Set
 		End Property
 
-		''' <summary>
-		''' The ForumID of the forum we are editing, if it is a new one it will return a -1. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Private ReadOnly Property ForumID() As Integer
-			Get
-				If Not (Request.QueryString("forumid") Is Nothing) Then
-					Return Int32.Parse(Request.QueryString("forumid"))
-				Else
-					Return -1
-				End If
-			End Get
-		End Property
+		' ''' <summary>
+		' ''' The ForumID of the forum we are editing, if it is a new one it will return a -1. 
+		' ''' </summary>
+		' ''' <value></value>
+		' ''' <returns></returns>
+		' ''' <remarks></remarks>
+		'Private ReadOnly Property ForumID() As Integer
+		'	Get
+		'		If Not (Request.QueryString("forumid") Is Nothing) Then
+		'			Return Int32.Parse(Request.QueryString("forumid"))
+		'		Else
+		'			Return -1
+		'		End If
+		'	End Get
+		'End Property
 
 		''' <summary>
 		''' The forum info object that is being edited.
@@ -261,8 +261,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			objForum = cntForum.GetForumInfoCache(ForumID)
 
 			'[skeel] store this value to clear correct cache
-			Dim CurrentParentID As Integer
-			CurrentParentID = objForum.ParentId
+			Dim OriginalParentID As Integer
+			OriginalParentID = objForum.ParentId
 
 			With objForum
 				.GroupID = Convert.ToInt32(ddlGroup.SelectedValue)
@@ -314,12 +314,15 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				objUrls.UpdateUrl(PortalId, ctlURL.Url, ctlURL.UrlType, ctlURL.Log, ctlURL.Track, ModuleId, ctlURL.NewWindow)
 			End With
 
-			'CP - still need to implement permissions update (doing so as passing info object to controller, have controller call current update)
-			cntForum.ForumUpdate(objForum, CurrentParentID)
+			cntForum.ForumUpdate(objForum, OriginalParentID)
 
+			Dim CurrentParentID As Integer = Convert.ToInt32(ddlParentForum.SelectedValue)
 			'update the cached values
 			ForumController.ResetForumInfoCache(ForumID)
-			ForumController.ResetForumInfoCache(CurrentParentID)
+			If Not (OriginalParentID = CurrentParentID) Then
+				ForumController.ResetForumInfoCache(CurrentParentID)
+			End If
+			ForumController.ResetForumInfoCache(OriginalParentID)
 
 			' Update group info in cache in case the forum moved
 			GroupInfo.ResetGroupInfo(Convert.ToInt32(ddlGroup.SelectedValue))
@@ -410,18 +413,15 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <remarks>
 		''' </remarks>
 		Protected Sub cmdDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdDelete.Click
-			' Handle deletion of polls assigned to threads in this forum
-			' Get all threads with polls in this forum
-
-			' loop through and delete all polls
-
-			'Dim cntForum As New ForumController
-			'cntForum.ForumDelete(CType(ddlGroup.SelectedValue, Integer), CType(txtForumID.Text, Integer))
-
-			'[skeel] dont like above, group id might have been changed so:
 			If Not objForum Is Nothing Then
 				Dim cntForum As New ForumController
 				cntForum.ForumDelete(objForum.ParentId, objForum.GroupID, ForumID, ModuleId)
+
+				'update the cached values
+				ForumController.ResetForumInfoCache(ForumID)
+				ForumController.ResetForumInfoCache(objForum.ParentId)
+				GroupInfo.ResetGroupInfo(Convert.ToInt32(ddlGroup.SelectedValue))
+
 				' Go Back to forum/group management screen
 				Response.Redirect(Utilities.Links.ACPForumsManageLink(TabId, ModuleId, CType(ddlGroup.SelectedValue, Integer)), False)
 			End If

@@ -39,7 +39,7 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _ForumID As Integer = 0
 		Dim _ThreadID As Integer = 0
 		Dim _PostID As Integer = 0
-		Dim _PostCollection As New List(Of PostInfo)
+		Dim _PostCollection As List(Of PostInfo)
 		Dim _PostPage As Integer = 0
 		Dim _ThreadInfo As ThreadInfo
 		Dim _HostForum As ForumInfo
@@ -75,14 +75,14 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Public Properties"
 
 		''' <summary>
-		''' The ForumID of the thread being rendered.
+		''' This is used to determine the permissions for the current user/forum combination. 
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public ReadOnly Property ForumId() As Integer
+		Private ReadOnly Property objSecurity() As ModuleSecurity
 			Get
-				Return _ForumID
+				Return New ModuleSecurity(ModuleID, TabID, ForumID, CurrentForumUser.UserID)
 			End Get
 		End Property
 
@@ -107,18 +107,6 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property PostId() As Integer
 			Get
 				Return _PostID
-			End Get
-		End Property
-
-		''' <summary>
-		''' The collection of posts being rendered.
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public ReadOnly Property PostCollection() As List(Of PostInfo)
-			Get
-				Return _PostCollection
 			End Get
 		End Property
 
@@ -162,16 +150,22 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Properties"
 
-		Public Property TrackedModule() As Boolean
+		''' <summary>
+		''' The collection of posts being rendered.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Property PostCollection() As List(Of PostInfo)
 			Get
-				Return _TrackedModule
+				Return _PostCollection
 			End Get
-			Set(ByVal Value As Boolean)
-				_TrackedModule = Value
+			Set(ByVal Value As List(Of PostInfo))
+				_PostCollection = Value
 			End Set
 		End Property
 
-		Public Property TrackedForum() As Boolean
+		Private Property TrackedForum() As Boolean
 			Get
 				Return _TrackedForum
 			End Get
@@ -180,7 +174,7 @@ Namespace DotNetNuke.Modules.Forum
 			End Set
 		End Property
 
-		Public Property TrackedThread() As Boolean
+		Private Property TrackedThread() As Boolean
 			Get
 				Return _TrackedThread
 			End Get
@@ -315,7 +309,7 @@ Namespace DotNetNuke.Modules.Forum
 			ForumControl.Descending = CType(ddlViewDescending.SelectedIndex, Boolean)
 
 			Dim ctlPost As New PostController
-			_PostCollection = ctlPost.PostGetAll(ThreadId, PostPage, CurrentForumUser.PostsPerPage, False, ForumControl.Descending, PortalID)
+			PostCollection = ctlPost.PostGetAll(ThreadId, PostPage, CurrentForumUser.PostsPerPage, False, ForumControl.Descending, PortalID)
 
 			'<tam:note value=update database if it's an authenticated user>
 			If CurrentForumUser.UserID > 0 Then
@@ -398,7 +392,7 @@ Namespace DotNetNuke.Modules.Forum
 				'Forum.ThreadInfo.ResetThreadInfo(ThreadId)
 
 				Dim ctlPost As New PostController
-				_PostCollection = ctlPost.PostGetAll(ThreadId, PostPage, CurrentForumUser.PostsPerPage, False, ForumControl.Descending, PortalID)
+				PostCollection = ctlPost.PostGetAll(ThreadId, PostPage, CurrentForumUser.PostsPerPage, False, ForumControl.Descending, PortalID)
 				' we need to redirect the user here to make sure the page is redrawn.
 			Else
 				' there is no quick reply message entered, yet they clicked submit. Show end user. 
@@ -533,9 +527,6 @@ Namespace DotNetNuke.Modules.Forum
 
 			' User might access this page by typing url so better check permission on parent forum
 			If Not (ParentForum.PublicView) Then
-				' The forum is private, see if we have proper view perms here
-				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
-
 				If Not objSecurity.IsAllowedToViewPrivateForum Then
 					' we should consider setting type of redirect here?
 
@@ -738,7 +729,7 @@ Namespace DotNetNuke.Modules.Forum
 			ctlThread.ThreadViewsIncrement(ThreadId)
 
 			'update the UserThread record
-			If ForumControl.Page.Request.IsAuthenticated Then
+			If HttpContext.Current.Request.IsAuthenticated Then
 				Dim userThreadController As New UserThreadsController
 				Dim userThread As New UserThreadsInfo
 				userThread = userThreadController.GetCachedUserThreadRead(CurrentForumUser.UserID, ThreadId)
@@ -775,9 +766,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	11/29/2005	Created
-		''' </history>
 		Private Sub AddControlHandlers()
 			Try
 				If objConfig.EnableThreadStatus And CurrentForumUser.UserID > 0 Then
@@ -891,7 +879,7 @@ Namespace DotNetNuke.Modules.Forum
 						If Not objForumUser.TrackedModule Then
 							' check to see if the user is tracking at the forum level
 							For Each objTrackForum As TrackingInfo In objForumUser.TrackedForums
-								If objTrackForum.ForumID = ForumId Then
+								If objTrackForum.ForumID = ForumID Then
 									TrackedForum = True
 									Exit For
 								End If
@@ -910,9 +898,6 @@ Namespace DotNetNuke.Modules.Forum
 									End If
 								Next
 							End If
-						Else
-							'CP - since not implemented, should never happen
-							TrackedModule = True
 						End If
 					End If
 
@@ -945,10 +930,10 @@ Namespace DotNetNuke.Modules.Forum
 					trcRating.Enabled = False
 				End If
 
-				_PostCollection = ctlPost.PostGetAll(ThreadId, PostPage, CurrentForumUser.PostsPerPage, False, ForumControl.Descending, PortalID)
+				PostCollection = ctlPost.PostGetAll(ThreadId, PostPage, CurrentForumUser.PostsPerPage, False, ForumControl.Descending, PortalID)
 
-				If _PostCollection.Count > 0 And _PostID = 0 Then
-					_PostID = CType(_PostCollection.Item(0), PostInfo).PostID
+				If PostCollection.Count > 0 And _PostID = 0 Then
+					_PostID = CType(PostCollection.Item(0), PostInfo).PostID
 				End If
 			Catch exc As Exception
 				LogException(exc)
@@ -1116,14 +1101,12 @@ Namespace DotNetNuke.Modules.Forum
 
 			' new thread button
 			'Remove LoggedOnUserID limitation if wishing to implement Anonymous Posting
-			If (CurrentForumUser.UserID > 0) And (Not ForumId = -1) Then
+			If (CurrentForumUser.UserID > 0) And (Not ForumID = -1) Then
 				If Not ParentForum.PublicPosting Then
-					Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
-
 					If objSecurity.IsAllowedToStartRestrictedThread Then
 						RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0")	'<Table>            
 						RenderRowBegin(wr) '<tr>
-						_url = Utilities.Links.NewThreadLink(TabID, ForumId, ModuleID)
+						_url = Utilities.Links.NewThreadLink(TabID, ForumID, ModuleID)
 						RenderCellBegin(wr, "Forum_NavBarButton", "", "", "", "middle", "", "") ' <td> 
 
 						If CurrentForumUser.IsBanned Then
@@ -1142,7 +1125,7 @@ Namespace DotNetNuke.Modules.Forum
 							RenderLinkButton(wr, _url, ForumControl.LocalizedText("Reply"), "Forum_Link", False)
 							RenderCellEnd(wr) ' </Td>
 						Else
-							_url = Utilities.Links.NewPostLink(TabID, ForumId, ThreadInfo.ThreadID, "reply", ModuleID)
+							_url = Utilities.Links.NewPostLink(TabID, ForumID, ThreadInfo.ThreadID, "reply", ModuleID)
 							RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
 							wr.Write("&nbsp;")
 							RenderCellEnd(wr) ' </Td>
@@ -1154,7 +1137,7 @@ Namespace DotNetNuke.Modules.Forum
 						'[skeel] moved delete thread here
 						If CurrentForumUser.UserID > 0 AndAlso (objSecurity.IsForumModerator) Then
 
-							_url = Utilities.Links.ThreadDeleteLink(TabID, ModuleID, ForumId, ThreadId, False)
+							_url = Utilities.Links.ThreadDeleteLink(TabID, ModuleID, ForumID, ThreadId, False)
 							RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
 							wr.Write("&nbsp;")
 							RenderCellEnd(wr) ' </Td>
@@ -1177,7 +1160,7 @@ Namespace DotNetNuke.Modules.Forum
 							RenderLinkButton(wr, _url, ForumControl.LocalizedText("Reply"), "Forum_Link", False)
 							RenderCellEnd(wr) ' </Td>
 						Else
-							_url = Utilities.Links.NewPostLink(TabID, ForumId, ThreadInfo.ThreadID, "reply", ModuleID)
+							_url = Utilities.Links.NewPostLink(TabID, ForumID, ThreadInfo.ThreadID, "reply", ModuleID)
 							RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
 							wr.Write("&nbsp;")
 							RenderCellEnd(wr) ' </Td>
@@ -1196,7 +1179,7 @@ Namespace DotNetNuke.Modules.Forum
 					' no posting restrictions
 					RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0")	'<Table>            
 					RenderRowBegin(wr) '<tr>
-					_url = Utilities.Links.NewThreadLink(TabID, ForumId, ModuleID)
+					_url = Utilities.Links.NewThreadLink(TabID, ForumID, ModuleID)
 					RenderCellBegin(wr, "Forum_NavBarButton", "", "", "", "middle", "", "") ' <td> 
 
 					If CurrentForumUser.IsBanned Then
@@ -1215,7 +1198,7 @@ Namespace DotNetNuke.Modules.Forum
 						RenderLinkButton(wr, _url, ForumControl.LocalizedText("Reply"), "Forum_Link", False)
 						RenderCellEnd(wr) ' </Td>
 					Else
-						_url = Utilities.Links.NewPostLink(TabID, ForumId, ThreadInfo.ThreadID, "reply", ModuleID)
+						_url = Utilities.Links.NewPostLink(TabID, ForumID, ThreadInfo.ThreadID, "reply", ModuleID)
 						RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
 						wr.Write("&nbsp;")
 						RenderCellEnd(wr) ' </Td>
@@ -1225,9 +1208,8 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 
 					'[skeel] moved delete thread here
-					Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
 					If CurrentForumUser.UserID > 0 AndAlso (objSecurity.IsForumModerator) Then
-						_url = Utilities.Links.ThreadDeleteLink(TabID, ModuleID, ForumId, ThreadId, False)
+						_url = Utilities.Links.ThreadDeleteLink(TabID, ModuleID, ForumID, ThreadId, False)
 						RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
 						wr.Write("&nbsp;")
 						RenderCellEnd(wr) ' </Td>
@@ -1408,8 +1390,6 @@ Namespace DotNetNuke.Modules.Forum
 				'End If
 			Else
 				' check to see if we are able to show user results
-				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
-
 				If objPoll.ShowResults Or ((CurrentForumUser.UserID = ThreadInfo.StartedByUserID) Or (objSecurity.IsForumModerator)) Then
 					' show results
 					RenderTableBegin(wr, "", "", "", "", "0", "0", "center", "middle", "")  ' <table> 
@@ -1631,8 +1611,6 @@ Namespace DotNetNuke.Modules.Forum
 				RenderCellBegin(wr, "Forum_Header", "", "", "right", "", "", "")	   '<td>
 
 				' if the user is the original author or a moderator AND this is the original post
-				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
-
 				If ((CurrentForumUser.UserID = Post.ParentThread.StartedByUserID) Or (objSecurity.IsForumModerator)) And Post.ParentPostID = 0 Then
 					If Post.ParentThread.ThreadStatus = ThreadStatus.Poll Then
 						ddlThreadStatus.Enabled = False
@@ -1704,7 +1682,6 @@ Namespace DotNetNuke.Modules.Forum
 			If Not Post Is Nothing Then
 				Dim author As ForumUserInfo = Post.Author
 				Dim authorOnline As Boolean = (author.EnableOnlineStatus AndAlso author.IsOnline AndAlso (ForumControl.objConfig.EnableUsersOnline))
-				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
 
 				' table to display integrated media, user alias, poster rank, avatar, homepage, and number of posts.
 				RenderTableBegin(wr, "", "Forum_PostAuthorTable", "", "100%", "0", "0", "", "", "")
@@ -1992,8 +1969,6 @@ Namespace DotNetNuke.Modules.Forum
 			Dim strSubject As String = String.Empty
 			Dim strCreatedDate As String = String.Empty
 			Dim strAuthorLocation As String = String.Empty
-
-			Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
 
 			If PostCountIsEven Then
 				detailCellClass = "Forum_PostDetails"
@@ -2520,14 +2495,12 @@ Namespace DotNetNuke.Modules.Forum
 			' new thread button
 			'Remove LoggedOnUserID limitation if wishing to implement Anonymous Posting
 			If (CurrentForumUser.UserID > 0) And (Not ForumId = -1) Then
-				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
-
 				If Not ParentForum.PublicPosting Then
 					If objSecurity.IsAllowedToStartRestrictedThread Then
 
 						RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0")	'<Table>            
 						RenderRowBegin(wr) '<tr>
-						_url = Utilities.Links.NewThreadLink(TabID, ForumId, ModuleID)
+						_url = Utilities.Links.NewThreadLink(TabID, ForumID, ModuleID)
 						RenderCellBegin(wr, "Forum_NavBarButton", "", "", "", "middle", "", "") ' <td> 
 
 						If CurrentForumUser.IsBanned Then
@@ -2546,7 +2519,7 @@ Namespace DotNetNuke.Modules.Forum
 							RenderLinkButton(wr, _url, ForumControl.LocalizedText("Reply"), "Forum_Link", False)
 							RenderCellEnd(wr) ' </Td>
 						Else
-							_url = Utilities.Links.NewPostLink(TabID, ForumId, ThreadInfo.ThreadID, "reply", ModuleID)
+							_url = Utilities.Links.NewPostLink(TabID, ForumID, ThreadInfo.ThreadID, "reply", ModuleID)
 							RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
 							wr.Write("&nbsp;")
 							RenderCellEnd(wr) ' </Td>
@@ -2557,7 +2530,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						'[skeel] moved delete thread here
 						If CurrentForumUser.UserID > 0 AndAlso (objSecurity.IsForumModerator) Then
-							_url = Utilities.Links.ThreadDeleteLink(TabID, ModuleID, ForumId, ThreadId, False)
+							_url = Utilities.Links.ThreadDeleteLink(TabID, ModuleID, ForumID, ThreadId, False)
 							RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
 							wr.Write("&nbsp;")
 							RenderCellEnd(wr) ' </Td>
@@ -2580,7 +2553,7 @@ Namespace DotNetNuke.Modules.Forum
 							RenderLinkButton(wr, _url, ForumControl.LocalizedText("Reply"), "Forum_Link", False)
 							RenderCellEnd(wr) ' </Td>
 						Else
-							_url = Utilities.Links.NewPostLink(TabID, ForumId, ThreadInfo.ThreadID, "reply", ModuleID)
+							_url = Utilities.Links.NewPostLink(TabID, ForumID, ThreadInfo.ThreadID, "reply", ModuleID)
 							RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
 							wr.Write("&nbsp;")
 							RenderCellEnd(wr) ' </Td>
@@ -2597,7 +2570,7 @@ Namespace DotNetNuke.Modules.Forum
 				Else
 					RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0")	'<Table>            
 					RenderRowBegin(wr) '<tr>
-					_url = Utilities.Links.NewThreadLink(TabID, ForumId, ModuleID)
+					_url = Utilities.Links.NewThreadLink(TabID, ForumID, ModuleID)
 					RenderCellBegin(wr, "Forum_NavBarButton", "", "", "", "middle", "", "") ' <td> 
 					If CurrentForumUser.IsBanned Then
 						RenderLinkButton(wr, _url, ForumControl.LocalizedText("NewThread"), "Forum_Link", False)
@@ -2614,7 +2587,7 @@ Namespace DotNetNuke.Modules.Forum
 						RenderLinkButton(wr, _url, ForumControl.LocalizedText("Reply"), "Forum_Link", False)
 						RenderCellEnd(wr) ' </Td>
 					Else
-						_url = Utilities.Links.NewPostLink(TabID, ForumId, ThreadInfo.ThreadID, "reply", ModuleID)
+						_url = Utilities.Links.NewPostLink(TabID, ForumID, ThreadInfo.ThreadID, "reply", ModuleID)
 						RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
 						wr.Write("&nbsp;")
 						RenderCellEnd(wr) ' </Td>
@@ -2625,7 +2598,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					'[skeel] moved delete thread here
 					If CurrentForumUser.UserID > 0 AndAlso (objSecurity.IsForumModerator) Then
-						_url = Utilities.Links.ThreadDeleteLink(TabID, ModuleID, ForumId, ThreadId, False)
+						_url = Utilities.Links.ThreadDeleteLink(TabID, ModuleID, ForumID, ThreadId, False)
 						RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
 						wr.Write("&nbsp;")
 						RenderCellEnd(wr) ' </Td>
@@ -2762,15 +2735,12 @@ Namespace DotNetNuke.Modules.Forum
 			' Display tracking option if user is authenticated and post count > 0 and user not track parent forum (make sure tracking is enabled)
 			'CP - Seperating so we can show user they are tracking at forum level if need be
 			If (PostCollection.Count > 0) AndAlso (CurrentForumUser.UserID > 0) And (objConfig.MailNotification) Then
-				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
-
 				If objSecurity.IsForumAdmin Then
 					cmdThreadSubscribers.RenderControl(wr)
 					wr.Write("<br />")
 				End If
 
 				If TrackedForum Then
-				ElseIf TrackedModule Then
 				Else
 					chkEmail.RenderControl(wr)
 				End If
@@ -2797,14 +2767,12 @@ Namespace DotNetNuke.Modules.Forum
 				If (CurrentForumUser.UserID > 0) And (Not ForumId = -1) Then
 					If Not ParentForum.PublicPosting Then
 						If CurrentForumUser.IsBanned = False And ThreadInfo.IsClosed = False Then
-							Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
 							If objSecurity.IsAllowedToPostRestrictedReply Then
 								QuickReply(wr)
 							End If
 						End If
 					Else
 						If CurrentForumUser.IsBanned = False And ThreadInfo.IsClosed = False Then
-							Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
 							QuickReply(wr)
 						End If
 					End If
@@ -2829,8 +2797,6 @@ Namespace DotNetNuke.Modules.Forum
 			' First see if the user has the ability to post
 			' remove logged on limitation if wishing to implement Anonymous posting
 			If CurrentForumUser.UserID > 0 Then
-				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
-
 				If (Not HostForum.PublicPosting And objSecurity.IsAllowedToPostRestrictedReply) Or (HostForum.PublicPosting = True) Then
 					' move link (logged user is admin and this is the first post in the thread)
 					'start table for mod/reply buttons
@@ -2839,14 +2805,14 @@ Namespace DotNetNuke.Modules.Forum
 
 					'Never Remove LoggedOnUserID limitation EVEN if wishing to implement Anonymous Posting - ParentPostID is so we know this is the first post in a thread to move it
 					If CurrentForumUser.UserID > 0 And (objSecurity.IsForumModerator) AndAlso (Post.ParentPostID = 0) Then
-						_url = Utilities.Links.ThreadMoveLink(TabID, ModuleID, ForumId, ThreadId)
+						_url = Utilities.Links.ThreadMoveLink(TabID, ModuleID, ForumID, ThreadId)
 
 						RenderCellBegin(wr, "Forum_ReplyCell", "", "", "", "", "", "")
 						RenderLinkButton(wr, _url, ForumControl.LocalizedText("Move"), "Forum_Link")
 						RenderCellEnd(wr)
 					ElseIf CurrentForumUser.UserID > 0 And (objSecurity.IsForumModerator) Then
 						' Split thread
-						_url = Utilities.Links.ThreadSplitLink(TabID, ModuleID, ForumId, Post.PostID)
+						_url = Utilities.Links.ThreadSplitLink(TabID, ModuleID, ForumID, Post.PostID)
 
 						RenderCellBegin(wr, "Forum_ReplyCell", "", "", "", "", "", "")
 						RenderLinkButton(wr, _url, ForumControl.LocalizedText("Split"), "Forum_Link")
@@ -2855,7 +2821,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					'Never Remove LoggedOnUserID limitation EVEN if wishing to implement Anonymous Posting
 					If CurrentForumUser.UserID > 0 AndAlso (objSecurity.IsForumModerator) Then
-						_url = Utilities.Links.PostDeleteLink(TabID, ModuleID, ForumId, Post.PostID, False)
+						_url = Utilities.Links.PostDeleteLink(TabID, ModuleID, ForumID, Post.PostID, False)
 
 						RenderCellBegin(wr, "Forum_ReplyCell", "", "", "", "", "", "")
 						RenderLinkButton(wr, _url, ForumControl.LocalizedText("Delete"), "Forum_Link")
@@ -2864,7 +2830,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					'Never Remove LoggedOnUserID limitation EVEN if wishing to implement Anonymous Posting - Anonymous cannot edit post
 					If CurrentForumUser.UserID > 0 AndAlso (objSecurity.IsForumModerator) Then
-						_url = Utilities.Links.NewPostLink(TabID, ForumId, Post.PostID, "edit", ModuleID)
+						_url = Utilities.Links.NewPostLink(TabID, ForumID, Post.PostID, "edit", ModuleID)
 
 						RenderCellBegin(wr, "Forum_ReplyCell", "", "", "", "", "", "")
 						RenderLinkButton(wr, _url, ForumControl.LocalizedText("Edit"), "Forum_Link")
@@ -2874,7 +2840,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						'[skeel] check for PostEditWindow
 						If objConfig.PostEditWindow = 0 Then
-							_url = Utilities.Links.NewPostLink(TabID, ForumId, Post.PostID, "edit", ModuleID)
+							_url = Utilities.Links.NewPostLink(TabID, ForumID, Post.PostID, "edit", ModuleID)
 							RenderCellBegin(wr, "Forum_ReplyCell", "", "", "", "", "", "")
 
 							If CurrentForumUser.IsBanned Then
@@ -2886,7 +2852,7 @@ Namespace DotNetNuke.Modules.Forum
 							RenderCellEnd(wr)
 						Else
 							If Post.CreatedDate.AddMinutes(CDbl(objConfig.PostEditWindow)) > Now Then
-								_url = Utilities.Links.NewPostLink(TabID, ForumId, Post.PostID, "edit", ModuleID)
+								_url = Utilities.Links.NewPostLink(TabID, ForumID, Post.PostID, "edit", ModuleID)
 								RenderCellBegin(wr, "Forum_ReplyCell", "", "", "", "", "", "")
 
 								If CurrentForumUser.IsBanned Then
@@ -2905,7 +2871,7 @@ Namespace DotNetNuke.Modules.Forum
 						If Not Post.ParentThread.HostForum.PublicPosting Then
 							' see if user can reply
 							If objSecurity.IsAllowedToPostRestrictedReply Then
-								_url = Utilities.Links.NewPostLink(TabID, ForumId, Post.PostID, "quote", ModuleID)
+								_url = Utilities.Links.NewPostLink(TabID, ForumID, Post.PostID, "quote", ModuleID)
 								' Quote link
 								RenderCellBegin(wr, "Forum_ReplyCell", "", "", "", "", "", "")
 								If CurrentForumUser.IsBanned Then
@@ -2915,7 +2881,7 @@ Namespace DotNetNuke.Modules.Forum
 								End If
 								RenderCellEnd(wr)
 
-								_url = Utilities.Links.NewPostLink(TabID, ForumId, Post.PostID, "reply", ModuleID)
+								_url = Utilities.Links.NewPostLink(TabID, ForumID, Post.PostID, "reply", ModuleID)
 
 								' Reply link                    
 								RenderCellBegin(wr, "Forum_ReplyCell", "", "", "", "", "", "")
@@ -2927,7 +2893,7 @@ Namespace DotNetNuke.Modules.Forum
 								RenderCellEnd(wr)
 							End If
 						Else
-							_url = Utilities.Links.NewPostLink(TabID, ForumId, Post.PostID, "quote", ModuleID)
+							_url = Utilities.Links.NewPostLink(TabID, ForumID, Post.PostID, "quote", ModuleID)
 							' Quote link
 							RenderCellBegin(wr, "Forum_ReplyCell", "", "", "", "", "", "")
 							If CurrentForumUser.IsBanned Then
@@ -2937,7 +2903,7 @@ Namespace DotNetNuke.Modules.Forum
 							End If
 							RenderCellEnd(wr)
 
-							_url = Utilities.Links.NewPostLink(TabID, ForumId, Post.PostID, "reply", ModuleID)
+							_url = Utilities.Links.NewPostLink(TabID, ForumID, Post.PostID, "reply", ModuleID)
 
 							' Reply link                    
 							RenderCellBegin(wr, "Forum_ReplyCell", "", "", "", "", "", "")

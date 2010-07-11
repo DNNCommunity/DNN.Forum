@@ -40,6 +40,7 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Private Members"
 
 		Private Const THREAD_KEY As String = Constants.CACHE_KEY_PREFIX + "THREAD_"
+		Private Const THREAD_COL_KEY As String = Constants.CACHE_KEY_PREFIX + "COL_"
 		Private Const RSS_KEY As String = Constants.CACHE_KEY_PREFIX + "RSS_"
 
 #End Region
@@ -153,8 +154,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="Filter"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Function ThreadGetAll(ByVal ModuleId As Integer, ByVal ForumId As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer, ByVal Filter As String, ByVal PortalID As Integer) As List(Of ThreadInfo)
-			Return CBO.FillCollection(Of ThreadInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadGetAll(ModuleId, ForumId, PageSize, PageIndex, Filter, PortalID))
+		Public Function ThreadGetAll(ByVal ModuleId As Integer, ByVal ForumID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer, ByVal Filter As String, ByVal PortalID As Integer) As List(Of ThreadInfo)
+			Return CBO.FillCollection(Of ThreadInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadGetAll(ModuleId, ForumID, PageSize, PageIndex, Filter, PortalID))
 		End Function
 
 		''' <summary>
@@ -164,8 +165,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ForumID"></param>
 		''' <returns></returns>
 		''' <remarks>This is only used for user Thread Reads, MarkAll in UserThreadController</remarks>
-		Public Function GetByForum(ByVal userID As Integer, ByVal ForumID As Integer) As ArrayList
-			Return CBO.FillCollection(DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadGetByForum(userID, ForumID), GetType(ThreadInfo))
+		Public Function GetByForum(ByVal userID As Integer, ByVal ForumID As Integer) As List(Of ThreadInfo)
+			Return CBO.FillCollection(Of ThreadInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadGetByForum(userID, ForumID))
 		End Function
 
 		''' <summary>
@@ -175,7 +176,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Public Function ThreadGet(ByVal ThreadId As Integer) As ThreadInfo
-			Return CType(CBO.FillObject(DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadGet(ThreadId), GetType(ThreadInfo)), ThreadInfo)
+			Return CBO.FillObject(Of ThreadInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadGet(ThreadId))
 		End Function
 
 		''' <summary>
@@ -279,9 +280,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	2/3/2006	Created
-		''' </history>
 		Public Function ThreadGetCount(ByVal ForumId As Integer, ByVal Filter As String) As Integer
 			Return DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadGetCount(ForumId, Filter)
 		End Function
@@ -292,9 +290,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ThreadId"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	2/3/2006	Created
-		''' </history>
 		Public Sub ThreadViewsIncrement(ByVal ThreadId As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadViewsIncrement(ThreadId)
 		End Sub

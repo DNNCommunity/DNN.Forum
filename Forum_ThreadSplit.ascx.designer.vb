@@ -33,24 +33,6 @@ Namespace DotNetNuke.Modules.Forum
 		Protected WithEvents txtSubject As Global.System.Web.UI.WebControls.TextBox
 
 		'''<summary>
-		'''plOldForum control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plOldForum As Global.DotNetNuke.UI.UserControls.LabelControl
-
-		'''<summary>
-		'''txtOldForum control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtOldForum As Global.System.Web.UI.WebControls.TextBox
-
-		'''<summary>
 		'''plPost control.
 		'''</summary>
 		'''<remarks>

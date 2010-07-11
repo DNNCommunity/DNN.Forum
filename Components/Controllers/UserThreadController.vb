@@ -144,7 +144,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			If read Then
 				Dim threadController As New ThreadController
-				Dim forumThreads As ArrayList = threadController.GetByForum(userID, forumID)
+				Dim forumThreads As List(Of ThreadInfo) = threadController.GetByForum(userID, forumID)
 				For Each forumThread As ThreadInfo In forumThreads
 					Dim userThread As New UserThreadsInfo
 					With userThread

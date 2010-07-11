@@ -35,13 +35,8 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Members"
 
-		Private _OldForumID As Integer
 		Private _ThreadID As Integer
-		Private _ThreadInfo As ThreadInfo
 		Private _SplitMode As Boolean = False
-		Private _PostID As Integer
-		Private _ForumInfo As ForumInfo
-		Private _ModeratorReturn As Boolean = False
 
 #End Region
 
@@ -69,22 +64,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Property SelectedForumId() As Integer
-			Get
-				Return CInt(ViewState("SelectedForumId"))
-			End Get
-			Set(ByVal Value As Integer)
-				ViewState("SelectedForumId") = Value
-			End Set
-		End Property
-
-		''' <summary>
-		''' 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property SplitMode() As Boolean
+		Private Property SplitMode() As Boolean
 			Get
 				Return _SplitMode
 			End Get
@@ -99,12 +79,29 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Property PostID() As Integer
+		Private ReadOnly Property PostID() As Integer
 			Get
-				Return _PostID
+				If HttpContext.Current.Request.QueryString("postid") Is Nothing Then
+					HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
+					Return -1
+				Else
+					Return Convert.ToInt32(HttpContext.Current.Request.QueryString("postid"))
+				End If
+			End Get
+		End Property
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Property ThreadID() As Integer
+			Get
+				Return _ThreadID
 			End Get
 			Set(ByVal Value As Integer)
-				_PostID = Value
+				_ThreadID = Value
 			End Set
 		End Property
 
@@ -149,36 +146,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 			Try
-				Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
-				Dim objPostInfo As New PostInfo
-				Dim ctlPost As New PostController
-				Dim cntThread As New ThreadController()
+				Dim objSecurity As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
 
 				If Request.IsAuthenticated Then
-					If Not Request.QueryString("postid") Is Nothing Then
-						Dim cntForum As New ForumController
-
-						_PostID = Int32.Parse(Request.QueryString("postid"))
-
-						objPostInfo = ctlPost.PostGet(_PostID, PortalId)
-						_ThreadID = objPostInfo.ThreadID
-						_ThreadInfo = cntThread.GetThreadInfo(_ThreadID)
-						_OldForumID = _ThreadInfo.ForumID
-						_ForumInfo = cntForum.GetForumInfoCache(_OldForumID)
-
-						' If there is no postid, there is no reason to be here
-					Else
-						' they don't belong here
-						HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
-					End If
-
-					'CLP
-					If Not (Security.IsModerator) Then
-						'If Not (Security.IsGlobalModerator = True) Or Not (Utils.IsInSingleForumModerators(mThreadInfo.ParentForum.SingleForumModerators, mLoggedOnUserID)) Then
-						'    ' they don't belong here
-						'    HttpContext.Current.Response.Redirect(UnAuthorizedLink())
-						'End If
-
+					If Not (objSecurity.IsModerator) Then
 						' they don't belong here
 						HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
 					End If
@@ -191,10 +162,18 @@ Namespace DotNetNuke.Modules.Forum
 				ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
 				If Page.IsPostBack = False Then
-					txtSubject.Text = objPostInfo.Subject
-					txtSubject.Enabled = True
-					lblPost.Text = FormatBody(_PostID)	' Server.HtmlDecode(objPostInfo.Body)
-					txtOldForum.Text = _ThreadInfo.HostForum.Name
+					Dim cntPost As New PostController
+					Dim objPost As New PostInfo
+					objPost = cntPost.PostGet(PostID, PortalId)
+
+					' if the post is nothing here, it was deleted
+					If objPost Is Nothing Then
+						HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
+					End If
+
+					ThreadID = objPost.ThreadID
+					txtSubject.Text = objPost.Subject
+					lblPost.Text = FormatBody(PostID)	' Server.HtmlDecode(objPostInfo.Body)
 
 					If Not Request.UrlReferrer Is Nothing Then
 						ViewState("UrlReferrer") = Request.UrlReferrer.ToString()
@@ -202,26 +181,18 @@ Namespace DotNetNuke.Modules.Forum
 
 					lblErrorMsg.Visible = False
 
-					' Treeview forum viewer
-					'ForumTreeview.InitializeTree(objConfig, ForumTree)
-					'ForumTreeview.SetTreeDefaults(objConfig, ForumTree, False)
-					'ForumTreeview.PopulateTree(objConfig, ForumTree, UserId)
 					ForumTreeview.PopulateTelerikTree(objConfig, rtvForums, UserId)
-					SelectDefaultForumTree(_ThreadInfo)
+					SelectDefaultForumTree()
 
 					' Get all posts
-					Dim arrPosts As List(Of PostInfo)
-					arrPosts = ctlPost.PostGetAllForThread(_ThreadID)
+					Dim arrPosts As New List(Of PostInfo)
+					arrPosts = cntPost.PostGetAllForThread(ThreadID)
 
 					cmdMove.Attributes.Add("onClick", "javascript:return confirm('" & DotNetNuke.Services.Localization.Localization.GetString("ThreadSplitPostApprove.Text", Me.LocalResourceFile) & "');")
 
 					dlPostsForThread.DataSource = arrPosts
 					dlPostsForThread.DataBind()
-
-					' Register scripts
-					'Utils.RegisterPageScripts(Page, ForumConfig)
 				End If
-
 			Catch exc As Exception
 				ProcessModuleLoadException(Me, exc)
 			End Try
@@ -256,15 +227,17 @@ Namespace DotNetNuke.Modules.Forum
 					lblErrorMsg.Visible = False
 					' build notes (old forum, new forum, say post was moved in body (basically email body text)
 					Dim Notes As String = "Thread Split"
+					Dim cntForum As New ForumController()
+					Dim objForum As ForumInfo = cntForum.GetForumInfoCache(ForumID)
 
 					' return to new forum page
-					Dim strURL As String = Utilities.Links.ContainerViewThreadLink(TabId, newForumID, _PostID)
+					Dim strURL As String = Utilities.Links.ContainerViewThreadLink(TabId, newForumID, PostID)
 					Dim ctlThread As New ThreadController
 					'Dim MyProfileUrl As String = Utils.MySettingsLink(TabId, ModuleId)
 					Dim MyProfileUrl As String = Utilities.Links.UCP_UserLinks(TabId, ModuleId, UserAjaxControl.Tracking, PortalSettings)
 
 					' Split this post into a new thread
-					ctlThread.ThreadSplit(_PostID, _ThreadID, newForumID, UserId, txtSubject.Text, Notes, _ForumInfo.ParentId)
+					ctlThread.ThreadSplit(PostID, ThreadID, newForumID, UserId, txtSubject.Text, Notes, objForum.ParentId)
 
 					' we need to grab all the selected posts, set their parent to new threadid.
 					' we know the first posts in each of the threads have sort order set to 0, we need to start w/ 1 here and increment by 1 for each post per thread
@@ -278,16 +251,16 @@ Namespace DotNetNuke.Modules.Forum
 							' For each selected post in datagrid
 							' set its parent to the mPostID (the new threadid we are creating), see if it is lastpostid/mostrecentpostid anywhere (thread, forums), check thread status
 							Dim PostIDToSplit As Integer = CInt(dlPostsForThread.DataKeys(item.ItemIndex))
-							If (Not PostIDToSplit = _PostID) And (Not PostIDToSplit = _ThreadID) Then
-								ctlPosts.PostMove(PostIDToSplit, _ThreadID, _PostID, newForumID, _OldForumID, UserId, newThreadSortOrder, Notes, _ForumInfo.ParentId)
+							If (Not PostIDToSplit = PostID) And (Not PostIDToSplit = ThreadID) Then
+								ctlPosts.PostMove(PostIDToSplit, ThreadID, PostID, newForumID, ForumID, UserId, newThreadSortOrder, Notes, objForum.ParentId)
 							End If
 
 							newThreadSortOrder += 1
 						Else
 							' make sure the parent post of this is an existing post that will remain in the thread. (Set to current threadID) 
 							Dim PostIDToSplit As Integer = CInt(dlPostsForThread.DataKeys(item.ItemIndex))
-							If (Not PostIDToSplit = _PostID) And (Not PostIDToSplit = _ThreadID) Then
-								ctlPosts.PostMove(PostIDToSplit, _ThreadID, _ThreadID, newForumID, _OldForumID, UserId, oldThreadSortOrder, Notes, _ThreadInfo.HostForum.ParentId)
+							If (Not PostIDToSplit = PostID) And (Not PostIDToSplit = ThreadID) Then
+								ctlPosts.PostMove(PostIDToSplit, ThreadID, ThreadID, newForumID, ForumID, UserId, oldThreadSortOrder, Notes, objForum.ParentId)
 							End If
 
 							oldThreadSortOrder += 1
@@ -295,15 +268,15 @@ Namespace DotNetNuke.Modules.Forum
 					Next
 
 					' reset the post cache
-					PostInfo.ResetPostInfo(_ThreadID)
-					PostInfo.ResetPostInfo(_PostID)
+					PostInfo.ResetPostInfo(ThreadID)
+					PostInfo.ResetPostInfo(PostID)
 
 					' reset cache of both threads in case anyone happen to visit one during the split processing
-					ThreadController.ResetThreadInfo(_ThreadID)
-					ThreadController.ResetThreadInfo(_PostID)
+					ThreadController.ResetThreadInfo(ThreadID)
+					ThreadController.ResetThreadInfo(PostID)
 
 					ThreadController.ResetThreadListCached(newForumID, ModuleId)
-					ThreadController.ResetThreadListCached(_OldForumID, ModuleId)
+					ThreadController.ResetThreadListCached(ForumID, ModuleId)
 
 					If objConfig.AggregatedForums Then
 						ThreadController.ResetThreadListCached(-1, ModuleId)
@@ -312,13 +285,13 @@ Namespace DotNetNuke.Modules.Forum
 					' the db calls handled caching at group level, make sure cache is updated at forum level(s)
 					ForumController.ResetForumInfoCache(newForumID)
 
-					If Not newForumID = _OldForumID Then
-						ForumController.ResetForumInfoCache(_OldForumID)
+					If Not newForumID = ForumID Then
+						ForumController.ResetForumInfoCache(ForumID)
 					End If
 
 					' Handle sending emails 
 					If chkEmailUsers.Checked And objConfig.MailNotification Then
-						Utilities.ForumUtils.SendForumMail(_PostID, strURL, ForumEmailType.UserThreadSplit, Notes, objConfig, MyProfileUrl, PortalId)
+						Utilities.ForumUtils.SendForumMail(PostID, strURL, ForumEmailType.UserThreadSplit, Notes, objConfig, MyProfileUrl, PortalId)
 						' we have several scenarios: post approved - send mod emails of split and users email of split
 						' Post Not Approved - send mods email of split, user email of approved
 						' If the post wasn't approved, just send approval notic
@@ -326,7 +299,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					Dim objPost As PostInfo
 					Dim PostCnt As New PostController
-					objPost = PostCnt.PostGet(_PostID, PortalId)
+					objPost = PostCnt.PostGet(PostID, PortalId)
 
 					Response.Redirect(GetReturnURL(objPost), False)
 				End If
@@ -361,14 +334,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <summary>
 		''' Used to select the user's default forum in the tree (if applicable)
 		''' </summary>
-		''' <param name="objThreadInfo">ThreadInfo</param>
 		''' <remarks>
 		''' </remarks>
-		Private Sub SelectDefaultForumTree(ByVal objThreadInfo As ThreadInfo)
-			Dim SelectedForumID As Integer
-			SelectedForumID = objThreadInfo.ForumID
-
-			Dim node As Telerik.Web.UI.RadTreeNode = rtvForums.FindNodeByValue("F" + SelectedForumID.ToString)
+		Private Sub SelectDefaultForumTree()
+			Dim node As Telerik.Web.UI.RadTreeNode = rtvForums.FindNodeByValue("F" + ForumID.ToString)
 			node.Selected = True
 			node.ParentNode.Expanded = True
 			node.Checked = True
@@ -382,6 +351,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Private Function GetReturnURL(ByVal Post As PostInfo) As String
 			Dim url As String
+			Dim ModeratedReturn As Boolean = False
 
 			' This only needs to be handled for moderators (which are trusted by no matter what, so it only happens at this point)
 			Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, Post.ForumID, UserId)
@@ -390,12 +360,12 @@ Namespace DotNetNuke.Modules.Forum
 				' Check for querystring parameter to make sure this is where they came from.  Even if a direct link was typed in (should not happen) no damage will be done
 				If (Not Request.QueryString("moderatorreturn") Is Nothing) Then
 					If Request.QueryString("moderatorreturn") = "1" Then
-						_ModeratorReturn = True
+						ModeratedReturn = True
 					End If
 				End If
 			End If
 
-			If _ModeratorReturn Then
+			If ModeratedReturn Then
 				If Not ViewState("UrlReferrer") Is Nothing Then
 					url = (CType(ViewState("UrlReferrer"), String))
 				Else
@@ -417,17 +387,17 @@ Namespace DotNetNuke.Modules.Forum
 		''' <summary>
 		''' Determines if a checkbox in the datalist should be shown for a specific post
 		''' </summary>
-		''' <param name="PostID"></param>
+		''' <param name="CurrentPostID"></param>
 		''' <param name="ThreadID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Protected Function EnabledSelector(ByVal PostID As Integer, ByVal ThreadID As Integer) As Boolean
+		Protected Function EnabledSelector(ByVal CurrentPostID As Integer, ByVal ThreadID As Integer) As Boolean
 			' if the current post is the first post in the old thread
 			If PostID = ThreadID Then
 				Return False
 			Else
 				' see if the post here is the post we are creating a new thread from
-				If PostID = _PostID Then
+				If CurrentPostID = PostID Then
 					Return False
 				Else
 					Return True
@@ -602,9 +572,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns>String</returns>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	1/9/2006	Created
-		''' </history>
 		Protected Function UserProfileLink(ByVal UserId As Integer) As String
 			Dim params As String()
 			Dim url As String

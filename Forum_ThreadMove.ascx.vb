@@ -29,19 +29,12 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	''' <history>
-	''' 	[cpaterra]	7/13/2005	Created
-	''' </history>
 	Public MustInherit Class ThreadMove
 		Inherits ForumModuleBase
 		Implements Entities.Modules.IActionable
 
 #Region "Private Members"
 
-		Private _OldForumID As Integer
-		Private _ThreadID As Integer
-		Private _ThreadInfo As ThreadInfo
-		Private _PostID As Integer
 		Private _ModeratorReturn As Boolean = False
 
 #End Region
@@ -64,22 +57,21 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Properties"
 
-		Public Property SelectedForumId() As Integer
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private ReadOnly Property ThreadID() As Integer
 			Get
-				Return CInt(ViewState("SelectedForumId"))
+				If HttpContext.Current.Request.QueryString("threadid") Is Nothing Then
+					HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
+					Return -1
+				Else
+					Return Convert.ToInt32(HttpContext.Current.Request.QueryString("threadid"))
+				End If
 			End Get
-			Set(ByVal Value As Integer)
-				ViewState("SelectedForumId") = Value
-			End Set
-		End Property
-
-		Public Property PostID() As Integer
-			Get
-				Return _PostID
-			End Get
-			Set(ByVal Value As Integer)
-				_PostID = Value
-			End Set
 		End Property
 
 #End Region
@@ -123,32 +115,13 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 			Try
-				Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
-				Dim cntThread As New ThreadController()
-				Dim objPostInfo As New PostInfo
-				Dim ctlPost As New PostController
+				If Not HttpContext.Current.Request.IsAuthenticated Then
+					HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
+				End If
 
-				If Request.IsAuthenticated Then
-					If Not Request.QueryString("threadid") Is Nothing Then
-						_ThreadID = Int32.Parse(Request.QueryString("threadid"))
-						_ThreadInfo = cntThread.GetThreadInfo(_ThreadID)
-						_OldForumID = _ThreadInfo.ForumID
-					Else
-						If Not Request.QueryString("postid") Is Nothing Then
-							_PostID = Int32.Parse(Request.QueryString("postid"))
+				Dim objSecurity As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
 
-							objPostInfo = ctlPost.PostGet(_PostID, PortalId)
-							_ThreadID = objPostInfo.ThreadID
-							_ThreadInfo = cntThread.GetThreadInfo(_ThreadID)
-							_OldForumID = _ThreadInfo.ForumID
-						End If
-					End If
-
-					If Not (Security.IsModerator) Then
-						' they don't belong here
-						HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
-					End If
-				Else
+				If Not (objSecurity.IsModerator) Then
 					' they don't belong here
 					HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
 				End If
@@ -157,8 +130,12 @@ Namespace DotNetNuke.Modules.Forum
 				ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
 				If Page.IsPostBack = False Then
-					txtSubject.Text = _ThreadInfo.Subject
-					txtOldForum.Text = _ThreadInfo.HostForum.Name
+					Dim cntThread As New ThreadController()
+					Dim objThread As New ThreadInfo
+					objThread = cntThread.ThreadGet(ThreadID)
+
+					txtSubject.Text = objThread.Subject
+					txtOldForum.Text = objThread.HostForum.Name
 
 					If Not Request.UrlReferrer Is Nothing Then
 						ViewState("UrlReferrer") = Request.UrlReferrer.ToString()
@@ -166,7 +143,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					' Treeview forum viewer
 					ForumTreeview.PopulateTelerikTree(objConfig, rtvForums, UserId)
-					SelectDefaultForumTree(_ThreadInfo)
+					SelectDefaultForumTree(objThread)
 					lblErrorMsg.Visible = False
 				End If
 
@@ -195,36 +172,14 @@ Namespace DotNetNuke.Modules.Forum
 					newForumID = iID
 					Exit For
 				Next
-				Dim cntThread As New ThreadController()
-
-				If Not Request.QueryString("threadid") Is Nothing Then
-					_ThreadID = Int32.Parse(Request.QueryString("threadid"))
-					_ThreadInfo = cntThread.GetThreadInfo(_ThreadID)
-					_OldForumID = _ThreadInfo.ForumID
-					_PostID = _ThreadInfo.LastApprovedPostID
-				Else
-					If Not Request.QueryString("postid") Is Nothing Then
-						_PostID = Int32.Parse(Request.QueryString("postid"))
-
-						Dim objPostInfo As New PostInfo
-						Dim ctlPost As New PostController
-
-						objPostInfo = ctlPost.PostGet(_PostID, PortalId)
-						_ThreadID = objPostInfo.ThreadID
-						_ThreadInfo = cntThread.GetThreadInfo(_ThreadID)
-						_OldForumID = _ThreadInfo.ForumID
-					End If
-				End If
-
 				' If the new forumID is the same as the old ForumID
-				If (newForumID = _OldForumID) Then
+				If (newForumID = ForumID) Then
 					' Show user error message
 					lblErrorMsg.Text = DotNetNuke.Services.Localization.Localization.GetString("OldForumSeleted.Text", Me.LocalResourceFile)
 					lblErrorMsg.Visible = True
 					Exit Sub
 				Else
 					If newForumID = -1 Then
-						'PopulateTree(mForumConfig)
 						lblErrorMsg.Text = DotNetNuke.Services.Localization.Localization.GetString("NoForumSelected.Text", Me.LocalResourceFile)
 						lblErrorMsg.Visible = True
 						Exit Sub
@@ -234,31 +189,33 @@ Namespace DotNetNuke.Modules.Forum
 						Dim Notes As String = "Thread Move"
 
 						' return to new forum page
-						Dim strURL As String = Utilities.Links.ContainerViewThreadLink(TabId, newForumID, _PostID)
+						Dim strURL As String = Utilities.Links.ContainerViewThreadLink(TabId, newForumID, ThreadID)
 						Dim ctlThread As New ThreadController
 						'Dim MyProfileUrl As String = Utils.MySettingsLink(TabId, ModuleId)
 						Dim MyProfileUrl As String = Utilities.Links.UCP_UserLinks(TabId, ModuleId, UserAjaxControl.Tracking, PortalSettings)
+						Dim cntForum As New ForumController()
+						Dim objForum As ForumInfo = cntForum.GetForumInfoCache(ForumID)
 
-						ctlThread.ThreadMove(_ThreadID, newForumID, UserId, Notes, _ThreadInfo.HostForum.ParentId)
+						ctlThread.ThreadMove(ThreadID, newForumID, UserId, Notes, objForum.ParentId)
 
 						ForumController.ResetForumInfoCache(newForumID)
-						ForumController.ResetForumInfoCache(_OldForumID)
-						ThreadController.ResetThreadInfo(_ThreadID)
+						ForumController.ResetForumInfoCache(ForumID)
+						ThreadController.ResetThreadInfo(ThreadID)
 
 						ThreadController.ResetThreadListCached(newForumID, ModuleId)
-						ThreadController.ResetThreadListCached(_OldForumID, ModuleId)
+						ThreadController.ResetThreadListCached(ForumID, ModuleId)
 						If objConfig.AggregatedForums Then
 							ThreadController.ResetThreadListCached(-1, ModuleId)
 						End If
 
 						' Handle sending emails 
 						If chkEmailUsers.Checked And objConfig.MailNotification Then
-							Utilities.ForumUtils.SendForumMail(_ThreadID, strURL, ForumEmailType.UserThreadMoved, Notes, objConfig, MyProfileUrl, PortalId)
+							Utilities.ForumUtils.SendForumMail(ThreadID, strURL, ForumEmailType.UserThreadMoved, Notes, objConfig, MyProfileUrl, PortalId)
 						End If
 
 						Dim objPost As PostInfo
 						Dim PostCnt As New PostController
-						objPost = PostCnt.PostGet(_PostID, PortalId)
+						objPost = PostCnt.PostGet(ThreadID, PortalId)
 
 						Response.Redirect(GetReturnURL(objPost), False)
 					End If
@@ -297,9 +254,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="objThreadInfo">ThreadInfo</param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	9/25/2006	Created
-		''' </history>
 		Private Sub SelectDefaultForumTree(ByVal objThreadInfo As ThreadInfo)
 			Dim SelectedForumID As Integer
 			SelectedForumID = objThreadInfo.ForumID

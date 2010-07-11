@@ -54,10 +54,10 @@ Namespace DotNetNuke.Modules.Forum
 		Private _ThreadStatus As ThreadStatus
 		Private _AnswerPostID As Integer = -1
 		Private _AnswerDate As DateTime
-		Private _PollID As Integer = -1
-		Private _TotalRecords As Integer = 0
+		Private _PollID As Integer
+		Private _TotalRecords As Integer
 		'CP - Not implemented
-		Private _ThreadIconID As Integer = 0
+		Private _ThreadIconID As Integer
 
 #End Region
 
@@ -67,6 +67,11 @@ Namespace DotNetNuke.Modules.Forum
 			'initialize the properties that
 			'can be null in the database
 
+			_RatingCount = -1
+			_TotalRecords = 0
+			_NextThreadID = -1
+			_PreviousThreadID = -1
+			_PollID = -1
 		End Sub
 
 #End Region
@@ -155,7 +160,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property RatingText() As String
 			Get
-				If RatingCount = 0 Then
+				If RatingCount < 1 Then
 					'Return "No rating"
 					Return Localization.GetString("RatingNoRating.Text", ParentForum.ParentGroup.objConfig.SharedResourceFile)
 				Else
@@ -405,21 +410,6 @@ Namespace DotNetNuke.Modules.Forum
 			End Set
 		End Property
 
-		' ''' <summary>
-		' ''' Reserved for 3rd party module integration.
-		' ''' </summary>
-		' ''' <value></value>
-		' ''' <returns></returns>
-		' ''' <remarks></remarks>
-		'Public Property ObjectID() As Integer
-		'	Get
-		'		Return _ObjectID
-		'	End Get
-		'	Set(ByVal Value As Integer)
-		'		_ObjectID = Value
-		'	End Set
-		'End Property
-
 		''' <summary>
 		''' Determines if the thread is pinned or not. 
 		''' </summary>
@@ -619,8 +609,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="dr"></param>
 		''' <remarks></remarks>
 		Public Overrides Sub Fill(ByVal dr As System.Data.IDataReader)
-			''Call the base classes fill method to populate base class proeprties
-			'MyBase.FillInternal(dr)
+			'Call the base classes fill method to populate base class proeprties
+			MyBase.FillInternal(dr)
 
 			ForumID = Null.SetNullInteger(dr("ForumID"))
 			Subject = Null.SetNullString(dr("Subject"))
@@ -640,7 +630,7 @@ Namespace DotNetNuke.Modules.Forum
 			PreviousThreadID = Null.SetNullInteger(dr("PreviousThreadID"))
 			ThreadStatus = CType(Null.SetNull(dr("ThreadStatus"), ThreadStatus), ThreadStatus)
 			PollID = Null.SetNullInteger(dr("PollID"))
-			TotalRecords = Null.SetNullInteger(dr("TotalRecords"))
+			'TotalRecords = Null.SetNullInteger(dr("TotalRecords"))
 
 			'BreadCrumbs = Nothing
 			'Panes = Nothing

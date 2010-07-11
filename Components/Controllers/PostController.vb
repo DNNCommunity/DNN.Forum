@@ -29,9 +29,6 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	''' <history>
-	''' 	[cpaterra]	7/13/2005	Created
-	''' </history>
 	Public Class PostController
 
 #Region "Public Methods"
@@ -125,18 +122,6 @@ Namespace DotNetNuke.Modules.Forum
 			Dim f As New ForumController
 			f.ClearCache_ForumGetAll(PostID, GroupID)
 		End Sub
-
-		'#Region "Post Reporting"
-
-		'		Public Sub PostReport(ByVal PostID As Integer, ByVal UserID As Integer, ByVal Reason As String)
-		'			Dim GroupID As Integer = DotNetNuke.Modules.Forum.DataProvider.Instance().PostReport(PostID, UserID, Reason)
-		'		End Sub
-
-		'		Public Function PostGetReported(ByVal PortalID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer) As List(Of PostInfo)
-		'			Return CBO.FillCollection(Of PostInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().PostGetReported(PortalID, PageIndex, PageSize))
-		'		End Function
-
-		'#End Region
 
 		''' <summary>
 		''' 

@@ -52,11 +52,23 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property ProfileUserID() As Integer
 			Get
-				If Not Request.QueryString("userid") Is Nothing Then
-					Dim _ProfileUserID As Integer = Int32.Parse(Request.QueryString("userid"))
+				If HttpContext.Current.Request.QueryString("userid") IsNot Nothing Then
+					Dim _ProfileUserID As Integer = Int32.Parse(HttpContext.Current.Request.QueryString("userid"))
 					Return _ProfileUserID
 				Else
 					Return CurrentForumUser.UserID
+				End If
+			End Get
+		End Property
+
+		Public ReadOnly Property ForumID() As Integer
+			Get
+				If HttpContext.Current.Request.QueryString("forumid") IsNot Nothing Then
+					Dim _ForumID As Integer = Int32.Parse(HttpContext.Current.Request.QueryString("forumid"))
+					Return _ForumID
+				Else
+					' maybe something else is in the url
+					Return -1
 				End If
 			End Get
 		End Property

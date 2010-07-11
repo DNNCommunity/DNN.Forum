@@ -29,9 +29,6 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks>This base allows one level lower than core permissions (ie. forum level).
 	''' </remarks>
-	''' <history>
-	''' 	[cpaterra]	8/17/2006	Created
-	''' </history>
 	Public Class ModuleSecurity
 
 #Region "Private Members"

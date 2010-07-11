@@ -32,10 +32,11 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Declarations"
 
-		Private _ParentForum As ForumInfo
+		'Private _ParentForum As ForumInfo
 		Private _ThreadCollection As New List(Of ThreadInfo)
-		Private _ThreadPage As Integer = 0
+		Private _CurrentPage As Integer = 0
 		Private _Filter As String = String.Empty
+
 		Private _NoReply As Boolean = False
 		Dim TotalRecords As Integer = 0
 		Dim url As String
@@ -58,26 +59,15 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Private Properties"
 
 		''' <summary>
-		'''  The containing Forum Info object. 
+		'''  The forum we are viewing the threads for.
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Private ReadOnly Property ParentForum() As ForumInfo
+		Private ReadOnly Property objForum() As ForumInfo
 			Get
-				Return _ParentForum
-			End Get
-		End Property
-
-		''' <summary>
-		''' The ForumID the thread belongs too. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Private ReadOnly Property ForumId() As Integer
-			Get
-				Return ForumControl.GenericObjectID
+				Dim cntForum As New ForumController
+				Return cntForum.GetForumInfoCache(ForumID)
 			End Get
 		End Property
 
@@ -87,22 +77,40 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Private ReadOnly Property ThreadCollection() As List(Of ThreadInfo)
+		Private Property ThreadCollection() As List(Of ThreadInfo)
 			Get
 				Return _ThreadCollection
 			End Get
+			Set(ByVal Value As List(Of ThreadInfo))
+				_ThreadCollection = Value
+			End Set
 		End Property
 
 		''' <summary>
-		''' Page user is on in this view.  
+		''' This is used to determine the permissions for the current user/forum combination. 
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Private ReadOnly Property ThreadPage() As Integer
+		Private ReadOnly Property objSecurity() As ModuleSecurity
 			Get
-				Return _ThreadPage
+				Return New ModuleSecurity(ModuleID, TabID, ForumID, CurrentForumUser.UserID)
 			End Get
+		End Property
+
+		''' <summary>
+		''' The current page the user is viewing.  
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Property CurrentPage() As Integer
+			Get
+				Return _CurrentPage
+			End Get
+			Set(ByVal Value As Integer)
+				_CurrentPage = Value
+			End Set
 		End Property
 
 		''' <summary>
@@ -250,28 +258,19 @@ Namespace DotNetNuke.Modules.Forum
 		Public Sub New(ByVal forum As DNNForum)
 			MyBase.New(forum)
 
-			Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
-
-			' User might access this page by typing url so better check permissions of parent forum
-			If ForumControl.GenericObjectID = -1 Then
-				_ParentForum = New ForumInfo
-				_ParentForum.ModuleID = ModuleID
-				_ParentForum.GroupID = -1
-				_ParentForum.ForumID = -1
+			If ForumID = -1 Then
+				' Redirect the user to the aggregated view (Prior to 4.4.4, aggregated used this view so we have to handle legacy links)
+				HttpContext.Current.Response.Redirect(Utilities.Links.ContainerAggregatedLink(TabID, False), True)
 			Else
-				Dim cntForum As New ForumController
-				_ParentForum = cntForum.GetForumInfoCache(ForumControl.GenericObjectID)
-
-				' Make sure the forum is not disabled
-				If Not _ParentForum.IsActive Then
+				If Not objForum.IsActive Then
 					' we should consider setting type of redirect here?
 
 					MyBase.BasePage.Response.Redirect(Utilities.Links.NoContentLink(TabID, ModuleID), True)
 				End If
 
-				' User might access this page by typing url so better check permission on parent forum
-				If Not (_ParentForum.PublicView) Then
+				If Not (objForum.PublicView) Then
 					' The forum is private, see if we have proper view perms here
+
 					If Not objSecurity.IsAllowedToViewPrivateForum Then
 						' we should consider setting type of redirect here?
 
@@ -282,12 +281,12 @@ Namespace DotNetNuke.Modules.Forum
 
 			'We are past knowing the user should be here, let's handle SEO oriented things
 			If objConfig.OverrideTitle Then
-				Me.BaseControl.BasePage.Title = _ParentForum.Name & " - " & Me.BaseControl.PortalName
+				Me.BaseControl.BasePage.Title = objForum.Name & " - " & Me.BaseControl.PortalName
 			End If
 
 			If objConfig.OverrideDescription Then
 
-				MyBase.BasePage.Description = "," + _ParentForum.Name + "," + Me.BaseControl.PortalName
+				MyBase.BasePage.Description = "," + objForum.Name + "," + Me.BaseControl.PortalName
 			End If
 			' Consider add metakeywords via applied tags, when taxonomy is integrated
 
@@ -295,7 +294,7 @@ Namespace DotNetNuke.Modules.Forum
 			'(problem is, a link can be posted by one user w/ page size of 5 pointing to page 2, if logged in user has pagesize set to 15, there is no page 2)
 			If Not HttpContext.Current.Request.QueryString("currentpage") Is Nothing Then
 				Dim urlThreadPage As Integer = Int32.Parse(HttpContext.Current.Request.QueryString("currentpage"))
-				Dim TotalThreads As Integer = ParentForum.TotalThreads
+				Dim TotalThreads As Integer = objForum.TotalThreads
 				Dim userThreadsPerPage As Integer
 
 				If CurrentForumUser.UserID > 0 Then
@@ -315,7 +314,7 @@ Namespace DotNetNuke.Modules.Forum
 					ThreadPageToShow = 0
 				End If
 
-				_ThreadPage = ThreadPageToShow
+				CurrentPage = ThreadPageToShow
 			End If
 
 			Dim Term As New SearchTerms
@@ -373,8 +372,8 @@ Namespace DotNetNuke.Modules.Forum
 
 			_Filter = Term.WhereClause
 
-			If _ThreadPage > 0 Then
-				_ThreadPage = _ThreadPage - 1
+			If CurrentPage > 0 Then
+				CurrentPage = CurrentPage - 1
 			End If
 		End Sub
 
@@ -474,34 +473,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Public Overrides Sub Render(ByVal wr As HtmlTextWriter)
 			'update the UserForum record (leave even if permitting anonymous posting)
-			If ForumControl.Page.Request.IsAuthenticated And ForumId <> -1 Then
-				Dim userForumController As New UserForumsController
-				Dim userForum As New UserForumsInfo
-
-				userForum = userForumController.GetCachedUserForumRead(CurrentForumUser.UserID, ForumId)
-
-				If Not userForum Is Nothing Then
-					userForum.LastVisitDate = Now
-					userForumController.Update(userForum)
-					UserForumsController.ResetUserForumReadCache(CurrentForumUser.UserID, ForumId)
-				Else
-					userForum = New UserForumsInfo
-					With userForum
-						.UserID = CurrentForumUser.UserID
-						.ForumID = ForumId
-						.LastVisitDate = Now
-					End With
-					userForumController.Add(userForum)
-					UserForumsController.ResetUserForumReadCache(CurrentForumUser.UserID, ForumId)
-				End If
-				ForumController.ResetForumInfoCache(ForumId)
-			End If
-
-			Dim AggregatedView As Boolean = False
-			If ForumId = -1 Then
-				'AggregatedView = True
-				' Redirect the user to the aggregated view (Prior to 4.4.4, aggregated used this view so we have to handle legacy links)
-				HttpContext.Current.Response.Redirect(Utilities.Links.ContainerAggregatedLink(TabID, False), True)
+			If HttpContext.Current.Request.IsAuthenticated And ForumID <> -1 Then
+				HandleReads()
 			End If
 
 			RenderTableBegin(wr, 0, 0, "tblThreads")
@@ -517,6 +490,33 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 #Region "Private Methods"
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <remarks></remarks>
+		Private Sub HandleReads()
+			Dim userForumController As New UserForumsController
+			Dim userForum As New UserForumsInfo
+
+			userForum = userForumController.GetCachedUserForumRead(CurrentForumUser.UserID, ForumID)
+
+			If Not userForum Is Nothing Then
+				userForum.LastVisitDate = Now
+				userForumController.Update(userForum)
+				UserForumsController.ResetUserForumReadCache(CurrentForumUser.UserID, ForumID)
+			Else
+				userForum = New UserForumsInfo
+				With userForum
+					.UserID = CurrentForumUser.UserID
+					.ForumID = ForumID
+					.LastVisitDate = Now
+				End With
+				userForumController.Add(userForum)
+				UserForumsController.ResetUserForumReadCache(CurrentForumUser.UserID, ForumID)
+			End If
+			ForumController.ResetForumInfoCache(ForumID)
+		End Sub
 
 		''' <summary>
 		''' Loads all the handlers for the controls used in this view
@@ -600,7 +600,7 @@ Namespace DotNetNuke.Modules.Forum
 					Dim blnTrackedForum As Boolean = False
 
 					For Each objTrackedForum As TrackingInfo In CurrentForumUser.TrackedForums
-						If objTrackedForum.ForumID = ForumId Then
+						If objTrackedForum.ForumID = ForumID Then
 							blnTrackedForum = True
 							Exit For
 						End If
@@ -612,7 +612,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				' Now we get threads to display for this user
 				Dim ctlThread As New ThreadController
-				_ThreadCollection = ctlThread.ThreadGetAll(ModuleID, ForumId, CurrentForumUser.ThreadsPerPage, ThreadPage, Filter, PortalID)
+				ThreadCollection = ctlThread.ThreadGetAll(ModuleID, ForumID, CurrentForumUser.ThreadsPerPage, CurrentPage, Filter, PortalID)
 
 			Catch exc As Exception
 				LogException(exc)
@@ -700,16 +700,16 @@ Namespace DotNetNuke.Modules.Forum
 			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0") ' <table>
 			RenderRowBegin(wr) ' <tr>
 			RenderCellBegin(wr, "", "", "80%", "left", "", "", "")	' <td>
-			wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.Threads, ParentForum, objConfig, ChildGroupView))
+			wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.Threads, objForum, objConfig, ChildGroupView))
 			RenderCellEnd(wr) ' </td>
 			RenderCellBegin(wr, "", "", "20%", "right", "", "", "") ' <td>
 
 			If NoReply Then
 				' show link to show all threads
-				RenderLinkButton(wr, Utilities.Links.ContainerViewForumLink(TabID, ForumId, False), Localization.GetString("ShowAll", objConfig.SharedResourceFile), "Forum_BreadCrumb")
+				RenderLinkButton(wr, Utilities.Links.ContainerViewForumLink(TabID, ForumID, False), Localization.GetString("ShowAll", objConfig.SharedResourceFile), "Forum_BreadCrumb")
 			Else
 				' show link to show no reply threads
-				RenderLinkButton(wr, Utilities.Links.ContainerViewForumLink(TabID, ForumId, True), Localization.GetString("ShowNoReplies", objConfig.SharedResourceFile), "Forum_BreadCrumb")
+				RenderLinkButton(wr, Utilities.Links.ContainerViewForumLink(TabID, ForumID, True), Localization.GetString("ShowNoReplies", objConfig.SharedResourceFile), "Forum_BreadCrumb")
 			End If
 
 			RenderCellEnd(wr) ' </td>
@@ -724,14 +724,12 @@ Namespace DotNetNuke.Modules.Forum
 			RenderRowBegin(wr) '<tr>
 			RenderCellBegin(wr, "", "", "100%", "left", "", "2", "") ' <td>
 			'Remove LoggedOnUserID limitation if wishing to implement Anonymous Posting
-			If (CurrentForumUser.UserID > 0) And (Not ForumId = -1) Then
-				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
-
-				If Not ParentForum.PublicPosting Then
+			If (CurrentForumUser.UserID > 0) And (Not ForumID = -1) Then
+				If Not objForum.PublicPosting Then
 					If objSecurity.IsAllowedToStartRestrictedThread Then
 						RenderTableBegin(wr, "", "", "", "", "4", "0", "", "", "0")	'<Table>            
 						RenderRowBegin(wr) '<tr>
-						url = Utilities.Links.NewThreadLink(TabID, ForumId, ModuleID)
+						url = Utilities.Links.NewThreadLink(TabID, ForumID, ModuleID)
 						RenderCellBegin(wr, "Forum_NavBarButton", "", "", "", "middle", "", "") ' <td> 
 
 						If CurrentForumUser.IsBanned Then
@@ -760,7 +758,7 @@ Namespace DotNetNuke.Modules.Forum
 				Else
 					RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0")	'<Table>            
 					RenderRowBegin(wr) '<tr>
-					url = Utilities.Links.NewThreadLink(TabID, ForumId, ModuleID)
+					url = Utilities.Links.NewThreadLink(TabID, ForumID, ModuleID)
 					RenderCellBegin(wr, "Forum_NavBarButton", "", "", "", "middle", "", "") ' <td> 
 
 					If CurrentForumUser.IsBanned Then
@@ -791,15 +789,6 @@ Namespace DotNetNuke.Modules.Forum
 			RenderCellEnd(wr) ' </Td>
 			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
 			RenderRowEnd(wr) ' </Tr>
-		End Sub
-
-		Public Overrides Sub OnPreRender()
-			' To permit ajax usage for some things, throw a script manager on the page
-			If DotNetNuke.Framework.AJAX.IsInstalled Then
-				DotNetNuke.Framework.AJAX.RegisterScriptManager()
-				'DotNetNuke.Framework.AJAX.RegisterPostBackControl(trcRating)
-				'DotNetNuke.Framework.AJAX.WrapUpdatePanelControl(trcRating, False)
-			End If
 		End Sub
 
 		''' <summary>
@@ -909,7 +898,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						' cell within table for thread status icon
 						RenderCellBegin(wr, "", "100%", "", "", "top", "", "")	' <td>
-						url = Utilities.Links.ContainerViewThreadLink(TabID, ForumId, thread.ThreadID)
+						url = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, thread.ThreadID)
 
 						'link so icon is clickable (also used below for subject)
 						wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
@@ -1036,7 +1025,7 @@ Namespace DotNetNuke.Modules.Forum
 
 							If UserPagesCount >= CapPageCount Then
 								For ThreadPage As Integer = 1 To CapPageCount - 1
-									url = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumId, thread.ThreadID, ThreadPage)
+									url = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumID, thread.ThreadID, ThreadPage)
 									wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 									wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_NormalSmall")
 									wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
@@ -1049,7 +1038,7 @@ Namespace DotNetNuke.Modules.Forum
 
 								If ShowFinalPage Then
 									wr.Write("..., ")
-									url = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumId, thread.ThreadID, UserPagesCount)
+									url = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumID, thread.ThreadID, UserPagesCount)
 									wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 									wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_NormalSmall")
 									wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
@@ -1059,7 +1048,7 @@ Namespace DotNetNuke.Modules.Forum
 							Else
 
 								For ThreadPage As Integer = 1 To UserPagesCount
-									url = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumId, thread.ThreadID, ThreadPage)
+									url = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumID, thread.ThreadID, ThreadPage)
 									wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 									wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_NormalSmall")
 									wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
@@ -1148,7 +1137,7 @@ Namespace DotNetNuke.Modules.Forum
 							If HasNewPosts(CurrentForumUser.UserID, thread) Then
 								Dim params As String()
 
-								params = New String(2) {"forumid=" & ForumId, "postid=" & thread.LastApprovedPost.PostID, "scope=posts"}
+								params = New String(2) {"forumid=" & ForumID, "postid=" & thread.LastApprovedPost.PostID, "scope=posts"}
 								url = NavigateURL(TabID, "", params)
 
 								If CurrentForumUser.PostsPerPage < thread.TotalPosts Then
@@ -1162,10 +1151,10 @@ Namespace DotNetNuke.Modules.Forum
 								RenderImage(wr, objConfig.GetThemeImageURL("thread_newest.") & objConfig.ImageExtension, ForumControl.LocalizedText("imgThreadNewest"), "")
 								wr.RenderEndTag() ' </a>
 							Else
-								url = Utilities.Links.ContainerViewPostLink(TabID, ForumId, thread.LastApprovedPost.PostID)
+								url = Utilities.Links.ContainerViewPostLink(TabID, ForumID, thread.LastApprovedPost.PostID)
 							End If
 						Else
-							url = Utilities.Links.ContainerViewPostLink(TabID, ForumId, thread.LastApprovedPost.PostID)
+							url = Utilities.Links.ContainerViewPostLink(TabID, ForumID, thread.LastApprovedPost.PostID)
 						End If
 						' End Skeel
 
@@ -1228,10 +1217,10 @@ Namespace DotNetNuke.Modules.Forum
 			RenderRowBegin(wr) ' <tr>
 
 			' xml link (for single forum syndication)
-			If (ForumControl.objConfig.EnableRSS And _ParentForum.EnableRSS) AndAlso (_ParentForum.PublicView) Then
+			If (ForumControl.objConfig.EnableRSS And objForum.EnableRSS) AndAlso (objForum.PublicView) Then
 				RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
 
-				wr.AddAttribute(HtmlTextWriterAttribute.Href, objConfig.SourceDirectory & "/Forum_Rss.aspx?forumid=" & Me.ForumId.ToString & "&tabid=" & TabID & "&mid=" & ModuleID)
+				wr.AddAttribute(HtmlTextWriterAttribute.Href, objConfig.SourceDirectory & "/Forum_Rss.aspx?forumid=" & Me.ForumID.ToString & "&tabid=" & TabID & "&mid=" & ModuleID)
 				wr.AddAttribute(HtmlTextWriterAttribute.Target, "_blank")
 				wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
 
@@ -1278,10 +1267,8 @@ Namespace DotNetNuke.Modules.Forum
 			RenderRowBegin(wr) '<tr>
 			RenderCellBegin(wr, "", "", "", "left", "", "", "") ' <td>
 			'Remove LoggedOnUserID limitation if wishing to implement Anonymous Posting
-			If (CurrentForumUser.UserID > 0) And (Not ForumId = -1) Then
-				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
-
-				If Not ParentForum.PublicPosting Then
+			If (CurrentForumUser.UserID > 0) And (Not ForumID = -1) Then
+				If Not objForum.PublicPosting Then
 					If objSecurity.IsAllowedToStartRestrictedThread Then
 						RenderTableBegin(wr, "", "", "", "", "4", "0", "", "", "0")	'<Table>     
 						RenderRowBegin(wr) '<tr>
@@ -1293,7 +1280,7 @@ Namespace DotNetNuke.Modules.Forum
 						RenderRowEnd(wr) ' </tr>
 
 						RenderRowBegin(wr) '<tr>
-						url = Utilities.Links.NewThreadLink(TabID, ForumId, ModuleID)
+						url = Utilities.Links.NewThreadLink(TabID, ForumID, ModuleID)
 						RenderCellBegin(wr, "Forum_NavBarButton", "", "", "", "middle", "", "") ' <td> 
 
 						If CurrentForumUser.IsBanned Then
@@ -1321,7 +1308,7 @@ Namespace DotNetNuke.Modules.Forum
 					RenderRowEnd(wr) ' </tr>
 
 					RenderRowBegin(wr) '<tr>
-					url = Utilities.Links.NewThreadLink(TabID, ForumId, ModuleID)
+					url = Utilities.Links.NewThreadLink(TabID, ForumID, ModuleID)
 					RenderCellBegin(wr, "Forum_NavBarButton", "", "", "", "middle", "", "") ' <td> 
 
 					If CurrentForumUser.IsBanned Then
@@ -1347,7 +1334,7 @@ Namespace DotNetNuke.Modules.Forum
 			If CType(ForumControl.TabModuleSettings("groupid"), String) <> String.Empty Then
 				ChildGroupView = True
 			End If
-			wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.Threads, ParentForum, objConfig, ChildGroupView))
+			wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.Threads, objForum, objConfig, ChildGroupView))
 			RenderCellEnd(wr) ' </td>
 			RenderRowEnd(wr) ' </tr>
 
@@ -1366,12 +1353,10 @@ Namespace DotNetNuke.Modules.Forum
 
 			' Display tracking option if user is authenticated and thread count > 0
 			' CP - Removed (Total Records > 0) as why shouldn't a user be able to subscribe to a new forum
-			If (CurrentForumUser.UserID > 0) And (objConfig.MailNotification) And (ForumId <> -1) Then
+			If (CurrentForumUser.UserID > 0) And (objConfig.MailNotification) And (ForumID <> -1) Then
 				' check email
 				RenderRowBegin(wr) ' <tr>
 				RenderCellBegin(wr, "", "", "", "right", "", "", "")
-
-				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
 
 				If objSecurity.IsForumAdmin Then
 					cmdForumSubscribers.RenderControl(wr)
@@ -1447,9 +1432,9 @@ Namespace DotNetNuke.Modules.Forum
 			ctlPagingControl.CssClass = "Forum_FooterText"
 			ctlPagingControl.TotalRecords = TotalRecords
 			ctlPagingControl.PageSize = CurrentForumUser.ThreadsPerPage
-			ctlPagingControl.CurrentPage = ThreadPage + 1
+			ctlPagingControl.CurrentPage = CurrentPage + 1
 
-			Dim Params As String = "forumid=" & ForumId.ToString & "&scope=threads"
+			Dim Params As String = "forumid=" & ForumID.ToString & "&scope=threads"
 			If NoReply Then
 				Params = Params & "&noreply=1"
 			End If
@@ -1596,7 +1581,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim usrThread As New UserThreadsInfo
 			Dim ReadLink As String
 
-			ReadLink = Utilities.Links.ContainerViewThreadLink(TabID, ForumId, Thread.ThreadID) & "#unread"
+			ReadLink = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, Thread.ThreadID) & "#unread"
 			usrThread = cltUserThread.GetCachedUserThreadRead(CurrentForumUser.UserID, Thread.ThreadID)
 
 			If usrThread Is Nothing Then
@@ -1604,9 +1589,9 @@ Namespace DotNetNuke.Modules.Forum
 				If CurrentForumUser.ViewDescending = True Then
 					Dim PageCount As Decimal = CDec(Thread.TotalPosts / CurrentForumUser.PostsPerPage)
 					PageCount = Math.Ceiling(PageCount)
-					ReadLink = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumId, Thread.ThreadID, CInt(PageCount)) & "#unread"
+					ReadLink = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumID, Thread.ThreadID, CInt(PageCount)) & "#unread"
 				Else
-					ReadLink = Utilities.Links.ContainerViewThreadLink(TabID, ForumId, Thread.ThreadID) & "#unread"
+					ReadLink = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, Thread.ThreadID) & "#unread"
 				End If
 			Else
 				'Get the Index
@@ -1617,9 +1602,9 @@ Namespace DotNetNuke.Modules.Forum
 				Do While PageNumber <= PageCount
 					If (CurrentForumUser.PostsPerPage * PageNumber) >= PostIndex Then
 						If PageNumber = 1 Then
-							ReadLink = Utilities.Links.ContainerViewThreadLink(TabID, ForumId, Thread.ThreadID) & "#unread"
+							ReadLink = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, Thread.ThreadID) & "#unread"
 						Else
-							ReadLink = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumId, Thread.ThreadID, PageNumber) & "#unread"
+							ReadLink = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumID, Thread.ThreadID, PageNumber) & "#unread"
 						End If
 						Exit Do
 					End If

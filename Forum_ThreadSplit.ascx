@@ -1,4 +1,4 @@
-<%@ Register TagPrefix="DNN" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke.WebControls" %>
+<%@ Register Assembly="DotNetNuke.WebControls" Namespace="DotNetNuke.UI.WebControls" TagPrefix="DNN" %>
 <%@ Control language="vb" CodeBehind="Forum_ThreadSplit.ascx.vb" AutoEventWireup="false" Explicit="True" Inherits="DotNetNuke.Modules.Forum.ThreadSplit" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnnforum" Namespace="DotNetNuke.Modules.Forum.WebControls" Assembly="DotNetNuke.Modules.Forum" %>
@@ -35,20 +35,11 @@
 		<tr>
 			<td class="Forum_Row_AdminL">
 				<span class="Forum_Row_AdminText">
-					<dnn:label id="plSubject" runat="server" controlname="txttxtSubject" Suffix=":"></dnn:label>
-				</span></td>
-			<td class="Forum_Row_AdminR" align="left">
-				<asp:textbox id="txtSubject" runat="server" width="250" cssclass="Forum_NormalTextBox" />
-			</td>
-		</tr>
-		<tr>
-			<td class="Forum_Row_AdminL">
-				<span class="Forum_Row_AdminText">
-					<dnn:label id="plOldForum" runat="server" controlname="txtOldForum" Suffix=":"></dnn:label>
+					<dnn:label id="plSubject" runat="server" controlname="txtSubject" Suffix=":"></dnn:label>
 				</span>
 			</td>
 			<td class="Forum_Row_AdminR" align="left">
-				<asp:textbox id="txtOldForum" runat="server" ReadOnly="True" width="250" cssclass="Forum_NormalTextBox" />
+				<asp:textbox id="txtSubject" runat="server" width="250" cssclass="Forum_NormalTextBox" />
 			</td>
 		</tr>
         <tr>

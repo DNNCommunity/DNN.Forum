@@ -32,10 +32,8 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Declarations"
 
-		Private mThreadCollection As New List(Of ThreadInfo)
-		Private mThreadPage As Integer = 0
-		Private mThreadsPerPage As Integer = 10
-		Dim mTotalRecords As Integer = 0
+		Private _ThreadCollection As New List(Of ThreadInfo)
+		Private _CurrentPage As Integer = 0
 		Dim Url As String
 		Private hsThreadRatings As New Hashtable
 
@@ -48,7 +46,7 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-#Region "Public Properties"
+#Region "Private Properties"
 
 		''' <summary>
 		''' The collection of threads returned. 
@@ -56,22 +54,28 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public ReadOnly Property ThreadCollection() As List(Of ThreadInfo)
+		Private Property ThreadCollection() As List(Of ThreadInfo)
 			Get
-				Return mThreadCollection
+				Return _ThreadCollection
 			End Get
+			Set(ByVal Value As List(Of ThreadInfo))
+				_ThreadCollection = Value
+			End Set
 		End Property
 
 		''' <summary>
-		''' Page user is on in this view.  
+		''' The current page the user is viewing.  
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public ReadOnly Property ThreadPage() As Integer
+		Private Property CurrentPage() As Integer
 			Get
-				Return mThreadPage
+				Return _CurrentPage
 			End Get
+			Set(ByVal Value As Integer)
+				_CurrentPage = Value
+			End Set
 		End Property
 
 #End Region
@@ -87,16 +91,11 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Private Sub cmdRead_Clicked(ByVal sender As Object, ByVal e As System.EventArgs)
 			Try
-				Dim ctlThread As New ThreadController
 				Dim userThreadController As New UserThreadsController
 
-				mThreadCollection = ctlThread.ThreadGetUnread(ModuleID, CurrentForumUser.ThreadsPerPage, ThreadPage, CurrentForumUser.UserID)
-				Dim thread As ThreadInfo
-
-				For Each thread In mThreadCollection
-					userThreadController.MarkAll(CurrentForumUser.UserID, thread.ForumID, True)
+				For Each objThread As ThreadInfo In ThreadCollection
+					userThreadController.MarkAll(CurrentForumUser.UserID, objThread.ForumID, True)
 				Next
-
 			Catch ex As Exception
 				LogException(ex)
 			End Try
@@ -129,14 +128,15 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			If Not HttpContext.Current.Request.QueryString("CurrentPage") Is Nothing Then
-				mThreadPage = Int32.Parse(HttpContext.Current.Request.QueryString("CurrentPage"))
+				CurrentPage = Int32.Parse(HttpContext.Current.Request.QueryString("CurrentPage"))
 			End If
 
-			If mThreadPage > 0 Then
-				mThreadPage = mThreadPage - 1
+			If CurrentPage > 0 Then
+				CurrentPage = CurrentPage - 1
 			End If
 
-			mThreadsPerPage = CurrentForumUser.ThreadsPerPage
+			Dim ctlThread As New ThreadController
+			ThreadCollection = ctlThread.ThreadGetUnread(ModuleID, CurrentForumUser.ThreadsPerPage, CurrentPage, CurrentForumUser.UserID)
 		End Sub
 
 		''' <summary>
@@ -155,10 +155,8 @@ Namespace DotNetNuke.Modules.Forum
 					.ID = "chkRead"
 					.Text = ForumControl.LocalizedText("MarkThreadAsRead")
 				End With
-
 			End If
 
-			BindControls()
 			AddControlHandlers()
 			AddControlsToTree()
 
@@ -194,7 +192,7 @@ Namespace DotNetNuke.Modules.Forum
 			RenderTableBegin(wr, 0, 0, "ThreadsTable")
 			RenderNavBar(wr, objConfig, ForumControl)
 			RenderBreadCrumbRow(wr)
-			If mThreadCollection.Count > 0 Then
+			If ThreadCollection.Count > 0 Then
 				RenderThreads(wr)
 				RenderFooterRow(wr)
 				RenderBottomBreadCrumbRow(wr)
@@ -213,9 +211,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[skeel]	12/14/2008	Created
-		''' </history>
 		Private Sub AddControlHandlers()
 			Try
 				AddHandler cmdRead.Click, AddressOf cmdRead_Clicked
@@ -230,9 +225,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[skeel]	12/14/2008	Created
-		''' </history>
 		Private Sub AddControlsToTree()
 			Try
 				Controls.Add(cmdRead)
@@ -242,24 +234,11 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 		''' <summary>
-		''' Binds data to control objects.
-		''' </summary>
-		''' <remarks></remarks>
-		Private Sub BindControls()
-			' Now we get threads containing new posts to display for this user
-			Dim ctlThread As New ThreadController
-			mThreadCollection = ctlThread.ThreadGetUnread(ModuleID, CurrentForumUser.ThreadsPerPage, ThreadPage, CurrentForumUser.UserID)
-		End Sub
-
-		''' <summary>
 		''' No Threads
 		''' </summary>
 		''' <param name="wr"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[skeel]	12/14/2008	Created
-		''' </history>
 		Private Sub RenderNoThreads(ByVal wr As HtmlTextWriter)
 			RenderRowBegin(wr) '<tr>
 
@@ -290,9 +269,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="wr"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[skeel]	12/14/2008	Created
-		''' </history>
 		Private Sub RenderBreadCrumbRow(ByVal wr As HtmlTextWriter)
 			RenderRowBegin(wr) '<tr>
 
@@ -334,9 +310,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="wr"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[skeel]	12/14/2008	Created
-		''' </history>
 		Private Sub RenderThreads(ByVal wr As HtmlTextWriter)
 			RenderRowBegin(wr) ' <tr>
 
@@ -412,9 +385,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="wr"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[skeel]	12/14/2008	Created
-		''' </history>
 		Private Sub RenderThreadInfo(ByVal wr As HtmlTextWriter)
 			Try
 				If ThreadCollection.Count = 0 Then
@@ -435,8 +405,6 @@ Namespace DotNetNuke.Modules.Forum
 				For Each thread In ThreadCollection
 					If Not thread Is Nothing Then
 						Dim even As Boolean = ThreadIsEven(Count)
-						mTotalRecords = thread.TotalRecords
-
 						RenderRowBegin(wr) ' <Tr>
 
 						' cell holds table for post icon/thread subject/rating
@@ -722,9 +690,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="wr"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[skeel]	12/14/2008	Created
-		''' </history>
 		Private Sub RenderFooterRow(ByVal wr As HtmlTextWriter)
 			RenderRowBegin(wr) ' <tr>
 			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")	   ' <td><img/></td>
@@ -810,16 +775,13 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="wr"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[skeel]	12/14/2008	Created
-		''' </history>
 		Private Sub RenderThreadsPaging(ByVal wr As HtmlTextWriter)
 			' First, previous, next, last thread hyperlinks
 			Dim ctlPagingControl As New DotNetNuke.Modules.Forum.WebControls.PagingControl
 			ctlPagingControl.CssClass = "Forum_FooterText"
-			ctlPagingControl.TotalRecords = mTotalRecords
+			ctlPagingControl.TotalRecords = ThreadCollection(0).TotalRecords
 			ctlPagingControl.PageSize = CurrentForumUser.ThreadsPerPage
-			ctlPagingControl.CurrentPage = ThreadPage + 1
+			ctlPagingControl.CurrentPage = CurrentPage + 1
 
 			Dim Params As String = "scope=unread"
 
@@ -835,9 +797,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[skeel]	12/14/2008	Created
-		''' </history>
 		Private Function ThreadIsEven(ByVal Count As Integer) As Boolean
 			If Count Mod 2 = 0 Then
 				'even
@@ -856,9 +815,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[skeel]	12/14/2008	Created
-		''' </history>
 		Private Function GetMediaURL(ByVal Thread As ThreadInfo) As String
 			If Thread.IsClosed Then
 				' thread IS locked
@@ -889,9 +845,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[skeel]	12/14/2008	Created
-		''' </history>
 		Private Function GetMediaText(ByVal Thread As ThreadInfo) As String
 			If Thread.IsClosed Then
 				' thread IS locked
@@ -922,9 +875,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns>URL</returns>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[skeel]	11/28/2008	Created
-		''' </history>
 		Private Function FirstUnreadLink(ByVal Thread As ThreadInfo) As String
 			Dim cltUserThread As New UserThreadsController
 			Dim usrThread As New UserThreadsInfo

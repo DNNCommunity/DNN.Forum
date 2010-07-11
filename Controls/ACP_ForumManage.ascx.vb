@@ -46,13 +46,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			End If
 		End Sub
 
-		'''' <summary>
-		'''' Sets the page up for the user to view. 
-		'''' </summary>
-		'''' <param name="sender"></param>
-		'''' <param name="e"></param>
-		'''' <remarks>
-		'''' </remarks>
+		''' <summary>
+		''' Sets the page up for the user to view. 
+		''' </summary>
+		''' <param name="sender"></param>
+		''' <param name="e"></param>
+		''' <remarks>
+		''' </remarks>
 		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 			Try
 				Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
@@ -89,9 +89,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <param name="e"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	7/13/2005	Created
-		''' </history>
 		Protected Sub lstGroup_ItemCommand(ByVal Sender As System.Object, ByVal e As System.Web.UI.WebControls.DataListCommandEventArgs) Handles lstGroup.ItemCommand
 			Try
 				' Determine the command of the button 
@@ -614,8 +611,14 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				Dim ParentID As Integer = Convert.ToInt32(Split(str, "|")(0))
 				Dim GroupID As Integer = Convert.ToInt32(Split(str, "|")(1))
 				Dim ForumID As Integer = Convert.ToInt32(Split(str, "|")(2))
+
 				Dim ctlForum As New ForumController
 				ctlForum.ForumDelete(ParentID, GroupID, ForumID, ModuleId)
+
+				'update the cached values
+				ForumController.ResetForumInfoCache(ForumID)
+				ForumController.ResetForumInfoCache(ParentID)
+				GroupInfo.ResetGroupInfo(Convert.ToInt32(GroupID))
 
 				BindGroupList()
 			Catch exc As Exception
