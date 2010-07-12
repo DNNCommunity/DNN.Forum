@@ -97,7 +97,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					Dim cntForum As New ForumController
 					Dim objForum As New ForumInfo
-					objForum = cntForum.GetForumInfoCache(objPost.ForumID)
+					objForum = cntForum.GetForumItemCache(objPost.ForumID)
 
 					'Grab keywords based on content type, this is stored in cache
 					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
@@ -135,7 +135,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					Dim cntForum As New ForumController
 					Dim objForum As New ForumInfo
-					objForum = cntForum.GetForumInfoCache(objPost.ForumID)
+					objForum = cntForum.GetForumItemCache(objPost.ForumID)
 
 					'Grab keywords based on content type, this is stored in cache
 					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
@@ -173,7 +173,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					Dim cntForum As New ForumController
 					Dim objForum As New ForumInfo
-					objForum = cntForum.GetForumInfoCache(objPost.ForumID)
+					objForum = cntForum.GetForumItemCache(objPost.ForumID)
 
 					'Grab keywords based on content type, this is stored in cache
 					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
@@ -210,7 +210,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					Dim cntForum As New ForumController
 					Dim objForum As New ForumInfo
-					objForum = cntForum.GetForumInfoCache(objPost.ForumID)
+					objForum = cntForum.GetForumItemCache(objPost.ForumID)
 
 					'Grab keywords based on content type, this is stored in cache
 					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
@@ -318,7 +318,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					Dim cntForum As New ForumController
 					Dim objForum As New ForumInfo
-					objForum = cntForum.GetForumInfoCache(objPost.ForumID)
+					objForum = cntForum.GetForumItemCache(objPost.ForumID)
 
 					'Grab keywords based on content type, this is stored in cache
 					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
@@ -355,7 +355,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					Dim cntForum As New ForumController
 					Dim objForum As New ForumInfo
-					objForum = cntForum.GetForumInfoCache(objPost.ForumID)
+					objForum = cntForum.GetForumItemCache(objPost.ForumID)
 
 					'Grab keywords based on content type, this is stored in cache
 					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
@@ -392,7 +392,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					Dim cntForum As New ForumController
 					Dim objForum As New ForumInfo
-					objForum = cntForum.GetForumInfoCache(objPost.ForumID)
+					objForum = cntForum.GetForumItemCache(objPost.ForumID)
 
 					'Grab keywords based on content type, this is stored in cache
 					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
@@ -719,7 +719,7 @@ Namespace DotNetNuke.Modules.Forum
 					'user -1 for userid, so we never get a value of IsTracked (important to not rely on userid specifically here)
 					Dim cntThread As New ThreadController()
 					Dim objThread As ThreadInfo = cntThread.GetThreadInfo(objPost.ThreadID)
-					Dim objForum As ForumInfo = cntForum.GetForumInfoCache(objThread.ForumID)
+					Dim objForum As ForumInfo = cntForum.GetForumItemCache(objThread.ForumID)
 
 					If Not Keywords Is Nothing Then
 						If Keywords.ContainsKey("[FORUMNAME]") Then
@@ -762,7 +762,7 @@ Namespace DotNetNuke.Modules.Forum
 					'user -1 for userid, so we never get a value of IsTracked (important to not rely on userid specifically here)
 					Dim cntThread As New ThreadController()
 					Dim objThread As ThreadInfo = cntThread.GetThreadInfo(objPost.ThreadID)
-					Dim objForum As ForumInfo = cntForum.GetForumInfoCache(objThread.ForumID)
+					Dim objForum As ForumInfo = cntForum.GetForumItemCache(objThread.ForumID)
 
 					If Not Keywords Is Nothing Then
 						If Keywords.ContainsKey("[FORUMNAME]") Then
@@ -812,7 +812,7 @@ Namespace DotNetNuke.Modules.Forum
 					'user -1 for userid, so we never get a value of IsTracked (important to not rely on userid specifically here)
 					Dim cntThread As New ThreadController()
 					Dim objThread As ThreadInfo = cntThread.GetThreadInfo(objPost.ThreadID)
-					Dim objForum As ForumInfo = cntForum.GetForumInfoCache(objThread.ForumID)
+					Dim objForum As ForumInfo = cntForum.GetForumItemCache(objThread.ForumID)
 
 					If Not Keywords Is Nothing Then
 						If Keywords.ContainsKey("[FORUMNAME]") Then

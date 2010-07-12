@@ -155,6 +155,7 @@
     <Compile Include="Components\Bookmark\ForumBookmark.vb" />
     <Compile Include="Components\Configuration\Enums.vb" />
     <Compile Include="Components\Configuration\ForumPreConfig.vb" />
+    <Compile Include="Components\Content\Terms.vb" />
     <Compile Include="Components\Controllers\AnswerController.vb" />
     <Compile Include="Components\Controllers\AttachmentController.vb" />
     <Compile Include="Components\Controllers\EmailTemplateController.vb" />
@@ -174,6 +175,7 @@
     <Compile Include="Components\Controllers\UserForumController.vb" />
     <Compile Include="Components\Controllers\UserThreadController.vb" />
     <Compile Include="Components\Controllers\WordFilterController.vb" />
+    <Compile Include="Components\Content\Content.vb" />
     <Compile Include="Components\Email\ForumEmail.vb" />
     <Compile Include="Components\Email\ForumEmailDistribution.vb">
       <SubType>Code</SubType>

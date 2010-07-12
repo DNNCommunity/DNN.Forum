@@ -33,21 +33,44 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Declarations"
 
-		Private mForumsCount As Integer = 0
-		Private mAuthorizedForumsCount As Integer = 0
-		Private a As Integer = 0
-		Dim url As String
-		Dim mGroupId As Integer = 0
-
-		'[skeel] Subforums
-		Dim mForumId As Integer = 0
-
-		Dim _arrAuthGroups As List(Of GroupInfo)
-		Dim _arrAuthForumsCount As Integer = 0
+		Dim _AuthorizedGroups As List(Of GroupInfo)
+		Dim _AuthForumsCount As Integer = 0
 
 #End Region
 
-#Region "Public Properties"
+#Region "Properties"
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private ReadOnly Property SelectedGroupID() As Integer
+			Get
+				If Not HttpContext.Current.Request.QueryString("groupid") Is Nothing Then
+					Return CType(HttpContext.Current.Request.QueryString("groupid"), Integer)
+				Else
+					Return 0
+				End If
+			End Get
+		End Property
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private ReadOnly Property SelectedForumID() As Integer
+			Get
+				If Not HttpContext.Current.Request.QueryString("forumid") Is Nothing Then
+					Return CType(HttpContext.Current.Request.QueryString("forumid"), Integer)
+				Else
+					Return 0
+				End If
+			End Get
+		End Property
 
 		''' <summary>
 		''' Collection of groups
@@ -55,12 +78,12 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Property arrAuthGroups() As List(Of GroupInfo)
+		Private Property AuthorizedGroups() As List(Of GroupInfo)
 			Get
-				Return _arrAuthGroups
+				Return _AuthorizedGroups
 			End Get
 			Set(ByVal Value As List(Of GroupInfo))
-				_arrAuthGroups = Value
+				_AuthorizedGroups = Value
 			End Set
 		End Property
 
@@ -70,12 +93,12 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Property arrAuthForumsCount() As Integer
+		Private Property AuthForumsCount() As Integer
 			Get
-				Return _arrAuthForumsCount
+				Return _AuthForumsCount
 			End Get
 			Set(ByVal Value As Integer)
-				_arrAuthForumsCount = Value
+				_AuthForumsCount = Value
 			End Set
 		End Property
 
@@ -108,15 +131,15 @@ Namespace DotNetNuke.Modules.Forum
 
 			' Get groups
 			Dim cntGroup As New GroupController
-			arrAuthGroups = cntGroup.GroupGetAllAuthorized(ModuleID, CurrentForumUser.UserID, False, TabID)
-			mAuthorizedForumsCount = 0
+			AuthorizedGroups = cntGroup.GroupGetAllAuthorized(ModuleID, CurrentForumUser.UserID, False, TabID)
+			AuthForumsCount = 0
 
-			If arrAuthGroups.Count > 0 Then
-				For Each objGroup As GroupInfo In arrAuthGroups
+			If AuthorizedGroups.Count > 0 Then
+				For Each objGroup As GroupInfo In AuthorizedGroups
 					Dim arrAuthForums As New List(Of ForumInfo)
 					arrAuthForums = cntGroup.AuthorizedForums(CurrentForumUser.UserID, objGroup.GroupID, False, ModuleID, TabID)
 					If arrAuthForums.Count > 0 Then
-						arrAuthForumsCount += arrAuthForums.Count
+						AuthForumsCount += arrAuthForums.Count
 					End If
 				Next
 			End If
@@ -132,16 +155,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>
 		''' </remarks>
 		Public Overrides Sub Render(ByVal wr As HtmlTextWriter)
-			'[skeel] load in the url requests, if any
-			If Not HttpContext.Current.Request.QueryString("groupid") Is Nothing Then
-				' assign a specific groupid so we only show a single group
-				mGroupId = CType(HttpContext.Current.Request.QueryString("groupid"), Integer)
-			End If
-			If Not HttpContext.Current.Request.QueryString("forumid") Is Nothing Then
-				' assign a specific groupid so we only show a single group
-				mForumId = CType(HttpContext.Current.Request.QueryString("forumid"), Integer)
-			End If
-
 			RenderTableBegin(wr, 0, 0, "tblGroup") ' <table>
 			Dim objGroupCnt As New GroupController
 			Dim arrGroups As New List(Of GroupInfo)
@@ -190,18 +203,24 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			'[Skeel] add support for full breadcrumb on groupview and parentforum view
-			If mForumId > 0 And mGroupId > 0 Then
+			If SelectedForumID > 0 And SelectedGroupID > 0 Then
 				'Parent Forum view
 				Dim cltForum As New ForumController
 				Dim objForumInfo As ForumInfo
-				objForumInfo = cltForum.GetForumInfoCache(mForumId)
+				objForumInfo = cltForum.GetForumItemCache(SelectedForumID)
 				wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.Groups, objForumInfo, objConfig, ChildGroupView))
-			ElseIf mGroupId > 0 Then
+			ElseIf SelectedGroupID > 0 Then
 				'Group view
 				Dim cltGroups As New GroupController
 				Dim objGroupInfo As GroupInfo
-				objGroupInfo = cltGroups.GroupGet(mGroupId)
+				objGroupInfo = cltGroups.GroupGet(SelectedGroupID)
 				wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.Groups, objGroupInfo, objConfig, ChildGroupView))
+				'ElseIf SelectedGroupID = -1 Then
+				'	' Aggregated Group View
+				'	Dim cltGroups As New GroupController
+				'	Dim objGroupInfo As GroupInfo
+				'	objGroupInfo = cltGroups.GroupGet(SelectedGroupID)
+				'	wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.Groups, objGroupInfo, objConfig, ChildGroupView))
 			Else
 				'Forum Home view
 				wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.Groups, Nothing, objConfig, ChildGroupView))
@@ -209,6 +228,7 @@ Namespace DotNetNuke.Modules.Forum
 				RenderCellBegin(wr, "Forum_LastPostText", "", "", "right", "", "", "") ' <td>
 
 				'View latest x hours
+				Dim url As String
 				wr.Write(Localization.GetString("ViewLatest", objConfig.SharedResourceFile) & " ")
 				url = Utilities.Links.ContainerViewLatestHoursLink(TabID, 6)
 				RenderLinkButton(wr, url, Localization.GetString("6", objConfig.SharedResourceFile), "Forum_LastPostText", "", False, objConfig.NoFollowLatestThreads)
@@ -329,7 +349,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			Dim forum As ForumInfo
 			Dim cntForum As New ForumController
-			forum = cntForum.GetForumInfoCache(mForumId)
+			forum = cntForum.GetForumItemCache(SelectedForumID)
 
 
 			RenderLinkButton(wr, GroupLinkURL, Group.Name + " > " & forum.Name, "Forum_AltHeaderText")
@@ -379,7 +399,7 @@ Namespace DotNetNuke.Modules.Forum
 			RenderCellBegin(wr, "Forum_Header", "", "", "left", "middle", "", "")	 '<td>
 			RenderDivBegin(wr, "", "Forum_HeaderText") ' <span>
 			wr.Write("&nbsp;")
-			If arrAuthGroups.Count > 0 Then
+			If AuthorizedGroups.Count > 0 Then
 				wr.Write(ForumControl.LocalizedText("Forums"))
 			Else
 				wr.Write(ForumControl.LocalizedText("ForumContainsNothing"))
@@ -392,7 +412,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			' Threads column 
 			RenderCellBegin(wr, "Forum_Header", "", "11%", "center", "middle", "", "")	 '<td>
-			If arrAuthGroups.Count > 0 Then
+			If AuthorizedGroups.Count > 0 Then
 				RenderDivBegin(wr, "", "Forum_HeaderText") ' <span>
 				wr.Write(ForumControl.LocalizedText("Threads"))
 				RenderDivEnd(wr) ' </span>
@@ -401,7 +421,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			' Posts column 
 			RenderCellBegin(wr, "Forum_Header", "", "11%", "center", "middle", "", "")	 '<td>
-			If arrAuthGroups.Count > 0 Then
+			If AuthorizedGroups.Count > 0 Then
 				RenderDivBegin(wr, "", "Forum_HeaderText") ' <span>
 				wr.Write(ForumControl.LocalizedText("Posts"))
 				RenderDivEnd(wr) ' </span>
@@ -414,7 +434,7 @@ Namespace DotNetNuke.Modules.Forum
 			RenderRowBegin(wr) '<tr>
 
 			RenderCellBegin(wr, "Forum_Header", "", "", "center", "middle", "", "") ' <td>
-			If arrAuthGroups.Count > 0 Then
+			If AuthorizedGroups.Count > 0 Then
 				RenderDivBegin(wr, "", "Forum_HeaderText") ' <span>
 				wr.Write(ForumControl.LocalizedText("LastPost"))
 				RenderDivEnd(wr) ' </span>
@@ -428,28 +448,27 @@ Namespace DotNetNuke.Modules.Forum
 			RenderRowEnd(wr) ' </tr>
 
 			' Loop through each forum group visible to the user
-			If arrAuthGroups.Count > 0 Then
+			If AuthorizedGroups.Count > 0 Then
 				' get the group specification ( if it exists )
 				Dim GroupID As Integer = 0
 				If CType(ForumControl.TabModuleSettings("groupid"), String) <> String.Empty Then
 					If CType(ForumControl.TabModuleSettings("groupid"), Integer) = 0 Then
 						' We know here group feature (parent/child) is not being used, check for url set item to show single group
-						If mGroupId > 0 Then
+						If SelectedGroupID > 0 Then
 							' assign a specific groupid so we only show a single group
-							GroupID = mGroupId
+							GroupID = SelectedGroupID
 						End If
 					Else
 						GroupID = CType(ForumControl.TabModuleSettings("groupid"), Integer)
 					End If
 				Else	' from else to end of if is correct
 					' We know here group feature (parent/child) is not being used, check for url set item to show single group
-					If mGroupId > 0 Then
+					If SelectedGroupID > 0 Then
 						' assign a specific groupid so we only show a single group
-						GroupID = mGroupId
+						GroupID = SelectedGroupID
 					End If
 				End If
 				Dim objGroup As New GroupInfo
-				'Dim objForum As New ForumInfo
 
 				If ForumControl.objConfig.AggregatedForums Then
 					objGroup = New GroupInfo
@@ -457,19 +476,19 @@ Namespace DotNetNuke.Modules.Forum
 					objGroup.ModuleID = ModuleID
 					objGroup.GroupID = -1
 					objGroup.Name = Localization.GetString("AggregatedGroupName", ForumControl.objConfig.SharedResourceFile)
-					arrAuthGroups.Insert(0, objGroup)
+					AuthorizedGroups.Insert(0, objGroup)
 				End If
 
 				' group is expand or collapse depends on user settings handled a few lines below
-				For Each objGroup In arrAuthGroups
+				For Each objGroup In AuthorizedGroups
 					' filter based on group:  - 1 means show all, matching the groupid to the current groupid in the colleciton means show a single one
 					If GroupID = 0 Or GroupID = objGroup.GroupID Then
 						'[skeel] Subforums
 						Dim arrForums As List(Of ForumInfo)
 						Dim cntGroup As New GroupController()
 
-						If mForumId > 0 Then
-							arrForums = cntGroup.AuthorizedSubForums(CurrentForumUser.UserID, objGroup.GroupID, False, mForumId, ModuleID, TabID)
+						If SelectedForumID > 0 Then
+							arrForums = cntGroup.AuthorizedSubForums(CurrentForumUser.UserID, objGroup.GroupID, False, SelectedForumID, ModuleID, TabID)
 						Else
 							arrForums = cntGroup.AuthorizedNoParentForums(CurrentForumUser.UserID, objGroup.GroupID, False, ModuleID, TabID)
 						End If
@@ -477,7 +496,7 @@ Namespace DotNetNuke.Modules.Forum
 						' display group only if group contains atleast one authorized forum
 						If arrForums.Count > 0 Then
 							'[skeel] Subforums
-							If mForumId > 0 Then
+							If SelectedForumID > 0 Then
 								RenderGroupForumInfo(wr, objGroup)
 							Else
 								RenderGroupInfo(wr, objGroup)
@@ -585,6 +604,8 @@ Namespace DotNetNuke.Modules.Forum
 					wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
 
 					Dim NewWindow As Boolean = False
+					Dim url As String
+
 					If objForum.ForumType = DotNetNuke.Modules.Forum.ForumType.Link Then
 						Dim objCnt As New DotNetNuke.Common.Utilities.UrlController
 						Dim objURLTrack As New DotNetNuke.Common.Utilities.UrlTrackingInfo
@@ -1090,12 +1111,12 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Private Function FooterStats(ByVal sb As StringBuilder) As String
 			sb.Append(ForumControl.LocalizedText("ForumsCountInfoPosts"))
-			sb.Replace("[ForumCount]", arrAuthForumsCount.ToString)
+			sb.Replace("[ForumCount]", AuthForumsCount.ToString)
 
 			If objConfig.AggregatedForums Then
-				sb.Replace("[GroupCount]", (arrAuthGroups.Count - 1).ToString())
+				sb.Replace("[GroupCount]", (AuthorizedGroups.Count - 1).ToString())
 			Else
-				sb.Replace("[GroupCount]", arrAuthGroups.Count.ToString())
+				sb.Replace("[GroupCount]", AuthorizedGroups.Count.ToString())
 			End If
 
 			Return sb.ToString

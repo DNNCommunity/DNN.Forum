@@ -126,7 +126,7 @@ Namespace DotNetNuke.Modules.Forum
 					ForumID = Int32.Parse(Request.QueryString("forumid"))
 					If ForumID <> -1 Then
 						Dim cntForum As New ForumController
-						objForum = cntForum.GetForumInfoCache(ForumID)
+						objForum = cntForum.GetForumItemCache(ForumID)
 						securityForumID = objForum.ForumID
 						' if the forumid in the querystring does not match the one assigned to the postid, someone is editing the querystring trying to gain posting access they may not have
 						If Not objParentPost Is Nothing Then
@@ -471,7 +471,7 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 
 				Dim cntForum As New ForumController
-				Dim objForum As ForumInfo = cntForum.GetForumInfoCache(Integer.Parse(ddlForum.SelectedItem.Value))
+				Dim objForum As ForumInfo = cntForum.GetForumItemCache(Integer.Parse(ddlForum.SelectedItem.Value))
 				Dim objModSecurity As New Forum.ModuleSecurity(ModuleId, TabId, objForum.ForumID, objLoggedOnUserID)
 				Dim ThreadID As Integer = -1
 
@@ -592,7 +592,7 @@ Namespace DotNetNuke.Modules.Forum
 		Protected Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
 			Try
 				Dim cntForum As New ForumController
-				Dim objForum As ForumInfo = cntForum.GetForumInfoCache(Integer.Parse(ddlForum.SelectedItem.Value))
+				Dim objForum As ForumInfo = cntForum.GetForumItemCache(Integer.Parse(ddlForum.SelectedItem.Value))
 
 				If objForum.AllowPolls Then
 					' Make sure user didn't create poll here that they are about to orhpan
@@ -1331,7 +1331,7 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 
 				Dim cntForum As New ForumController
-				Dim objForum As ForumInfo = cntForum.GetForumInfoCache(ForumID)
+				Dim objForum As ForumInfo = cntForum.GetForumItemCache(ForumID)
 
 				If objForum.AllowPolls Then
 					Dim statusEntry As New ListItem(Localization.GetString("Poll", objConfig.SharedResourceFile), CInt(ThreadStatus.Poll).ToString())

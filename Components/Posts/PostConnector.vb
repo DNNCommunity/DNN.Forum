@@ -217,7 +217,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim objForumUser As ForumUserInfo
 
 			objConfig = Forum.Configuration.GetForumConfig(ModuleID)
-			objForum = cntForum.GetForumInfoCache(ForumID)
+			objForum = cntForum.GetForumItemCache(ForumID)
 			objForumUser = cntForumUser.GetForumUser(UserID, False, ModuleID, PortalID)
 
 			Dim objModSecurity As New Forum.ModuleSecurity(objConfig.ModuleID, TabID, objForum.ForumID, objForumUser.UserID)
@@ -400,6 +400,17 @@ Namespace DotNetNuke.Modules.Forum
 						ctlThread.ThreadStatusChange(newPostID, objForumUser.UserID, Status, 0, -1, PortalID)
 					End If
 
+					' Handle Content Item Creation
+					If ThreadID = -1 Then
+						Dim cntThread As New ThreadController
+						Dim objThread As ThreadInfo = cntThread.GetThreadInfo(newPostID)
+
+						objThread.ModuleID = objConfig.ModuleID
+						objThread.TabID = TabID
+						Dim cntContent As New Content
+						cntContent.CreateContentItem(objThread, TabID)
+					End If
+
 					Forum.Components.Utilities.Caching.UpdatePostCache(newPostID, ThreadID, objForum.ForumID, objForum.GroupID, objConfig.ModuleID)
 
 					_emailType = ForumEmailType.UserNewThread
@@ -422,6 +433,17 @@ Namespace DotNetNuke.Modules.Forum
 
 					Forum.Components.Utilities.Caching.UpdatePostCache(newPostID, ThreadID, objForum.ForumID, objForum.GroupID, objConfig.ModuleID)
 
+					' Handle Content Item (if postid = threadid)
+					If ThreadID = newPostID Then
+						Dim cntThread As New ThreadController
+						Dim objThread As ThreadInfo = cntThread.GetThreadInfo(ThreadID)
+
+						objThread.ModuleID = objConfig.ModuleID
+						objThread.TabID = TabID
+						Dim cntContent As New Content
+						cntContent.UpdateContentItem(objThread, TabID)
+					End If
+
 					_emailType = ForumEmailType.UserPostEdited
 				Case Else	  ' Reply/Quote
 					' we are clearing out attachments (empty string) as this method is now legacy
@@ -436,7 +458,6 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			ForumUserController.ResetForumUser(objForumUser.UserID, PortalID)
-			Forum.Components.Utilities.Caching.UpdateGroupCache(objForum.GroupID, objConfig.ModuleID)
 
 			' Obtain a new instance of postinfo 
 			Dim cntPost As New PostController()

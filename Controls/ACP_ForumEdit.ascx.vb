@@ -113,7 +113,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			Get
 				If ForumID > 0 Then
 					Dim cntForum As New ForumController
-					Return cntForum.GetForumInfoCache(ForumID)
+					Return cntForum.GetForumItemCache(ForumID)
 				Else
 					Return Nothing
 				End If
@@ -258,7 +258,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			Dim cntForum As New ForumController
 			Dim objForum As New ForumInfo
 			' Make sure we are working w/ the current forumID
-			objForum = cntForum.GetForumInfoCache(ForumID)
+			objForum = cntForum.GetForumItemCache(ForumID)
 
 			'[skeel] store this value to clear correct cache
 			Dim OriginalParentID As Integer
@@ -667,7 +667,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					Dim objPerForum As ForumInfo
 
 					' set the perms stuff from the forum template selected
-					objPerForum = objForumCnt.GetForumInfoCache(intForumID)
+					objPerForum = objForumCnt.GetForumItemCache(intForumID)
 					'PublicPosting = objPerForum.PublicPosting
 					'PublicView = objPerForum.PublicView
 					'ModeratedForum = objPerForum.IsModerated

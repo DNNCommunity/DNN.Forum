@@ -633,7 +633,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			Try
 				Dim forumID As Integer = Int32.Parse(CType(Sender, ImageButton).CommandArgument)
 				Dim cntForum As New ForumController
-				Dim forum As ForumInfo = cntForum.GetForumInfoCache(forumID)
+				Dim forum As ForumInfo = cntForum.GetForumItemCache(forumID)
 
 				Dim ctlForum As New ForumController
 				ctlForum.ForumSortOrderUpdate(forum.ParentId, forum.GroupID, forumID, True)
@@ -655,7 +655,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			Try
 				Dim forumID As Integer = Int32.Parse(CType(Sender, ImageButton).CommandArgument)
 				Dim cntForum As New ForumController
-				Dim forum As ForumInfo = cntForum.GetForumInfoCache(forumID)
+				Dim forum As ForumInfo = cntForum.GetForumItemCache(forumID)
 				Dim GroupID As Integer = forum.GroupID
 				Dim ctlForum As New ForumController
 				ctlForum.ForumSortOrderUpdate(forum.ParentId, forum.GroupID, forumID, False)
@@ -733,7 +733,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <remarks></remarks>
 		Private Function EnabledImage(ByVal ForumID As Integer) As String
 			Dim cntForum As New ForumController
-			Dim forum As ForumInfo = cntForum.GetForumInfoCache(ForumID)
+			Dim forum As ForumInfo = cntForum.GetForumItemCache(ForumID)
 			Dim GroupID As Integer = forum.GroupID
 			Dim ctlForum As New ForumController
 			Dim imagepath As String
@@ -755,7 +755,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <remarks></remarks>
 		Private Function EnabledImageText(ByVal ForumID As Integer) As String
 			Dim cntForum As New ForumController
-			Dim forum As ForumInfo = cntForum.GetForumInfoCache(ForumID)
+			Dim forum As ForumInfo = cntForum.GetForumItemCache(ForumID)
 			Dim GroupID As Integer = forum.GroupID
 			Dim ctlForum As New ForumController
 			Dim imagetext As String

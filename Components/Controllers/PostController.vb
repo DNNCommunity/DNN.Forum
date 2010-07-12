@@ -122,12 +122,17 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>Never handle email sends from here. Also, the post delete sproc handles related attachment deletes in the data store.</remarks>
 		Friend Sub PostDelete(ByVal PostID As Integer, ByVal ModeratorID As Integer, ByVal Notes As String, ByVal PortalID As Integer, ByVal GroupID As Integer, ByVal DeleteThread As Boolean, ByVal ParentID As Integer)
 			Dim objPost As New PostInfo
+			Dim objThread As New ThreadInfo
+			Dim cntThread As New ThreadController
+
 			objPost = PostGet(PostID, PortalID)
+			objThread = cntThread.GetThreadInfo(objPost.PostID)
 
 			DotNetNuke.Modules.Forum.DataProvider.Instance().PostDelete(PostID, ModeratorID, Notes, PortalID)
 
+			' We need to delete the Content Item here
+			Forum.Content.DeleteContentItem(objThread)
 			ForumUserController.ResetForumUser(objPost.Author.UserID, PortalID)
-			ForumController.ClearChildForumCache(ParentID, GroupID)
 		End Sub
 
 		''' <summary>
@@ -140,7 +145,6 @@ Namespace DotNetNuke.Modules.Forum
 		Friend Sub PostUpdateParseInfo(ByVal PostID As Integer, ByVal GroupID As Integer, ByVal ParseInfo As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().PostUpdateParseInfo(PostID, ParseInfo)
 			Forum.Components.Utilities.Caching.UpdatePostCache(PostID)
-			ForumController.ClearChildForumCache(PostID, GroupID)
 		End Sub
 
 		''' <summary>
@@ -176,8 +180,6 @@ Namespace DotNetNuke.Modules.Forum
 				While dr.Read
 					OldGroupID = Convert.ToInt32(dr("OldGroupID"))
 					NewGroupID = Convert.ToInt32(dr("NewGroupID"))
-					ForumController.ClearChildForumCache(ParentID, OldGroupID)
-					ForumController.ClearChildForumCache(ParentID, NewGroupID)
 				End While
 			Finally
 				If dr IsNot Nothing Then
@@ -210,13 +212,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ParseInfo"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Friend Function PostAdd(ByVal ParentPostID As Integer, ByVal ForumID As Integer, ByVal UserID As Integer, ByVal RemoteAddr As String, ByVal Notify As Boolean, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal ObjectID As Integer, ByVal FileAttachmentURL As String, ByVal PortalID As Integer, ByVal ThreadIconID As Integer, ByVal PollID As Integer, ByVal IsModerated As Boolean, ByVal GroupID As Integer, ByVal ParentID As Integer, ByVal ParseInfo As Integer) As Integer
-			Dim PostID As Integer
-			PostID = DotNetNuke.Modules.Forum.DataProvider.Instance().PostAdd(ParentPostID, ForumID, UserID, RemoteAddr, Notify, Subject, Body, IsPinned, PinnedDate, IsClosed, ObjectID, FileAttachmentURL, PortalID, ThreadIconID, PollID, IsModerated, ParseInfo)
-
-			ForumController.ClearChildForumCache(ParentID, GroupID)
-
-			Return PostID
+		Public Function PostAdd(ByVal ParentPostID As Integer, ByVal ForumID As Integer, ByVal UserID As Integer, ByVal RemoteAddr As String, ByVal Notify As Boolean, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal ObjectID As Integer, ByVal FileAttachmentURL As String, ByVal PortalID As Integer, ByVal ThreadIconID As Integer, ByVal PollID As Integer, ByVal IsModerated As Boolean, ByVal GroupID As Integer, ByVal ParentID As Integer, ByVal ParseInfo As Integer) As Integer
+			Return DotNetNuke.Modules.Forum.DataProvider.Instance().PostAdd(ParentPostID, ForumID, UserID, RemoteAddr, Notify, Subject, Body, IsPinned, PinnedDate, IsClosed, ObjectID, FileAttachmentURL, PortalID, ThreadIconID, PollID, IsModerated, ParseInfo)
 		End Function
 
 		''' <summary>
@@ -239,9 +236,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ParseInfo"></param>
 		''' <remarks></remarks>
 		Friend Sub PostUpdate(ByVal ThreadID As Integer, ByVal PostID As Integer, ByVal Notify As Boolean, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal UpdatedBy As Integer, ByVal FileAttachmentURL As String, ByVal PortalID As Integer, ByVal ThreadIconID As Integer, ByVal PollID As Integer, ByVal ParentID As Integer, ByVal ParseInfo As Integer)
-			Dim GroupID As Integer = DotNetNuke.Modules.Forum.DataProvider.Instance().PostUpdate(ThreadID, PostID, Notify, Subject, Body, IsPinned, PinnedDate, IsClosed, UpdatedBy, FileAttachmentURL, PortalID, ThreadIconID, PollID, ParseInfo)
-
-			ForumController.ClearChildForumCache(ParentID, GroupID)
+			DotNetNuke.Modules.Forum.DataProvider.Instance().PostUpdate(ThreadID, PostID, Notify, Subject, Body, IsPinned, PinnedDate, IsClosed, UpdatedBy, FileAttachmentURL, PortalID, ThreadIconID, PollID, ParseInfo)
 		End Sub
 
 		''' <summary>

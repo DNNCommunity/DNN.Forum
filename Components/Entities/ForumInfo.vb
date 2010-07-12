@@ -197,7 +197,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				If ParentId > 0 Then
 					Dim cntForum As New ForumController
-					objForum = cntForum.GetForumInfoCache(ParentId)
+					objForum = cntForum.GetForumItemCache(ParentId)
 				Else
 					objForum.ModuleID = ModuleID
 					objForum.ForumID = ForumID

@@ -194,7 +194,7 @@ Namespace DotNetNuke.Modules.Forum
 						'Dim MyProfileUrl As String = Utils.MySettingsLink(TabId, ModuleId)
 						Dim MyProfileUrl As String = Utilities.Links.UCP_UserLinks(TabId, ModuleId, UserAjaxControl.Tracking, PortalSettings)
 						Dim cntForum As New ForumController()
-						Dim objForum As ForumInfo = cntForum.GetForumInfoCache(ForumID)
+						Dim objForum As ForumInfo = cntForum.GetForumItemCache(ForumID)
 
 						ctlThread.ThreadMove(ThreadID, newForumID, UserId, Notes, objForum.ParentId)
 

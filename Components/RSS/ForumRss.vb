@@ -143,7 +143,7 @@ Namespace DotNetNuke.Modules.Forum
 			' If Not an Aggregated forum
 			If ForumID <> -1 Then
 				Dim cntForum As New ForumController
-				forum = cntForum.GetForumInfoCache(ForumID)
+				forum = cntForum.GetForumItemCache(ForumID)
 			Else
 				' Aggregated
 				forum = New ForumInfo

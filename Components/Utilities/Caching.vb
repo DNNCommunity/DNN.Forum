@@ -85,7 +85,12 @@ Namespace DotNetNuke.Modules.Forum.Components.Utilities
 		Public Shared Sub UpdateForumCache(ByVal ForumID As Integer, ByVal GroupID As Integer, ByVal ModuleID As Integer)
 			ForumController.ResetForumItemCache(ForumID)
 
+			If ModuleID > 0 Then
+				ForumController.ResetModuleForumsCache(ModuleID)
+			End If
+
 			If GroupID > 0 Then
+				ForumController.ResetGroupForumsCache(GroupID)
 				UpdateGroupCache(GroupID, ModuleID)
 			End If
 		End Sub

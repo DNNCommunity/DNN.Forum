@@ -71,7 +71,7 @@ Namespace DotNetNuke.Modules.Forum
 					Dim cntForum As New ForumController
 
 					mForumID = Int32.Parse(Request.QueryString("forumid"))
-					mForumInfo = cntForum.GetForumInfoCache(mForumID)
+					mForumInfo = cntForum.GetForumItemCache(mForumID)
 				End If
 
 				Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, mForumID, UserId)
@@ -279,7 +279,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Private Sub ApprovePost(ByVal PostID As Integer, ByVal UserID As Integer, ByVal Notes As String, ByVal URL As String, ByVal ProfileURL As String, ByVal ForumID As Integer, ByVal ThreadID As Integer)
 			Dim ctlForum As New ForumController
-			Dim forum As ForumInfo = ctlForum.GetForumInfoCache(ForumID)
+			Dim forum As ForumInfo = ctlForum.GetForumItemCache(ForumID)
 			Dim ctlForumModerate As New PostModerationController
 			ctlForumModerate.ModeratePostApprove(PostID, UserID, Notes, ForumID, forum.ParentId, ThreadID, ModuleId)
 
@@ -302,7 +302,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Private Sub ApproveMovePost(ByVal PostID As Integer, ByVal UserID As Integer, ByVal Notes As String, ByVal ForumID As Integer, ByVal ThreadID As Integer)
 			Dim ctlForum As New ForumController
-			Dim forum As ForumInfo = ctlForum.GetForumInfoCache(ForumID)
+			Dim forum As ForumInfo = ctlForum.GetForumItemCache(ForumID)
 			Dim ctlForumModerate As New PostModerationController
 			ctlForumModerate.ModeratePostApprove(PostID, UserID, Notes, ForumID, forum.ParentId, ThreadID, ModuleId)
 		End Sub

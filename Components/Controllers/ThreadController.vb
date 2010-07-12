@@ -209,16 +209,15 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Public Sub ThreadMove(ByVal ThreadID As Integer, ByVal NewForumID As Integer, ByVal ModID As Integer, ByVal Notes As String, ByVal ParentID As Integer)
 			Dim dr As IDataReader = Nothing
-
 			Try
-				Dim OldGroupID As Integer
-				Dim NewGroupID As Integer
 				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadMove(ThreadID, NewForumID, ModID, Notes)
 				While dr.Read
-					OldGroupID = Convert.ToInt32(dr("OldGroupID"))
-					NewGroupID = Convert.ToInt32(dr("NewGroupID"))
-					ForumController.ClearChildForumCache(ParentID, OldGroupID)
-					ForumController.ClearChildForumCache(ParentID, NewGroupID)
+					Dim OldGroupID As Integer = Convert.ToInt32(dr("OldGroupID"))
+					Dim NewGroupID As Integer = Convert.ToInt32(dr("NewGroupID"))
+					ForumController.ResetChildForumsCache(ParentID, OldGroupID)
+					If OldGroupID <> NewGroupID Then
+						ForumController.ResetChildForumsCache(ParentID, NewGroupID)
+					End If
 				End While
 			Finally
 				If Not dr Is Nothing Then
@@ -240,16 +239,15 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Sub ThreadSplit(ByVal PostID As Integer, ByVal ThreadID As Integer, ByVal NewForumID As Integer, ByVal ModeratorUserID As Integer, ByVal Subject As String, ByVal Notes As String, ByVal ParentID As Integer)
 			Dim dr As IDataReader = Nothing
-
 			Try
-				Dim OldGroupID As Integer
-				Dim NewGroupID As Integer
 				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadSplit(PostID, ThreadID, NewForumID, ModeratorUserID, Subject, Notes)
 				While dr.Read
-					OldGroupID = Convert.ToInt32(dr("OldGroupID"))
-					NewGroupID = Convert.ToInt32(dr("NewGroupID"))
-					ForumController.ClearChildForumCache(ParentID, OldGroupID)
-					ForumController.ClearChildForumCache(ParentID, NewGroupID)
+					Dim OldGroupID As Integer = Convert.ToInt32(dr("OldGroupID"))
+					Dim NewGroupID As Integer = Convert.ToInt32(dr("NewGroupID"))
+					ForumController.ResetChildForumsCache(ParentID, OldGroupID)
+					If OldGroupID <> NewGroupID Then
+						ForumController.ResetChildForumsCache(ParentID, NewGroupID)
+					End If
 				End While
 			Finally
 				If Not dr Is Nothing Then

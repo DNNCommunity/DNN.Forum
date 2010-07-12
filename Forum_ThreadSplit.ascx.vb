@@ -228,7 +228,7 @@ Namespace DotNetNuke.Modules.Forum
 					' build notes (old forum, new forum, say post was moved in body (basically email body text)
 					Dim Notes As String = "Thread Split"
 					Dim cntForum As New ForumController()
-					Dim objForum As ForumInfo = cntForum.GetForumInfoCache(ForumID)
+					Dim objForum As ForumInfo = cntForum.GetForumItemCache(ForumID)
 
 					' return to new forum page
 					Dim strURL As String = Utilities.Links.ContainerViewThreadLink(TabId, newForumID, PostID)

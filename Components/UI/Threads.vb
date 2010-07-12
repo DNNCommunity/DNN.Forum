@@ -67,7 +67,7 @@ Namespace DotNetNuke.Modules.Forum
 		Private ReadOnly Property objForum() As ForumInfo
 			Get
 				Dim cntForum As New ForumController
-				Return cntForum.GetForumInfoCache(ForumID)
+				Return cntForum.GetForumItemCache(ForumID)
 			End Get
 		End Property
 
