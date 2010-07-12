@@ -600,9 +600,8 @@ Namespace DotNetNuke.Modules.Forum
 				RenderRowBegin(wr) ' <tr>
 				RenderCellBegin(wr, detailCellClass, "", "", "", "top", "", "") ' <td>
 
-				'Title
+				'Subject
 				RenderDivBegin(wr, "", "Forum_Profile")	' <span>
-				wr.Write(Localization.GetString("Title", objConfig.SharedResourceFile) & ": ")
 				url = Utilities.Links.ContainerViewPostLink(TabID, objPost.ForumID, objPost.PostID)
 				RenderLinkButton(wr, url, objPost.Subject, "Forum_Profile", "")
 				RenderDivEnd(wr) ' </span>
