@@ -215,7 +215,6 @@
     </Compile>
     <Compile Include="Components\Providers\Data\ForumDataProvider.vb" />
     <Compile Include="Components\RSS\ForumRss.vb" />
-    <Compile Include="Components\Search\ForumSearchHelper.vb" />
     <Compile Include="Components\UI\ModuleSearch.vb">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -236,6 +235,7 @@
     <Compile Include="Components\Utilities\PostContent.vb" />
     <Compile Include="Components\Utilities\ForumUtils.vb" />
     <Compile Include="Components\Utilities\Links.vb" />
+    <Compile Include="Components\Utilities\SearchHelper.vb" />
     <Compile Include="Components\WordFilter\ForumFilterWordCollection.vb" />
     <Compile Include="Controls\ACP_ForumEdit.ascx.designer.vb">
       <DependentUpon>ACP_ForumEdit.ascx</DependentUpon>
