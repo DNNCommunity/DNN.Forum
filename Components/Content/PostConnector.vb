@@ -407,8 +407,11 @@ Namespace DotNetNuke.Modules.Forum
 
 						objThread.ModuleID = objConfig.ModuleID
 						objThread.TabID = TabID
+
 						Dim cntContent As New Content
 						cntContent.CreateContentItem(objThread, TabID)
+
+						ThreadID = objThread.ThreadID
 					End If
 
 					Forum.Components.Utilities.Caching.UpdatePostCache(newPostID, ThreadID, objForum.ForumID, objForum.GroupID, objConfig.ModuleID)

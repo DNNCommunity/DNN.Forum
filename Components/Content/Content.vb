@@ -62,6 +62,10 @@ Namespace DotNetNuke.Modules.Forum
 
 			objContent.ContentItemId = Util.GetContentController.AddContentItem(objContent)
 
+			' we need to update the thread here so it has the new content item id
+			Dim cntThread As New ThreadController()
+			cntThread.UpdateThread(objThread.ThreadID, objContent.ContentItemId)
+
 			' Update Terms
 			Dim cntTerm As New Terms()
 			cntTerm.ManageEntryTerms(objThread, objContent)

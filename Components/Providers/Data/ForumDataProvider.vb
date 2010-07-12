@@ -117,6 +117,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public MustOverride Function ThreadGetCount(ByVal ForumID As Integer, ByVal Filter As String) As Integer
 		Public MustOverride Sub ThreadViewsIncrement(ByVal ThreadID As Integer)
 		Public MustOverride Sub ThreadStatusChange(ByVal ThreadID As Integer, ByVal UserID As Integer, ByVal Status As Integer, ByVal AnswerPostID As Integer)
+		Public MustOverride Sub UpdateThread(ByVal ThreadID As Integer, ByVal ContentItemID As Integer)
 
 #Region "Rating"
 

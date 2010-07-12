@@ -302,6 +302,16 @@ Namespace DotNetNuke.Modules.Forum
 			' NOTE: CP: COMEBACK: Eventually add email notifications here. 
 		End Sub
 
+		''' <summary>
+		''' Updates a thread's contentitemid. 
+		''' </summary>
+		''' <param name="ThreadID">The thread we are going to update.</param>
+		''' <param name="ContentItemID">The content item id we are assigning to the thread.</param>
+		''' <remarks></remarks>
+		Public Sub UpdateThread(ByVal ThreadID As Integer, ByVal ContentItemID As Integer)
+			DotNetNuke.Modules.Forum.DataProvider.Instance().UpdateThread(ThreadID, ContentItemID)
+		End Sub
+
 #Region "Rating"
 
 		''' <summary>
@@ -312,10 +322,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	9/23/2006	Created
-		'''   [cpaterra] 11/15/2009 Updated
-		''' </history>
 		Public Function ThreadGetUserRating(ByVal ThreadID As Integer, ByVal UserID As Integer) As Double
 			Return DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadGetUserRating(ThreadID, UserID)
 		End Function
@@ -328,10 +334,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="Rate"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	2/3/2006	Created
-		'''   [cpaterra] 11/15/2009 Updated
-		''' </history>
 		Public Sub ThreadRateAdd(ByVal ThreadId As Integer, ByVal UserID As Integer, ByVal Rate As Double)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadRateAdd(ThreadId, UserID, Rate)
 		End Sub

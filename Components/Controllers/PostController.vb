@@ -22,8 +22,6 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "PostController"
-
 	''' <summary>
 	''' Communicates with the Forum_Posts table in the data store. Note that some items in the data store also interact with the Forum_Threads table as well. 
 	''' </summary>
@@ -263,7 +261,5 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 	End Class
-
-#End Region
 
 End Namespace

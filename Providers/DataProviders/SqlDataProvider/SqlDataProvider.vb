@@ -107,13 +107,16 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-#Region "Public Methods"
 
-#Region "General Public Methods"
+#Region "Private Methods"
+
 		Private Function GetNull(ByVal Field As Object) As Object
 			Return DotNetNuke.Common.Utilities.Null.GetNull(Field, DBNull.Value)
 		End Function
+
 #End Region
+
+#Region "Public Methods"
 
 #Region "Attachments"
 
@@ -281,6 +284,10 @@ Namespace DotNetNuke.Modules.Forum
 			Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "Reads_GetFirstUnread", ThreadID, LastVisitDate, ViewDecending), Integer)
 		End Function
 
+		Public Overrides Sub UpdateThread(ByVal ThreadID As Integer, ByVal ContentItemID As Integer)
+			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "Thread_Update", ThreadID, ContentItemID)
+		End Sub
+
 #Region "Rating"
 
 		Public Overrides Sub ThreadRateAdd(ByVal ThreadID As Integer, ByVal UserID As Integer, ByVal Rate As Double)
@@ -389,7 +396,7 @@ Namespace DotNetNuke.Modules.Forum
 
 		' Search within the module
 		Public Overrides Function SearchGetResults(ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal FromDate As DateTime, ByVal ToDate As DateTime, ByVal ThreadStatusID As Integer) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "SearchGetResults", Filter, PageIndex, PageSize, UserID, ModuleID, FromDate, ToDate, ThreadStatusID), IDataReader)
+			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Search_GetResults", Filter, PageIndex, PageSize, UserID, ModuleID, FromDate, ToDate, ThreadStatusID), IDataReader)
 		End Function
 
 		' Search within the module
