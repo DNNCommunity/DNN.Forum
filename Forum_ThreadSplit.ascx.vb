@@ -181,7 +181,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					lblErrorMsg.Visible = False
 
-					ForumTreeview.PopulateTelerikTree(objConfig, rtvForums, UserId)
+					ForumTreeview.PopulateTelerikTree(objConfig, rtvForums, UserId, TabId)
 					SelectDefaultForumTree()
 
 					' Get all posts
@@ -268,8 +268,8 @@ Namespace DotNetNuke.Modules.Forum
 					Next
 
 					' reset the post cache
-					PostInfo.ResetPostInfo(ThreadID)
-					PostInfo.ResetPostInfo(PostID)
+					PostController.ResetPostInfo(ThreadID)
+					PostController.ResetPostInfo(PostID)
 
 					' reset cache of both threads in case anyone happen to visit one during the split processing
 					ThreadController.ResetThreadInfo(ThreadID)

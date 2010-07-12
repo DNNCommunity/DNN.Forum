@@ -91,9 +91,10 @@ Namespace DotNetNuke.Modules.Forum
 
 				If Not Request.QueryString("postid") Is Nothing Then
 					Dim objPost As New PostInfo
+					Dim cntPost As New PostController()
 
 					PostID = Int32.Parse(Request.QueryString("postid"))
-					objPost = PostInfo.GetPostInfo(PostID, PortalId)
+					objPost = cntPost.GetPostInfo(PostID, PortalId)
 					ForumID = objPost.ForumID
 					_IsThreadDelete = False
 				Else
@@ -221,7 +222,7 @@ Namespace DotNetNuke.Modules.Forum
 							Dim PostID As Integer
 
 							PostID = Int32.Parse(Request.QueryString("postid"))
-							objPost = PostInfo.GetPostInfo(PostID, PortalId)
+							objPost = cntPost.GetPostInfo(PostID, PortalId)
 							ForumID = objPost.ForumID
 							ThreadID = objPost.ThreadID
 							AuthorID = objPost.Author.UserID
@@ -248,9 +249,9 @@ Namespace DotNetNuke.Modules.Forum
 							_IsThreadDelete = True
 						End If
 						' Delete post (SEND MAIL BEFORE DELETE, we need the post still in the db)
-						cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objPost.ParentThread.HostForum.GroupID, False, objPost.ParentThread.HostForum.ParentId)
+						cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objPost.ParentThread.ContainingForum.GroupID, False, objPost.ParentThread.ContainingForum.ParentId)
 
-						PostInfo.ResetPostInfo(objPost.PostID)
+						PostController.ResetPostInfo(objPost.PostID)
 						ThreadController.ResetThreadInfo(ThreadID)
 						ForumController.ResetForumInfoCache(ForumID)
 						ForumUserController.ResetForumUser(AuthorID, PortalId)
@@ -307,12 +308,11 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[hmnguyen]	10/29/2005	Localization
-		''' </history>
 		Private Sub PopulatePost(ByVal PostID As Integer, ByVal ThreadDelete As Boolean)
+			Dim cntPost As New PostController()
 			Dim objPost As New PostInfo
-			objPost = PostInfo.GetPostInfo(PostID, PortalId)
+
+			objPost = cntPost.GetPostInfo(PostID, PortalId)
 
 			Dim fTextDecode As Utilities.PostContent = New Utilities.PostContent(Server.HtmlDecode(objPost.Body), objConfig)
 			lblMessage.Text = fTextDecode.ProcessHtml

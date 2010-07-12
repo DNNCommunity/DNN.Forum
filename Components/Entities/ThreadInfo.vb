@@ -59,6 +59,18 @@ Namespace DotNetNuke.Modules.Forum
 		'CP - Not implemented
 		Private _ThreadIconID As Integer
 
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private ReadOnly Property objConfig() As Configuration
+			Get
+				Return Configuration.GetForumConfig(ContainingForum.ModuleID)
+			End Get
+		End Property
+
 #End Region
 
 #Region "Constructors"
@@ -100,7 +112,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property LastApprovedUser() As ForumUserInfo
 			Get
 				Dim cntForumUser As New ForumUserController
-				Return cntForumUser.GetForumUser(LastApprovedPost.Author.UserID, False, ModuleID, PortalID)
+				Return cntForumUser.GetForumUser(LastApprovedPost.Author.UserID, False, ContainingForum.ModuleID, PortalID)
 			End Get
 		End Property
 
@@ -110,7 +122,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks>This is the actual forum, not the parent forum (when using sub-forums).</remarks>
-		Public ReadOnly Property HostForum() As ForumInfo
+		Public ReadOnly Property ContainingForum() As ForumInfo
 			Get
 				Dim cntForum As New ForumController
 				Return cntForum.GetForumInfoCache(ForumID)
@@ -131,28 +143,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' The forum that contains the thread.
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public ReadOnly Property ParentForum() As ForumInfo
-			Get
-				Dim objForum As ForumInfo = New ForumInfo
-
-				If ForumID > 0 Then
-					Dim cntForum As New ForumController
-					objForum = cntForum.GetForumInfoCache(ForumID)
-				Else
-					objForum.ModuleID = ModuleID
-					objForum.ForumID = ForumID
-				End If
-
-				Return objForum
-			End Get
-		End Property
-
-		''' <summary>
 		''' The tooltip to load based on the threads rating
 		''' </summary>
 		''' <value></value>
@@ -162,10 +152,10 @@ Namespace DotNetNuke.Modules.Forum
 			Get
 				If RatingCount < 1 Then
 					'Return "No rating"
-					Return Localization.GetString("RatingNoRating.Text", ParentForum.ParentGroup.objConfig.SharedResourceFile)
+					Return Localization.GetString("RatingNoRating.Text", objConfig.SharedResourceFile)
 				Else
 					'Return String.Format("{0} out of 10 stars - based on {1} rate(s)", Rating, RatingCount)
-					Return String.Format(Localization.GetString("RatingHaveRating.Text", ParentForum.ParentGroup.objConfig.SharedResourceFile), Rating, RatingCount)
+					Return String.Format(Localization.GetString("RatingHaveRating.Text", objConfig.SharedResourceFile), Rating, RatingCount)
 				End If
 			End Get
 		End Property
@@ -181,13 +171,13 @@ Namespace DotNetNuke.Modules.Forum
 				Dim strImage As String = String.Empty
 				Select Case ThreadStatus
 					Case ThreadStatus.Answered
-						strImage = "status_answered." & ParentForum.ParentGroup.objConfig.ImageExtension
+						strImage = "status_answered." & objConfig.ImageExtension
 					Case ThreadStatus.Unanswered
-						strImage = "status_unanswered." & ParentForum.ParentGroup.objConfig.ImageExtension
+						strImage = "status_unanswered." & objConfig.ImageExtension
 					Case ThreadStatus.Info
-						strImage = "status_info." & ParentForum.ParentGroup.objConfig.ImageExtension
+						strImage = "status_info." & objConfig.ImageExtension
 					Case ThreadStatus.Poll
-						strImage = "status_poll." & ParentForum.ParentGroup.objConfig.ImageExtension
+						strImage = "status_poll." & objConfig.ImageExtension
 					Case Else
 						strImage = "status_spacer.gif"
 				End Select
@@ -206,13 +196,13 @@ Namespace DotNetNuke.Modules.Forum
 				Dim strText As String = String.Empty
 				Select Case ThreadStatus
 					Case ThreadStatus.Answered
-						strText = Localization.GetString("StatusAnswered.Text", ParentForum.ParentGroup.objConfig.SharedResourceFile)
+						strText = Localization.GetString("StatusAnswered.Text", objConfig.SharedResourceFile)
 					Case ThreadStatus.Unanswered
-						strText = Localization.GetString("StatusUnanswered.Text", ParentForum.ParentGroup.objConfig.SharedResourceFile)
+						strText = Localization.GetString("StatusUnanswered.Text", objConfig.SharedResourceFile)
 					Case ThreadStatus.Info
-						strText = Localization.GetString("StatusInfo.Text", ParentForum.ParentGroup.objConfig.SharedResourceFile)
+						strText = Localization.GetString("StatusInfo.Text", objConfig.SharedResourceFile)
 					Case ThreadStatus.Poll
-						strText = Localization.GetString("StatusPoll.Text", ParentForum.ParentGroup.objConfig.SharedResourceFile)
+						strText = Localization.GetString("StatusPoll.Text", objConfig.SharedResourceFile)
 					Case Else
 						strText = String.Empty
 				End Select
@@ -241,7 +231,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property IsPopular() As Boolean
 			Get
-				Return (TotalPosts > ParentForum.ParentGroup.objConfig.PopularThreadReply) OrElse (Views > ParentForum.ParentGroup.objConfig.PopularThreadView)
+				Return (TotalPosts > objConfig.PopularThreadReply) OrElse (Views > objConfig.PopularThreadView)
 			End Get
 		End Property
 
@@ -253,7 +243,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property LastApprovedPost() As PostInfo
 			Get
-				Return PostInfo.GetPostInfo(LastApprovedPostID, PortalID)
+				Dim cntPost As New PostController()
+				Return cntPost.GetPostInfo(LastApprovedPostID, PortalID)
 			End Get
 		End Property
 
@@ -268,7 +259,7 @@ Namespace DotNetNuke.Modules.Forum
 				Dim strBody As String = LastApprovedPost.Body
 				Dim strTrimedBody As String = String.Empty
 				strTrimedBody = Utilities.ForumUtils.FormatToolTip(Utilities.ForumUtils.TrimString(strBody, 100))
-				If ParentForum.ParentGroup.objConfig.EnableBadWordFilter Then
+				If objConfig.EnableBadWordFilter Then
 					strTrimedBody = Utilities.ForumUtils.FormatProhibitedWord(strTrimedBody, LastApprovedPost.CreatedDate, PortalID)
 				End If
 				Return strTrimedBody
@@ -630,7 +621,7 @@ Namespace DotNetNuke.Modules.Forum
 			PreviousThreadID = Null.SetNullInteger(dr("PreviousThreadID"))
 			ThreadStatus = CType(Null.SetNull(dr("ThreadStatus"), ThreadStatus), ThreadStatus)
 			PollID = Null.SetNullInteger(dr("PollID"))
-			'TotalRecords = Null.SetNullInteger(dr("TotalRecords"))
+			TotalRecords = Null.SetNullInteger(dr("TotalRecords"))
 
 			'BreadCrumbs = Nothing
 			'Panes = Nothing

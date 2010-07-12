@@ -95,7 +95,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <param name="GroupID">The GroupID of forums to clear the cached items for.</param>
 		''' <remarks></remarks>
-		Public Sub ClearCache_ForumGetAll(ByVal ParentForumID As Integer, ByVal GroupID As Integer)
+		Public Shared Sub ClearCache_ForumGetAll(ByVal ParentForumID As Integer, ByVal GroupID As Integer)
 			Dim strCacheKey As String = ForumInfoCacheKeyPrefix + "-" + CStr(ParentForumID) + "-" + CStr(GroupID)
 			Dim strCacheKey2 As String = ForumInfoCacheKeyPrefix + "-" + CStr(GroupID)
 			DataCache.RemoveCache(strCacheKey)

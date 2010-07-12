@@ -31,11 +31,9 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Members"
 
-		Private Const PostInfoCacheKeyPrefix As String = "PostInfo"
-		Private Const PostInfoCacheTimeout As Integer = 20
-		Dim _PostId As Integer
-		Dim _ParentPostId As Integer
-		Dim _UserId As Integer
+		Dim _PostID As Integer
+		Dim _ParentPostID As Integer
+		Dim _UserID As Integer
 		Dim _RemoteAddr As String = String.Empty
 		Dim _Notify As Boolean
 		Dim _Subject As String = String.Empty
@@ -56,60 +54,7 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _Addressed As Integer = 0
 		Dim _Attachments As List(Of AttachmentInfo)
 		Dim _ParseInfo As Integer = 0
-
-#End Region
-
-#Region "Public Methods"
-
-#Region "Constructors"
-
-		''' <summary>
-		''' 
-		''' </summary>
-		''' <remarks></remarks>
-		Public Sub New()
-		End Sub
-
-#End Region
-
-		''' <summary>
-		''' Gets the post info object, first checks for it in cache
-		''' </summary>
-		''' <param name="PostID"></param>
-		''' <returns></returns>
-		''' <remarks>
-		''' </remarks>
-		Public Shared Function GetPostInfo(ByVal PostID As Integer, ByVal PortalID As Integer) As PostInfo
-			Dim strCacheKey As String = PostInfoCacheKeyPrefix & CStr(PostID)
-			Dim objPost As PostInfo = CType(DataCache.GetCache(strCacheKey), PostInfo)
-
-			If objPost Is Nothing Then
-				'post caching settings
-				Dim timeOut As Int32 = PostInfoCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
-
-				Dim ctlPost As New PostController
-				objPost = ctlPost.PostGet(PostID, PortalID)
-
-				'Cache Post if timeout > 0 and Post is not null
-				If timeOut > 0 And objPost IsNot Nothing Then
-					DataCache.SetCache(strCacheKey, objPost, TimeSpan.FromMinutes(timeOut))
-				End If
-			End If
-
-			Return objPost
-		End Function
-
-		''' <summary>
-		''' Resets the post info object in cahce to nothing
-		''' </summary>
-		''' <param name="PostID"></param>
-		''' <remarks>
-		''' </remarks>
-		Public Shared Sub ResetPostInfo(ByVal PostID As Integer)
-			Dim strCacheKey As String = PostInfoCacheKeyPrefix & CStr(PostID)
-
-			DataCache.RemoveCache(strCacheKey)
-		End Sub
+		Dim _TotalRecords As Integer
 
 #End Region
 
@@ -186,10 +131,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Property PostID() As Integer
 			Get
-				Return _PostId
+				Return _PostID
 			End Get
 			Set(ByVal Value As Integer)
-				_PostId = Value
+				_PostID = Value
 			End Set
 		End Property
 
@@ -201,10 +146,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Property ParentPostID() As Integer
 			Get
-				Return _ParentPostId
+				Return _ParentPostID
 			End Get
 			Set(ByVal Value As Integer)
-				_ParentPostId = Value
+				_ParentPostID = Value
 			End Set
 		End Property
 
@@ -216,10 +161,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Property UserID() As Integer
 			Get
-				Return _UserId
+				Return _UserID
 			End Get
 			Set(ByVal Value As Integer)
-				_UserId = Value
+				_UserID = Value
 			End Set
 		End Property
 
@@ -551,6 +496,21 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 				Return _Attachments
 			End Get
+		End Property
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property TotalRecords() As Integer
+			Get
+				Return _TotalRecords
+			End Get
+			Set(ByVal Value As Integer)
+				_TotalRecords = Value
+			End Set
 		End Property
 
 #End Region

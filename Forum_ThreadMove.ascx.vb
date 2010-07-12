@@ -135,14 +135,14 @@ Namespace DotNetNuke.Modules.Forum
 					objThread = cntThread.ThreadGet(ThreadID)
 
 					txtSubject.Text = objThread.Subject
-					txtOldForum.Text = objThread.HostForum.Name
+					txtOldForum.Text = objThread.ContainingForum.Name
 
 					If Not Request.UrlReferrer Is Nothing Then
 						ViewState("UrlReferrer") = Request.UrlReferrer.ToString()
 					End If
 
 					' Treeview forum viewer
-					ForumTreeview.PopulateTelerikTree(objConfig, rtvForums, UserId)
+					ForumTreeview.PopulateTelerikTree(objConfig, rtvForums, UserId, TabId)
 					SelectDefaultForumTree(objThread)
 					lblErrorMsg.Visible = False
 				End If

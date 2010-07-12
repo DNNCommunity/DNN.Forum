@@ -47,17 +47,6 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-#Region "Constructors"
-
-		''' <summary>
-		''' Constructor.
-		''' </summary>
-		''' <remarks></remarks>
-		Public Sub New()
-		End Sub
-
-#End Region
-
 #Region "ReadOnly Properties"
 
 		''' <summary>
@@ -81,7 +70,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property LastApprovedPost() As PostInfo
 			Get
-				Return PostInfo.GetPostInfo(LastPostedPostID, PortalID)
+				Dim cntPost As New PostController()
+				Return cntPost.GetPostInfo(LastPostedPostID, PortalID)
 			End Get
 		End Property
 

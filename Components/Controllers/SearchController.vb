@@ -43,9 +43,9 @@ Namespace DotNetNuke.Modules.Forum
         ''' <param name="ThreadStatusID">The threadStatus to search for.</param>
         ''' <returns>A collection of search results.</returns>
         ''' <remarks></remarks>
-        Public Function SearchGetResults(ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal FromDate As DateTime, ByVal ToDate As DateTime, ByVal ThreadStatusID As Integer) As ArrayList
-            Return CBO.FillCollection(DotNetNuke.Modules.Forum.DataProvider.Instance().SearchGetResults(Filter, PageIndex, PageSize, UserID, ModuleID, FromDate, ToDate, ThreadStatusID), GetType(SearchInfo))
-        End Function
+		Public Function SearchGetResults(ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal FromDate As DateTime, ByVal ToDate As DateTime, ByVal ThreadStatusID As Integer) As List(Of ThreadInfo)
+			Return CBO.FillCollection(Of ThreadInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().SearchGetResults(Filter, PageIndex, PageSize, UserID, ModuleID, FromDate, ToDate, ThreadStatusID))
+		End Function
 
         ''' <summary>
         ''' Gets the paged results for a search query used by the module's self contained search control as posts.
@@ -60,9 +60,9 @@ Namespace DotNetNuke.Modules.Forum
         ''' <param name="ThreadStatusID">The threadStatus to search for.</param>
         ''' <returns>A collection of search results.</returns>
         ''' <remarks>Added by Skeel</remarks>
-        Public Function Search(ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal FromDate As DateTime, ByVal ToDate As DateTime, ByVal ThreadStatusID As Integer) As ArrayList
-            Return CBO.FillCollection(DotNetNuke.Modules.Forum.DataProvider.Instance().Search(Filter, PageIndex, PageSize, UserID, ModuleID, FromDate, ToDate, ThreadStatusID), GetType(SearchResult))
-        End Function
+		Public Function Search(ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal FromDate As DateTime, ByVal ToDate As DateTime, ByVal ThreadStatusID As Integer) As List(Of PostInfo)
+			Return CBO.FillCollection(Of PostInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().Search(Filter, PageIndex, PageSize, UserID, ModuleID, FromDate, ToDate, ThreadStatusID))
+		End Function
 
     End Class
 

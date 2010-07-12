@@ -43,18 +43,17 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-		Public Shared Sub PopulateTelerikTree(ByVal objConfig As Forum.Configuration, ByVal ForumTree As Telerik.Web.UI.RadTreeView, ByVal UserID As Integer)
+		Public Shared Sub PopulateTelerikTree(ByVal objConfig As Forum.Configuration, ByVal ForumTree As Telerik.Web.UI.RadTreeView, ByVal UserID As Integer, ByVal TabID As Integer)
 			ForumTree.Nodes.Clear()
 
 			Dim cntGroup As New GroupController
 			Dim arrAuthGroups As New List(Of GroupInfo)
-			Dim objGroup As GroupInfo
 			Dim objTreeNode As Telerik.Web.UI.RadTreeNode
 
-			arrAuthGroups = cntGroup.GroupGetAllAuthorized(objConfig.ModuleID, UserID, True)
+			arrAuthGroups = cntGroup.GroupGetAllAuthorized(objConfig.ModuleID, UserID, True, TabID)
 
-			For Each objGroup In arrAuthGroups
-				Dim arrForums As List(Of ForumInfo) = objGroup.AuthorizedForums(UserID, True)
+			For Each objGroup As GroupInfo In arrAuthGroups
+				Dim arrForums As List(Of ForumInfo) = cntGroup.AuthorizedForums(UserID, objGroup.GroupID, True, objConfig.ModuleID, TabID)
 				If arrForums.Count > 0 Then
 					objTreeNode = AddTelerikNode(objGroup.Name, "G", objGroup.GroupID.ToString, eImageType.Group, ForumTree.Nodes, objGroup.GroupID, objConfig, UserID)
 
@@ -64,14 +63,14 @@ Namespace DotNetNuke.Modules.Forum
 					'	'this should be set to true only when we have child nodes
 					'	objTreeNode.HasNodes = True
 					'End If
-					AddTelerikForums(objGroup, objTreeNode, objConfig, UserID)
+					AddTelerikForums(objGroup, objTreeNode, objConfig, UserID, TabID)
 				End If
 			Next
 		End Sub
 
-		Public Shared Sub AddTelerikForums(ByVal objGroup As GroupInfo, ByVal objNode As Telerik.Web.UI.RadTreeNode, ByVal objConfig As Forum.Configuration, ByVal UserID As Integer)
-			Dim cntForum As New ForumController
-			Dim arrAuthForums As List(Of ForumInfo) = objGroup.AuthorizedForums(UserID, True)
+		Public Shared Sub AddTelerikForums(ByVal objGroup As GroupInfo, ByVal objNode As Telerik.Web.UI.RadTreeNode, ByVal objConfig As Forum.Configuration, ByVal UserID As Integer, ByVal TabID As Integer)
+			Dim cntGroup As New GroupController()
+			Dim arrAuthForums As List(Of ForumInfo) = cntGroup.AuthorizedForums(UserID, objGroup.GroupID, True, objConfig.ModuleID, TabID)
 			Dim forumNode As Telerik.Web.UI.RadTreeNode
 
 			For Each objForum As Forum.ForumInfo In arrAuthForums

@@ -80,7 +80,7 @@ Namespace DotNetNuke.Modules.Forum
 						rowDefaultForum.Visible = True
 					End If
 
-					ForumTreeview.PopulateTelerikTree(mForumConfig, rtvForums, UserId)
+					ForumTreeview.PopulateTelerikTree(mForumConfig, rtvForums, UserId, TabId)
 
 					' Bind the default forum
 					If CType(TabModuleSettings("defaultforumid"), String) <> String.Empty And (Not cboGroup.SelectedValue = "-1") Then

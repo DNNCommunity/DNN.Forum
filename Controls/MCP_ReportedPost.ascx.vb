@@ -71,7 +71,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 
 			hl = CType(e.Item.FindControl("hlForumName"), HyperLink)
 			hl.NavigateUrl = Utilities.Links.ContainerViewForumLink(TabId, dataItem.ForumID, False)
-			hl.Text = dataItem.ParentThread.HostForum.Name
+			hl.Text = dataItem.ParentThread.ContainingForum.Name
 
 			hl = CType(e.Item.FindControl("hlPostAuthor"), HyperLink)
 			If Not objConfig.EnableExternalProfile Then
@@ -185,7 +185,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 
 						cntPostReport.AddressPostReport(CInt(argument), UserId, PortalId)
 						' Update the post cache.
-						PostInfo.ResetPostInfo(CInt(argument))
+						PostController.ResetPostInfo(CInt(argument))
 						BindPostDetails(CInt(argument))
 				End Select
 			Catch exc As Exception

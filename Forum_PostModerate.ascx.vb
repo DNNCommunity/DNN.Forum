@@ -120,65 +120,59 @@ Namespace DotNetNuke.Modules.Forum
 				Dim bodyPanel As Panel = DirectCast(selListItem.FindControl("pnlBody"), Panel)
 				'Dim ProfileUrl As String = Utils.MySettingsLink(TabId, ModuleId)
 				Dim ProfileUrl As String = Utilities.Links.UCP_UserLinks(TabId, ModuleId, UserAjaxControl.Tracking, PortalSettings)
+				Dim cntPost As New PostController()
+				Dim objPost As PostInfo = cntPost.GetPostInfo(postID, PortalId)
 
 				Select Case cmdButton.CommandName.ToLower
 					Case "approve"
 						Dim _notes As String = "Approved"
-						Dim _post As PostInfo = PostInfo.GetPostInfo(postID, PortalId)
-						Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(TabId, _post.ForumID, _post.PostID)
+						Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(TabId, objPost.ForumID, objPost.PostID)
 
-						ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, _post.ForumID)
-						ForumUserController.ResetForumUser(_post.Author.UserID, PortalId)
+						ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, objPost.ForumID)
+						ForumUserController.ResetForumUser(objPost.Author.UserID, PortalId)
 
 						' Rebind latest non-approved posts to datalist
 						BindList()
 					Case "move"
-						Dim _post As PostInfo = PostInfo.GetPostInfo(postID, PortalId)
 						' We have to approve the post before moving the thread, this decreases post count and also avoids this being stuck in moderation if the user cancels out (no email sent 4 this)
-						ApproveMovePost(_post.PostID, CurrentForumUser.UserID, "move", _post.ForumID)
+						ApproveMovePost(objPost.PostID, CurrentForumUser.UserID, "move", objPost.ForumID)
 
 						'"moderatorreturn=1"
-						Dim url As String = Utilities.Links.ThreadMoveLink(TabId, ModuleId, _post.ForumID, _post.ThreadID)
+						Dim url As String = Utilities.Links.ThreadMoveLink(TabId, ModuleId, objPost.ForumID, objPost.ThreadID)
 						' Still have to handle approval and emailing in new page
 						Response.Redirect(url, False)
 					Case "split"
 						' in the case of split, we are not going to adjust moderation counts at all, as split sproc handles this for us
-						Dim _post As PostInfo = PostInfo.GetPostInfo(postID, PortalId)
-
-						'"moderatorreturn=1"
-						Dim url As String = Utilities.Links.ThreadSplitLink(TabId, ModuleId, _post.ForumID, _post.PostID)
+						Dim url As String = Utilities.Links.ThreadSplitLink(TabId, ModuleId, objPost.ForumID, objPost.PostID)
 
 						' Still have to handle approval and emailing in new page
 						Response.Redirect(url, False)
 					Case "delete"
-						Dim _post As PostInfo = PostInfo.GetPostInfo(postID, PortalId)
-						Dim _nextURL As String = Utilities.Links.PostDeleteLink(TabId, ModuleId, _post.ForumID, _post.PostID, True)
+						Dim _nextURL As String = Utilities.Links.PostDeleteLink(TabId, ModuleId, objPost.ForumID, objPost.PostID, True)
 
 						'"moderatorreturn=1"
 						Response.Redirect(_nextURL, False)
 					Case "edit"
-						Dim _post As PostInfo = PostInfo.GetPostInfo(postID, PortalId)
 						Dim _notes As String = "Approved with edit"
-						Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(TabId, _post.ForumID, _post.PostID)
+						Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(TabId, objPost.ForumID, objPost.PostID)
 
-						ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, _post.ForumID)
-						ForumUserController.ResetForumUser(_post.Author.UserID, PortalId)
+						ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, objPost.ForumID)
+						ForumUserController.ResetForumUser(objPost.Author.UserID, PortalId)
 
 						'"moderatorreturn=1"
-						Dim url As String = Utilities.Links.NewPostLink(TabId, _post.ForumID, _post.PostID, "edit", ModuleId)
+						Dim url As String = Utilities.Links.NewPostLink(TabId, objPost.ForumID, objPost.PostID, "edit", ModuleId)
 
 						' Still have to handle approval and emailing in new page
 						Response.Redirect(url, False)
 					Case "approverespond"
 						Dim _notes As String = "Approved and respond"
-						Dim _post As PostInfo = PostInfo.GetPostInfo(postID, PortalId)
-						Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(TabId, _post.ForumID, _post.PostID)
+						Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(TabId, objPost.ForumID, objPost.PostID)
 
-						ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, _post.ForumID)
-						ForumUserController.ResetForumUser(_post.Author.UserID, PortalId)
+						ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, objPost.ForumID)
+						ForumUserController.ResetForumUser(objPost.Author.UserID, PortalId)
 
 						' "moderatorreturn=1"
-						Dim url As String = Utilities.Links.NewPostLink(TabId, _post.ForumID, _post.PostID, "reply", ModuleId)
+						Dim url As String = Utilities.Links.NewPostLink(TabId, objPost.ForumID, objPost.PostID, "reply", ModuleId)
 
 						Response.Redirect(url, False)
 				End Select
@@ -347,9 +341,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>
 		''' </remarks>
 		Protected Function ThreadCanMove(ByVal PostID As Integer) As Boolean
-			Dim _post As PostInfo = PostInfo.GetPostInfo(PostID, PortalId)
+			Dim cntPost As New PostController()
+			Dim objPost As PostInfo = cntPost.GetPostInfo(PostID, PortalId)
 
-			If _post.ParentPostID = 0 Then
+			If objPost.ParentPostID = 0 Then
 				Return True
 			Else
 				Return False
@@ -363,9 +358,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Protected Function ThreadCanSplit(ByVal PostID As Integer) As Boolean
-			Dim _post As PostInfo = PostInfo.GetPostInfo(PostID, PortalId)
+			Dim cntPost As New PostController()
+			Dim objPost As PostInfo = cntPost.GetPostInfo(PostID, PortalId)
 
-			If _post.ParentPostID = 0 Then
+			If objPost.ParentPostID = 0 Then
 				Return False
 			Else
 				Return True

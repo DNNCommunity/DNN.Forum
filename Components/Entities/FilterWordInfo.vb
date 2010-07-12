@@ -30,23 +30,12 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Members"
 
-		Private mItemID As Integer
-		Private mPortalID As Integer
-		Private mBadWord As String = String.Empty
-		Private mReplacedWord As String = String.Empty
-		Private mCreatedBy As Integer
-		Private mCreatedOn As DateTime
-
-#End Region
-
-#Region "Constructors"
-
-		''' <summary>
-		''' Instantiates the class.
-		''' </summary>
-		''' <remarks></remarks>
-		Sub New()
-		End Sub
+		Private _ItemID As Integer
+		Private _PortalID As Integer
+		Private _BadWord As String = String.Empty
+		Private _ReplacedWord As String = String.Empty
+		Private _CreatedBy As Integer
+		Private _CreatedOn As DateTime
 
 #End Region
 
@@ -60,10 +49,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Property ItemID() As Integer
 			Get
-				Return mItemID
+				Return _ItemID
 			End Get
 			Set(ByVal Value As Integer)
-				mItemID = Value
+				_ItemID = Value
 			End Set
 		End Property
 
@@ -75,10 +64,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Property PortalID() As Integer
 			Get
-				Return mPortalID
+				Return _PortalID
 			End Get
 			Set(ByVal Value As Integer)
-				mPortalID = Value
+				_PortalID = Value
 			End Set
 		End Property
 
@@ -90,10 +79,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Property BadWord() As String
 			Get
-				Return mBadWord
+				Return _BadWord
 			End Get
 			Set(ByVal Value As String)
-				mBadWord = Value
+				_BadWord = Value
 			End Set
 		End Property
 
@@ -105,10 +94,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Property ReplacedWord() As String
 			Get
-				Return mReplacedWord
+				Return _ReplacedWord
 			End Get
 			Set(ByVal Value As String)
-				mReplacedWord = Value
+				_ReplacedWord = Value
 			End Set
 		End Property
 
@@ -120,10 +109,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Property CreatedBy() As Integer
 			Get
-				Return mCreatedBy
+				Return _CreatedBy
 			End Get
 			Set(ByVal Value As Integer)
-				mCreatedBy = Value
+				_CreatedBy = Value
 			End Set
 		End Property
 
@@ -135,10 +124,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Property CreatedOn() As DateTime
 			Get
-				Return mCreatedOn
+				Return _CreatedOn
 			End Get
 			Set(ByVal Value As DateTime)
-				mCreatedOn = Value
+				_CreatedOn = Value
 			End Set
 		End Property
 

@@ -241,16 +241,16 @@ Namespace DotNetNuke.Modules.Forum
 				Next
 			Else
 				Dim cntSearch As New SearchController
-				Dim arrSearch As ArrayList
-				Dim objSearch As SearchInfo
+				Dim colThreads As List(Of ThreadInfo)
+				Dim objSearch As ThreadInfo
 
 				'Temp variables
 				Dim StartDate As DateTime = DateAdd(DateInterval.Year, -1, DateTime.Today)
 				Dim EndDate As DateTime = DateAdd(DateInterval.Day, 1, DateTime.Today)
 
-				arrSearch = cntSearch.SearchGetResults(" ", ThreadsPage - 1, mForumConfig.RSSThreadsPerFeed, -1, ModuleId, StartDate, EndDate, -1)
+				colThreads = cntSearch.SearchGetResults(" ", ThreadsPage - 1, mForumConfig.RSSThreadsPerFeed, -1, ModuleId, StartDate, EndDate, -1)
 
-				For Each objSearch In arrSearch
+				For Each objSearch In colThreads
 					Dim bodyForumText As New Utilities.PostContent(server.HtmlDecode(objSearch.LastApprovedPost.Body), mForumConfig)
 
 					If mForumConfig.EnableBadWordFilter Then

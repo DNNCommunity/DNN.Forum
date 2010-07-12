@@ -32,7 +32,6 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Declarations"
 
-		Private SearchCollection As New ArrayList
 		Private SearchCount As Integer = 0
 		Private SearchPage As Integer
 		Private SearchTerms As String
@@ -48,11 +47,44 @@ Namespace DotNetNuke.Modules.Forum
 		Private LatestHours As Boolean = False
 		Private hsThreadRatings As New Hashtable
 
+		Private _ThreadCollection As New List(Of ThreadInfo)
+		Private _PostCollection As New List(Of PostInfo)
+
 #Region "Controls"
 
 		Private trcRating As Telerik.Web.UI.RadRating
 
 #End Region
+
+		''' <summary>
+		''' The collection of threads returned. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Property ThreadCollection() As List(Of ThreadInfo)
+			Get
+				Return _ThreadCollection
+			End Get
+			Set(ByVal Value As List(Of ThreadInfo))
+				_ThreadCollection = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Property PostCollection() As List(Of PostInfo)
+			Get
+				Return _PostCollection
+			End Get
+			Set(ByVal Value As List(Of PostInfo))
+				_PostCollection = Value
+			End Set
+		End Property
 
 #End Region
 
@@ -290,14 +322,14 @@ Namespace DotNetNuke.Modules.Forum
 				InThreadView = True
 			End If
 
-			' Get search results that will be rendered and the total number of search results
 			If InThreadView Then
-				SearchCollection = ctlSearch.SearchGetResults(SearchTerms, SearchPage, ResultsPerPage, CurrentForumUser.UserID, ForumControl.ModuleID, StartDate, EndDate, ThreadStatusID)
-				If SearchCollection.Count > 0 Then
-					SearchCount = CType(SearchCollection(0), SearchInfo).RecordCount
+				ThreadCollection = ctlSearch.SearchGetResults(SearchTerms, SearchPage, ResultsPerPage, CurrentForumUser.UserID, ForumControl.ModuleID, StartDate, EndDate, ThreadStatusID)
+
+				If ThreadCollection.Count > 0 Then
+					SearchCount = CType(ThreadCollection(0), ThreadInfo).TotalRecords
 				End If
 
-				For Each thread As SearchInfo In SearchCollection
+				For Each thread As ThreadInfo In ThreadCollection
 					Me.trcRating = New Telerik.Web.UI.RadRating
 					With trcRating
 						.Enabled = False
@@ -317,10 +349,10 @@ Namespace DotNetNuke.Modules.Forum
 					Controls.Add(trcRating)
 				Next
 			Else
-				'[skeel] Post view
-				SearchCollection = ctlSearch.Search(SearchTerms, SearchPage, ResultsPerPage, CurrentForumUser.UserID, ForumControl.ModuleID, StartDate, EndDate, ThreadStatusID)
-				If SearchCollection.Count > 0 Then
-					SearchCount = CType(SearchCollection(0), SearchResult).RecordCount
+				PostCollection = ctlSearch.Search(SearchTerms, SearchPage, ResultsPerPage, CurrentForumUser.UserID, ForumControl.ModuleID, StartDate, EndDate, ThreadStatusID)
+
+				If PostCollection.Count > 0 Then
+					SearchCount = PostCollection(0).TotalRecords
 				End If
 			End If
 		End Sub
@@ -337,11 +369,9 @@ Namespace DotNetNuke.Modules.Forum
 				RenderNavBar(wr, objConfig, ForumControl)
 				RenderBreadCrumbRow(wr)
 				If Aggregated Or myThreads Or LatestHours Then
-					'[skeel] Thread view
-					RenderSearch(wr)
+					RenderThreadSearchResults(wr)
 				Else
-					'[skel] Posts view
-					RenderSearchResults(wr)
+					RenderPostSearchResults(wr)
 				End If
 				RenderFooter(wr)
 				RenderBottomBreadCrumb(wr)
@@ -408,7 +438,7 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			If Aggregated Then
-				wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.ThreadSearch, SearchCollection, objConfig, ChildGroupView))
+				wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.ThreadSearch, ThreadCollection, objConfig, ChildGroupView))
 			Else
 				wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.ThreadSearch, Nothing, objConfig, ChildGroupView))
 			End If
@@ -443,9 +473,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="wr"></param>
 		''' <remarks>
 		''' </remarks>
-		Private Sub RenderSearchResults(ByVal wr As HtmlTextWriter)
+		Private Sub RenderPostSearchResults(ByVal wr As HtmlTextWriter)
 			'Check if we have any hits
-			If SearchCollection.Count = 0 Then
+			If PostCollection.Count = 0 Then
 				'Start Cell
 				RenderRowBegin(wr) '<tr>
 				RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
@@ -474,8 +504,8 @@ Namespace DotNetNuke.Modules.Forum
 
 			'Display the results
 			Dim Count As Integer = 1
-			Dim SearchItem As New SearchResult(TabID)
-			For Each SearchItem In SearchCollection
+			'Dim SearchItem As New SearchResult(TabID)
+			For Each objPost As PostInfo In PostCollection
 				'Handle Css
 				Dim authorCellClass As String = String.Empty
 				Dim bodyCellClass As String = String.Empty
@@ -513,7 +543,7 @@ Namespace DotNetNuke.Modules.Forum
 				RenderCellBegin(wr, "Forum_Header", "", "1%", "left", "middle", "", "") '<td>
 				' display "new" image if this post is new since last time user visited the thread (leave even if permitting anonymous posting)
 				If HttpContext.Current.Request.IsAuthenticated Then
-					If NewPost(SearchItem.ThreadID, SearchItem.CreatedDate) Then
+					If NewPost(objPost.ThreadID, objPost.CreatedDate) Then
 						RenderImage(wr, objConfig.GetThemeImageURL("s_new.") & objConfig.ImageExtension, ForumControl.LocalizedText("UnreadPost"), "")
 					Else
 						RenderImage(wr, objConfig.GetThemeImageURL("s_old.") & objConfig.ImageExtension, ForumControl.LocalizedText("ReadPost"), "")
@@ -527,15 +557,15 @@ Namespace DotNetNuke.Modules.Forum
 				RenderCellBegin(wr, "Forum_Header", "", "", "", "middle", "", "")    '<td>
 				RenderDivBegin(wr, "", "Forum_HeaderText") ' <span>
 				wr.Write("&nbsp;" & Localization.GetString("Forum", objConfig.SharedResourceFile) & ": ")
-				url = Utilities.Links.ContainerViewForumLink(TabID, SearchItem.ForumID, False)
-				RenderLinkButton(wr, url, SearchItem.ForumName, "Forum_HeaderText", "")
+				url = Utilities.Links.ContainerViewForumLink(TabID, objPost.ForumID, False)
+				RenderLinkButton(wr, url, objPost.ParentThread.ContainingForum.Name, "Forum_HeaderText", "")
 				RenderDivEnd(wr) ' </span>
 				RenderCellEnd(wr) ' </td>
 
 				'Post Date
 				RenderCellBegin(wr, "Forum_Header", "", "", "right", "middle", "", "")   '<td>
 				RenderDivBegin(wr, "", "Forum_HeaderText") ' <span>
-				wr.Write("&nbsp;" & Replace(Utilities.ForumUtils.GetCreatedDateInfo(SearchItem.CreatedDate, objConfig, ""), "<br />", "") & "&nbsp;&nbsp;")
+				wr.Write("&nbsp;" & Replace(Utilities.ForumUtils.GetCreatedDateInfo(objPost.CreatedDate, objConfig, ""), "<br />", "") & "&nbsp;&nbsp;")
 				RenderDivEnd(wr) ' </span>
 				RenderCellEnd(wr) ' </td> 
 				RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "Forum_HeaderCapRight", "")
@@ -559,7 +589,7 @@ Namespace DotNetNuke.Modules.Forum
 				'Author Cell
 				RenderCellBegin(wr, authorCellClass, "", "20%", "center", "top", "1", "1")	  ' <td>
 				'link to user profile, always display in both view
-				RenderAuthor(wr, SearchItem, postCountIsEven)
+				RenderAuthor(wr, objPost, postCountIsEven)
 				RenderCellEnd(wr) ' </td>
 
 				'Post Cell Start
@@ -573,8 +603,8 @@ Namespace DotNetNuke.Modules.Forum
 				'Title
 				RenderDivBegin(wr, "", "Forum_Profile")	' <span>
 				wr.Write(Localization.GetString("Title", objConfig.SharedResourceFile) & ": ")
-				url = Utilities.Links.ContainerViewPostLink(TabID, SearchItem.ForumID, SearchItem.PostID)
-				RenderLinkButton(wr, url, SearchItem.Subject, "Forum_Profile", "")
+				url = Utilities.Links.ContainerViewPostLink(TabID, objPost.ForumID, objPost.PostID)
+				RenderLinkButton(wr, url, objPost.Subject, "Forum_Profile", "")
 				RenderDivEnd(wr) ' </span>
 				RenderCellEnd(wr) ' </td>
 				RenderRowEnd(wr) ' </tr>
@@ -590,7 +620,7 @@ Namespace DotNetNuke.Modules.Forum
 				RenderRowBegin(wr) ' <tr>
 				RenderCellBegin(wr, postBodyClass, "", "", "left", "top", "", "") ' <td>
 				RenderDivBegin(wr, "", "Forum_Normal")
-				wr.Write(ProcessSearchBody(SearchItem.Body, SearchItem.CreatedDate))
+				wr.Write(ProcessSearchBody(objPost.Body, objPost.CreatedDate))
 				RenderDivEnd(wr) ' </span>
 				RenderCellEnd(wr) ' </td>
 				RenderRowEnd(wr) ' </tr>
@@ -609,7 +639,7 @@ Namespace DotNetNuke.Modules.Forum
 				RenderRowEnd(wr) ' </Tr>
 
 				'Add spacer
-				If Count < SearchCollection.Count Then
+				If Count < PostCollection.Count Then
 					RenderSpacerRow(wr)
 				End If
 
@@ -619,14 +649,14 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 		''' <summary>
-		''' Renders this views forum header columns
+		''' Renders this views post header columns
 		''' </summary>
 		''' <param name="wr"></param>
 		''' <remarks>
 		''' </remarks>
-		Private Sub RenderSearch(ByVal wr As HtmlTextWriter)
+		Private Sub RenderThreadSearchResults(ByVal wr As HtmlTextWriter)
 			'[skeel] Check if we have any hits
-			If SearchCollection.Count = 0 Then
+			If ThreadCollection.Count = 0 Then
 				'Start Cell
 				RenderRowBegin(wr) '<tr>
 				RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
@@ -724,8 +754,7 @@ Namespace DotNetNuke.Modules.Forum
 		Private Sub RenderSearchInfo(ByVal wr As HtmlTextWriter)
 			Dim Count As Integer = 1
 
-			Dim SearchItem As New SearchInfo
-			For Each SearchItem In SearchCollection
+			For Each objThread As ThreadInfo In ThreadCollection
 				Dim even As Boolean = ThreadIsEven(Count)
 
 				RenderRowBegin(wr) ' <Tr>
@@ -744,18 +773,18 @@ Namespace DotNetNuke.Modules.Forum
 				RenderCellBegin(wr, "", "100%", "", "left", "", "", "") ' <td>
 
 				' Determine url here so we can use it for thread name and icon
-				url = Utilities.Links.ContainerViewThreadLink(TabID, SearchItem.ForumID, SearchItem.ThreadID)
+				url = Utilities.Links.ContainerViewThreadLink(TabID, objThread.ForumID, objThread.ThreadID)
 
 				' see if post is pinned, priority over other icons
-				If SearchItem.LastApprovedPost.ParentThread.IsPinned Then
+				If objThread.LastApprovedPost.ParentThread.IsPinned Then
 					' First see if the thread is popular
-					If (SearchItem.LastApprovedPost.ParentThread.IsPopular) Then
+					If (objThread.LastApprovedPost.ParentThread.IsPopular) Then
 						' thread IS popular and pinned
 						' see if thread is locked
-						If (SearchItem.LastApprovedPost.ParentThread.IsClosed) Then
+						If (objThread.LastApprovedPost.ParentThread.IsClosed) Then
 							' thread IS popular, pinned, locked
 							' See if this is an unread post
-							If (HasNewPosts(CurrentForumUser.UserID, SearchItem.LastApprovedPost.ParentThread)) Then
+							If (HasNewPosts(CurrentForumUser.UserID, objThread.LastApprovedPost.ParentThread)) Then
 								' IS read
 								RenderImageButton(wr, url, objConfig.GetThemeImageURL("s_postlockedpinnedunreadplu.") & objConfig.ImageExtension, ForumControl.LocalizedText("imgHotNewLockedPinnedThread"), "")
 							Else
@@ -765,7 +794,7 @@ Namespace DotNetNuke.Modules.Forum
 						Else
 							' thread IS popular, Pinned but NOT locked
 							' See if this is an unread post
-							If (HasNewPosts(CurrentForumUser.UserID, SearchItem.LastApprovedPost.ParentThread)) Then
+							If (HasNewPosts(CurrentForumUser.UserID, objThread.LastApprovedPost.ParentThread)) Then
 								' IS read
 								RenderImageButton(wr, url, objConfig.GetThemeImageURL("s_postpinnedunreadplus.") & objConfig.ImageExtension, ForumControl.LocalizedText("imgNewHotPinnedThread"), "")
 							Else
@@ -776,9 +805,9 @@ Namespace DotNetNuke.Modules.Forum
 					Else
 						' thread NOT popular but IS pinned
 						' see if thread is locked
-						If (SearchItem.LastApprovedPost.ParentThread.IsClosed) Then
+						If (objThread.LastApprovedPost.ParentThread.IsClosed) Then
 							' thread IS pinned, Locked but NOT popular
-							If (HasNewPosts(CurrentForumUser.UserID, SearchItem.LastApprovedPost.ParentThread)) Then
+							If (HasNewPosts(CurrentForumUser.UserID, objThread.LastApprovedPost.ParentThread)) Then
 								' IS read
 								RenderImageButton(wr, url, objConfig.GetThemeImageURL("s_postpinnedlockedunread.") & objConfig.ImageExtension, ForumControl.LocalizedText("imgNewPinnedLockedThread"), "")
 							Else
@@ -787,7 +816,7 @@ Namespace DotNetNuke.Modules.Forum
 							End If
 						Else
 							'thread IS pinned but NOT popular, Locked
-							If (HasNewPosts(CurrentForumUser.UserID, SearchItem.LastApprovedPost.ParentThread)) Then
+							If (HasNewPosts(CurrentForumUser.UserID, objThread.LastApprovedPost.ParentThread)) Then
 								' IS read
 								RenderImageButton(wr, url, objConfig.GetThemeImageURL("s_postpinnedunread.") & objConfig.ImageExtension, ForumControl.LocalizedText("imgNewPinnedThread"), "")
 							Else
@@ -798,7 +827,7 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 				Else
 					' thread not pinned, determine post icon
-					RenderImageButton(wr, url, GetMediaURL(SearchItem.LastApprovedPost.ParentThread), GetMediaText(SearchItem.LastApprovedPost.ParentThread), "")
+					RenderImageButton(wr, url, GetMediaURL(objThread.LastApprovedPost.ParentThread), GetMediaText(objThread.LastApprovedPost.ParentThread), "")
 				End If
 
 				' sloppy code, but quick fix
@@ -814,7 +843,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 
-				If (SearchItem.IsUnRead) Then
+				If HasNewPosts(CurrentForumUser.UserID, objThread) Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_NormalBold")
 					wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
 				Else
@@ -823,9 +852,9 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 
 				If objConfig.FilterSubject Then
-					wr.Write(Utilities.ForumUtils.FormatProhibitedWord(SearchItem.Subject, SearchItem.CreatedDate, PortalID))
+					wr.Write(Utilities.ForumUtils.FormatProhibitedWord(objThread.Subject, objThread.CreatedDate, PortalID))
 				Else
-					wr.Write(SearchItem.Subject)
+					wr.Write(objThread.Subject)
 				End If
 				wr.RenderEndTag() ' </A>
 
@@ -842,7 +871,7 @@ Namespace DotNetNuke.Modules.Forum
 					userPostsPerPage = objConfig.PostsPerPage
 				End If
 
-				Dim UserPagesCount As Integer = CInt(Math.Ceiling((SearchItem.Replies + 1) / userPostsPerPage))
+				Dim UserPagesCount As Integer = CInt(Math.Ceiling((objThread.Replies + 1) / userPostsPerPage))
 				Dim ShowFinalPage As Boolean = (UserPagesCount > CapPageCount)
 
 				' Only show Pager if there is more than 1 page for the user
@@ -854,7 +883,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					If UserPagesCount >= CapPageCount Then
 						For ThreadPage As Integer = 1 To CapPageCount - 1
-							url = Utilities.Links.ContainerViewThreadPagedLink(TabID, SearchItem.ForumID, SearchItem.ThreadID, ThreadPage)
+							url = Utilities.Links.ContainerViewThreadPagedLink(TabID, objThread.ForumID, objThread.ThreadID, ThreadPage)
 							wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_NormalSmall")
 							wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
@@ -867,7 +896,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						If ShowFinalPage Then
 							wr.Write("..., ")
-							url = Utilities.Links.ContainerViewThreadPagedLink(TabID, SearchItem.ForumID, SearchItem.ThreadID, UserPagesCount)
+							url = Utilities.Links.ContainerViewThreadPagedLink(TabID, objThread.ForumID, objThread.ThreadID, UserPagesCount)
 							wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_NormalSmall")
 							wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
@@ -877,7 +906,7 @@ Namespace DotNetNuke.Modules.Forum
 					Else
 
 						For ThreadPage As Integer = 1 To UserPagesCount
-							url = Utilities.Links.ContainerViewThreadPagedLink(TabID, SearchItem.ForumID, SearchItem.ThreadID, ThreadPage)
+							url = Utilities.Links.ContainerViewThreadPagedLink(TabID, objThread.ForumID, objThread.ThreadID, ThreadPage)
 							wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_NormalSmall")
 							wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
@@ -896,21 +925,21 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 
 				RenderDivBegin(wr, "", "Forum_NormalSmall")
-				url = Utilities.Links.ContainerViewForumLink(TabID, SearchItem.ForumID, False)
+				url = Utilities.Links.ContainerViewForumLink(TabID, objThread.ForumID, False)
 				wr.Write(ForumControl.LocalizedText("in") + "&nbsp;")
-				RenderLinkButton(wr, url, SearchItem.ForumName, "Forum_NormalSmall")
+				RenderLinkButton(wr, url, objThread.ContainingForum.Name, "Forum_NormalSmall")
 				RenderDivEnd(wr) ' </span>
 				RenderCellEnd(wr) ' </td>
 
 				' start third cell for ratings held within nested table
 				' CP - Add check for RatingsEnabled
-				If objConfig.EnableRatings And SearchItem.Parent.EnableForumsRating Then
+				If objConfig.EnableRatings And objThread.ContainingForum.EnableForumsRating Then
 					RenderCellBegin(wr, "", "", "30%", "right", "", "", "") ' <td>
 
-					If hsThreadRatings.ContainsKey(SearchItem.ThreadID) Then
-						trcRating = CType(hsThreadRatings(SearchItem.ThreadID), Telerik.Web.UI.RadRating)
+					If hsThreadRatings.ContainsKey(objThread.ThreadID) Then
+						trcRating = CType(hsThreadRatings(objThread.ThreadID), Telerik.Web.UI.RadRating)
 						' CP - we alter statement below if we want to enable 0 rating still showing image.
-						If SearchItem.Rating > 0 Then
+						If objThread.Rating > 0 Then
 							trcRating.RenderControl(wr)
 						End If
 					End If
@@ -918,10 +947,10 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 
 				'CP - Add for thread status
-				If (objConfig.EnableThreadStatus And SearchItem.Parent.EnableForumsThreadStatus) Or (SearchItem.ThreadStatus = ThreadStatus.Poll And SearchItem.Parent.AllowPolls) Then
+				If (objConfig.EnableThreadStatus And objThread.ContainingForum.EnableForumsThreadStatus) Or (objThread.ThreadStatus = ThreadStatus.Poll And objThread.ContainingForum.AllowPolls) Then
 					' Display rating image
 					RenderCellBegin(wr, "", "", "5%", "right", "", "", "")
-					RenderImage(wr, objConfig.GetThemeImageURL(SearchItem.StatusImage), SearchItem.StatusText, "")
+					RenderImage(wr, objConfig.GetThemeImageURL(objThread.StatusImage), objThread.StatusText, "")
 					RenderCellEnd(wr) ' </td>
 				End If
 
@@ -938,7 +967,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_Normal")
 				wr.RenderBeginTag(HtmlTextWriterTag.Span) ' <span>
-				wr.Write(SearchItem.Replies)
+				wr.Write(objThread.Replies)
 				RenderDivEnd(wr) ' </span>
 				RenderCellEnd(wr) ' </td>
 
@@ -951,7 +980,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_Normal")
 				wr.RenderBeginTag(HtmlTextWriterTag.Span) ' <span>
-				wr.Write(SearchItem.Views)
+				wr.Write(objThread.Views)
 				RenderDivEnd(wr) ' </span>
 				RenderCellEnd(wr) ' </td>
 
@@ -971,7 +1000,7 @@ Namespace DotNetNuke.Modules.Forum
 				RenderCellEnd(wr) ' </td>
 
 				RenderCellBegin(wr, "", "", "", "right", "", "", "") ' <td>
-				url = Utilities.Links.ContainerViewPostLink(TabID, SearchItem.ForumID, SearchItem.LastApprovedPost.PostID)
+				url = Utilities.Links.ContainerViewPostLink(TabID, objThread.ForumID, objThread.LastApprovedPost.PostID)
 				'' Skeel - This is for showing link to first unread post for logged in users. 
 				'If LoggedOnUserID > 0 Then
 				'	If HasNewPosts(LoggedOnUserID, SearchItem.LastApprovedP) Then
@@ -989,18 +1018,18 @@ Namespace DotNetNuke.Modules.Forum
 				'End If
 				'' End Skeel
 
-				RenderTitleLinkButton(wr, url, Utilities.ForumUtils.GetCreatedDateInfo(SearchItem.LastApprovedPost.CreatedDate, objConfig, ""), "Forum_LastPostText", SearchItem.LastPostShortBody)	  ' <a/>
+				RenderTitleLinkButton(wr, url, Utilities.ForumUtils.GetCreatedDateInfo(objThread.LastApprovedPost.CreatedDate, objConfig, ""), "Forum_LastPostText", objThread.LastPostShortBody)	  ' <a/>
 
 				RenderDivBegin(wr, "", "Forum_LastPostText")	   ' <div>
 				wr.Write(ForumControl.LocalizedText("by") & " ")
 
 				If Not objConfig.EnableExternalProfile Then
-					url = SearchItem.LastApprovedUser.UserCoreProfileLink
+					url = objThread.LastApprovedUser.UserCoreProfileLink
 				Else
-					url = Utilities.Links.UserExternalProfileLink(SearchItem.LastApprovedUser.UserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, SearchItem.LastApprovedUser.Username)
+					url = Utilities.Links.UserExternalProfileLink(objThread.LastApprovedUser.UserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, objThread.LastApprovedUser.Username)
 				End If
 
-				RenderLinkButton(wr, url, SearchItem.LastApprovedUser.SiteAlias, "Forum_LastPostText") ' <a/>
+				RenderLinkButton(wr, url, objThread.LastApprovedUser.SiteAlias, "Forum_LastPostText") ' <a/>
 				RenderDivEnd(wr) ' </div>
 				RenderCellEnd(wr) ' </td>
 
@@ -1025,14 +1054,11 @@ Namespace DotNetNuke.Modules.Forum
 		''' Builds the left cell for RenderPost (author, rank, avatar area)
 		''' </summary>
 		''' <param name="wr"></param>
-		''' <param name="SearchItem"></param>
+		''' <param name="objPost"></param>
 		''' <param name="PostCountIsEven"></param>
 		''' <remarks>
 		''' </remarks>
-		Private Sub RenderAuthor(ByVal wr As HtmlTextWriter, ByVal SearchItem As SearchResult, ByVal PostCountIsEven As Boolean)
-			Dim author As ForumUserInfo = SearchItem.Author
-			Dim authorOnline As Boolean = (author.EnableOnlineStatus AndAlso author.IsOnline AndAlso (ForumControl.objConfig.EnableUsersOnline))
-
+		Private Sub RenderAuthor(ByVal wr As HtmlTextWriter, ByVal objPost As PostInfo, ByVal PostCountIsEven As Boolean)
 			' table to display integrated media, user alias, poster rank, avatar, homepage, and number of posts.
 			RenderTableBegin(wr, "", "Forum_PostAuthorTable", "", "100%", "0", "0", "", "top", "")
 
@@ -1042,7 +1068,7 @@ Namespace DotNetNuke.Modules.Forum
 			' display user online status
 			If objConfig.EnableUsersOnline Then
 				RenderCellBegin(wr, "", "", "5%", "", "middle", "", "")  ' <td> 
-				If authorOnline Then
+				If objPost.Author.IsOnline Then
 					Dim imgURL As String = objConfig.GetThemeImageURL("s_online.") & objConfig.ImageExtension
 					RenderImage(wr, imgURL, ForumControl.LocalizedText("imgOnline"), "")
 				Else
@@ -1059,19 +1085,19 @@ Namespace DotNetNuke.Modules.Forum
 
 			'link to user profile, always display in both view
 			If Not objConfig.EnableExternalProfile Then
-				url = author.UserCoreProfileLink
+				url = objPost.Author.UserCoreProfileLink
 			Else
-				url = Utilities.Links.UserExternalProfileLink(author.UserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, author.Username)
+				url = Utilities.Links.UserExternalProfileLink(objPost.Author.UserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, objPost.Author.Username)
 			End If
 
-			RenderTitleLinkButton(wr, url, author.SiteAlias, "Forum_Profile", ForumControl.LocalizedText("ViewProfile"))
+			RenderTitleLinkButton(wr, url, objPost.Author.SiteAlias, "Forum_Profile", ForumControl.LocalizedText("ViewProfile"))
 
 			RenderCellEnd(wr) ' </td>
 			RenderRowEnd(wr) ' </tr> (end user alias/online)  
 
 			' display user ranking 
 			If (objConfig.Ranking) Then
-				Dim authorRank As PosterRank = Utilities.ForumUtils.GetRank(author, ForumControl.objConfig)
+				Dim authorRank As PosterRank = Utilities.ForumUtils.GetRank(objPost.Author, ForumControl.objConfig)
 				Dim rankImage As String = String.Format("Rank_{0}." & objConfig.ImageExtension, CType(authorRank, Integer).ToString)
 				Dim rankURL As String = objConfig.GetThemeImageURL(rankImage)
 				Dim RankTitle As String = Utilities.ForumUtils.GetRankTitle(authorRank, objConfig)
@@ -1095,7 +1121,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			'Post count
 			RenderDivBegin(wr, "spAuthorPostCount", "Forum_NormalSmall")
-			wr.Write(ForumControl.LocalizedText("PostCount").Replace("[PostCount]", author.PostCount.ToString))
+			wr.Write(ForumControl.LocalizedText("PostCount").Replace("[PostCount]", objPost.Author.PostCount.ToString))
 			RenderDivEnd(wr)
 
 			RenderCellEnd(wr) ' </td>
@@ -1216,7 +1242,7 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			If Aggregated Then
-				wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.ThreadSearch, SearchCollection, objConfig, ChildGroupView))
+				wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.ThreadSearch, ThreadCollection, objConfig, ChildGroupView))
 			Else
 				wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.ThreadSearch, Nothing, objConfig, ChildGroupView))
 			End If
@@ -1431,9 +1457,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="CreatedDate"></param>
 		''' <returns>A string with markup of search words, max 300 caracters</returns>
 		''' <remarks></remarks>
-		''' <history>
-		''' 	[skeel]	12/13/2008	Created
-		''' </history>
 		Private Function ProcessSearchBody(ByVal strBody As String, ByVal CreatedDate As Date) As String
 			Dim str As String = HttpUtility.HtmlDecode(strBody)
 			Try

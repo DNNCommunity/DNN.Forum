@@ -238,7 +238,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Private Function FormatBytes(ByVal Bytes As Integer) As String
-
 			Dim strBytes As String = String.Empty
 			Try
 				If Bytes >= 1073741824 Then
@@ -255,9 +254,7 @@ Namespace DotNetNuke.Modules.Forum
 			End Try
 
 			Return strBytes
-
 		End Function
-
 
 #End Region
 

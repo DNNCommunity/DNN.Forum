@@ -82,6 +82,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim ForumEmailTypeID As Integer
 			Dim Keywords As New Hashtable
 			Dim SetKeywords As New Hashtable
+			Dim cntPost As New PostController()
 
 			Select Case emailType
 				Case ForumEmailType.UserPostAdded
@@ -90,20 +91,20 @@ Namespace DotNetNuke.Modules.Forum
 					ForumEmailTypeID = ForumEmailType.UserPostAdded
 
 					' Use ContentID to get post info for post content types
-					Dim objPostInfo As New PostInfo
-					objPostInfo = PostInfo.GetPostInfo(ContentID, PortalID)
-					DistroContentID = objPostInfo.ThreadID
+					Dim objPost As New PostInfo
+					objPost = cntPost.GetPostInfo(ContentID, PortalID)
+					DistroContentID = objPost.ThreadID
 
 					Dim cntForum As New ForumController
 					Dim objForum As New ForumInfo
-					objForum = cntForum.GetForumInfoCache(objPostInfo.ForumID)
+					objForum = cntForum.GetForumInfoCache(objPost.ForumID)
 
 					'Grab keywords based on content type, this is stored in cache
 					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
 
 					' We first have to pass to the keyword rendering. This is going to take the hashtable, replaces its replacementvar's based on the email content type
 					If Not Keywords Is Nothing Then
-						SetKeywords = RenderKeywords(Keywords, objPostInfo, ContentType, URL, ProfileURL, Notes, objConfig.CurrentPortalSettings.ActiveTab.TabID)
+						SetKeywords = RenderKeywords(Keywords, objPost, ContentType, URL, ProfileURL, Notes, objConfig.CurrentPortalSettings.ActiveTab.TabID)
 					End If
 
 					' this sproc goes against Tracked Threads table and tracked forums tables
@@ -128,20 +129,20 @@ Namespace DotNetNuke.Modules.Forum
 					ForumEmailTypeID = ForumEmailType.UserNewThread
 
 					' Use ContentID to get post info for post content types
-					Dim objPostInfo As New PostInfo
-					objPostInfo = PostInfo.GetPostInfo(ContentID, PortalID)
-					DistroContentID = objPostInfo.ThreadID
+					Dim objPost As New PostInfo
+					objPost = cntPost.GetPostInfo(ContentID, PortalID)
+					DistroContentID = objPost.ThreadID
 
 					Dim cntForum As New ForumController
 					Dim objForum As New ForumInfo
-					objForum = cntForum.GetForumInfoCache(objPostInfo.ForumID)
+					objForum = cntForum.GetForumInfoCache(objPost.ForumID)
 
 					'Grab keywords based on content type, this is stored in cache
 					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
 
 					' We first have to pass to the keyword rendering. This is going to take the hashtable, replaces its replacementvar's based on the email content type
 					If Not Keywords Is Nothing Then
-						SetKeywords = RenderKeywords(Keywords, objPostInfo, ContentType, URL, ProfileURL, Notes, objConfig.CurrentPortalSettings.ActiveTab.TabID)
+						SetKeywords = RenderKeywords(Keywords, objPost, ContentType, URL, ProfileURL, Notes, objConfig.CurrentPortalSettings.ActiveTab.TabID)
 					End If
 
 					' this sproc goes against Tracked Threads table and tracked forums tables
@@ -166,20 +167,20 @@ Namespace DotNetNuke.Modules.Forum
 					ForumEmailTypeID = ForumEmailType.UserPostEdited
 
 					' Use ContentID to get post info for post content types
-					Dim objPostInfo As New PostInfo
-					objPostInfo = PostInfo.GetPostInfo(ContentID, PortalID)
-					DistroContentID = objPostInfo.ThreadID
+					Dim objPost As New PostInfo
+					objPost = cntPost.GetPostInfo(ContentID, PortalID)
+					DistroContentID = objPost.ThreadID
 
 					Dim cntForum As New ForumController
 					Dim objForum As New ForumInfo
-					objForum = cntForum.GetForumInfoCache(objPostInfo.ForumID)
+					objForum = cntForum.GetForumInfoCache(objPost.ForumID)
 
 					'Grab keywords based on content type, this is stored in cache
 					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
 
 					' We first have to pass to the keyword rendering. This is going to take the hashtable, replaces its replacementvar's based on the email content type
 					If Not Keywords Is Nothing Then
-						SetKeywords = RenderKeywords(Keywords, objPostInfo, ContentType, URL, ProfileURL, Notes, objConfig.CurrentPortalSettings.ActiveTab.TabID)
+						SetKeywords = RenderKeywords(Keywords, objPost, ContentType, URL, ProfileURL, Notes, objConfig.CurrentPortalSettings.ActiveTab.TabID)
 					End If
 
 					DistroCall = "Forum_Subscriptions_NewThread"
@@ -203,20 +204,20 @@ Namespace DotNetNuke.Modules.Forum
 					ForumEmailTypeID = ForumEmailType.UserPostDeleted
 
 					' Use ContentID to get post info for post content types
-					Dim objPostInfo As New PostInfo
-					objPostInfo = PostInfo.GetPostInfo(ContentID, PortalID)
-					DistroContentID = objPostInfo.PostID
+					Dim objPost As New PostInfo
+					objPost = cntPost.GetPostInfo(ContentID, PortalID)
+					DistroContentID = objPost.PostID
 
 					Dim cntForum As New ForumController
 					Dim objForum As New ForumInfo
-					objForum = cntForum.GetForumInfoCache(objPostInfo.ForumID)
+					objForum = cntForum.GetForumInfoCache(objPost.ForumID)
 
 					'Grab keywords based on content type, this is stored in cache
 					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
 
 					' We first have to pass to the keyword rendering. This is going to take hashtable, replaces its replacementvar's based on the email content type
 					If Not Keywords Is Nothing Then
-						SetKeywords = RenderKeywords(Keywords, objPostInfo, ContentType, URL, ProfileURL, Notes, objConfig.CurrentPortalSettings.ActiveTab.TabID)
+						SetKeywords = RenderKeywords(Keywords, objPost, ContentType, URL, ProfileURL, Notes, objConfig.CurrentPortalSettings.ActiveTab.TabID)
 					End If
 
 					DistroCall = "Forum_Subscriptions_PostDeleted"
@@ -240,16 +241,16 @@ Namespace DotNetNuke.Modules.Forum
 					ForumEmailTypeID = ForumEmailType.ModeratorPostDeleted
 
 					' Use ContentID to get post info for post content types
-					Dim objPostInfo As New PostInfo
-					objPostInfo = PostInfo.GetPostInfo(ContentID, PortalID)
-					DistroContentID = objPostInfo.ForumID
+					Dim objPost As New PostInfo
+					objPost = cntPost.GetPostInfo(ContentID, PortalID)
+					DistroContentID = objPost.ForumID
 
 					'Grab keywords based on content type, this is stored in cache
 					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
 
 					' We first have to pass to the keyword rendering. This is going to take the hashtable, replaces its replacementvar's based on the email content type
 					If Not Keywords Is Nothing Then
-						SetKeywords = RenderKeywords(Keywords, objPostInfo, ContentType, URL, ProfileURL, Notes, objConfig.CurrentPortalSettings.ActiveTab.TabID)
+						SetKeywords = RenderKeywords(Keywords, objPost, ContentType, URL, ProfileURL, Notes, objConfig.CurrentPortalSettings.ActiveTab.TabID)
 					End If
 
 					DistroCall = "Forum_Subscriptions_ModPostDeleted"
@@ -263,16 +264,16 @@ Namespace DotNetNuke.Modules.Forum
 					ForumEmailTypeID = ForumEmailType.ModeratorPostToModerate
 
 					' Use ContentID to get post info for post content types
-					Dim objPostInfo As New PostInfo
-					objPostInfo = PostInfo.GetPostInfo(ContentID, PortalID)
-					DistroContentID = objPostInfo.PostID
+					Dim objPost As New PostInfo
+					objPost = cntPost.GetPostInfo(ContentID, PortalID)
+					DistroContentID = objPost.PostID
 
 					'Grab keywords based on content type, this is stored in cache
 					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
 
 					' We first have to pass to the keyword rendering. This is going to take the hashtable, replaces its replacementvar's based on the email content type
 					If Not Keywords Is Nothing Then
-						SetKeywords = RenderKeywords(Keywords, objPostInfo, ContentType, URL, ProfileURL, Notes, objConfig.CurrentPortalSettings.ActiveTab.TabID)
+						SetKeywords = RenderKeywords(Keywords, objPost, ContentType, URL, ProfileURL, Notes, objConfig.CurrentPortalSettings.ActiveTab.TabID)
 					End If
 
 					' Since Post To Moderate and Post To Delete Mods are same for forum post is in, use same distro sproc to determine who receives.
@@ -288,16 +289,16 @@ Namespace DotNetNuke.Modules.Forum
 					ForumEmailTypeID = ForumEmailType.ModeratorPostAbuse
 
 					' Use ContentID to get post info for post content types
-					Dim objPostInfo As New PostInfo
-					objPostInfo = PostInfo.GetPostInfo(ContentID, PortalID)
-					DistroContentID = objPostInfo.PostID
+					Dim objPost As New PostInfo
+					objPost = cntPost.GetPostInfo(ContentID, PortalID)
+					DistroContentID = objPost.PostID
 
 					'Grab keywords based on content type, this is stored in cache
 					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
 
 					' We first have to pass to the keyword rendering. This is going to take the hashtable, replaces its replacementvar's based on the email content type
 					If Not Keywords Is Nothing Then
-						SetKeywords = RenderKeywords(Keywords, objPostInfo, ContentType, URL, ProfileURL, Notes, objConfig.CurrentPortalSettings.ActiveTab.TabID)
+						SetKeywords = RenderKeywords(Keywords, objPost, ContentType, URL, ProfileURL, Notes, objConfig.CurrentPortalSettings.ActiveTab.TabID)
 					End If
 
 					DistroCall = "Forum_Subscriptions_ModPostAbuse"
@@ -311,20 +312,20 @@ Namespace DotNetNuke.Modules.Forum
 					ForumEmailTypeID = ForumEmailType.UserThreadMoved
 
 					' Use ContentID to get post info for post content types
-					Dim objPostInfo As New PostInfo
-					objPostInfo = PostInfo.GetPostInfo(ContentID, PortalID)
-					DistroContentID = objPostInfo.ThreadID
+					Dim objPost As New PostInfo
+					objPost = cntPost.GetPostInfo(ContentID, PortalID)
+					DistroContentID = objPost.ThreadID
 
 					Dim cntForum As New ForumController
 					Dim objForum As New ForumInfo
-					objForum = cntForum.GetForumInfoCache(objPostInfo.ForumID)
+					objForum = cntForum.GetForumInfoCache(objPost.ForumID)
 
 					'Grab keywords based on content type, this is stored in cache
 					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
 
 					' We first have to pass to the keyword rendering. This is going to take the hashtable, replaces its replacementvar's based on the email content type
 					If Not Keywords Is Nothing Then
-						SetKeywords = RenderKeywords(Keywords, objPostInfo, ContentType, URL, ProfileURL, Notes, objConfig.CurrentPortalSettings.ActiveTab.TabID)
+						SetKeywords = RenderKeywords(Keywords, objPost, ContentType, URL, ProfileURL, Notes, objConfig.CurrentPortalSettings.ActiveTab.TabID)
 					End If
 
 					DistroCall = "Forum_Subscriptions_NewThread"
@@ -348,20 +349,20 @@ Namespace DotNetNuke.Modules.Forum
 					ForumEmailTypeID = ForumEmailType.UserThreadSplit
 
 					' Use ContentID to get post info for post content types
-					Dim objPostInfo As New PostInfo
-					objPostInfo = PostInfo.GetPostInfo(ContentID, PortalID)
-					DistroContentID = objPostInfo.ThreadID
+					Dim objPost As New PostInfo
+					objPost = cntPost.GetPostInfo(ContentID, PortalID)
+					DistroContentID = objPost.ThreadID
 
 					Dim cntForum As New ForumController
 					Dim objForum As New ForumInfo
-					objForum = cntForum.GetForumInfoCache(objPostInfo.ForumID)
+					objForum = cntForum.GetForumInfoCache(objPost.ForumID)
 
 					'Grab keywords based on content type, this is stored in cache
 					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
 
 					' We first have to pass to the keyword rendering. This is going to take the hashtable, replaces its replacementvar's based on the email content type
 					If Not Keywords Is Nothing Then
-						SetKeywords = RenderKeywords(Keywords, objPostInfo, ContentType, URL, ProfileURL, Notes, objConfig.CurrentPortalSettings.ActiveTab.TabID)
+						SetKeywords = RenderKeywords(Keywords, objPost, ContentType, URL, ProfileURL, Notes, objConfig.CurrentPortalSettings.ActiveTab.TabID)
 					End If
 
 					DistroCall = "Forum_Subscriptions_NewThread"
@@ -385,20 +386,20 @@ Namespace DotNetNuke.Modules.Forum
 					ForumEmailTypeID = ForumEmailType.UserPostApproved
 
 					' Use ContentID to get post info for post content types
-					Dim objPostInfo As New PostInfo
-					objPostInfo = PostInfo.GetPostInfo(ContentID, PortalID)
-					DistroContentID = objPostInfo.PostID
+					Dim objPost As New PostInfo
+					objPost = cntPost.GetPostInfo(ContentID, PortalID)
+					DistroContentID = objPost.PostID
 
 					Dim cntForum As New ForumController
 					Dim objForum As New ForumInfo
-					objForum = cntForum.GetForumInfoCache(objPostInfo.ForumID)
+					objForum = cntForum.GetForumInfoCache(objPost.ForumID)
 
 					'Grab keywords based on content type, this is stored in cache
 					Keywords = KeywordInfo.GetKeywordsHash(ContentType)
 
 					' We first have to pass to the keyword rendering. This is going to take hashtable, replaces its replacementvar's based on the email content type
 					If Not Keywords Is Nothing Then
-						SetKeywords = RenderKeywords(Keywords, objPostInfo, ContentType, URL, ProfileURL, Notes, objConfig.CurrentPortalSettings.ActiveTab.TabID)
+						SetKeywords = RenderKeywords(Keywords, objPost, ContentType, URL, ProfileURL, Notes, objConfig.CurrentPortalSettings.ActiveTab.TabID)
 					End If
 
 					DistroCall = "Forum_Subscriptions_PostApproved"

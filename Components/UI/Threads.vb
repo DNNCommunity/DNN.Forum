@@ -1067,7 +1067,7 @@ Namespace DotNetNuke.Modules.Forum
 						RenderCellEnd(wr) ' </td>
 
 						' CP - Add check for RatingsEnabled
-						If objConfig.EnableRatings And thread.HostForum.EnableForumsRating Then ' And thread.Rating > 0
+						If objConfig.EnableRatings And thread.ContainingForum.EnableForumsRating Then ' And thread.Rating > 0
 							RenderCellBegin(wr, "", "", "30%", "right", "", "", "") ' <td>
 
 							If hsThreadRatings.ContainsKey(thread.ThreadID) Then
@@ -1082,7 +1082,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						'CP - Add for thread status
 						RenderCellBegin(wr, "", "", "5%", "right", "", "", "")	 ' <td>
-						If (objConfig.EnableThreadStatus And thread.HostForum.EnableForumsThreadStatus) Or (thread.ThreadStatus = ThreadStatus.Poll And thread.HostForum.AllowPolls) Then
+						If (objConfig.EnableThreadStatus And thread.ContainingForum.EnableForumsThreadStatus) Or (thread.ThreadStatus = ThreadStatus.Poll And thread.ContainingForum.AllowPolls) Then
 							RenderImage(wr, objConfig.GetThemeImageURL(thread.StatusImage), thread.StatusText, "") ' <img/>
 						End If
 						RenderCellEnd(wr) ' </td>

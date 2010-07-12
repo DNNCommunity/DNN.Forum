@@ -804,15 +804,15 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 						'Forum Home
 						sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), Localization.GetString("Home", objConfig.SharedResourceFile), imageURL))
 						' Render Group Name
-						sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objThreadInfo.HostForum.GroupID), TrimString(objThreadInfo.HostForum.ParentGroup.Name, 15), imageURL))
+						sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objThreadInfo.ContainingForum.GroupID), TrimString(objThreadInfo.ContainingForum.ParentGroup.Name, 15), imageURL))
 
 						'Check if this is a sub forum
-						If objThreadInfo.HostForum.ParentId > 0 Then
+						If objThreadInfo.ContainingForum.ParentId > 0 Then
 							'Render Parent Forum Name
-							sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerParentForumLink(TabID, objThreadInfo.HostForum.GroupID, objThreadInfo.HostForum.ForumID), objThreadInfo.HostForum.ParentForum.Name, imageURL))
+							sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerParentForumLink(TabID, objThreadInfo.ContainingForum.GroupID, objThreadInfo.ContainingForum.ForumID), objThreadInfo.ContainingForum.ParentForum.Name, imageURL))
 						End If
 
-						sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(TabID, objThreadInfo.ForumID, False), TrimString(objThreadInfo.HostForum.Name, 15), imageURL))
+						sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(TabID, objThreadInfo.ForumID, False), TrimString(objThreadInfo.ContainingForum.Name, 15), imageURL))
 						' Render Thread Name
 						If objConfig.FilterSubject Then
 							Dim strFilteredSubject As String = objThreadInfo.Subject

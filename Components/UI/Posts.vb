@@ -515,7 +515,7 @@ Namespace DotNetNuke.Modules.Forum
 				MyBase.BasePage.Response.Redirect(Utilities.Links.NoContentLink(TabID, ModuleID), True)
 			End If
 
-			_HostForum = ThreadInfo.HostForum
+			_HostForum = ThreadInfo.ContainingForum
 			_ForumID = ParentForum.ForumID
 
 			' Make sure the forum is active 
@@ -536,11 +536,11 @@ Namespace DotNetNuke.Modules.Forum
 
 			'We are past knowing the user should be here, let's handle SEO oriented things
 			If objConfig.OverrideTitle Then
-				MyBase.BasePage.Title = ThreadInfo.Subject & " - " & ThreadInfo.HostForum.Name & " - " & Me.BaseControl.PortalName
+				MyBase.BasePage.Title = ThreadInfo.Subject & " - " & ThreadInfo.ContainingForum.Name & " - " & Me.BaseControl.PortalName
 			End If
 
 			If objConfig.OverrideDescription Then
-				MyBase.BasePage.Description = ThreadInfo.Subject + "," + ThreadInfo.HostForum.Name + "," + Me.BaseControl.PortalName
+				MyBase.BasePage.Description = ThreadInfo.Subject + "," + ThreadInfo.ContainingForum.Name + "," + Me.BaseControl.PortalName
 			End If
 			' Consider add metakeywords via applied tags, when taxonomy is integrated
 
@@ -853,7 +853,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				' All enclosed items are user specific, so we must have a userID
 				If CurrentForumUser.UserID > 0 Then
-					If objConfig.EnableThreadStatus And ThreadInfo.HostForum.EnableForumsThreadStatus Then
+					If objConfig.EnableThreadStatus And ThreadInfo.ContainingForum.EnableForumsThreadStatus Then
 						ddlThreadStatus.Visible = True
 						ddlThreadStatus.Items.Clear()
 
@@ -983,7 +983,7 @@ Namespace DotNetNuke.Modules.Forum
 			' Display rating only if user is authenticated
 			If PostCollection.Count > 0 Then
 				'check to see if new setting, enable ratings is enabled
-				If objConfig.EnableRatings And ThreadInfo.HostForum.EnableForumsRating Then
+				If objConfig.EnableRatings And ThreadInfo.ContainingForum.EnableForumsRating Then
 					RenderCellBegin(wr, "", "", "", "left", "", "", "") ' <td> 
 					'CP - Sub in ajax image rating solution here for ddl
 					trcRating.RenderControl(wr)
@@ -1321,7 +1321,7 @@ Namespace DotNetNuke.Modules.Forum
 			'End spacer row
 
 			' Handle polls
-			If ThreadInfo.HostForum.AllowPolls And ThreadInfo.PollID > 0 And CurrentForumUser.UserID > 0 Then
+			If ThreadInfo.ContainingForum.AllowPolls And ThreadInfo.PollID > 0 And CurrentForumUser.UserID > 0 Then
 				RenderPoll(wr)
 			End If
 
@@ -1620,13 +1620,13 @@ Namespace DotNetNuke.Modules.Forum
 				Else
 					' this is either not the original post or the user is not the author or a moderator
 					' If the thread is answered AND this is the post accepted as the answer
-					If Post.ParentThread.ThreadStatus = ThreadStatus.Answered And (Post.ParentThread.AnswerPostID = Post.PostID) And ThreadInfo.HostForum.EnableForumsThreadStatus Then
+					If Post.ParentThread.ThreadStatus = ThreadStatus.Answered And (Post.ParentThread.AnswerPostID = Post.PostID) And ThreadInfo.ContainingForum.EnableForumsThreadStatus Then
 						RenderDivBegin(wr, "", "Forum_AnswerText") ' <span>
 						wr.Write(ForumControl.LocalizedText("AcceptedAnswer"))
 						wr.Write("&nbsp;")
 						RenderDivEnd(wr) ' </span>
 						' If the thread is NOT answered AND this user started the post or is a moderator of some sort
-					ElseIf ((CurrentForumUser.UserID = Post.ParentThread.StartedByUserID) Or (objSecurity.IsForumModerator)) And (Post.ParentThread.ThreadStatus = ThreadStatus.Unanswered) And ThreadInfo.HostForum.EnableForumsThreadStatus Then
+					ElseIf ((CurrentForumUser.UserID = Post.ParentThread.StartedByUserID) Or (objSecurity.IsForumModerator)) And (Post.ParentThread.ThreadStatus = ThreadStatus.Unanswered) And ThreadInfo.ContainingForum.EnableForumsThreadStatus Then
 						' Select the proper command argument (set before rendering)
 						If hsThreadAnswers.ContainsKey(Post.PostID) Then
 							cmdThreadAnswer = CType(hsThreadAnswers(Post.PostID), LinkButton)
@@ -2791,7 +2791,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim user As ForumUserInfo = CurrentForumUser
 			Dim author As ForumUserInfo = Post.Author
 			Dim HostThread As ThreadInfo = Post.ParentThread
-			Dim HostForum As ForumInfo = HostThread.HostForum
+			Dim HostForum As ForumInfo = HostThread.ContainingForum
 
 			' Render reply/mod buttons if necessary
 			' First see if the user has the ability to post
@@ -2836,7 +2836,7 @@ Namespace DotNetNuke.Modules.Forum
 						RenderLinkButton(wr, _url, ForumControl.LocalizedText("Edit"), "Forum_Link")
 						RenderCellEnd(wr)
 						'don't allow non mod, forum admin or anything other than a moderator to edit a closed forum post (if the forum is not moderated, or the user is trusted)
-					ElseIf CurrentForumUser.UserID > 0 And (Post.ParentThread.HostForum.IsActive) And ((CurrentForumUser.UserID = Post.Author.UserID) AndAlso (Post.ParentThread.HostForum.IsModerated = False Or author.IsTrusted Or objSecurity.IsUnmoderated)) Then
+					ElseIf CurrentForumUser.UserID > 0 And (Post.ParentThread.ContainingForum.IsActive) And ((CurrentForumUser.UserID = Post.Author.UserID) AndAlso (Post.ParentThread.ContainingForum.IsModerated = False Or author.IsTrusted Or objSecurity.IsUnmoderated)) Then
 
 						'[skeel] check for PostEditWindow
 						If objConfig.PostEditWindow = 0 Then
@@ -2867,8 +2867,8 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 
 					'First check if the thread is opened, if not then handle for single situation
-					If CurrentForumUser.UserID > 0 AndAlso (Not Post.ParentThread.IsClosed) And (Post.ParentThread.HostForum.IsActive) Then
-						If Not Post.ParentThread.HostForum.PublicPosting Then
+					If CurrentForumUser.UserID > 0 AndAlso (Not Post.ParentThread.IsClosed) And (Post.ParentThread.ContainingForum.IsActive) Then
+						If Not Post.ParentThread.ContainingForum.PublicPosting Then
 							' see if user can reply
 							If objSecurity.IsAllowedToPostRestrictedReply Then
 								_url = Utilities.Links.NewPostLink(TabID, ForumID, Post.PostID, "quote", ModuleID)

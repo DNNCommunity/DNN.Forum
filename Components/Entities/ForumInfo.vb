@@ -85,18 +85,6 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-#Region "Constructors"
-
-		''' <summary>
-		''' Creates a new instance of the foruminfo object.
-		''' </summary>
-		''' <remarks>
-		''' </remarks>
-		Public Sub New()
-		End Sub
-
-#End Region
-
 #Region "Public ReadOnly Properties"
 
 		''' <summary>
@@ -186,7 +174,8 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property ParentGroup() As GroupInfo
 			Get
 				If GroupID <> -1 Then
-					Return GroupInfo.GetGroupInfo(GroupID)
+					Dim cntGroup As New GroupController()
+					Return cntGroup.GetGroupInfo(GroupID)
 				Else
 					Dim _groupInfo As GroupInfo = New GroupInfo
 					_groupInfo.ModuleID = ModuleID
@@ -204,7 +193,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property ParentForum() As ForumInfo
 			Get
-				Dim objForum As ForumInfo = New ForumInfo
+				Dim objForum As New ForumInfo
 
 				If ParentId > 0 Then
 					Dim cntForum As New ForumController

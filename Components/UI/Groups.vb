@@ -108,15 +108,13 @@ Namespace DotNetNuke.Modules.Forum
 
 			' Get groups
 			Dim cntGroup As New GroupController
-			arrAuthGroups = cntGroup.GroupGetAllAuthorized(ModuleID, CurrentForumUser.UserID, False)
+			arrAuthGroups = cntGroup.GroupGetAllAuthorized(ModuleID, CurrentForumUser.UserID, False, TabID)
 			mAuthorizedForumsCount = 0
 
 			If arrAuthGroups.Count > 0 Then
-				Dim objGroup As New GroupInfo
-
-				For Each objGroup In arrAuthGroups
+				For Each objGroup As GroupInfo In arrAuthGroups
 					Dim arrAuthForums As New List(Of ForumInfo)
-					arrAuthForums = objGroup.AuthorizedForums(CurrentForumUser.UserID, False)
+					arrAuthForums = cntGroup.AuthorizedForums(CurrentForumUser.UserID, objGroup.GroupID, False, ModuleID, TabID)
 					If arrAuthForums.Count > 0 Then
 						arrAuthForumsCount += arrAuthForums.Count
 					End If
@@ -461,17 +459,19 @@ Namespace DotNetNuke.Modules.Forum
 					objGroup.Name = Localization.GetString("AggregatedGroupName", ForumControl.objConfig.SharedResourceFile)
 					arrAuthGroups.Insert(0, objGroup)
 				End If
+
 				' group is expand or collapse depends on user settings handled a few lines below
 				For Each objGroup In arrAuthGroups
 					' filter based on group:  - 1 means show all, matching the groupid to the current groupid in the colleciton means show a single one
 					If GroupID = 0 Or GroupID = objGroup.GroupID Then
 						'[skeel] Subforums
 						Dim arrForums As List(Of ForumInfo)
+						Dim cntGroup As New GroupController()
 
 						If mForumId > 0 Then
-							arrForums = objGroup.AuthorizedSubForums(CurrentForumUser.UserID, False, mForumId)
+							arrForums = cntGroup.AuthorizedSubForums(CurrentForumUser.UserID, objGroup.GroupID, False, mForumId, ModuleID, TabID)
 						Else
-							arrForums = objGroup.AuthorizedNoParentForums(CurrentForumUser.UserID, False)
+							arrForums = cntGroup.AuthorizedNoParentForums(CurrentForumUser.UserID, objGroup.GroupID, False, ModuleID, TabID)
 						End If
 
 						' display group only if group contains atleast one authorized forum
@@ -540,14 +540,14 @@ Namespace DotNetNuke.Modules.Forum
 					objForum.Name = Localization.GetString("AggregatedForumName", objConfig.SharedResourceFile)
 					objForum.Description = Localization.GetString("AggregatedForumDescription", objConfig.SharedResourceFile)
 
-					Dim SearchCollection As New ArrayList
+					Dim SearchCollection As New List(Of ThreadInfo)
 					Dim cntSearch As New SearchController
 					SearchCollection = cntSearch.SearchGetResults("", 0, 1, CurrentForumUser.UserID, ModuleID, DateAdd(DateInterval.Year, -1, DateTime.Today), DateAdd(DateInterval.Day, 1, DateTime.Today), -1)
 
-					For Each objSearch As SearchInfo In SearchCollection
+					For Each objSearch As ThreadInfo In SearchCollection
 						If objSearch IsNot Nothing Then
 							objForum.MostRecentPostDate = objSearch.CreatedDate
-							objForum.MostRecentPostID = objSearch.LastPostedPostID
+							objForum.MostRecentPostID = objSearch.LastApprovedPostID
 							objForum.MostRecentPostAuthorID = objSearch.LastApprovedUser.UserID
 							objForum.MostRecentThreadID = objSearch.ThreadID
 						End If
@@ -597,7 +597,7 @@ Namespace DotNetNuke.Modules.Forum
 							NewWindow = objURLTrack.NewWindow
 						End If
 
-						url = DotNetNuke.Common.Globals.LinkClick(objForum.ForumLink, objForum.ParentGroup.objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID, TrackClicks)
+						url = DotNetNuke.Common.Globals.LinkClick(objForum.ForumLink, TabID, ModuleID, TrackClicks)
 
 					Else
 						If objForum.GroupID = -1 Then
@@ -888,7 +888,8 @@ Namespace DotNetNuke.Modules.Forum
 						If (objForum.MostRecentPostID > 0) Then
 							'Dim displayCreatedDate As DateTime = ConvertTimeZone(MostRecentPostDate, objConfig)
 							Dim lastPostInfo As New PostInfo
-							lastPostInfo = PostInfo.GetPostInfo(objForum.MostRecentPostID, PortalID)
+							Dim cntPost As New PostController()
+							lastPostInfo = cntPost.GetPostInfo(objForum.MostRecentPostID, PortalID)
 
 							Dim strLastPostInfo As String = Utilities.ForumUtils.GetCreatedDateInfo(objForum.MostRecentPostDate, objConfig, "")
 							' shows only first 15 letters of the post subject title

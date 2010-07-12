@@ -31,7 +31,6 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Declarations"
 
-		Private Const EmailTemplateInfoCacheKeyPrefix As String = "Forum_EmailTemplateInfo"
 		Private _EmailTemplateID As Integer
 		Private _EmailSubject As String
 		Private _HTMLBody As String
@@ -196,18 +195,6 @@ Namespace DotNetNuke.Modules.Forum
 				_ForumEmailTypeID = Value
 			End Set
 		End Property
-
-#End Region
-
-#Region "Constructor"
-
-		''' <summary>
-		''' Instantiates a new instance of the class.
-		''' </summary>
-		''' <remarks></remarks>
-		Public Sub New()
-			MyBase.New()
-		End Sub
 
 #End Region
 

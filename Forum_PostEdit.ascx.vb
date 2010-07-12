@@ -105,6 +105,7 @@ Namespace DotNetNuke.Modules.Forum
 		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 			Try
 				Dim securityForumID As Integer = -1
+				Dim cntPost As New PostController()
 				Dim objParentPost As New PostInfo
 				objParentPost = Nothing
 
@@ -113,7 +114,7 @@ Namespace DotNetNuke.Modules.Forum
 					Dim PostID As Integer = -1
 
 					PostID = Int32.Parse(Request.QueryString("postid"))
-					objParentPost = PostInfo.GetPostInfo(PostID, PortalId)
+					objParentPost = cntPost.GetPostInfo(PostID, PortalId)
 					securityForumID = objParentPost.ForumID
 				End If
 
@@ -194,7 +195,7 @@ Namespace DotNetNuke.Modules.Forum
 					Select Case objAction
 						Case PostAction.Edit
 							' security check
-							If Not objParentPost.ParentThread.HostForum.PublicPosting Then
+							If Not objParentPost.ParentThread.ContainingForum.PublicPosting Then
 								'restricted posting forum
 								If Not (Security.IsAllowedToPostRestrictedReply Or Security.IsAllowedToStartRestrictedThread) Then
 									HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
@@ -203,7 +204,7 @@ Namespace DotNetNuke.Modules.Forum
 
 							' Make sure user IsTrusted too before they can edit (but only if a moderated forum, if its not moderated we don't care)
 							' First check to see if user is original author 
-							If objLoggedOnUserID > 0 And (objParentPost.UserID = objForumUser.UserID) And (objParentPost.ParentThread.HostForum.IsModerated = False Or objForumUser.IsTrusted Or Security.IsUnmoderated) And (objParentPost.ParentThread.HostForum.IsActive) Then
+							If objLoggedOnUserID > 0 And (objParentPost.UserID = objForumUser.UserID) And (objParentPost.ParentThread.ContainingForum.IsModerated = False Or objForumUser.IsTrusted Or Security.IsUnmoderated) And (objParentPost.ParentThread.ContainingForum.IsActive) Then
 								AllowUserEdit = True
 							Else
 								' The user is not the original author
@@ -231,7 +232,7 @@ Namespace DotNetNuke.Modules.Forum
 							' If we reach this point, we know it is a reply, quote
 
 							' security check
-							If Not objParentPost.ParentThread.HostForum.PublicPosting Then
+							If Not objParentPost.ParentThread.ContainingForum.PublicPosting Then
 								'restricted posting forum
 								If Not (Security.IsAllowedToPostRestrictedReply) Then
 									HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
@@ -239,7 +240,7 @@ Namespace DotNetNuke.Modules.Forum
 							End If
 
 							' Rework if allowing anonymous posting, for now this is good
-							If objLoggedOnUserID > 0 And (objParentPost.ParentThread.HostForum.IsActive) Then
+							If objLoggedOnUserID > 0 And (objParentPost.ParentThread.ContainingForum.IsActive) Then
 								If (objParentPost.ParentThread.IsClosed = True) Then
 									'see if reply is coming from the original thread author
 									If objParentPost.ParentThread.StartedByUserID = objLoggedOnUserID Then
@@ -317,11 +318,11 @@ Namespace DotNetNuke.Modules.Forum
 							rowPinned.Visible = False
 						End If
 						' load authorized forums
-						Dim objGroups As New GroupController
+						Dim cntGroup As New GroupController()
 						Dim arrForums As List(Of ForumInfo)
 
-						For Each objGroup As GroupInfo In objGroups.GroupsGetByModuleID(ModuleId)
-							arrForums = objGroup.AuthorizedForums(UserId, True)
+						For Each objGroup As GroupInfo In cntGroup.GroupsGetByModuleID(ModuleId)
+							arrForums = cntGroup.AuthorizedForums(UserId, objGroup.GroupID, True, ModuleId, TabId)
 							If arrForums.Count > 0 Then
 								For Each objForum In arrForums
 									ddlForum.Items.Add(New ListItem(objGroup.Name & " - " & objForum.Name, objForum.ForumID.ToString))

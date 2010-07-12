@@ -34,19 +34,7 @@ Namespace DotNetNuke.Modules.Forum
         Private _PollID As Integer
         Private _Answer As String
         Private _SortOrder As Integer
-
         Private _AnswerCount As Integer
-
-#End Region
-
-#Region "Constructors"
-
-        ''' <summary>
-        ''' Instantiates the object. 
-        ''' </summary>
-        ''' <remarks></remarks>
-        Public Sub New()
-        End Sub
 
 #End Region
 
@@ -112,6 +100,12 @@ Namespace DotNetNuke.Modules.Forum
             End Set
         End Property
 
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
         Public Property AnswerCount() As Integer
             Get
                 Return _AnswerCount

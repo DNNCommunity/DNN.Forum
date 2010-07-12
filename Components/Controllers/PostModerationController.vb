@@ -70,10 +70,9 @@ Namespace DotNetNuke.Modules.Forum
 			Dim GroupID As Integer
 			GroupID = DotNetNuke.Modules.Forum.DataProvider.Instance().ModeratePostApprove(PostID, ApprovedBy, Notes)
 			' Reset Cache
-			GroupInfo.ResetGroupInfo(GroupID)
+			GroupController.ResetGroupInfo(GroupID)
 			ForumController.ResetForumInfoCache(ForumID)
-			Dim f As New ForumController
-			f.ClearCache_ForumGetAll(ParentID, GroupID)
+			ForumController.ClearCache_ForumGetAll(ParentID, GroupID)
 		End Sub
 
 		''' <summary>

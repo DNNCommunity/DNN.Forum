@@ -86,8 +86,10 @@ Namespace DotNetNuke.Modules.Forum
 
 				If Not Request.QueryString("postid") Is Nothing Then
 					Dim objThread As New ThreadInfo
+					Dim cntPost As New PostController()
+
 					_PostID = Int32.Parse(Request.QueryString("postid"))
-					_PostInfo = PostInfo.GetPostInfo(_PostID, PortalId)
+					_PostInfo = cntPost.GetPostInfo(_PostID, PortalId)
 					_ThreadID = _PostInfo.ThreadID
 					objThread = cntThread.GetThreadInfo(_ThreadID)
 					_ForumID = objThread.ForumID
@@ -146,7 +148,8 @@ Namespace DotNetNuke.Modules.Forum
 				' Get most recent info on this post
 				If Not Request.QueryString("postid") Is Nothing Then
 					_PostID = Int32.Parse(Request.QueryString("postid"))
-					_PostInfo = PostInfo.GetPostInfo(_PostID, PortalId)
+					Dim cntPost As New PostController()
+					_PostInfo = cntPost.GetPostInfo(_PostID, PortalId)
 				End If
 
 				Dim cntPostReport As New PostReportedController
@@ -171,7 +174,7 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 
 					' only thing that changes is post, so only reset it
-					PostInfo.ResetPostInfo(_PostID)
+					PostController.ResetPostInfo(_PostID)
 
 					If Not ViewState("UrlReferrer") Is Nothing Then
 						Response.Redirect(ViewState("UrlReferrer").ToString, False)

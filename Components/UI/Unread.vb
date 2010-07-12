@@ -500,7 +500,7 @@ Namespace DotNetNuke.Modules.Forum
 						'Add in forum (where thread belongs)
 						wr.Write(String.Format("&nbsp;{0}&nbsp;", ForumControl.LocalizedText("in")))
 						Url = Utilities.Links.ContainerViewForumLink(TabID, thread.ForumID, False)
-						RenderLinkButton(wr, Url, thread.HostForum.Name, "Forum_NormalSmall")
+						RenderLinkButton(wr, Url, thread.ContainingForum.Name, "Forum_NormalSmall")
 
 						' correct logic to handle posts per page per user
 						Dim userPostsPerPage As Integer
@@ -565,7 +565,7 @@ Namespace DotNetNuke.Modules.Forum
 						RenderCellEnd(wr) ' </td>
 
 						'Add check for RatingsEnabled
-						If objConfig.EnableRatings And thread.HostForum.EnableForumsRating Then
+						If objConfig.EnableRatings And thread.ContainingForum.EnableForumsRating Then
 							' Display rating image
 							RenderCellBegin(wr, "", "", "30%", "right", "", "", "") ' <td>
 
@@ -583,7 +583,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						'Thread status
 						RenderCellBegin(wr, "", "", "5%", "right", "", "", "")	 ' <td>
-						If (objConfig.EnableThreadStatus And thread.HostForum.EnableForumsThreadStatus) Or (thread.ThreadStatus = ThreadStatus.Poll And thread.HostForum.AllowPolls) Then
+						If (objConfig.EnableThreadStatus And thread.ContainingForum.EnableForumsThreadStatus) Or (thread.ThreadStatus = ThreadStatus.Poll And thread.ContainingForum.AllowPolls) Then
 							RenderImage(wr, objConfig.GetThemeImageURL(thread.StatusImage), thread.StatusText, "") ' <img/>
 						Else
 							RenderImage(wr, objConfig.GetThemeImageURL("status_spacer.gif"), "", "")	' <img/>

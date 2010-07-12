@@ -195,7 +195,6 @@
     <Compile Include="Components\Entities\PostReportedInfo.vb" />
     <Compile Include="Components\Entities\PostSearchInfo.vb" />
     <Compile Include="Components\Entities\RoleAvatarInfo.vb" />
-    <Compile Include="Components\Entities\SearchInfo.vb" />
     <Compile Include="Components\Entities\TemplateInfo.vb" />
     <Compile Include="Components\Entities\ThreadInfo.vb" />
     <Compile Include="Components\Entities\ThreadRateInfo.vb" />
@@ -206,7 +205,6 @@
     <Compile Include="Components\Entities\UserThreadInfo.vb" />
     <Compile Include="Components\Portals\ForumPortalSettings.vb" />
     <Compile Include="Components\Posts\PostConnector.vb" />
-    <Compile Include="Components\Search\ForumSearchResult.vb" />
     <Compile Include="Components\Security\MockSecurity.vb" />
     <Compile Include="Components\Tracking\UserTracking.vb" />
     <Compile Include="Components\UI\Groups.vb">

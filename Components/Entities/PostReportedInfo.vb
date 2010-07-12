@@ -167,7 +167,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property Post(ByVal PortalID As Integer) As PostInfo
 			Get
-				Return PostInfo.GetPostInfo(PostID, PortalID)
+				Dim cntPost As New PostController()
+				Return cntPost.GetPostInfo(PostID, PortalID)
 			End Get
 		End Property
 

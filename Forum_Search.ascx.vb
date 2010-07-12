@@ -128,7 +128,7 @@ Namespace DotNetNuke.Modules.Forum
 					End With
 
 					InitializeTextSuggest()
-					ForumTreeview.PopulateTelerikTree(objConfig, rtvForums, UserId)
+					ForumTreeview.PopulateTelerikTree(objConfig, rtvForums, UserId, TabId)
 				End If
 
 				SelectedForumIds = String.Empty

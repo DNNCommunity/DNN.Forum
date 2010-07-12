@@ -31,7 +31,6 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Members"
 
-		Private Const GroupInfoCacheKeyPrefix As String = "GroupInfo"
 		Private mGroupID As Integer
 		Private mName As String
 		Private mPortalID As Integer
@@ -47,207 +46,7 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-#Region "Constructors"
 
-		''' <summary>
-		''' Instantiats the Group object. 
-		''' </summary>
-		''' <remarks></remarks>
-		Public Sub New()
-		End Sub
-
-#End Region
-
-#Region "Public Methods"
-
-		''' <summary>
-		''' Attempts to load the group from cache, if not available it retrieves it and places it in cache. 
-		''' </summary>
-		''' <param name="GroupID"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Shared Function GetGroupInfo(ByVal GroupID As Integer) As GroupInfo
-			Dim strCacheKey As String = GroupInfoCacheKeyPrefix & CStr(GroupID)
-			Dim objGroup As New GroupInfo
-			objGroup = CType(DataCache.GetCache(strCacheKey), GroupInfo)
-
-			If objGroup Is Nothing Then
-				Dim cntGroup As New GroupController
-				objGroup = cntGroup.GroupGet(GroupID)
-				DataCache.SetCache(strCacheKey, objGroup)
-			End If
-
-			Return objGroup
-		End Function
-
-		''' <summary>
-		''' Resets the group info in cache. 
-		''' </summary>
-		''' <param name="GroupID"></param>
-		''' <remarks></remarks>
-		Public Shared Sub ResetGroupInfo(ByVal GroupID As Integer)
-			Dim strCacheKey As String = GroupInfoCacheKeyPrefix & CStr(GroupID)
-
-			DataCache.RemoveCache(strCacheKey)
-		End Sub
-
-		''' <summary>
-		''' Builds a collection of authorized forums for the specified Group.
-		''' </summary>
-		''' <param name="UserID">The user to return results for. (Permissions)</param>
-		''' <param name="NoLinkForums">True if no link type forums should be added to the collection.</param>
-		''' <returns>A Generics collection of ForumInfo items.</returns>
-		''' <remarks></remarks>
-		Public Function AuthorizedForums(ByVal UserID As Integer, ByVal NoLinkForums As Boolean) As List(Of ForumInfo)
-			Dim cntForum As New ForumController
-			Dim arrAuthForums As New List(Of ForumInfo)
-			Dim arrAllForums As New List(Of ForumInfo)
-			Dim objForum As ForumInfo
-
-			arrAllForums = cntForum.ForumGetAll(GroupID)
-			' add Aggregated Forum option
-			If GroupID = -1 Then
-				objForum = New ForumInfo
-				objForum.ModuleID = ModuleID
-				objForum.GroupID = -1
-				objForum.ForumID = -1
-				objForum.ForumType = ForumType.Normal
-
-				arrAuthForums.Add(objForum)
-			End If
-
-			For Each objForum In arrAllForums
-				Dim Security As New Forum.ModuleSecurity(ModuleID, objConfig.CurrentPortalSettings.ActiveTab.TabID, objForum.ForumID, UserID)
-				If Not objForum.PublicView And objForum.IsActive Then
-					If Security.IsAllowedToViewPrivateForum And objForum.IsActive Then
-						If NoLinkForums Then
-							If Not (objForum.ForumType = ForumType.Link) Then
-								arrAuthForums.Add(objForum)
-							End If
-						Else
-							arrAuthForums.Add(objForum)
-						End If
-					End If
-				ElseIf objForum.IsActive Then
-					'We handle non-private seperately because module security (core) handles the rest
-					If NoLinkForums Then
-						If Not (objForum.ForumType = ForumType.Link) Then
-							arrAuthForums.Add(objForum)
-						End If
-					Else
-						arrAuthForums.Add(objForum)
-					End If
-				End If
-			Next
-
-			Return arrAuthForums
-		End Function
-
-		''' <summary>
-		''' Builds a collection of authorized forums with no parents for the specified Group.
-		''' </summary>
-		''' <param name="UserID">The user to return results for. (Permissions)</param>
-		''' <param name="NoLinkForums">True if no link type forums should be added to the collection.</param>
-		''' <returns>A Generics collection of ForumInfo items.</returns>
-		''' <remarks></remarks>
-		Public Function AuthorizedNoParentForums(ByVal UserID As Integer, ByVal NoLinkForums As Boolean) As List(Of ForumInfo)
-			Dim cntForum As New ForumController
-			Dim arrAuthForums As New List(Of ForumInfo)
-			Dim arrAllForums As New List(Of ForumInfo)
-			Dim objForum As ForumInfo
-
-			arrAllForums = cntForum.ForumGetAllByParentID(0, GroupID, True)
-			' add Aggregated Forum option
-			If GroupID = -1 Then
-				objForum = New ForumInfo
-				objForum.ModuleID = ModuleID
-				objForum.GroupID = -1
-				objForum.ForumID = -1
-				objForum.ForumType = ForumType.Normal
-
-				arrAuthForums.Add(objForum)
-			End If
-
-			For Each objForum In arrAllForums
-				Dim Security As New Forum.ModuleSecurity(ModuleID, objConfig.CurrentPortalSettings.ActiveTab.TabID, objForum.ForumID, UserID)
-				If Not objForum.PublicView And objForum.IsActive Then
-					If Security.IsAllowedToViewPrivateForum And objForum.IsActive Then
-						If NoLinkForums Then
-							If Not (objForum.ForumType = ForumType.Link) Then
-								arrAuthForums.Add(objForum)
-							End If
-						Else
-							arrAuthForums.Add(objForum)
-						End If
-					End If
-				ElseIf objForum.IsActive Then
-					'We handle non-private seperately because module security (core) handles the rest
-					If NoLinkForums Then
-						If Not (objForum.ForumType = ForumType.Link) Then
-							arrAuthForums.Add(objForum)
-						End If
-					Else
-						arrAuthForums.Add(objForum)
-					End If
-				End If
-			Next
-
-			Return arrAuthForums
-		End Function
-
-		''' <summary>
-		''' Builds a collection of authorized subforums for the specified Group/Parrent Forum.
-		''' </summary>
-		''' <param name="UserID">The user to return results for. (Permissions)</param>
-		''' <param name="NoLinkForums">True if no link type forums should be added to the collection.</param>
-		''' <returns>A Generics collection of ForumInfo items.</returns>
-		''' <remarks></remarks>
-		Public Function AuthorizedSubForums(ByVal UserID As Integer, ByVal NoLinkForums As Boolean, ByVal ParentForumId As Integer) As List(Of ForumInfo)
-			Dim cntForum As New ForumController
-			Dim arrAuthForums As New List(Of ForumInfo)
-			Dim arrAllForums As New List(Of ForumInfo)
-			Dim objForum As ForumInfo
-
-			arrAllForums = cntForum.ForumGetAllByParentID(ParentForumId, GroupID, True)
-			' add Aggregated Forum option
-			If GroupID = -1 Then
-				objForum = New ForumInfo
-				objForum.ModuleID = ModuleID
-				objForum.GroupID = -1
-				objForum.ForumID = -1
-				objForum.ForumType = ForumType.Normal
-
-				arrAuthForums.Add(objForum)
-			End If
-
-			For Each objForum In arrAllForums
-				Dim Security As New Forum.ModuleSecurity(ModuleID, objConfig.CurrentPortalSettings.ActiveTab.TabID, objForum.ForumID, UserID)
-				If Not objForum.PublicView And objForum.IsActive Then
-					If Security.IsAllowedToViewPrivateForum And objForum.IsActive Then
-						If NoLinkForums Then
-							If Not (objForum.ForumType = ForumType.Link) Then
-								arrAuthForums.Add(objForum)
-							End If
-						Else
-							arrAuthForums.Add(objForum)
-						End If
-					End If
-				ElseIf objForum.IsActive Then
-					'We handle non-private seperately because module security (core) handles the rest
-					If NoLinkForums Then
-						If Not (objForum.ForumType = ForumType.Link) Then
-							arrAuthForums.Add(objForum)
-						End If
-					Else
-						arrAuthForums.Add(objForum)
-					End If
-				End If
-			Next
-
-			Return arrAuthForums
-		End Function
-
-#End Region
 
 #Region "Public Properties"
 
@@ -418,40 +217,21 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-#Region "Public ReadOnly Properties"
+		'#Region "Public ReadOnly Properties"
 
-		''' <summary>
-		''' The modules configuration settings. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public ReadOnly Property objConfig() As Forum.Configuration
-			Get
-				Return Forum.Configuration.GetForumConfig(ModuleID)
-			End Get
-		End Property
+		'		''' <summary>
+		'		''' The modules configuration settings. 
+		'		''' </summary>
+		'		''' <value></value>
+		'		''' <returns></returns>
+		'		''' <remarks></remarks>
+		'		Public ReadOnly Property objConfig() As Forum.Configuration
+		'			Get
+		'				Return Forum.Configuration.GetForumConfig(ModuleID)
+		'			End Get
+		'		End Property
 
-		''' <summary>
-		''' This would allow for multiple Group Levels, not used. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public ReadOnly Property Parent() As GroupInfo
-			Get
-				If GroupID <> -1 Then
-					Return GroupInfo.GetGroupInfo(GroupID)
-				Else
-					Dim objGroup As GroupInfo = New GroupInfo
-					objGroup.ModuleID = ModuleID
-					objGroup.GroupID = GroupID
-					Return objGroup
-				End If
-			End Get
-		End Property
-
-#End Region
+		'#End Region
 
 	End Class
 

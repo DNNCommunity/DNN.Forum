@@ -31,6 +31,12 @@ Namespace DotNetNuke.Modules.Forum
 	''' </remarks>
 	Public Class PostController
 
+#Region "Private Members"
+
+		Private Const PostCacheKeyPrefix As String = Constants.CACHE_KEY_PREFIX + "POST_"
+
+#End Region
+
 #Region "Public Methods"
 
 		''' <summary>
@@ -47,6 +53,42 @@ Namespace DotNetNuke.Modules.Forum
 		Public Function PostGetAll(ByVal ThreadID As Integer, ByVal ThreadPage As Integer, ByVal PostsPerPage As Integer, ByVal TreeView As Boolean, ByVal Descending As Boolean, ByVal PortalID As Integer) As List(Of PostInfo)
 			Return CBO.FillCollection(Of PostInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().PostGetAll(ThreadID, ThreadPage, PostsPerPage, TreeView, Descending, PortalID))
 		End Function
+
+		''' <summary>
+		''' Gets the post info object, first checks for it in cache
+		''' </summary>
+		''' <param name="PostID"></param>
+		''' <returns></returns>
+		''' <remarks>
+		''' </remarks>
+		Public Function GetPostInfo(ByVal PostID As Integer, ByVal PortalID As Integer) As PostInfo
+			Dim strCacheKey As String = PostCacheKeyPrefix & CStr(PostID)
+			Dim objPost As PostInfo = CType(DataCache.GetCache(strCacheKey), PostInfo)
+
+			If objPost Is Nothing Then
+				'post caching settings
+				Dim timeOut As Int32 = Constants.CACHE_TIMEOUT * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
+				objPost = PostGet(PostID, PortalID)
+
+				'Cache Post if timeout > 0 and Post is not null
+				If timeOut > 0 And objPost IsNot Nothing Then
+					DataCache.SetCache(strCacheKey, objPost, TimeSpan.FromMinutes(timeOut))
+				End If
+			End If
+
+			Return objPost
+		End Function
+
+		''' <summary>
+		''' Resets the post info object in cahce to nothing
+		''' </summary>
+		''' <param name="PostID"></param>
+		''' <remarks>
+		''' </remarks>
+		Public Shared Sub ResetPostInfo(ByVal PostID As Integer)
+			Dim strCacheKey As String = PostCacheKeyPrefix & CStr(PostID)
+			DataCache.RemoveCache(strCacheKey)
+		End Sub
 
 		''' <summary>
 		''' This is used in splitting and deleting threads. Returns a list of all posts in a thread ordering by time - descending. 
@@ -79,34 +121,13 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="GroupID">The GroupID of the post that is going to be deleted, necessary for updating group statistics and for data verification reasons.</param>
 		''' <remarks>Never handle email sends from here. Also, the post delete sproc handles related attachment deletes in the data store.</remarks>
 		Friend Sub PostDelete(ByVal PostID As Integer, ByVal ModeratorID As Integer, ByVal Notes As String, ByVal PortalID As Integer, ByVal GroupID As Integer, ByVal DeleteThread As Boolean, ByVal ParentID As Integer)
-			Dim cntPost As New PostController
-			Dim cntForum As New ForumController
 			Dim objPost As New PostInfo
-
-			' Get the post info now so we can clear cache later.
-			objPost = cntPost.PostGet(PostID, PortalID)
+			objPost = PostGet(PostID, PortalID)
 
 			DotNetNuke.Modules.Forum.DataProvider.Instance().PostDelete(PostID, ModeratorID, Notes, PortalID)
 
-			' Clear cache items affected by this delete
 			ForumUserController.ResetForumUser(objPost.Author.UserID, PortalID)
-			' We use the groupid passed in since it is possible the thread is gone if a lookup were to occur
-			cntForum.ClearCache_ForumGetAll(ParentID, GroupID)
-			' [Skeel] 8/1/2009
-			' As can not have a relation between posts and files, as postid -1 is used for attachments
-			' still not related to a specific post, so at this point, we need to delete all attachments 
-			' related to this post. We do this by updating the AttachmentInfo and set the PostID to -2
-			' The actual deletion process will then be handled later in AttachmentControl.ascx while the
-			' file is unlocked!
-			' CP - NOTE: I commented below out, we are not actually deleting files so who cares about a file lock? 
-			'Dim cntAttachment As New AttachmentController
-			'Dim lstAttachments As List(Of AttachmentInfo) = cntAttachment.GetAllByPostID(PostID)
-			'If lstAttachments.Count > 0 Then
-			'    For Each objFile As AttachmentInfo In lstAttachments
-			'        objFile.PostID = -2
-			'        cntAttachment.Update(objFile)
-			'    Next
-			'End If
+			ForumController.ClearCache_ForumGetAll(ParentID, GroupID)
 		End Sub
 
 		''' <summary>
@@ -118,9 +139,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Friend Sub PostUpdateParseInfo(ByVal PostID As Integer, ByVal GroupID As Integer, ByVal ParseInfo As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().PostUpdateParseInfo(PostID, ParseInfo)
-			PostInfo.ResetPostInfo(PostID)
-			Dim f As New ForumController
-			f.ClearCache_ForumGetAll(PostID, GroupID)
+			PostController.ResetPostInfo(PostID)
+			ForumController.ClearCache_ForumGetAll(PostID, GroupID)
 		End Sub
 
 		''' <summary>
@@ -131,8 +151,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Friend Function PostReportCheck(ByVal PostID As Integer, ByVal UserID As Integer) As Boolean
-			Dim HasReported As Boolean = DotNetNuke.Modules.Forum.DataProvider.Instance().PostReportCheck(PostID, UserID)
-			Return HasReported
+			Return DotNetNuke.Modules.Forum.DataProvider.Instance().PostReportCheck(PostID, UserID)
 		End Function
 
 		''' <summary>
@@ -149,7 +168,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ParentID"></param>
 		''' <remarks></remarks>
 		Friend Sub PostMove(ByVal PostID As Integer, ByVal oldThreadID As Integer, ByVal newThreadID As Integer, ByVal newForumID As Integer, ByVal oldForumID As Integer, ByVal ModID As Integer, ByVal SortOrder As Integer, ByVal Notes As String, ByVal ParentID As Integer)
-			Dim f As New ForumController
 			Dim dr As IDataReader = Nothing
 			Try
 				Dim OldGroupID As Integer
@@ -158,8 +176,8 @@ Namespace DotNetNuke.Modules.Forum
 				While dr.Read
 					OldGroupID = Convert.ToInt32(dr("OldGroupID"))
 					NewGroupID = Convert.ToInt32(dr("NewGroupID"))
-					f.ClearCache_ForumGetAll(ParentID, OldGroupID)
-					f.ClearCache_ForumGetAll(ParentID, NewGroupID)
+					ForumController.ClearCache_ForumGetAll(ParentID, OldGroupID)
+					ForumController.ClearCache_ForumGetAll(ParentID, NewGroupID)
 				End While
 			Finally
 				If dr IsNot Nothing Then
@@ -196,8 +214,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim PostID As Integer
 			PostID = DotNetNuke.Modules.Forum.DataProvider.Instance().PostAdd(ParentPostID, ForumID, UserID, RemoteAddr, Notify, Subject, Body, IsPinned, PinnedDate, IsClosed, ObjectID, FileAttachmentURL, PortalID, ThreadIconID, PollID, IsModerated, ParseInfo)
 
-			Dim f As New ForumController
-			f.ClearCache_ForumGetAll(ParentID, GroupID)
+			ForumController.ClearCache_ForumGetAll(ParentID, GroupID)
 
 			Return PostID
 		End Function
@@ -223,8 +240,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Friend Sub PostUpdate(ByVal ThreadID As Integer, ByVal PostID As Integer, ByVal Notify As Boolean, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal UpdatedBy As Integer, ByVal FileAttachmentURL As String, ByVal PortalID As Integer, ByVal ThreadIconID As Integer, ByVal PollID As Integer, ByVal ParentID As Integer, ByVal ParseInfo As Integer)
 			Dim GroupID As Integer = DotNetNuke.Modules.Forum.DataProvider.Instance().PostUpdate(ThreadID, PostID, Notify, Subject, Body, IsPinned, PinnedDate, IsClosed, UpdatedBy, FileAttachmentURL, PortalID, ThreadIconID, PollID, ParseInfo)
-			Dim f As New ForumController
-			f.ClearCache_ForumGetAll(ParentID, GroupID)
+
+			ForumController.ClearCache_ForumGetAll(ParentID, GroupID)
 		End Sub
 
 		''' <summary>

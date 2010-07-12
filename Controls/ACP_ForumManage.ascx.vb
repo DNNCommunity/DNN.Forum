@@ -104,8 +104,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				End If
 
 				Dim groupID As Integer = Int32.Parse(argument)
-				Dim ctlGroup As New GroupController
-				Dim objGroup As GroupInfo = GroupInfo.GetGroupInfo(groupID)
+				Dim cntGroup As New GroupController
+				Dim objGroup As GroupInfo = cntGroup.GetGroupInfo(groupID)
 
 				Select Case cmd.ToLower
 					Case "close"
@@ -114,15 +114,15 @@ Namespace DotNetNuke.Modules.Forum.ACP
 						lstGroup.SelectedIndex = e.Item.ItemIndex
 						lstGroup.EditItemIndex = -1
 					Case "delete"
-						ctlGroup.GroupDelete(groupID, ModuleId)
+						cntGroup.GroupDelete(groupID, ModuleId)
 					Case "up"
-						ctlGroup.GroupSortOrderUpdate(groupID, True)
+						cntGroup.GroupSortOrderUpdate(groupID, True)
 					Case "down"
-						ctlGroup.GroupSortOrderUpdate(groupID, False)
+						cntGroup.GroupSortOrderUpdate(groupID, False)
 					Case "add"
 						Utilities.Links.ForumEditLink(TabId, ModuleId, -1, groupID)
 				End Select
-				ctlGroup.ResetAllGroupsByModuleID(ModuleId)
+				cntGroup.ResetAllGroupsByModuleID(ModuleId)
 				BindGroupList()
 			Catch exc As Exception
 				ProcessModuleLoadException(Me, exc)
@@ -178,7 +178,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			objGrpCnt.ResetAllGroupsByModuleID(ModuleId)
 
 			' Remove the updated group from cache
-			GroupInfo.ResetGroupInfo(CType(GroupID, Integer))
+			GroupController.ResetGroupInfo(CType(GroupID, Integer))
 
 			lstGroup.EditItemIndex = -1
 			lstGroup.SelectedIndex = -1
@@ -618,7 +618,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				'update the cached values
 				ForumController.ResetForumInfoCache(ForumID)
 				ForumController.ResetForumInfoCache(ParentID)
-				GroupInfo.ResetGroupInfo(Convert.ToInt32(GroupID))
+				GroupController.ResetGroupInfo(Convert.ToInt32(GroupID))
 
 				BindGroupList()
 			Catch exc As Exception

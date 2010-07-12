@@ -417,7 +417,7 @@ Namespace DotNetNuke.Modules.Forum
 						ctlThread.ThreadStatusChange(newPostID, objForumUser.UserID, Status, 0, -1, PortalID)
 					End If
 
-					PostInfo.ResetPostInfo(newPostID)
+					PostController.ResetPostInfo(newPostID)
 					_emailType = ForumEmailType.UserPostEdited
 					ThreadController.ResetThreadInfo(ParentThreadID)
 				Case Else	  ' Reply/Quote
@@ -437,7 +437,8 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			' Obtain a new instance of postinfo 
-			objNewPost = PostInfo.GetPostInfo(newPostID, PortalID)
+			Dim cntPost As New PostController()
+			objNewPost = cntPost.GetPostInfo(newPostID, PortalID)
 
 			If lstAttachmentFileIDs <> String.Empty Then
 				HandleAttachments(objConfig, objForumUser.UserID, objAction, objNewPost)
