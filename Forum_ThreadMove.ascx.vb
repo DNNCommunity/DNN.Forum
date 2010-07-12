@@ -198,14 +198,9 @@ Namespace DotNetNuke.Modules.Forum
 
 						ctlThread.ThreadMove(ThreadID, newForumID, UserId, Notes, objForum.ParentId)
 
-						ForumController.ResetForumInfoCache(newForumID)
-						ForumController.ResetForumInfoCache(ForumID)
-						ThreadController.ResetThreadInfo(ThreadID)
-
-						ThreadController.ResetThreadListCached(newForumID, ModuleId)
-						ThreadController.ResetThreadListCached(ForumID, ModuleId)
-						If objConfig.AggregatedForums Then
-							ThreadController.ResetThreadListCached(-1, ModuleId)
+						Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID, newForumID, objForum.GroupID, ModuleId)
+						If Not (ForumID = newForumID) Then
+							Forum.Components.Utilities.Caching.UpdateForumCache(ForumID, objForum.GroupID, ModuleId)
 						End If
 
 						' Handle sending emails 

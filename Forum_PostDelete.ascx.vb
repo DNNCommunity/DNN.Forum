@@ -197,16 +197,10 @@ Namespace DotNetNuke.Modules.Forum
 						' Delete thread (SEND MAIL BEFORE DELETE, we need the thread still in the db)
 						cntThread.ThreadDelete(objThread.ThreadID, PortalId, Notes)
 
-						ThreadController.ResetThreadInfo(objThread.ThreadID)
-						ForumController.ResetForumInfoCache(objThread.ForumID)
+						Forum.Components.Utilities.Caching.UpdatePostCache(objThread.ThreadID, objThread.ThreadID, objThread.ForumID, objThread.ContainingForum.GroupID, ModuleId)
 
-						' We need to clear all users who posted in the thread. (Otherwise cached user objects will not reflect proper post count) KNOWN ISSUE
-						'ForumUserController.ResetForumUser(objThread.)
-
-						ThreadController.ResetThreadListCached(objThread.ForumID, objThread.ModuleID)
-						If objConfig.AggregatedForums Then
-							ThreadController.ResetThreadListCached(-1, objThread.ModuleID)
-						End If
+						'' We need to clear all users who posted in the thread. (Otherwise cached user objects will not reflect proper post count) KNOWN ISSUE
+						'ForumUserController.ResetForumUser(AuthorID, PortalId)
 
 						' have to handle that the post we just removed deleted the entire thread
 						Response.Redirect(GetReturnURL(-1, ForumID), True)
@@ -251,15 +245,8 @@ Namespace DotNetNuke.Modules.Forum
 						' Delete post (SEND MAIL BEFORE DELETE, we need the post still in the db)
 						cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objPost.ParentThread.ContainingForum.GroupID, False, objPost.ParentThread.ContainingForum.ParentId)
 
-						PostController.ResetPostInfo(objPost.PostID)
-						ThreadController.ResetThreadInfo(ThreadID)
-						ForumController.ResetForumInfoCache(ForumID)
+						Forum.Components.Utilities.Caching.UpdatePostCache(objPost.PostID, ThreadID, ForumID, objPost.ParentThread.ContainingForum.GroupID, ModuleId)
 						ForumUserController.ResetForumUser(AuthorID, PortalId)
-
-						ThreadController.ResetThreadListCached(ForumID, ModuleId)
-						If objConfig.AggregatedForums Then
-							ThreadController.ResetThreadListCached(-1, ModuleId)
-						End If
 
 						Response.Redirect(GetReturnURL(ThreadID, ForumID), True)
 					End If

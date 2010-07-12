@@ -185,7 +185,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 
 						cntPostReport.AddressPostReport(CInt(argument), UserId, PortalId)
 						' Update the post cache.
-						PostController.ResetPostInfo(CInt(argument))
+						Forum.Components.Utilities.Caching.UpdatePostCache(CInt(argument))
 						BindPostDetails(CInt(argument))
 				End Select
 			Catch exc As Exception

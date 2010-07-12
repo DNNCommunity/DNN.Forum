@@ -473,6 +473,7 @@ Namespace DotNetNuke.Modules.Forum
 				Dim cntForum As New ForumController
 				Dim objForum As ForumInfo = cntForum.GetForumInfoCache(Integer.Parse(ddlForum.SelectedItem.Value))
 				Dim objModSecurity As New Forum.ModuleSecurity(ModuleId, TabId, objForum.ForumID, objLoggedOnUserID)
+				Dim ThreadID As Integer = -1
 
 				Select Case objAction
 					Case PostAction.Edit
@@ -483,6 +484,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						ParentPostID = objEditPost.ParentPostID
 						PostID = objEditPost.PostID
+						ThreadID = objEditPost.ThreadID
 
 						' if polls are enabled, make sure db is properly setup
 						If objForum.AllowPolls And PollID > 0 Then
@@ -509,6 +511,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						ParentPostID = URLPostID
 						IsQuote = True
+						ThreadID = objReplyToPost.ThreadID
 					Case Else	  ' reply
 						Dim cntPost As New PostController
 						Dim objReplyToPost As New PostInfo
@@ -516,6 +519,7 @@ Namespace DotNetNuke.Modules.Forum
 						objReplyToPost = cntPost.PostGet(URLPostID, PortalId)
 
 						ParentPostID = URLPostID
+						ThreadID = objReplyToPost.ThreadID
 				End Select
 
 				If ParentPostID = 0 And objForum.AllowPolls Then
@@ -535,7 +539,7 @@ Namespace DotNetNuke.Modules.Forum
 				Dim cntPostConnect As New PostConnector
 				Dim PostMessage As PostMessage
 
-				PostMessage = cntPostConnect.SubmitInternalPost(TabId, ModuleId, PortalId, objLoggedOnUserID, txtSubject.Text, teContent.Text, objForum.ForumID, ParentPostID, PostID, chkIsPinned.Checked, chkIsClosed.Checked, chkNotify.Checked, ThreadStatus, ctlAttachment.lstAttachmentIDs, RemoteAddress, PollID, ThreadIconID, IsQuote)
+				PostMessage = cntPostConnect.SubmitInternalPost(TabId, ModuleId, PortalId, objLoggedOnUserID, txtSubject.Text, teContent.Text, objForum.ForumID, ParentPostID, PostID, chkIsPinned.Checked, chkIsClosed.Checked, chkNotify.Checked, ThreadStatus, ctlAttachment.lstAttachmentIDs, RemoteAddress, PollID, ThreadIconID, IsQuote, ThreadID)
 
 				Select Case PostMessage
 					Case PostMessage.PostApproved

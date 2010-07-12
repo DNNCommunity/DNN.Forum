@@ -66,13 +66,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ParentID"></param>
 		''' <remarks>
 		''' </remarks>
-		Public Sub ModeratePostApprove(ByVal PostID As Integer, ByVal ApprovedBy As Integer, ByVal Notes As String, ByVal ForumID As Integer, ByVal ParentID As Integer)
+		Public Sub ModeratePostApprove(ByVal PostID As Integer, ByVal ApprovedBy As Integer, ByVal Notes As String, ByVal ForumID As Integer, ByVal ParentID As Integer, ByVal ThreadID As Integer, ByVal ModuleID As Integer)
 			Dim GroupID As Integer
 			GroupID = DotNetNuke.Modules.Forum.DataProvider.Instance().ModeratePostApprove(PostID, ApprovedBy, Notes)
-			' Reset Cache
-			GroupController.ResetGroupInfo(GroupID)
-			ForumController.ResetForumInfoCache(ForumID)
-			ForumController.ClearCache_ForumGetAll(ParentID, GroupID)
+			Components.Utilities.Caching.UpdatePostCache(PostID, ThreadID, ForumID, GroupID, ModuleID)
 		End Sub
 
 		''' <summary>

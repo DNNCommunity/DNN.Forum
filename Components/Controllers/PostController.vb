@@ -85,7 +85,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="PostID"></param>
 		''' <remarks>
 		''' </remarks>
-		Public Shared Sub ResetPostInfo(ByVal PostID As Integer)
+		Friend Shared Sub ResetPostItemCache(ByVal PostID As Integer)
 			Dim strCacheKey As String = PostCacheKeyPrefix & CStr(PostID)
 			DataCache.RemoveCache(strCacheKey)
 		End Sub
@@ -127,7 +127,7 @@ Namespace DotNetNuke.Modules.Forum
 			DotNetNuke.Modules.Forum.DataProvider.Instance().PostDelete(PostID, ModeratorID, Notes, PortalID)
 
 			ForumUserController.ResetForumUser(objPost.Author.UserID, PortalID)
-			ForumController.ClearCache_ForumGetAll(ParentID, GroupID)
+			ForumController.ClearChildForumCache(ParentID, GroupID)
 		End Sub
 
 		''' <summary>
@@ -139,8 +139,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Friend Sub PostUpdateParseInfo(ByVal PostID As Integer, ByVal GroupID As Integer, ByVal ParseInfo As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().PostUpdateParseInfo(PostID, ParseInfo)
-			PostController.ResetPostInfo(PostID)
-			ForumController.ClearCache_ForumGetAll(PostID, GroupID)
+			Forum.Components.Utilities.Caching.UpdatePostCache(PostID)
+			ForumController.ClearChildForumCache(PostID, GroupID)
 		End Sub
 
 		''' <summary>
@@ -176,8 +176,8 @@ Namespace DotNetNuke.Modules.Forum
 				While dr.Read
 					OldGroupID = Convert.ToInt32(dr("OldGroupID"))
 					NewGroupID = Convert.ToInt32(dr("NewGroupID"))
-					ForumController.ClearCache_ForumGetAll(ParentID, OldGroupID)
-					ForumController.ClearCache_ForumGetAll(ParentID, NewGroupID)
+					ForumController.ClearChildForumCache(ParentID, OldGroupID)
+					ForumController.ClearChildForumCache(ParentID, NewGroupID)
 				End While
 			Finally
 				If dr IsNot Nothing Then
@@ -214,7 +214,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim PostID As Integer
 			PostID = DotNetNuke.Modules.Forum.DataProvider.Instance().PostAdd(ParentPostID, ForumID, UserID, RemoteAddr, Notify, Subject, Body, IsPinned, PinnedDate, IsClosed, ObjectID, FileAttachmentURL, PortalID, ThreadIconID, PollID, IsModerated, ParseInfo)
 
-			ForumController.ClearCache_ForumGetAll(ParentID, GroupID)
+			ForumController.ClearChildForumCache(ParentID, GroupID)
 
 			Return PostID
 		End Function
@@ -241,7 +241,7 @@ Namespace DotNetNuke.Modules.Forum
 		Friend Sub PostUpdate(ByVal ThreadID As Integer, ByVal PostID As Integer, ByVal Notify As Boolean, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal UpdatedBy As Integer, ByVal FileAttachmentURL As String, ByVal PortalID As Integer, ByVal ThreadIconID As Integer, ByVal PollID As Integer, ByVal ParentID As Integer, ByVal ParseInfo As Integer)
 			Dim GroupID As Integer = DotNetNuke.Modules.Forum.DataProvider.Instance().PostUpdate(ThreadID, PostID, Notify, Subject, Body, IsPinned, PinnedDate, IsClosed, UpdatedBy, FileAttachmentURL, PortalID, ThreadIconID, PollID, ParseInfo)
 
-			ForumController.ClearCache_ForumGetAll(ParentID, GroupID)
+			ForumController.ClearChildForumCache(ParentID, GroupID)
 		End Sub
 
 		''' <summary>

@@ -128,14 +128,14 @@ Namespace DotNetNuke.Modules.Forum
 						Dim _notes As String = "Approved"
 						Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(TabId, objPost.ForumID, objPost.PostID)
 
-						ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, objPost.ForumID)
+						ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, objPost.ForumID, objPost.ThreadID)
 						ForumUserController.ResetForumUser(objPost.Author.UserID, PortalId)
 
 						' Rebind latest non-approved posts to datalist
 						BindList()
 					Case "move"
 						' We have to approve the post before moving the thread, this decreases post count and also avoids this being stuck in moderation if the user cancels out (no email sent 4 this)
-						ApproveMovePost(objPost.PostID, CurrentForumUser.UserID, "move", objPost.ForumID)
+						ApproveMovePost(objPost.PostID, CurrentForumUser.UserID, "move", objPost.ForumID, objPost.ThreadID)
 
 						'"moderatorreturn=1"
 						Dim url As String = Utilities.Links.ThreadMoveLink(TabId, ModuleId, objPost.ForumID, objPost.ThreadID)
@@ -156,7 +156,7 @@ Namespace DotNetNuke.Modules.Forum
 						Dim _notes As String = "Approved with edit"
 						Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(TabId, objPost.ForumID, objPost.PostID)
 
-						ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, objPost.ForumID)
+						ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, objPost.ForumID, objPost.ThreadID)
 						ForumUserController.ResetForumUser(objPost.Author.UserID, PortalId)
 
 						'"moderatorreturn=1"
@@ -168,7 +168,7 @@ Namespace DotNetNuke.Modules.Forum
 						Dim _notes As String = "Approved and respond"
 						Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(TabId, objPost.ForumID, objPost.PostID)
 
-						ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, objPost.ForumID)
+						ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, objPost.ForumID, objPost.ThreadID)
 						ForumUserController.ResetForumUser(objPost.Author.UserID, PortalId)
 
 						' "moderatorreturn=1"
@@ -277,11 +277,11 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ForumID"></param>
 		''' <remarks>
 		''' </remarks>
-		Private Sub ApprovePost(ByVal PostID As Integer, ByVal UserID As Integer, ByVal Notes As String, ByVal URL As String, ByVal ProfileURL As String, ByVal ForumID As Integer)
+		Private Sub ApprovePost(ByVal PostID As Integer, ByVal UserID As Integer, ByVal Notes As String, ByVal URL As String, ByVal ProfileURL As String, ByVal ForumID As Integer, ByVal ThreadID As Integer)
 			Dim ctlForum As New ForumController
 			Dim forum As ForumInfo = ctlForum.GetForumInfoCache(ForumID)
 			Dim ctlForumModerate As New PostModerationController
-			ctlForumModerate.ModeratePostApprove(PostID, UserID, Notes, ForumID, forum.ParentId)
+			ctlForumModerate.ModeratePostApprove(PostID, UserID, Notes, ForumID, forum.ParentId, ThreadID, ModuleId)
 
 			If objConfig.MailNotification Then
 				' send notification mail to author
@@ -300,11 +300,11 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ForumID"></param>
 		''' <remarks>
 		''' </remarks>
-		Private Sub ApproveMovePost(ByVal PostID As Integer, ByVal UserID As Integer, ByVal Notes As String, ByVal ForumID As Integer)
+		Private Sub ApproveMovePost(ByVal PostID As Integer, ByVal UserID As Integer, ByVal Notes As String, ByVal ForumID As Integer, ByVal ThreadID As Integer)
 			Dim ctlForum As New ForumController
 			Dim forum As ForumInfo = ctlForum.GetForumInfoCache(ForumID)
 			Dim ctlForumModerate As New PostModerationController
-			ctlForumModerate.ModeratePostApprove(PostID, UserID, Notes, ForumID, forum.ParentId)
+			ctlForumModerate.ModeratePostApprove(PostID, UserID, Notes, ForumID, forum.ParentId, ThreadID, ModuleId)
 		End Sub
 
 #End Region

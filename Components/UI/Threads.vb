@@ -515,7 +515,7 @@ Namespace DotNetNuke.Modules.Forum
 				userForumController.Add(userForum)
 				UserForumsController.ResetUserForumReadCache(CurrentForumUser.UserID, ForumID)
 			End If
-			ForumController.ResetForumInfoCache(ForumID)
+			'ForumController.ResetForumInfoCache(ForumID)
 		End Sub
 
 		''' <summary>

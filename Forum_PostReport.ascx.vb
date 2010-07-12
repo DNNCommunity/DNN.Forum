@@ -174,7 +174,7 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 
 					' only thing that changes is post, so only reset it
-					PostController.ResetPostInfo(_PostID)
+					Forum.Components.Utilities.Caching.UpdatePostCache(_PostID)
 
 					If Not ViewState("UrlReferrer") Is Nothing Then
 						Response.Redirect(ViewState("UrlReferrer").ToString, False)

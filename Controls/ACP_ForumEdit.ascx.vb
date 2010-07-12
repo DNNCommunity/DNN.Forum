@@ -297,17 +297,10 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				.EmailUser = txtEmailUser.Text
 				.EmailPass = txtEmailPass.Text
 
-				' CP - Changes
 				If Not txtEmailPort.Text.Trim = String.Empty Then
 					.EmailPort = CType(txtEmailPort.Text, Integer)
 				End If
-				' End Changes
-
 				.EmailEnableSSL = chkEmailEnableSSL.Checked
-
-				'' CP - Changes
-				'.EmailAuth = CInt(ddlEmailAuth.SelectedValue)
-				'' End Changes
 
 				' url tracking
 				Dim objUrls As New UrlController
@@ -318,14 +311,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
 			Dim CurrentParentID As Integer = Convert.ToInt32(ddlParentForum.SelectedValue)
 			'update the cached values
-			ForumController.ResetForumInfoCache(ForumID)
-			If Not (OriginalParentID = CurrentParentID) Then
-				ForumController.ResetForumInfoCache(CurrentParentID)
-			End If
-			ForumController.ResetForumInfoCache(OriginalParentID)
+			Forum.Components.Utilities.Caching.UpdateForumCache(ForumID, objForum.GroupID, ModuleId)
 
-			' Update group info in cache in case the forum moved
-			GroupController.ResetGroupInfo(Convert.ToInt32(ddlGroup.SelectedValue))
+			If Not (OriginalParentID = CurrentParentID) Then
+				Forum.Components.Utilities.Caching.UpdateForumCache(CurrentParentID, objForum.GroupID, ModuleId)
+			Else
+				Forum.Components.Utilities.Caching.UpdateForumCache(OriginalParentID, objForum.GroupID, ModuleId)
+			End If
 
 			' Go Back to forum/group management screen
 			Response.Redirect(Utilities.Links.ACPForumsManageLink(TabId, ModuleId, CType(ddlGroup.SelectedValue, Integer)), False)
@@ -376,17 +368,10 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				.EmailUser = txtEmailUser.Text
 				.EmailPass = txtEmailPass.Text
 
-				' CP - Changes
 				If Not txtEmailPort.Text.Trim = String.Empty Then
 					.EmailPort = CType(txtEmailPort.Text, Integer)
 				End If
-				' End Changes
-
 				.EmailEnableSSL = chkEmailEnableSSL.Checked
-
-				'' CP - Changes
-				'.EmailAuth = CInt(ddlEmailAuth.SelectedValue)
-				'' End Changes
 
 				' url tracking
 				Dim objUrls As New UrlController
@@ -395,10 +380,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
 			ForumID = cntForum.ForumAdd(objForum)
 
-			'update the cached values
-			ForumController.ResetForumInfoCache(ForumID)
 			' Update the group info so it knows there is a new forum
-			GroupController.ResetGroupInfo(Convert.ToInt32(ddlGroup.SelectedValue))
+			Forum.Components.Utilities.Caching.UpdateGroupCache(Convert.ToInt32(ddlGroup.SelectedValue), ModuleId)
 
 			' Go Back to forum/group management screen
 			Response.Redirect(Utilities.Links.ACPForumsManageLink(TabId, ModuleId, CType(ddlGroup.SelectedValue, Integer)), False)
@@ -418,9 +401,10 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				cntForum.ForumDelete(objForum.ParentId, objForum.GroupID, ForumID, ModuleId)
 
 				'update the cached values
-				ForumController.ResetForumInfoCache(ForumID)
-				ForumController.ResetForumInfoCache(objForum.ParentId)
-				GroupController.ResetGroupInfo(Convert.ToInt32(ddlGroup.SelectedValue))
+				Components.Utilities.Caching.UpdateForumCache(ForumID, objForum.GroupID, ModuleId)
+				If objForum.ParentId > 0 Then
+					Components.Utilities.Caching.UpdateForumCache(objForum.ParentId, objForum.GroupID, ModuleId)
+				End If
 
 				' Go Back to forum/group management screen
 				Response.Redirect(Utilities.Links.ACPForumsManageLink(TabId, ModuleId, CType(ddlGroup.SelectedValue, Integer)), False)
@@ -438,24 +422,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			If rowParentForum.Visible = True Then
 				BindParentForum()
 			End If
-		End Sub
-
-		''' <summary>
-		''' Changes the ddlForumPermTemplate to the parent to inherat permissions
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks>
-		''' </remarks>
-		Protected Sub ddlParentForum_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ddlParentForum.SelectedIndexChanged
-			'If ddlParentForum.SelectedItem.Value <> "0" Then
-			'Try
-			'ddlForumPermTemplate.ClearSelection()
-			'ddlForumPermTemplate.Items.FindByText(ddlParentForum.SelectedItem.Text).Selected = True
-			'Catch ex As Exception
-
-			'End Try
-			'End If
 		End Sub
 
 		''' <summary>
@@ -814,7 +780,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			myItem.Text = Localization.GetString("None", Me.LocalResourceFile)
 			ddlParentForum.Items.Insert(0, myItem)
 
-			Dim arrItems As List(Of ForumInfo) = cntForum.ForumGetAllByParentID(0, CInt(ddlGroup.SelectedItem.Value), False)
+			Dim arrItems As List(Of ForumInfo) = cntForum.GetChildForums(0, CInt(ddlGroup.SelectedItem.Value), False)
 			Dim fInfo As ForumInfo
 
 			'Make sure we only add forums that arent link type, has posts or is another subforum

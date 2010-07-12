@@ -31,8 +31,10 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Members"
 
-		Private Const ForumInfoCacheKeyPrefix As String = "ForumGetAll"
-		Private Const ForumInfoCacheTimeout As Integer = 20
+		Private Const ForumCacheKeyPrefix As String = Constants.CACHE_KEY_PREFIX + "FORUM_"
+		Private Const ForumModuleColCacheKeyPrefix As String = Constants.CACHE_KEY_PREFIX + "FORUM_MODULE_COL_"
+		Private Const ForumGroupColCacheKeyPrefix As String = Constants.CACHE_KEY_PREFIX + "FORUM_GROUP_COL_"
+		Private Const ForumChildColCacheKeyPrefix As String = Constants.CACHE_KEY_PREFIX + "FORUM_CHILD_COL_"
 
 #End Region
 
@@ -45,14 +47,14 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="GroupId">The GroupID of forums to populate.</param>
 		''' <returns>An arraylist of forums belonging to a specific GroupID.</returns>
 		''' <remarks></remarks>
-		Public Function ForumGetAllByParentID(ByVal ParentID As Integer, ByVal GroupId As Integer, ByVal EnabledOnly As Boolean) As List(Of ForumInfo)
+		Public Function GetChildForums(ByVal ParentID As Integer, ByVal GroupId As Integer, ByVal EnabledOnly As Boolean) As List(Of ForumInfo)
 			Dim arrForums As List(Of ForumInfo)
-			Dim strCacheKey As String = ForumInfoCacheKeyPrefix + "-" + CStr(ParentID) + "-" + CStr(GroupId)
+			Dim strCacheKey As String = ForumChildColCacheKeyPrefix + "-" + CStr(ParentID) + "-" + CStr(GroupId)
 			arrForums = CType(DataCache.GetCache(strCacheKey), List(Of ForumInfo))
 
 			If arrForums Is Nothing Then
 				'forum caching settings
-				Dim timeOut As Int32 = ForumInfoCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
+				Dim timeOut As Int32 = Constants.CACHE_TIMEOUT * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
 
 				arrForums = CBO.FillCollection(Of ForumInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ForumGetAllByParentID(ParentID, GroupId, EnabledOnly))
 
@@ -71,14 +73,14 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="GroupId">The GroupID of forums to populate.</param>
 		''' <returns>An arraylist of forums belonging to a specific GroupID.</returns>
 		''' <remarks></remarks>
-		Public Function ForumGetAll(ByVal GroupId As Integer) As List(Of ForumInfo)
+		Public Function GetGroupForums(ByVal GroupId As Integer) As List(Of ForumInfo)
 			Dim arrForums As List(Of ForumInfo)
-			Dim strCacheKey As String = ForumInfoCacheKeyPrefix + "-" + CStr(GroupId)
+			Dim strCacheKey As String = ForumGroupColCacheKeyPrefix + "-" + CStr(GroupId)
 			arrForums = CType(DataCache.GetCache(strCacheKey), List(Of ForumInfo))
 
 			If arrForums Is Nothing Then
 				'forum caching settings
-				Dim timeOut As Int32 = ForumInfoCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
+				Dim timeOut As Int32 = Constants.CACHE_TIMEOUT * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
 
 				arrForums = CBO.FillCollection(Of ForumInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ForumGetAll(GroupId))
 
@@ -95,11 +97,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <param name="GroupID">The GroupID of forums to clear the cached items for.</param>
 		''' <remarks></remarks>
-		Public Shared Sub ClearCache_ForumGetAll(ByVal ParentForumID As Integer, ByVal GroupID As Integer)
-			Dim strCacheKey As String = ForumInfoCacheKeyPrefix + "-" + CStr(ParentForumID) + "-" + CStr(GroupID)
-			Dim strCacheKey2 As String = ForumInfoCacheKeyPrefix + "-" + CStr(GroupID)
+		Public Shared Sub ClearChildForumCache(ByVal ParentID As Integer, ByVal GroupID As Integer)
+			Dim strCacheKey As String = ForumChildColCacheKeyPrefix + "-" + CStr(ParentID) + "-" + CStr(GroupID)
 			DataCache.RemoveCache(strCacheKey)
-			DataCache.RemoveCache(strCacheKey2)
 		End Sub
 
 		''' <summary>
@@ -110,13 +110,13 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>
 		''' </remarks>
 		Public Function GetForumInfoCache(ByVal ForumID As Integer) As ForumInfo
-			Dim strCacheKey As String = ForumInfoCacheKeyPrefix + "-SingleForum-" + CStr(ForumID)
+			Dim strCacheKey As String = ForumCacheKeyPrefix + CStr(ForumID)
 			Dim objForum As ForumInfo = CType(DataCache.GetCache(strCacheKey), ForumInfo)
 
 			If objForum Is Nothing Then
 				If ForumID > 0 Then
 					'forum caching settings
-					Dim timeOut As Int32 = ForumInfoCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
+					Dim timeOut As Int32 = Constants.CACHE_TIMEOUT * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
 					objForum = New ForumInfo
 					objForum = GetForum(ForumID)
 
@@ -138,8 +138,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ForumID">The ForumID (integer) that we want to remove from cache.</param>
 		''' <remarks>
 		''' </remarks>
-		Public Shared Sub ResetForumInfoCache(ByVal ForumID As Integer)
-			Dim strCacheKey As String = ForumInfoCacheKeyPrefix + "-SingleForum-" + CStr(ForumID)
+		Friend Shared Sub ResetForumItemCache(ByVal ForumID As Integer)
+			Dim strCacheKey As String = ForumCacheKeyPrefix + CStr(ForumID)
 
 			ForumPermissionController.ClearCache_GetForumPermissionsDictionary(ForumID)
 			DataCache.RemoveCache(strCacheKey)
@@ -153,12 +153,12 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Function GetModuleForums(ByVal ModuleID As Integer) As List(Of ForumInfo)
 			Dim arrForums As List(Of ForumInfo)
-			Dim strCacheKey As String = ForumInfoCacheKeyPrefix + "-" + CStr(ModuleID) + "-Module"
+			Dim strCacheKey As String = ForumModuleColCacheKeyPrefix + "-" + CStr(ModuleID) + "-Module"
 			arrForums = CType(DataCache.GetCache(strCacheKey), List(Of ForumInfo))
 
 			If arrForums Is Nothing Then
 				'forum caching settings
-				Dim timeOut As Int32 = ForumInfoCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
+				Dim timeOut As Int32 = Constants.CACHE_TIMEOUT * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
 
 				arrForums = GetForumByModuleID(ModuleID)
 
@@ -175,9 +175,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <param name="ModuleID"></param>
 		''' <remarks></remarks>
-		Public Sub ClearCache_GetModuleForums(ByVal ModuleID As Integer)
-			Dim strCacheKey As String = ForumInfoCacheKeyPrefix + "-" + CStr(ModuleID) + "-Module"
-
+		Public Sub ClearModuleForumCache(ByVal ModuleID As Integer)
+			Dim strCacheKey As String = ForumModuleColCacheKeyPrefix + "-" + CStr(ModuleID) + "-Module"
 			DataCache.RemoveCache(strCacheKey)
 		End Sub
 
@@ -207,8 +206,8 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 			End If
 
-			ClearCache_ForumGetAll(objForum.ParentId, objForum.GroupID)
-			ClearCache_GetModuleForums(objForum.ModuleID)
+			ClearChildForumCache(objForum.ParentId, objForum.GroupID)
+			ClearModuleForumCache(objForum.ModuleID)
 			Return ForumId
 		End Function
 
@@ -237,11 +236,11 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 			End If
 
-			ClearCache_ForumGetAll(PreviousParentID, objForum.GroupID)
+			ClearChildForumCache(PreviousParentID, objForum.GroupID)
 			If PreviousParentID <> objForum.ParentId Then
-				ClearCache_ForumGetAll(objForum.ParentId, objForum.GroupID)
+				ClearChildForumCache(objForum.ParentId, objForum.GroupID)
 			End If
-			ClearCache_GetModuleForums(objForum.ModuleID)
+			ClearModuleForumCache(objForum.ModuleID)
 		End Sub
 
 		''' <summary>
@@ -252,8 +251,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Sub ForumDelete(ByVal ParentID As Integer, ByVal GroupID As Integer, ByVal ForumID As Integer, ByVal ModuleID As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().ForumDelete(ForumID, GroupID)
-			ClearCache_ForumGetAll(ParentID, GroupID)
-			ClearCache_GetModuleForums(ModuleID)
+			ClearChildForumCache(ParentID, GroupID)
+			ClearModuleForumCache(ModuleID)
 		End Sub
 
 		''' <summary>
@@ -265,7 +264,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Sub ForumSortOrderUpdate(ByVal ParentID As Integer, ByVal GroupID As Integer, ByVal ForumId As Integer, ByVal MoveUp As Boolean)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().ForumSortOrderUpdate(GroupID, ForumId, MoveUp)
-			ClearCache_ForumGetAll(ParentID, GroupID)
+			ClearChildForumCache(ParentID, GroupID)
 		End Sub
 
 #End Region

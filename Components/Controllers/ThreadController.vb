@@ -40,7 +40,6 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Private Members"
 
 		Private Const THREAD_KEY As String = Constants.CACHE_KEY_PREFIX + "THREAD_"
-		Private Const THREAD_COL_KEY As String = Constants.CACHE_KEY_PREFIX + "COL_"
 		Private Const RSS_KEY As String = Constants.CACHE_KEY_PREFIX + "RSS_"
 
 #End Region
@@ -82,17 +81,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Function
 
 		''' <summary>
-		''' Clears the cache of the ThreadList (necessary for post add/edit/delete, thread move/split)
-		''' </summary>
-		''' <param name="ForumId"></param>
-		''' <param name="ModuleID"></param>
-		''' <remarks></remarks>
-		Public Shared Sub ResetThreadListCached(ByVal ForumID As Integer, ByVal ModuleID As Integer)
-			Dim strCacheKey As String = RSS_KEY & ForumID.ToString() & ModuleID.ToString()
-			DataCache.RemoveCache(strCacheKey)
-		End Sub
-
-		''' <summary>
 		''' This attempts to load from cache first, if not found loads into cache
 		''' </summary>
 		''' <param name="ThreadID"></param>
@@ -124,7 +112,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <param name="ThreadID"></param>
 		''' <remarks></remarks>
-		Public Shared Sub ResetThreadInfo(ByVal ThreadID As Integer)
+		Friend Shared Sub ResetThreadItemCache(ByVal ThreadID As Integer)
 			Dim strCacheKey As String = THREAD_KEY & ThreadID.ToString
 			DataCache.RemoveCache(strCacheKey)
 		End Sub
@@ -229,8 +217,8 @@ Namespace DotNetNuke.Modules.Forum
 				While dr.Read
 					OldGroupID = Convert.ToInt32(dr("OldGroupID"))
 					NewGroupID = Convert.ToInt32(dr("NewGroupID"))
-					ForumController.ClearCache_ForumGetAll(ParentID, OldGroupID)
-					ForumController.ClearCache_ForumGetAll(ParentID, NewGroupID)
+					ForumController.ClearChildForumCache(ParentID, OldGroupID)
+					ForumController.ClearChildForumCache(ParentID, NewGroupID)
 				End While
 			Finally
 				If Not dr Is Nothing Then
@@ -260,8 +248,8 @@ Namespace DotNetNuke.Modules.Forum
 				While dr.Read
 					OldGroupID = Convert.ToInt32(dr("OldGroupID"))
 					NewGroupID = Convert.ToInt32(dr("NewGroupID"))
-					ForumController.ClearCache_ForumGetAll(ParentID, OldGroupID)
-					ForumController.ClearCache_ForumGetAll(ParentID, NewGroupID)
+					ForumController.ClearChildForumCache(ParentID, OldGroupID)
+					ForumController.ClearChildForumCache(ParentID, NewGroupID)
 				End While
 			Finally
 				If Not dr Is Nothing Then

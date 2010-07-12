@@ -979,7 +979,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim i As Integer = 1
 			Dim SubForum As New ForumInfo
 			Dim forumCtl As New ForumController
-			Dim arrSubForums As List(Of ForumInfo) = forumCtl.ForumGetAllByParentID(ParentID, GroupId, True)
+			Dim arrSubForums As List(Of ForumInfo) = forumCtl.GetChildForums(ParentID, GroupId, True)
 
 			wr.RenderBeginTag(HtmlTextWriterTag.B) '<b>
 			wr.Write(Localization.GetString("SubForums", objConfig.SharedResourceFile) & ": ")

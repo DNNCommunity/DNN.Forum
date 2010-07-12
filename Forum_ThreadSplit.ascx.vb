@@ -253,6 +253,7 @@ Namespace DotNetNuke.Modules.Forum
 							Dim PostIDToSplit As Integer = CInt(dlPostsForThread.DataKeys(item.ItemIndex))
 							If (Not PostIDToSplit = PostID) And (Not PostIDToSplit = ThreadID) Then
 								ctlPosts.PostMove(PostIDToSplit, ThreadID, PostID, newForumID, ForumID, UserId, newThreadSortOrder, Notes, objForum.ParentId)
+								Forum.Components.Utilities.Caching.UpdatePostCache(PostIDToSplit)
 							End If
 
 							newThreadSortOrder += 1
@@ -261,33 +262,16 @@ Namespace DotNetNuke.Modules.Forum
 							Dim PostIDToSplit As Integer = CInt(dlPostsForThread.DataKeys(item.ItemIndex))
 							If (Not PostIDToSplit = PostID) And (Not PostIDToSplit = ThreadID) Then
 								ctlPosts.PostMove(PostIDToSplit, ThreadID, ThreadID, newForumID, ForumID, UserId, oldThreadSortOrder, Notes, objForum.ParentId)
+								Forum.Components.Utilities.Caching.UpdatePostCache(PostIDToSplit)
 							End If
 
 							oldThreadSortOrder += 1
 						End If
 					Next
 
-					' reset the post cache
-					PostController.ResetPostInfo(ThreadID)
-					PostController.ResetPostInfo(PostID)
-
-					' reset cache of both threads in case anyone happen to visit one during the split processing
-					ThreadController.ResetThreadInfo(ThreadID)
-					ThreadController.ResetThreadInfo(PostID)
-
-					ThreadController.ResetThreadListCached(newForumID, ModuleId)
-					ThreadController.ResetThreadListCached(ForumID, ModuleId)
-
-					If objConfig.AggregatedForums Then
-						ThreadController.ResetThreadListCached(-1, ModuleId)
-					End If
-
-					' the db calls handled caching at group level, make sure cache is updated at forum level(s)
-					ForumController.ResetForumInfoCache(newForumID)
-
-					If Not newForumID = ForumID Then
-						ForumController.ResetForumInfoCache(ForumID)
-					End If
+					' reset cache of both threads, we don't do this above in each post so it is only called once per thread. 
+					Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID, newForumID, objForum.GroupID, ModuleId)
+					Forum.Components.Utilities.Caching.UpdateThreadCache(PostID, ForumID, objForum.GroupID, ModuleId)
 
 					' Handle sending emails 
 					If chkEmailUsers.Checked And objConfig.MailNotification Then

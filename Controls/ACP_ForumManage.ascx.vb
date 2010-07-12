@@ -122,7 +122,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					Case "add"
 						Utilities.Links.ForumEditLink(TabId, ModuleId, -1, groupID)
 				End Select
-				cntGroup.ResetAllGroupsByModuleID(ModuleId)
+
+				Forum.Components.Utilities.Caching.UpdateGroupCache(groupID, ModuleId)
 				BindGroupList()
 			Catch exc As Exception
 				ProcessModuleLoadException(Me, exc)
@@ -170,15 +171,10 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			objGroup = cntGroup.GroupGet(GroupID)
 
 			Dim txtGroupName As TextBox = CType(e.Item.Controls(0).FindControl("txtGroupName"), TextBox)
-
 			cntGroup.GroupUpdate(CType(GroupID, Integer), txtGroupName.Text, UserId, objGroup.SortOrder, ModuleId)
 
-			' Reset the module groups
-			Dim objGrpCnt As New GroupController
-			objGrpCnt.ResetAllGroupsByModuleID(ModuleId)
-
 			' Remove the updated group from cache
-			GroupController.ResetGroupInfo(CType(GroupID, Integer))
+			Forum.Components.Utilities.Caching.UpdateGroupCache(CType(GroupID, Integer), ModuleId)
 
 			lstGroup.EditItemIndex = -1
 			lstGroup.SelectedIndex = -1
@@ -578,7 +574,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					Dim imgLevel As Image = CType(imgColumnControl, System.Web.UI.WebControls.Image)
 					imgLevel.ImageUrl = objConfig.GetThemeImageURL("sublevel.") & objConfig.ImageExtension
 				End If
-
 			End If
 		End Sub
 
@@ -616,9 +611,10 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				ctlForum.ForumDelete(ParentID, GroupID, ForumID, ModuleId)
 
 				'update the cached values
-				ForumController.ResetForumInfoCache(ForumID)
-				ForumController.ResetForumInfoCache(ParentID)
-				GroupController.ResetGroupInfo(Convert.ToInt32(GroupID))
+				Components.Utilities.Caching.UpdateForumCache(ForumID, GroupID, ModuleId)
+				If ParentID > 0 Then
+					Components.Utilities.Caching.UpdateForumCache(ParentID, GroupID, ModuleId)
+				End If
 
 				BindGroupList()
 			Catch exc As Exception
@@ -700,8 +696,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				GroupID = ctlGroup.GroupAdd(txtAddGroup.Text, PortalId, ModuleId, UserId)
 
 				' Reset the module groups
-				Dim objGrpCnt As New GroupController
-				objGrpCnt.ResetAllGroupsByModuleID(ModuleId)
+				GroupController.ResetModuleGroups(ModuleId)
 
 				' Re-bind
 				lblvalAddGroup.Visible = False
@@ -795,7 +790,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			Dim ctlForum As New ForumController
 			Dim forumCollection As List(Of ForumInfo)
 
-			forumCollection = ctlForum.ForumGetAllByParentID(ParentID, GroupID, False)
+			forumCollection = ctlForum.GetChildForums(ParentID, GroupID, False)
 			Dim test As Integer = forumCollection.Count
 
 			Return forumCollection

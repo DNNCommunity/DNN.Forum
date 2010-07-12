@@ -207,7 +207,7 @@ Namespace DotNetNuke.Modules.Forum
 				ctlThread.ThreadStatusChange(ThreadId, CurrentForumUser.UserID, ThreadStatus, 0, ModeratorID, PortalID)
 			End If
 
-			ThreadController.ResetThreadInfo(ThreadId)
+			Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadId)
 		End Sub
 
 		''' <summary>
@@ -219,8 +219,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Protected Sub chkEmail_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
 			Dim ctlTracking As New TrackingController
-			ctlTracking.TrackingThreadCreateDelete(ForumId, _ThreadID, CurrentForumUser.UserID, chkEmail.Checked, ModuleID)
-			ThreadController.ResetThreadInfo(_ThreadID)
+			ctlTracking.TrackingThreadCreateDelete(ForumID, ThreadId, CurrentForumUser.UserID, chkEmail.Checked, ModuleID)
+			'Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadId)
 		End Sub
 
 		''' <summary>
@@ -237,7 +237,7 @@ Namespace DotNetNuke.Modules.Forum
 				ctlThread.ThreadRateAdd(ThreadId, CurrentForumUser.UserID, rate)
 			End If
 
-			ThreadController.ResetThreadInfo(ThreadId)
+			Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadId)
 		End Sub
 
 		''' <summary>
@@ -356,7 +356,7 @@ Namespace DotNetNuke.Modules.Forum
 				Dim cntPostConnect As New PostConnector
 				Dim PostMessage As PostMessage
 
-				PostMessage = cntPostConnect.SubmitInternalPost(TabID, ModuleID, PortalID, CurrentForumUser.UserID, strSubject, txtQuickReply.Text, ForumId, ThreadInfo.ThreadID, -1, ThreadInfo.IsPinned, False, False, ThreadInfo.ThreadStatus, "", RemoteAddress, ThreadInfo.PollID, ThreadInfo.ThreadIconID, False)
+				PostMessage = cntPostConnect.SubmitInternalPost(TabID, ModuleID, PortalID, CurrentForumUser.UserID, strSubject, txtQuickReply.Text, ForumID, ThreadInfo.ThreadID, -1, ThreadInfo.IsPinned, False, False, ThreadInfo.ThreadStatus, "", RemoteAddress, ThreadInfo.PollID, ThreadInfo.ThreadIconID, False, ThreadInfo.ThreadID)
 
 				Select Case PostMessage
 					Case PostMessage.PostApproved
@@ -425,7 +425,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				ctlThread.ThreadStatusChange(ThreadId, objPostInfo.UserID, ThreadStatus.Answered, answerPostID, ModeratorID, PortalID)
 
-				ThreadController.ResetThreadInfo(ThreadId)
+				Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadId)
 			End If
 		End Sub
 
@@ -753,7 +753,8 @@ Namespace DotNetNuke.Modules.Forum
 					userThreadController.Add(userThread)
 					UserThreadsController.ResetUserThreadReadCache(userThread.UserID, userThread.ThreadID)
 				End If
-				ThreadController.ResetThreadInfo(ThreadId)
+				' Not sure we should keep this, we are basically updating a thread cache item if a new view was added. Is this really necessary?
+				Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadId)
 			End If
 		End Sub
 

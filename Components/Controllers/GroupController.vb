@@ -33,7 +33,6 @@ Namespace DotNetNuke.Modules.Forum
 
 		Private Const GroupColCacheKeyPrefix As String = Constants.CACHE_KEY_PREFIX + "GROUP_MODULE_"
 		Private Const GroupCacheKeyPrefix As String = Constants.CACHE_KEY_PREFIX + "GROUP_"
-		Private Const GroupInfoCacheTimeout As Integer = 20
 
 #End Region
 
@@ -54,7 +53,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim arrAllForums As New List(Of ForumInfo)
 			Dim objForum As ForumInfo
 
-			arrAllForums = cntForum.ForumGetAll(GroupID)
+			arrAllForums = cntForum.GetGroupForums(GroupID)
 			' add Aggregated Forum option
 			If GroupID = -1 Then
 				objForum = New ForumInfo
@@ -106,7 +105,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim arrAllForums As New List(Of ForumInfo)
 			Dim objForum As ForumInfo
 
-			arrAllForums = cntForum.ForumGetAllByParentID(0, GroupID, True)
+			arrAllForums = cntForum.GetChildForums(0, GroupID, True)
 			' add Aggregated Forum option
 			If GroupID = -1 Then
 				objForum = New ForumInfo
@@ -158,7 +157,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim arrAllForums As New List(Of ForumInfo)
 			Dim objForum As ForumInfo
 
-			arrAllForums = cntForum.ForumGetAllByParentID(ParentForumId, GroupID, True)
+			arrAllForums = cntForum.GetChildForums(ParentForumId, GroupID, True)
 			' add Aggregated Forum option
 			If GroupID = -1 Then
 				objForum = New ForumInfo
@@ -212,11 +211,9 @@ Namespace DotNetNuke.Modules.Forum
 			arrGroups = CType(DataCache.GetCache(strCacheKey), List(Of GroupInfo))
 
 			If arrGroups Is Nothing Then
-				Dim timeOut As Int32 = GroupInfoCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
-
+				Dim timeOut As Int32 = Constants.CACHE_TIMEOUT * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
 				arrGroups = CBO.FillCollection(Of GroupInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().GroupGetByModuleID(ModuleId))
 
-				'Cache Group if timeout > 0 and Group is not null
 				If timeOut > 0 And arrGroups IsNot Nothing Then
 					DataCache.SetCache(strCacheKey, arrGroups, TimeSpan.FromMinutes(timeOut))
 				End If
@@ -253,7 +250,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <param name="ModuleID"></param>
 		''' <remarks></remarks>
-		Public Sub ResetAllGroupsByModuleID(ByVal ModuleID As Integer)
+		Friend Shared Sub ResetModuleGroups(ByVal ModuleID As Integer)
 			Dim strCacheKey As String = GroupColCacheKeyPrefix & ModuleID.ToString()
 			DataCache.RemoveCache(strCacheKey)
 		End Sub
@@ -263,7 +260,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <param name="GroupID"></param>
 		''' <remarks></remarks>
-		Public Shared Sub ResetGroupInfo(ByVal GroupID As Integer)
+		Friend Shared Sub ResetGroupCacheItem(ByVal GroupID As Integer)
 			Dim strCacheKey As String = GroupCacheKeyPrefix & CStr(GroupID)
 			DataCache.RemoveCache(strCacheKey)
 		End Sub

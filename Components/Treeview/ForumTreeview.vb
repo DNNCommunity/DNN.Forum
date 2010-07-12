@@ -94,7 +94,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim cntForum As New ForumController
 			Dim arrForums As List(Of ForumInfo)
 
-			arrForums = cntForum.ForumGetAllByParentID(CInt(strKey), GroupID, True)
+			arrForums = cntForum.GetChildForums(CInt(strKey), GroupID, True)
 
 			Dim objNode As Telerik.Web.UI.RadTreeNode
 			objNode = New Telerik.Web.UI.RadTreeNode(strName)
