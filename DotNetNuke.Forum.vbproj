@@ -155,6 +155,7 @@
     <Compile Include="Components\Bookmark\ForumBookmark.vb" />
     <Compile Include="Components\Configuration\Enums.vb" />
     <Compile Include="Components\Configuration\ForumPreConfig.vb" />
+    <Compile Include="Components\Content\PostConnector.vb" />
     <Compile Include="Components\Content\Terms.vb" />
     <Compile Include="Components\Controllers\AnswerController.vb" />
     <Compile Include="Components\Controllers\AttachmentController.vb" />
@@ -206,7 +207,6 @@
     <Compile Include="Components\Entities\UserInfo.vb" />
     <Compile Include="Components\Entities\UserThreadInfo.vb" />
     <Compile Include="Components\Portals\ForumPortalSettings.vb" />
-    <Compile Include="Components\Posts\PostConnector.vb" />
     <Compile Include="Components\Security\MockSecurity.vb" />
     <Compile Include="Components\Tracking\UserTracking.vb" />
     <Compile Include="Components\UI\Groups.vb">
