@@ -272,8 +272,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				.Description = txtForumDescription.Text
 				.EnablePostStatistics = True
 				.ForumType = CType(ddlForumType.SelectedIndex, Integer)
-				.IsIntegrated = False
-				.IntegratedModuleID = 0
 				.UpdatedByUser = UserId
 				.ForumPermissions = dgPermissions.Permissions
 				.EnableForumsThreadStatus = chkEnableForumsThreadStatus.Checked

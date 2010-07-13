@@ -45,9 +45,6 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _IsModerated As Boolean = False
 		Dim _SortOrder As Integer
 		Dim _ForumType As Integer
-		'Dim _IsIntegrated As Boolean
-		'Dim _IntegratedModuleID As Integer
-		'Dim _IntegratedObjects As String
 		Dim _UpdatedDate As DateTime
 		Dim _UpdatedByUser As Integer
 		Dim _ForumPermissions As DotNetNuke.Modules.Forum.ForumPermissionCollection
@@ -527,51 +524,6 @@ Namespace DotNetNuke.Modules.Forum
 				_ForumType = Value
 			End Set
 		End Property
-
-		''' <summary>
-		''' If the forum is integrated w/ a 3rd party module
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property IsIntegrated() As Boolean
-			Get
-				Return _IsIntegrated
-			End Get
-			Set(ByVal Value As Boolean)
-				_IsIntegrated = Value
-			End Set
-		End Property
-
-		' ''' <summary>
-		' ''' 3rd party integration Module's ModuleID. 
-		' ''' </summary>
-		' ''' <value></value>
-		' ''' <returns></returns>
-		' ''' <remarks></remarks>
-		'Public Property IntegratedModuleID() As Integer
-		'	Get
-		'		Return _IntegratedModuleID
-		'	End Get
-		'	Set(ByVal Value As Integer)
-		'		_IntegratedModuleID = Value
-		'	End Set
-		'End Property
-
-		' ''' <summary>
-		' ''' The objects which are integrated (possibly legacy)
-		' ''' </summary>
-		' ''' <value></value>
-		' ''' <returns></returns>
-		' ''' <remarks></remarks>
-		'Public Property IntegratedObjects() As String
-		'	Get
-		'		Return _IntegratedObjects
-		'	End Get
-		'	Set(ByVal Value As String)
-		'		_IntegratedObjects = Value
-		'	End Set
-		'End Property
 
 		''' <summary>
 		''' The UserID of the person to last update the forum settings. 

@@ -197,7 +197,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks>If anything is changed here, consider chaging ForumPreConfig.vb method for adding default "General" forum.</remarks>
 		Public Function ForumAdd(ByVal objForum As ForumInfo) As Integer
-			Dim ForumId As Integer = DotNetNuke.Modules.Forum.DataProvider.Instance().ForumAdd(objForum.GroupID, objForum.IsActive, objForum.ParentId, objForum.Name, objForum.Description, objForum.IsModerated, objForum.EnablePostStatistics, objForum.ForumType, objForum.IsIntegrated, objForum.IntegratedModuleID, objForum.PublicView, objForum.CreatedByUser, objForum.PublicPosting, objForum.EnableForumsThreadStatus, objForum.EnableForumsRating, objForum.ForumLink, objForum.ForumBehavior, objForum.AllowPolls, objForum.EnableRSS, objForum.EmailAddress, objForum.EmailFriendlyFrom, objForum.NotifyByDefault, objForum.EmailStatusChange, objForum.EmailServer, objForum.EmailUser, objForum.EmailPass, objForum.EmailEnableSSL, objForum.EmailAuth, objForum.EmailPort)
+			Dim ForumId As Integer = DotNetNuke.Modules.Forum.DataProvider.Instance().ForumAdd(objForum.GroupID, objForum.IsActive, objForum.ParentId, objForum.Name, objForum.Description, objForum.IsModerated, objForum.EnablePostStatistics, objForum.ForumType, objForum.PublicView, objForum.CreatedByUser, objForum.PublicPosting, objForum.EnableForumsThreadStatus, objForum.EnableForumsRating, objForum.ForumLink, objForum.ForumBehavior, objForum.AllowPolls, objForum.EnableRSS, objForum.EmailAddress, objForum.EmailFriendlyFrom, objForum.NotifyByDefault, objForum.EmailStatusChange, objForum.EmailServer, objForum.EmailUser, objForum.EmailPass, objForum.EmailEnableSSL, objForum.EmailAuth, objForum.EmailPort)
 
 			' update forum permissions
 			If Not objForum.ForumPermissions Is Nothing Then
@@ -225,7 +225,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="objForum">The ForumInfo object being updated in the data store.</param>
 		''' <remarks></remarks>
 		Public Sub ForumUpdate(ByVal objForum As ForumInfo, ByVal PreviousParentID As Integer)
-			DotNetNuke.Modules.Forum.DataProvider.Instance().ForumUpdate(objForum.GroupID, objForum.ForumID, objForum.IsActive, objForum.ParentId, objForum.Name, objForum.Description, objForum.IsModerated, objForum.EnablePostStatistics, objForum.ForumType, objForum.IsIntegrated, objForum.IntegratedModuleID, objForum.PublicView, objForum.UpdatedByUser, objForum.PublicPosting, objForum.EnableForumsThreadStatus, objForum.EnableForumsRating, objForum.ForumLink, objForum.ForumBehavior, objForum.AllowPolls, objForum.EnableRSS, objForum.EmailAddress, objForum.EmailFriendlyFrom, objForum.NotifyByDefault, objForum.EmailStatusChange, objForum.EmailServer, objForum.EmailUser, objForum.EmailPass, objForum.EmailEnableSSL, objForum.EmailAuth, objForum.EmailPort)
+			DotNetNuke.Modules.Forum.DataProvider.Instance().ForumUpdate(objForum.GroupID, objForum.ForumID, objForum.IsActive, objForum.ParentId, objForum.Name, objForum.Description, objForum.IsModerated, objForum.EnablePostStatistics, objForum.ForumType, objForum.PublicView, objForum.UpdatedByUser, objForum.PublicPosting, objForum.EnableForumsThreadStatus, objForum.EnableForumsRating, objForum.ForumLink, objForum.ForumBehavior, objForum.AllowPolls, objForum.EnableRSS, objForum.EmailAddress, objForum.EmailFriendlyFrom, objForum.NotifyByDefault, objForum.EmailStatusChange, objForum.EmailServer, objForum.EmailUser, objForum.EmailPass, objForum.EmailEnableSSL, objForum.EmailAuth, objForum.EmailPort)
 
 			' update forum permissions
 			If Not objForum.ForumPermissions Is Nothing Then
@@ -342,14 +342,6 @@ Namespace DotNetNuke.Modules.Forum
 				End Try
 				Try
 					objForumInfo.GroupID = Convert.ToInt32(Null.SetNull(dr("GroupID"), objForumInfo.GroupID))
-				Catch
-				End Try
-				Try
-					objForumInfo.IsIntegrated = Convert.ToBoolean(Null.SetNull(dr("IsIntegrated"), objForumInfo.IsIntegrated))
-				Catch
-				End Try
-				Try
-					objForumInfo.IntegratedModuleID = Convert.ToInt32(Null.SetNull(dr("IntegratedModuleID"), objForumInfo.IntegratedModuleID))
 				Catch
 				End Try
 				Try
