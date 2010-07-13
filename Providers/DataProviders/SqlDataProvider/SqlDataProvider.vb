@@ -284,8 +284,8 @@ Namespace DotNetNuke.Modules.Forum
 			Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "Reads_GetFirstUnread", ThreadID, LastVisitDate, ViewDecending), Integer)
 		End Function
 
-		Public Overrides Sub UpdateThread(ByVal ThreadID As Integer, ByVal ContentItemID As Integer)
-			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "Thread_Update", ThreadID, ContentItemID)
+		Public Overrides Sub UpdateThread(ByVal ThreadID As Integer, ByVal ContentItemID As Integer, ByVal SitemapInclude As Boolean)
+			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "Thread_Update", ThreadID, ContentItemID, SitemapInclude)
 		End Sub
 
 #Region "Rating"
@@ -331,18 +331,12 @@ Namespace DotNetNuke.Modules.Forum
 		Public Overrides Function PostMove(ByVal PostID As Integer, ByVal oldThreadID As Integer, ByVal newThreadID As Integer, ByVal newForumID As Integer, ByVal oldForumID As Integer, ByVal ModID As Integer, ByVal SortOrder As Integer, ByVal Notes As String) As IDataReader
 			Return SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Post_Move", PostID, oldThreadID, newThreadID, newForumID, oldForumID, ModID, SortOrder, Notes)
 		End Function
-
-		Public Overrides Function PostAdd(ByVal ParentPostID As Integer, ByVal ForumID As Integer, ByVal UserID As Integer, ByVal RemoteAddr As String, ByVal Notify As Boolean, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal ObjectID As Integer, ByVal FileAttachmentURL As String, ByVal PortalID As Integer, ByVal ThreadIconID As Integer, ByVal PollID As Integer, ByVal IsModerated As Boolean, ByVal ParseInfo As Integer) As Integer
-			Try
-				Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "Post_Add", ParentPostID, ForumID, UserID, RemoteAddr, Notify, Subject, Body, IsPinned, GetNull(PinnedDate), IsClosed, ObjectID, FileAttachmentURL, PortalID, ThreadIconID, PollID, IsModerated, ParseInfo), Integer)
-			Catch ex As Exception ' duplicate
-				ex.ToString()
-				Return Nothing
-			End Try
+		Public Overrides Function PostAdd(ByVal ParentPostID As Integer, ByVal ForumID As Integer, ByVal UserID As Integer, ByVal RemoteAddr As String, ByVal Notify As Boolean, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal IsModerated As Boolean, ByVal ParseInfo As Integer) As Integer
+				Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "Post_Add", ParentPostID, ForumID, UserID, RemoteAddr, Notify, Subject, Body, IsPinned, GetNull(PinnedDate), IsClosed, PortalID, PollID, IsModerated, ParseInfo), Integer)
 		End Function
 
-		Public Overrides Function PostUpdate(ByVal ThreadID As Integer, ByVal PostID As Integer, ByVal Notify As Boolean, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal UpdatedBy As Integer, ByVal FileAttachmentURL As String, ByVal PortalID As Integer, ByVal ThreadIconID As Integer, ByVal PollID As Integer, ByVal ParseInfo As Integer) As Integer
-			Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "Post_Update", ThreadID, PostID, Notify, Subject, Body, IsPinned, PinnedDate, IsClosed, UpdatedBy, FileAttachmentURL, PortalID, ThreadIconID, PollID, ParseInfo), Integer)
+		Public Overrides Function PostUpdate(ByVal ThreadID As Integer, ByVal PostID As Integer, ByVal Notify As Boolean, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal UpdatedBy As Integer, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal ParseInfo As Integer) As Integer
+			Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "Post_Update", ThreadID, PostID, Notify, Subject, Body, IsPinned, PinnedDate, IsClosed, UpdatedBy, PortalID, PollID, ParseInfo), Integer)
 		End Function
 
 		Public Overrides Function PostSortOrderGet(ByVal PostID As Integer, ByVal flatView As Boolean) As Integer

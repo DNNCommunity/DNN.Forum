@@ -539,7 +539,7 @@ Namespace DotNetNuke.Modules.Forum
 				Dim cntPostConnect As New PostConnector
 				Dim PostMessage As PostMessage
 
-				PostMessage = cntPostConnect.SubmitInternalPost(TabId, ModuleId, PortalId, objLoggedOnUserID, txtSubject.Text, teContent.Text, objForum.ForumID, ParentPostID, PostID, chkIsPinned.Checked, chkIsClosed.Checked, chkNotify.Checked, ThreadStatus, ctlAttachment.lstAttachmentIDs, RemoteAddress, PollID, ThreadIconID, IsQuote, ThreadID)
+				PostMessage = cntPostConnect.SubmitInternalPost(TabId, ModuleId, PortalId, objLoggedOnUserID, txtSubject.Text, teContent.Text, objForum.ForumID, ParentPostID, PostID, chkIsPinned.Checked, chkIsClosed.Checked, chkNotify.Checked, ThreadStatus, ctlAttachment.lstAttachmentIDs, RemoteAddress, PollID, IsQuote, ThreadID)
 
 				Select Case PostMessage
 					Case PostMessage.PostApproved

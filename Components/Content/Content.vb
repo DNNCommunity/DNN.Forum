@@ -34,12 +34,12 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 		''' <summary>
-		''' 
+		''' Creates a content item in the data store (via core API). Also, associates any 'terms'. 
 		''' </summary>
 		''' <param name="objThread"></param>
 		''' <param name="tabId"></param>
 		''' <returns></returns>
-		''' <remarks></remarks>
+		''' <remarks>Once created, a thread is immediately updated (thread = content item). Will handlescontent type check too.</remarks>
 		Friend Function CreateContentItem(ByVal objThread As ThreadInfo, ByVal tabId As Integer) As ContentItem
 			Dim typeController As IContentTypeController = New ContentTypeController
 			Dim colContentTypes As IQueryable(Of ContentType) = (From t In typeController.GetContentTypes() Where t.ContentType = ContentTypeName Select t)
@@ -52,7 +52,6 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			Dim objContent As New ContentItem
-
 			objContent.Content = objThread.Subject
 			objContent.ContentTypeId = ContentTypeID
 			objContent.Indexed = False
@@ -64,7 +63,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			' we need to update the thread here so it has the new content item id
 			Dim cntThread As New ThreadController()
-			cntThread.UpdateThread(objThread.ThreadID, objContent.ContentItemId)
+			cntThread.UpdateThread(objThread.ThreadID, objContent.ContentItemId, objThread.SitemapInclude)
 
 			' Update Terms
 			Dim cntTerm As New Terms()
@@ -74,7 +73,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Function
 
 		''' <summary>
-		''' 
+		''' Updates a content item in the data store (via core API). Also updates associated 'terms'. 
 		''' </summary>
 		''' <param name="objThread"></param>
 		''' <param name="tabId"></param>
@@ -96,7 +95,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 		''' <summary>
-		''' 
+		''' Deletes a content item from the data store (via core API).
 		''' </summary>
 		''' <param name="objThread"></param>
 		''' <remarks>Currently, we are deleting the content item only when a postid ='s threadid.</remarks>

@@ -41,7 +41,7 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Properties"
 
 		''' <summary>
-		''' 
+		''' This is the selected group. When a group is selected, only its forums will be displayed (and not other groups). 
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
@@ -57,11 +57,11 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' 
+		''' This is the selected parent forum (since we render child forums, like forums, within this group view). 
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
-		''' <remarks></remarks>
+		''' <remarks>Results in similar view as selected group.</remarks>
 		Private ReadOnly Property SelectedForumID() As Integer
 			Get
 				If Not HttpContext.Current.Request.QueryString("forumid") Is Nothing Then
@@ -73,7 +73,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' Collection of groups
+		''' Collection of groups that contain at least one authorized forum for the current user.
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
@@ -88,7 +88,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' Number of active forums in the group. 
+		''' This is the total number of forums the end user is authorized to view (used for total # count).
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>

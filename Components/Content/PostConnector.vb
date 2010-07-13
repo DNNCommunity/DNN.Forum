@@ -65,7 +65,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns>An enumerator PostMessage that tells what happend (post moderated, post approved, reason rejected, etc.).</returns>
 		''' <remarks>This is available for all outside modules/applications to post to the forum module.</remarks>
 		Public Function SubmitExternalPost(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer, ByVal UserID As Integer, ByVal PostSubject As String, ByVal PostBody As String, ByVal ForumID As Integer, ByVal ParentPostID As Integer, ByVal Attachments As String, ByVal Provider As String, ByVal ParentThreadID As Integer) As PostMessage
-			Return PostingValidation(TabID, ModuleID, PortalID, UserID, PostSubject, PostBody, ForumID, ParentPostID, -1, False, False, False, Forum.ThreadStatus.NotSet, Attachments, "0.0.0.0", -1, -1, False, Provider, ParentThreadID)
+			Return PostingValidation(TabID, ModuleID, PortalID, UserID, PostSubject, PostBody, ForumID, ParentPostID, -1, False, False, False, Forum.ThreadStatus.NotSet, Attachments, "0.0.0.0", -1, False, Provider, ParentThreadID)
 		End Function
 
 		''' <summary>
@@ -172,13 +172,12 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="AttachmentFileIDs">A string of comma separated integers(DNN File ID's). It is assumed that all attachments (and local post images) already exist within the DNN file system.</param>
 		''' <param name="RemoteAddress"></param>
 		''' <param name="PollID"></param>
-		''' <param name="ThreadIconID"></param>
 		''' <param name="IsQuote"></param>
 		''' <param name="ThreadID"></param>
 		''' <returns></returns>
 		''' <remarks>This is set as friend so only PostEdit uses this method. We want to avoid threadstatus, polls, thread icon changes from external sources (for now). Also avoiding post edits externally,.</remarks>
-		Friend Function SubmitInternalPost(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer, ByVal UserID As Integer, ByVal PostSubject As String, ByVal PostBody As String, ByVal ForumID As Integer, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal IsPinned As Boolean, ByVal IsClosed As Boolean, ByVal ReceiveReply As Boolean, ByVal Status As Forum.ThreadStatus, ByVal AttachmentFileIDs As String, ByVal RemoteAddress As String, ByVal PollID As Integer, ByVal ThreadIconID As Integer, ByVal IsQuote As Boolean, ByVal ThreadID As Integer) As PostMessage
-			Return PostingValidation(TabID, ModuleID, PortalID, UserID, PostSubject, PostBody, ForumID, ParentPostID, PostID, IsPinned, IsClosed, ReceiveReply, Status, AttachmentFileIDs, RemoteAddress, PollID, ThreadIconID, IsQuote, "InterModule", ThreadID)
+		Friend Function SubmitInternalPost(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer, ByVal UserID As Integer, ByVal PostSubject As String, ByVal PostBody As String, ByVal ForumID As Integer, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal IsPinned As Boolean, ByVal IsClosed As Boolean, ByVal ReceiveReply As Boolean, ByVal Status As Forum.ThreadStatus, ByVal AttachmentFileIDs As String, ByVal RemoteAddress As String, ByVal PollID As Integer, ByVal IsQuote As Boolean, ByVal ThreadID As Integer) As PostMessage
+			Return PostingValidation(TabID, ModuleID, PortalID, UserID, PostSubject, PostBody, ForumID, ParentPostID, PostID, IsPinned, IsClosed, ReceiveReply, Status, AttachmentFileIDs, RemoteAddress, PollID, IsQuote, "InterModule", ThreadID)
 		End Function
 
 #End Region
@@ -204,13 +203,12 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="lstAttachmentFileIDs">A string of comma separated integers(DNN File ID's). It is assumed that all attachments (and local post images) already exist within the DNN file system.</param>
 		''' <param name="RemoteAddress"></param>
 		''' <param name="PollID"></param>
-		''' <param name="ThreadIconID"></param>
 		''' <param name="IsQuote"></param>
 		''' <param name="Provider"></param>
 		''' <param name="ThreadID"></param>
 		''' <returns>A message indicating what happend, ie. if the post was successfull or why it failed.</returns>
 		''' <remarks>Internal and external methods for posting call this.</remarks>
-		Private Function PostingValidation(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer, ByVal UserID As Integer, ByVal PostSubject As String, ByVal PostBody As String, ByVal ForumID As Integer, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal IsPinned As Boolean, ByVal IsClosed As Boolean, ByVal ReceiveReply As Boolean, ByVal Status As Forum.ThreadStatus, ByVal lstAttachmentFileIDs As String, ByVal RemoteAddress As String, ByVal PollID As Integer, ByVal ThreadIconID As Integer, ByVal IsQuote As Boolean, ByVal Provider As String, ByVal ThreadID As Integer) As PostMessage
+		Private Function PostingValidation(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer, ByVal UserID As Integer, ByVal PostSubject As String, ByVal PostBody As String, ByVal ForumID As Integer, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal IsPinned As Boolean, ByVal IsClosed As Boolean, ByVal ReceiveReply As Boolean, ByVal Status As Forum.ThreadStatus, ByVal lstAttachmentFileIDs As String, ByVal RemoteAddress As String, ByVal PollID As Integer, ByVal IsQuote As Boolean, ByVal Provider As String, ByVal ThreadID As Integer) As PostMessage
 			Dim cntForum As New ForumController
 			Dim objForum As New ForumInfo
 			Dim cntForumUser As New ForumUserController
@@ -323,7 +321,7 @@ Namespace DotNetNuke.Modules.Forum
 				Dim FinalBody As String = ProcessPostBody(PostBody, objConfig, PortalID, objAction, objForumUser.UserID)
 				Dim NewPostID As Integer = -1
 
-				NewPostID = PostToDatabase(TabID, objConfig, PortalID, objForumUser, FinalSubject, FinalBody, objForum, ParentPostID, PostID, IsPinned, IsClosed, ReceiveReply, Status, lstAttachmentFileIDs, RemoteAddress, PollID, ThreadIconID, ThreadID, objAction, IsModerated)
+				NewPostID = PostToDatabase(TabID, ModuleID, objConfig, PortalID, objForumUser, FinalSubject, FinalBody, objForum, ParentPostID, PostID, IsPinned, IsClosed, ReceiveReply, Status, lstAttachmentFileIDs, RemoteAddress, PollID, ThreadID, objAction, IsModerated)
 
 				If NewPostID > 0 Then
 					If IsModerated Then
@@ -342,7 +340,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' for security reasons as well as bad words (if enabled), and calls all parsing (for image replacement, etc.).
 		''' </summary>
 		''' <remarks>All permissions and validation checks should be done prior to this method.</remarks>
-		Private Function PostToDatabase(ByVal TabID As Integer, ByVal objConfig As Forum.Configuration, ByVal PortalID As Integer, ByVal objForumUser As ForumUserInfo, ByVal PostSubject As String, ByVal PostBody As String, ByVal objForum As ForumInfo, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal IsPinned As Boolean, ByVal IsClosed As Boolean, ByVal ReplyNotify As Boolean, ByVal Status As Forum.ThreadStatus, ByVal lstAttachmentFileIDs As String, ByVal RemoteAddress As String, ByVal PollID As Integer, ByVal ThreadIconID As Integer, ByVal ThreadID As Integer, ByVal objAction As PostAction, ByVal IsModerated As Boolean) As Integer
+		Private Function PostToDatabase(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal objConfig As Forum.Configuration, ByVal PortalID As Integer, ByVal objForumUser As ForumUserInfo, ByVal PostSubject As String, ByVal PostBody As String, ByVal objForum As ForumInfo, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal IsPinned As Boolean, ByVal IsClosed As Boolean, ByVal ReplyNotify As Boolean, ByVal Status As Forum.ThreadStatus, ByVal lstAttachmentFileIDs As String, ByVal RemoteAddress As String, ByVal PollID As Integer, ByVal ThreadID As Integer, ByVal objAction As PostAction, ByVal IsModerated As Boolean) As Integer
 			Dim objSecurity As New PortalSecurity
 			Dim newPostID As Integer
 			Dim objNewPost As New PostInfo
@@ -375,10 +373,6 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 			'End If
 
-			' Marked for removal (since PostConnector is the integration method)
-			Dim _ObjectTypeCode As Integer = 0
-			Dim _ObjectID As Integer = 0
-
 			Dim ctlPost As New PostController
 			Dim _emailType As ForumEmailType
 
@@ -386,7 +380,7 @@ Namespace DotNetNuke.Modules.Forum
 			Select Case objAction
 				Case PostAction.[New]
 					' we are clearing out attachments (empty string) as this method is now legacy
-					newPostID = ctlPost.PostAdd(0, objForum.ForumID, objForumUser.UserID, RemoteAddress, ReplyNotify, PostSubject, PostBody, IsPinned, _PinnedDate, IsClosed, _ObjectID, "", PortalID, ThreadIconID, PollID, IsModerated, objForum.GroupID, objForum.ParentId, ParsingType)
+					newPostID = ctlPost.PostAdd(0, objForum.ForumID, objForumUser.UserID, RemoteAddress, ReplyNotify, PostSubject, PostBody, IsPinned, _PinnedDate, IsClosed, PortalID, PollID, IsModerated, objForum.GroupID, objForum.ParentId, ParsingType)
 					' If thread status is enabled and there is an edit on the first post in a thread, make sure we set the thread status
 					' Remeber that the threadID is equal to the postid of the first post in a thread.
 					If objConfig.EnableThreadStatus And objForum.EnableForumsThreadStatus Then
@@ -401,11 +395,11 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 
 					' Handle Content Item Creation
-					If ThreadID = -1 Then
+					If (ThreadID = -1) AndAlso (newPostID > 0) Then
 						Dim cntThread As New ThreadController
 						Dim objThread As ThreadInfo = cntThread.GetThreadInfo(newPostID)
 
-						objThread.ModuleID = objConfig.ModuleID
+						objThread.ModuleID = ModuleID
 						objThread.TabID = TabID
 
 						Dim cntContent As New Content
@@ -420,7 +414,7 @@ Namespace DotNetNuke.Modules.Forum
 				Case PostAction.Edit
 					newPostID = PostID
 					' we are clearing out attachments (empty string) as this method is now legacy
-					ctlPost.PostUpdate(ThreadID, newPostID, ReplyNotify, PostSubject, PostBody, IsPinned, _PinnedDate, IsClosed, objForumUser.UserID, "", PortalID, ThreadIconID, PollID, objForum.ParentId, ParsingType)
+					ctlPost.PostUpdate(ThreadID, newPostID, ReplyNotify, PostSubject, PostBody, IsPinned, _PinnedDate, IsClosed, objForumUser.UserID, PortalID, PollID, objForum.ParentId, ParsingType)
 					' If thread status is enabled and there is an edit on the first post in a thread, make sure we set the thread status
 					If objConfig.EnableThreadStatus And ParentPostID = 0 Then
 						If Status > 0 Then
@@ -450,7 +444,7 @@ Namespace DotNetNuke.Modules.Forum
 					_emailType = ForumEmailType.UserPostEdited
 				Case Else	  ' Reply/Quote
 					' we are clearing out attachments (empty string) as this method is now legacy
-					newPostID = ctlPost.PostAdd(ParentPostID, objForum.ForumID, objForumUser.UserID, RemoteAddress, ReplyNotify, PostSubject, PostBody, IsPinned, _PinnedDate, IsClosed, _ObjectID, "", PortalID, ThreadIconID, PollID, IsModerated, objForum.GroupID, ParentPostID, ParsingType)
+					newPostID = ctlPost.PostAdd(ParentPostID, objForum.ForumID, objForumUser.UserID, RemoteAddress, ReplyNotify, PostSubject, PostBody, IsPinned, _PinnedDate, IsClosed, PortalID, PollID, IsModerated, objForum.GroupID, ParentPostID, ParsingType)
 					' since it is a new post, we only need to update thread & forum
 					Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID, objForum.ForumID, objForum.GroupID, objConfig.ModuleID)
 					_emailType = ForumEmailType.UserPostAdded

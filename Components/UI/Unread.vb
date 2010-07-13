@@ -23,7 +23,7 @@ Option Explicit On
 Namespace DotNetNuke.Modules.Forum
 
 	''' <summary>
-	''' This renders a list of threads containing unread posts
+	''' This renders a list of threads containing unread posts (similar to threads view and aggregated view).
 	''' </summary>
 	''' <remarks>All UI is done in code, no corresponding ascx
 	''' </remarks>
@@ -34,8 +34,7 @@ Namespace DotNetNuke.Modules.Forum
 
 		Private _ThreadCollection As New List(Of ThreadInfo)
 		Private _CurrentPage As Integer = 0
-		Dim Url As String
-		Private hsThreadRatings As New Hashtable
+		Private _ThreadRatings As New Hashtable
 
 #Region "Controls"
 
@@ -75,6 +74,21 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 			Set(ByVal Value As Integer)
 				_CurrentPage = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' A collection of ratings controls. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks>This is only used in 'my threads'/aggregated view.</remarks>
+		Private Property ThreadRatings() As Hashtable
+			Get
+				Return _ThreadRatings
+			End Get
+			Set(ByVal Value As Hashtable)
+				_ThreadRatings = Value
 			End Set
 		End Property
 
@@ -176,7 +190,7 @@ Namespace DotNetNuke.Modules.Forum
 					.Value = CDec(thread.Rating)
 					'AddHandler trcRating.Command, AddressOf trcRating_Rate
 				End With
-				hsThreadRatings.Add(thread.ThreadID, trcRating)
+				ThreadRatings.Add(thread.ThreadID, trcRating)
 				Controls.Add(trcRating)
 			Next
 		End Sub
@@ -401,9 +415,10 @@ Namespace DotNetNuke.Modules.Forum
 
 				'loop through each post and make a new row within this table
 				Dim Count As Integer = 1
-				Dim thread As New ThreadInfo()
-				For Each thread In ThreadCollection
-					If Not thread Is Nothing Then
+				Dim url As String = String.Empty
+
+				For Each objThread As ThreadInfo In ThreadCollection
+					If Not objThread Is Nothing Then
 						Dim even As Boolean = ThreadIsEven(Count)
 						RenderRowBegin(wr) ' <Tr>
 
@@ -420,19 +435,19 @@ Namespace DotNetNuke.Modules.Forum
 
 						' cell within table for thread status icon
 						RenderCellBegin(wr, "", "100%", "", "", "top", "", "")	 ' <td>
-						Url = Utilities.Links.ContainerViewThreadLink(TabID, thread.ForumID, thread.ThreadID)
+						url = Utilities.Links.ContainerViewThreadLink(TabID, objThread.ForumID, objThread.ThreadID)
 
 						'link so icon is clickable (also used below for subject)
-						wr.AddAttribute(HtmlTextWriterAttribute.Href, Url)
+						wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 						wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
 
 						' see if post is pinned, priority over other icons
-						If thread.IsPinned Then
+						If objThread.IsPinned Then
 							' First see if the thread is popular
-							If (thread.IsPopular) Then
+							If (objThread.IsPopular) Then
 								' thread IS popular and pinned
 								' see if thread is locked
-								If (thread.IsClosed) Then
+								If (objThread.IsClosed) Then
 									' thread IS popular, pinned, locked
 									RenderImage(wr, objConfig.GetThemeImageURL("s_postlockedpinnedunreadplu.") & objConfig.ImageExtension, ForumControl.LocalizedText("imgHotNewLockedPinnedThread"), "")
 								Else
@@ -442,7 +457,7 @@ Namespace DotNetNuke.Modules.Forum
 							Else
 								' thread NOT popular but IS pinned
 								' see if thread is locked
-								If (thread.IsClosed) Then
+								If (objThread.IsClosed) Then
 									' thread IS pinned, Locked but NOT popular
 									RenderImage(wr, objConfig.GetThemeImageURL("s_postpinnedlockedunread.") & objConfig.ImageExtension, ForumControl.LocalizedText("imgNewPinnedLockedThread"), "")
 
@@ -453,7 +468,7 @@ Namespace DotNetNuke.Modules.Forum
 							End If
 						Else
 							' thread not pinned, determine post icon
-							RenderImage(wr, GetMediaURL(thread), GetMediaText(thread), "") ' <img/>
+							RenderImage(wr, GetMediaURL(objThread), GetMediaText(objThread), "") ' <img/>
 						End If
 
 						wr.RenderEndTag() ' </A>
@@ -467,7 +482,7 @@ Namespace DotNetNuke.Modules.Forum
 						' cell for thread subject
 						RenderCellBegin(wr, "", "", "100%", "left", "", "", "") ' <td>
 
-						wr.AddAttribute(HtmlTextWriterAttribute.Href, Url)
+						wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 
 						Dim SubjectCssClass As String = "Forum_NormalBold"
 
@@ -478,9 +493,9 @@ Namespace DotNetNuke.Modules.Forum
 
 						' Format prohibited words
 						If ForumControl.objConfig.FilterSubject Then
-							wr.Write(Utilities.ForumUtils.FormatProhibitedWord(thread.Subject, thread.CreatedDate, PortalID))
+							wr.Write(Utilities.ForumUtils.FormatProhibitedWord(objThread.Subject, objThread.CreatedDate, PortalID))
 						Else
-							wr.Write(thread.Subject)
+							wr.Write(objThread.Subject)
 						End If
 
 						RenderDivEnd(wr) ' </div> - CP - I am not sure why this has to be here
@@ -490,17 +505,17 @@ Namespace DotNetNuke.Modules.Forum
 						wr.Write(String.Format("{0}&nbsp;", ForumControl.LocalizedText("by")))
 
 						If Not objConfig.EnableExternalProfile Then
-							Url = thread.StartedByUser.UserCoreProfileLink
+							url = objThread.StartedByUser.UserCoreProfileLink
 						Else
-							Url = Utilities.Links.UserExternalProfileLink(thread.StartedByUserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, thread.StartedByUser.Username)
+							url = Utilities.Links.UserExternalProfileLink(objThread.StartedByUserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, objThread.StartedByUser.Username)
 						End If
 
-						RenderLinkButton(wr, Url, thread.StartedByUser.SiteAlias, "Forum_NormalSmall") ' <a/>
+						RenderLinkButton(wr, url, objThread.StartedByUser.SiteAlias, "Forum_NormalSmall") ' <a/>
 
 						'Add in forum (where thread belongs)
 						wr.Write(String.Format("&nbsp;{0}&nbsp;", ForumControl.LocalizedText("in")))
-						Url = Utilities.Links.ContainerViewForumLink(TabID, thread.ForumID, False)
-						RenderLinkButton(wr, Url, thread.ContainingForum.Name, "Forum_NormalSmall")
+						url = Utilities.Links.ContainerViewForumLink(TabID, objThread.ForumID, False)
+						RenderLinkButton(wr, url, objThread.ContainingForum.Name, "Forum_NormalSmall")
 
 						' correct logic to handle posts per page per user
 						Dim userPostsPerPage As Integer
@@ -513,7 +528,7 @@ Namespace DotNetNuke.Modules.Forum
 							userPostsPerPage = objConfig.PostsPerPage
 						End If
 
-						Dim UserPagesCount As Integer = CInt(Math.Ceiling((thread.TotalPosts) / userPostsPerPage))
+						Dim UserPagesCount As Integer = CInt(Math.Ceiling((objThread.TotalPosts) / userPostsPerPage))
 						Dim ShowFinalPage As Boolean = (UserPagesCount > CapPageCount)
 
 						' Only show Pager if there is more than 1 page for the user
@@ -523,8 +538,8 @@ Namespace DotNetNuke.Modules.Forum
 
 							If UserPagesCount >= CapPageCount Then
 								For ThreadPage As Integer = 1 To CapPageCount - 1
-									Url = Utilities.Links.ContainerViewThreadPagedLink(TabID, thread.ForumID, thread.ThreadID, ThreadPage)
-									wr.AddAttribute(HtmlTextWriterAttribute.Href, Url)
+									url = Utilities.Links.ContainerViewThreadPagedLink(TabID, objThread.ForumID, objThread.ThreadID, ThreadPage)
+									wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 									wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_NormalSmall")
 									wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
 									wr.Write(ThreadPage.ToString())
@@ -536,8 +551,8 @@ Namespace DotNetNuke.Modules.Forum
 
 								If ShowFinalPage Then
 									wr.Write("..., ")
-									Url = Utilities.Links.ContainerViewThreadPagedLink(TabID, thread.ForumID, thread.ThreadID, UserPagesCount)
-									wr.AddAttribute(HtmlTextWriterAttribute.Href, Url)
+									url = Utilities.Links.ContainerViewThreadPagedLink(TabID, objThread.ForumID, objThread.ThreadID, UserPagesCount)
+									wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 									wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_NormalSmall")
 									wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
 									wr.Write(UserPagesCount.ToString())
@@ -546,8 +561,8 @@ Namespace DotNetNuke.Modules.Forum
 							Else
 
 								For ThreadPage As Integer = 1 To UserPagesCount
-									Url = Utilities.Links.ContainerViewThreadPagedLink(TabID, thread.ForumID, thread.ThreadID, ThreadPage)
-									wr.AddAttribute(HtmlTextWriterAttribute.Href, Url)
+									url = Utilities.Links.ContainerViewThreadPagedLink(TabID, objThread.ForumID, objThread.ThreadID, ThreadPage)
+									wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 									wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_NormalSmall")
 									wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
 									wr.Write(ThreadPage.ToString())
@@ -565,15 +580,15 @@ Namespace DotNetNuke.Modules.Forum
 						RenderCellEnd(wr) ' </td>
 
 						'Add check for RatingsEnabled
-						If objConfig.EnableRatings And thread.ContainingForum.EnableForumsRating Then
+						If objConfig.EnableRatings And objThread.ContainingForum.EnableForumsRating Then
 							' Display rating image
 							RenderCellBegin(wr, "", "", "30%", "right", "", "", "") ' <td>
 
 							''RenderImage(wr, objConfig.GetThemeImageURL(thread.RatingImage), thread.RatingText, "") ' <img/>
-							If hsThreadRatings.ContainsKey(thread.ThreadID) Then
-								trcRating = CType(hsThreadRatings(thread.ThreadID), Telerik.Web.UI.RadRating)
+							If ThreadRatings.ContainsKey(objThread.ThreadID) Then
+								trcRating = CType(ThreadRatings(objThread.ThreadID), Telerik.Web.UI.RadRating)
 								' CP - we alter statement below if we want to enable 0 rating still showing image.
-								If thread.Rating > 0 Then
+								If objThread.Rating > 0 Then
 									trcRating.RenderControl(wr)
 								End If
 							End If
@@ -583,8 +598,8 @@ Namespace DotNetNuke.Modules.Forum
 
 						'Thread status
 						RenderCellBegin(wr, "", "", "5%", "right", "", "", "")	 ' <td>
-						If (objConfig.EnableThreadStatus And thread.ContainingForum.EnableForumsThreadStatus) Or (thread.ThreadStatus = ThreadStatus.Poll And thread.ContainingForum.AllowPolls) Then
-							RenderImage(wr, objConfig.GetThemeImageURL(thread.StatusImage), thread.StatusText, "") ' <img/>
+						If (objConfig.EnableThreadStatus And objThread.ContainingForum.EnableForumsThreadStatus) Or (objThread.ThreadStatus = ThreadStatus.Poll And objThread.ContainingForum.AllowPolls) Then
+							RenderImage(wr, objConfig.GetThemeImageURL(objThread.StatusImage), objThread.StatusText, "") ' <img/>
 						Else
 							RenderImage(wr, objConfig.GetThemeImageURL("status_spacer.gif"), "", "")	' <img/>
 						End If
@@ -602,7 +617,7 @@ Namespace DotNetNuke.Modules.Forum
 						End If
 
 						RenderDivBegin(wr, "", "Forum_Posts") ' <div>
-						wr.Write(thread.Replies)
+						wr.Write(objThread.Replies)
 						RenderDivEnd(wr) ' </div>
 						RenderCellEnd(wr) ' </td>
 
@@ -614,7 +629,7 @@ Namespace DotNetNuke.Modules.Forum
 						End If
 
 						RenderDivBegin(wr, "", "Forum_Threads")	' <div>
-						wr.Write(thread.Views)
+						wr.Write(objThread.Views)
 						RenderDivEnd(wr) ' </div>
 						RenderCellEnd(wr) ' </td>
 
@@ -634,32 +649,32 @@ Namespace DotNetNuke.Modules.Forum
 						RenderCellEnd(wr) ' </td>
 
 						RenderCellBegin(wr, "", "", "", "right", "", "", "") ' <td>
-						Url = Utilities.Links.ContainerViewPostLink(TabID, thread.ForumID, thread.LastApprovedPost.PostID)
+						url = Utilities.Links.ContainerViewPostLink(TabID, objThread.ForumID, objThread.LastApprovedPost.PostID)
 
 						' Skeel - This is for showing link to first unread post for logged in users. 
-						If CurrentForumUser.PostsPerPage < thread.TotalPosts Then
+						If CurrentForumUser.PostsPerPage < objThread.TotalPosts Then
 							'Find the page on which the first unread post is located
-							wr.AddAttribute(HtmlTextWriterAttribute.Href, FirstUnreadLink(thread))
+							wr.AddAttribute(HtmlTextWriterAttribute.Href, FirstUnreadLink(objThread))
 						Else
 							'Thread has only one page
-							wr.AddAttribute(HtmlTextWriterAttribute.Href, Url + "#unread")
+							wr.AddAttribute(HtmlTextWriterAttribute.Href, url + "#unread")
 						End If
 						wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
 						RenderImage(wr, objConfig.GetThemeImageURL("thread_newest.") & objConfig.ImageExtension, ForumControl.LocalizedText("imgThreadNewest"), "")
 						wr.RenderEndTag() ' </a>
 
-						RenderTitleLinkButton(wr, Url + "#p" + CStr(thread.LastApprovedPostID), Utilities.ForumUtils.GetCreatedDateInfo(thread.LastApprovedPost.CreatedDate, objConfig, ""), "Forum_LastPostText", thread.LastPostShortBody)	' <a/>
+						RenderTitleLinkButton(wr, url + "#p" + CStr(objThread.LastApprovedPostID), Utilities.ForumUtils.GetCreatedDateInfo(objThread.LastApprovedPost.CreatedDate, objConfig, ""), "Forum_LastPostText", objThread.LastPostShortBody)	' <a/>
 
 						RenderDivBegin(wr, "", "Forum_LastPostText")	   ' <div>
 						wr.Write(ForumControl.LocalizedText("by") & " ")
 
 						If Not objConfig.EnableExternalProfile Then
-							Url = thread.LastApprovedUser.UserCoreProfileLink
+							url = objThread.LastApprovedUser.UserCoreProfileLink
 						Else
-							Url = Utilities.Links.UserExternalProfileLink(thread.LastApprovedUser.UserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, thread.LastApprovedUser.Username)
+							url = Utilities.Links.UserExternalProfileLink(objThread.LastApprovedUser.UserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, objThread.LastApprovedUser.Username)
 						End If
 
-						RenderLinkButton(wr, Url, thread.LastApprovedUser.SiteAlias, "Forum_LastPostText") ' <a/>
+						RenderLinkButton(wr, url, objThread.LastApprovedUser.SiteAlias, "Forum_LastPostText") ' <a/>
 						RenderDivEnd(wr) ' </div>
 						RenderCellEnd(wr) ' </td>
 

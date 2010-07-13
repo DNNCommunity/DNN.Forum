@@ -35,29 +35,29 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Members"
 
-		Private _CreatedDate As DateTime
-		Private _StartedByUserID As Integer
-		Private _LastApprovedPostID As Integer
-		Private _ForumID As Integer
 		Private _Subject As String
 		Private _Body As String
+		Private _CreatedDate As DateTime
+		Private _StartedByUserID As Integer
 		Private _ThreadID As Integer
-		Private _Replies As Integer
+		Private _ForumID As Integer
 		Private _Views As Integer
+		Private _LastApprovedPostID As Integer
+		Private _Replies As Integer
 		Private _IsPinned As Boolean
 		Private _PinnedDate As DateTime
 		Private _IsClosed As Boolean
-		Private _Rating As Double
-		Private _RatingCount As Integer
-		Private _NextThreadID As Integer
-		Private _PreviousThreadID As Integer
 		Private _ThreadStatus As ThreadStatus
-		Private _AnswerPostID As Integer = -1
-		Private _AnswerDate As DateTime
+		Private _AnswerPostID As Integer
+		Private _AnswerUserID As Integer
 		Private _PollID As Integer
+		Private _AnswerDate As DateTime
+		Private _SitemapInclude As Boolean
+		Private _PreviousThreadID As Integer
+		Private _NextThreadID As Integer
+		Private _RatingCount As Integer
+		Private _Rating As Double
 		Private _TotalRecords As Integer
-		'CP - Not implemented
-		Private _ThreadIconID As Integer
 
 		''' <summary>
 		''' 
@@ -88,7 +88,7 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-#Region "Public Properties"
+#Region "Public ReadOnly Properties"
 
 		''' <summary>
 		''' The user who started the thread
@@ -266,65 +266,9 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 		End Property
 
-		''' <summary>
-		''' Date thread was created (based on original post info)
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property CreatedDate() As DateTime
-			Get
-				Return _CreatedDate
-			End Get
-			Set(ByVal Value As DateTime)
-				_CreatedDate = Value
-			End Set
-		End Property
+#End Region
 
-		''' <summary>
-		''' The userID of who started the thread.
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property StartedByUserID() As Integer
-			Get
-				Return _StartedByUserID
-			End Get
-			Set(ByVal Value As Integer)
-				_StartedByUserID = Value
-			End Set
-		End Property
-
-		''' <summary>
-		''' The last approved PostID in this thread.
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property LastApprovedPostID() As Integer
-			Get
-				Return _LastApprovedPostID
-			End Get
-			Set(ByVal Value As Integer)
-				_LastApprovedPostID = Value
-			End Set
-		End Property
-
-		''' <summary>
-		''' The forumID this thread belongs to.
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property ForumID() As Integer
-			Get
-				Return _ForumID
-			End Get
-			Set(ByVal Value As Integer)
-				_ForumID = Value
-			End Set
-		End Property
+#Region "Public Properties"
 
 		''' <summary>
 		''' The subject of a thread is the subject of the original post.
@@ -357,6 +301,36 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
+		''' Date thread was created (based on original post info)
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property CreatedDate() As DateTime
+			Get
+				Return _CreatedDate
+			End Get
+			Set(ByVal Value As DateTime)
+				_CreatedDate = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' The userID of who started the thread.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property StartedByUserID() As Integer
+			Get
+				Return _StartedByUserID
+			End Get
+			Set(ByVal Value As Integer)
+				_StartedByUserID = Value
+			End Set
+		End Property
+
+		''' <summary>
 		''' ThreadID = PostID of original post in thread. 
 		''' </summary>
 		''' <value></value>
@@ -372,17 +346,17 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' Number of replies to the original post of the thread.
+		''' The forumID this thread belongs to.
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Property Replies() As Integer
+		Public Property ForumID() As Integer
 			Get
-				Return _Replies
+				Return _ForumID
 			End Get
 			Set(ByVal Value As Integer)
-				_Replies = Value
+				_ForumID = Value
 			End Set
 		End Property
 
@@ -398,6 +372,36 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 			Set(ByVal Value As Integer)
 				_Views = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' The last approved PostID in this thread.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property LastApprovedPostID() As Integer
+			Get
+				Return _LastApprovedPostID
+			End Get
+			Set(ByVal Value As Integer)
+				_LastApprovedPostID = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' Number of replies to the original post of the thread.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property Replies() As Integer
+			Get
+				Return _Replies
+			End Get
+			Set(ByVal Value As Integer)
+				_Replies = Value
 			End Set
 		End Property
 
@@ -447,66 +451,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' The overall rating of the thread.
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property Rating() As Double
-			Get
-				Return _Rating
-			End Get
-			Set(ByVal Value As Double)
-				_Rating = Value
-			End Set
-		End Property
-
-		''' <summary>
-		''' The number of times users have rated this thread. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property RatingCount() As Integer
-			Get
-				Return _RatingCount
-			End Get
-			Set(ByVal Value As Integer)
-				_RatingCount = Value
-			End Set
-		End Property
-
-		''' <summary>
-		''' Used to determine which thread is next to be viewed (in order)
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property NextThreadID() As Integer
-			Get
-				Return _NextThreadID
-			End Get
-			Set(ByVal Value As Integer)
-				_NextThreadID = Value
-			End Set
-		End Property
-
-		''' <summary>
-		''' Used to determine which thread is previous to be viewed (in order)
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property PreviousThreadID() As Integer
-			Get
-				Return _PreviousThreadID
-			End Get
-			Set(ByVal Value As Integer)
-				_PreviousThreadID = Value
-			End Set
-		End Property
-
-		''' <summary>
 		''' The thread status of the thread.
 		''' </summary>
 		''' <value></value>
@@ -537,17 +481,17 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' The date the thread was marked as answered. 
+		''' 
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
-		''' <remarks>Currently we are not populating this in any of the get sprocs. This was added quickly just for DNN.COM moderation purposes. Thread_Get, Thread_GetAll, Thread_GetByForum, Thread_GetUnread = All need updated.</remarks>
-		Public Property AnswerDate() As DateTime
+		''' <remarks></remarks>
+		Public Property AnswerUserID() As Integer
 			Get
-				Return _AnswerDate
+				Return _AnswerUserID
 			End Get
-			Set(ByVal Value As DateTime)
-				_AnswerDate = Value
+			Set(ByVal Value As Integer)
+				_AnswerUserID = Value
 			End Set
 		End Property
 
@@ -567,20 +511,101 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' The icon associated with the thread.
+		''' The date the thread was marked as answered. 
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
-		''' <remarks>Not Implemented</remarks>
-		Public Property ThreadIconID() As Integer
+		''' <remarks>Currently we are not populating this in any of the get sprocs. This was added quickly just for DNN.COM moderation purposes. Thread_Get, Thread_GetAll, Thread_GetByForum, Thread_GetUnread = All need updated.</remarks>
+		Public Property AnswerDate() As DateTime
 			Get
-				Return _ThreadIconID
+				Return _AnswerDate
 			End Get
-			Set(ByVal Value As Integer)
-				_ThreadIconID = Value
+			Set(ByVal Value As DateTime)
+				_AnswerDate = Value
 			End Set
 		End Property
 
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property SitemapInclude() As Boolean
+			Get
+				Return _SitemapInclude
+			End Get
+			Set(ByVal Value As Boolean)
+				_SitemapInclude = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' Used to determine which thread is previous to be viewed (in order)
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property PreviousThreadID() As Integer
+			Get
+				Return _PreviousThreadID
+			End Get
+			Set(ByVal Value As Integer)
+				_PreviousThreadID = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' Used to determine which thread is next to be viewed (in order)
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property NextThreadID() As Integer
+			Get
+				Return _NextThreadID
+			End Get
+			Set(ByVal Value As Integer)
+				_NextThreadID = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' The number of times users have rated this thread. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property RatingCount() As Integer
+			Get
+				Return _RatingCount
+			End Get
+			Set(ByVal Value As Integer)
+				_RatingCount = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' The overall rating of the thread.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property Rating() As Double
+			Get
+				Return _Rating
+			End Get
+			Set(ByVal Value As Double)
+				_Rating = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
 		Public Property TotalRecords() As Integer
 			Get
 				Return _TotalRecords
@@ -603,29 +628,29 @@ Namespace DotNetNuke.Modules.Forum
 			'Call the base classes fill method to populate base class proeprties
 			MyBase.FillInternal(dr)
 
-			ForumID = Null.SetNullInteger(dr("ForumID"))
 			Subject = Null.SetNullString(dr("Subject"))
 			Body = Null.SetNullString(dr("Body"))
 			CreatedDate = Null.SetNullDateTime(dr("CreatedDate"))
 			StartedByUserID = Null.SetNullInteger(dr("StartedByUserID"))
 			ThreadID = Null.SetNullInteger(dr("ThreadID"))
-			Replies = Null.SetNullInteger(dr("Replies"))
+			ForumID = Null.SetNullInteger(dr("ForumID"))
 			Views = Null.SetNullInteger(dr("Views"))
 			LastApprovedPostID = Null.SetNullInteger(dr("LastApprovedPostID"))
+			Replies = Null.SetNullInteger(dr("Replies"))
 			IsPinned = Null.SetNullBoolean(dr("IsPinned"))
 			PinnedDate = Null.SetNullDateTime(dr("PinnedDate"))
 			IsClosed = Null.SetNullBoolean(dr("IsClosed"))
-			Rating = Convert.ToDouble(Null.SetNull(dr("Rating"), Rating))
-			RatingCount = Null.SetNullInteger(dr("RatingCount"))
-			NextThreadID = Null.SetNullInteger(dr("NextThreadID"))
-			PreviousThreadID = Null.SetNullInteger(dr("PreviousThreadID"))
 			ThreadStatus = CType(Null.SetNull(dr("ThreadStatus"), ThreadStatus), ThreadStatus)
+			AnswerPostID = Null.SetNullInteger(dr("AnswerPostID"))
+			AnswerUserID = Null.SetNullInteger(dr("AnswerUserID"))
+			AnswerDate = Null.SetNullDateTime(dr("AnswerDate"))
 			PollID = Null.SetNullInteger(dr("PollID"))
+			SitemapInclude = Null.SetNullBoolean(dr("SitemapInclude"))
+			PreviousThreadID = Null.SetNullInteger(dr("PreviousThreadID"))
+			NextThreadID = Null.SetNullInteger(dr("NextThreadID"))
+			RatingCount = Null.SetNullInteger(dr("RatingCount"))
+			Rating = Convert.ToDouble(Null.SetNull(dr("Rating"), Rating))
 			TotalRecords = Null.SetNullInteger(dr("TotalRecords"))
-
-			'BreadCrumbs = Nothing
-			'Panes = Nothing
-			'Modules = Nothing
 		End Sub
 
 		''' <summary>

@@ -25,8 +25,6 @@ Imports DotNetNuke.Entities.Portals
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "ThreadController"
-
 	''' <summary>
 	''' The ThreadController class includes the option interfaces such as ISearchable, IUpgradeable
 	''' in addition to the standard Get, GetAll, Update, Delete items to hook into the DAL
@@ -308,8 +306,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ThreadID">The thread we are going to update.</param>
 		''' <param name="ContentItemID">The content item id we are assigning to the thread.</param>
 		''' <remarks></remarks>
-		Public Sub UpdateThread(ByVal ThreadID As Integer, ByVal ContentItemID As Integer)
-			DotNetNuke.Modules.Forum.DataProvider.Instance().UpdateThread(ThreadID, ContentItemID)
+		Public Sub UpdateThread(ByVal ThreadID As Integer, ByVal ContentItemID As Integer, ByVal SitemapInclude As Boolean)
+			DotNetNuke.Modules.Forum.DataProvider.Instance().UpdateThread(ThreadID, ContentItemID, SitemapInclude)
 		End Sub
 
 #Region "Rating"
@@ -467,7 +465,5 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 	End Class
-
-#End Region
 
 End Namespace

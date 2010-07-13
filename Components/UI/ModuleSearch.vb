@@ -32,23 +32,15 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Declarations"
 
-		Private SearchCount As Integer = 0
-		Private SearchPage As Integer
-		Private SearchTerms As String
-		Private ResultsPerPage As Integer = 10
-		Private StartDate As DateTime
-		Private EndDate As DateTime
-		Private url As String
-		Private ThreadStatusID As Integer = -1
-		Private Aggregated As Boolean = False
-		Private NoReply As Boolean = False
-		Private myThreads As Boolean = False
-		Private NoResults As Boolean = False
-		Private LatestHours As Boolean = False
-		Private hsThreadRatings As New Hashtable
-
+		Private _TotalRecords As Integer = 0
+		Private _CurrentPage As Integer
 		Private _ThreadCollection As New List(Of ThreadInfo)
 		Private _PostCollection As New List(Of PostInfo)
+		Private _ThreadRatings As New Hashtable
+		Private _NoResults As Boolean
+		Private _SearchTerms As String
+		Private _StartDate As DateTime
+		Private _EndDate As DateTime
 
 #Region "Controls"
 
@@ -57,7 +49,117 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 		''' <summary>
-		''' The collection of threads returned. 
+		''' Used to retrieve only posts with no replies if true.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private ReadOnly Property NoReply() As Boolean
+			Get
+				If Not HttpContext.Current.Request.QueryString("noreply") Is Nothing Then
+					Return True
+				Else
+					Return False
+				End If
+			End Get
+		End Property
+
+		''' <summary>
+		''' Determines if the user is using aggregated view. This is a similar look to threads view.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private ReadOnly Property Aggregated() As Boolean
+			Get
+				If HttpContext.Current.Request.QueryString("aggregated") IsNot Nothing Then
+					Return True
+				Else
+					Return False
+				End If
+			End Get
+		End Property
+
+		''' <summary>
+		''' Determines if the user is in 'my threads' view (like aggregated).
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private ReadOnly Property MyThreads() As Boolean
+			Get
+				If HttpContext.Current.Request.QueryString("mythreads") IsNot Nothing Then
+					Return True
+				Else
+					Return False
+				End If
+			End Get
+		End Property
+
+		''' <summary>
+		''' Determines if the user is in 'latest hours' view (like aggregated).
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private ReadOnly Property LatestHours() As Boolean
+			Get
+				If HttpContext.Current.Request.QueryString("latesthours") IsNot Nothing Then
+					Return True
+				Else
+					Return False
+				End If
+			End Get
+		End Property
+
+		''' <summary>
+		''' Determines if we are applying a threadstatus as part of our search criteria. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private ReadOnly Property ThreadStatusID() As Integer
+			Get
+				If HttpContext.Current.Request.QueryString("threadstatusid") IsNot Nothing Then
+					Return Convert.ToInt32(HttpContext.Current.Request.QueryString("threadstatusid"))
+				Else
+					Return -1
+				End If
+			End Get
+		End Property
+
+		''' <summary>
+		''' The total number of threads/posts available for viewing.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Property TotalRecords() As Integer
+			Get
+				Return _TotalRecords
+			End Get
+			Set(ByVal Value As Integer)
+				_TotalRecords = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' The current page the user is viewing.  
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Property CurrentPage() As Integer
+			Get
+				Return _CurrentPage
+			End Get
+			Set(ByVal Value As Integer)
+				_CurrentPage = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' The collection of threads returned when in my threads/aggregated views. 
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
@@ -72,7 +174,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' 
+		''' The collection of posts returned, when doing a search or 'my posts' view.
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
@@ -83,6 +185,81 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 			Set(ByVal Value As List(Of PostInfo))
 				_PostCollection = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' A collection of ratings controls. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks>This is only used in 'my threads'/aggregated view.</remarks>
+		Private Property ThreadRatings() As Hashtable
+			Get
+				Return _ThreadRatings
+			End Get
+			Set(ByVal Value As Hashtable)
+				_ThreadRatings = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' Determines if the performed search returned any results. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Property NoResults() As Boolean
+			Get
+				Return _NoResults
+			End Get
+			Set(ByVal Value As Boolean)
+				_NoResults = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' The search terms that are sent to the query for post/thread retrieval.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Property SearchTerms() As String
+			Get
+				Return _SearchTerms
+			End Get
+			Set(ByVal Value As String)
+				_SearchTerms = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' The start date/time of our search period.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Property StartDate() As DateTime
+			Get
+				Return _StartDate
+			End Get
+			Set(ByVal Value As DateTime)
+				_StartDate = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' The end date/time of our search period. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Property EndDate() As DateTime
+			Get
+				Return _EndDate
+			End Get
+			Set(ByVal Value As DateTime)
+				_EndDate = Value
 			End Set
 		End Property
 
@@ -101,19 +278,11 @@ Namespace DotNetNuke.Modules.Forum
 			MyBase.New(forum)
 
 			If Not HttpContext.Current.Request.QueryString("CurrentPage") Is Nothing Then
-				SearchPage = Int32.Parse(HttpContext.Current.Request.QueryString("CurrentPage"))
+				CurrentPage = Int32.Parse(HttpContext.Current.Request.QueryString("CurrentPage"))
 			End If
 
-			If SearchPage > 0 Then
-				SearchPage = SearchPage - 1
-			End If
-
-			If Not HttpContext.Current.Request.QueryString("aggregated") Is Nothing Then
-				Aggregated = True
-			End If
-
-			If Not HttpContext.Current.Request.QueryString("noreply") Is Nothing Then
-				NoReply = True
+			If CurrentPage > 0 Then
+				CurrentPage = CurrentPage - 1
 			End If
 
 			Dim Term As New SearchTerms
@@ -121,7 +290,6 @@ Namespace DotNetNuke.Modules.Forum
 			Dim body As String
 			Dim forums As String
 			Dim authors As String
-
 			Dim HasForums As Boolean = False
 			Dim HasAuthors As Boolean = False
 			Dim HasSubject As Boolean = False
@@ -139,10 +307,6 @@ Namespace DotNetNuke.Modules.Forum
 				EndDate = Utilities.ForumUtils.NumToDate(Double.Parse(HttpContext.Current.Request.QueryString("todate")))
 			Else
 				EndDate = DateAdd(DateInterval.Day, 1, DateTime.Today)
-			End If
-
-			If Not HttpContext.Current.Request.QueryString("threadstatusid") Is Nothing Then
-				ThreadStatusID = CInt(HttpContext.Current.Request.QueryString("threadstatusid"))
 			End If
 
 			If Not HttpContext.Current.Request.Params("forums") Is Nothing Then
@@ -272,13 +436,7 @@ Namespace DotNetNuke.Modules.Forum
 				Term.AddSearchTerm("Replies", CompareOperator.GreaterThanOrEqualTo, "0")
 			End If
 
-			' I have reverted this back to just simple threads involving user
-			If Not HttpContext.Current.Request.Params("mythreads") Is Nothing Then
-				myThreads = True
-			End If
-
-			'[Skeel] Lastest x Hours
-			If Not HttpContext.Current.Request.Params("latesthours") Is Nothing Then
+			If LatestHours Then
 				subject = HttpContext.Current.Request.Params("latesthours")
 				If subject.Length > 0 AndAlso subject <> " " Then
 
@@ -286,7 +444,6 @@ Namespace DotNetNuke.Modules.Forum
 						Dim hours As Integer = CInt(subject)
 						EndDate = Now
 						StartDate = Now.AddHours((hours * -1))
-						LatestHours = True
 					Catch ex As Exception
 						'Do nothing
 					End Try
@@ -312,7 +469,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Public Overrides Sub CreateChildControls()
 			Controls.Clear()
-
 			BindControls()
 
 			Dim ctlSearch As New SearchController
@@ -323,10 +479,10 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			If InThreadView Then
-				ThreadCollection = ctlSearch.SearchGetResults(SearchTerms, SearchPage, ResultsPerPage, CurrentForumUser.UserID, ForumControl.ModuleID, StartDate, EndDate, ThreadStatusID)
+				ThreadCollection = ctlSearch.SearchGetResults(SearchTerms, CurrentPage, CurrentForumUser.ThreadsPerPage, CurrentForumUser.UserID, ForumControl.ModuleID, StartDate, EndDate, ThreadStatusID)
 
 				If ThreadCollection.Count > 0 Then
-					SearchCount = CType(ThreadCollection(0), ThreadInfo).TotalRecords
+					TotalRecords = CType(ThreadCollection(0), ThreadInfo).TotalRecords
 				End If
 
 				For Each thread As ThreadInfo In ThreadCollection
@@ -345,14 +501,14 @@ Namespace DotNetNuke.Modules.Forum
 						.Value = CDec(thread.Rating)
 						'AddHandler trcRating.Command, AddressOf trcRating_Rate
 					End With
-					hsThreadRatings.Add(thread.ThreadID, trcRating)
+					ThreadRatings.Add(thread.ThreadID, trcRating)
 					Controls.Add(trcRating)
 				Next
 			Else
-				PostCollection = ctlSearch.Search(SearchTerms, SearchPage, ResultsPerPage, CurrentForumUser.UserID, ForumControl.ModuleID, StartDate, EndDate, ThreadStatusID)
+				PostCollection = ctlSearch.Search(SearchTerms, CurrentPage, CurrentForumUser.PostsPerPage, CurrentForumUser.UserID, ForumControl.ModuleID, StartDate, EndDate, ThreadStatusID)
 
 				If PostCollection.Count > 0 Then
-					SearchCount = PostCollection(0).TotalRecords
+					TotalRecords = PostCollection(0).TotalRecords
 				End If
 			End If
 		End Sub
@@ -388,29 +544,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <remarks></remarks>
 		Private Sub BindControls()
-			Dim ctlSearch As New SearchController
-			Dim InThreadView As Boolean = False
-
-			If Aggregated Or myThreads Or LatestHours Then
-				InThreadView = True
-			End If
-
 			If CurrentForumUser.UserID > 0 Then
 				Dim cntForumUser As New ForumUserController
 				Dim forumUser As ForumUserInfo
 				forumUser = cntForumUser.GetForumUser(CurrentForumUser.UserID, False, ForumControl.ModuleID, PortalID)
-
-				If InThreadView Then
-					ResultsPerPage = forumUser.ThreadsPerPage
-				Else
-					ResultsPerPage = forumUser.PostsPerPage
-				End If
-			Else
-				If InThreadView Then
-					ResultsPerPage = objConfig.ThreadsPerPage
-				Else
-					ResultsPerPage = objConfig.PostsPerPage
-				End If
 			End If
 		End Sub
 
@@ -494,7 +631,7 @@ Namespace DotNetNuke.Modules.Forum
 				RenderRowBegin(wr) '<tr>
 				RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
 				RenderCellBegin(wr, "Forum_NormalBold", "", "100%", "right", "", "", "") '<td>
-				wr.Write(String.Format(Localization.GetString("SearchResult", objConfig.SharedResourceFile), SearchCount) & ":")
+				wr.Write(String.Format(Localization.GetString("SearchResult", objConfig.SharedResourceFile), TotalRecords) & ":")
 
 				'End Cell 
 				RenderCellEnd(wr) ' </Td>
@@ -503,8 +640,8 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			'Display the results
+			Dim url As String
 			Dim Count As Integer = 1
-			'Dim SearchItem As New SearchResult(TabID)
 			For Each objPost As PostInfo In PostCollection
 				'Handle Css
 				Dim authorCellClass As String = String.Empty
@@ -680,7 +817,7 @@ Namespace DotNetNuke.Modules.Forum
 						wr.Write("&nbsp;")
 					Else
 						'LatestHours
-						wr.Write(String.Format(Localization.GetString("SearchResult", objConfig.SharedResourceFile), SearchCount) & ":")
+						wr.Write(String.Format(Localization.GetString("SearchResult", objConfig.SharedResourceFile), TotalRecords) & ":")
 					End If
 
 					'End Cell 
@@ -752,6 +889,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Private Sub RenderSearchInfo(ByVal wr As HtmlTextWriter)
 			Dim Count As Integer = 1
+			Dim url As String
 
 			For Each objThread As ThreadInfo In ThreadCollection
 				Dim even As Boolean = ThreadIsEven(Count)
@@ -935,8 +1073,8 @@ Namespace DotNetNuke.Modules.Forum
 				If objConfig.EnableRatings And objThread.ContainingForum.EnableForumsRating Then
 					RenderCellBegin(wr, "", "", "30%", "right", "", "", "") ' <td>
 
-					If hsThreadRatings.ContainsKey(objThread.ThreadID) Then
-						trcRating = CType(hsThreadRatings(objThread.ThreadID), Telerik.Web.UI.RadRating)
+					If ThreadRatings.ContainsKey(objThread.ThreadID) Then
+						trcRating = CType(ThreadRatings(objThread.ThreadID), Telerik.Web.UI.RadRating)
 						' CP - we alter statement below if we want to enable 0 rating still showing image.
 						If objThread.Rating > 0 Then
 							trcRating.RenderControl(wr)
@@ -1083,6 +1221,7 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			'link to user profile, always display in both view
+			Dim url As String
 			If Not objConfig.EnableExternalProfile Then
 				url = objPost.Author.UserCoreProfileLink
 			Else
@@ -1156,9 +1295,16 @@ Namespace DotNetNuke.Modules.Forum
 		Private Sub RenderSearchPaging(ByVal wr As HtmlTextWriter) ' Start the new column
 			Dim ctlPagingControl As New DotNetNuke.Modules.Forum.WebControls.PagingControl
 			ctlPagingControl.CssClass = "Forum_FooterText"
-			ctlPagingControl.TotalRecords = SearchCount
-			ctlPagingControl.PageSize = ResultsPerPage
-			ctlPagingControl.CurrentPage = SearchPage + 1
+			ctlPagingControl.TotalRecords = TotalRecords
+
+			If Aggregated Or myThreads Or LatestHours Then
+				ctlPagingControl.PageSize = CurrentForumUser.ThreadsPerPage
+			Else
+				ctlPagingControl.PageSize = CurrentForumUser.PostsPerPage
+			End If
+
+
+			ctlPagingControl.CurrentPage = CurrentPage + 1
 
 			Dim Params As String
 			Params = GetQuerystring()
