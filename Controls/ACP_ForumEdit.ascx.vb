@@ -216,6 +216,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 							txtEmailAddress.Text = objConfig.AutomatedEmailAddress
 							txtEmailFriendlyFrom.Text = objConfig.EmailAddressDisplayName
 							chkEnableRSS.Checked = objConfig.EnableRSS
+							txtSitemapPriority.Text = objConfig.SitemapPriority.ToString()
 
 							SetPageView(False)
 							Dim objForum As ForumInfo = New ForumInfo
@@ -294,6 +295,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				.EmailServer = txtEmailServer.Text
 				.EmailUser = txtEmailUser.Text
 				.EmailPass = txtEmailPass.Text
+				.EnableSitemap = chkEnableSitemap.Checked
+				.SitemapPriority = Convert.ToDouble(txtSitemapPriority.Text)
 
 				If Not txtEmailPort.Text.Trim = String.Empty Then
 					.EmailPort = CType(txtEmailPort.Text, Integer)
@@ -342,9 +345,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				.Description = txtForumDescription.Text
 				.EnablePostStatistics = True
 				.ForumType = CType(ddlForumType.SelectedIndex, Integer)
-				'.IsIntegrated = False
-				'.IntegratedModuleID = 0
-				'.IntegratedObjects = String.Empty
 				.CreatedByUser = UserId
 				.ForumPermissions = dgPermissions.Permissions
 				.EnableForumsThreadStatus = chkEnableForumsThreadStatus.Checked
@@ -365,6 +365,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				.EmailServer = txtEmailServer.Text
 				.EmailUser = txtEmailUser.Text
 				.EmailPass = txtEmailPass.Text
+				.EnableSitemap = chkEnableSitemap.Checked
+				.SitemapPriority = Convert.ToDouble(txtSitemapPriority.Text)
 
 				If Not txtEmailPort.Text.Trim = String.Empty Then
 					.EmailPort = CType(txtEmailPort.Text, Integer)

@@ -113,6 +113,8 @@ Namespace DotNetNuke.Modules.Forum
 				objForum.EmailStatusChange = False
 				objForum.EmailEnableSSL = False
 				objForum.EmailAuth = 0
+				objForum.EnableSitemap = True
+				objForum.SitemapPriority = 0.5
 
 				cntForum.ForumAdd(objForum)
 			Catch ex As Exception
