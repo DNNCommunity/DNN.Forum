@@ -344,9 +344,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				.Description = txtForumDescription.Text
 				.EnablePostStatistics = True
 				.ForumType = CType(ddlForumType.SelectedIndex, Integer)
-				.IsIntegrated = False
-				.IntegratedModuleID = 0
-				.IntegratedObjects = String.Empty
+				'.IsIntegrated = False
+				'.IntegratedModuleID = 0
+				'.IntegratedObjects = String.Empty
 				.CreatedByUser = UserId
 				.ForumPermissions = dgPermissions.Permissions
 				.EnableForumsThreadStatus = chkEnableForumsThreadStatus.Checked
@@ -510,6 +510,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					'[skeel] disable ParentForum if Link type
 					rowParentForum.Visible = False
 					'ddlParentForum.Items.FindByValue("0").Selected = True
+					rowEnableSitemap.Visible = False
+					rowSitemapPriority.Visible = False
 				Case Else
 					rowThreadStatus.Visible = True
 					rowRating.Visible = True

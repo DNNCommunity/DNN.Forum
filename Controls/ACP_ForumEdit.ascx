@@ -203,6 +203,27 @@
 												<asp:checkbox id="chkEnableRSS" runat="server" CssClass="Forum_NormalTextBox" />
 											</td>
 										</tr>
+										<tr id="rowEnableSitemap" runat="server">
+											<td width="35%">
+												<span class="Forum_Row_AdminText">
+													<dnn:label id="plEnableSitemap" runat="server" Suffix=":" controlname="chkEnableSitemap"></dnn:label>
+												</span>
+											</td>
+											<td align="left">
+												<asp:checkbox id="chkEnableSitemap" runat="server" CssClass="Forum_NormalTextBox" AutoPostBack="true" />
+											</td>
+										</tr>
+										<tr id="rowSitemapPriority" runat="server">
+											<td width="35%">
+												<span class="Forum_Row_AdminText">
+													<dnn:label id="plSitemapPriority" runat="server" Suffix=":" controlname="txtSitemapPriority"></dnn:label>
+												</span>
+											</td>
+											<td align="left">
+												<asp:TextBox ID="txtSitemapPriority" runat="server" MaxLength="6" Width="50px" />
+												<asp:RangeValidator ID="valNumeric" runat="server" ControlToValidate="txtSitemapPriority" MaximumValue="1.0" MinimumValue="0" Type="Double" resourcekey="NumericValidation.ErrorMessage" Display="Dynamic" CssClass="NormalRed"/>
+											</td>
+										</tr>
 										<tr id="rowPermissions" runat="server">
 											<td align="center" valign="top" colspan="2">
 												<dnnforum:forumpermissionsgrid id="dgPermissions" runat="server"></dnnforum:forumpermissionsgrid>

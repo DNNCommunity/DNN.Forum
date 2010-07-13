@@ -105,11 +105,8 @@ Namespace DotNetNuke.Modules.Forum
 				objForum.ForumType = ForumType.Normal
 				objForum.ForumBehavior = ForumBehavior.PublicUnModerated
 				objForum.IsActive = True
-				objForum.IntegratedModuleID = 0
-				objForum.IsIntegrated = False
 				objForum.CreatedByUser = UserId
 				objForum.ModuleID = ModuleId
-				objForum.IntegratedObjects = String.Empty
 				objForum.ParentId = 0
 				' Email
 				objForum.NotifyByDefault = False

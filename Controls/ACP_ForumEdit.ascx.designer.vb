@@ -492,6 +492,69 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected WithEvents chkEnableRSS As Global.System.Web.UI.WebControls.CheckBox
 
 		'''<summary>
+		'''rowEnableSitemap control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents rowEnableSitemap As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+		'''<summary>
+		'''plEnableSitemap control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents plEnableSitemap As Global.DotNetNuke.UI.UserControls.LabelControl
+
+		'''<summary>
+		'''chkEnableSitemap control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents chkEnableSitemap As Global.System.Web.UI.WebControls.CheckBox
+
+		'''<summary>
+		'''rowSitemapPriority control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents rowSitemapPriority As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+		'''<summary>
+		'''plSitemapPriority control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents plSitemapPriority As Global.DotNetNuke.UI.UserControls.LabelControl
+
+		'''<summary>
+		'''txtSitemapPriority control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents txtSitemapPriority As Global.System.Web.UI.WebControls.TextBox
+
+		'''<summary>
+		'''valNumeric control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents valNumeric As Global.System.Web.UI.WebControls.RangeValidator
+
+		'''<summary>
 		'''rowPermissions control.
 		'''</summary>
 		'''<remarks>

@@ -547,10 +547,10 @@ Namespace DotNetNuke.Modules.Forum
 					objForum.GroupID = -1
 					objForum.ForumID = -1
 					objForum.ForumType = 0
-					objForum.IntegratedModuleID = 0
-					objForum.IntegratedObjects = Nothing
+					'objForum.IntegratedModuleID = 0
+					'objForum.IntegratedObjects = Nothing
 					objForum.IsActive = objConfig.AggregatedForums
-					objForum.IsIntegrated = False
+					'objForum.IsIntegrated = False
 					objForum.TotalThreads = 0
 					objForum.TotalPosts = 0
 					objForum.ParentId = 0

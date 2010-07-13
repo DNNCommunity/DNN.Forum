@@ -45,9 +45,9 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _IsModerated As Boolean = False
 		Dim _SortOrder As Integer
 		Dim _ForumType As Integer
-		Dim _IsIntegrated As Boolean
-		Dim _IntegratedModuleID As Integer
-		Dim _IntegratedObjects As String
+		'Dim _IsIntegrated As Boolean
+		'Dim _IntegratedModuleID As Integer
+		'Dim _IntegratedObjects As String
 		Dim _UpdatedDate As DateTime
 		Dim _UpdatedByUser As Integer
 		Dim _ForumPermissions As DotNetNuke.Modules.Forum.ForumPermissionCollection
@@ -82,6 +82,10 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _EmailEnableSSL As Boolean = False
 		Dim _EmailAuth As Integer = 0	' 0 = none (for now, eventually need an enum)
 		Dim _EmailPort As Integer = 110 ' 995 also used for gmail
+
+		' New
+		Private _EnableSitemap As Boolean
+		Private _SitemapPriority As Double
 
 #End Region
 
@@ -218,6 +222,21 @@ Namespace DotNetNuke.Modules.Forum
 				Dim cntForumUser As New ForumUserController
 				Return cntForumUser.GetForumUser(MostRecentPostAuthorID, False, ModuleID, PortalID)
 			End Get
+		End Property
+
+		''' <summary>
+		''' The last approved posts date. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property MostRecentPostDate() As DateTime
+			Get
+				Return _MostRecentPostDate
+			End Get
+			Set(ByVal Value As DateTime)
+				_MostRecentPostDate = Value
+			End Set
 		End Property
 
 #End Region
@@ -465,21 +484,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' The last approved posts date. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property MostRecentPostDate() As DateTime
-			Get
-				Return _MostRecentPostDate
-			End Get
-			Set(ByVal Value As DateTime)
-				_MostRecentPostDate = Value
-			End Set
-		End Property
-
-		''' <summary>
 		''' Determines if the most recent thread is pinned.
 		''' </summary>
 		''' <value></value>
@@ -539,35 +543,35 @@ Namespace DotNetNuke.Modules.Forum
 			End Set
 		End Property
 
-		''' <summary>
-		''' 3rd party integration Module's ModuleID. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property IntegratedModuleID() As Integer
-			Get
-				Return _IntegratedModuleID
-			End Get
-			Set(ByVal Value As Integer)
-				_IntegratedModuleID = Value
-			End Set
-		End Property
+		' ''' <summary>
+		' ''' 3rd party integration Module's ModuleID. 
+		' ''' </summary>
+		' ''' <value></value>
+		' ''' <returns></returns>
+		' ''' <remarks></remarks>
+		'Public Property IntegratedModuleID() As Integer
+		'	Get
+		'		Return _IntegratedModuleID
+		'	End Get
+		'	Set(ByVal Value As Integer)
+		'		_IntegratedModuleID = Value
+		'	End Set
+		'End Property
 
-		''' <summary>
-		''' The objects which are integrated (possibly legacy)
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property IntegratedObjects() As String
-			Get
-				Return _IntegratedObjects
-			End Get
-			Set(ByVal Value As String)
-				_IntegratedObjects = Value
-			End Set
-		End Property
+		' ''' <summary>
+		' ''' The objects which are integrated (possibly legacy)
+		' ''' </summary>
+		' ''' <value></value>
+		' ''' <returns></returns>
+		' ''' <remarks></remarks>
+		'Public Property IntegratedObjects() As String
+		'	Get
+		'		Return _IntegratedObjects
+		'	End Get
+		'	Set(ByVal Value As String)
+		'		_IntegratedObjects = Value
+		'	End Set
+		'End Property
 
 		''' <summary>
 		''' The UserID of the person to last update the forum settings. 
@@ -714,6 +718,36 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 			Set(ByVal Value As Integer)
 				_SubForums = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' Determines if threads within this forum can be exposed to the seo sitemap provider.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property EnableSitemap() As Boolean
+			Get
+				Return _EnableSitemap
+			End Get
+			Set(ByVal Value As Boolean)
+				_EnableSitemap = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' The value which will be used for sitemap pages (between 1.0 and .1). 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property SitemapPriority() As Double
+			Get
+				Return _SitemapPriority
+			End Get
+			Set(ByVal Value As Double)
+				_SitemapPriority = Value
 			End Set
 		End Property
 

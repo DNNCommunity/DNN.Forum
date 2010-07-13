@@ -402,4 +402,16 @@
   <data name="cmdHome.Text" xml:space="preserve">
     <value>Home</value>
   </data>
+  <data name="plEnableSitemap.Help" xml:space="preserve">
+    <value>If checked (and the forum is public), the threads created within this forum will be exposed to the SEO sitemap provider.</value>
+  </data>
+  <data name="plEnableSitemap.Text" xml:space="preserve">
+    <value>Enable Sitemap</value>
+  </data>
+  <data name="plSitemapPriority.Help" xml:space="preserve">
+    <value>The </value>
+  </data>
+  <data name="plSitemapPriority.Text" xml:space="preserve">
+    <value>Sitemap Priority</value>
+  </data>
 </root>
