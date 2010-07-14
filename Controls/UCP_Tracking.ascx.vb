@@ -431,7 +431,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 			userForum = userForumController.GetCachedUserForumRead(UserId, Forum.ForumID)
 
 			If Not userForum Is Nothing Then
-				If Not userForum.LastVisitDate < Forum.MostRecentPostDate Then
+				If Not userForum.LastVisitDate < Forum.MostRecentPost.CreatedDate Then
 					HasNewThreads = False
 				End If
 			End If

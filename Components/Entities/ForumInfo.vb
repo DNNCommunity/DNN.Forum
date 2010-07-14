@@ -58,8 +58,6 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _SubForums As Integer
 		Dim _MostRecentPostID As Integer
 		Dim _MostRecentThreadID As Integer
-		Dim _MostRecentPostAuthorID As Integer
-		Dim _MostRecentPostDate As DateTime = Null.NullDate
 		Dim _MostRecentThreadPinned As Boolean = False
 		Dim _PostsToModerate As Integer
 		Dim _TotalPosts As Integer
@@ -193,9 +191,9 @@ Namespace DotNetNuke.Modules.Forum
 			Get
 				Dim objForum As New ForumInfo
 
-				If ParentId > 0 Then
+				If ParentID > 0 Then
 					Dim cntForum As New ForumController
-					objForum = cntForum.GetForumItemCache(ParentId)
+					objForum = cntForum.GetForumItemCache(ParentID)
 				Else
 					objForum.ModuleID = ModuleID
 					objForum.ForumID = ForumID
@@ -206,31 +204,20 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' The last approved post's Author's user information for this forum. 
+		''' The most recent post in the forum collection (that is approved). 
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
-		''' <remarks></remarks>
-		Public ReadOnly Property MostRecentPostAuthor() As ForumUserInfo
+		''' <remarks>This also accounts for child forums (if applicable) in stored procedure in data store.</remarks>
+		Public ReadOnly Property MostRecentPost() As PostInfo
 			Get
-				Dim cntForumUser As New ForumUserController
-				Return cntForumUser.GetForumUser(MostRecentPostAuthorID, False, ModuleID, PortalID)
+				Dim cntPost As New PostController
+				If MostRecentPostID > 0 Then
+					Return cntPost.GetPostInfo(MostRecentPostID, PortalID)
+				Else
+					Return Nothing
+				End If
 			End Get
-		End Property
-
-		''' <summary>
-		''' The last approved posts date. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property MostRecentPostDate() As DateTime
-			Get
-				Return _MostRecentPostDate
-			End Get
-			Set(ByVal Value As DateTime)
-				_MostRecentPostDate = Value
-			End Set
 		End Property
 
 #End Region
@@ -303,7 +290,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Property ParentId() As Integer
+		Public Property ParentID() As Integer
 			Get
 				Return _ParentID
 			End Get
@@ -444,21 +431,6 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 			Set(ByVal Value As Integer)
 				_MostRecentThreadID = Value
-			End Set
-		End Property
-
-		''' <summary>
-		''' The last approved post author's UserID. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property MostRecentPostAuthorID() As Integer
-			Get
-				Return _MostRecentPostAuthorID
-			End Get
-			Set(ByVal Value As Integer)
-				_MostRecentPostAuthorID = Value
 			End Set
 		End Property
 

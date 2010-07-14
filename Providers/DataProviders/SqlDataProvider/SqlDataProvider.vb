@@ -24,8 +24,6 @@ Imports Microsoft.ApplicationBlocks.Data
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "SqlDataProvider"
-
 	''' <summary>
 	''' The Microsoft SQL specific provider to allow Forum module to communicate with a data store. 
 	''' </summary>
@@ -106,7 +104,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 #End Region
-
 
 #Region "Private Methods"
 
@@ -882,7 +879,5 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 	End Class
-
-#End Region
 
 End Namespace

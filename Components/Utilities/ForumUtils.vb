@@ -784,9 +784,9 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 							' Render Group Name
 							sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objForumInfo.GroupID), TrimString(objForumInfo.ParentGroup.Name, 15), imageURL))
 							'[skeel] check for subforum
-							If objForumInfo.ParentId > 0 Then
+							If objForumInfo.ParentID > 0 Then
 								'Render Parent Forum Name
-								sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerParentForumLink(TabID, objForumInfo.GroupID, objForumInfo.ParentId), objForumInfo.ParentForum.Name, imageURL))
+								sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerParentForumLink(TabID, objForumInfo.GroupID, objForumInfo.ParentID), objForumInfo.ParentForum.Name, imageURL))
 							End If
 							' Render Forum Name
 							sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(TabID, objForumInfo.ForumID, False), objForumInfo.Name, imageURL))
@@ -807,7 +807,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 						sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objThreadInfo.ContainingForum.GroupID), TrimString(objThreadInfo.ContainingForum.ParentGroup.Name, 15), imageURL))
 
 						'Check if this is a sub forum
-						If objThreadInfo.ContainingForum.ParentId > 0 Then
+						If objThreadInfo.ContainingForum.ParentID > 0 Then
 							'Render Parent Forum Name
 							sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerParentForumLink(TabID, objThreadInfo.ContainingForum.GroupID, objThreadInfo.ContainingForum.ForumID), objThreadInfo.ContainingForum.ParentForum.Name, imageURL))
 						End If

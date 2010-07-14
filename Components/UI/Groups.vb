@@ -538,8 +538,6 @@ Namespace DotNetNuke.Modules.Forum
 				Dim fPage As Page = Me.ForumControl.DNNPage
 				Dim fTabID As Integer = Me.ForumControl.TabID
 				Dim fModuleID As Integer = Me.ForumControl.ModuleID
-				'Dim url As String
-				'Dim objForumInfo As New ForumInfo
 
 				If objForum.ForumID = -1 Then
 					'Aggregated Forum (so this is never cached, since it is per user). 
@@ -547,13 +545,10 @@ Namespace DotNetNuke.Modules.Forum
 					objForum.GroupID = -1
 					objForum.ForumID = -1
 					objForum.ForumType = 0
-					'objForum.IntegratedModuleID = 0
-					'objForum.IntegratedObjects = Nothing
 					objForum.IsActive = objConfig.AggregatedForums
-					'objForum.IsIntegrated = False
 					objForum.TotalThreads = 0
 					objForum.TotalPosts = 0
-					objForum.ParentId = 0
+					objForum.ParentID = 0
 					objForum.SubForums = 0
 					objForum.NotifyByDefault = False
 					objForum.Name = Localization.GetString("AggregatedForumName", objConfig.SharedResourceFile)
@@ -565,9 +560,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					For Each objSearch As ThreadInfo In SearchCollection
 						If objSearch IsNot Nothing Then
-							objForum.MostRecentPostDate = objSearch.CreatedDate
 							objForum.MostRecentPostID = objSearch.LastApprovedPostID
-							objForum.MostRecentPostAuthorID = objSearch.LastApprovedUser.UserID
 							objForum.MostRecentThreadID = objSearch.ThreadID
 						End If
 					Next
@@ -619,7 +612,6 @@ Namespace DotNetNuke.Modules.Forum
 						End If
 
 						url = DotNetNuke.Common.Globals.LinkClick(objForum.ForumLink, TabID, ModuleID, TrackClicks)
-
 					Else
 						If objForum.GroupID = -1 Then
 							' aggregated
@@ -629,13 +621,12 @@ Namespace DotNetNuke.Modules.Forum
 							If objForum.IsParentForum = True Then
 								'Parent forum, link to group view
 								url = Utilities.Links.ContainerParentForumLink(TabID, objForum.GroupID, objForum.ForumID)
-								'Now let's get the most recent info
-								objForum = ForumGetMostRecentInfo(objForum)
+								' ''Now let's get the most recent info
+								''objForum = ForumGetMostRecentInfo(objForum)
 							Else
 								'Normal Forum, link goes to Thread view
 								url = Utilities.Links.ContainerViewForumLink(TabID, objForum.ForumID, False)
 							End If
-
 						End If
 					End If
 
@@ -662,28 +653,29 @@ Namespace DotNetNuke.Modules.Forum
 								End If
 							End While
 							dr.Close()
-							If Not LastVisitDate < objForum.MostRecentPostDate Then
+							If objForum.MostRecentPost Is Nothing Then
 								HasNewThreads = False
+							Else
+								If Not LastVisitDate < objForum.MostRecentPost.CreatedDate Then
+									HasNewThreads = False
+								End If
 							End If
 						Else
 							Dim userForum As New UserForumsInfo
-							If objForum.ForumID = -1 Then
-								'Aggregated Forum
-								'[skeel] at some point we should consider looping through all the threads, but it's
-								'a lot of CPU cycles just to show an icon, so for now we always show it as containing new posts
-							Else
-								'Regular forum
+							If Not (objForum.ForumID = -1) Then
 								userForum = userForumController.GetCachedUserForumRead(CurrentForumUser.UserID, objForum.ForumID)
 							End If
 
 							If Not userForum Is Nothing Then
-								If Not userForum.LastVisitDate < objForum.MostRecentPostDate Then
+								If objForum.MostRecentPost Is Nothing Then
 									HasNewThreads = False
+								Else
+									If Not userForum.LastVisitDate < objForum.MostRecentPost.CreatedDate Then
+										HasNewThreads = False
+									End If
 								End If
 							End If
-
 						End If
-
 					End If
 
 					' display image depends on new post status 
@@ -795,7 +787,7 @@ Namespace DotNetNuke.Modules.Forum
 						wr.Write("<br />")
 						wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_SubForumContainer")
 						wr.RenderBeginTag(HtmlTextWriterTag.Div) '<div>
-						RenderSubForums(wr, objForum.ForumID, objForum.GroupID, "Forum_SubForumLink", objForum.SubForums)
+						RenderSubForums(wr, objForum.ForumID, objForum.GroupID, "Forum_SubForumLink")
 						wr.RenderEndTag() '</div>
 					End If
 
@@ -912,7 +904,7 @@ Namespace DotNetNuke.Modules.Forum
 							Dim cntPost As New PostController()
 							lastPostInfo = cntPost.GetPostInfo(objForum.MostRecentPostID, PortalID)
 
-							Dim strLastPostInfo As String = Utilities.ForumUtils.GetCreatedDateInfo(objForum.MostRecentPostDate, objConfig, "")
+							Dim strLastPostInfo As String = Utilities.ForumUtils.GetCreatedDateInfo(objForum.MostRecentPost.CreatedDate, objConfig, "")
 							' shows only first 15 letters of the post subject title
 							Dim truncatedTitle As String
 							If lastPostInfo.Subject.Length > 16 Then
@@ -949,15 +941,15 @@ Namespace DotNetNuke.Modules.Forum
 							wr.RenderEndTag() ' </span>
 
 							If Not objConfig.EnableExternalProfile Then
-								url = objForum.MostRecentPostAuthor.UserCoreProfileLink
+								url = objForum.MostRecentPost.Author.UserCoreProfileLink
 							Else
-								url = Utilities.Links.UserExternalProfileLink(objForum.MostRecentPostAuthorID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, objForum.MostRecentPostAuthor.Username)
+								url = Utilities.Links.UserExternalProfileLink(objForum.MostRecentPost.Author.UserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, objForum.MostRecentPost.Author.Username)
 							End If
 
 							wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText") 'Forum_AliasLink
 							wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
-							wr.Write(objForum.MostRecentPostAuthor.SiteAlias)
+							wr.Write(objForum.MostRecentPost.Author.SiteAlias)
 							wr.RenderEndTag() '  </A>
 						Else
 							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText")
@@ -995,7 +987,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="wr"></param>
 		''' <param name="ParentID"></param>
 		''' <remarks>Added by Skeel</remarks>
-		Private Sub RenderSubForums(ByVal wr As HtmlTextWriter, ByVal ParentID As Integer, ByVal GroupId As Integer, ByVal Css As String, ByVal SubForumCount As Integer)
+		Private Sub RenderSubForums(ByVal wr As HtmlTextWriter, ByVal ParentID As Integer, ByVal GroupId As Integer, ByVal Css As String)
 			Dim Url As String
 			Dim i As Integer = 1
 			Dim SubForum As New ForumInfo
@@ -1042,7 +1034,7 @@ Namespace DotNetNuke.Modules.Forum
 					wr.Write(SubForum.Name)
 					wr.RenderEndTag() ' </a>
 
-					If i < SubForumCount Then
+					If i < arrSubForums.Count Then
 						wr.Write(", ")
 					End If
 
@@ -1122,25 +1114,23 @@ Namespace DotNetNuke.Modules.Forum
 			Return sb.ToString
 		End Function
 
-		''' <summary>
-		''' Updates nesseary information to display last post info for a parentforum (subforums container)
-		''' </summary>
-		''' <param name="objForum"></param>
-		''' <returns>An updated ForumInfo object</returns>
-		''' <remarks>Added by Skeel</remarks>
-		Private Function ForumGetMostRecentInfo(ByVal objForum As ForumInfo) As ForumInfo
-			Dim dr As IDataReader = DotNetNuke.Modules.Forum.DataProvider.Instance().ForumGetMostRecentInfo(objForum.ForumID)
+		' ''' <summary>
+		' ''' Updates nesseary information to display last post info for a parentforum (subforums container)
+		' ''' </summary>
+		' ''' <param name="objForum"></param>
+		' ''' <returns>An updated ForumInfo object</returns>
+		' ''' <remarks>Added by Skeel</remarks>
+		'Private Function ForumGetMostRecentInfo(ByVal objForum As ForumInfo) As ForumInfo
+		'	Dim dr As IDataReader = DotNetNuke.Modules.Forum.DataProvider.Instance().ForumGetMostRecentInfo(objForum.ForumID)
 
-			While dr.Read
-				objForum.MostRecentPostAuthorID = CInt(dr("MostRecentPostAuthorID").ToString)
-				objForum.MostRecentPostDate = CDate(dr("MostRecentPostDate").ToString)
-				objForum.MostRecentPostID = CInt(dr("MostRecentPostID").ToString)
-				objForum.MostRecentThreadID = CInt(dr("MostRecentThreadID").ToString)
-			End While
+		'	While dr.Read
+		'		objForum.MostRecentPostID = CInt(dr("MostRecentPostID").ToString)
+		'		objForum.MostRecentThreadID = CInt(dr("MostRecentThreadID").ToString)
+		'	End While
 
-			dr.Close()
-			Return objForum
-		End Function
+		'	dr.Close()
+		'	Return objForum
+		'End Function
 
 		''' <summary>
 		''' Determines if thread is even or odd numbered row

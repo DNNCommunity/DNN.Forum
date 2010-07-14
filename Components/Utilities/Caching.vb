@@ -98,6 +98,21 @@ Namespace DotNetNuke.Modules.Forum.Components.Utilities
 		''' <summary>
 		''' 
 		''' </summary>
+		''' <param name="ParentID"></param>
+		''' <param name="GroupID"></param>
+		''' <param name="ModuleID"></param>
+		''' <remarks></remarks>
+		Public Shared Sub UpdateChildForumCache(ByVal ParentID As Integer, ByVal GroupID As Integer, ByVal ModuleID As Integer)
+			ForumController.ResetChildForumsCache(ParentID, GroupID)
+
+			If GroupID > 0 Then
+				UpdateGroupCache(GroupID, ModuleID)
+			End If
+		End Sub
+
+		''' <summary>
+		''' 
+		''' </summary>
 		''' <param name="GroupID"></param>
 		''' <param name="ModuleID"></param>
 		''' <remarks></remarks>

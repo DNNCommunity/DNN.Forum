@@ -197,7 +197,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks>If anything is changed here, consider chaging ForumPreConfig.vb method for adding default "General" forum.</remarks>
 		Public Function ForumAdd(ByVal objForum As ForumInfo) As Integer
-			Dim ForumId As Integer = DotNetNuke.Modules.Forum.DataProvider.Instance().ForumAdd(objForum.GroupID, objForum.IsActive, objForum.ParentId, objForum.Name, objForum.Description, objForum.IsModerated, objForum.ForumType, objForum.PublicView, objForum.CreatedByUser, objForum.PublicPosting, objForum.EnableForumsThreadStatus, objForum.EnableForumsRating, objForum.ForumLink, objForum.ForumBehavior, objForum.AllowPolls, objForum.EnableRSS, objForum.EmailAddress, objForum.EmailFriendlyFrom, objForum.NotifyByDefault, objForum.EmailStatusChange, objForum.EmailServer, objForum.EmailUser, objForum.EmailPass, objForum.EmailEnableSSL, objForum.EmailAuth, objForum.EmailPort, objForum.EnableSitemap, objForum.SitemapPriority)
+			Dim ForumId As Integer = DotNetNuke.Modules.Forum.DataProvider.Instance().ForumAdd(objForum.GroupID, objForum.IsActive, objForum.ParentID, objForum.Name, objForum.Description, objForum.IsModerated, objForum.ForumType, objForum.PublicView, objForum.CreatedByUser, objForum.PublicPosting, objForum.EnableForumsThreadStatus, objForum.EnableForumsRating, objForum.ForumLink, objForum.ForumBehavior, objForum.AllowPolls, objForum.EnableRSS, objForum.EmailAddress, objForum.EmailFriendlyFrom, objForum.NotifyByDefault, objForum.EmailStatusChange, objForum.EmailServer, objForum.EmailUser, objForum.EmailPass, objForum.EmailEnableSSL, objForum.EmailAuth, objForum.EmailPort, objForum.EnableSitemap, objForum.SitemapPriority)
 
 			' update forum permissions
 			If Not objForum.ForumPermissions Is Nothing Then
@@ -225,7 +225,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="objForum">The ForumInfo object being updated in the data store.</param>
 		''' <remarks></remarks>
 		Public Sub ForumUpdate(ByVal objForum As ForumInfo, ByVal PreviousParentID As Integer)
-			DotNetNuke.Modules.Forum.DataProvider.Instance().ForumUpdate(objForum.GroupID, objForum.ForumID, objForum.IsActive, objForum.ParentId, objForum.Name, objForum.Description, objForum.IsModerated, objForum.ForumType, objForum.PublicView, objForum.UpdatedByUser, objForum.PublicPosting, objForum.EnableForumsThreadStatus, objForum.EnableForumsRating, objForum.ForumLink, objForum.ForumBehavior, objForum.AllowPolls, objForum.EnableRSS, objForum.EmailAddress, objForum.EmailFriendlyFrom, objForum.NotifyByDefault, objForum.EmailStatusChange, objForum.EmailServer, objForum.EmailUser, objForum.EmailPass, objForum.EmailEnableSSL, objForum.EmailAuth, objForum.EmailPort, objForum.EnableSitemap, objForum.SitemapPriority)
+			DotNetNuke.Modules.Forum.DataProvider.Instance().ForumUpdate(objForum.GroupID, objForum.ForumID, objForum.IsActive, objForum.ParentID, objForum.Name, objForum.Description, objForum.IsModerated, objForum.ForumType, objForum.PublicView, objForum.UpdatedByUser, objForum.PublicPosting, objForum.EnableForumsThreadStatus, objForum.EnableForumsRating, objForum.ForumLink, objForum.ForumBehavior, objForum.AllowPolls, objForum.EnableRSS, objForum.EmailAddress, objForum.EmailFriendlyFrom, objForum.NotifyByDefault, objForum.EmailStatusChange, objForum.EmailServer, objForum.EmailUser, objForum.EmailPass, objForum.EmailEnableSSL, objForum.EmailAuth, objForum.EmailPort, objForum.EnableSitemap, objForum.SitemapPriority)
 
 			' update forum permissions
 			If Not objForum.ForumPermissions Is Nothing Then
@@ -243,11 +243,6 @@ Namespace DotNetNuke.Modules.Forum
 					Next
 				End If
 			End If
-
-			ResetChildForumsCache(PreviousParentID, objForum.GroupID)
-			If PreviousParentID <> objForum.ParentId Then
-				ResetChildForumsCache(objForum.ParentId, objForum.GroupID)
-			End If
 		End Sub
 
 		''' <summary>
@@ -258,7 +253,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Sub ForumDelete(ByVal ParentID As Integer, ByVal GroupID As Integer, ByVal ForumID As Integer, ByVal ModuleID As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().ForumDelete(ForumID, GroupID)
-			ResetChildForumsCache(ParentID, GroupID)
 		End Sub
 
 		''' <summary>
@@ -270,7 +264,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Sub ForumSortOrderUpdate(ByVal ParentID As Integer, ByVal GroupID As Integer, ByVal ForumId As Integer, ByVal MoveUp As Boolean)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().ForumSortOrderUpdate(GroupID, ForumId, MoveUp)
-			ResetChildForumsCache(ParentID, GroupID)
 		End Sub
 
 #End Region
@@ -353,14 +346,6 @@ Namespace DotNetNuke.Modules.Forum
 				Catch
 				End Try
 				Try
-					objForumInfo.MostRecentPostAuthorID = Convert.ToInt32(Null.SetNull(dr("MostRecentPostAuthorID"), objForumInfo.MostRecentPostAuthorID))
-				Catch
-				End Try
-				Try
-					objForumInfo.MostRecentPostDate = Convert.ToDateTime(Null.SetNull(dr("MostRecentPostDate"), objForumInfo.MostRecentPostDate))
-				Catch
-				End Try
-				Try
 					objForumInfo.MostRecentPostID = Convert.ToInt32(Null.SetNull(dr("MostRecentPostID"), objForumInfo.MostRecentPostID))
 				Catch
 				End Try
@@ -426,7 +411,7 @@ Namespace DotNetNuke.Modules.Forum
 				Catch
 				End Try
 				Try
-					objForumInfo.ParentId = Convert.ToInt32(Null.SetNull(dr("ParentID"), objForumInfo.ParentId))
+					objForumInfo.ParentID = Convert.ToInt32(Null.SetNull(dr("ParentID"), objForumInfo.ParentID))
 				Catch
 				End Try
 				' Email support

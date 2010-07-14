@@ -99,7 +99,7 @@ Namespace DotNetNuke.Modules.Forum
 				If HttpContext.Current.Request.QueryString("threadid") IsNot Nothing Then
 					Return Convert.ToInt32(HttpContext.Current.Request.QueryString("threadid"))
 				Else
-					Return -1
+					Return _ThreadID
 				End If
 			End Get
 			Set(ByVal Value As Integer)

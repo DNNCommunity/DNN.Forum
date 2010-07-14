@@ -107,7 +107,7 @@ Namespace DotNetNuke.Modules.Forum
 				objForum.IsActive = True
 				objForum.CreatedByUser = UserId
 				objForum.ModuleID = ModuleId
-				objForum.ParentId = 0
+				objForum.ParentID = 0
 				' Email
 				objForum.NotifyByDefault = False
 				objForum.EmailStatusChange = False

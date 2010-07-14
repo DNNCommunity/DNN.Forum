@@ -450,7 +450,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
 					imgDelete.Attributes.Add("onClick", "javascript:return confirm('" & Localization.GetString("DeleteItem") & "');")
 					imgDelete.ImageUrl = objConfig.GetThemeImageURL("s_delete.") & objConfig.ImageExtension
-					imgDelete.CommandArgument = objForum.ParentId.ToString() + "|" + objForum.GroupID.ToString() + "|" + objForum.ForumID.ToString()
+					imgDelete.CommandArgument = objForum.ParentID.ToString() + "|" + objForum.GroupID.ToString() + "|" + objForum.ForumID.ToString()
 				End If
 
 				imgColumnControl = item.Controls(0).FindControl("imgForumUp")
@@ -543,7 +543,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					Dim imgDelete As ImageButton = CType(imgColumnControl, System.Web.UI.WebControls.ImageButton)
 					imgDelete.Attributes.Add("onClick", "javascript:return confirm('" & Localization.GetString("DeleteItem") & "');")
 					imgDelete.ImageUrl = objConfig.GetThemeImageURL("s_delete.") & objConfig.ImageExtension
-					imgDelete.CommandArgument = objForum.ParentId.ToString() + "|" + objForum.GroupID.ToString() + "|" + objForum.ForumID.ToString()
+					imgDelete.CommandArgument = objForum.ParentID.ToString() + "|" + objForum.GroupID.ToString() + "|" + objForum.ForumID.ToString()
 				End If
 
 				imgColumnControl = item.Controls(0).FindControl("imgSubForumUp")
@@ -636,7 +636,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				Dim forum As ForumInfo = cntForum.GetForumItemCache(forumID)
 
 				Dim ctlForum As New ForumController
-				ctlForum.ForumSortOrderUpdate(forum.ParentId, forum.GroupID, forumID, True)
+				ctlForum.ForumSortOrderUpdate(forum.ParentID, forum.GroupID, forumID, True)
 
 				BindGroupList()
 			Catch exc As Exception
@@ -658,7 +658,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				Dim forum As ForumInfo = cntForum.GetForumItemCache(forumID)
 				Dim GroupID As Integer = forum.GroupID
 				Dim ctlForum As New ForumController
-				ctlForum.ForumSortOrderUpdate(forum.ParentId, forum.GroupID, forumID, False)
+				ctlForum.ForumSortOrderUpdate(forum.ParentID, forum.GroupID, forumID, False)
 
 				BindGroupList()
 			Catch exc As Exception

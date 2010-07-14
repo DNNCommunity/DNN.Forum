@@ -196,7 +196,7 @@ Namespace DotNetNuke.Modules.Forum
 						Dim cntForum As New ForumController()
 						Dim objForum As ForumInfo = cntForum.GetForumItemCache(ForumID)
 
-						ctlThread.ThreadMove(ThreadID, newForumID, UserId, Notes, objForum.ParentId)
+						ctlThread.ThreadMove(ThreadID, newForumID, UserId, Notes, objForum.ParentID)
 
 						Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID, newForumID, objForum.GroupID, ModuleId)
 						If Not (ForumID = newForumID) Then

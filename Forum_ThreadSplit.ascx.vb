@@ -237,7 +237,7 @@ Namespace DotNetNuke.Modules.Forum
 					Dim MyProfileUrl As String = Utilities.Links.UCP_UserLinks(TabId, ModuleId, UserAjaxControl.Tracking, PortalSettings)
 
 					' Split this post into a new thread
-					ctlThread.ThreadSplit(PostID, ThreadID, newForumID, UserId, txtSubject.Text, Notes, objForum.ParentId)
+					ctlThread.ThreadSplit(PostID, ThreadID, newForumID, UserId, txtSubject.Text, Notes, objForum.ParentID, ModuleId)
 
 					' we need to grab all the selected posts, set their parent to new threadid.
 					' we know the first posts in each of the threads have sort order set to 0, we need to start w/ 1 here and increment by 1 for each post per thread
@@ -252,7 +252,7 @@ Namespace DotNetNuke.Modules.Forum
 							' set its parent to the mPostID (the new threadid we are creating), see if it is lastpostid/mostrecentpostid anywhere (thread, forums), check thread status
 							Dim PostIDToSplit As Integer = CInt(dlPostsForThread.DataKeys(item.ItemIndex))
 							If (Not PostIDToSplit = PostID) And (Not PostIDToSplit = ThreadID) Then
-								ctlPosts.PostMove(PostIDToSplit, ThreadID, PostID, newForumID, ForumID, UserId, newThreadSortOrder, Notes, objForum.ParentId)
+								ctlPosts.PostMove(PostIDToSplit, ThreadID, PostID, newForumID, ForumID, UserId, newThreadSortOrder, Notes, objForum.ParentID)
 								Forum.Components.Utilities.Caching.UpdatePostCache(PostIDToSplit)
 							End If
 
@@ -261,7 +261,7 @@ Namespace DotNetNuke.Modules.Forum
 							' make sure the parent post of this is an existing post that will remain in the thread. (Set to current threadID) 
 							Dim PostIDToSplit As Integer = CInt(dlPostsForThread.DataKeys(item.ItemIndex))
 							If (Not PostIDToSplit = PostID) And (Not PostIDToSplit = ThreadID) Then
-								ctlPosts.PostMove(PostIDToSplit, ThreadID, ThreadID, newForumID, ForumID, UserId, oldThreadSortOrder, Notes, objForum.ParentId)
+								ctlPosts.PostMove(PostIDToSplit, ThreadID, ThreadID, newForumID, ForumID, UserId, oldThreadSortOrder, Notes, objForum.ParentID)
 								Forum.Components.Utilities.Caching.UpdatePostCache(PostIDToSplit)
 							End If
 

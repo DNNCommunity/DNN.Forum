@@ -378,7 +378,7 @@ Namespace DotNetNuke.Modules.Forum
 			Select Case objAction
 				Case PostAction.[New]
 					' we are clearing out attachments (empty string) as this method is now legacy
-					newPostID = ctlPost.PostAdd(0, objForum.ForumID, objForumUser.UserID, RemoteAddress, PostSubject, PostBody, IsPinned, _PinnedDate, IsClosed, PortalID, PollID, IsModerated, objForum.GroupID, objForum.ParentId, ParsingType)
+					newPostID = ctlPost.PostAdd(0, objForum.ForumID, objForumUser.UserID, RemoteAddress, PostSubject, PostBody, IsPinned, _PinnedDate, IsClosed, PortalID, PollID, IsModerated, objForum.GroupID, objForum.ParentID, ParsingType)
 					' If thread status is enabled and there is an edit on the first post in a thread, make sure we set the thread status
 					' Remeber that the threadID is equal to the postid of the first post in a thread.
 					If objConfig.EnableThreadStatus And objForum.EnableForumsThreadStatus Then
@@ -412,7 +412,7 @@ Namespace DotNetNuke.Modules.Forum
 				Case PostAction.Edit
 					newPostID = PostID
 					' we are clearing out attachments (empty string) as this method is now legacy
-					ctlPost.PostUpdate(ThreadID, newPostID, PostSubject, PostBody, IsPinned, _PinnedDate, IsClosed, objForumUser.UserID, PortalID, PollID, objForum.ParentId, ParsingType)
+					ctlPost.PostUpdate(ThreadID, newPostID, PostSubject, PostBody, IsPinned, _PinnedDate, IsClosed, objForumUser.UserID, PortalID, PollID, objForum.ParentID, ParsingType)
 					' If thread status is enabled and there is an edit on the first post in a thread, make sure we set the thread status
 					If objConfig.EnableThreadStatus And ParentPostID = 0 Then
 						If Status > 0 Then
@@ -448,8 +448,8 @@ Namespace DotNetNuke.Modules.Forum
 					_emailType = ForumEmailType.UserPostAdded
 			End Select
 
-			If objForum.ParentId > 0 Then
-				Forum.Components.Utilities.Caching.UpdateForumCache(objForum.ParentId, objForum.GroupID, objConfig.ModuleID)
+			If objForum.ParentID > 0 Then
+				Forum.Components.Utilities.Caching.UpdateForumCache(objForum.ParentID, objForum.GroupID, objConfig.ModuleID)
 			End If
 
 			ForumUserController.ResetForumUser(objForumUser.UserID, PortalID)

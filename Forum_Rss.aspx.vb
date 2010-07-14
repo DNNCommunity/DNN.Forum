@@ -84,7 +84,7 @@ Namespace DotNetNuke.Modules.Forum
 						mForumInfo = New ForumInfo
 						mForumInfo.Name = Localization.GetString("AggregatedForumName", mForumConfig.SharedResourceFile)
 						mForumInfo.Description = Localization.GetString("AggregatedForumDescription", mForumConfig.SharedResourceFile)
-						mForumInfo.MostRecentPostDate = Now
+						mForumInfo.MostRecentPost.CreatedDate = Now
 						mForumInfo.TotalThreads = 0
 						mForumInfo.EnableRSS = mForumConfig.EnableRSS
 					End If

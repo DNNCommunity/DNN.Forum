@@ -182,7 +182,7 @@ Namespace DotNetNuke.Modules.Forum
 			For Each objPost As PostInfo In arrPost
 				' we need to make sure we delete the threadid last (because of split and possibly move). 
 				If Not objPost.PostID = ThreadID Then
-					cntPost.PostDelete(objPost.PostID, objPost.ModuleId, Notes, PortalID, objPost.ParentThread.ContainingForum.GroupID, True, objPost.ParentThread.ContainingForum.ParentId)
+					cntPost.PostDelete(objPost.PostID, objPost.ModuleId, Notes, PortalID, objPost.ParentThread.ContainingForum.GroupID, True, objPost.ParentThread.ContainingForum.ParentID)
 				Else
 					objThreadPost = objPost
 				End If
@@ -191,7 +191,7 @@ Namespace DotNetNuke.Modules.Forum
 			' we deleted all posts in the thread but the threadid one
 			If Not objThreadPost Is Nothing Then
 				' not sure how this would happen, but just to be safe
-				cntPost.PostDelete(objThreadPost.PostID, objThreadPost.ModuleId, Notes, PortalID, objThreadPost.ParentThread.ContainingForum.GroupID, True, objThreadPost.ParentThread.ContainingForum.ParentId)
+				cntPost.PostDelete(objThreadPost.PostID, objThreadPost.ModuleId, Notes, PortalID, objThreadPost.ParentThread.ContainingForum.GroupID, True, objThreadPost.ParentThread.ContainingForum.ParentID)
 			End If
 		End Sub
 
@@ -212,10 +212,10 @@ Namespace DotNetNuke.Modules.Forum
 				While dr.Read
 					Dim OldGroupID As Integer = Convert.ToInt32(dr("OldGroupID"))
 					Dim NewGroupID As Integer = Convert.ToInt32(dr("NewGroupID"))
-					ForumController.ResetChildForumsCache(ParentID, OldGroupID)
-					If OldGroupID <> NewGroupID Then
-						ForumController.ResetChildForumsCache(ParentID, NewGroupID)
-					End If
+					'ForumController.ResetChildForumsCache(ParentID, OldGroupID)
+					'If OldGroupID <> NewGroupID Then
+					'	ForumController.ResetChildForumsCache(ParentID, NewGroupID)
+					'End If
 				End While
 			Finally
 				If Not dr Is Nothing Then
@@ -234,17 +234,19 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="Subject"></param>
 		''' <param name="Notes"></param>
 		''' <param name="ParentID"></param>
+		''' <param name="ModuleID"></param>
 		''' <remarks></remarks>
-		Public Sub ThreadSplit(ByVal PostID As Integer, ByVal ThreadID As Integer, ByVal NewForumID As Integer, ByVal ModeratorUserID As Integer, ByVal Subject As String, ByVal Notes As String, ByVal ParentID As Integer)
+		Public Sub ThreadSplit(ByVal PostID As Integer, ByVal ThreadID As Integer, ByVal NewForumID As Integer, ByVal ModeratorUserID As Integer, ByVal Subject As String, ByVal Notes As String, ByVal ParentID As Integer, ByVal ModuleID As Integer)
 			Dim dr As IDataReader = Nothing
 			Try
 				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadSplit(PostID, ThreadID, NewForumID, ModeratorUserID, Subject, Notes)
 				While dr.Read
 					Dim OldGroupID As Integer = Convert.ToInt32(dr("OldGroupID"))
 					Dim NewGroupID As Integer = Convert.ToInt32(dr("NewGroupID"))
-					ForumController.ResetChildForumsCache(ParentID, OldGroupID)
+					Components.Utilities.Caching.UpdateChildForumCache(ParentID, OldGroupID, ModuleID)
+
 					If OldGroupID <> NewGroupID Then
-						ForumController.ResetChildForumsCache(ParentID, NewGroupID)
+						Components.Utilities.Caching.UpdateChildForumCache(ParentID, NewGroupID, ModuleID)
 					End If
 				End While
 			Finally

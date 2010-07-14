@@ -74,7 +74,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim forumNode As Telerik.Web.UI.RadTreeNode
 
 			For Each objForum As Forum.ForumInfo In arrAuthForums
-				If objForum.IsActive And objForum.ParentId < 1 Then ' - And (Not objForum.ForumType = ForumType.Link) 
+				If objForum.IsActive And objForum.ParentID < 1 Then ' - And (Not objForum.ForumType = ForumType.Link) 
 					Dim Security As New Forum.ModuleSecurity(objConfig.ModuleID, objConfig.CurrentPortalSettings.ActiveTab.TabID, objForum.ForumID, UserID)
 					If Not objForum.PublicView Then
 						If Security.IsAllowedToViewPrivateForum Then

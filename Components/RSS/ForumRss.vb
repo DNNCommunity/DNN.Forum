@@ -149,7 +149,7 @@ Namespace DotNetNuke.Modules.Forum
 				forum = New ForumInfo
 				forum.Name = Localization.GetString("AggregatedForumName", mForumConfig.SharedResourceFile)
 				forum.Description = Localization.GetString("AggregatedForumDescription", mForumConfig.SharedResourceFile)
-				forum.MostRecentPostDate = Now
+				forum.MostRecentPost.CreatedDate = Now
 				forum.TotalThreads = 0
 			End If
 
@@ -187,7 +187,7 @@ Namespace DotNetNuke.Modules.Forum
 				.Title = forum.Name
 				.Description = forum.Description
 				.PubDate = System.Xml.XmlConvert.ToString(mCreationTime.ToUniversalTime(), "yyyy-MM-ddTHH:mm:ssZ")
-				.LastBuildDate = System.Xml.XmlConvert.ToString(forum.MostRecentPostDate.ToUniversalTime(), "yyyy-MM-ddTHH:mm:ssZ")
+				.LastBuildDate = System.Xml.XmlConvert.ToString(forum.MostRecentPost.CreatedDate.ToUniversalTime(), "yyyy-MM-ddTHH:mm:ssZ")
 				.TimeToLive = mForumConfig.RSSUpdateInterval.ToString
 
 				If ThreadsPage > 1 Then

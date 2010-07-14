@@ -243,7 +243,7 @@ Namespace DotNetNuke.Modules.Forum
 							_IsThreadDelete = True
 						End If
 						' Delete post (SEND MAIL BEFORE DELETE, we need the post still in the db)
-						cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objPost.ParentThread.ContainingForum.GroupID, False, objPost.ParentThread.ContainingForum.ParentId)
+						cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objPost.ParentThread.ContainingForum.GroupID, False, objPost.ParentThread.ContainingForum.ParentID)
 
 						Forum.Components.Utilities.Caching.UpdatePostCache(objPost.PostID, ThreadID, ForumID, objPost.ParentThread.ContainingForum.GroupID, ModuleId)
 						ForumUserController.ResetForumUser(AuthorID, PortalId)
