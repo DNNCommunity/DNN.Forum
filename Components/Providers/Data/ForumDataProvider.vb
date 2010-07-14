@@ -22,8 +22,6 @@ Option Strict On
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "DataProvider"
-
 	''' <summary>
 	''' The abstract provider class for the Forum module.
 	''' </summary>
@@ -364,7 +362,5 @@ Namespace DotNetNuke.Modules.Forum
 		Public MustOverride Function GetModulesPortalID(ByVal ModuleID As Integer) As Integer
 
 	End Class
-
-#End Region
 
 End Namespace

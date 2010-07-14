@@ -67,10 +67,6 @@
 							<version>04.05.02</version>
 						</script>
 						<script type="Install">
-							<name>04.05.03.SqlDataProvider</name>
-							<version>04.05.03</version>
-						</script>
-						<script type="Install">
 							<name>04.06.01.SqlDataProvider</name>
 							<version>04.06.01</version>
 						</script>
