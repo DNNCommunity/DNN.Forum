@@ -193,7 +193,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ForumID"></param>
 		''' <param name="UserID"></param>
 		''' <param name="RemoteAddr"></param>
-		''' <param name="Notify"></param>
 		''' <param name="Subject"></param>
 		''' <param name="Body"></param>
 		''' <param name="IsPinned"></param>
@@ -207,8 +206,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ParseInfo"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Friend Function PostAdd(ByVal ParentPostID As Integer, ByVal ForumID As Integer, ByVal UserID As Integer, ByVal RemoteAddr As String, ByVal Notify As Boolean, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal IsModerated As Boolean, ByVal GroupID As Integer, ByVal ParentID As Integer, ByVal ParseInfo As Integer) As Integer
-			Return DotNetNuke.Modules.Forum.DataProvider.Instance().PostAdd(ParentPostID, ForumID, UserID, RemoteAddr, Notify, Subject, Body, IsPinned, PinnedDate, IsClosed, PortalID, PollID, IsModerated, ParseInfo)
+		Friend Function PostAdd(ByVal ParentPostID As Integer, ByVal ForumID As Integer, ByVal UserID As Integer, ByVal RemoteAddr As String, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal IsModerated As Boolean, ByVal GroupID As Integer, ByVal ParentID As Integer, ByVal ParseInfo As Integer) As Integer
+			Return DotNetNuke.Modules.Forum.DataProvider.Instance().PostAdd(ParentPostID, ForumID, UserID, RemoteAddr, Subject, Body, IsPinned, PinnedDate, IsClosed, PortalID, PollID, IsModerated, ParseInfo)
 		End Function
 
 		''' <summary>
@@ -216,7 +215,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <param name="ThreadID"></param>
 		''' <param name="PostID"></param>
-		''' <param name="Notify"></param>
 		''' <param name="Subject"></param>
 		''' <param name="Body"></param>
 		''' <param name="IsPinned"></param>
@@ -228,20 +226,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ParentID"></param>
 		''' <param name="ParseInfo"></param>
 		''' <remarks></remarks>
-		Friend Sub PostUpdate(ByVal ThreadID As Integer, ByVal PostID As Integer, ByVal Notify As Boolean, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal UpdatedBy As Integer, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal ParentID As Integer, ByVal ParseInfo As Integer)
-			DotNetNuke.Modules.Forum.DataProvider.Instance().PostUpdate(ThreadID, PostID, Notify, Subject, Body, IsPinned, PinnedDate, IsClosed, UpdatedBy, PortalID, PollID, ParseInfo)
+		Friend Sub PostUpdate(ByVal ThreadID As Integer, ByVal PostID As Integer, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal UpdatedBy As Integer, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal ParentID As Integer, ByVal ParseInfo As Integer)
+			DotNetNuke.Modules.Forum.DataProvider.Instance().PostUpdate(ThreadID, PostID, Subject, Body, IsPinned, PinnedDate, IsClosed, UpdatedBy, PortalID, PollID, ParseInfo)
 		End Sub
-
-		''' <summary>
-		''' 
-		''' </summary>
-		''' <param name="PostID"></param>
-		''' <param name="FlatView"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Friend Function PostSortOrderGet(ByVal PostID As Integer, ByVal FlatView As Boolean) As Integer
-			Return DotNetNuke.Modules.Forum.DataProvider.Instance().PostSortOrderGet(PostID, FlatView)
-		End Function
 
 		''' <summary>
 		''' 

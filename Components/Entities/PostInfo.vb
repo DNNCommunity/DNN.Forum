@@ -184,21 +184,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' If the original posters wants to be notified of responses. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property Notify() As Boolean
-			Get
-				Return _Notify
-			End Get
-			Set(ByVal Value As Boolean)
-				_Notify = Value
-			End Set
-		End Property
-
-		''' <summary>
 		''' The subject of the post.
 		''' </summary>
 		''' <value></value>
@@ -255,51 +240,6 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 			Set(ByVal Value As Integer)
 				_ThreadID = Value
-			End Set
-		End Property
-
-		''' <summary>
-		''' The post level value of the post. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property PostLevel() As Integer
-			Get
-				Return _PostLevel
-			End Get
-			Set(ByVal Value As Integer)
-				_PostLevel = Value
-			End Set
-		End Property
-
-		''' <summary>
-		''' The tree sort order value of the post.
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property TreeSortOrder() As Integer
-			Get
-				Return _TreeSortOrder
-			End Get
-			Set(ByVal Value As Integer)
-				_TreeSortOrder = Value
-			End Set
-		End Property
-
-		''' <summary>
-		''' The flat sort order value of the post.
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property FlatSortOrder() As Integer
-			Get
-				Return _FlatSortOrder
-			End Get
-			Set(ByVal Value As Integer)
-				_FlatSortOrder = Value
 			End Set
 		End Property
 
@@ -420,21 +360,6 @@ Namespace DotNetNuke.Modules.Forum
 					Return True
 				End If
 			End Get
-		End Property
-
-		''' <summary>
-		''' The URL to the file attachment.
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property FileAttachmentURL() As String
-			Get
-				Return _FileAttachmentURL
-			End Get
-			Set(ByVal Value As String)
-				_FileAttachmentURL = Value
-			End Set
 		End Property
 
 		''' <summary>

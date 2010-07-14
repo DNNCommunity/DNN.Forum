@@ -91,8 +91,8 @@ Namespace DotNetNuke.Modules.Forum
 		Public MustOverride Function ForumGetAllByParentID(ByVal ParentID As Integer, ByVal GroupID As Integer, ByVal EnabledOnly As Boolean) As IDataReader
 		Public MustOverride Function ForumGet(ByVal ForumID As Integer) As IDataReader
 		Public MustOverride Function ForumsGetByModuleID(ByVal ModuleID As Integer) As IDataReader
-		Public MustOverride Function ForumAdd(ByVal GroupID As Integer, ByVal IsActive As Boolean, ByVal ParentID As Integer, ByVal Name As String, ByVal Description As String, ByVal IsModerated As Boolean, ByVal EnablePostStatistics As Boolean, ByVal ForumType As Integer, ByVal PublicView As Boolean, ByVal CreatedByUserId As Integer, ByVal PublicPosting As Boolean, ByVal EnableForumsThreadStatus As Boolean, ByVal EnableForumsRating As Boolean, ByVal ForumLink As String, ByVal ForumBehavior As Integer, ByVal AllowPolls As Boolean, ByVal EnableRSS As Boolean, ByVal EmailAddress As String, ByVal EmailFriendlyFrom As String, ByVal NotifyByDefault As Boolean, ByVal EmailStatusChange As Boolean, ByVal EmailServer As String, ByVal EmailUser As String, ByVal EmailPass As String, ByVal EmailEnableSSL As Boolean, ByVal EmailAuth As Integer, ByVal EmailPort As Integer, ByVal EnableSitemap As Boolean, ByVal SitemapPriority As Double) As Integer
-		Public MustOverride Sub ForumUpdate(ByVal GroupID As Integer, ByVal ForumID As Integer, ByVal IsActive As Boolean, ByVal ParentID As Integer, ByVal Name As String, ByVal Description As String, ByVal IsModerated As Boolean, ByVal EnablePostStatistics As Boolean, ByVal ForumType As Integer, ByVal PublicView As Boolean, ByVal UpdatedByUserId As Integer, ByVal PublicPosting As Boolean, ByVal EnableForumsThreadStatus As Boolean, ByVal EnableForumsRating As Boolean, ByVal ForumLink As String, ByVal ForumBehavior As Integer, ByVal AllowPolls As Boolean, ByVal EnableRSS As Boolean, ByVal EmailAddress As String, ByVal EmailFriendlyFrom As String, ByVal NotifyByDefault As Boolean, ByVal EmailStatusChange As Boolean, ByVal EmailServer As String, ByVal EmailUser As String, ByVal EmailPass As String, ByVal EmailEnableSSL As Boolean, ByVal EmailAuth As Integer, ByVal EmailPort As Integer, ByVal EnableSitemap As Boolean, ByVal SitemapPriority As Double)
+		Public MustOverride Function ForumAdd(ByVal GroupID As Integer, ByVal IsActive As Boolean, ByVal ParentID As Integer, ByVal Name As String, ByVal Description As String, ByVal IsModerated As Boolean, ByVal ForumType As Integer, ByVal PublicView As Boolean, ByVal CreatedByUserId As Integer, ByVal PublicPosting As Boolean, ByVal EnableForumsThreadStatus As Boolean, ByVal EnableForumsRating As Boolean, ByVal ForumLink As String, ByVal ForumBehavior As Integer, ByVal AllowPolls As Boolean, ByVal EnableRSS As Boolean, ByVal EmailAddress As String, ByVal EmailFriendlyFrom As String, ByVal NotifyByDefault As Boolean, ByVal EmailStatusChange As Boolean, ByVal EmailServer As String, ByVal EmailUser As String, ByVal EmailPass As String, ByVal EmailEnableSSL As Boolean, ByVal EmailAuth As Integer, ByVal EmailPort As Integer, ByVal EnableSitemap As Boolean, ByVal SitemapPriority As Double) As Integer
+		Public MustOverride Sub ForumUpdate(ByVal GroupID As Integer, ByVal ForumID As Integer, ByVal IsActive As Boolean, ByVal ParentID As Integer, ByVal Name As String, ByVal Description As String, ByVal IsModerated As Boolean, ByVal ForumType As Integer, ByVal PublicView As Boolean, ByVal UpdatedByUserId As Integer, ByVal PublicPosting As Boolean, ByVal EnableForumsThreadStatus As Boolean, ByVal EnableForumsRating As Boolean, ByVal ForumLink As String, ByVal ForumBehavior As Integer, ByVal AllowPolls As Boolean, ByVal EnableRSS As Boolean, ByVal EmailAddress As String, ByVal EmailFriendlyFrom As String, ByVal NotifyByDefault As Boolean, ByVal EmailStatusChange As Boolean, ByVal EmailServer As String, ByVal EmailUser As String, ByVal EmailPass As String, ByVal EmailEnableSSL As Boolean, ByVal EmailAuth As Integer, ByVal EmailPort As Integer, ByVal EnableSitemap As Boolean, ByVal SitemapPriority As Double)
 		Public MustOverride Sub ForumDelete(ByVal ForumID As Integer, ByVal GroupID As Integer)
 		Public MustOverride Sub ForumSortOrderUpdate(ByVal GroupID As Integer, ByVal ForumID As Integer, ByVal Enable As Boolean)
 
@@ -114,7 +114,6 @@ Namespace DotNetNuke.Modules.Forum
 		Public MustOverride Function ThreadGet(ByVal ThreadID As Integer) As IDataReader
 		Public MustOverride Function ThreadMove(ByVal ThreadID As Integer, ByVal NewForumID As Integer, ByVal ModID As Integer, ByVal Notes As String) As IDataReader
 		Public MustOverride Function ThreadSplit(ByVal PostID As Integer, ByVal ThreadID As Integer, ByVal NewForumID As Integer, ByVal ModeratorUserID As Integer, ByVal Subject As String, ByVal Notes As String) As IDataReader
-		Public MustOverride Function ThreadGetCount(ByVal ForumID As Integer, ByVal Filter As String) As Integer
 		Public MustOverride Sub ThreadViewsIncrement(ByVal ThreadID As Integer)
 		Public MustOverride Sub ThreadStatusChange(ByVal ThreadID As Integer, ByVal UserID As Integer, ByVal Status As Integer, ByVal AnswerPostID As Integer)
 		Public MustOverride Sub UpdateThread(ByVal ThreadID As Integer, ByVal ContentItemID As Integer, ByVal SitemapInclude As Boolean)
@@ -132,12 +131,12 @@ Namespace DotNetNuke.Modules.Forum
 
 		Public MustOverride Function PostGetAll(ByVal ThreadID As Integer, ByVal ThreadPage As Integer, ByVal postsPerPage As Integer, ByVal TreeView As Boolean, ByVal Descending As Boolean, ByVal PortalID As Integer) As IDataReader
 		Public MustOverride Function PostGet(ByVal PostID As Integer, ByVal PortalID As Integer) As IDataReader
-		Public MustOverride Function PostAdd(ByVal ParentPostID As Integer, ByVal ForumID As Integer, ByVal UserID As Integer, ByVal RemoteAddr As String, ByVal Notify As Boolean, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal IsModerated As Boolean, ByVal ParseInfo As Integer) As Integer
-		Public MustOverride Function PostUpdate(ByVal ThreadID As Integer, ByVal PostID As Integer, ByVal Notify As Boolean, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal UpdatedBy As Integer, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal ParseInfo As Integer) As Integer
+		Public MustOverride Function PostAdd(ByVal ParentPostID As Integer, ByVal ForumID As Integer, ByVal UserID As Integer, ByVal RemoteAddr As String, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal IsModerated As Boolean, ByVal ParseInfo As Integer) As Integer
+		Public MustOverride Function PostUpdate(ByVal ThreadID As Integer, ByVal PostID As Integer, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal UpdatedBy As Integer, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal ParseInfo As Integer) As Integer
 		Public MustOverride Sub PostDelete(ByVal PostID As Integer, ByVal ModID As Integer, ByVal Notes As String, ByVal PortalID As Integer)
 		Public MustOverride Function PostReportCheck(ByVal PostID As Integer, ByVal UserID As Integer) As Boolean
 		Public MustOverride Function PostMove(ByVal PostID As Integer, ByVal oldThreadID As Integer, ByVal newThreadID As Integer, ByVal newForumID As Integer, ByVal oldForumID As Integer, ByVal ModID As Integer, ByVal SortOrder As Integer, ByVal Notes As String) As IDataReader
-		Public MustOverride Function PostSortOrderGet(ByVal PostID As Integer, ByVal flatView As Boolean) As Integer
+
 		' Get children Posts (for thread split)
 		Public MustOverride Function PostGetChildren(ByVal PostID As Integer) As IDataReader
 		Public MustOverride Function PostGetEntireThread(ByVal ThreadID As Integer) As IDataReader
@@ -369,6 +368,3 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 End Namespace
-
-
-

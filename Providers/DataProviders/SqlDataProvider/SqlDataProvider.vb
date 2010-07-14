@@ -223,16 +223,16 @@ Namespace DotNetNuke.Modules.Forum
 			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "Forum_Delete", ForumID, GroupID)
 		End Sub
 
-		Public Overrides Function ForumAdd(ByVal GroupID As Integer, ByVal IsActive As Boolean, ByVal ParentID As Integer, ByVal Name As String, ByVal Description As String, ByVal IsModerated As Boolean, ByVal EnablePostStatistics As Boolean, ByVal ForumType As Integer, ByVal PublicView As Boolean, ByVal CreatedByUserId As Integer, ByVal PublicPosting As Boolean, ByVal EnableForumsThreadStatus As Boolean, ByVal EnableForumsRating As Boolean, ByVal ForumLink As String, ByVal ForumBehavior As Integer, ByVal AllowPolls As Boolean, ByVal EnableRSS As Boolean, ByVal EmailAddress As String, ByVal EmailFriendlyFrom As String, ByVal NotifyByDefault As Boolean, ByVal EmailStatusChange As Boolean, ByVal EmailServer As String, ByVal EmailUser As String, ByVal EmailPass As String, ByVal EmailEnableSSL As Boolean, ByVal EmailAuth As Integer, ByVal EmailPort As Integer, ByVal EnableSitemap As Boolean, ByVal SitemapPriority As Double) As Integer
+		Public Overrides Function ForumAdd(ByVal GroupID As Integer, ByVal IsActive As Boolean, ByVal ParentID As Integer, ByVal Name As String, ByVal Description As String, ByVal IsModerated As Boolean, ByVal ForumType As Integer, ByVal PublicView As Boolean, ByVal CreatedByUserId As Integer, ByVal PublicPosting As Boolean, ByVal EnableForumsThreadStatus As Boolean, ByVal EnableForumsRating As Boolean, ByVal ForumLink As String, ByVal ForumBehavior As Integer, ByVal AllowPolls As Boolean, ByVal EnableRSS As Boolean, ByVal EmailAddress As String, ByVal EmailFriendlyFrom As String, ByVal NotifyByDefault As Boolean, ByVal EmailStatusChange As Boolean, ByVal EmailServer As String, ByVal EmailUser As String, ByVal EmailPass As String, ByVal EmailEnableSSL As Boolean, ByVal EmailAuth As Integer, ByVal EmailPort As Integer, ByVal EnableSitemap As Boolean, ByVal SitemapPriority As Double) As Integer
 			Try
-				Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "Forum_Add", GroupID, IsActive, ParentID, Name, Description, IsModerated, EnablePostStatistics, ForumType, PublicView, CreatedByUserId, PublicPosting, EnableForumsThreadStatus, EnableForumsRating, ForumLink, ForumBehavior, AllowPolls, EnableRSS, EmailAddress, EmailFriendlyFrom, NotifyByDefault, EmailStatusChange, EmailServer, EmailUser, EmailPass, EmailEnableSSL, EmailAuth, EmailPort, EnableSitemap, SitemapPriority), Integer)
+				Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "Forum_Add", GroupID, IsActive, ParentID, Name, Description, IsModerated, ForumType, PublicView, CreatedByUserId, PublicPosting, EnableForumsThreadStatus, EnableForumsRating, ForumLink, ForumBehavior, AllowPolls, EnableRSS, EmailAddress, EmailFriendlyFrom, NotifyByDefault, EmailStatusChange, EmailServer, EmailUser, EmailPass, EmailEnableSSL, EmailAuth, EmailPort, EnableSitemap, SitemapPriority), Integer)
 			Catch
 				Return -1
 			End Try
 		End Function
 
-		Public Overrides Sub ForumUpdate(ByVal GroupID As Integer, ByVal ForumID As Integer, ByVal IsActive As Boolean, ByVal ParentID As Integer, ByVal Name As String, ByVal Description As String, ByVal IsModerated As Boolean, ByVal EnablePostStatistics As Boolean, ByVal ForumType As Integer, ByVal PublicView As Boolean, ByVal UpdatedByUserId As Integer, ByVal PublicPosting As Boolean, ByVal EnableForumsThreadStatus As Boolean, ByVal EnableForumsRating As Boolean, ByVal ForumLink As String, ByVal ForumBehavior As Integer, ByVal AllowPolls As Boolean, ByVal EnableRSS As Boolean, ByVal EmailAddress As String, ByVal EmailFriendlyFrom As String, ByVal NotifyByDefault As Boolean, ByVal EmailStatusChange As Boolean, ByVal EmailServer As String, ByVal EmailUser As String, ByVal EmailPass As String, ByVal EmailEnableSSL As Boolean, ByVal EmailAuth As Integer, ByVal EmailPort As Integer, ByVal EnableSitemap As Boolean, ByVal SitemapPriority As Double)
-			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "Forum_Update", GroupID, ForumID, IsActive, ParentID, Name, Description, IsModerated, EnablePostStatistics, ForumType, PublicView, UpdatedByUserId, PublicPosting, EnableForumsThreadStatus, EnableForumsRating, ForumLink, ForumBehavior, AllowPolls, EnableRSS, EmailAddress, EmailFriendlyFrom, NotifyByDefault, EmailStatusChange, EmailServer, EmailUser, EmailPass, EmailEnableSSL, EmailAuth, EmailPort, EnableSitemap, SitemapPriority)
+		Public Overrides Sub ForumUpdate(ByVal GroupID As Integer, ByVal ForumID As Integer, ByVal IsActive As Boolean, ByVal ParentID As Integer, ByVal Name As String, ByVal Description As String, ByVal IsModerated As Boolean, ByVal ForumType As Integer, ByVal PublicView As Boolean, ByVal UpdatedByUserId As Integer, ByVal PublicPosting As Boolean, ByVal EnableForumsThreadStatus As Boolean, ByVal EnableForumsRating As Boolean, ByVal ForumLink As String, ByVal ForumBehavior As Integer, ByVal AllowPolls As Boolean, ByVal EnableRSS As Boolean, ByVal EmailAddress As String, ByVal EmailFriendlyFrom As String, ByVal NotifyByDefault As Boolean, ByVal EmailStatusChange As Boolean, ByVal EmailServer As String, ByVal EmailUser As String, ByVal EmailPass As String, ByVal EmailEnableSSL As Boolean, ByVal EmailAuth As Integer, ByVal EmailPort As Integer, ByVal EnableSitemap As Boolean, ByVal SitemapPriority As Double)
+			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "Forum_Update", GroupID, ForumID, IsActive, ParentID, Name, Description, IsModerated, ForumType, PublicView, UpdatedByUserId, PublicPosting, EnableForumsThreadStatus, EnableForumsRating, ForumLink, ForumBehavior, AllowPolls, EnableRSS, EmailAddress, EmailFriendlyFrom, NotifyByDefault, EmailStatusChange, EmailServer, EmailUser, EmailPass, EmailEnableSSL, EmailAuth, EmailPort, EnableSitemap, SitemapPriority)
 		End Sub
 
 		Public Overrides Sub ForumSortOrderUpdate(ByVal GroupID As Integer, ByVal ForumID As Integer, ByVal MoveUp As Boolean)
@@ -265,10 +265,6 @@ Namespace DotNetNuke.Modules.Forum
 
 		Public Overrides Function ThreadSplit(ByVal PostID As Integer, ByVal ThreadID As Integer, ByVal NewForumID As Integer, ByVal ModeratorUserID As Integer, ByVal Subject As String, ByVal Notes As String) As IDataReader
 			Return SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Thread_Split", PostID, ThreadID, NewForumID, ModeratorUserID, Subject, Notes)
-		End Function
-
-		Public Overrides Function ThreadGetCount(ByVal ForumID As Integer, ByVal Filter As String) As Integer
-			Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "ThreadGetCount", ForumID, Filter), Integer)
 		End Function
 
 		Public Overrides Sub ThreadViewsIncrement(ByVal ThreadID As Integer)
@@ -331,16 +327,12 @@ Namespace DotNetNuke.Modules.Forum
 		Public Overrides Function PostMove(ByVal PostID As Integer, ByVal oldThreadID As Integer, ByVal newThreadID As Integer, ByVal newForumID As Integer, ByVal oldForumID As Integer, ByVal ModID As Integer, ByVal SortOrder As Integer, ByVal Notes As String) As IDataReader
 			Return SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Post_Move", PostID, oldThreadID, newThreadID, newForumID, oldForumID, ModID, SortOrder, Notes)
 		End Function
-		Public Overrides Function PostAdd(ByVal ParentPostID As Integer, ByVal ForumID As Integer, ByVal UserID As Integer, ByVal RemoteAddr As String, ByVal Notify As Boolean, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal IsModerated As Boolean, ByVal ParseInfo As Integer) As Integer
-				Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "Post_Add", ParentPostID, ForumID, UserID, RemoteAddr, Notify, Subject, Body, IsPinned, GetNull(PinnedDate), IsClosed, PortalID, PollID, IsModerated, ParseInfo), Integer)
+		Public Overrides Function PostAdd(ByVal ParentPostID As Integer, ByVal ForumID As Integer, ByVal UserID As Integer, ByVal RemoteAddr As String, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal IsModerated As Boolean, ByVal ParseInfo As Integer) As Integer
+			Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "Post_Add", ParentPostID, ForumID, UserID, RemoteAddr, Subject, Body, IsPinned, GetNull(PinnedDate), IsClosed, PortalID, PollID, IsModerated, ParseInfo), Integer)
 		End Function
 
-		Public Overrides Function PostUpdate(ByVal ThreadID As Integer, ByVal PostID As Integer, ByVal Notify As Boolean, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal UpdatedBy As Integer, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal ParseInfo As Integer) As Integer
-			Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "Post_Update", ThreadID, PostID, Notify, Subject, Body, IsPinned, PinnedDate, IsClosed, UpdatedBy, PortalID, PollID, ParseInfo), Integer)
-		End Function
-
-		Public Overrides Function PostSortOrderGet(ByVal PostID As Integer, ByVal flatView As Boolean) As Integer
-			Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "PostSortOrderGet", PostID, flatView), Integer)
+		Public Overrides Function PostUpdate(ByVal ThreadID As Integer, ByVal PostID As Integer, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal UpdatedBy As Integer, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal ParseInfo As Integer) As Integer
+			Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "Post_Update", ThreadID, PostID, Subject, Body, IsPinned, PinnedDate, IsClosed, UpdatedBy, PortalID, PollID, ParseInfo), Integer)
 		End Function
 
 		Public Overrides Sub PostUpdateParseInfo(ByVal PostID As Integer, ByVal ParseInfo As Integer)
@@ -894,4 +886,3 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 End Namespace
-

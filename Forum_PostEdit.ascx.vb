@@ -1202,7 +1202,6 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 
 				With objParentPost
-					chkNotify.Checked = .Notify
 					chkIsClosed.Checked = .ParentThread.IsClosed
 					chkIsPinned.Checked = .ParentThread.IsPinned
 				End With

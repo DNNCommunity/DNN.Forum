@@ -271,7 +271,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				.IsActive = chkActive.Checked
 				.Name = txtForumName.Text
 				.Description = txtForumDescription.Text
-				.EnablePostStatistics = True
 				.ForumType = CType(ddlForumType.SelectedIndex, Integer)
 				.UpdatedByUser = UserId
 				.ForumPermissions = dgPermissions.Permissions
@@ -343,7 +342,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				.IsActive = chkActive.Checked
 				.Name = txtForumName.Text
 				.Description = txtForumDescription.Text
-				.EnablePostStatistics = True
 				.ForumType = CType(ddlForumType.SelectedIndex, Integer)
 				.CreatedByUser = UserId
 				.ForumPermissions = dgPermissions.Permissions

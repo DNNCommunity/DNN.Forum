@@ -255,18 +255,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 		''' <summary>
-		''' Gets the number of threads in a forum
-		''' </summary>
-		''' <param name="ForumId"></param>
-		''' <param name="Filter"></param>
-		''' <returns></returns>
-		''' <remarks>
-		''' </remarks>
-		Public Function ThreadGetCount(ByVal ForumId As Integer, ByVal Filter As String) As Integer
-			Return DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadGetCount(ForumId, Filter)
-		End Function
-
-		''' <summary>
 		''' Increases a threads view count by one
 		''' </summary>
 		''' <param name="ThreadId"></param>

@@ -465,7 +465,6 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 
 				Dim TotalPosts As Integer = objThread.Replies + 1
-				Dim FlatSortOrder As Integer = objPost.FlatSortOrder
 				Dim userPostsPerPage As Integer = 1
 
 				If CurrentForumUser.UserID > 0 Then
@@ -479,9 +478,11 @@ Namespace DotNetNuke.Modules.Forum
 
 				' we need to use flatsortorder and totalpages to determine which page to view          
 				If user.ViewDescending Then
-					ThreadPageToShow = CInt(Math.Ceiling((TotalPosts - FlatSortOrder) / userPostsPerPage))
+					'ThreadPageToShow = CInt(Math.Ceiling((TotalPosts - FlatSortOrder) / userPostsPerPage))
+					' TODO: Calculate
 				Else
-					ThreadPageToShow = CInt(Math.Ceiling((FlatSortOrder + 1) / userPostsPerPage))
+					'ThreadPageToShow = CInt(Math.Ceiling((FlatSortOrder + 1) / userPostsPerPage))
+					' TODO: Calculate
 				End If
 				' DO NOT FACTOR IN ThreadPage in URL HERE!!! (It will cause errors so never check what it says)
 				PostPage = ThreadPageToShow
@@ -1531,7 +1532,7 @@ Namespace DotNetNuke.Modules.Forum
 					End Try
 
 					Dim postCountIsEven As Boolean = ThreadIsEven(intPostCount)
-					Me.RenderPost(wr, Post, postCountIsEven, True)
+					Me.RenderPost(wr, Post, postCountIsEven)
 					' spacer row should be displayed in flat view only
 					If Not currentCount = totalPostCount Then
 						RenderSpacerRow(wr)
@@ -1554,10 +1555,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="wr"></param>
 		''' <param name="Post"></param>
 		''' <param name="PostCountIsEven"></param>
-		''' <param name="ShowDetails"></param>
 		''' <remarks>
 		''' </remarks>
-		Private Sub RenderPost(ByVal wr As HtmlTextWriter, ByVal Post As PostInfo, ByVal PostCountIsEven As Boolean, ByVal ShowDetails As Boolean)
+		Private Sub RenderPost(ByVal wr As HtmlTextWriter, ByVal Post As PostInfo, ByVal PostCountIsEven As Boolean)
 			Dim authorCellClass As String
 			Dim bodyCellClass As String
 
@@ -1571,116 +1571,115 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			'Add per post header - better UI can add more info
-			If ShowDetails Then
-				Dim strPostedDate As String = String.Empty
-				Dim newpost As Boolean
-				strPostedDate = Utilities.ForumUtils.GetCreatedDateInfo(Post.CreatedDate, objConfig, "").ToString
+			Dim strPostedDate As String = String.Empty
+			Dim newpost As Boolean
+			strPostedDate = Utilities.ForumUtils.GetCreatedDateInfo(Post.CreatedDate, objConfig, "").ToString
 
-				RenderRowBegin(wr) ' <tr>
-				RenderCellBegin(wr, "", "", "100%", "left", "middle", "2", "")	'<td>
-				'[skeel] Check if first new post and add bookmark used for navigation
-				If HttpContext.Current.Request IsNot Nothing Then
-					If HttpContext.Current.Request.IsAuthenticated Then
-						If Post.NewPost(CurrentForumUser.UserID) Then
-							RenderPostBookmark(wr, "unread")
-							newpost = True
-						End If
+			RenderRowBegin(wr) ' <tr>
+			RenderCellBegin(wr, "", "", "100%", "left", "middle", "2", "")	'<td>
+			'[skeel] Check if first new post and add bookmark used for navigation
+			If HttpContext.Current.Request IsNot Nothing Then
+				If HttpContext.Current.Request.IsAuthenticated Then
+					If Post.NewPost(CurrentForumUser.UserID) Then
+						RenderPostBookmark(wr, "unread")
+						newpost = True
 					End If
 				End If
+			End If
 
-				'[skeel] add Bookmark to post
-				RenderPostBookmark(wr, "p" & CStr(Post.PostID))
-				'Make table to hold per post header
-				RenderTableBegin(wr, "", "", "", "100%", "0", "0", "center", "middle", "0")  ' <table> 
-				RenderRowBegin(wr) ' <tr>
-				RenderCellBegin(wr, "", "", "100%", "left", "middle", "", "")   '<td>
-				RenderTableBegin(wr, "", "", "", "100%", "0", "0", "center", "middle", "0")  ' <table> 
+			'[skeel] add Bookmark to post
+			RenderPostBookmark(wr, "p" & CStr(Post.PostID))
+			'Make table to hold per post header
+			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "center", "middle", "0")  ' <table> 
+			RenderRowBegin(wr) ' <tr>
+			RenderCellBegin(wr, "", "", "100%", "left", "middle", "", "")   '<td>
+			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "center", "middle", "0")  ' <table> 
 
-				RenderRowBegin(wr) ' <tr>
-				RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "Forum_HeaderCapLeft", "") ' <td><img /></td>
+			RenderRowBegin(wr) ' <tr>
+			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "Forum_HeaderCapLeft", "") ' <td><img /></td>
 
 
-				' start post status image
-				RenderCellBegin(wr, "Forum_Header", "", "1%", "left", "", "", "") '<td>
-				' display "new" image if this post is new since last time user visited the thread
-				If HttpContext.Current.Request IsNot Nothing Then
-					If HttpContext.Current.Request.IsAuthenticated Then
-						If Post.NewPost(CurrentForumUser.UserID) Then
-							RenderImage(wr, objConfig.GetThemeImageURL("s_new.") & objConfig.ImageExtension, ForumControl.LocalizedText("UnreadPost"), "")
-						Else
-							RenderImage(wr, objConfig.GetThemeImageURL("s_old.") & objConfig.ImageExtension, ForumControl.LocalizedText("ReadPost"), "")
-						End If
-					Else
+			' start post status image
+			RenderCellBegin(wr, "Forum_Header", "", "1%", "left", "", "", "") '<td>
+			' display "new" image if this post is new since last time user visited the thread
+			If HttpContext.Current.Request IsNot Nothing Then
+				If HttpContext.Current.Request.IsAuthenticated Then
+					If Post.NewPost(CurrentForumUser.UserID) Then
 						RenderImage(wr, objConfig.GetThemeImageURL("s_new.") & objConfig.ImageExtension, ForumControl.LocalizedText("UnreadPost"), "")
+					Else
+						RenderImage(wr, objConfig.GetThemeImageURL("s_old.") & objConfig.ImageExtension, ForumControl.LocalizedText("ReadPost"), "")
 					End If
 				Else
 					RenderImage(wr, objConfig.GetThemeImageURL("s_new.") & objConfig.ImageExtension, ForumControl.LocalizedText("UnreadPost"), "")
 				End If
-				RenderCellEnd(wr) ' </td> 
-
-				RenderCellBegin(wr, "Forum_Header", "", "89%", "left", "", "", "")		'<td>
-				RenderDivBegin(wr, "", "Forum_HeaderText") ' <span>
-				wr.Write(strPostedDate)
-				RenderDivEnd(wr) ' </span>
-				RenderCellEnd(wr) ' </td> 
-
-				RenderCellBegin(wr, "Forum_Header", "", "", "right", "", "", "")	   '<td>
-
-				' if the user is the original author or a moderator AND this is the original post
-				If ((CurrentForumUser.UserID = Post.ParentThread.StartedByUserID) Or (objSecurity.IsForumModerator)) And Post.ParentPostID = 0 Then
-					If Post.ParentThread.ThreadStatus = ThreadStatus.Poll Then
-						ddlThreadStatus.Enabled = False
-					End If
-					ddlThreadStatus.RenderControl(wr)
-					'wr.Write("&nbsp;")
-				Else
-					' this is either not the original post or the user is not the author or a moderator
-					' If the thread is answered AND this is the post accepted as the answer
-					If Post.ParentThread.ThreadStatus = ThreadStatus.Answered And (Post.ParentThread.AnswerPostID = Post.PostID) And objThread.ContainingForum.EnableForumsThreadStatus Then
-						RenderDivBegin(wr, "", "Forum_AnswerText") ' <span>
-						wr.Write(ForumControl.LocalizedText("AcceptedAnswer"))
-						wr.Write("&nbsp;")
-						RenderDivEnd(wr) ' </span>
-						' If the thread is NOT answered AND this user started the post or is a moderator of some sort
-					ElseIf ((CurrentForumUser.UserID = Post.ParentThread.StartedByUserID) Or (objSecurity.IsForumModerator)) And (Post.ParentThread.ThreadStatus = ThreadStatus.Unanswered) And objThread.ContainingForum.EnableForumsThreadStatus Then
-						' Select the proper command argument (set before rendering)
-						If hsThreadAnswers.ContainsKey(Post.PostID) Then
-							cmdThreadAnswer = CType(hsThreadAnswers(Post.PostID), LinkButton)
-							cmdThreadAnswer.CommandArgument = Post.PostID.ToString
-							cmdThreadAnswer.RenderControl(wr)
-							wr.Write("&nbsp;")
-							wr.Write("&nbsp;")
-						End If
-						' all that can be left worth displaying is if the post is the original, show the status icon
-					Else
-						wr.Write("&nbsp;")
-					End If
-				End If
-				RenderCellEnd(wr) ' </td> 
-
-				RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "Forum_HeaderCapRight", "")
-
-				RenderRowEnd(wr) ' </tr>
-				RenderTableEnd(wr) ' </table>
-				RenderCellEnd(wr) ' </td> 
-
-				RenderRowEnd(wr) ' </tr>
-				RenderTableEnd(wr) ' </table>
-
-				RenderCellEnd(wr) ' </td> 
-				RenderRowEnd(wr) ' </tr>
+			Else
+				RenderImage(wr, objConfig.GetThemeImageURL("s_new.") & objConfig.ImageExtension, ForumControl.LocalizedText("UnreadPost"), "")
 			End If
+			RenderCellEnd(wr) ' </td> 
+
+			RenderCellBegin(wr, "Forum_Header", "", "89%", "left", "", "", "")		'<td>
+			RenderDivBegin(wr, "", "Forum_HeaderText") ' <span>
+			wr.Write(strPostedDate)
+			RenderDivEnd(wr) ' </span>
+			RenderCellEnd(wr) ' </td> 
+
+			RenderCellBegin(wr, "Forum_Header", "", "", "right", "", "", "")	   '<td>
+
+			' if the user is the original author or a moderator AND this is the original post
+			If ((CurrentForumUser.UserID = Post.ParentThread.StartedByUserID) Or (objSecurity.IsForumModerator)) And Post.ParentPostID = 0 Then
+				If Post.ParentThread.ThreadStatus = ThreadStatus.Poll Then
+					ddlThreadStatus.Enabled = False
+				End If
+				ddlThreadStatus.RenderControl(wr)
+				'wr.Write("&nbsp;")
+			Else
+				' this is either not the original post or the user is not the author or a moderator
+				' If the thread is answered AND this is the post accepted as the answer
+				If Post.ParentThread.ThreadStatus = ThreadStatus.Answered And (Post.ParentThread.AnswerPostID = Post.PostID) And objThread.ContainingForum.EnableForumsThreadStatus Then
+					RenderDivBegin(wr, "", "Forum_AnswerText") ' <span>
+					wr.Write(ForumControl.LocalizedText("AcceptedAnswer"))
+					wr.Write("&nbsp;")
+					RenderDivEnd(wr) ' </span>
+					' If the thread is NOT answered AND this user started the post or is a moderator of some sort
+				ElseIf ((CurrentForumUser.UserID = Post.ParentThread.StartedByUserID) Or (objSecurity.IsForumModerator)) And (Post.ParentThread.ThreadStatus = ThreadStatus.Unanswered) And objThread.ContainingForum.EnableForumsThreadStatus Then
+					' Select the proper command argument (set before rendering)
+					If hsThreadAnswers.ContainsKey(Post.PostID) Then
+						cmdThreadAnswer = CType(hsThreadAnswers(Post.PostID), LinkButton)
+						cmdThreadAnswer.CommandArgument = Post.PostID.ToString
+						cmdThreadAnswer.RenderControl(wr)
+						wr.Write("&nbsp;")
+						wr.Write("&nbsp;")
+					End If
+					' all that can be left worth displaying is if the post is the original, show the status icon
+				Else
+					wr.Write("&nbsp;")
+				End If
+			End If
+			RenderCellEnd(wr) ' </td> 
+
+			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "Forum_HeaderCapRight", "")
+
+			RenderRowEnd(wr) ' </tr>
+			RenderTableEnd(wr) ' </table>
+			RenderCellEnd(wr) ' </td> 
+
+			RenderRowEnd(wr) ' </tr>
+			RenderTableEnd(wr) ' </table>
+
+			RenderCellEnd(wr) ' </td> 
+			RenderRowEnd(wr) ' </tr>
+
 			RenderRowBegin(wr) ' <tr>
 
 			' Author area
 			RenderCellBegin(wr, authorCellClass, "", "20%", "center", "top", "1", "1")	 ' <td>
-			Me.RenderAuthor(wr, Post, PostCountIsEven, ShowDetails)
+			Me.RenderAuthor(wr, Post, PostCountIsEven)
 			RenderCellEnd(wr) ' </td> 
 
 			' post area
 			' cell for post details (subject, buttons)
 			RenderCellBegin(wr, bodyCellClass, "100%", "80%", "left", "top", "", "")	  '<td>
-			RenderPostHeader(wr, Post, PostCountIsEven, ShowDetails)
+			RenderPostHeader(wr, Post, PostCountIsEven)
 			RenderCellEnd(wr) ' </td>
 			RenderRowEnd(wr) ' </tr>
 		End Sub
@@ -1691,10 +1690,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="wr"></param>
 		''' <param name="Post"></param>
 		''' <param name="PostCountIsEven"></param>
-		''' <param name="ShowDetails"></param>
 		''' <remarks>
 		''' </remarks>
-		Private Sub RenderAuthor(ByVal wr As HtmlTextWriter, ByVal Post As PostInfo, ByVal PostCountIsEven As Boolean, ByVal ShowDetails As Boolean)
+		Private Sub RenderAuthor(ByVal wr As HtmlTextWriter, ByVal Post As PostInfo, ByVal PostCountIsEven As Boolean)
 			If Not Post Is Nothing Then
 				Dim author As ForumUserInfo = Post.Author
 				Dim authorOnline As Boolean = (author.EnableOnlineStatus AndAlso author.IsOnline AndAlso (ForumControl.objConfig.EnableUsersOnline))
@@ -1766,150 +1764,148 @@ Namespace DotNetNuke.Modules.Forum
 				RenderCellEnd(wr) ' </td>
 				RenderRowEnd(wr) ' </tr> (end user alias/online)  
 
-				If ShowDetails Then	' Display author details only in flatView
-					' display user ranking 
-					If (objConfig.Ranking) Then
-						Dim authorRank As PosterRank = Utilities.ForumUtils.GetRank(author, ForumControl.objConfig)
-						Dim rankImage As String = String.Format("Rank_{0}." & objConfig.ImageExtension, CType(authorRank, Integer).ToString)
-						Dim rankURL As String = objConfig.GetThemeImageURL(rankImage)
-						Dim RankTitle As String = Utilities.ForumUtils.GetRankTitle(authorRank, objConfig)
+				' display user ranking 
+				If (objConfig.Ranking) Then
+					Dim authorRank As PosterRank = Utilities.ForumUtils.GetRank(author, ForumControl.objConfig)
+					Dim rankImage As String = String.Format("Rank_{0}." & objConfig.ImageExtension, CType(authorRank, Integer).ToString)
+					Dim rankURL As String = objConfig.GetThemeImageURL(rankImage)
+					Dim RankTitle As String = Utilities.ForumUtils.GetRankTitle(authorRank, objConfig)
 
-						RenderRowBegin(wr) ' <tr> (start ranking row)
-						RenderCellBegin(wr, "", "", "", "", "top", "", "") ' <td>
-						If objConfig.EnableRankingImage Then
-							RenderImage(wr, rankURL, RankTitle, "")
-						Else
-							RenderDivBegin(wr, "", "Forum_NormalSmall")
-							wr.Write(RankTitle)
-							RenderDivEnd(wr)
-						End If
-						RenderCellEnd(wr) ' </td>
-						RenderRowEnd(wr) ' </tr>
+					RenderRowBegin(wr) ' <tr> (start ranking row)
+					RenderCellBegin(wr, "", "", "", "", "top", "", "") ' <td>
+					If objConfig.EnableRankingImage Then
+						RenderImage(wr, rankURL, RankTitle, "")
+					Else
+						RenderDivBegin(wr, "", "Forum_NormalSmall")
+						wr.Write(RankTitle)
+						RenderDivEnd(wr)
 					End If
+					RenderCellEnd(wr) ' </td>
+					RenderRowEnd(wr) ' </tr>
+				End If
 
-					' display user avatar
-					If objConfig.EnableUserAvatar AndAlso (String.IsNullOrEmpty(author.AvatarComplete) = False) Then
-						RenderRowBegin(wr) ' <tr> (start avatar row)
-						RenderCellBegin(wr, "Forum_UserAvatar", "", "", "", "top", "", "") ' <td>
-						wr.Write("<br />")
-						If objConfig.EnableProfileAvatar And author.UserID > 0 Then
-							If Not author.IsSuperUser Then
-								Dim WebVisibility As UserVisibilityMode
-								WebVisibility = author.Profile.ProfileProperties(objConfig.AvatarProfilePropName).Visibility
+				' display user avatar
+				If objConfig.EnableUserAvatar AndAlso (String.IsNullOrEmpty(author.AvatarComplete) = False) Then
+					RenderRowBegin(wr) ' <tr> (start avatar row)
+					RenderCellBegin(wr, "Forum_UserAvatar", "", "", "", "top", "", "") ' <td>
+					wr.Write("<br />")
+					If objConfig.EnableProfileAvatar And author.UserID > 0 Then
+						If Not author.IsSuperUser Then
+							Dim WebVisibility As UserVisibilityMode
+							WebVisibility = author.Profile.ProfileProperties(objConfig.AvatarProfilePropName).Visibility
 
-								Select Case WebVisibility
-									Case UserVisibilityMode.AdminOnly
-										If objSecurity.IsForumAdmin Then
-											RenderProfileAvatar(author, wr)
-										End If
-									Case UserVisibilityMode.AllUsers
+							Select Case WebVisibility
+								Case UserVisibilityMode.AdminOnly
+									If objSecurity.IsForumAdmin Then
 										RenderProfileAvatar(author, wr)
-									Case UserVisibilityMode.MembersOnly
-										If CurrentForumUser.UserID > 0 Then
-											RenderProfileAvatar(author, wr)
-										End If
-								End Select
-							End If
-						Else
-							If author.UserID > 0 Then
-								RenderImage(wr, author.AvatarComplete, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "")
-							End If
+									End If
+								Case UserVisibilityMode.AllUsers
+									RenderProfileAvatar(author, wr)
+								Case UserVisibilityMode.MembersOnly
+									If CurrentForumUser.UserID > 0 Then
+										RenderProfileAvatar(author, wr)
+									End If
+							End Select
 						End If
-
-						RenderCellEnd(wr) ' </td>
-						RenderRowEnd(wr) ' </tr>
+					Else
+						If author.UserID > 0 Then
+							RenderImage(wr, author.AvatarComplete, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "")
+						End If
 					End If
-
-					' display system avatars (ie. DNN Core avatar)
-					If objConfig.EnableSystemAvatar AndAlso (Not author.SystemAvatars = String.Empty) Then
-						Dim SystemAvatar As String
-						For Each SystemAvatar In author.SystemAvatarsComplete.Trim(";"c).Split(";"c)
-							If SystemAvatar.Length > 0 AndAlso (Not SystemAvatar.ToLower = "standard") Then
-								Dim SystemAvatarUrl As String = SystemAvatar
-								RenderRowBegin(wr) ' <tr> (start system avatar row) 
-								RenderCellBegin(wr, "Forum_NormalSmall", "", "", "", "top", "", "") ' <td>
-								wr.Write("<br />")
-								RenderImage(wr, SystemAvatarUrl, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "")
-								RenderCellEnd(wr) ' </td>
-								RenderRowEnd(wr) ' </tr>
-							End If
-						Next
-
-					End If
-
-					'Now for RoleBased Avatars
-					If objConfig.EnableRoleAvatar AndAlso (Not author.RoleAvatar = ";") Then
-						Dim RoleAvatar As String
-						For Each RoleAvatar In author.RoleAvatarComplete.Trim(";"c).Split(";"c)
-							If RoleAvatar.Length > 0 AndAlso (Not RoleAvatar.ToLower = "standard") Then
-								Dim RoleAvatarUrl As String = RoleAvatar
-								RenderRowBegin(wr) ' <tr> (start system avatar row) 
-								RenderCellBegin(wr, "Forum_NormalSmall", "", "", "", "top", "", "") ' <td>
-								wr.Write("<br />")
-								RenderImage(wr, RoleAvatarUrl, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "")
-								RenderCellEnd(wr) ' </td>
-								RenderRowEnd(wr) ' </tr>
-							End If
-						Next
-					End If
-
-					'Author information
-					RenderRowBegin(wr) ' <tr> 
-					RenderCellBegin(wr, "Forum_NormalSmall", "", "", "", "top", "", "")	' <td>
-
-					'Homepage
-					If author.UserID > 0 Then
-						Dim WebSiteVisibility As UserVisibilityMode
-						WebSiteVisibility = author.Profile.ProfileProperties("Website").Visibility
-
-						Select Case WebSiteVisibility
-							Case UserVisibilityMode.AdminOnly
-								If objSecurity.IsForumAdmin Then
-									RenderWebSiteLink(author, wr)
-								End If
-							Case UserVisibilityMode.AllUsers
-								RenderWebSiteLink(author, wr)
-							Case UserVisibilityMode.MembersOnly
-								If CurrentForumUser.UserID > 0 Then
-									RenderWebSiteLink(author, wr)
-								End If
-						End Select
-
-						'Region
-						Dim CountryVisibility As UserVisibilityMode
-						CountryVisibility = author.Profile.ProfileProperties("Country").Visibility
-
-						Select Case CountryVisibility
-							Case UserVisibilityMode.AdminOnly
-								If objSecurity.IsForumAdmin Then
-									RenderCountry(author, wr)
-								End If
-							Case UserVisibilityMode.AllUsers
-								RenderCountry(author, wr)
-							Case UserVisibilityMode.MembersOnly
-								If CurrentForumUser.UserID > 0 Then
-									RenderCountry(author, wr)
-								End If
-						End Select
-					End If
-
-					'Joined
-					Dim strJoinedDate As String
-					Dim displayCreatedDate As DateTime = Utilities.ForumUtils.ConvertTimeZone(CType(author.Membership.CreatedDate, DateTime), objConfig)
-					strJoinedDate = ForumControl.LocalizedText("Joined") & ": " & displayCreatedDate.ToShortDateString
-					wr.Write("<br />" & strJoinedDate)
-
-					'Post count
-					RenderDivBegin(wr, "spAuthorPostCount", "Forum_NormalSmall")
-					wr.Write(ForumControl.LocalizedText("PostCount").Replace("[PostCount]", author.PostCount.ToString))
-					RenderDivEnd(wr)
 
 					RenderCellEnd(wr) ' </td>
 					RenderRowEnd(wr) ' </tr>
 				End If
 
-				RenderTableEnd(wr) ' </table>  (End of user avatar/alias table, close td next)
+				' display system avatars (ie. DNN Core avatar)
+				If objConfig.EnableSystemAvatar AndAlso (Not author.SystemAvatars = String.Empty) Then
+					Dim SystemAvatar As String
+					For Each SystemAvatar In author.SystemAvatarsComplete.Trim(";"c).Split(";"c)
+						If SystemAvatar.Length > 0 AndAlso (Not SystemAvatar.ToLower = "standard") Then
+							Dim SystemAvatarUrl As String = SystemAvatar
+							RenderRowBegin(wr) ' <tr> (start system avatar row) 
+							RenderCellBegin(wr, "Forum_NormalSmall", "", "", "", "top", "", "") ' <td>
+							wr.Write("<br />")
+							RenderImage(wr, SystemAvatarUrl, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "")
+							RenderCellEnd(wr) ' </td>
+							RenderRowEnd(wr) ' </tr>
+						End If
+					Next
+
+				End If
+
+				'Now for RoleBased Avatars
+				If objConfig.EnableRoleAvatar AndAlso (Not author.RoleAvatar = ";") Then
+					Dim RoleAvatar As String
+					For Each RoleAvatar In author.RoleAvatarComplete.Trim(";"c).Split(";"c)
+						If RoleAvatar.Length > 0 AndAlso (Not RoleAvatar.ToLower = "standard") Then
+							Dim RoleAvatarUrl As String = RoleAvatar
+							RenderRowBegin(wr) ' <tr> (start system avatar row) 
+							RenderCellBegin(wr, "Forum_NormalSmall", "", "", "", "top", "", "") ' <td>
+							wr.Write("<br />")
+							RenderImage(wr, RoleAvatarUrl, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "")
+							RenderCellEnd(wr) ' </td>
+							RenderRowEnd(wr) ' </tr>
+						End If
+					Next
+				End If
+
+				'Author information
+				RenderRowBegin(wr) ' <tr> 
+				RenderCellBegin(wr, "Forum_NormalSmall", "", "", "", "top", "", "")	' <td>
+
+				'Homepage
+				If author.UserID > 0 Then
+					Dim WebSiteVisibility As UserVisibilityMode
+					WebSiteVisibility = author.Profile.ProfileProperties("Website").Visibility
+
+					Select Case WebSiteVisibility
+						Case UserVisibilityMode.AdminOnly
+							If objSecurity.IsForumAdmin Then
+								RenderWebSiteLink(author, wr)
+							End If
+						Case UserVisibilityMode.AllUsers
+							RenderWebSiteLink(author, wr)
+						Case UserVisibilityMode.MembersOnly
+							If CurrentForumUser.UserID > 0 Then
+								RenderWebSiteLink(author, wr)
+							End If
+					End Select
+
+					'Region
+					Dim CountryVisibility As UserVisibilityMode
+					CountryVisibility = author.Profile.ProfileProperties("Country").Visibility
+
+					Select Case CountryVisibility
+						Case UserVisibilityMode.AdminOnly
+							If objSecurity.IsForumAdmin Then
+								RenderCountry(author, wr)
+							End If
+						Case UserVisibilityMode.AllUsers
+							RenderCountry(author, wr)
+						Case UserVisibilityMode.MembersOnly
+							If CurrentForumUser.UserID > 0 Then
+								RenderCountry(author, wr)
+							End If
+					End Select
+				End If
+
+				'Joined
+				Dim strJoinedDate As String
+				Dim displayCreatedDate As DateTime = Utilities.ForumUtils.ConvertTimeZone(CType(author.Membership.CreatedDate, DateTime), objConfig)
+				strJoinedDate = ForumControl.LocalizedText("Joined") & ": " & displayCreatedDate.ToShortDateString
+				wr.Write("<br />" & strJoinedDate)
+
+				'Post count
+				RenderDivBegin(wr, "spAuthorPostCount", "Forum_NormalSmall")
+				wr.Write(ForumControl.LocalizedText("PostCount").Replace("[PostCount]", author.PostCount.ToString))
+				RenderDivEnd(wr)
+
+				RenderCellEnd(wr) ' </td>
+				RenderRowEnd(wr) ' </tr>
 			End If
+
+			RenderTableEnd(wr) ' </table>  (End of user avatar/alias table, close td next)
 		End Sub
 
 		''' <summary>
@@ -1977,9 +1973,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="wr"></param>
 		''' <param name="Post"></param>
 		''' <param name="PostCountIsEven"></param>
-		''' <param name="ShowDetails"></param>
 		''' <remarks></remarks>
-		Private Sub RenderPostHeader(ByVal wr As HtmlTextWriter, ByVal Post As PostInfo, ByVal PostCountIsEven As Boolean, ByVal ShowDetails As Boolean)
+		Private Sub RenderPostHeader(ByVal wr As HtmlTextWriter, ByVal Post As PostInfo, ByVal PostCountIsEven As Boolean)
 			Dim detailCellClass As String = String.Empty
 			Dim buttonCellClass As String = String.Empty
 			Dim strSubject As String = String.Empty
@@ -2022,114 +2017,79 @@ Namespace DotNetNuke.Modules.Forum
 			RenderTableBegin(wr, Post.PostID.ToString, "", "100%", "100%", "0", "0", "", "", "0") ' <table>
 			RenderRowBegin(wr) ' <tr>
 
-			'Indent based on post level in treeview
-			If Not ShowDetails Then
-				Dim iCount As Integer
+			RenderCellBegin(wr, "", "", "100%", "", "", "", "") ' <td>
+			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0") ' <table>
+			RenderRowBegin(wr) ' <tr>
 
-				RenderCellBegin(wr, detailCellClass, "", "70%", "left", "top", "", "") ' <td>
-				For iCount = 1 To Post.PostLevel
-					wr.Write("..")
-				Next
-			Else
-				RenderCellBegin(wr, "", "", "100%", "", "", "", "") ' <td>
-				RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0") ' <table>
-				RenderRowBegin(wr) ' <tr>
+			RenderCellBegin(wr, detailCellClass, "", "100%", "left", "top", "", "") ' <td>
 
-				RenderCellBegin(wr, detailCellClass, "", "100%", "left", "top", "", "") ' <td>
+			'[skeel] Subject now works as a direct link to a specific post!
+			RenderDivBegin(wr, "spCreatedDate", "Forum_Normal") ' <span>
+			Me.RenderLinkButton(wr, Utilities.Links.ContainerViewPostLink(TabID, Post.ForumID, Post.PostID), strSubject, "Forum_NormalBold")
+			wr.Write("&nbsp;")
+			wr.Write(strAuthorLocation)
+
+			' display edited tag if post has been modified
+			If (Post.UpdatedByUser > 0) Then
+				' if the person who edited the post is a moderator and hide mod edits is enabled, we don't want to show edit details.
+				'CP - Impersonate
+				Dim objPosterSecurity As New ModuleSecurity(ModuleID, TabID, ForumID, CurrentForumUser.UserID)
+				If Not (objConfig.HideModEdits And objPosterSecurity.IsForumModerator) Then
+					wr.Write("&nbsp;")
+					RenderImage(wr, objConfig.GetThemeImageURL("s_edit.") & objConfig.ImageExtension, String.Format(ForumControl.LocalizedText("ModifiedBy") & " {0} {1}", Post.LastModifiedAuthor.SiteAlias, " " & ForumControl.LocalizedText("on") & " " & Post.UpdatedDate.ToString), "")
+				End If
 			End If
 
-			If ShowDetails Then
-				'[skeel] Subject now works as a direct link to a specific post!
-				RenderDivBegin(wr, "spCreatedDate", "Forum_Normal") ' <span>
-				Me.RenderLinkButton(wr, Utilities.Links.ContainerViewPostLink(TabID, Post.ForumID, Post.PostID), strSubject, "Forum_NormalBold")
-				wr.Write("&nbsp;")
-				wr.Write(strAuthorLocation)
-
-				' display edited tag if post has been modified
-				If (Post.UpdatedByUser > 0) Then
-					' if the person who edited the post is a moderator and hide mod edits is enabled, we don't want to show edit details.
-					'CP - Impersonate
-					Dim objPosterSecurity As New ModuleSecurity(ModuleID, TabID, ForumId, CurrentForumUser.UserID)
-					If Not (objConfig.HideModEdits And objPosterSecurity.IsForumModerator) Then
-						wr.Write("&nbsp;")
-						RenderImage(wr, objConfig.GetThemeImageURL("s_edit.") & objConfig.ImageExtension, String.Format(ForumControl.LocalizedText("ModifiedBy") & " {0} {1}", Post.LastModifiedAuthor.SiteAlias, " " & ForumControl.LocalizedText("on") & " " & Post.UpdatedDate.ToString), "")
-					End If
-				End If
-
-				RenderDivEnd(wr) ' </span> 
-			Else
-				' link to select (open) this post when in tree view mode    
-				If PostPage = 0 Then
-					url = Utilities.Links.ContainerViewPostLink(TabID, ForumID, Post.PostID)
-				Else
-					url = Utilities.Links.ContainerViewPostPagedLink(TabID, ForumID, ThreadID, Post.PostID, PostPage + 1)
-				End If
-				Me.RenderLinkButton(wr, url, strSubject, "Forum_NormalBold")
-			End If
+			RenderDivEnd(wr) ' </span> 
 
 			RenderCellEnd(wr) ' </td> 
 
-			If ShowDetails Then
-				'CP- Add back in row seperation 
-				RenderRowEnd(wr) '</tr>    
-				RenderRowBegin(wr) ' <tr>
+			'CP- Add back in row seperation 
+			RenderRowEnd(wr) '</tr>    
+			RenderRowBegin(wr) ' <tr>
 
-				RenderCellBegin(wr, buttonCellClass, "", "", "left", "top", "", "") ' <td>
-				RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0") ' <table>
-				RenderRowBegin(wr) ' <tr>
+			RenderCellBegin(wr, buttonCellClass, "", "", "left", "top", "", "") ' <td>
+			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0") ' <table>
+			RenderRowBegin(wr) ' <tr>
 
-				RenderCellBegin(wr, "", "", "5%", "left", "top", "", "") ' <td>
-				' '' display edited tag if post has been modified
-				''If (Post.UpdatedByUser > 0) Then
-				''	' if the person who edited the post is a moderator and hide mod edits is enabled, we don't want to show edit details.
-				''	'CP - Impersonate
-				''	Dim objPosterSecurity As New ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
-				''	If Not (objConfig.HideModEdits And objPosterSecurity.IsForumModerator) Then
-				''		wr.Write("&nbsp;")
-				''		RenderImage(wr, objConfig.GetThemeImageURL("s_edit.") & objConfig.ImageExtension, String.Format(ForumControl.LocalizedText("ModifiedBy") & " {0} {1}", Post.LastModifiedAuthor.SiteAlias, " " & ForumControl.LocalizedText("on") & " " & Post.UpdatedDate.ToString), "")
-				''	End If
-				''End If
-				RenderCellEnd(wr) ' </td> 
+			RenderCellBegin(wr, "", "", "5%", "left", "top", "", "") ' <td>
+			' '' display edited tag if post has been modified
+			''If (Post.UpdatedByUser > 0) Then
+			''	' if the person who edited the post is a moderator and hide mod edits is enabled, we don't want to show edit details.
+			''	'CP - Impersonate
+			''	Dim objPosterSecurity As New ModuleSecurity(ModuleID, TabID, ForumId, LoggedOnUser.UserID)
+			''	If Not (objConfig.HideModEdits And objPosterSecurity.IsForumModerator) Then
+			''		wr.Write("&nbsp;")
+			''		RenderImage(wr, objConfig.GetThemeImageURL("s_edit.") & objConfig.ImageExtension, String.Format(ForumControl.LocalizedText("ModifiedBy") & " {0} {1}", Post.LastModifiedAuthor.SiteAlias, " " & ForumControl.LocalizedText("on") & " " & Post.UpdatedDate.ToString), "")
+			''	End If
+			''End If
+			RenderCellEnd(wr) ' </td> 
 
-				' (in flatview or selected, display commands on right)
-				RenderCellBegin(wr, "", "", "95%", "right", "middle", "", "") ' <td>
-				Me.RenderCommands(wr, Post)
-				RenderCellEnd(wr) ' </td> 
-
-				RenderRowEnd(wr) '</tr>    
-				RenderTableEnd(wr) ' </table> 
-				RenderCellEnd(wr) ' </td> 
-				RenderRowEnd(wr) '</tr>    
-				RenderTableEnd(wr) ' </table> 
-				RenderCellEnd(wr) ' </td> 
-			Else
-				' (we are in treeview and its not selected, display created date on right)
-				RenderCellBegin(wr, detailCellClass, "", "30%", "right", "", "", "") ' <td>
-				RenderDivBegin(wr, "spCreatedDate", "Forum_HeaderText") ' <div>
-				wr.Write(strCreatedDate.ToString)
-				RenderDivEnd(wr) ' </div>
-				RenderCellEnd(wr) ' </td> 
-			End If
-
+			' (in flatview or selected, display commands on right)
+			RenderCellBegin(wr, "", "", "95%", "right", "middle", "", "") ' <td>
+			Me.RenderCommands(wr, Post)
+			RenderCellEnd(wr) ' </td> 
+			RenderRowEnd(wr) '</tr>    
+			RenderTableEnd(wr) ' </table> 
+			RenderCellEnd(wr) ' </td> 
+			RenderRowEnd(wr) '</tr>    
+			RenderTableEnd(wr) ' </table> 
+			RenderCellEnd(wr) ' </td> 
 			RenderRowEnd(wr) '</tr>    
 
-			' Body and detail if in flatview (body, signature, attachement...)
-			If ShowDetails Then
-				RenderRowBegin(wr) ' <tr>
+			RenderRowBegin(wr) ' <tr>
 
-				' test
-				Dim postBodyClass As String = String.Empty
-				If PostCountIsEven Then
-					postBodyClass = "Forum_PostBody"
-				Else
-					postBodyClass = "Forum_PostBody_Alt"
-				End If
-
-				RenderCellBegin(wr, postBodyClass, "100%", "80%", "left", "top", "", "") ' <td>
-				Me.RenderPostBody(wr, Post, PostCountIsEven)
-				RenderCellEnd(wr) ' </td>
-				RenderRowEnd(wr) ' </tr>
+			Dim postBodyClass As String = String.Empty
+			If PostCountIsEven Then
+				postBodyClass = "Forum_PostBody"
+			Else
+				postBodyClass = "Forum_PostBody_Alt"
 			End If
+
+			RenderCellBegin(wr, postBodyClass, "100%", "80%", "left", "top", "", "") ' <td>
+			Me.RenderPostBody(wr, Post, PostCountIsEven)
+			RenderCellEnd(wr) ' </td>
+			RenderRowEnd(wr) ' </tr>
 
 			RenderTableEnd(wr) ' </table> 
 		End Sub
@@ -2253,65 +2213,6 @@ Namespace DotNetNuke.Modules.Forum
 			'RenderPerPostRating(wr)
 			'RenderCellEnd(wr) ' </td>
 			'RenderRowEnd(wr) ' </tr> done with perPostRating
-
-			' done with per post rating, move to attachments (old version)
-			If Post.FileAttachmentURL.Length > 0 Then
-				RenderRowBegin(wr) '<tr> 
-				RenderCellBegin(wr, attachmentClass, "1px", "100%", "left", "middle", "", "") ' <td>
-
-				' create table to hold link and image
-				RenderTableBegin(wr, "", "", "", "", "0", "0", "", "middle", "0") ' <table>
-				RenderRowBegin(wr) ' <tr>
-				RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
-
-				Dim strLink As String
-				Dim strFileName As String
-				If (objConfig.AnonDownloads = False) Then
-					If HttpContext.Current.Request.IsAuthenticated = False Then
-						strFileName = Localization.GetString("NoAnonDownloads", ForumControl.objConfig.SharedResourceFile)
-
-						RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
-						RenderImage(wr, objConfig.GetThemeImageURL("s_attachment.") & objConfig.ImageExtension, "", "")
-						RenderCellEnd(wr) ' </td>
-
-						RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
-						wr.Write("&nbsp;")
-						wr.Write("<span class=Forum_NormalBold>" & strFileName & "</span>")
-						RenderCellEnd(wr) ' </td>
-					Else
-						strLink = FormatURL(Post.FileAttachmentURL, False)
-						strFileName = Post.FileAttachmentName
-
-						RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
-						RenderImageButton(wr, strLink, objConfig.GetThemeImageURL("s_attachment.") & objConfig.ImageExtension, "", "", True)
-						RenderCellEnd(wr) ' </td>
-
-						RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
-						wr.Write("&nbsp;")
-						RenderLinkButton(wr, strLink, strFileName, "Forum_Link", "", True, False)
-						RenderCellEnd(wr) ' </td>
-					End If
-				Else
-					strLink = FormatURL(Post.FileAttachmentURL, False)
-					strFileName = Post.FileAttachmentName
-
-					RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
-					RenderImageButton(wr, strLink, objConfig.GetThemeImageURL("s_attachment.") & objConfig.ImageExtension, "", "", True)
-					RenderCellEnd(wr) ' </td>
-
-					RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
-					wr.Write("&nbsp;")
-					RenderLinkButton(wr, strLink, strFileName, "Forum_Link", "", True, False)
-					RenderCellEnd(wr) ' </td>
-				End If
-
-				RenderCellEnd(wr) ' </td>
-				RenderRowEnd(wr) ' </tr> 
-				RenderTableEnd(wr) ' </table>
-
-				RenderCellEnd(wr) ' </td>
-				RenderRowEnd(wr) ' </tr> 
-			End If
 
 			'New Attachments type
 			Select Case Post.ParseInfo

@@ -48,7 +48,6 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _UpdatedDate As DateTime
 		Dim _UpdatedByUser As Integer
 		Dim _ForumPermissions As DotNetNuke.Modules.Forum.ForumPermissionCollection
-		Dim _EnablePostStatistics As Boolean = True
 		Dim _PublicPosting As Boolean = True
 		Dim _EnableForumsThreadStatus As Boolean = True
 		Dim _EnableForumsRating As Boolean = True
@@ -57,8 +56,6 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _EnableRSS As Boolean = True
 		Dim _AllowPolls As Boolean = False
 		Dim _SubForums As Integer
-		Dim _DisablePostCount As Boolean = False
-		'Anytime a post is added, these values can change
 		Dim _MostRecentPostID As Integer
 		Dim _MostRecentThreadID As Integer
 		Dim _MostRecentPostAuthorID As Integer
@@ -417,21 +414,6 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 			Set(ByVal Value As Integer)
 				_TotalThreads = Value
-			End Set
-		End Property
-
-		''' <summary>
-		''' If post stats are fed to a queue (non-functional)
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property EnablePostStatistics() As Boolean
-			Get
-				Return _EnablePostStatistics
-			End Get
-			Set(ByVal Value As Boolean)
-				_EnablePostStatistics = Value
 			End Set
 		End Property
 
