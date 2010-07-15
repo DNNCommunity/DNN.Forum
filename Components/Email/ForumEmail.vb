@@ -113,7 +113,7 @@ Namespace DotNetNuke.Modules.Forum
 						If objConfig.EnablePerForumFrom And Not (objForum.EmailAddress.Trim = String.Empty) Then
 							EmailFromAddress = objForum.EmailAddress.Trim
 						Else
-							FromFriendlyName = objConfig.AutomatedEmailAddress
+							EmailFromAddress = objConfig.AutomatedEmailAddress
 						End If
 
 						If objConfig.EnablePerForumFrom And Not (objForum.EmailFriendlyFrom.Trim = String.Empty) Then
@@ -122,8 +122,8 @@ Namespace DotNetNuke.Modules.Forum
 							FromFriendlyName = objConfig.EmailAddressDisplayName
 						End If
 					Else
-						FromFriendlyName = objConfig.EmailAddressDisplayName
 						EmailFromAddress = objConfig.AutomatedEmailAddress
+						FromFriendlyName = objConfig.EmailAddressDisplayName
 					End If
 				Case ForumEmailType.UserNewThread
 					ContentType = ForumContentTypeID.POST
@@ -165,8 +165,8 @@ Namespace DotNetNuke.Modules.Forum
 							FromFriendlyName = objConfig.EmailAddressDisplayName
 						End If
 					Else
-						FromFriendlyName = objConfig.EmailAddressDisplayName
 						EmailFromAddress = objConfig.AutomatedEmailAddress
+						FromFriendlyName = objConfig.EmailAddressDisplayName
 					End If
 				Case ForumEmailType.UserPostEdited
 					ContentType = ForumContentTypeID.POST
@@ -207,8 +207,8 @@ Namespace DotNetNuke.Modules.Forum
 							FromFriendlyName = objConfig.EmailAddressDisplayName
 						End If
 					Else
-						FromFriendlyName = objConfig.EmailAddressDisplayName
 						EmailFromAddress = objConfig.AutomatedEmailAddress
+						FromFriendlyName = objConfig.EmailAddressDisplayName
 					End If
 				Case ForumEmailType.UserPostDeleted
 					ContentType = ForumContentTypeID.DELETEPOST
@@ -249,8 +249,8 @@ Namespace DotNetNuke.Modules.Forum
 							FromFriendlyName = objConfig.EmailAddressDisplayName
 						End If
 					Else
-						FromFriendlyName = objConfig.EmailAddressDisplayName
 						EmailFromAddress = objConfig.AutomatedEmailAddress
+						FromFriendlyName = objConfig.EmailAddressDisplayName
 					End If
 				Case ForumEmailType.ModeratorPostDeleted
 					ContentType = ForumContentTypeID.MODERATORCOMMUNICATION

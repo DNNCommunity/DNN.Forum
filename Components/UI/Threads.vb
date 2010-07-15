@@ -1049,8 +1049,8 @@ Namespace DotNetNuke.Modules.Forum
 							userPostsPerPage = objConfig.PostsPerPage
 						End If
 
-						Dim UserPagesCount As Integer = CInt(Math.Ceiling((objThread.TotalPosts) / userPostsPerPage))
-						Dim ShowFinalPage As Boolean = (UserPagesCount > CapPageCount)
+						Dim UserPagesCount As Integer = CInt(Math.Ceiling(objThread.TotalPosts / userPostsPerPage))
+						Dim ShowFinalPage As Boolean = (UserPagesCount >= CapPageCount)
 
 						' Only show Pager if there is more than 1 page for the user
 						If UserPagesCount > 1 Then
@@ -1063,6 +1063,7 @@ Namespace DotNetNuke.Modules.Forum
 									url = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumID, objThread.ThreadID, ThreadPage)
 									wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 									wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_NormalSmall")
+									wr.AddAttribute(HtmlTextWriterAttribute.Rel, "nofollow")
 									wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
 									wr.Write(ThreadPage.ToString())
 									wr.RenderEndTag() ' </a>
@@ -1072,20 +1073,25 @@ Namespace DotNetNuke.Modules.Forum
 								Next
 
 								If ShowFinalPage Then
-									wr.Write("..., ")
+									If UserPagesCount > CapPageCount Then
+										wr.Write("..., ")
+									Else
+										wr.Write(", ")
+									End If
 									url = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumID, objThread.ThreadID, UserPagesCount)
 									wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 									wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_NormalSmall")
+									wr.AddAttribute(HtmlTextWriterAttribute.Rel, "nofollow")
 									wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
 									wr.Write(UserPagesCount.ToString())
 									wr.RenderEndTag() ' </A>
 								End If
 							Else
-
 								For ThreadPage As Integer = 1 To UserPagesCount
 									url = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumID, objThread.ThreadID, ThreadPage)
 									wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 									wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_NormalSmall")
+									wr.AddAttribute(HtmlTextWriterAttribute.Rel, "nofollow")
 									wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
 									wr.Write(ThreadPage.ToString())
 									wr.RenderEndTag() ' </a>

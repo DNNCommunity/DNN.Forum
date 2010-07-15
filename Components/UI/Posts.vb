@@ -1306,7 +1306,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			If NextEnabled Then
 				url = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, objThread.NextThreadID)
-				RenderLinkButton(wr, url, ForumControl.LocalizedText("Next"), "Forum_Link", NextEnabled)
+				RenderLinkButton(wr, url, ForumControl.LocalizedText("Next"), "Forum_Link")
 			Else
 				RenderDivBegin(wr, "", "Forum_NormalBold")
 				wr.Write(ForumControl.LocalizedText("Next"))
@@ -2598,7 +2598,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			If NextEnabled Then
 				url = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, objThread.NextThreadID)
-				RenderLinkButton(wr, url, ForumControl.LocalizedText("Next"), "Forum_Link", NextEnabled)
+				RenderLinkButton(wr, url, ForumControl.LocalizedText("Next"), "Forum_Link")
 			Else
 				RenderDivBegin(wr, "", "Forum_NormalBold")
 				wr.Write(ForumControl.LocalizedText("Next"))

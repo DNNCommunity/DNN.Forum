@@ -450,6 +450,25 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 		''' <summary>
+		''' Creates a Link Button used w/ an HtmlTextWriter
+		''' </summary>
+		''' <param name="wr">The HtmlTextWriter being used.</param>
+		''' <param name="URL">The url to navigate to when clicked.</param>
+		''' <param name="Text">The string of text to show to the end user.</param>
+		''' <param name="Css">The css class being applied to the link button.</param>
+		''' <remarks>(Similar to a stringbuilder)</remarks>
+		Protected Overloads Sub RenderNoFollowLinkButton(ByVal wr As HtmlTextWriter, ByVal URL As String, ByVal Text As String, ByVal Css As String)
+			If Css.Length > 0 Then
+				wr.AddAttribute(HtmlTextWriterAttribute.Class, Css)
+			End If
+			wr.AddAttribute(HtmlTextWriterAttribute.Href, URL)
+			wr.AddAttribute(HtmlTextWriterAttribute.Rel, "nofollow")
+			wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
+			wr.Write(Text)
+			wr.RenderEndTag() ' </A>
+		End Sub
+
+		''' <summary>
 		''' Renders a link button w/ an HtmlTextWriter that has a title.
 		''' </summary>
 		''' <param name="wr">The HtmlTextWriter being used.</param>
