@@ -400,10 +400,6 @@ Namespace DotNetNuke.Modules.Forum
 				Catch
 				End Try
 				Try
-					objForumInfo.MostRecentThreadPinned = Convert.ToBoolean(Null.SetNull(dr("MostRecentThreadPinned"), objForumInfo.MostRecentThreadPinned))
-				Catch
-				End Try
-				Try
 					objForumInfo.AllowPolls = Convert.ToBoolean(Null.SetNull(dr("AllowPolls"), objForumInfo.AllowPolls))
 				Catch
 				End Try

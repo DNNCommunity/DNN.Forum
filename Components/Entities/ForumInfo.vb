@@ -57,8 +57,6 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _AllowPolls As Boolean = False
 		Dim _SubForums As Integer
 		Dim _MostRecentPostID As Integer
-		Dim _MostRecentThreadID As Integer
-		Dim _MostRecentThreadPinned As Boolean = False
 		Dim _PostsToModerate As Integer
 		Dim _TotalPosts As Integer
 		Dim _TotalThreads As Integer
@@ -74,8 +72,6 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _EmailEnableSSL As Boolean = False
 		Dim _EmailAuth As Integer = 0	' 0 = none (for now, eventually need an enum)
 		Dim _EmailPort As Integer = 110 ' 995 also used for gmail
-
-		' New
 		Private _EnableSitemap As Boolean
 		Private _SitemapPriority As Double
 
@@ -416,21 +412,6 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 			Set(ByVal Value As Integer)
 				_MostRecentPostID = Value
-			End Set
-		End Property
-
-		''' <summary>
-		''' Determines if the most recent thread is pinned.
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property MostRecentThreadPinned() As Boolean
-			Get
-				Return _MostRecentThreadPinned
-			End Get
-			Set(ByVal Value As Boolean)
-				_MostRecentThreadPinned = Value
 			End Set
 		End Property
 

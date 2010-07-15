@@ -191,14 +191,19 @@ Namespace DotNetNuke.Modules.Forum
 						' return to new forum page
 						Dim strURL As String = Utilities.Links.ContainerViewThreadLink(TabId, newForumID, ThreadID)
 						Dim ctlThread As New ThreadController
+						' lets get existing info on thread
+						Dim objThread As ThreadInfo
+						objThread = ctlThread.GetThreadInfo(ThreadID)
+
 						'Dim MyProfileUrl As String = Utils.MySettingsLink(TabId, ModuleId)
 						Dim MyProfileUrl As String = Utilities.Links.UCP_UserLinks(TabId, ModuleId, UserAjaxControl.Tracking, PortalSettings)
 						Dim cntForum As New ForumController()
-						Dim objForum As ForumInfo = cntForum.GetForumItemCache(ForumID)
+						Dim objForum As ForumInfo = cntForum.GetForumItemCache(newForumID)
 
 						ctlThread.ThreadMove(ThreadID, newForumID, UserId, Notes, objForum.ParentID)
 
-						Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID, ForumID, objForum.GroupID, ModuleId, objForum.ParentID)
+						Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID, objThread.ForumID, objThread.ContainingForum.GroupID, ModuleId, objThread.ContainingForum.ParentID)
+
 						If Not (ForumID = newForumID) Then
 							Forum.Components.Utilities.Caching.UpdateForumCache(newForumID, objForum.GroupID, ModuleId, objForum.ParentID)
 						End If

@@ -42,9 +42,7 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-#Region "Public Methods"
-
-#Region "Caching Methods"
+#Region "Friend Methods"
 
 		''' <summary>
 		''' Used for RSS and for Latest Post Extension. 
@@ -59,7 +57,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="TotalRecords"></param>
 		''' <returns>A cached list of threads.</returns>
 		''' <remarks>Other aspects do not use this because of pagesize/pageindex variance. (also reason we use moduleid for cache key here)</remarks>
-		Public Function ThreadListGetCached(ByVal ModuleID As Integer, ByVal ForumID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer, ByVal Filter As String, ByVal PortalID As Integer, ByRef TotalRecords As Integer) As List(Of ThreadInfo)
+		Friend Function ThreadListGetCached(ByVal ModuleID As Integer, ByVal ForumID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer, ByVal Filter As String, ByVal PortalID As Integer, ByRef TotalRecords As Integer) As List(Of ThreadInfo)
 			Dim strCacheKey As String = RSS_KEY & ForumID.ToString() & ModuleID.ToString()
 			Dim objThreads As List(Of ThreadInfo) = CType(DataCache.GetCache(strCacheKey), List(Of ThreadInfo))
 
@@ -85,7 +83,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns>ThreadInfo object</returns>
 		''' <remarks>
 		''' </remarks>
-		Public Function GetThreadInfo(ByVal ThreadID As Integer) As ThreadInfo
+		Friend Function GetThreadInfo(ByVal ThreadID As Integer) As ThreadInfo
 			Dim strCacheKey As String = THREAD_KEY & CStr(ThreadID)
 			Dim objThread As ThreadInfo = CType(DataCache.GetCache(strCacheKey), ThreadInfo)
 
@@ -115,8 +113,6 @@ Namespace DotNetNuke.Modules.Forum
 			DataCache.RemoveCache(strCacheKey)
 		End Sub
 
-#End Region
-
 		''' <summary>
 		''' Gets all threads for a module (handles filtering and paging)
 		''' </summary>
@@ -126,7 +122,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="LoggedOnUserID"></param>
 		''' <returns></returns>
 		''' <remarks>Added by Skeel</remarks>
-		Public Function ThreadGetUnread(ByVal ModuleId As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer, ByVal LoggedOnUserID As Integer) As List(Of ThreadInfo)
+		Friend Function ThreadGetUnread(ByVal ModuleId As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer, ByVal LoggedOnUserID As Integer) As List(Of ThreadInfo)
 			Return CBO.FillCollection(Of ThreadInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadGetUnread(ModuleId, PageSize, PageIndex, LoggedOnUserID))
 		End Function
 
@@ -140,7 +136,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="Filter"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Function ThreadGetAll(ByVal ModuleId As Integer, ByVal ForumID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer, ByVal Filter As String, ByVal PortalID As Integer) As List(Of ThreadInfo)
+		Friend Function ThreadGetAll(ByVal ModuleId As Integer, ByVal ForumID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer, ByVal Filter As String, ByVal PortalID As Integer) As List(Of ThreadInfo)
 			Return CBO.FillCollection(Of ThreadInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadGetAll(ModuleId, ForumID, PageSize, PageIndex, Filter, PortalID))
 		End Function
 
@@ -151,7 +147,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ForumID"></param>
 		''' <returns></returns>
 		''' <remarks>This is only used for user Thread Reads, MarkAll in UserThreadController</remarks>
-		Public Function GetByForum(ByVal userID As Integer, ByVal ForumID As Integer) As List(Of ThreadInfo)
+		Friend Function GetByForum(ByVal userID As Integer, ByVal ForumID As Integer) As List(Of ThreadInfo)
 			Return CBO.FillCollection(Of ThreadInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadGetByForum(userID, ForumID))
 		End Function
 
@@ -161,7 +157,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ThreadId"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Function ThreadGet(ByVal ThreadId As Integer) As ThreadInfo
+		Friend Function ThreadGet(ByVal ThreadId As Integer) As ThreadInfo
 			Return CBO.FillObject(Of ThreadInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadGet(ThreadId))
 		End Function
 
@@ -171,7 +167,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ThreadID"></param>
 		''' <remarks>Never handle email sends from here. All posts are deleted 1 by 1 so that all statistics are easily updated minimizing the potential for error. 
 		''' </remarks>
-		Public Sub ThreadDelete(ByVal ThreadID As Integer, ByVal PortalID As Integer, ByVal Notes As String)
+		Friend Sub ThreadDelete(ByVal ThreadID As Integer, ByVal PortalID As Integer, ByVal Notes As String)
 			' we need to get all the posts in the thread so each can be deleted properly (and thus decrease user post counts)
 			Dim cntPost As New PostController
 			Dim arrPost As New List(Of PostInfo)
@@ -205,23 +201,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ParentID"></param>
 		''' <remarks>
 		''' </remarks>
-		Public Sub ThreadMove(ByVal ThreadID As Integer, ByVal NewForumID As Integer, ByVal ModID As Integer, ByVal Notes As String, ByVal ParentID As Integer)
-			Dim dr As IDataReader = Nothing
-			Try
-				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadMove(ThreadID, NewForumID, ModID, Notes)
-				While dr.Read
-					Dim OldGroupID As Integer = Convert.ToInt32(dr("OldGroupID"))
-					Dim NewGroupID As Integer = Convert.ToInt32(dr("NewGroupID"))
-					'ForumController.ResetChildForumsCache(ParentID, OldGroupID)
-					'If OldGroupID <> NewGroupID Then
-					'	ForumController.ResetChildForumsCache(ParentID, NewGroupID)
-					'End If
-				End While
-			Finally
-				If Not dr Is Nothing Then
-					dr.Close()
-				End If
-			End Try
+		Friend Sub ThreadMove(ByVal ThreadID As Integer, ByVal NewForumID As Integer, ByVal ModID As Integer, ByVal Notes As String, ByVal ParentID As Integer)
+			DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadMove(ThreadID, NewForumID, ModID, Notes)
 		End Sub
 
 		''' <summary>
@@ -236,24 +217,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ParentID"></param>
 		''' <param name="ModuleID"></param>
 		''' <remarks></remarks>
-		Public Sub ThreadSplit(ByVal PostID As Integer, ByVal ThreadID As Integer, ByVal NewForumID As Integer, ByVal ModeratorUserID As Integer, ByVal Subject As String, ByVal Notes As String, ByVal ParentID As Integer, ByVal ModuleID As Integer)
-			Dim dr As IDataReader = Nothing
-			Try
-				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadSplit(PostID, ThreadID, NewForumID, ModeratorUserID, Subject, Notes)
-				While dr.Read
-					Dim OldGroupID As Integer = Convert.ToInt32(dr("OldGroupID"))
-					Dim NewGroupID As Integer = Convert.ToInt32(dr("NewGroupID"))
-					'Components.Utilities.Caching.UpdateThreadCache(ParentID, OldGroupID, ModuleID, -1)
-
-					'If OldGroupID <> NewGroupID Then
-					'	Components.Utilities.Caching.UpdateChildForumCache(ParentID, NewGroupID, ModuleID)
-					'End If
-				End While
-			Finally
-				If Not dr Is Nothing Then
-					dr.Close()
-				End If
-			End Try
+		Friend Sub ThreadSplit(ByVal PostID As Integer, ByVal ThreadID As Integer, ByVal NewForumID As Integer, ByVal ModeratorUserID As Integer, ByVal Subject As String, ByVal Notes As String, ByVal ParentID As Integer, ByVal ModuleID As Integer)
+			DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadSplit(PostID, ThreadID, NewForumID, ModeratorUserID, Subject, Notes)
 		End Sub
 
 		''' <summary>
@@ -262,7 +227,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ThreadId"></param>
 		''' <remarks>
 		''' </remarks>
-		Public Sub ThreadViewsIncrement(ByVal ThreadId As Integer)
+		Friend Sub ThreadViewsIncrement(ByVal ThreadId As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadViewsIncrement(ThreadId)
 		End Sub
 
@@ -277,7 +242,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="PortalID"></param>
 		''' <remarks>We are not tracking moderator actions when setting poll for thread status type (regardless of what it was before). 
 		''' </remarks>
-		Public Sub ThreadStatusChange(ByVal ThreadId As Integer, ByVal UserID As Integer, ByVal ThreadStatus As Integer, ByVal AnswerPostID As Integer, ByVal ModeratorUserID As Integer, ByVal PortalID As Integer)
+		Friend Sub ThreadStatusChange(ByVal ThreadId As Integer, ByVal UserID As Integer, ByVal ThreadStatus As Integer, ByVal AnswerPostID As Integer, ByVal ModeratorUserID As Integer, ByVal PortalID As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadStatusChange(ThreadId, UserID, ThreadStatus, AnswerPostID)
 
 			If ModeratorUserID > 0 Then
@@ -296,7 +261,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ThreadID">The thread we are going to update.</param>
 		''' <param name="ContentItemID">The content item id we are assigning to the thread.</param>
 		''' <remarks></remarks>
-		Public Sub UpdateThread(ByVal ThreadID As Integer, ByVal ContentItemID As Integer, ByVal SitemapInclude As Boolean)
+		Friend Sub UpdateThread(ByVal ThreadID As Integer, ByVal ContentItemID As Integer, ByVal SitemapInclude As Boolean)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().UpdateThread(ThreadID, ContentItemID, SitemapInclude)
 		End Sub
 
@@ -310,7 +275,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks>
 		''' </remarks>
-		Public Function ThreadGetUserRating(ByVal ThreadID As Integer, ByVal UserID As Integer) As Double
+		Friend Function ThreadGetUserRating(ByVal ThreadID As Integer, ByVal UserID As Integer) As Double
 			Return DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadGetUserRating(ThreadID, UserID)
 		End Function
 
@@ -322,7 +287,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="Rate"></param>
 		''' <remarks>
 		''' </remarks>
-		Public Sub ThreadRateAdd(ByVal ThreadId As Integer, ByVal UserID As Integer, ByVal Rate As Double)
+		Friend Sub ThreadRateAdd(ByVal ThreadId As Integer, ByVal UserID As Integer, ByVal Rate As Double)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadRateAdd(ThreadId, UserID, Rate)
 		End Sub
 
