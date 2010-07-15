@@ -34,26 +34,19 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _PostID As Integer
 		Dim _ParentPostID As Integer
 		Dim _UserID As Integer
-		Dim _RemoteAddr As String = String.Empty
-		Dim _Notify As Boolean
-		Dim _Subject As String = String.Empty
-		Dim _Body As String = String.Empty
+		Dim _RemoteAddr As String
+		Dim _Subject As String
+		Dim _Body As String
 		Dim _CreatedDate As DateTime
 		Dim _ThreadID As Integer
-		Dim _PostLevel As Integer
-		Dim _TreeSortOrder As Integer
-		Dim _FlatSortOrder As Integer
 		Dim _UpdatedDate As DateTime
 		Dim _UpdatedByUser As Integer
 		Dim _IsApproved As Boolean
 		Dim _IsLocked As Boolean
 		Dim _IsClosed As Boolean
-		Dim _FileAttachmentURL As String = String.Empty
-		Dim _FileAttachmentName As String = String.Empty
-		Dim _PostReported As Integer = 0
-		Dim _Addressed As Integer = 0
-		Dim _Attachments As List(Of AttachmentInfo)
-		Dim _ParseInfo As Integer = 0
+		Dim _PostReported As Integer
+		Dim _Addressed As Integer
+		Dim _ParseInfo As Integer
 		Dim _TotalRecords As Integer
 
 #End Region
@@ -136,6 +129,48 @@ Namespace DotNetNuke.Modules.Forum
 				Else
 					Return Nothing
 				End If
+			End Get
+		End Property
+
+		''' <summary>
+		''' If the thread has new posts since the user's last visit date.
+		''' </summary>
+		''' <param name="UserID"></param>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property NewPost(ByVal UserID As Integer) As Boolean
+			Get
+				Dim userThreadController As New UserThreadsController
+				Dim userThread As New UserThreadsInfo
+				If UserID > 0 Then
+					userThread = userThreadController.GetCachedUserThreadRead(UserID, ThreadID)
+					If userThread Is Nothing Then
+						Return True
+					Else
+						'consider it a new post if made within the last minute of the most recent visit
+						If userThread.LastVisitDate < CreatedDate Then
+							Return True
+						Else
+							Return False
+						End If
+					End If
+				Else
+					Return True
+				End If
+			End Get
+		End Property
+
+		''' <summary>
+		''' All Attachments related to the specific post 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks>Returns a list of AttachmentInfo, use Attachments.Count to see if anything is there</remarks>
+		Public ReadOnly Property AttachmentCollection() As List(Of AttachmentInfo)
+			Get
+				Dim cntAttachment As New AttachmentController
+				Return cntAttachment.GetAllByPostID(PostID)
 			End Get
 		End Property
 
@@ -335,65 +370,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' The ParseInfo of the post as a sum of Enum PostParserInfo 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property ParseInfo() As Integer
-			Get
-				Return _ParseInfo
-			End Get
-			Set(ByVal Value As Integer)
-				_ParseInfo = Value
-			End Set
-		End Property
-
-		''' <summary>
-		''' If the thread has new posts since the user's last visit date.
-		''' </summary>
-		''' <param name="UserID"></param>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public ReadOnly Property NewPost(ByVal UserID As Integer) As Boolean
-			Get
-				Dim userThreadController As New UserThreadsController
-				Dim userThread As New UserThreadsInfo
-				If UserID > 0 Then
-					userThread = userThreadController.GetCachedUserThreadRead(UserID, ThreadID)
-					If userThread Is Nothing Then
-						Return True
-					Else
-						'consider it a new post if made within the last minute of the most recent visit
-						If userThread.LastVisitDate < CreatedDate Then
-							Return True
-						Else
-							Return False
-						End If
-					End If
-				Else
-					Return True
-				End If
-			End Get
-		End Property
-
-		''' <summary>
-		''' The name of the file attachment attached to the post.
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property FileAttachmentName() As String
-			Get
-				Return _FileAttachmentName
-			End Get
-			Set(ByVal Value As String)
-				_FileAttachmentName = Value
-			End Set
-		End Property
-
-		''' <summary>
 		''' The number of times the post has been reported. 
 		''' </summary>
 		''' <value></value>
@@ -424,19 +400,18 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' All Attachments related to the specific post 
+		''' The ParseInfo of the post as a sum of Enum PostParserInfo 
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
-		''' <remarks>Returns a list of AttachmentInfo, use Attachments.Count to see if anything is there</remarks>
-		Public ReadOnly Property Attachments() As List(Of AttachmentInfo)
+		''' <remarks></remarks>
+		Public Property ParseInfo() As Integer
 			Get
-				If _Attachments Is Nothing Then
-					Dim cntAttachment As New AttachmentController
-					_Attachments = cntAttachment.GetAllByPostID(PostID)
-				End If
-				Return _Attachments
+				Return _ParseInfo
 			End Get
+			Set(ByVal Value As Integer)
+				_ParseInfo = Value
+			End Set
 		End Property
 
 		''' <summary>

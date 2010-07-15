@@ -496,9 +496,9 @@ Namespace DotNetNuke.Modules.Forum
 					Else
 						'At lease Inline to Parse
 						If Users.UserController.GetCurrentUserInfo.UserID > 0 Then
-							bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(objPost.Body), objConfig, objPost.ParseInfo, objPost.Attachments, True)
+							bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(objPost.Body), objConfig, objPost.ParseInfo, objPost.AttachmentCollection, True)
 						Else
-							bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(objPost.Body), objConfig, objPost.ParseInfo, objPost.Attachments, False)
+							bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(objPost.Body), objConfig, objPost.ParseInfo, objPost.AttachmentCollection, False)
 						End If
 					End If
 				End If

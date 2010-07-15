@@ -126,7 +126,7 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Posts"
 
-		Public MustOverride Function PostGetAll(ByVal ThreadID As Integer, ByVal ThreadPage As Integer, ByVal postsPerPage As Integer, ByVal TreeView As Boolean, ByVal Descending As Boolean, ByVal PortalID As Integer) As IDataReader
+		Public MustOverride Function PostGetAll(ByVal ThreadID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal Descending As Boolean, ByVal PortalID As Integer) As IDataReader
 		Public MustOverride Function PostGet(ByVal PostID As Integer, ByVal PortalID As Integer) As IDataReader
 		Public MustOverride Function PostAdd(ByVal ParentPostID As Integer, ByVal ForumID As Integer, ByVal UserID As Integer, ByVal RemoteAddr As String, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal IsModerated As Boolean, ByVal ParseInfo As Integer) As Integer
 		Public MustOverride Function PostUpdate(ByVal ThreadID As Integer, ByVal PostID As Integer, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal UpdatedBy As Integer, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal ParseInfo As Integer) As Integer

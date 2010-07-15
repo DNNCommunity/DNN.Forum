@@ -293,8 +293,8 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Posts"
 
-		Public Overrides Function PostGetAll(ByVal ThreadID As Integer, ByVal threadPage As Integer, ByVal postsPerPage As Integer, ByVal TreeView As Boolean, ByVal Descending As Boolean, ByVal PortalID As Integer) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Post_GetAll", ThreadID, threadPage, postsPerPage, TreeView, Descending, PortalID), IDataReader)
+		Public Overrides Function PostGetAll(ByVal ThreadID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal Descending As Boolean, ByVal PortalID As Integer) As IDataReader
+			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Post_GetAll", ThreadID, PageIndex, PageSize, Descending, PortalID), IDataReader)
 		End Function
 
 		Public Overrides Function PostGetEntireThread(ByVal ThreadID As Integer) As IDataReader

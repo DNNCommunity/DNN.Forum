@@ -1182,7 +1182,7 @@ Namespace DotNetNuke.Modules.Forum
 								End If
 							ElseIf objAction = PostAction.Reply Then
 								'Ignore the inlines, this is a parentpost
-								fTextDecode = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(objParentPost.Body), objConfig, objParentPost.ParseInfo, objParentPost.Attachments, True)
+								fTextDecode = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(objParentPost.Body), objConfig, objParentPost.ParseInfo, objParentPost.AttachmentCollection, True)
 							End If
 						End If
 					End If

@@ -308,7 +308,7 @@ Namespace DotNetNuke.Modules.Forum
 			ForumControl.Descending = CType(ddlViewDescending.SelectedIndex, Boolean)
 
 			Dim ctlPost As New PostController
-			PostCollection = ctlPost.PostGetAll(ThreadID, PostPage, CurrentForumUser.PostsPerPage, False, ForumControl.Descending, PortalID)
+			PostCollection = ctlPost.PostGetAll(ThreadID, PostPage, CurrentForumUser.PostsPerPage, ForumControl.Descending, PortalID)
 
 			'<tam:note value=update database if it's an authenticated user>
 			If CurrentForumUser.UserID > 0 Then
@@ -392,7 +392,7 @@ Namespace DotNetNuke.Modules.Forum
 				'Forum.ThreadInfo.ResetThreadInfo(ThreadId)
 
 				Dim ctlPost As New PostController
-				PostCollection = ctlPost.PostGetAll(ThreadID, PostPage, CurrentForumUser.PostsPerPage, False, ForumControl.Descending, PortalID)
+				PostCollection = ctlPost.PostGetAll(ThreadID, PostPage, CurrentForumUser.PostsPerPage, ForumControl.Descending, PortalID)
 				' we need to redirect the user here to make sure the page is redrawn.
 			Else
 				' there is no quick reply message entered, yet they clicked submit. Show end user. 
@@ -947,7 +947,7 @@ Namespace DotNetNuke.Modules.Forum
 					trcRating.Enabled = False
 				End If
 
-				PostCollection = ctlPost.PostGetAll(ThreadId, PostPage, CurrentForumUser.PostsPerPage, False, ForumControl.Descending, PortalID)
+				PostCollection = ctlPost.PostGetAll(ThreadID, PostPage, CurrentForumUser.PostsPerPage, ForumControl.Descending, PortalID)
 			Catch exc As Exception
 				LogException(exc)
 			End Try
@@ -2119,9 +2119,9 @@ Namespace DotNetNuke.Modules.Forum
 				Else
 					'At lease Inline to Parse
 					If CurrentForumUser.UserID > 0 Then
-						bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(Post.Body), objConfig, Post.ParseInfo, Post.Attachments, True)
+						bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(Post.Body), objConfig, Post.ParseInfo, Post.AttachmentCollection, True)
 					Else
-						bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(Post.Body), objConfig, Post.ParseInfo, Post.Attachments, False)
+						bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(Post.Body), objConfig, Post.ParseInfo, Post.AttachmentCollection, False)
 					End If
 				End If
 			End If
@@ -2223,7 +2223,7 @@ Namespace DotNetNuke.Modules.Forum
 					' create table to hold link and image
 					RenderTableBegin(wr, "", "", "", "", "0", "0", "", "middle", "0") ' <table>
 
-					For Each objFile As AttachmentInfo In Post.Attachments
+					For Each objFile As AttachmentInfo In Post.AttachmentCollection
 						'Here we only handle attachments not inline type
 						If objFile.Inline = False Then
 

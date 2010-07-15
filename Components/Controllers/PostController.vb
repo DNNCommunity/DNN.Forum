@@ -41,15 +41,14 @@ Namespace DotNetNuke.Modules.Forum
 		''' 
 		''' </summary>
 		''' <param name="ThreadID"></param>
-		''' <param name="ThreadPage"></param>
-		''' <param name="PostsPerPage"></param>
-		''' <param name="TreeView"></param>
+		''' <param name="PageIndex"></param>
+		''' <param name="PageSize"></param>
 		''' <param name="Descending"></param>
 		''' <param name="PortalID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Function PostGetAll(ByVal ThreadID As Integer, ByVal ThreadPage As Integer, ByVal PostsPerPage As Integer, ByVal TreeView As Boolean, ByVal Descending As Boolean, ByVal PortalID As Integer) As List(Of PostInfo)
-			Return CBO.FillCollection(Of PostInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().PostGetAll(ThreadID, ThreadPage, PostsPerPage, TreeView, Descending, PortalID))
+		Public Function PostGetAll(ByVal ThreadID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal Descending As Boolean, ByVal PortalID As Integer) As List(Of PostInfo)
+			Return CBO.FillCollection(Of PostInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().PostGetAll(ThreadID, PageIndex, PageSize, Descending, PortalID))
 		End Function
 
 		''' <summary>
