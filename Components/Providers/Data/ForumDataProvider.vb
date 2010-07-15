@@ -84,7 +84,6 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Forums"
 
-		Public MustOverride Function ForumGetMostRecentInfo(ByVal ForumID As Integer) As IDataReader
 		Public MustOverride Function ForumGetAll(ByVal GroupID As Integer) As IDataReader
 		Public MustOverride Function ForumGetAllByParentID(ByVal ParentID As Integer, ByVal GroupID As Integer, ByVal EnabledOnly As Boolean) As IDataReader
 		Public MustOverride Function ForumGet(ByVal ForumID As Integer) As IDataReader

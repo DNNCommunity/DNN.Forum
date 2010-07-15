@@ -87,22 +87,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			End Set
 		End Property
 
-		' ''' <summary>
-		' ''' The ForumID of the forum we are editing, if it is a new one it will return a -1. 
-		' ''' </summary>
-		' ''' <value></value>
-		' ''' <returns></returns>
-		' ''' <remarks></remarks>
-		'Private ReadOnly Property ForumID() As Integer
-		'	Get
-		'		If Not (Request.QueryString("forumid") Is Nothing) Then
-		'			Return Int32.Parse(Request.QueryString("forumid"))
-		'		Else
-		'			Return -1
-		'		End If
-		'	End Get
-		'End Property
-
 		''' <summary>
 		''' The forum info object that is being edited.
 		''' </summary>
@@ -221,7 +205,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 							SetPageView(False)
 							Dim objForum As ForumInfo = New ForumInfo
 							'[skeel] load in parentforums
-							BindParentForum()
+							BindParentForums()
 						Else
 							'[skeel] No GroupID means bad url right?
 							Response.Redirect(Utilities.Links.ACPControlLink(TabId, ModuleId, AdminAjaxControl.Main))
@@ -269,7 +253,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				.GroupID = Convert.ToInt32(ddlGroup.SelectedValue)
 				.ForumID = ForumID
 				.IsActive = chkActive.Checked
-				.Name = txtForumName.Text
+				If txtForumName.Text <> "" Then
+					.Name = txtForumName.Text
+				Else
+					' set validation
+					Exit Sub
+				End If
+
 				.Description = txtForumDescription.Text
 				.ForumType = CType(ddlForumType.SelectedIndex, Integer)
 				.UpdatedByUser = UserId
@@ -285,7 +275,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				.ForumPermissions = dgPermissions.Permissions
 				.AllowPolls = chkAllowPolls.Checked
 				.EnableRSS = chkEnableRSS.Checked
-				' email
 				.EmailAddress = txtEmailAddress.Text
 				.EmailFriendlyFrom = txtEmailFriendlyFrom.Text
 				' not implemented
@@ -295,7 +284,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				.EmailUser = txtEmailUser.Text
 				.EmailPass = txtEmailPass.Text
 				.EnableSitemap = chkEnableSitemap.Checked
-				.SitemapPriority = Convert.ToDouble(txtSitemapPriority.Text)
+				If txtSitemapPriority.Text <> "" Then
+					.SitemapPriority = Convert.ToDouble(txtSitemapPriority.Text)
+				Else
+					' set validation
+					Exit Sub
+				End If
+
 
 				If Not txtEmailPort.Text.Trim = String.Empty Then
 					.EmailPort = CType(txtEmailPort.Text, Integer)
@@ -310,26 +305,19 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			cntForum.ForumUpdate(objForum, OriginalParentID)
 
 			' Update the group/forum cache
-			If objForum.ParentID > 0 Then
-				' if it has a parent, we have to update that now too
-				Forum.Components.Utilities.Caching.UpdateForumCache(objForum.ForumID, objForum.GroupID, ModuleId)
-				Forum.Components.Utilities.Caching.UpdateForumCache(objForum.ParentID, objForum.GroupID, ModuleId)
-				Forum.Components.Utilities.Caching.UpdateChildForumCache(objForum.ParentID, objForum.GroupID, ModuleId)
-			Else
-				Forum.Components.Utilities.Caching.UpdateForumCache(objForum.ForumID, objForum.GroupID, ModuleId)
-			End If
+			Forum.Components.Utilities.Caching.UpdateForumCache(objForum.ForumID, OriginalGroupID, ModuleId, OriginalParentID)
 
-			If Not (OriginalParentID = objForum.ParentID And OriginalParentID = 0) Then
-				' we have to update the old parent forum
-				Forum.Components.Utilities.Caching.UpdateForumCache(OriginalParentID, objForum.GroupID, ModuleId)
-				Forum.Components.Utilities.Caching.UpdateChildForumCache(OriginalParentID, objForum.GroupID, ModuleId)
+			If Not (OriginalParentID = objForum.ParentID) Then
+				' need to update cache of new parent forum (so it sees the new child forum)
+				Forum.Components.Utilities.Caching.UpdateForumCache(objForum.ForumID, objForum.GroupID, ModuleId, objForum.ParentID)
 			End If
 
 			If Not (OriginalGroupID = objForum.GroupID) Then
-				Forum.Components.Utilities.Caching.UpdateGroupCache(OriginalGroupID, ModuleId)
+				' need to update cache of new group (we handled original group already)
+				Forum.Components.Utilities.Caching.UpdateGroupCache(objForum.GroupID, ModuleId)
 			End If
 
-			Forum.Components.Utilities.Caching.UpdateChildForumCache(objForum.ParentID, objForum.GroupID, ModuleId)
+			'Forum.Components.Utilities.Caching.UpdateChildForumCache(objForum.ParentID, objForum.GroupID, ModuleId)
 			' Go Back to forum/group management screen
 			Response.Redirect(Utilities.Links.ACPForumsManageLink(TabId, ModuleId, CType(ddlGroup.SelectedValue, Integer)), False)
 		End Sub
@@ -389,14 +377,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
 			ForumID = cntForum.ForumAdd(objForum)
 
-			' Update the group/forum cache
-			If objForum.ParentID > 0 Then
-				' if it has a parent, we have to update that now too
-				Forum.Components.Utilities.Caching.UpdateForumCache(objForum.ParentID, objForum.GroupID, ModuleId)
-				Forum.Components.Utilities.Caching.UpdateChildForumCache(objForum.ParentID, objForum.GroupID, ModuleId)
-			Else
-				Forum.Components.Utilities.Caching.UpdateGroupCache(objForum.GroupID, ModuleId)
-			End If
+			' update cache
+			Forum.Components.Utilities.Caching.UpdateForumCache(objForum.ForumID, objForum.GroupID, ModuleId, objForum.ParentID)
 
 			' Go Back to forum/group management screen
 			Response.Redirect(Utilities.Links.ACPForumsManageLink(TabId, ModuleId, CType(ddlGroup.SelectedValue, Integer)), False)
@@ -416,10 +398,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				cntForum.ForumDelete(objForum.ParentID, objForum.GroupID, ForumID, ModuleId)
 
 				'update the cached values
-				Components.Utilities.Caching.UpdateForumCache(ForumID, objForum.GroupID, ModuleId)
-				If objForum.ParentID > 0 Then
-					Components.Utilities.Caching.UpdateForumCache(objForum.ParentID, objForum.GroupID, ModuleId)
-				End If
+				Components.Utilities.Caching.UpdateForumCache(ForumID, objForum.GroupID, ModuleId, objForum.ParentID)
 
 				' Go Back to forum/group management screen
 				Response.Redirect(Utilities.Links.ACPForumsManageLink(TabId, ModuleId, CType(ddlGroup.SelectedValue, Integer)), False)
@@ -435,7 +414,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </remarks>
 		Protected Sub ddlGroup_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ddlGroup.SelectedIndexChanged
 			If rowParentForum.Visible = True Then
-				BindParentForum()
+				BindParentForums()
 			End If
 		End Sub
 
@@ -534,15 +513,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					rowLinkTracking.Visible = False
 					rowPolls.Visible = True
 
-					'[skeel] handle ParentForum here
-					If Not objForum Is Nothing Then
-						If objForum.SubForums = 0 Then
-							rowParentForum.Visible = True
-						Else
-							rowParentForum.Visible = False
-						End If
-					End If
-
 					' As of now, permissions are used on all 3 forum types
 					rowPermissions.Visible = True
 			End Select
@@ -624,22 +594,25 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				txtEmailServer.Text = .EmailServer
 				txtEmailUser.Text = .EmailUser
 				txtEmailPass.Text = .EmailPass
-
-				' CP - Changes
 				txtEmailPort.Text = .EmailPort.ToString()
-				' End Changes
-
 				chkEmailEnableSSL.Checked = .EmailEnableSSL
-
-				' CP - Changes
 				'ddlEmailAuth.SelectedValue = .EmailAuth.ToString()
-				' End Changes
+				' sitemap
+				chkEnableSitemap.Checked = .EnableSitemap
+				txtSitemapPriority.Text = .SitemapPriority.ToString()
 
-				'[skeel] Show and Set ParentForums?
-				Dim i As Integer = .ParentID
+				'Dim i As Integer = .ParentID
 				If .SubForums = 0 AndAlso .ForumType <> ForumType.Link Then
-					BindParentForum()
-					rowParentForum.Visible = True
+					BindParentForums()
+					If .IsParentForum Or (.TotalThreads = 0) Then
+						rowParentForum.Visible = True
+					Else
+						If .IsParentForum = False Then
+							rowParentForum.Visible = True
+						Else
+							rowParentForum.Visible = False
+						End If
+					End If
 				Else
 					rowParentForum.Visible = False
 				End If
@@ -786,7 +759,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </summary>
 		''' <remarks>
 		''' </remarks>
-		Private Sub BindParentForum()
+		Private Sub BindParentForums()
 			Dim cntForum As New ForumController
 
 			ddlParentForum.Items.Clear()
@@ -797,20 +770,27 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			myItem.Text = Localization.GetString("None", Me.LocalResourceFile)
 			ddlParentForum.Items.Insert(0, myItem)
 
-			Dim arrItems As List(Of ForumInfo) = cntForum.GetChildForums(0, CInt(ddlGroup.SelectedItem.Value), False)
-			Dim fInfo As ForumInfo
+			'Dim arrItems As List(Of ForumInfo) = cntForum.GetChildForums(0, CInt(ddlGroup.SelectedItem.Value), False)
+			Dim arrItems As List(Of ForumInfo) = cntForum.GetParentForums(CInt(ddlGroup.SelectedItem.Value))
 
 			'Make sure we only add forums that arent link type, has posts or is another subforum
-			For Each fInfo In arrItems
+			For Each fInfo As ForumInfo In arrItems
 				If fInfo.ParentID = 0 AndAlso fInfo.ForumType <> ForumType.Link _
-				AndAlso fInfo.ForumID <> ForumID AndAlso fInfo.MostRecentThreadID = 0 Then
-					myItem = New ListItem
-					myItem.Text = fInfo.Name
-					myItem.Value = CStr(fInfo.ForumID)
-					If Not objForum Is Nothing Then
-						If fInfo.ForumID = objForum.ParentID Then myItem.Selected = True
+				AndAlso fInfo.ForumID <> ForumID Then
+					' we can't use lastpostid or mostrecentpostid here, not can we use total threads/posts (since a parent is inclusive of all children). Unfortunately, this means we have to get the forumn info direct from db. 
+					Dim singleForum As ForumInfo = cntForum.GetForumItemCache(fInfo.ForumID)
+
+					If singleForum.IsParentForum Or (singleForum.TotalThreads = 0) Then
+						myItem = New ListItem
+						myItem.Text = singleForum.Name
+						myItem.Value = CStr(singleForum.ForumID)
+
+						If Not objForum Is Nothing Then
+							If singleForum.ForumID = objForum.ParentID Then myItem.Selected = True
+						End If
+
+						ddlParentForum.Items.Add(myItem)
 					End If
-					ddlParentForum.Items.Add(myItem)
 				End If
 			Next
 

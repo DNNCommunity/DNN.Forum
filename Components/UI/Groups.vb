@@ -561,7 +561,7 @@ Namespace DotNetNuke.Modules.Forum
 					For Each objSearch As ThreadInfo In SearchCollection
 						If objSearch IsNot Nothing Then
 							objForum.MostRecentPostID = objSearch.LastApprovedPostID
-							objForum.MostRecentThreadID = objSearch.ThreadID
+							'objForum.MostRecentThreadID = objSearch.ThreadID
 						End If
 					Next
 				End If
@@ -621,8 +621,6 @@ Namespace DotNetNuke.Modules.Forum
 							If objForum.IsParentForum = True Then
 								'Parent forum, link to group view
 								url = Utilities.Links.ContainerParentForumLink(TabID, objForum.GroupID, objForum.ForumID)
-								' ''Now let's get the most recent info
-								''objForum = ForumGetMostRecentInfo(objForum)
 							Else
 								'Normal Forum, link goes to Thread view
 								url = Utilities.Links.ContainerViewForumLink(TabID, objForum.ForumID, False)
@@ -940,16 +938,29 @@ Namespace DotNetNuke.Modules.Forum
 							wr.Write(Me.BaseControl.LocalizedText("by") & " ")
 							wr.RenderEndTag() ' </span>
 
-							If Not objConfig.EnableExternalProfile Then
-								url = objForum.MostRecentPost.Author.UserCoreProfileLink
-							Else
-								url = Utilities.Links.UserExternalProfileLink(objForum.MostRecentPost.Author.UserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, objForum.MostRecentPost.Author.Username)
+							url = String.Empty
+
+							If objForum.MostRecentPost IsNot Nothing Then
+								If Not objConfig.EnableExternalProfile Then
+									If objForum.MostRecentPost.Author IsNot Nothing Then
+										url = objForum.MostRecentPost.Author.UserCoreProfileLink
+									End If
+								Else
+									If objForum.MostRecentPost.Author IsNot Nothing Then
+										url = Utilities.Links.UserExternalProfileLink(objForum.MostRecentPost.Author.UserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, objForum.MostRecentPost.Author.Username)
+									End If
+								End If
 							End If
 
 							wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText") 'Forum_AliasLink
 							wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
-							wr.Write(objForum.MostRecentPost.Author.SiteAlias)
+							If objForum.MostRecentPost IsNot Nothing Then
+								If objForum.MostRecentPost.Author IsNot Nothing Then
+									wr.Write(objForum.MostRecentPost.Author.SiteAlias)
+								End If
+							End If
+
 							wr.RenderEndTag() '  </A>
 						Else
 							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText")
@@ -1113,24 +1124,6 @@ Namespace DotNetNuke.Modules.Forum
 
 			Return sb.ToString
 		End Function
-
-		' ''' <summary>
-		' ''' Updates nesseary information to display last post info for a parentforum (subforums container)
-		' ''' </summary>
-		' ''' <param name="objForum"></param>
-		' ''' <returns>An updated ForumInfo object</returns>
-		' ''' <remarks>Added by Skeel</remarks>
-		'Private Function ForumGetMostRecentInfo(ByVal objForum As ForumInfo) As ForumInfo
-		'	Dim dr As IDataReader = DotNetNuke.Modules.Forum.DataProvider.Instance().ForumGetMostRecentInfo(objForum.ForumID)
-
-		'	While dr.Read
-		'		objForum.MostRecentPostID = CInt(dr("MostRecentPostID").ToString)
-		'		objForum.MostRecentThreadID = CInt(dr("MostRecentThreadID").ToString)
-		'	End While
-
-		'	dr.Close()
-		'	Return objForum
-		'End Function
 
 		''' <summary>
 		''' Determines if thread is even or odd numbered row

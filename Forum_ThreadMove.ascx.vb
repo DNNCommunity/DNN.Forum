@@ -198,9 +198,9 @@ Namespace DotNetNuke.Modules.Forum
 
 						ctlThread.ThreadMove(ThreadID, newForumID, UserId, Notes, objForum.ParentID)
 
-						Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID, newForumID, objForum.GroupID, ModuleId)
+						Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID, ForumID, objForum.GroupID, ModuleId, objForum.ParentID)
 						If Not (ForumID = newForumID) Then
-							Forum.Components.Utilities.Caching.UpdateForumCache(ForumID, objForum.GroupID, ModuleId)
+							Forum.Components.Utilities.Caching.UpdateForumCache(newForumID, objForum.GroupID, ModuleId, objForum.ParentID)
 						End If
 
 						' Handle sending emails 

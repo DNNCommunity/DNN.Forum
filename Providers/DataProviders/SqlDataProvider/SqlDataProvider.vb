@@ -196,10 +196,6 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Forums"
 
-		Public Overrides Function ForumGetMostRecentInfo(ByVal ForumID As Integer) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Forum_GetMostRecentInfo", ForumID), IDataReader)
-		End Function
-
 		Public Overrides Function ForumGetAllByParentID(ByVal ParentID As Integer, ByVal GroupID As Integer, ByVal EnabledOnly As Boolean) As IDataReader
 			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Forum_GetAllByParentID", ParentID, GroupID, EnabledOnly), IDataReader)
 		End Function

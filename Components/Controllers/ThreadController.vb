@@ -243,11 +243,11 @@ Namespace DotNetNuke.Modules.Forum
 				While dr.Read
 					Dim OldGroupID As Integer = Convert.ToInt32(dr("OldGroupID"))
 					Dim NewGroupID As Integer = Convert.ToInt32(dr("NewGroupID"))
-					Components.Utilities.Caching.UpdateChildForumCache(ParentID, OldGroupID, ModuleID)
+					'Components.Utilities.Caching.UpdateThreadCache(ParentID, OldGroupID, ModuleID, -1)
 
-					If OldGroupID <> NewGroupID Then
-						Components.Utilities.Caching.UpdateChildForumCache(ParentID, NewGroupID, ModuleID)
-					End If
+					'If OldGroupID <> NewGroupID Then
+					'	Components.Utilities.Caching.UpdateChildForumCache(ParentID, NewGroupID, ModuleID)
+					'End If
 				End While
 			Finally
 				If Not dr Is Nothing Then

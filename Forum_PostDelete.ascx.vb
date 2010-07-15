@@ -197,7 +197,7 @@ Namespace DotNetNuke.Modules.Forum
 						' Delete thread (SEND MAIL BEFORE DELETE, we need the thread still in the db)
 						cntThread.ThreadDelete(objThread.ThreadID, PortalId, Notes)
 
-						Forum.Components.Utilities.Caching.UpdatePostCache(objThread.ThreadID, objThread.ThreadID, objThread.ForumID, objThread.ContainingForum.GroupID, ModuleId)
+						Forum.Components.Utilities.Caching.UpdatePostCache(objThread.ThreadID, objThread.ThreadID, objThread.ForumID, objThread.ContainingForum.GroupID, ModuleId, objThread.ContainingForum.ParentID)
 
 						'' We need to clear all users who posted in the thread. (Otherwise cached user objects will not reflect proper post count) KNOWN ISSUE
 						'ForumUserController.ResetForumUser(AuthorID, PortalId)
@@ -244,8 +244,7 @@ Namespace DotNetNuke.Modules.Forum
 						End If
 						' Delete post (SEND MAIL BEFORE DELETE, we need the post still in the db)
 						cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objPost.ParentThread.ContainingForum.GroupID, False, objPost.ParentThread.ContainingForum.ParentID)
-
-						Forum.Components.Utilities.Caching.UpdatePostCache(objPost.PostID, ThreadID, ForumID, objPost.ParentThread.ContainingForum.GroupID, ModuleId)
+						Forum.Components.Utilities.Caching.UpdatePostCache(objPost.PostID, ThreadID, ForumID, objPost.ParentThread.ContainingForum.GroupID, ModuleId, objPost.ParentThread.ContainingForum.ParentID)
 						ForumUserController.ResetForumUser(AuthorID, PortalId)
 
 						Response.Redirect(GetReturnURL(ThreadID, ForumID), True)

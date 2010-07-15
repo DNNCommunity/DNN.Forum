@@ -68,7 +68,11 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property ModuleId() As Integer
 			Get
-				Return ParentThread.ModuleID
+				If ParentThread IsNot Nothing Then
+					Return ParentThread.ModuleID
+				Else
+					Return Nothing
+				End If
 			End Get
 		End Property
 
@@ -80,7 +84,11 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property ForumID() As Integer
 			Get
-				Return ParentThread.ForumID
+				If ParentThread IsNot Nothing Then
+					Return ParentThread.ForumID
+				Else
+					Return Nothing
+				End If
 			End Get
 		End Property
 
@@ -105,8 +113,12 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property Author() As ForumUserInfo
 			Get
-				Dim cntForumUser As New ForumUserController
-				Return cntForumUser.GetForumUser(UserID, False, ModuleId, ParentThread.PortalID)
+				If ParentThread IsNot Nothing Then
+					Dim cntForumUser As New ForumUserController
+					Return cntForumUser.GetForumUser(UserID, False, ModuleId, ParentThread.PortalID)
+				Else
+					Return Nothing
+				End If
 			End Get
 		End Property
 
@@ -118,8 +130,12 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>Returns anonymous user if it wasn't updated. </remarks>
 		Public ReadOnly Property LastModifiedAuthor() As ForumUserInfo
 			Get
-				Dim cntForumUser As New ForumUserController
-				Return cntForumUser.GetForumUser(UpdatedByUser, False, ModuleId, ParentThread.PortalID)
+				If ParentThread IsNot Nothing Then
+					Dim cntForumUser As New ForumUserController
+					Return cntForumUser.GetForumUser(UpdatedByUser, False, ModuleId, ParentThread.PortalID)
+				Else
+					Return Nothing
+				End If
 			End Get
 		End Property
 

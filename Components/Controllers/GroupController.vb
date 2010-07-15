@@ -51,11 +51,11 @@ Namespace DotNetNuke.Modules.Forum
 			Dim cntForum As New ForumController
 			Dim arrAuthForums As New List(Of ForumInfo)
 			Dim arrAllForums As New List(Of ForumInfo)
-			Dim objForum As ForumInfo
 
-			arrAllForums = cntForum.GetGroupForums(GroupID)
+			arrAllForums = cntForum.GetParentForums(GroupID)
 			' add Aggregated Forum option
 			If GroupID = -1 Then
+				Dim objForum As New ForumInfo
 				objForum = New ForumInfo
 				objForum.ModuleID = ModuleID
 				objForum.GroupID = -1
@@ -65,10 +65,11 @@ Namespace DotNetNuke.Modules.Forum
 				arrAuthForums.Add(objForum)
 			End If
 
-			For Each objForum In arrAllForums
-				Dim Security As New Forum.ModuleSecurity(ModuleID, TabID, objForum.ForumID, UserID)
+			For Each objForum As ForumInfo In arrAllForums
+				Dim objSecurity As New Forum.ModuleSecurity(ModuleID, TabID, objForum.ForumID, UserID)
+
 				If Not objForum.PublicView And objForum.IsActive Then
-					If Security.IsAllowedToViewPrivateForum And objForum.IsActive Then
+					If objSecurity.IsAllowedToViewPrivateForum And objForum.IsActive Then
 						If NoLinkForums Then
 							If Not (objForum.ForumType = ForumType.Link) Then
 								arrAuthForums.Add(objForum)
@@ -103,12 +104,11 @@ Namespace DotNetNuke.Modules.Forum
 			Dim cntForum As New ForumController
 			Dim arrAuthForums As New List(Of ForumInfo)
 			Dim arrAllForums As New List(Of ForumInfo)
-			Dim objForum As ForumInfo
 
 			arrAllForums = cntForum.GetChildForums(0, GroupID, True)
 			' add Aggregated Forum option
 			If GroupID = -1 Then
-				objForum = New ForumInfo
+				Dim objForum As New ForumInfo
 				objForum.ModuleID = ModuleID
 				objForum.GroupID = -1
 				objForum.ForumID = -1
@@ -117,8 +117,9 @@ Namespace DotNetNuke.Modules.Forum
 				arrAuthForums.Add(objForum)
 			End If
 
-			For Each objForum In arrAllForums
+			For Each objForum As ForumInfo In arrAllForums
 				Dim Security As New Forum.ModuleSecurity(ModuleID, TabID, objForum.ForumID, UserID)
+
 				If Not objForum.PublicView And objForum.IsActive Then
 					If Security.IsAllowedToViewPrivateForum And objForum.IsActive Then
 						If NoLinkForums Then
@@ -155,12 +156,11 @@ Namespace DotNetNuke.Modules.Forum
 			Dim cntForum As New ForumController
 			Dim arrAuthForums As New List(Of ForumInfo)
 			Dim arrAllForums As New List(Of ForumInfo)
-			Dim objForum As ForumInfo
 
 			arrAllForums = cntForum.GetChildForums(ParentForumId, GroupID, True)
 			' add Aggregated Forum option
 			If GroupID = -1 Then
-				objForum = New ForumInfo
+				Dim objForum As New ForumInfo
 				objForum.ModuleID = ModuleID
 				objForum.GroupID = -1
 				objForum.ForumID = -1
@@ -169,8 +169,9 @@ Namespace DotNetNuke.Modules.Forum
 				arrAuthForums.Add(objForum)
 			End If
 
-			For Each objForum In arrAllForums
+			For Each objForum As ForumInfo In arrAllForums
 				Dim Security As New Forum.ModuleSecurity(ModuleID, TabID, objForum.ForumID, UserID)
+
 				If Not objForum.PublicView And objForum.IsActive Then
 					If Security.IsAllowedToViewPrivateForum And objForum.IsActive Then
 						If NoLinkForums Then
@@ -205,14 +206,14 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns>An arraylist of all groups corresponding to the supplied ModuleID.</returns>
 		''' <remarks>
 		''' </remarks>
-		Public Function GroupsGetByModuleID(ByVal ModuleId As Integer) As List(Of GroupInfo)
-			Dim strCacheKey As String = GroupColCacheKeyPrefix & ModuleId.ToString()
+		Public Function GroupsGetByModuleID(ByVal ModuleID As Integer) As List(Of GroupInfo)
+			Dim strCacheKey As String = GroupColCacheKeyPrefix + ModuleID.ToString()
 			Dim arrGroups As New List(Of GroupInfo)
 			arrGroups = CType(DataCache.GetCache(strCacheKey), List(Of GroupInfo))
 
 			If arrGroups Is Nothing Then
 				Dim timeOut As Int32 = Constants.CACHE_TIMEOUT * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
-				arrGroups = CBO.FillCollection(Of GroupInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().GroupGetByModuleID(ModuleId))
+				arrGroups = CBO.FillCollection(Of GroupInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().GroupGetByModuleID(ModuleID))
 
 				If timeOut > 0 And arrGroups IsNot Nothing Then
 					DataCache.SetCache(strCacheKey, arrGroups, TimeSpan.FromMinutes(timeOut))
@@ -251,7 +252,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ModuleID"></param>
 		''' <remarks></remarks>
 		Friend Shared Sub ResetModuleGroups(ByVal ModuleID As Integer)
-			Dim strCacheKey As String = GroupColCacheKeyPrefix & ModuleID.ToString()
+			Dim strCacheKey As String = GroupColCacheKeyPrefix + ModuleID.ToString()
 			DataCache.RemoveCache(strCacheKey)
 		End Sub
 

@@ -74,9 +74,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="objConfig">The forum module's configuration.</param>
 		''' <remarks>Each active emailType requires a new variable in the case statement.
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	8/27/2006	Created
-		''' </history>
 		Public Sub GenerateEmail(ByVal Notes As String, ByVal emailType As ForumEmailType, ByVal ContentID As Integer, ByVal objConfig As Forum.Configuration, ByVal URL As String, ByVal ProfileURL As String, ByVal PortalID As Integer)
 			Dim ContentType As ForumContentTypeID
 			Dim ForumEmailTypeID As Integer
@@ -112,16 +109,21 @@ Namespace DotNetNuke.Modules.Forum
 					DistroParams = DistroContentID.ToString
 					DistroIsSproc = True
 
-					If objConfig.EnablePerForumFrom And Not (objForum.EmailAddress.Trim = String.Empty) Then
-						EmailFromAddress = objForum.EmailAddress.Trim
-					Else
-						EmailFromAddress = objConfig.AutomatedEmailAddress
-					End If
+					If objForum IsNot Nothing Then
+						If objConfig.EnablePerForumFrom And Not (objForum.EmailAddress.Trim = String.Empty) Then
+							EmailFromAddress = objForum.EmailAddress.Trim
+						Else
+							FromFriendlyName = objConfig.AutomatedEmailAddress
+						End If
 
-					If objConfig.EnablePerForumFrom And Not (objForum.EmailFriendlyFrom.Trim = String.Empty) Then
-						FromFriendlyName = objForum.EmailFriendlyFrom.Trim
+						If objConfig.EnablePerForumFrom And Not (objForum.EmailFriendlyFrom.Trim = String.Empty) Then
+							FromFriendlyName = objForum.EmailFriendlyFrom.Trim
+						Else
+							FromFriendlyName = objConfig.EmailAddressDisplayName
+						End If
 					Else
 						FromFriendlyName = objConfig.EmailAddressDisplayName
+						EmailFromAddress = objConfig.AutomatedEmailAddress
 					End If
 				Case ForumEmailType.UserNewThread
 					ContentType = ForumContentTypeID.POST
@@ -150,16 +152,21 @@ Namespace DotNetNuke.Modules.Forum
 					DistroParams = DistroContentID.ToString
 					DistroIsSproc = True
 
-					If objConfig.EnablePerForumFrom And Not (objForum.EmailAddress.Trim = String.Empty) Then
-						EmailFromAddress = objForum.EmailAddress.Trim
-					Else
-						EmailFromAddress = objConfig.AutomatedEmailAddress
-					End If
+					If objForum IsNot Nothing Then
+						If objConfig.EnablePerForumFrom And Not (objForum.EmailAddress.Trim = String.Empty) Then
+							EmailFromAddress = objForum.EmailAddress.Trim
+						Else
+							EmailFromAddress = objConfig.AutomatedEmailAddress
+						End If
 
-					If objConfig.EnablePerForumFrom And Not (objForum.EmailFriendlyFrom.Trim = String.Empty) Then
-						FromFriendlyName = objForum.EmailFriendlyFrom.Trim
+						If objConfig.EnablePerForumFrom And Not (objForum.EmailFriendlyFrom.Trim = String.Empty) Then
+							FromFriendlyName = objForum.EmailFriendlyFrom.Trim
+						Else
+							FromFriendlyName = objConfig.EmailAddressDisplayName
+						End If
 					Else
 						FromFriendlyName = objConfig.EmailAddressDisplayName
+						EmailFromAddress = objConfig.AutomatedEmailAddress
 					End If
 				Case ForumEmailType.UserPostEdited
 					ContentType = ForumContentTypeID.POST
@@ -187,16 +194,21 @@ Namespace DotNetNuke.Modules.Forum
 					DistroParams = DistroContentID.ToString
 					DistroIsSproc = True
 
-					If objConfig.EnablePerForumFrom And Not (objForum.EmailAddress.Trim = String.Empty) Then
-						EmailFromAddress = objForum.EmailAddress.Trim
-					Else
-						EmailFromAddress = objConfig.AutomatedEmailAddress
-					End If
+					If objForum IsNot Nothing Then
+						If objConfig.EnablePerForumFrom And Not (objForum.EmailAddress.Trim = String.Empty) Then
+							EmailFromAddress = objForum.EmailAddress.Trim
+						Else
+							EmailFromAddress = objConfig.AutomatedEmailAddress
+						End If
 
-					If objConfig.EnablePerForumFrom And Not (objForum.EmailFriendlyFrom.Trim = String.Empty) Then
-						FromFriendlyName = objForum.EmailFriendlyFrom.Trim
+						If objConfig.EnablePerForumFrom And Not (objForum.EmailFriendlyFrom.Trim = String.Empty) Then
+							FromFriendlyName = objForum.EmailFriendlyFrom.Trim
+						Else
+							FromFriendlyName = objConfig.EmailAddressDisplayName
+						End If
 					Else
 						FromFriendlyName = objConfig.EmailAddressDisplayName
+						EmailFromAddress = objConfig.AutomatedEmailAddress
 					End If
 				Case ForumEmailType.UserPostDeleted
 					ContentType = ForumContentTypeID.DELETEPOST
@@ -224,16 +236,21 @@ Namespace DotNetNuke.Modules.Forum
 					DistroParams = DistroContentID.ToString
 					DistroIsSproc = True
 
-					If objConfig.EnablePerForumFrom And Not (objForum.EmailAddress.Trim = String.Empty) Then
-						EmailFromAddress = objForum.EmailAddress.Trim
-					Else
-						EmailFromAddress = objConfig.AutomatedEmailAddress
-					End If
+					If objForum IsNot Nothing Then
+						If objConfig.EnablePerForumFrom And Not (objForum.EmailAddress.Trim = String.Empty) Then
+							EmailFromAddress = objForum.EmailAddress.Trim
+						Else
+							EmailFromAddress = objConfig.AutomatedEmailAddress
+						End If
 
-					If objConfig.EnablePerForumFrom And Not (objForum.EmailFriendlyFrom.Trim = String.Empty) Then
-						FromFriendlyName = objForum.EmailFriendlyFrom.Trim
+						If objConfig.EnablePerForumFrom And Not (objForum.EmailFriendlyFrom.Trim = String.Empty) Then
+							FromFriendlyName = objForum.EmailFriendlyFrom.Trim
+						Else
+							FromFriendlyName = objConfig.EmailAddressDisplayName
+						End If
 					Else
 						FromFriendlyName = objConfig.EmailAddressDisplayName
+						EmailFromAddress = objConfig.AutomatedEmailAddress
 					End If
 				Case ForumEmailType.ModeratorPostDeleted
 					ContentType = ForumContentTypeID.MODERATORCOMMUNICATION
@@ -332,15 +349,20 @@ Namespace DotNetNuke.Modules.Forum
 					DistroParams = DistroContentID.ToString
 					DistroIsSproc = True
 
-					If objConfig.EnablePerForumFrom And Not (objForum.EmailAddress.Trim = String.Empty) Then
-						EmailFromAddress = objForum.EmailAddress.Trim
+					If objForum IsNot Nothing Then
+						If objConfig.EnablePerForumFrom And Not (objForum.EmailAddress.Trim = String.Empty) Then
+							EmailFromAddress = objForum.EmailAddress.Trim
+						Else
+							EmailFromAddress = objConfig.AutomatedEmailAddress
+						End If
+
+						If objConfig.EnablePerForumFrom And Not (objForum.EmailFriendlyFrom.Trim = String.Empty) Then
+							FromFriendlyName = objForum.EmailFriendlyFrom.Trim
+						Else
+							FromFriendlyName = objConfig.EmailAddressDisplayName
+						End If
 					Else
 						EmailFromAddress = objConfig.AutomatedEmailAddress
-					End If
-
-					If objConfig.EnablePerForumFrom And Not (objForum.EmailFriendlyFrom.Trim = String.Empty) Then
-						FromFriendlyName = objForum.EmailFriendlyFrom.Trim
-					Else
 						FromFriendlyName = objConfig.EmailAddressDisplayName
 					End If
 				Case ForumEmailType.UserThreadSplit
@@ -369,15 +391,20 @@ Namespace DotNetNuke.Modules.Forum
 					DistroParams = DistroContentID.ToString
 					DistroIsSproc = True
 
-					If objConfig.EnablePerForumFrom And Not (objForum.EmailAddress.Trim = String.Empty) Then
-						EmailFromAddress = objForum.EmailAddress.Trim
+					If objForum IsNot Nothing Then
+						If objConfig.EnablePerForumFrom And Not (objForum.EmailAddress.Trim = String.Empty) Then
+							EmailFromAddress = objForum.EmailAddress.Trim
+						Else
+							EmailFromAddress = objConfig.AutomatedEmailAddress
+						End If
+
+						If objConfig.EnablePerForumFrom And Not (objForum.EmailFriendlyFrom.Trim = String.Empty) Then
+							FromFriendlyName = objForum.EmailFriendlyFrom.Trim
+						Else
+							FromFriendlyName = objConfig.EmailAddressDisplayName
+						End If
 					Else
 						EmailFromAddress = objConfig.AutomatedEmailAddress
-					End If
-
-					If objConfig.EnablePerForumFrom And Not (objForum.EmailFriendlyFrom.Trim = String.Empty) Then
-						FromFriendlyName = objForum.EmailFriendlyFrom.Trim
-					Else
 						FromFriendlyName = objConfig.EmailAddressDisplayName
 					End If
 				Case ForumEmailType.UserPostApproved
@@ -406,15 +433,20 @@ Namespace DotNetNuke.Modules.Forum
 					DistroParams = DistroContentID.ToString
 					DistroIsSproc = True
 
-					If objConfig.EnablePerForumFrom And Not (objForum.EmailAddress.Trim = String.Empty) Then
-						EmailFromAddress = objForum.EmailAddress.Trim
+					If objForum IsNot Nothing Then
+						If objConfig.EnablePerForumFrom And Not (objForum.EmailAddress.Trim = String.Empty) Then
+							EmailFromAddress = objForum.EmailAddress.Trim
+						Else
+							EmailFromAddress = objConfig.AutomatedEmailAddress
+						End If
+
+						If objConfig.EnablePerForumFrom And Not (objForum.EmailFriendlyFrom.Trim = String.Empty) Then
+							FromFriendlyName = objForum.EmailFriendlyFrom.Trim
+						Else
+							FromFriendlyName = objConfig.EmailAddressDisplayName
+						End If
 					Else
 						EmailFromAddress = objConfig.AutomatedEmailAddress
-					End If
-
-					If objConfig.EnablePerForumFrom And Not (objForum.EmailFriendlyFrom.Trim = String.Empty) Then
-						FromFriendlyName = objForum.EmailFriendlyFrom.Trim
-					Else
 						FromFriendlyName = objConfig.EmailAddressDisplayName
 					End If
 				Case Else
@@ -719,10 +751,14 @@ Namespace DotNetNuke.Modules.Forum
 					'user -1 for userid, so we never get a value of IsTracked (important to not rely on userid specifically here)
 					Dim cntThread As New ThreadController()
 					Dim objThread As ThreadInfo = cntThread.GetThreadInfo(objPost.ThreadID)
-					Dim objForum As ForumInfo = cntForum.GetForumItemCache(objThread.ForumID)
+					Dim objForum As New ForumInfo
+
+					If objThread IsNot Nothing Then
+						objForum = cntForum.GetForumItemCache(objThread.ForumID)
+					End If
 
 					If Not Keywords Is Nothing Then
-						If Keywords.ContainsKey("[FORUMNAME]") Then
+						If Keywords.ContainsKey("[FORUMNAME]") AndAlso (objForum IsNot Nothing) Then
 							Keywords.Item("[FORUMNAME]") = objForum.Name
 						End If
 
@@ -734,7 +770,7 @@ Namespace DotNetNuke.Modules.Forum
 							Keywords.Item("[DATEPOSTED]") = objPost.CreatedDate
 						End If
 
-						If Keywords.ContainsKey("[POSTAUTHOR]") Then
+						If Keywords.ContainsKey("[POSTAUTHOR]") AndAlso (objPost.Author IsNot Nothing) Then
 							Keywords.Item("[POSTAUTHOR]") = objPost.Author.SiteAlias
 						End If
 
@@ -746,8 +782,10 @@ Namespace DotNetNuke.Modules.Forum
 							Keywords.Item("[POSTURL]") = PostUrl
 						End If
 
-						If Keywords.ContainsKey("[GROUPNAME]") Then
-							Keywords.Item("[GROUPNAME]") = objForum.ParentGroup.Name
+						If Keywords.ContainsKey("[GROUPNAME]") AndAlso (objForum IsNot Nothing) Then
+							If objForum.ParentGroup IsNot Nothing Then
+								Keywords.Item("[GROUPNAME]") = objForum.ParentGroup.Name
+							End If
 						End If
 
 						If Keywords.ContainsKey("[PROFILELINK]") Then

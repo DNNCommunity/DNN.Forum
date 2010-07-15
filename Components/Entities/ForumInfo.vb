@@ -420,21 +420,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' The last approved thread in a forum. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property MostRecentThreadID() As Integer
-			Get
-				Return _MostRecentThreadID
-			End Get
-			Set(ByVal Value As Integer)
-				_MostRecentThreadID = Value
-			End Set
-		End Property
-
-		''' <summary>
 		''' Determines if the most recent thread is pinned.
 		''' </summary>
 		''' <value></value>

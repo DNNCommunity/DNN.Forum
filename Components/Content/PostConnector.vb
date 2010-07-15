@@ -406,7 +406,7 @@ Namespace DotNetNuke.Modules.Forum
 						ThreadID = objThread.ThreadID
 					End If
 
-					Forum.Components.Utilities.Caching.UpdatePostCache(newPostID, ThreadID, objForum.ForumID, objForum.GroupID, objConfig.ModuleID)
+					Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID, objForum.ForumID, objForum.GroupID, objConfig.ModuleID, objForum.ParentID)
 
 					_emailType = ForumEmailType.UserNewThread
 				Case PostAction.Edit
@@ -426,7 +426,7 @@ Namespace DotNetNuke.Modules.Forum
 						ctlThread.ThreadStatusChange(newPostID, objForumUser.UserID, Status, 0, -1, PortalID)
 					End If
 
-					Forum.Components.Utilities.Caching.UpdatePostCache(newPostID, ThreadID, objForum.ForumID, objForum.GroupID, objConfig.ModuleID)
+					Forum.Components.Utilities.Caching.UpdatePostCache(newPostID, ThreadID)
 
 					' Handle Content Item (if postid = threadid)
 					If ThreadID = newPostID Then
@@ -444,13 +444,13 @@ Namespace DotNetNuke.Modules.Forum
 					' we are clearing out attachments (empty string) as this method is now legacy
 					newPostID = ctlPost.PostAdd(ParentPostID, objForum.ForumID, objForumUser.UserID, RemoteAddress, PostSubject, PostBody, IsPinned, _PinnedDate, IsClosed, PortalID, PollID, IsModerated, objForum.GroupID, ParentPostID, ParsingType)
 					' since it is a new post, we only need to update thread & forum
-					Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID, objForum.ForumID, objForum.GroupID, objConfig.ModuleID)
+					Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID, objForum.ForumID, objForum.GroupID, objConfig.ModuleID, objForum.ParentID)
 					_emailType = ForumEmailType.UserPostAdded
 			End Select
 
-			If objForum.ParentID > 0 Then
-				Forum.Components.Utilities.Caching.UpdateForumCache(objForum.ParentID, objForum.GroupID, objConfig.ModuleID)
-			End If
+			'If objForum.ParentID > 0 Then
+			'	Forum.Components.Utilities.Caching.UpdateForumCache(objForum.ParentID, objForum.GroupID, objConfig.ModuleID, objForum.ParentID)
+			'End If
 
 			ForumUserController.ResetForumUser(objForumUser.UserID, PortalID)
 

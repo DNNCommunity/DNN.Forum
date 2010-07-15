@@ -611,10 +611,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				ctlForum.ForumDelete(ParentID, GroupID, ForumID, ModuleId)
 
 				'update the cached values
-				Components.Utilities.Caching.UpdateForumCache(ForumID, GroupID, ModuleId)
-				If ParentID > 0 Then
-					Components.Utilities.Caching.UpdateForumCache(ParentID, GroupID, ModuleId)
-				End If
+				Components.Utilities.Caching.UpdateForumCache(ForumID, GroupID, ModuleId, ParentID)
 
 				BindGroupList()
 			Catch exc As Exception

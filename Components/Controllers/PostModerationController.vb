@@ -69,7 +69,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public Sub ModeratePostApprove(ByVal PostID As Integer, ByVal ApprovedBy As Integer, ByVal Notes As String, ByVal ForumID As Integer, ByVal ParentID As Integer, ByVal ThreadID As Integer, ByVal ModuleID As Integer)
 			Dim GroupID As Integer
 			GroupID = DotNetNuke.Modules.Forum.DataProvider.Instance().ModeratePostApprove(PostID, ApprovedBy, Notes)
-			Components.Utilities.Caching.UpdatePostCache(PostID, ThreadID, ForumID, GroupID, ModuleID)
+			Components.Utilities.Caching.UpdatePostCache(PostID, ThreadID, ForumID, GroupID, ModuleID, ParentID)
 		End Sub
 
 		''' <summary>

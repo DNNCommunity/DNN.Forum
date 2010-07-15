@@ -272,6 +272,9 @@ Namespace DotNetNuke.Modules.Forum
 				mailMessage.Body = Body
 				mailMessage.IsBodyHtml = objEmailToSend.IsHTML
 				mailMessage.BodyEncoding = System.Text.Encoding.UTF8
+				mailMessage.Sender = Sender
+				mailMessage.From = Sender
+				'mailMessage.ReplyTo = 
 
 				Try
 					' Send the mail message

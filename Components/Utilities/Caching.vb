@@ -25,12 +25,22 @@ Namespace DotNetNuke.Modules.Forum.Components.Utilities
 	Friend Class Caching
 
 		''' <summary>
-		''' 
+		''' This is only necessary in rare situations like when a post is udpated but has no impact on thread (ie. post reporting)
 		''' </summary>
 		''' <param name="PostID"></param>
 		''' <remarks></remarks>
 		Public Shared Sub UpdatePostCache(ByVal PostID As Integer)
-			UpdatePostCache(PostID, -1, -1, -1, -1)
+			UpdatePostCache(PostID, -1, -1, -1, -1, -1)
+		End Sub
+
+		''' <summary>
+		''' We use this when a post edit occurs, only when we need the actual post and the thread updated for this information.
+		''' </summary>
+		''' <param name="PostID"></param>
+		''' <param name="ThreadID"></param>
+		''' <remarks></remarks>
+		Public Shared Sub UpdatePostCache(ByVal PostID As Integer, ByVal ThreadID As Integer)
+			UpdatePostCache(PostID, ThreadID, -1, -1, -1, -1)
 		End Sub
 
 		''' <summary>
@@ -42,11 +52,11 @@ Namespace DotNetNuke.Modules.Forum.Components.Utilities
 		''' <param name="GroupID"></param>
 		''' <param name="ModuleID"></param>
 		''' <remarks>Forum cache can only be updated if the thread cache is updated.</remarks>
-		Public Shared Sub UpdatePostCache(ByVal PostID As Integer, ByVal ThreadID As Integer, ByVal ForumID As Integer, ByVal GroupID As Integer, ByVal ModuleID As Integer)
+		Public Shared Sub UpdatePostCache(ByVal PostID As Integer, ByVal ThreadID As Integer, ByVal ForumID As Integer, ByVal GroupID As Integer, ByVal ModuleID As Integer, ByVal ParentID As Integer)
 			PostController.ResetPostItemCache(PostID)
 
 			If ThreadID > 0 Then
-				UpdateThreadCache(ThreadID, ForumID, GroupID, ModuleID)
+				UpdateThreadCache(ThreadID, ForumID, GroupID, ModuleID, ParentID)
 			End If
 		End Sub
 
@@ -56,7 +66,7 @@ Namespace DotNetNuke.Modules.Forum.Components.Utilities
 		''' <param name="ThreadID">The thread we want to reset in cache.</param>
 		''' <remarks></remarks>
 		Public Shared Sub UpdateThreadCache(ByVal ThreadID As Integer)
-			UpdateThreadCache(ThreadID, -1, -1, -1)
+			UpdateThreadCache(ThreadID, -1, -1, -1, -1)
 		End Sub
 
 		''' <summary>
@@ -67,11 +77,11 @@ Namespace DotNetNuke.Modules.Forum.Components.Utilities
 		''' <param name="GroupID"></param>
 		''' <param name="ModuleID"></param>
 		''' <remarks></remarks>
-		Public Shared Sub UpdateThreadCache(ByVal ThreadID As Integer, ByVal ForumID As Integer, ByVal GroupID As Integer, ByVal ModuleID As Integer)
+		Public Shared Sub UpdateThreadCache(ByVal ThreadID As Integer, ByVal ForumID As Integer, ByVal GroupID As Integer, ByVal ModuleID As Integer, ByVal ParentID As Integer)
 			ThreadController.ResetThreadItemCache(ThreadID)
 
 			If ForumID > 0 Then
-				UpdateForumCache(ForumID, GroupID, ModuleID)
+				UpdateForumCache(ForumID, GroupID, ModuleID, ParentID)
 			End If
 		End Sub
 
@@ -82,28 +92,16 @@ Namespace DotNetNuke.Modules.Forum.Components.Utilities
 		''' <param name="GroupID"></param>
 		''' <param name="ModuleID"></param>
 		''' <remarks></remarks>
-		Public Shared Sub UpdateForumCache(ByVal ForumID As Integer, ByVal GroupID As Integer, ByVal ModuleID As Integer)
+		Public Shared Sub UpdateForumCache(ByVal ForumID As Integer, ByVal GroupID As Integer, ByVal ModuleID As Integer, ByVal ParentID As Integer)
 			ForumController.ResetForumItemCache(ForumID)
 
-			If ModuleID > 0 Then
-				ForumController.ResetModuleForumsCache(ModuleID)
+			If ParentID > 0 Then
+				ForumController.ResetForumItemCache(ParentID)
+				ForumController.ResetChildForumsCache(ParentID, GroupID)
+				ForumController.ResetChildForumsCache(0, GroupID)
+			Else
+				ForumController.ResetChildForumsCache(0, GroupID)
 			End If
-
-			If GroupID > 0 Then
-				ForumController.ResetGroupForumsCache(GroupID)
-				UpdateGroupCache(GroupID, ModuleID)
-			End If
-		End Sub
-
-		''' <summary>
-		''' 
-		''' </summary>
-		''' <param name="ParentID"></param>
-		''' <param name="GroupID"></param>
-		''' <param name="ModuleID"></param>
-		''' <remarks></remarks>
-		Public Shared Sub UpdateChildForumCache(ByVal ParentID As Integer, ByVal GroupID As Integer, ByVal ModuleID As Integer)
-			ForumController.ResetChildForumsCache(ParentID, GroupID)
 
 			If GroupID > 0 Then
 				UpdateGroupCache(GroupID, ModuleID)
@@ -118,10 +116,21 @@ Namespace DotNetNuke.Modules.Forum.Components.Utilities
 		''' <remarks></remarks>
 		Public Shared Sub UpdateGroupCache(ByVal GroupID As Integer, ByVal ModuleID As Integer)
 			GroupController.ResetGroupCacheItem(GroupID)
+			ForumController.ResetParentForumsCache(GroupID)
 
 			If ModuleID > 0 Then
-				GroupController.ResetModuleGroups(ModuleID)
+				UpdateModuleLevelCache(ModuleID)
 			End If
+		End Sub
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="ModuleID"></param>
+		''' <remarks></remarks>
+		Private Shared Sub UpdateModuleLevelCache(ByVal ModuleID As Integer)
+			ForumController.ResetModuleForumsCache(ModuleID)
+			GroupController.ResetModuleGroups(ModuleID)
 		End Sub
 
 	End Class

@@ -270,8 +270,8 @@ Namespace DotNetNuke.Modules.Forum
 					Next
 
 					' reset cache of both threads, we don't do this above in each post so it is only called once per thread. 
-					Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID, newForumID, objForum.GroupID, ModuleId)
-					Forum.Components.Utilities.Caching.UpdateThreadCache(PostID, ForumID, objForum.GroupID, ModuleId)
+					Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID, newForumID, objForum.GroupID, ModuleId, objForum.ParentID)
+					Forum.Components.Utilities.Caching.UpdateThreadCache(PostID, ForumID, objForum.GroupID, ModuleId, objForum.ParentID)
 
 					' Handle sending emails 
 					If chkEmailUsers.Checked And objConfig.MailNotification Then

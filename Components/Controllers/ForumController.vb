@@ -49,7 +49,14 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Function GetChildForums(ByVal ParentID As Integer, ByVal GroupId As Integer, ByVal EnabledOnly As Boolean) As List(Of ForumInfo)
 			Dim arrForums As List(Of ForumInfo)
-			Dim strCacheKey As String = ForumChildColCacheKeyPrefix + "-" + CStr(ParentID) + "-" + CStr(GroupId)
+			Dim strCacheKey As String
+
+			If EnabledOnly Then
+				strCacheKey = ForumChildColCacheKeyPrefix + "-" + CStr(ParentID) + "-" + CStr(GroupId) + "-TRUE"
+			Else
+				strCacheKey = ForumChildColCacheKeyPrefix + "-" + CStr(ParentID) + "-" + CStr(GroupId) + "-FALSE"
+			End If
+
 			arrForums = CType(DataCache.GetCache(strCacheKey), List(Of ForumInfo))
 
 			If arrForums Is Nothing Then
@@ -103,7 +110,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="GroupId">The GroupID of forums to populate.</param>
 		''' <returns>An arraylist of forums belonging to a specific GroupID.</returns>
 		''' <remarks></remarks>
-		Public Function GetGroupForums(ByVal GroupId As Integer) As List(Of ForumInfo)
+		Public Function GetParentForums(ByVal GroupId As Integer) As List(Of ForumInfo)
 			Dim arrForums As List(Of ForumInfo)
 			Dim strCacheKey As String = ForumGroupColCacheKeyPrefix + "-" + CStr(GroupId)
 			arrForums = CType(DataCache.GetCache(strCacheKey), List(Of ForumInfo))
@@ -153,8 +160,11 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="GroupID">The GroupID of forums to clear the cached items for.</param>
 		''' <remarks></remarks>
 		Friend Shared Sub ResetChildForumsCache(ByVal ParentID As Integer, ByVal GroupID As Integer)
-			Dim strCacheKey As String = ForumChildColCacheKeyPrefix + "-" + CStr(ParentID) + "-" + CStr(GroupID)
-			DataCache.RemoveCache(strCacheKey)
+			Dim strCacheKeyT As String = ForumChildColCacheKeyPrefix + "-" + CStr(ParentID) + "-" + CStr(GroupID) + "-TRUE"
+			Dim strCacheKeyF As String = ForumChildColCacheKeyPrefix + "-" + CStr(ParentID) + "-" + CStr(GroupID) + "-FALSE"
+
+			DataCache.RemoveCache(strCacheKeyT)
+			DataCache.RemoveCache(strCacheKeyF)
 		End Sub
 
 		''' <summary>
@@ -175,7 +185,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <param name="GroupId"></param>
 		''' <remarks></remarks>
-		Friend Shared Sub ResetGroupForumsCache(ByVal GroupId As Integer)
+		Friend Shared Sub ResetParentForumsCache(ByVal GroupId As Integer)
 			Dim strCacheKey As String = ForumGroupColCacheKeyPrefix + "-" + CStr(GroupId)
 			DataCache.RemoveCache(strCacheKey)
 		End Sub
@@ -347,10 +357,6 @@ Namespace DotNetNuke.Modules.Forum
 				End Try
 				Try
 					objForumInfo.MostRecentPostID = Convert.ToInt32(Null.SetNull(dr("MostRecentPostID"), objForumInfo.MostRecentPostID))
-				Catch
-				End Try
-				Try
-					objForumInfo.MostRecentThreadID = Convert.ToInt32(Null.SetNull(dr("MostRecentThreadID"), objForumInfo.MostRecentThreadID))
 				Catch
 				End Try
 				Try
