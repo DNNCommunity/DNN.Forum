@@ -1104,6 +1104,17 @@ Namespace DotNetNuke.Modules.Forum
 
 			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
 			RenderRowEnd(wr) ' </Tr>
+
+			' This is the last row displayed in the UI, create some space below.
+			RenderRowBegin(wr) '<tr>
+			RenderCellBegin(wr, "", "", "", "", "", "", "") '<td>
+			RenderCellEnd(wr) ' </td>
+			RenderCellBegin(wr, "", "", "", "", "", "", "") '<td>
+			wr.Write("<br />")
+			RenderCellEnd(wr) ' </td>
+			RenderCellBegin(wr, "", "", "", "", "", "", "") '<td>
+			RenderCellEnd(wr) ' </td>
+			RenderRowEnd(wr) ' </Tr>
 		End Sub
 
 		''' <summary>

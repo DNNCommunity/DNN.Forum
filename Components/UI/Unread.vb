@@ -165,7 +165,7 @@ Namespace DotNetNuke.Modules.Forum
 			If CurrentForumUser.UserID > 0 Then
 				cmdRead = New LinkButton
 				With cmdRead
-					.CssClass = "Forum_Profile"
+					.CssClass = "Forum_Link"
 					.ID = "chkRead"
 					.Text = ForumControl.LocalizedText("MarkThreadAsRead")
 				End With
@@ -756,7 +756,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			'breadcrumb row
 			RenderRowBegin(wr) '<Tr>
-			RenderCellBegin(wr, "", "", "100%", "left", "top", "", "")
+			RenderCellBegin(wr, "", "", "100%", "left", "top", "", "") ' <td>
 			Dim ChildGroupView As Boolean = False
 			If CType(ForumControl.TabModuleSettings("groupid"), String) <> String.Empty Then
 				ChildGroupView = True
@@ -766,14 +766,33 @@ Namespace DotNetNuke.Modules.Forum
 			RenderRowEnd(wr) ' </tr>
 
 			' Mark As Read linkbutton
-			If objConfig.EnableUserReadManagement Then
+			If objConfig.EnableUserReadManagement AndAlso CurrentForumUser.UserID > 0 Then
 				RenderRowBegin(wr) ' <tr>
-				RenderCellBegin(wr, "", "", "", "right", "", "", "")
+				RenderCellBegin(wr, "", "", "100%", "left", "", "", "") '<td>
+
+				' need a new table
+				RenderTableBegin(wr, 0, 0, "tblReadButton") ' <table>
+				RenderRowBegin(wr) '<tr>
+				RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
+				wr.Write("&nbsp;")
+				RenderCellEnd(wr) ' </td>
+				RenderCellBegin(wr, "Forum_ReplyCell", "", "85px", "right", "", "", "") ' <td>
 				cmdRead.RenderControl(wr)
-				RenderImage(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
+				'RenderImage(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
+				RenderCellEnd(wr) ' </td>
+				RenderRowEnd(wr) ' </tr>
+				RenderTableEnd(wr) ' </table>
+
 				RenderCellEnd(wr) ' </td>
 				RenderRowEnd(wr) ' </tr>
 			End If
+
+			' Spacer Row (very last line we generate in UI)
+			RenderRowBegin(wr) ' <tr>
+			RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
+			wr.Write("<br />")
+			RenderCellEnd(wr) ' </td>
+			RenderRowEnd(wr) ' </tr>
 
 			RenderTableEnd(wr) ' </table>
 			RenderCellEnd(wr) ' </td>

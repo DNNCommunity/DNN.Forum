@@ -146,18 +146,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' The PortalID the forum belongs too. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public ReadOnly Property PortalID() As Integer
-			Get
-				Return ParentGroup.PortalID
-			End Get
-		End Property
-
-		''' <summary>
 		''' The group information which contains this forum. 
 		''' </summary>
 		''' <value></value>
@@ -209,7 +197,7 @@ Namespace DotNetNuke.Modules.Forum
 			Get
 				Dim cntPost As New PostController
 				If MostRecentPostID > 0 Then
-					Return cntPost.GetPostInfo(MostRecentPostID, PortalID)
+					Return cntPost.GetPostInfo(MostRecentPostID, ParentGroup.PortalID)
 				Else
 					Return Nothing
 				End If

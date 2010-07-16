@@ -1441,7 +1441,9 @@ Namespace DotNetNuke.Modules.Forum
 				RenderCellEnd(wr) ' </td>
 
 				RenderCellBegin(wr, "Forum_ReplyCell", "", "85px", "right", "", "", "") ' <td>
-				cmdRead.RenderControl(wr)
+				If objConfig.EnableUserReadManagement AndAlso CurrentForumUser.UserID > 0 Then
+					cmdRead.RenderControl(wr)
+				End If
 				RenderCellEnd(wr) ' </td>
 
 				RenderRowEnd(wr) ' </tr>
@@ -1452,6 +1454,13 @@ Namespace DotNetNuke.Modules.Forum
 			Else
 				' user is not logged on (or notification is not enabled)
 			End If
+
+			RenderRowBegin(wr) ' <tr>
+			RenderCellBegin(wr, "", "", "", "right", "", "", "")
+			wr.Write("<br />")
+			RenderCellEnd(wr) ' </td>
+			RenderRowEnd(wr) ' </tr>
+
 
 			RenderTableEnd(wr) ' </table>
 			RenderCellEnd(wr) ' </td>
