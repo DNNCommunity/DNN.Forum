@@ -2677,7 +2677,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 		''' <summary>
-		''' 
+		''' Determines if we should render the quick reply section based on several conditions, also adds a bottom row for padding.
 		''' </summary>
 		''' <param name="wr"></param>
 		''' <remarks></remarks>
@@ -2697,6 +2697,16 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 				End If
 			End If
+			' render bottom spacer row
+			RenderRowBegin(wr) '<tr>
+			RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td> 
+			RenderCellEnd(wr) ' </td> 
+			RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td> 
+			wr.Write("<br />")
+			RenderCellEnd(wr) ' </td> 
+			RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td> 
+			RenderCellEnd(wr) ' </td> 
+			RenderRowEnd(wr) ' </tr>  
 		End Sub
 
 		''' <summary>
