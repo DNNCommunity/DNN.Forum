@@ -357,6 +357,26 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 		End Property
 
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property SearchTabID() As Integer
+			Get
+				Dim objModules As New DotNetNuke.Entities.Modules.ModuleController()
+				Dim SearchModule As DotNetNuke.Entities.Modules.ModuleInfo
+				SearchModule = objModules.GetModuleByDefinition(CurrentPortalSettings.PortalId, "Search Results")
+
+				If SearchModule IsNot Nothing Then
+					Return SearchModule.TabID
+				Else
+					Return -1
+				End If
+			End Get
+		End Property
+
 #End Region
 
 #Region "General Settings"

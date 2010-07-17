@@ -53,7 +53,8 @@ Namespace DotNetNuke.Modules.Forum
 		Private hsThreadAnswers As New Hashtable
 		Private rblstPoll As RadioButtonList
 		Private cmdVote As LinkButton
-		Private cmdBookmark As ImageButton	'[skeel] added
+		Private cmdBookmark As ImageButton
+		Private tagsControl As DotNetNuke.Web.UI.WebControls.Tags
 		Private txtQuickReply As TextBox
 		Private cmdSubmit As LinkButton
 		Private cmdThreadSubscribers As LinkButton
@@ -660,7 +661,6 @@ Namespace DotNetNuke.Modules.Forum
 				.Text = ForumControl.LocalizedText("Vote")
 			End With
 
-			'[skeel] added
 			If CurrentForumUser.UserID > 0 Then
 				Me.cmdBookmark = New ImageButton
 				With cmdBookmark
@@ -668,7 +668,7 @@ Namespace DotNetNuke.Modules.Forum
 					.ID = "cmdBookmark"
 				End With
 				Dim BookmarkCtl As New BookmarkController
-				If BookmarkCtl.BookmarkCheck(CurrentForumUser.UserID, ThreadId, ModuleID) = True Then
+				If BookmarkCtl.BookmarkCheck(CurrentForumUser.UserID, ThreadID, ModuleID) = True Then
 					With cmdBookmark
 						.AlternateText = ForumControl.LocalizedText("RemoveBookmark")
 						.ToolTip = ForumControl.LocalizedText("RemoveBookmark")
@@ -686,6 +686,22 @@ Namespace DotNetNuke.Modules.Forum
 			If Not CurrentForumUser.UserID > 0 Then
 				ddlViewDescending.Visible = False
 			End If
+
+			' Tags
+			Me.tagsControl = New DotNetNuke.Web.UI.WebControls.Tags
+			With tagsControl
+				.ID = "tagsControl"
+				.AllowTagging = True
+				.NavigateUrlFormatString = DotNetNuke.Common.Globals.NavigateURL(objConfig.SearchTabID, "", "Tag={0}")
+				.RepeatDirection = "Horizontal"
+				.Separator = ","
+				.ShowCategories = True
+				.ShowTags = True
+				.AddImageUrl = "~/images/add.gif"
+				.CancelImageUrl = "~/images/lt.gif"
+				.SaveImageUrl = "~/images/save.gif"
+				.CssClass = "SkinObject"
+			End With
 
 			' Quick Reply
 			Me.txtQuickReply = New TextBox
@@ -740,11 +756,14 @@ Namespace DotNetNuke.Modules.Forum
 			RenderTableBegin(wr, "tblForumContainer", "Forum_Container", "", "100%", "0", "0", "left", "top", "0")
 			RenderNavBar(wr, objConfig, ForumControl)
 			RenderSearchBar(wr)
-			RenderBreadCrumbRow(wr)
+			RenderTopBreadcrumb(wr)
+			RenderTopThreadButtons(wr)
 			RenderThread(wr)
-			RenderFooter(wr)
-			RenderBottomBreadCrumbRow(wr)
+			RenderBottomThreadButtons(wr)
+			RenderBottomBreadCrumb(wr)
+			RenderTags(wr)
 			RenderQuickReply(wr)
+			RenderThreadOptions(wr)
 			RenderTableEnd(wr)
 
 			'increment the thread view count
@@ -851,6 +870,7 @@ Namespace DotNetNuke.Modules.Forum
 					Controls.Add(cmdSubmit)
 				End If
 
+				Controls.Add(tagsControl)
 				Controls.Add(ddlViewDescending)
 				Controls.Add(txtForumSearch)
 				Controls.Add(cmdForumSearch)
@@ -951,6 +971,8 @@ Namespace DotNetNuke.Modules.Forum
 					trcRating.Enabled = False
 				End If
 
+				tagsControl.ContentItem = DotNetNuke.Entities.Content.Common.Util.GetContentController().GetContentItem(objThread.ContentItemId)
+
 				PostCollection = ctlPost.PostGetAll(ThreadID, PostPage, CurrentForumUser.PostsPerPage, ForumControl.Descending, PortalID)
 			Catch exc As Exception
 				LogException(exc)
@@ -1047,7 +1069,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <param name="wr"></param>
 		''' <remarks></remarks>
-		Private Sub RenderBreadCrumbRow(ByVal wr As HtmlTextWriter)
+		Private Sub RenderTopBreadcrumb(ByVal wr As HtmlTextWriter)
 			RenderRowBegin(wr) '<tr>
 			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")	' <td></td>
 			RenderCellBegin(wr, "", "", "100%", "left", "bottom", "", "") ' <td>
@@ -1090,7 +1112,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="wr"></param>
 		''' <remarks>
 		''' </remarks>
-		Private Sub RenderThread(ByVal wr As HtmlTextWriter)
+		Private Sub RenderTopThreadButtons(ByVal wr As HtmlTextWriter)
 			Dim fSubject As String
 			Dim url As String
 
@@ -1330,7 +1352,14 @@ Namespace DotNetNuke.Modules.Forum
 			RenderCellEnd(wr) ' </td>
 			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
 			RenderRowEnd(wr) ' </tr>       
+		End Sub
 
+		''' <summary>
+		''' This area is used to render all individual posts and the footer  as well as any poll related UI (by calling other methods)
+		''' </summary>
+		''' <param name="wr"></param>
+		''' <remarks></remarks>
+		Private Sub RenderThread(ByVal wr As HtmlTextWriter)
 			'CP - Spacer Row between final post footer and bottom panel
 			RenderRowBegin(wr) '<tr>
 			RenderCapCell(wr, objConfig.GetThemeImageURL("height_spacer.gif"), "", "")
@@ -1347,6 +1376,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			' Loop round rows in selected thread (These are rows w/ user avatar/alias, post body)
 			RenderPosts(wr)
+			RenderFooter(wr)
 		End Sub
 
 		''' <summary>
@@ -1510,47 +1540,30 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="wr"></param>
 		''' <remarks></remarks>
 		Private Sub RenderPosts(ByVal wr As HtmlTextWriter)
-			Try
-				' use a counter to determine odd/even for alternating colors (via css)
-				Dim intPostCount As Integer = 1
-				Dim totalPostCount As Integer = PostCollection.Count
-				Dim currentCount As Integer = 1
+			' use a counter to determine odd/even for alternating colors (via css)
+			Dim intPostCount As Integer = 1
+			Dim totalPostCount As Integer = PostCollection.Count
+			Dim currentCount As Integer = 1
 
-				RenderRowBegin(wr) '<tr>                
-				RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
-				RenderCellBegin(wr, "", "", "100%", "", "top", "", "")	' <td>
-				RenderTableBegin(wr, "", "", "", "100%", "0", "0", "center", "", "0")	 ' <table> 
+			RenderRowBegin(wr) '<tr>                
+			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
+			RenderCellBegin(wr, "", "", "100%", "", "top", "", "")	' <td>
+			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "center", "", "0")	 ' <table> 
 
-				For Each Post As PostInfo In PostCollection
-					Dim parent As New ThreadInfo()
-
-					Try
-						parent = Post.ParentThread
-					Catch exc As Exception
-						If parent Is Nothing Then
-							Services.Exceptions.ProcessPageLoadException(New Exception("Forum post " + Post.PostID.ToString + " has no parent.", exc))
-						Else
-							Services.Exceptions.ProcessPageLoadException(New Exception("Post object is nothing.", exc))
-						End If
-						Exit Sub
-					End Try
-
-					Dim postCountIsEven As Boolean = ThreadIsEven(intPostCount)
-					Me.RenderPost(wr, Post, postCountIsEven)
-					' spacer row should be displayed in flat view only
-					If Not currentCount = totalPostCount Then
-						RenderSpacerRow(wr)
-						currentCount += 1
-					End If
-					intPostCount += 1
-				Next
-				RenderTableEnd(wr) ' </table>
-				RenderCellEnd(wr) ' </td> 
-				RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
-				RenderRowEnd(wr) ' </tr>
-			Catch ex As Exception
-				LogException(ex)
-			End Try
+			For Each Post As PostInfo In PostCollection
+				Dim postCountIsEven As Boolean = ThreadIsEven(intPostCount)
+				Me.RenderPost(wr, Post, postCountIsEven)
+				' spacer row should be displayed in flat view only
+				If Not currentCount = totalPostCount Then
+					RenderSpacerRow(wr)
+					currentCount += 1
+				End If
+				intPostCount += 1
+			Next
+			RenderTableEnd(wr) ' </table>
+			RenderCellEnd(wr) ' </td> 
+			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
+			RenderRowEnd(wr) ' </tr>
 		End Sub
 
 		''' <summary>
@@ -1677,7 +1690,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			' Author area
 			RenderCellBegin(wr, authorCellClass, "", "20%", "center", "top", "1", "1")	 ' <td>
-			Me.RenderAuthor(wr, Post, PostCountIsEven)
+			Me.RenderPostAuthor(wr, Post, PostCountIsEven)
 			RenderCellEnd(wr) ' </td> 
 
 			' post area
@@ -1696,7 +1709,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="PostCountIsEven"></param>
 		''' <remarks>
 		''' </remarks>
-		Private Sub RenderAuthor(ByVal wr As HtmlTextWriter, ByVal Post As PostInfo, ByVal PostCountIsEven As Boolean)
+		Private Sub RenderPostAuthor(ByVal wr As HtmlTextWriter, ByVal Post As PostInfo, ByVal PostCountIsEven As Boolean)
 			If Not Post Is Nothing Then
 				Dim author As ForumUserInfo = Post.Author
 				Dim authorOnline As Boolean = (author.EnableOnlineStatus AndAlso author.IsOnline AndAlso (ForumControl.objConfig.EnableUsersOnline))
@@ -2393,12 +2406,12 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 		''' <summary>
-		''' bottom Breadcrumb and ddl's, along w/ subscribe chkbx (last row)
+		''' Renders the bottom prev/next buttons.
 		''' </summary>
 		''' <param name="wr"></param>
 		''' <remarks>
 		''' </remarks>
-		Private Sub RenderBottomBreadCrumbRow(ByVal wr As HtmlTextWriter)
+		Private Sub RenderBottomThreadButtons(ByVal wr As HtmlTextWriter)
 			Dim url As String = String.Empty
 
 			RenderRowBegin(wr) '<tr>
@@ -2619,10 +2632,17 @@ Namespace DotNetNuke.Modules.Forum
 
 			wr.RenderEndTag() ' </Td>
 			wr.RenderEndTag() ' </Tr>
+		End Sub
 
+		''' <summary>
+		''' Renders the bottom breadcrumb.
+		''' </summary>
+		''' <param name="wr"></param>
+		''' <remarks></remarks>
+		Private Sub RenderBottomBreadCrumb(ByVal wr As HtmlTextWriter)
 			RenderRowBegin(wr) '<Tr>
 
-			RenderCellBegin(wr, "", "", "", "left", "", "3", "") ' <td> 
+			RenderCellBegin(wr, "", "", "", "left", "", "2", "") ' <td> 
 			Dim ChildGroupView As Boolean = False
 			If CType(ForumControl.TabModuleSettings("groupid"), String) <> String.Empty Then
 				ChildGroupView = True
@@ -2630,16 +2650,56 @@ Namespace DotNetNuke.Modules.Forum
 			wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.Posts, objThread, objConfig, ChildGroupView))
 			RenderCellEnd(wr) ' </td> 
 			RenderRowEnd(wr) ' </tr> 
+		End Sub
 
-			'Treeview ViewOrder drop down lists
+		''' <summary>
+		''' Renders the tags area, which is blow the bottom breadcrumb. 
+		''' </summary>
+		''' <param name="wr"></param>
+		''' <remarks></remarks>
+		Private Sub RenderTags(ByVal wr As HtmlTextWriter)
+			RenderRowBegin(wr) '<tr>
+
+			RenderCellBegin(wr, "", "", "98%", "left", "", "2", "")	' <td> 
+			tagsControl.RenderControl(wr)
+			RenderCellEnd(wr) ' </td> 
+
+			RenderRowEnd(wr) ' </tr>  
+		End Sub
+
+		''' <summary>
+		''' Determines if we should render the quick reply section based on several conditions, also adds a bottom row for padding.
+		''' </summary>
+		''' <param name="wr"></param>
+		''' <remarks></remarks>
+		Private Sub RenderQuickReply(ByVal wr As HtmlTextWriter)
+			If objConfig.EnableQuickReply Then
+				If (CurrentForumUser.UserID > 0) And (Not objThread.ForumID = -1) Then
+					If Not objThread.ContainingForum.PublicPosting Then
+						If CurrentForumUser.IsBanned = False And objThread.IsClosed = False Then
+							If objSecurity.IsAllowedToPostRestrictedReply Then
+								QuickReply(wr)
+							End If
+						End If
+					Else
+						If CurrentForumUser.IsBanned = False And objThread.IsClosed = False Then
+							QuickReply(wr)
+						End If
+					End If
+				End If
+			End If
+		End Sub
+
+		''' <summary>
+		''' Renders the bottom area that includes date drop down, view subscribers link (for admin) and notification checkbox.
+		''' </summary>
+		''' <param name="wr"></param>
+		''' <remarks></remarks>
+		Private Sub RenderThreadOptions(ByVal wr As HtmlTextWriter)
 			RenderRowBegin(wr) '<tr>
 			RenderCellBegin(wr, "", "", "100%", "right", "", "2", "") ' <td> 
 
 			If PostCollection.Count > 0 Then
-				'If objConfig.EnableTreeView Then
-				'	ddlForumView.RenderControl(wr)
-				'End If
-
 				wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 				wr.AddAttribute(HtmlTextWriterAttribute.Src, objConfig.GetThemeImageURL("spacer.gif"))
 				wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <Img>
@@ -2650,7 +2710,7 @@ Namespace DotNetNuke.Modules.Forum
 			RenderCellEnd(wr) ' </td> 
 			RenderRowEnd(wr) ' </tr>   
 
-			'[Skeel] Notifications row
+			' Notifications row
 			RenderRowBegin(wr) '<tr>
 			RenderCellBegin(wr, "", "", "", "right", "", "2", "")	' <td> 
 			wr.Write("<br />")
@@ -2678,29 +2738,7 @@ Namespace DotNetNuke.Modules.Forum
 			RenderCellEnd(wr) ' </td> 
 			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
 			RenderRowEnd(wr) ' </tr>   
-		End Sub
 
-		''' <summary>
-		''' Determines if we should render the quick reply section based on several conditions, also adds a bottom row for padding.
-		''' </summary>
-		''' <param name="wr"></param>
-		''' <remarks></remarks>
-		Private Sub RenderQuickReply(ByVal wr As HtmlTextWriter)
-			If objConfig.EnableQuickReply Then
-				If (CurrentForumUser.UserID > 0) And (Not ForumId = -1) Then
-					If Not objThread.ContainingForum.PublicPosting Then
-						If CurrentForumUser.IsBanned = False And objThread.IsClosed = False Then
-							If objSecurity.IsAllowedToPostRestrictedReply Then
-								QuickReply(wr)
-							End If
-						End If
-					Else
-						If CurrentForumUser.IsBanned = False And objThread.IsClosed = False Then
-							QuickReply(wr)
-						End If
-					End If
-				End If
-			End If
 			' render bottom spacer row
 			RenderRowBegin(wr) '<tr>
 			RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td> 
@@ -3013,15 +3051,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 		''' <summary>
-		''' CP-ADD - Not implemented yet
-		''' </summary>
-		''' <param name="wr">HtmlTextWriter</param>
-		''' <remarks>
-		''' </remarks>
-		Private Sub RenderPerPostRating(ByVal wr As HtmlTextWriter)
-		End Sub
-
-		''' <summary>
 		''' Builds a bookmark for RenderPost, used to navigate directly to a specific post
 		''' </summary>
 		''' <param name="wr"></param>
@@ -3039,17 +3068,13 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Private Sub QuickReply(ByVal wr As HtmlTextWriter)
 			RenderRowBegin(wr) '<tr>
-			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
-
-			RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td> 
+			RenderCellBegin(wr, "", "", "100%", "left", "middle", "2", "") ' <td> 
 			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0") ' <table>
 			RenderRowBegin(wr) ' <tr>
 			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "Forum_HeaderCapLeft", "") ' <td><img/></td>
-
-			RenderCellBegin(wr, "Forum_Header", "", "", "", "", "", "")	' <td>
+			RenderCellBegin(wr, "Forum_Header", "", "100%", "", "", "", "")	' <td>
 			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0") ' <table>
 			RenderRowBegin(wr) ' <tr>
-
 			RenderCellBegin(wr, "", "", "100%", "", "", "", "")  ' <td>
 			RenderDivBegin(wr, "", "Forum_HeaderText") ' <span>
 			wr.Write("&nbsp;" & "Quick Reply")
@@ -3062,49 +3087,37 @@ Namespace DotNetNuke.Modules.Forum
 			RenderRowEnd(wr) ' </tr>
 			RenderTableEnd(wr) ' </table>
 			RenderCellEnd(wr) ' </td>
-			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
 			RenderRowEnd(wr) ' </tr>  
 
 			' Show quick reply textbox row
 			RenderRowBegin(wr) '<tr>
-			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
-
-			RenderCellBegin(wr, "Forum_UCP_HeaderInfo", "", "", "left", "middle", "", "") ' <td> 
+			RenderCellBegin(wr, "Forum_UCP_HeaderInfo", "", "", "left", "middle", "2", "") ' <td> 
 			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0") ' <table>
 			RenderRowBegin(wr) ' <tr>
-
 			RenderCellBegin(wr, "", "", "125px", "", "top", "", "")	' <td>
 			RenderDivBegin(wr, "", "Forum_NormalBold") ' <span>
 			wr.Write("&nbsp;" & "Body")
 			RenderDivEnd(wr) ' </span>
 			RenderCellEnd(wr) ' </td> 
-
 			RenderCellBegin(wr, "", "", "", "left", "", "", "")	' <td>
 			txtQuickReply.RenderControl(wr)
 			RenderCellEnd(wr) ' </td> 
-
 			RenderRowEnd(wr) ' </tr>
 			RenderTableEnd(wr) ' </table>
 			RenderCellEnd(wr) ' </td>
-			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
 			RenderRowEnd(wr) ' </tr>  
 
 			' Submit Row
 			RenderRowBegin(wr) '<tr>
-			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
-
-			RenderCellBegin(wr, "", "", "", "center", "middle", "", "")	' <td> 
+			RenderCellBegin(wr, "", "", "", "center", "middle", "2", "")	' <td> 
 			RenderTableBegin(wr, "", "", "", "125px", "0", "0", "", "", "0")	' <table>
 			RenderRowBegin(wr) ' <tr>
-
-
 			RenderCellBegin(wr, "Forum_NavBarButton", "", "125px", "", "", "", "")	' <td>
 			cmdSubmit.RenderControl(wr)
 			RenderCellEnd(wr) ' </td> 
 			RenderRowEnd(wr) ' </tr>
 			RenderTableEnd(wr) ' </table>
 			RenderCellEnd(wr) ' </td> 
-			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
 			RenderRowEnd(wr) ' </tr>  
 		End Sub
 

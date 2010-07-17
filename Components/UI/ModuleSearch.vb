@@ -474,7 +474,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim ctlSearch As New SearchController
 			Dim InThreadView As Boolean = False
 
-			If Aggregated Or myThreads Or LatestHours Then
+			If Aggregated Or MyThreads Or LatestHours Then
 				InThreadView = True
 			End If
 
