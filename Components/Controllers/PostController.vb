@@ -123,7 +123,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim cntThread As New ThreadController
 
 			objPost = PostGet(PostID, PortalID)
-			objThread = cntThread.GetThreadInfo(objPost.PostID)
+			objThread = cntThread.GetThread(objPost.PostID)
 
 			DotNetNuke.Modules.Forum.DataProvider.Instance().PostDelete(PostID, ModeratorID, Notes, PortalID)
 

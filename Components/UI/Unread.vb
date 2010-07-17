@@ -150,7 +150,7 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			Dim ctlThread As New ThreadController
-			ThreadCollection = ctlThread.ThreadGetUnread(ModuleID, CurrentForumUser.ThreadsPerPage, CurrentPage, CurrentForumUser.UserID)
+			ThreadCollection = ctlThread.GetUnreadThreads(ModuleID, CurrentForumUser.ThreadsPerPage, CurrentPage, CurrentForumUser.UserID)
 		End Sub
 
 		''' <summary>
@@ -915,7 +915,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim ReadLink As String
 
 			ReadLink = Utilities.Links.ContainerViewThreadLink(TabID, Thread.ForumID, Thread.ThreadID) & "#unread"
-			usrThread = cltUserThread.GetCachedUserThreadRead(CurrentForumUser.UserID, Thread.ThreadID)
+			usrThread = cltUserThread.GetThreadReadsByUser(CurrentForumUser.UserID, Thread.ThreadID)
 
 			If usrThread Is Nothing Then
 				'All new

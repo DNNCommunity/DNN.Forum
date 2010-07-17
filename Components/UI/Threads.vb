@@ -112,7 +112,7 @@ Namespace DotNetNuke.Modules.Forum
 					If objThread Is Nothing Then
 						Return True
 					Else
-						userthread = userthreadController.GetCachedUserThreadRead(UserID, objThread.ThreadID)
+						userthread = userthreadController.GetThreadReadsByUser(UserID, objThread.ThreadID)
 						If userthread Is Nothing Then
 							Return True
 						Else
@@ -532,12 +532,12 @@ Namespace DotNetNuke.Modules.Forum
 			Dim userForumController As New UserForumsController
 			Dim userForum As New UserForumsInfo
 
-			userForum = userForumController.GetCachedUserForumRead(CurrentForumUser.UserID, ForumID)
+			userForum = userForumController.GetUsersForumReads(CurrentForumUser.UserID, ForumID)
 
 			If Not userForum Is Nothing Then
 				userForum.LastVisitDate = Now
 				userForumController.Update(userForum)
-				UserForumsController.ResetUserForumReadCache(CurrentForumUser.UserID, ForumID)
+				UserForumsController.ResetUsersForumReads(CurrentForumUser.UserID, ForumID)
 			Else
 				userForum = New UserForumsInfo
 				With userForum
@@ -546,7 +546,7 @@ Namespace DotNetNuke.Modules.Forum
 					.LastVisitDate = Now
 				End With
 				userForumController.Add(userForum)
-				UserForumsController.ResetUserForumReadCache(CurrentForumUser.UserID, ForumID)
+				UserForumsController.ResetUsersForumReads(CurrentForumUser.UserID, ForumID)
 			End If
 			'ForumController.ResetForumInfoCache(ForumID)
 		End Sub
@@ -645,7 +645,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				' Now we get threads to display for this user
 				Dim ctlThread As New ThreadController
-				ThreadCollection = ctlThread.ThreadGetAll(ModuleID, ForumID, CurrentForumUser.ThreadsPerPage, CurrentPage, Filter, PortalID)
+				ThreadCollection = ctlThread.GetForumThreads(ModuleID, ForumID, CurrentForumUser.ThreadsPerPage, CurrentPage, Filter, PortalID)
 
 			Catch exc As Exception
 				LogException(exc)
@@ -1630,7 +1630,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim ReadLink As String
 
 			ReadLink = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, Thread.ThreadID) & "#unread"
-			usrThread = cltUserThread.GetCachedUserThreadRead(CurrentForumUser.UserID, Thread.ThreadID)
+			usrThread = cltUserThread.GetThreadReadsByUser(CurrentForumUser.UserID, Thread.ThreadID)
 
 			If usrThread Is Nothing Then
 				'All new

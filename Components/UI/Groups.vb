@@ -640,17 +640,20 @@ Namespace DotNetNuke.Modules.Forum
 						If objForum.IsParentForum = True Then
 							'Parent Forum
 							Dim LastVisitDate As Date = Now.AddYears(1)
-							Dim dr As IDataReader = userForumController.GetSubForumIDs(objForum.ForumID)
-							While dr.Read
+							Dim cntForum As New ForumController()
+							Dim colChildForums As New List(Of ForumInfo)
+							colChildForums = cntForum.GetChildForums(objForum.ForumID, objForum.GroupID, True)
+
+							For Each objChildForum As ForumInfo In colChildForums
 								Dim userForum As New UserForumsInfo
-								userForum = userForumController.GetCachedUserForumRead(CurrentForumUser.UserID, CInt(dr("ForumID").ToString))
+								userForum = userForumController.GetUsersForumReads(CurrentForumUser.UserID, objChildForum.ForumID)
 								If Not userForum Is Nothing Then
 									If LastVisitDate > userForum.LastVisitDate Then
 										LastVisitDate = userForum.LastVisitDate
 									End If
 								End If
-							End While
-							dr.Close()
+							Next
+
 							If objForum.MostRecentPost Is Nothing Then
 								HasNewThreads = False
 							Else
@@ -661,7 +664,7 @@ Namespace DotNetNuke.Modules.Forum
 						Else
 							Dim userForum As New UserForumsInfo
 							If Not (objForum.ForumID = -1) Then
-								userForum = userForumController.GetCachedUserForumRead(CurrentForumUser.UserID, objForum.ForumID)
+								userForum = userForumController.GetUsersForumReads(CurrentForumUser.UserID, objForum.ForumID)
 							End If
 
 							If Not userForum Is Nothing Then

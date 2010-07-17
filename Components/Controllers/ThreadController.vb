@@ -20,9 +20,6 @@
 Option Strict On
 Option Explicit On
 
-Imports DotNetNuke.Services.Sitemap
-Imports DotNetNuke.Entities.Portals
-
 Namespace DotNetNuke.Modules.Forum
 
 	''' <summary>
@@ -31,7 +28,6 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks></remarks>
 	Public Class ThreadController
-		Inherits SitemapProvider
 		Implements DotNetNuke.Entities.Modules.ISearchable
 		Implements IEmailQueueable
 
@@ -39,6 +35,20 @@ Namespace DotNetNuke.Modules.Forum
 
 		Private Const THREAD_KEY As String = Constants.CACHE_KEY_PREFIX + "THREAD_"
 		Private Const RSS_KEY As String = Constants.CACHE_KEY_PREFIX + "RSS_"
+
+#End Region
+
+#Region "Public Methods"
+
+		''' <summary>
+		''' This is used to return an eligible list of threads for the seo sitemap provider. It is not cached because SEO Sitemap generation should only occur once a day and caching would avoid instance updates if pushed from admin UI module. 
+		''' </summary>
+		''' <param name="PortalID"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Function GetSitemapThreads(ByVal PortalID As Integer) As List(Of ThreadInfo)
+			Return CBO.FillCollection(Of ThreadInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().GetSitemapThreads(PortalID))
+		End Function
 
 #End Region
 
@@ -57,7 +67,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="TotalRecords"></param>
 		''' <returns>A cached list of threads.</returns>
 		''' <remarks>Other aspects do not use this because of pagesize/pageindex variance. (also reason we use moduleid for cache key here)</remarks>
-		Friend Function ThreadListGetCached(ByVal ModuleID As Integer, ByVal ForumID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer, ByVal Filter As String, ByVal PortalID As Integer, ByRef TotalRecords As Integer) As List(Of ThreadInfo)
+		Friend Function GetRSSFeed(ByVal ModuleID As Integer, ByVal ForumID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer, ByVal Filter As String, ByVal PortalID As Integer, ByRef TotalRecords As Integer) As List(Of ThreadInfo)
 			Dim strCacheKey As String = RSS_KEY & ForumID.ToString() & ModuleID.ToString()
 			Dim objThreads As List(Of ThreadInfo) = CType(DataCache.GetCache(strCacheKey), List(Of ThreadInfo))
 
@@ -65,7 +75,7 @@ Namespace DotNetNuke.Modules.Forum
 				'thread caching settings
 				Dim timeOut As Int32 = Constants.CACHE_TIMEOUT * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
 
-				objThreads = ThreadGetAll(ModuleID, ForumID, PageSize, PageIndex, Filter, PortalID)
+				objThreads = GetForumThreads(ModuleID, ForumID, PageSize, PageIndex, Filter, PortalID)
 
 				'Cache Thread if timeout > 0 and Thread is not null
 				If timeOut > 0 And objThreads IsNot Nothing Then
@@ -83,7 +93,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns>ThreadInfo object</returns>
 		''' <remarks>
 		''' </remarks>
-		Friend Function GetThreadInfo(ByVal ThreadID As Integer) As ThreadInfo
+		Friend Function GetThread(ByVal ThreadID As Integer) As ThreadInfo
 			Dim strCacheKey As String = THREAD_KEY & CStr(ThreadID)
 			Dim objThread As ThreadInfo = CType(DataCache.GetCache(strCacheKey), ThreadInfo)
 
@@ -108,7 +118,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <param name="ThreadID"></param>
 		''' <remarks></remarks>
-		Friend Shared Sub ResetThreadItemCache(ByVal ThreadID As Integer)
+		Friend Shared Sub ResetThreadCache(ByVal ThreadID As Integer)
 			Dim strCacheKey As String = THREAD_KEY & ThreadID.ToString
 			DataCache.RemoveCache(strCacheKey)
 		End Sub
@@ -122,7 +132,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="LoggedOnUserID"></param>
 		''' <returns></returns>
 		''' <remarks>Added by Skeel</remarks>
-		Friend Function ThreadGetUnread(ByVal ModuleId As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer, ByVal LoggedOnUserID As Integer) As List(Of ThreadInfo)
+		Friend Function GetUnreadThreads(ByVal ModuleId As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer, ByVal LoggedOnUserID As Integer) As List(Of ThreadInfo)
 			Return CBO.FillCollection(Of ThreadInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadGetUnread(ModuleId, PageSize, PageIndex, LoggedOnUserID))
 		End Function
 
@@ -135,13 +145,13 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="PageIndex"></param>
 		''' <param name="Filter"></param>
 		''' <returns></returns>
-		''' <remarks></remarks>
-		Friend Function ThreadGetAll(ByVal ModuleId As Integer, ByVal ForumID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer, ByVal Filter As String, ByVal PortalID As Integer) As List(Of ThreadInfo)
+		''' <remarks>This is not meant to be cached because of filtering and pagesize.</remarks>
+		Friend Function GetForumThreads(ByVal ModuleId As Integer, ByVal ForumID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer, ByVal Filter As String, ByVal PortalID As Integer) As List(Of ThreadInfo)
 			Return CBO.FillCollection(Of ThreadInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadGetAll(ModuleId, ForumID, PageSize, PageIndex, Filter, PortalID))
 		End Function
 
 		''' <summary>
-		''' Gets all threads for a single forum for a specific user
+		''' Gets all threads for a single forum for a specific user in order to 'mark all as read'. 
 		''' </summary>
 		''' <param name="userID"></param>
 		''' <param name="ForumID"></param>
@@ -152,22 +162,12 @@ Namespace DotNetNuke.Modules.Forum
 		End Function
 
 		''' <summary>
-		''' Gets a specific thread
-		''' </summary>
-		''' <param name="ThreadId"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Friend Function ThreadGet(ByVal ThreadId As Integer) As ThreadInfo
-			Return CBO.FillObject(Of ThreadInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadGet(ThreadId))
-		End Function
-
-		''' <summary>
 		''' Deletes a thread (and the initial post which is the thread) but first deletes all posts in that thread individually. The Delete Thread sproc simply deletes any poll related data prior to thread deletion. 
 		''' </summary>
 		''' <param name="ThreadID"></param>
 		''' <remarks>Never handle email sends from here. All posts are deleted 1 by 1 so that all statistics are easily updated minimizing the potential for error. 
 		''' </remarks>
-		Friend Sub ThreadDelete(ByVal ThreadID As Integer, ByVal PortalID As Integer, ByVal Notes As String)
+		Friend Sub DeleteThread(ByVal ThreadID As Integer, ByVal PortalID As Integer, ByVal Notes As String)
 			' we need to get all the posts in the thread so each can be deleted properly (and thus decrease user post counts)
 			Dim cntPost As New PostController
 			Dim arrPost As New List(Of PostInfo)
@@ -201,7 +201,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ParentID"></param>
 		''' <remarks>
 		''' </remarks>
-		Friend Sub ThreadMove(ByVal ThreadID As Integer, ByVal NewForumID As Integer, ByVal ModID As Integer, ByVal Notes As String, ByVal ParentID As Integer)
+		Friend Sub MoveThread(ByVal ThreadID As Integer, ByVal NewForumID As Integer, ByVal ModID As Integer, ByVal Notes As String, ByVal ParentID As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadMove(ThreadID, NewForumID, ModID, Notes)
 		End Sub
 
@@ -217,7 +217,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ParentID"></param>
 		''' <param name="ModuleID"></param>
 		''' <remarks></remarks>
-		Friend Sub ThreadSplit(ByVal PostID As Integer, ByVal ThreadID As Integer, ByVal NewForumID As Integer, ByVal ModeratorUserID As Integer, ByVal Subject As String, ByVal Notes As String, ByVal ParentID As Integer, ByVal ModuleID As Integer)
+		Friend Sub SplitThread(ByVal PostID As Integer, ByVal ThreadID As Integer, ByVal NewForumID As Integer, ByVal ModeratorUserID As Integer, ByVal Subject As String, ByVal Notes As String, ByVal ParentID As Integer, ByVal ModuleID As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadSplit(PostID, ThreadID, NewForumID, ModeratorUserID, Subject, Notes)
 		End Sub
 
@@ -227,7 +227,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ThreadId"></param>
 		''' <remarks>
 		''' </remarks>
-		Friend Sub ThreadViewsIncrement(ByVal ThreadId As Integer)
+		Friend Sub IncrementThreadViewCount(ByVal ThreadId As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadViewsIncrement(ThreadId)
 		End Sub
 
@@ -242,7 +242,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="PortalID"></param>
 		''' <remarks>We are not tracking moderator actions when setting poll for thread status type (regardless of what it was before). 
 		''' </remarks>
-		Friend Sub ThreadStatusChange(ByVal ThreadId As Integer, ByVal UserID As Integer, ByVal ThreadStatus As Integer, ByVal AnswerPostID As Integer, ByVal ModeratorUserID As Integer, ByVal PortalID As Integer)
+		Friend Sub ChangeThreadStatus(ByVal ThreadId As Integer, ByVal UserID As Integer, ByVal ThreadStatus As Integer, ByVal AnswerPostID As Integer, ByVal ModeratorUserID As Integer, ByVal PortalID As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadStatusChange(ThreadId, UserID, ThreadStatus, AnswerPostID)
 
 			If ModeratorUserID > 0 Then
@@ -292,6 +292,20 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 #End Region
+
+#End Region
+
+#Region "Private Methods"
+
+		''' <summary>
+		''' Gets a single thread from the data store.
+		''' </summary>
+		''' <param name="ThreadId"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Function ThreadGet(ByVal ThreadId As Integer) As ThreadInfo
+			Return CBO.FillObject(Of ThreadInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ThreadGet(ThreadId))
+		End Function
 
 #End Region
 
@@ -377,46 +391,6 @@ Namespace DotNetNuke.Modules.Forum
 
 			Return EmailQueueTask
 		End Function
-
-		''' <summary>
-		''' 
-		''' </summary>
-		''' <param name="portalId"></param>
-		''' <param name="ps"></param>
-		''' <param name="version"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Overrides Function GetUrls(ByVal portalId As Integer, ByVal ps As PortalSettings, ByVal version As String) As List(Of SitemapUrl)
-			'Dim blogUrl As SitemapUrl
-			Dim urls As New List(Of SitemapUrl)
-
-			'Dim blog As New EntryController
-			'Dim entries As ArrayList = blog.ListAllEntriesByPortal(portalId, False, False)
-
-			'For Each entry As EntryInfo In entries
-			'	blogUrl = GetThreadUrls(entry, ps.PortalAlias.HTTPAlias)
-			'	urls.Add(blogUrl)
-			'Next
-			Return urls
-		End Function
-
-		''' <summary>
-		''' 
-		''' </summary>
-		''' <param name="objEntry"></param>
-		''' <param name="portalAlias"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Private Function GetThreadUrls(ByVal objEntry As ThreadInfo, ByVal portalAlias As String) As SitemapUrl
-			Dim pageUrl As New SitemapUrl
-			'pageUrl.Url = objEntry.PermaLink
-			pageUrl.Priority = 0.5
-			'pageUrl.LastModified = objEntry.AddedDate
-			pageUrl.ChangeFrequency = SitemapChangeFrequency.Weekly
-
-			Return pageUrl
-		End Function
-
 #End Region
 
 	End Class

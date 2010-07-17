@@ -22,41 +22,20 @@ Option Strict On
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "UserThreadsController"
-
-    ''' <summary>
-    ''' Hanldes the Thread read status for a single user instance.
-    ''' </summary>
-    ''' <remarks>
-    ''' </remarks>
+	''' <summary>
+	''' Hanldes the Thread read status for a single user instance.
+	''' </summary>
+	''' <remarks>
+	''' </remarks>
 	Public Class UserThreadsController
 
 #Region "Private Members"
 
-		Private Const FORUM_USERTHREADREADS_CACHE_KEY_PREFIX As String = "Forum_UserThreadReads-"
-		Private Const UserThreadReadsCacheTimeout As Integer = 20
+		Private Const FORUM_USERTHREADREADS_CACHE_KEY_PREFIX As String = Constants.CACHE_KEY_PREFIX + "USER_THREAD_READS_"
 
 #End Region
 
-#Region "Private Methods"
-
-		''' <summary>
-		''' Gets the thread read status for a single thread for a single user
-		''' </summary>
-		''' <param name="userID"></param>
-		''' <param name="threadID"></param>
-		''' <returns></returns>
-		''' <remarks>
-		''' </remarks>
-		Private Function GetUserThreadRead(ByVal UserID As Integer, ByVal ThreadID As Integer) As UserThreadsInfo
-			Return CType(CBO.FillObject(DataProvider.Instance().GetUserThreads(UserID, ThreadID), GetType(UserThreadsInfo)), UserThreadsInfo)
-		End Function
-
-#End Region
-
-#Region "Public Methods"
-
-#Region "Caching"
+#Region "Friend Methods"
 
 		''' <summary>
 		''' Gets a single row of data for a threadid/userid combination.
@@ -66,9 +45,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks>
 		''' </remarks>
-		Public Function GetCachedUserThreadRead(ByVal UserID As Integer, ByVal ThreadID As Integer) As UserThreadsInfo
+		Friend Function GetThreadReadsByUser(ByVal UserID As Integer, ByVal ThreadID As Integer) As UserThreadsInfo
 			Dim keyID As String = FORUM_USERTHREADREADS_CACHE_KEY_PREFIX & UserID.ToString & "-" & ThreadID
-			Dim timeOut As Int32 = UserThreadReadsCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
+			Dim timeOut As Int32 = Constants.CACHE_TIMEOUT * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
 
 			Dim objUserThread As New UserThreadsInfo
 			objUserThread = CType(DataCache.GetCache(keyID), UserThreadsInfo)
@@ -90,15 +69,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="UserID"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	12/4/2005	Created
-		''' </history>
-		Public Shared Sub ResetUserThreadReadCache(ByVal UserID As Integer, ByVal ThreadID As Integer)
+		Friend Shared Sub ResetUserThreadReadCache(ByVal UserID As Integer, ByVal ThreadID As Integer)
 			Dim keyID As String = FORUM_USERTHREADREADS_CACHE_KEY_PREFIX & UserID.ToString & "-" & ThreadID
 			DataCache.RemoveCache(keyID)
 		End Sub
-
-#End Region
 
 		''' <summary>
 		''' Adds a read status
@@ -106,7 +80,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="objUserThreads"></param>
 		''' <remarks>
 		''' </remarks>
-		Public Sub Add(ByVal objUserThreads As UserThreadsInfo)
+		Friend Sub Add(ByVal objUserThreads As UserThreadsInfo)
 			DataProvider.Instance().AddUserThreads(objUserThreads.UserID, objUserThreads.ThreadID, objUserThreads.LastVisitDate)
 		End Sub
 
@@ -116,7 +90,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="objUserThreads"></param>
 		''' <remarks>
 		''' </remarks>
-		Public Sub Update(ByVal objUserThreads As UserThreadsInfo)
+		Friend Sub Update(ByVal objUserThreads As UserThreadsInfo)
 			DataProvider.Instance().UpdateUserThreads(objUserThreads.UserID, objUserThreads.ThreadID, objUserThreads.LastVisitDate)
 		End Sub
 
@@ -127,7 +101,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="forumID"></param>
 		''' <remarks>
 		''' </remarks>
-		Public Sub DeleteAllByForum(ByVal userID As Integer, ByVal forumID As Integer)
+		Friend Sub DeleteAllByForum(ByVal userID As Integer, ByVal forumID As Integer)
 			DataProvider.Instance().DeleteUserThreadsByForum(userID, forumID)
 		End Sub
 
@@ -139,7 +113,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="read"></param>
 		''' <remarks>
 		''' </remarks>
-		Public Sub MarkAll(ByVal userID As Integer, ByVal forumID As Integer, ByVal read As Boolean)
+		Friend Sub MarkAll(ByVal userID As Integer, ByVal forumID As Integer, ByVal read As Boolean)
 			DeleteAllByForum(userID, forumID)
 
 			If read Then
@@ -174,14 +148,28 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns>Integer</returns>
 		''' <remarks>
 		''' </remarks>
-		Public Function GetPostIndexFirstUnread(ByVal ThreadID As Integer, ByVal LastVisitDate As Date, ByVal ViewDecending As Boolean) As Integer
+		Friend Function GetPostIndexFirstUnread(ByVal ThreadID As Integer, ByVal LastVisitDate As Date, ByVal ViewDecending As Boolean) As Integer
 			Return DotNetNuke.Modules.Forum.DataProvider.Instance().ReadsGetFirstUnread(ThreadID, LastVisitDate, ViewDecending)
 		End Function
 
 #End Region
 
-	End Class
+#Region "Private Methods"
+
+		''' <summary>
+		''' Gets the thread read status for a single thread for a single user
+		''' </summary>
+		''' <param name="userID"></param>
+		''' <param name="threadID"></param>
+		''' <returns></returns>
+		''' <remarks>
+		''' </remarks>
+		Private Function GetUserThreadRead(ByVal UserID As Integer, ByVal ThreadID As Integer) As UserThreadsInfo
+			Return CType(CBO.FillObject(DataProvider.Instance().GetUserThreads(UserID, ThreadID), GetType(UserThreadsInfo)), UserThreadsInfo)
+		End Function
 
 #End Region
+
+	End Class
 
 End Namespace

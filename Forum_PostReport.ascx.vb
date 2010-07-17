@@ -91,7 +91,7 @@ Namespace DotNetNuke.Modules.Forum
 					_PostID = Int32.Parse(Request.QueryString("postid"))
 					_PostInfo = cntPost.GetPostInfo(_PostID, PortalId)
 					_ThreadID = _PostInfo.ThreadID
-					objThread = cntThread.GetThreadInfo(_ThreadID)
+					objThread = cntThread.GetThread(_ThreadID)
 					_ForumID = objThread.ForumID
 				Else
 					' they don't belong here

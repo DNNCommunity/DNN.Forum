@@ -78,7 +78,7 @@ Namespace DotNetNuke.Modules.Forum.Components.Utilities
 		''' <param name="ModuleID"></param>
 		''' <remarks></remarks>
 		Public Shared Sub UpdateThreadCache(ByVal ThreadID As Integer, ByVal ForumID As Integer, ByVal GroupID As Integer, ByVal ModuleID As Integer, ByVal ParentID As Integer)
-			ThreadController.ResetThreadItemCache(ThreadID)
+			ThreadController.ResetThreadCache(ThreadID)
 
 			If ForumID > 0 Then
 				UpdateForumCache(ForumID, GroupID, ModuleID, ParentID)

@@ -203,7 +203,7 @@ Namespace DotNetNuke.Modules.Forum
 					ModeratorID = CurrentForumUser.UserID
 				End If
 
-				ctlThread.ThreadStatusChange(ThreadID, CurrentForumUser.UserID, ThreadStatus, 0, ModeratorID, PortalID)
+				ctlThread.ChangeThreadStatus(ThreadID, CurrentForumUser.UserID, ThreadStatus, 0, ModeratorID, PortalID)
 			End If
 
 			Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID)
@@ -423,7 +423,7 @@ Namespace DotNetNuke.Modules.Forum
 					ModeratorID = CurrentForumUser.UserID
 				End If
 
-				ctlThread.ThreadStatusChange(ThreadID, objPostInfo.UserID, ThreadStatus.Answered, answerPostID, ModeratorID, PortalID)
+				ctlThread.ChangeThreadStatus(ThreadID, objPostInfo.UserID, ThreadStatus.Answered, answerPostID, ModeratorID, PortalID)
 
 				Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID)
 			End If
@@ -451,17 +451,19 @@ Namespace DotNetNuke.Modules.Forum
 
 				' we need to determine which page to return based on number of posts in this thread, the users posts per page count, and their asc/desc view, where this post is
 				Dim cntThread As New ThreadController()
-				objThread = cntThread.GetThreadInfo(ThreadID)
+				objThread = cntThread.GetThread(ThreadID)
 
 				' we need to see if there is a content item for the thread, if not create one.
 				If objThread.ContentItemId < 1 Then
 					Dim cntContent As New Content
 					objThread.ModuleID = ModuleID
 					objThread.TabID = TabID
+					objThread.SitemapInclude = objPost.ParentThread.ContainingForum.EnableSitemap
+
 					cntContent.CreateContentItem(objThread, TabID)
 
 					DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateThreadCache(objThread.ThreadID)
-					objThread = cntThread.GetThreadInfo(ThreadId)
+					objThread = cntThread.GetThread(ThreadId)
 				End If
 
 				Dim TotalPosts As Integer = objThread.Replies + 1
@@ -489,17 +491,19 @@ Namespace DotNetNuke.Modules.Forum
 			Else
 				If ThreadID > 0 Then
 					Dim cntThread As New ThreadController()
-					objThread = cntThread.GetThreadInfo(ThreadID)
+					objThread = cntThread.GetThread(ThreadID)
 
 					' we need to see if there is a content item for the thread, if not create one.
 					If objThread.ContentItemId < 1 Then
 						Dim cntContent As New Content
 						objThread.ModuleID = ModuleID
 						objThread.TabID = TabID
+						objThread.SitemapInclude = objThread.ContainingForum.EnableSitemap
+
 						cntContent.CreateContentItem(objThread, TabID)
 
 						DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateThreadCache(objThread.ThreadID)
-						objThread = cntThread.GetThreadInfo(ThreadID)
+						objThread = cntThread.GetThread(ThreadID)
 					End If
 
 					' We need to make sure the user's thread pagesize can handle this 
@@ -745,13 +749,13 @@ Namespace DotNetNuke.Modules.Forum
 
 			'increment the thread view count
 			Dim ctlThread As New ThreadController
-			ctlThread.ThreadViewsIncrement(ThreadId)
+			ctlThread.IncrementThreadViewCount(ThreadId)
 
 			'update the UserThread record
 			If HttpContext.Current.Request.IsAuthenticated Then
 				Dim userThreadController As New UserThreadsController
 				Dim userThread As New UserThreadsInfo
-				userThread = userThreadController.GetCachedUserThreadRead(CurrentForumUser.UserID, ThreadId)
+				userThread = userThreadController.GetThreadReadsByUser(CurrentForumUser.UserID, ThreadId)
 
 				If Not userThread Is Nothing Then
 					userThread.LastVisitDate = Now

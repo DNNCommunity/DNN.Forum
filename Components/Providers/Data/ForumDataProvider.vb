@@ -105,6 +105,7 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Threads"
 
+		Public MustOverride Function GetSitemapThreads(ByVal PortalID As Integer) As IDataReader
 		Public MustOverride Function ThreadGetAll(ByVal ModuleID As Integer, ByVal ForumID As Integer, ByVal PageSize As Integer, ByVal pageIndex As Integer, ByVal Filter As String, ByVal PortalID As Integer) As IDataReader
 		Public MustOverride Function ThreadGetByForum(ByVal userID As Integer, ByVal ForumID As Integer) As IDataReader
 		Public MustOverride Function ThreadGetUnread(ByVal ModuleId As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer, ByVal LoggedOnUserID As Integer) As IDataReader
@@ -231,7 +232,6 @@ Namespace DotNetNuke.Modules.Forum
 		Public MustOverride Sub UpdateUserForums(ByVal userID As Integer, ByVal forumID As Integer, ByVal lastVisitDate As DateTime)
 		Public MustOverride Sub DeleteUserForums(ByVal userID As Integer, ByVal forumID As Integer)
 		Public MustOverride Sub UserDeleteReads(ByVal userID As Integer)
-		Public MustOverride Function GetSubForumIDs(ByVal ParentForumID As Integer) As IDataReader
 
 #End Region
 

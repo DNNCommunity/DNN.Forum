@@ -94,7 +94,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property ParentThread() As ThreadInfo
 			Get
 				Dim cntThread As New ThreadController()
-				Return cntThread.GetThreadInfo(ThreadID)
+				Return cntThread.GetThread(ThreadID)
 			End Get
 		End Property
 
@@ -144,7 +144,7 @@ Namespace DotNetNuke.Modules.Forum
 				Dim userThreadController As New UserThreadsController
 				Dim userThread As New UserThreadsInfo
 				If UserID > 0 Then
-					userThread = userThreadController.GetCachedUserThreadRead(UserID, ThreadID)
+					userThread = userThreadController.GetThreadReadsByUser(UserID, ThreadID)
 					If userThread Is Nothing Then
 						Return True
 					Else

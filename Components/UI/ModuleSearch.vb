@@ -1464,7 +1464,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim userThreadController As New UserThreadsController
 			Dim userThread As New UserThreadsInfo
 			If CurrentForumUser.UserID > 0 Then
-				userThread = userThreadController.GetCachedUserThreadRead(CurrentForumUser.UserID, PostThreadID)
+				userThread = userThreadController.GetThreadReadsByUser(CurrentForumUser.UserID, PostThreadID)
 				If userThread Is Nothing Then
 					Return True
 				Else
@@ -1789,7 +1789,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim userThread As New UserThreadsInfo
 
 			If UserID > 0 Then
-				userThread = userThreadController.GetCachedUserThreadRead(UserID, objThreadInfo.ThreadID)
+				userThread = userThreadController.GetThreadReadsByUser(UserID, objThreadInfo.ThreadID)
 
 				If userThread Is Nothing Then
 					Return True

@@ -132,7 +132,7 @@ Namespace DotNetNuke.Modules.Forum
 				If Page.IsPostBack = False Then
 					Dim cntThread As New ThreadController()
 					Dim objThread As New ThreadInfo
-					objThread = cntThread.ThreadGet(ThreadID)
+					objThread = cntThread.GetThread(ThreadID)
 
 					txtSubject.Text = objThread.Subject
 					txtOldForum.Text = objThread.ContainingForum.Name
@@ -193,14 +193,14 @@ Namespace DotNetNuke.Modules.Forum
 						Dim ctlThread As New ThreadController
 						' lets get existing info on thread
 						Dim objThread As ThreadInfo
-						objThread = ctlThread.GetThreadInfo(ThreadID)
+						objThread = ctlThread.GetThread(ThreadID)
 
 						'Dim MyProfileUrl As String = Utils.MySettingsLink(TabId, ModuleId)
 						Dim MyProfileUrl As String = Utilities.Links.UCP_UserLinks(TabId, ModuleId, UserAjaxControl.Tracking, PortalSettings)
 						Dim cntForum As New ForumController()
 						Dim objForum As ForumInfo = cntForum.GetForumItemCache(newForumID)
 
-						ctlThread.ThreadMove(ThreadID, newForumID, UserId, Notes, objForum.ParentID)
+						ctlThread.MoveThread(ThreadID, newForumID, UserId, Notes, objForum.ParentID)
 
 						Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID, objThread.ForumID, objThread.ContainingForum.GroupID, ModuleId, objThread.ContainingForum.ParentID)
 

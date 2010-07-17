@@ -73,7 +73,7 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _EmailAuth As Integer = 0	' 0 = none (for now, eventually need an enum)
 		Dim _EmailPort As Integer = 110 ' 995 also used for gmail
 		Private _EnableSitemap As Boolean
-		Private _SitemapPriority As Double
+		Private _SitemapPriority As Single
 
 #End Region
 
@@ -602,11 +602,11 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Property SitemapPriority() As Double
+		Public Property SitemapPriority() As Single
 			Get
 				Return _SitemapPriority
 			End Get
-			Set(ByVal Value As Double)
+			Set(ByVal Value As Single)
 				_SitemapPriority = Value
 			End Set
 		End Property

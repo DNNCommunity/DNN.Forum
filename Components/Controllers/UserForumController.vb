@@ -22,8 +22,6 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "UserForumsController"
-
 	''' <summary>
 	''' Communicates with the Forum_UserForums table in the data store. 
 	''' </summary>
@@ -33,12 +31,11 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Members"
 
-		Private Const FORUM_USERFORUMREADS_CACHE_KEY_PREFIX As String = "Forum_UserForumReads-"
-		Private Const UserForumReadsCacheTimeout As Integer = 20
+		Private Const FORUM_USERFORUMREADS_CACHE_KEY_PREFIX As String = Constants.CACHE_KEY_PREFIX + "USER_FORUM_READS_"
 
 #End Region
 
-#Region "Private Methods"
+#Region "Friend Methods"
 
 		''' <summary>
 		''' Gets a single row of data for a forumid/userid combination.
@@ -48,27 +45,9 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks>
 		''' </remarks>
-		Private Function GetUserForumRead(ByVal UserID As Integer, ByVal ForumID As Integer) As UserForumsInfo
-			Return CType(CBO.FillObject(DataProvider.Instance().GetUserForums(UserID, ForumID), GetType(UserForumsInfo)), UserForumsInfo)
-		End Function
-
-#End Region
-
-#Region "Public Methods"
-
-#Region "Caching"
-
-		''' <summary>
-		''' Gets a single row of data for a forumid/userid combination.
-		''' </summary>
-		''' <param name="userID">The UserID being checked in the db.</param>
-		''' <param name="forumID">The ForumID being checked in the db.</param>
-		''' <returns></returns>
-		''' <remarks>
-		''' </remarks>
-		Public Function GetCachedUserForumRead(ByVal UserID As Integer, ByVal ForumID As Integer) As UserForumsInfo
+		Friend Function GetUsersForumReads(ByVal UserID As Integer, ByVal ForumID As Integer) As UserForumsInfo
 			Dim keyID As String = FORUM_USERFORUMREADS_CACHE_KEY_PREFIX & UserID.ToString & "-" & ForumID
-			Dim timeOut As Int32 = UserForumReadsCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
+			Dim timeOut As Int32 = Constants.CACHE_TIMEOUT * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
 
 			Dim objUserForum As New UserForumsInfo
 			objUserForum = CType(DataCache.GetCache(keyID), UserForumsInfo)
@@ -90,24 +69,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="UserID"></param>
 		''' <remarks>
 		''' </remarks>
-		Public Shared Sub ResetUserForumReadCache(ByVal UserID As Integer, ByVal ForumID As Integer)
+		Friend Shared Sub ResetUsersForumReads(ByVal UserID As Integer, ByVal ForumID As Integer)
 			Dim keyID As String = FORUM_USERFORUMREADS_CACHE_KEY_PREFIX & UserID.ToString & "-" & ForumID
 			DataCache.RemoveCache(keyID)
 		End Sub
-
-#End Region
-
-		''' <summary>
-		''' Gets the ForumID's of a parent forums's subforums
-		''' </summary>
-		''' <param name="ParentForumId">The parent forum ID we are attempting to retrieve subforums of.</param>
-		''' <remarks>
-		''' Placed in this controller for performance issues,
-		''' as it's used in conjunction with forum reads
-		''' </remarks>
-		Public Function GetSubForumIDs(ByVal ParentForumId As Integer) As IDataReader
-			Return DataProvider.Instance().GetSubForumIDs(ParentForumId)
-		End Function
 
 		''' <summary>
 		''' Adds an instance of a forumid/userid combination to the db.
@@ -115,7 +80,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="objUserForums"></param>
 		''' <remarks>
 		''' </remarks>
-		Public Sub Add(ByVal objUserForums As UserForumsInfo)
+		Friend Sub Add(ByVal objUserForums As UserForumsInfo)
 			DataProvider.Instance().AddUserForums(objUserForums.UserID, objUserForums.ForumID, objUserForums.LastVisitDate)
 		End Sub
 
@@ -125,8 +90,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="objUserForums"></param>
 		''' <remarks>
 		''' </remarks>
-
-		Public Sub Update(ByVal objUserForums As UserForumsInfo)
+		Friend Sub Update(ByVal objUserForums As UserForumsInfo)
 			DataProvider.Instance().UpdateUserForums(objUserForums.UserID, objUserForums.ForumID, objUserForums.LastVisitDate)
 		End Sub
 
@@ -137,14 +101,28 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="forumID"></param>
 		''' <remarks>
 		''' </remarks>
-		Public Sub Delete(ByVal userID As Integer, ByVal forumID As Integer)
+		Friend Sub Delete(ByVal userID As Integer, ByVal forumID As Integer)
 			DataProvider.Instance().DeleteUserForums(userID, forumID)
 		End Sub
 
 #End Region
 
-	End Class
+#Region "Private Methods"
+
+		''' <summary>
+		''' Gets a single row of data for a forumid/userid combination.
+		''' </summary>
+		''' <param name="userID">The UserID being checked in the db.</param>
+		''' <param name="forumID">The ForumID being checked in the db.</param>
+		''' <returns></returns>
+		''' <remarks>
+		''' </remarks>
+		Private Function GetUserForumRead(ByVal UserID As Integer, ByVal ForumID As Integer) As UserForumsInfo
+			Return CType(CBO.FillObject(DataProvider.Instance().GetUserForums(UserID, ForumID), GetType(UserForumsInfo)), UserForumsInfo)
+		End Function
 
 #End Region
+
+	End Class
 
 End Namespace

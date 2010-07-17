@@ -12,9 +12,6 @@
 			<td class="Forum_UCP_HeaderInfo">
 				<div>
 					<telerik:RadGrid ID="rgTaskDetails" runat="server" AutoGenerateColumns="false" AllowSorting="false" AllowPaging="true" PageSize="20" >
-						<ClientSettings AllowColumnsReorder="false" EnableRowHoverStyle="true">
-							<Resizing AllowColumnResize="true" />
-						</ClientSettings>
 						<MasterTableView DataKeyNames="EmailQueueID">
 							<NoRecordsTemplate>
 								<asp:Label ID="lblNoRecords" runat="server" resourcekey="lblNoRecords" CssClass="NormalBold" />

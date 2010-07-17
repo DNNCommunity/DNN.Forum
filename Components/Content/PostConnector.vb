@@ -22,8 +22,6 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "PostConnector"
-
 	''' <summary>
 	''' The purpose of the PostConnector class is to have a centralized spot where multiple areas within the Forum Module can post to the database. This also is abstracted so third party providers, such as metaPost, can easily post messages. This also paves the way for Quick Reply as well as SMTP replies. 
 	''' </summary>
@@ -328,6 +326,8 @@ Namespace DotNetNuke.Modules.Forum
 						Return PostMessage.PostApproved
 					End If
 				End If
+
+				Return Nothing
 			End If
 		End Function
 
@@ -384,21 +384,22 @@ Namespace DotNetNuke.Modules.Forum
 					If objConfig.EnableThreadStatus And objForum.EnableForumsThreadStatus Then
 						If Status > 0 Then
 							Dim ctlThread As New ThreadController
-							ctlThread.ThreadStatusChange(newPostID, objForumUser.UserID, Status, 0, -1, PortalID)
+							ctlThread.ChangeThreadStatus(newPostID, objForumUser.UserID, Status, 0, -1, PortalID)
 						End If
 						' even if thread status is off, user may be allowed to add a poll which means we need to set the status to "Poll"
 					ElseIf objForum.AllowPolls And PollID > 0 Then
 						Dim ctlThread As New ThreadController
-						ctlThread.ThreadStatusChange(newPostID, objForumUser.UserID, Status, 0, -1, PortalID)
+						ctlThread.ChangeThreadStatus(newPostID, objForumUser.UserID, Status, 0, -1, PortalID)
 					End If
 
 					' Handle Content Item Creation
 					If (ThreadID = -1) AndAlso (newPostID > 0) Then
 						Dim cntThread As New ThreadController
-						Dim objThread As ThreadInfo = cntThread.GetThreadInfo(newPostID)
+						Dim objThread As ThreadInfo = cntThread.GetThread(newPostID)
 
 						objThread.ModuleID = ModuleID
 						objThread.TabID = TabID
+						objThread.SitemapInclude = objForum.EnableSitemap
 
 						Dim cntContent As New Content
 						cntContent.CreateContentItem(objThread, TabID)
@@ -418,12 +419,12 @@ Namespace DotNetNuke.Modules.Forum
 						If Status > 0 Then
 							Dim ctlThread As New ThreadController
 							'NOTE: CP - COMEBACK: It may be possible for a thread status to be edited on the original post, for which we should send an update if it is a moderator.
-							ctlThread.ThreadStatusChange(ThreadID, objForumUser.UserID, Status, 0, -1, PortalID)
+							ctlThread.ChangeThreadStatus(ThreadID, objForumUser.UserID, Status, 0, -1, PortalID)
 						End If
 						' even if thread status is off, user may be allowed to add a poll which means we need to set the status to "Poll"
 					ElseIf objForum.AllowPolls And PollID > 0 And ParentPostID = 0 Then
 						Dim ctlThread As New ThreadController
-						ctlThread.ThreadStatusChange(newPostID, objForumUser.UserID, Status, 0, -1, PortalID)
+						ctlThread.ChangeThreadStatus(newPostID, objForumUser.UserID, Status, 0, -1, PortalID)
 					End If
 
 					Forum.Components.Utilities.Caching.UpdatePostCache(newPostID, ThreadID)
@@ -431,7 +432,7 @@ Namespace DotNetNuke.Modules.Forum
 					' Handle Content Item (if postid = threadid)
 					If ThreadID = newPostID Then
 						Dim cntThread As New ThreadController
-						Dim objThread As ThreadInfo = cntThread.GetThreadInfo(ThreadID)
+						Dim objThread As ThreadInfo = cntThread.GetThread(ThreadID)
 
 						objThread.ModuleID = objConfig.ModuleID
 						objThread.TabID = TabID
@@ -467,7 +468,7 @@ Namespace DotNetNuke.Modules.Forum
 				cntTracking.TrackingThreadCreateDelete(objForum.ForumID, ThreadID, objForumUser.UserID, ReplyNotify, ModuleID)
 			End If
 
-			HandleThreadStatus(objConfig, objForum, objForumUser.UserID, Status, PollID, ParentPostID, objNewPost.PostID, objAction, PortalID)
+			HandleThreadStatus(objForum, objForumUser.UserID, Status, PollID, ParentPostID, objNewPost.PostID, objAction, PortalID)
 			HandleNotifications(IsModerated, objConfig, objNewPost, _emailType, TabID, PortalID)
 
 			Return newPostID
@@ -537,7 +538,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <summary>
 		''' This method is used to change the status of a thread. 
 		''' </summary>
-		''' <param name="objConfig"></param>
 		''' <param name="objForum"></param>
 		''' <param name="UserID"></param>
 		''' <param name="Status"></param>
@@ -546,7 +546,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="PostID"></param>
 		''' <param name="objAction"></param>
 		''' <remarks></remarks>
-		Public Sub HandleThreadStatus(ByVal objConfig As Forum.Configuration, ByVal objForum As ForumInfo, ByVal UserID As Integer, ByVal Status As Forum.ThreadStatus, ByVal PollID As Integer, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal objAction As Forum.PostAction, ByVal PortalID As Integer)
+		Private Sub HandleThreadStatus(ByVal objForum As ForumInfo, ByVal UserID As Integer, ByVal Status As Forum.ThreadStatus, ByVal PollID As Integer, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal objAction As Forum.PostAction, ByVal PortalID As Integer)
 			Select Case objAction
 				Case PostAction.New
 					' If thread status is enabled and there is an edit on the first post in a thread, make sure we set the thread status
@@ -554,12 +554,12 @@ Namespace DotNetNuke.Modules.Forum
 					If objConfig.EnableThreadStatus And objForum.EnableForumsThreadStatus Then
 						If Status > 0 Then
 							Dim ctlThread As New ThreadController
-							ctlThread.ThreadStatusChange(PostID, UserID, Status, 0, -1, objConfig.CurrentPortalSettings.PortalId)
+							ctlThread.ChangeThreadStatus(PostID, UserID, Status, 0, -1, objConfig.CurrentPortalSettings.PortalId)
 						End If
 						' even if thread status is off, user may be allowed to add a poll which means we need to set the status to "Poll"
 					ElseIf objForum.AllowPolls And PollID > 0 Then
 						Dim ctlThread As New ThreadController
-						ctlThread.ThreadStatusChange(PostID, UserID, Convert.ToInt32(ThreadStatus.Poll), 0, -1, PortalID)
+						ctlThread.ChangeThreadStatus(PostID, UserID, Convert.ToInt32(ThreadStatus.Poll), 0, -1, PortalID)
 					End If
 				Case PostAction.Edit
 					' If thread status is enabled and there is an edit on the first post in a thread, make sure we set the thread status
@@ -567,15 +567,16 @@ Namespace DotNetNuke.Modules.Forum
 						If Status > 0 Then
 							Dim ctlThread As New ThreadController
 							'NOTE: CP - COMEBACK: It may be possible for a thread status to be edited on the original post, for which we should send an update if it is a moderator.
-							ctlThread.ThreadStatusChange(PostID, UserID, Status, 0, -1, PortalID)
+							ctlThread.ChangeThreadStatus(PostID, UserID, Status, 0, -1, PortalID)
 						End If
 						' even if thread status is off, user may be allowed to add a poll which means we need to set the status to "Poll"
 					ElseIf objForum.AllowPolls And PollID > 0 And ParentPostID = -1 Then
 						Dim ctlThread As New ThreadController
-						ctlThread.ThreadStatusChange(PostID, UserID, Convert.ToInt32(ThreadStatus.Poll), 0, -1, PortalID)
+						ctlThread.ChangeThreadStatus(PostID, UserID, Convert.ToInt32(ThreadStatus.Poll), 0, -1, PortalID)
 					End If
 			End Select
 		End Sub
+
 		''' <summary>
 		''' This method is called by PostToDatabase AFTER a post is submitted so that any notifications can be sent out based on the post action and results that just occurred. 
 		''' </summary>
@@ -619,8 +620,6 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 			End If
 		End Sub
-
-#Region "Image Handling"
 
 		''' <summary>
 		''' This generates a thumbnail from the destination image. Since we are
@@ -729,8 +728,6 @@ Namespace DotNetNuke.Modules.Forum
 
 			Return Ret
 		End Function
-
-#End Region
 
 		''' <summary>
 		''' Generates a list of Attachments for Preview
@@ -942,7 +939,5 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 	End Class
-
-#End Region
 
 End Namespace

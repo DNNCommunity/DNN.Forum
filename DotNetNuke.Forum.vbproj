@@ -450,6 +450,7 @@
       <DependentUpon>MCP.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Components\Providers\Sitemap\ThreadSitemap.vb" />
     <Compile Include="PublicProfile.ascx.designer.vb">
       <DependentUpon>PublicProfile.ascx</DependentUpon>
     </Compile>

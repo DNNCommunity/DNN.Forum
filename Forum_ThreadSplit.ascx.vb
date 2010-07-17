@@ -237,7 +237,7 @@ Namespace DotNetNuke.Modules.Forum
 					Dim MyProfileUrl As String = Utilities.Links.UCP_UserLinks(TabId, ModuleId, UserAjaxControl.Tracking, PortalSettings)
 
 					' Split this post into a new thread
-					ctlThread.ThreadSplit(PostID, ThreadID, newForumID, UserId, txtSubject.Text, Notes, objForum.ParentID, ModuleId)
+					ctlThread.SplitThread(PostID, ThreadID, newForumID, UserId, txtSubject.Text, Notes, objForum.ParentID, ModuleId)
 
 					' we need to grab all the selected posts, set their parent to new threadid.
 					' we know the first posts in each of the threads have sort order set to 0, we need to start w/ 1 here and increment by 1 for each post per thread

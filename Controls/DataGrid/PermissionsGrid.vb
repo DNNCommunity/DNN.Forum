@@ -647,7 +647,7 @@ Namespace DotNetNuke.Modules.Forum.Controls
 		''' <history>
 		''' </history>
 		Protected Overridable Function GetEnabled(ByVal objPerm As PermissionInfo, ByVal role As Security.Roles.RoleInfo, ByVal column As Integer) As Boolean
-
+			Return False
 		End Function
 
 		''' <summary>
@@ -657,7 +657,7 @@ Namespace DotNetNuke.Modules.Forum.Controls
 		''' <param name="user">The user</param>
 		''' <param name="column">The column of the Grid</param>
 		Protected Overridable Function GetEnabled(ByVal objPerm As PermissionInfo, ByVal user As Users.UserInfo, ByVal column As Integer) As Boolean
-
+			Return False
 		End Function
 
 		''' <summary>
@@ -669,7 +669,7 @@ Namespace DotNetNuke.Modules.Forum.Controls
 		''' <history>
 		''' </history>
 		Protected Overridable Function GetPermission(ByVal objPerm As PermissionInfo, ByVal role As Security.Roles.RoleInfo, ByVal column As Integer) As Boolean
-
+			Return False
 		End Function
 
 		''' <summary>
@@ -679,7 +679,7 @@ Namespace DotNetNuke.Modules.Forum.Controls
 		''' <param name="user">The user</param>
 		''' <param name="column">The column of the Grid</param>
 		Protected Overridable Function GetPermission(ByVal objPerm As PermissionInfo, ByVal user As Users.UserInfo, ByVal column As Integer) As Boolean
-
+			Return False
 		End Function
 
 		''' <summary>

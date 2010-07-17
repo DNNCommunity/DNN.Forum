@@ -179,7 +179,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 			Dim lbl As Label
 			Dim img As System.Web.UI.WebControls.Image
 
-			objThread = cntThread.ThreadGet(dataItem.ThreadID)
+			objThread = cntThread.GetThread(dataItem.ThreadID)
 
 			hl = CType(e.Item.FindControl("hlSubject"), HyperLink)
 			' Format prohibited words
@@ -384,13 +384,13 @@ Namespace DotNetNuke.Modules.Forum.UCP
 			Dim objThreadInfo As ThreadInfo
 			Dim ctlThread As New ThreadController
 
-			objThreadInfo = ctlThread.ThreadGet(ThreadID)
+			objThreadInfo = ctlThread.GetThread(ThreadID)
 
 			If UserID > 0 Then
 				If objThreadInfo Is Nothing Then
 					Return True
 				Else
-					userthread = userthreadController.GetCachedUserThreadRead(UserID, objThreadInfo.ThreadID)
+					userthread = userthreadController.GetThreadReadsByUser(UserID, objThreadInfo.ThreadID)
 					If userthread Is Nothing Then
 						Return True
 					Else
@@ -428,7 +428,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 				url = Utilities.Links.ContainerViewForumLink(TabId, Forum.ForumID, False)
 			End If
 
-			userForum = userForumController.GetCachedUserForumRead(UserId, Forum.ForumID)
+			userForum = userForumController.GetUsersForumReads(UserId, Forum.ForumID)
 
 			If Not userForum Is Nothing Then
 				If Not userForum.LastVisitDate < Forum.MostRecentPost.CreatedDate Then

@@ -38,7 +38,7 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-#Region "Public Methods"
+#Region "Friend Methods"
 
 		''' <summary>
 		''' Checks cache to get all forums for a specified GroupID, if not in cache a collection is 
@@ -47,7 +47,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="GroupId">The GroupID of forums to populate.</param>
 		''' <returns>An arraylist of forums belonging to a specific GroupID.</returns>
 		''' <remarks></remarks>
-		Public Function GetChildForums(ByVal ParentID As Integer, ByVal GroupId As Integer, ByVal EnabledOnly As Boolean) As List(Of ForumInfo)
+		Friend Function GetChildForums(ByVal ParentID As Integer, ByVal GroupId As Integer, ByVal EnabledOnly As Boolean) As List(Of ForumInfo)
 			Dim arrForums As List(Of ForumInfo)
 			Dim strCacheKey As String
 
@@ -80,7 +80,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks>
 		''' </remarks>
-		Public Function GetForumItemCache(ByVal ForumID As Integer) As ForumInfo
+		Friend Function GetForumItemCache(ByVal ForumID As Integer) As ForumInfo
 			Dim strCacheKey As String = ForumCacheKeyPrefix + CStr(ForumID)
 			Dim objForum As ForumInfo = CType(DataCache.GetCache(strCacheKey), ForumInfo)
 
@@ -110,7 +110,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="GroupId">The GroupID of forums to populate.</param>
 		''' <returns>An arraylist of forums belonging to a specific GroupID.</returns>
 		''' <remarks></remarks>
-		Public Function GetParentForums(ByVal GroupId As Integer) As List(Of ForumInfo)
+		Friend Function GetParentForums(ByVal GroupId As Integer) As List(Of ForumInfo)
 			Dim arrForums As List(Of ForumInfo)
 			Dim strCacheKey As String = ForumGroupColCacheKeyPrefix + "-" + CStr(GroupId)
 			arrForums = CType(DataCache.GetCache(strCacheKey), List(Of ForumInfo))
@@ -130,12 +130,12 @@ Namespace DotNetNuke.Modules.Forum
 		End Function
 
 		''' <summary>
-		''' 
+		''' Retreives all forums associated with a single module. 
 		''' </summary>
 		''' <param name="ModuleID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Function GetModuleForums(ByVal ModuleID As Integer) As List(Of ForumInfo)
+		Friend Function GetModuleForums(ByVal ModuleID As Integer) As List(Of ForumInfo)
 			Dim arrForums As List(Of ForumInfo)
 			Dim strCacheKey As String = ForumModuleColCacheKeyPrefix + CStr(ModuleID)
 			arrForums = CType(DataCache.GetCache(strCacheKey), List(Of ForumInfo))
@@ -181,7 +181,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 		''' <summary>
-		''' 
+		''' Clears the cache of parent forums within a group.
 		''' </summary>
 		''' <param name="GroupId"></param>
 		''' <remarks></remarks>
@@ -191,7 +191,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 		''' <summary>
-		''' 
+		''' Clears the cache of forums within a single module.
 		''' </summary>
 		''' <param name="ModuleID"></param>
 		''' <remarks></remarks>
@@ -206,7 +206,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="objForum">The ForumInfo object to add to the data store.</param>
 		''' <returns></returns>
 		''' <remarks>If anything is changed here, consider chaging ForumPreConfig.vb method for adding default "General" forum.</remarks>
-		Public Function ForumAdd(ByVal objForum As ForumInfo) As Integer
+		Friend Function ForumAdd(ByVal objForum As ForumInfo) As Integer
 			Dim ForumId As Integer = DotNetNuke.Modules.Forum.DataProvider.Instance().ForumAdd(objForum.GroupID, objForum.IsActive, objForum.ParentID, objForum.Name, objForum.Description, objForum.IsModerated, objForum.ForumType, objForum.PublicView, objForum.CreatedByUser, objForum.PublicPosting, objForum.EnableForumsThreadStatus, objForum.EnableForumsRating, objForum.ForumLink, objForum.ForumBehavior, objForum.AllowPolls, objForum.EnableRSS, objForum.EmailAddress, objForum.EmailFriendlyFrom, objForum.NotifyByDefault, objForum.EmailStatusChange, objForum.EmailServer, objForum.EmailUser, objForum.EmailPass, objForum.EmailEnableSSL, objForum.EmailAuth, objForum.EmailPort, objForum.EnableSitemap, objForum.SitemapPriority)
 
 			' update forum permissions
@@ -234,7 +234,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <param name="objForum">The ForumInfo object being updated in the data store.</param>
 		''' <remarks></remarks>
-		Public Sub ForumUpdate(ByVal objForum As ForumInfo, ByVal PreviousParentID As Integer)
+		Friend Sub ForumUpdate(ByVal objForum As ForumInfo, ByVal PreviousParentID As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().ForumUpdate(objForum.GroupID, objForum.ForumID, objForum.IsActive, objForum.ParentID, objForum.Name, objForum.Description, objForum.IsModerated, objForum.ForumType, objForum.PublicView, objForum.UpdatedByUser, objForum.PublicPosting, objForum.EnableForumsThreadStatus, objForum.EnableForumsRating, objForum.ForumLink, objForum.ForumBehavior, objForum.AllowPolls, objForum.EnableRSS, objForum.EmailAddress, objForum.EmailFriendlyFrom, objForum.NotifyByDefault, objForum.EmailStatusChange, objForum.EmailServer, objForum.EmailUser, objForum.EmailPass, objForum.EmailEnableSSL, objForum.EmailAuth, objForum.EmailPort, objForum.EnableSitemap, objForum.SitemapPriority)
 
 			' update forum permissions
@@ -261,7 +261,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="GroupID"></param>
 		''' <param name="ForumID"></param>
 		''' <remarks></remarks>
-		Public Sub ForumDelete(ByVal ParentID As Integer, ByVal GroupID As Integer, ByVal ForumID As Integer, ByVal ModuleID As Integer)
+		Friend Sub ForumDelete(ByVal ParentID As Integer, ByVal GroupID As Integer, ByVal ForumID As Integer, ByVal ModuleID As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().ForumDelete(ForumID, GroupID)
 		End Sub
 
@@ -272,7 +272,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ForumId"></param>
 		''' <param name="MoveUp"></param>
 		''' <remarks></remarks>
-		Public Sub ForumSortOrderUpdate(ByVal ParentID As Integer, ByVal GroupID As Integer, ByVal ForumId As Integer, ByVal MoveUp As Boolean)
+		Friend Sub ForumSortOrderUpdate(ByVal ParentID As Integer, ByVal GroupID As Integer, ByVal ForumId As Integer, ByVal MoveUp As Boolean)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().ForumSortOrderUpdate(GroupID, ForumId, MoveUp)
 		End Sub
 
@@ -281,197 +281,13 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Private Methods"
 
 		''' <summary>
-		''' Calls the Custom Hydrator to hydrate a specific ForumID instance.
+		''' Retrieves a single forum entity from the data store. 
 		''' </summary>
-		''' <param name="ForumId">The ForumID of the forum to hydrate.</param>
+		''' <param name="ForumId">The ForumID, pk, we are retrieving.</param>
 		''' <returns>A single instance of the forum info object for the specified ForumID.</returns>
 		''' <remarks></remarks>
 		Private Function GetForum(ByVal ForumId As Integer) As ForumInfo
-			Dim dr As IDataReader = DotNetNuke.Modules.Forum.DataProvider.Instance().ForumGet(ForumId)
-			Try
-				Return FillForumInfo(dr, True, True)
-			Finally
-				If Not dr Is Nothing Then
-					dr.Close()
-				End If
-			End Try
-		End Function
-
-		''' <summary>
-		''' The Custom Hydrator function which is used for performance reasons. (This is faster than core CBO)
-		''' </summary>
-		''' <param name="dr">The datareader populated by the ForumID we are about to hydrate.</param>
-		''' <param name="CheckForOpenDataReader">Determines if the function should check for open datareaders.</param>
-		''' <param name="IncludePermissions">Determines if the permissions collection should be populated.</param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Private Function FillForumInfo(ByVal dr As IDataReader, ByVal CheckForOpenDataReader As Boolean, ByVal IncludePermissions As Boolean) As ForumInfo
-			Dim objForumInfo As New ForumInfo
-			Dim objForumPermissionController As New DotNetNuke.Modules.Forum.ForumPermissionController
-			' read datareader
-			Dim [Continue] As Boolean = True
-
-			If CheckForOpenDataReader Then
-				[Continue] = False
-				If dr.Read Then
-					[Continue] = True
-				End If
-			End If
-			If [Continue] Then
-				Try
-					objForumInfo.CreatedByUser = Convert.ToInt32(Null.SetNull(dr("CreatedByUser"), objForumInfo.CreatedByUser))
-				Catch
-				End Try
-				Try
-					objForumInfo.CreatedDate = Convert.ToDateTime(Null.SetNull(dr("CreatedDate"), objForumInfo.CreatedDate))
-				Catch
-				End Try
-				Try
-					objForumInfo.Description = Convert.ToString(Null.SetNull(dr("Description"), objForumInfo.Description))
-				Catch
-				End Try
-				Try
-					objForumInfo.ForumID = Convert.ToInt32(Null.SetNull(dr("ForumID"), objForumInfo.ForumID))
-				Catch
-				End Try
-
-				Try
-					objForumInfo.ForumType = Convert.ToInt32(Null.SetNull(dr("ForumType"), objForumInfo.ForumType))
-				Catch
-				End Try
-				Try
-					objForumInfo.GroupID = Convert.ToInt32(Null.SetNull(dr("GroupID"), objForumInfo.GroupID))
-				Catch
-				End Try
-				Try
-					objForumInfo.IsActive = Convert.ToBoolean(Null.SetNull(dr("IsActive"), objForumInfo.IsActive))
-				Catch
-				End Try
-				Try
-					objForumInfo.ModuleID = Convert.ToInt32(Null.SetNull(dr("ModuleID"), objForumInfo.ModuleID))
-				Catch
-				End Try
-				Try
-					objForumInfo.Name = Convert.ToString(Null.SetNull(dr("Name"), objForumInfo.Name))
-				Catch
-				End Try
-				Try
-					objForumInfo.MostRecentPostID = Convert.ToInt32(Null.SetNull(dr("MostRecentPostID"), objForumInfo.MostRecentPostID))
-				Catch
-				End Try
-				Try
-					objForumInfo.PostsToModerate = Convert.ToInt32(Null.SetNull(dr("PostsToModerate"), objForumInfo.PostsToModerate))
-				Catch
-				End Try
-				Try
-					objForumInfo.SortOrder = Convert.ToInt32(Null.SetNull(dr("SortOrder"), objForumInfo.SortOrder))
-				Catch
-				End Try
-				Try
-					objForumInfo.TotalPosts = Convert.ToInt32(Null.SetNull(dr("TotalPosts"), objForumInfo.TotalPosts))
-				Catch
-				End Try
-				Try
-					objForumInfo.TotalThreads = Convert.ToInt32(Null.SetNull(dr("TotalThreads"), objForumInfo.TotalThreads))
-				Catch
-				End Try
-				Try
-					objForumInfo.UpdatedByUser = Convert.ToInt32(Null.SetNull(dr("UpdatedByUser"), objForumInfo.UpdatedByUser))
-				Catch
-				End Try
-				Try
-					objForumInfo.UpdatedDate = Convert.ToDateTime(Null.SetNull(dr("UpdatedDate"), objForumInfo.UpdatedDate))
-				Catch
-				End Try
-				Try
-					objForumInfo.EnableForumsThreadStatus = Convert.ToBoolean(Null.SetNull(dr("EnableForumsThreadStatus"), objForumInfo.EnableForumsThreadStatus))
-				Catch
-				End Try
-				Try
-					objForumInfo.EnableForumsRating = Convert.ToBoolean(Null.SetNull(dr("EnableForumsRating"), objForumInfo.EnableForumsRating))
-				Catch
-				End Try
-				Try
-					objForumInfo.ForumLink = Convert.ToString(Null.SetNull(dr("ForumLink"), objForumInfo.ForumLink))
-				Catch
-				End Try
-				Try
-					objForumInfo.ForumBehavior = CType(Null.SetNull(dr("ForumBehavior"), objForumInfo.ForumBehavior), DotNetNuke.Modules.Forum.ForumBehavior)
-				Catch
-				End Try
-				Try
-					objForumInfo.AllowPolls = Convert.ToBoolean(Null.SetNull(dr("AllowPolls"), objForumInfo.AllowPolls))
-				Catch
-				End Try
-				Try
-					objForumInfo.EnableRSS = Convert.ToBoolean(Null.SetNull(dr("EnableRSS"), objForumInfo.EnableRSS))
-				Catch
-				End Try
-				'[skeel] subforums support
-				Try
-					objForumInfo.SubForums = Convert.ToInt32(Null.SetNull(dr("SubForums"), objForumInfo.SubForums))
-				Catch
-				End Try
-				Try
-					objForumInfo.ParentID = Convert.ToInt32(Null.SetNull(dr("ParentID"), objForumInfo.ParentID))
-				Catch
-				End Try
-				' Email support
-				Try
-					objForumInfo.EmailAddress = Convert.ToString(Null.SetNull(dr("EmailAddress"), objForumInfo.EmailAddress))
-				Catch
-				End Try
-				Try
-					objForumInfo.EmailFriendlyFrom = Convert.ToString(Null.SetNull(dr("EmailFriendlyFrom"), objForumInfo.EmailFriendlyFrom))
-				Catch
-				End Try
-				Try
-					objForumInfo.NotifyByDefault = Convert.ToBoolean(Null.SetNull(dr("NotifyByDefault"), objForumInfo.NotifyByDefault))
-				Catch
-				End Try
-				Try
-					objForumInfo.EmailStatusChange = Convert.ToBoolean(Null.SetNull(dr("EmailStatusChange"), objForumInfo.EmailStatusChange))
-				Catch
-				End Try
-
-				Try
-					objForumInfo.EmailServer = Convert.ToString(Null.SetNull(dr("EmailServer"), objForumInfo.EmailServer))
-				Catch
-				End Try
-				Try
-					objForumInfo.EmailUser = Convert.ToString(Null.SetNull(dr("EmailUser"), objForumInfo.EmailUser))
-				Catch
-				End Try
-				Try
-					objForumInfo.EmailPass = Convert.ToString(Null.SetNull(dr("EmailPass"), objForumInfo.EmailPass))
-				Catch
-				End Try
-				Try
-					objForumInfo.EmailEnableSSL = Convert.ToBoolean(Null.SetNull(dr("EmailEnableSSL"), objForumInfo.EmailEnableSSL))
-				Catch
-				End Try
-				Try
-					objForumInfo.EmailAuth = Convert.ToInt32(Null.SetNull(dr("EmailAuth"), objForumInfo.EmailAuth))
-				Catch
-				End Try
-				Try
-					objForumInfo.EmailPort = Convert.ToInt32(Null.SetNull(dr("EmailPort"), objForumInfo.EmailPort))
-				Catch
-				End Try
-
-				If IncludePermissions Then
-					If Not objForumInfo Is Nothing Then
-						' per forum perms
-						Try
-							objForumInfo.ForumPermissions = objForumPermissionController.GetForumPermissionsCollection(objForumInfo.ForumID)
-						Catch
-						End Try
-					End If
-				End If
-			Else
-				objForumInfo = Nothing
-			End If
-			Return objForumInfo
+			Return CBO.FillObject(Of ForumInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().ForumGet(ForumId))
 		End Function
 
 		''' <summary>

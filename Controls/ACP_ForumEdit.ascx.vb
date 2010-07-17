@@ -285,10 +285,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				.EmailPass = txtEmailPass.Text
 				.EnableSitemap = chkEnableSitemap.Checked
 				If txtSitemapPriority.Text <> "" Then
-					.SitemapPriority = Convert.ToDouble(txtSitemapPriority.Text)
+					.SitemapPriority = Convert.ToSingle(txtSitemapPriority.Text)
 				Else
-					' set validation
-					Exit Sub
+					.SitemapPriority = 0.5
 				End If
 
 
@@ -363,7 +362,11 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				.EmailUser = txtEmailUser.Text
 				.EmailPass = txtEmailPass.Text
 				.EnableSitemap = chkEnableSitemap.Checked
-				.SitemapPriority = Convert.ToDouble(txtSitemapPriority.Text)
+				If txtSitemapPriority.Text <> "" Then
+					.SitemapPriority = Convert.ToSingle(txtSitemapPriority.Text)
+				Else
+					.SitemapPriority = 0.5
+				End If
 
 				If Not txtEmailPort.Text.Trim = String.Empty Then
 					.EmailPort = CType(txtEmailPort.Text, Integer)
@@ -724,6 +727,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					' populate view roles
 					Dim arrAssignedAuthViewRoles As New ArrayList
 					Dim arrAuthViewRoles As Array = Split(objModule.AuthorizedViewRoles, ";")
+
 					For Each strRole In arrAuthViewRoles
 						If strRole <> String.Empty Then
 							For Each objListItem In arrAvailableAuthViewRoles

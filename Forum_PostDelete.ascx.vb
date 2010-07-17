@@ -104,7 +104,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						ThreadID = Int32.Parse(Request.QueryString("threadid"))
 						Dim cntThread As New ThreadController()
-						objThread = cntThread.GetThreadInfo(ThreadID)
+						objThread = cntThread.GetThread(ThreadID)
 						ForumID = objThread.ForumID
 						' we will get info for first post, since we are deleting the thread
 						PostID = ThreadID
@@ -174,7 +174,7 @@ Namespace DotNetNuke.Modules.Forum
 							Dim ThreadID As Integer
 
 							ThreadID = Int32.Parse(Request.QueryString("threadid"))
-							objThread = cntThread.GetThreadInfo(ThreadID)
+							objThread = cntThread.GetThread(ThreadID)
 							ForumID = objThread.ForumID
 						Else
 							Exit Sub
@@ -195,7 +195,7 @@ Namespace DotNetNuke.Modules.Forum
 						End If
 
 						' Delete thread (SEND MAIL BEFORE DELETE, we need the thread still in the db)
-						cntThread.ThreadDelete(objThread.ThreadID, PortalId, Notes)
+						cntThread.DeleteThread(objThread.ThreadID, PortalId, Notes)
 
 						Forum.Components.Utilities.Caching.UpdatePostCache(objThread.ThreadID, objThread.ThreadID, objThread.ForumID, objThread.ContainingForum.GroupID, ModuleId, objThread.ContainingForum.ParentID)
 

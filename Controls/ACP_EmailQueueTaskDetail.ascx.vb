@@ -185,7 +185,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 #Region "Private Methods"
 
 		''' <summary>
-		''' 
+		''' Binds data to the queue grid. 
 		''' </summary>
 		''' <param name="BindIt"></param>
 		''' <remarks></remarks>

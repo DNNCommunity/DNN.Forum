@@ -721,7 +721,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim portalID As Integer = DirectCast(cacheItemArgs.ParamList(0), Integer)
 			Dim userID As Integer = DirectCast(cacheItemArgs.ParamList(1), Integer)
 			Dim moduleID As Integer = DirectCast(cacheItemArgs.ParamList(2), Integer)
-			Dim objUserInfo As ForumUserInfo
+			Dim objUserInfo As ForumUserInfo = Nothing
 			Dim dr As IDataReader = Nothing
 			Try
 				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().UserGet(userID, portalID)

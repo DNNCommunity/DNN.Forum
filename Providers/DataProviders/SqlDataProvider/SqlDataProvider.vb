@@ -236,6 +236,10 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Threads"
 
+		Public Overrides Function GetSitemapThreads(ByVal PortalID As Integer) As IDataReader
+			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Thread_GetSitemapThreads", PortalID), IDataReader)
+		End Function
+
 		Public Overrides Function ThreadGetAll(ByVal ModuleID As Integer, ByVal ForumID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer, ByVal Filter As String, ByVal PortalID As Integer) As IDataReader
 			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Thread_GetAll", ModuleID, ForumID, PageSize, PageIndex, Filter, PortalID), IDataReader)
 		End Function
@@ -489,9 +493,6 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 #Region "UserForums Methods"
-		Public Overrides Function GetSubForumIDs(ByVal ParentForumID As Integer) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Forum_Forum_GetSubForumId", ParentForumID), IDataReader)
-		End Function
 
 		Public Overrides Function GetUserForums(ByVal UserID As Integer, ByVal ForumID As Integer) As IDataReader
 			Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "Forum_UserForumsGet", UserID, ForumID), IDataReader)

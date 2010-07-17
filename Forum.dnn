@@ -326,7 +326,31 @@
 							<name>Forum_04.05.03_Install.resources</name>
 						</file>
 					</files>
-				</component>		
+				</component>
+				<component type="Config">
+					<config>
+						<configFile>web.config</configFile>
+						<install>
+							<configuration>
+								<nodes>
+									<node path="/configuration/dotnetnuke/sitemap/providers" action="add" key="name" collision="overwrite">
+										<add name="ForumThreadProvider"
+													type="DotNetNuke.Modules.Forum.Components.Providers.ThreadSitemap,  DotNetNuke.Modules.Forum"
+													providerPath="~\DesktopModules\Forum\Components\Providers\Sitemap\" />
+									</node>
+								</nodes>
+							</configuration>
+						</install>
+						<uninstall>
+							<configuration>
+								<nodes>
+									<node path="/configuration/dotnetnuke/sitemap/providers/add[@name = 'ForumThreadProvider']" action="remove">
+									</node>
+								</nodes>
+							</configuration>
+						</uninstall>
+					</config>
+				</component>
 			</components>
 		</package>
 	</packages>

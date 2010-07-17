@@ -22,8 +22,6 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "Enum"
-
 	''' <summary>
 	''' Options for how a forum behaves. Notifications forums are forced subscriptions. Link forums are just links, no actual forum inside.
 	''' </summary>
@@ -94,11 +92,19 @@ Namespace DotNetNuke.Modules.Forum
 	End Enum
 
 	''' <summary>
-	''' 
+	''' The permission keys used for the module level permissions (ie. module settings).
 	''' </summary>
 	''' <remarks></remarks>
 	Public Enum PermissionKeys
+		''' <summary>
+		''' This user is treated like an admin (ie. content editor)
+		''' </summary>
+		''' <remarks></remarks>
 		FORUMADMIN
+		''' <summary>
+		''' This person is moderator of all forums they can see. 
+		''' </summary>
+		''' <remarks></remarks>
 		FORUMGLBMOD
 	End Enum
 
@@ -154,15 +160,15 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <remarks></remarks>
 		[ThreadSearch] = 4
-		'''' <summary>
-		'''' Shows list of threads with new posts since last visit.
-		'''' </summary>
-		'''' <remarks>Added by Skeel</remarks>
+		''' <summary>
+		''' Shows list of threads with new posts since last visit.
+		''' </summary>
+		''' <remarks>Added by Skeel</remarks>
 		[Unread] = 6
-		'''' <summary>
-		'''' Shows search input area.
-		'''' </summary>
-		'''' <remarks></remarks>
+		' ''' <summary>
+		' ''' Shows search input area.
+		' ''' </summary>
+		' ''' <remarks></remarks>
 		'[SearchInput] = 7
 	End Enum
 
@@ -728,6 +734,10 @@ Namespace DotNetNuke.Modules.Forum
 		EmailSubscribers
 	End Enum
 
+	''' <summary>
+	''' The type of user avatar being used.
+	''' </summary>
+	''' <remarks></remarks>
 	Public Enum UserAvatarType
 		None = 0
 		UserAvatar = 1
@@ -736,10 +746,10 @@ Namespace DotNetNuke.Modules.Forum
 	End Enum
 
 	''' <summary>
-    ''' Depending on what needs to be processed, a unique sum will be generated
-    ''' eq: Sum of 11 = Emoticons + BBCode + Inline
-    ''' </summary>
-    ''' <remarks>[Skeel] Not implemented yet, but will speed up post generation</remarks>
+	''' Depending on what needs to be processed, a unique sum will be generated
+	''' eq: Sum of 11 = Emoticons + BBCode + Inline
+	''' </summary>
+	''' <remarks>[Skeel] Not implemented yet, but will speed up post generation</remarks>
 	Friend Enum PostParserInfo As Integer
 		''' <summary>
 		''' Nothing to Parse
@@ -790,7 +800,5 @@ Namespace DotNetNuke.Modules.Forum
 		UserCannotStartThread = 14
 		UserCannotViewForum = 15
 	End Enum
-
-#End Region
 
 End Namespace

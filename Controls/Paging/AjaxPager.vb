@@ -616,7 +616,8 @@ Namespace DotNetNuke.Modules.Forum.WebControls
                 If Me.SmartShortCutList.Count > 0 Then
                     Return Me.EnableSmartShortCuts
                 End If
-            End If
+			End If
+			Return False
         End Function
 
 #End Region

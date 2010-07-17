@@ -238,7 +238,7 @@
     <value>All Forums</value>
   </data>
   <data name="AggregatedForumDescription.Text" xml:space="preserve">
-    <value>An aggregated view of all public forum threads.</value>
+    <value>An aggregated view of all forum threads.</value>
   </data>
   <data name="Post Replies.Permission" xml:space="preserve">
     <value>Reply</value>

@@ -150,4 +150,7 @@
   <data name="EmailSubject.Header" xml:space="preserve">
     <value>Subject</value>
   </data>
+  <data name="EmailAddress.Header" xml:space="preserve">
+    <value>Email</value>
+  </data>
 </root>
