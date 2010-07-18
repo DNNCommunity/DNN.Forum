@@ -70,20 +70,15 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <param name="e"></param>
 		''' <remarks>Saves the module settings shown in this view.
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	7/13/2005	Created
-		''' </history>
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
-				' Update settings in the database
 				Dim ctlModule As New Entities.Modules.ModuleController
-				ctlModule.UpdateModuleSetting(ModuleId, "EnableUsersOnline", chkUserOnline.Checked.ToString)
-				' User Profile
-				ctlModule.UpdateModuleSetting(ModuleId, "EnableExternalProfile", chkEnableExtProfilePage.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "ExternalProfilePage", ddlExtProfilePageID.SelectedValue)
-				ctlModule.UpdateModuleSetting(ModuleId, "ExternalProfileParam", txtExtProfileUserParam.Text)
-				ctlModule.UpdateModuleSetting(ModuleId, "ExternalProfileParamName", txtExtProfileParamName.Text)
-				ctlModule.UpdateModuleSetting(ModuleId, "ExternalProfileParamName", txtExtProfileParamValue.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_USERS_ONLINE, chkUserOnline.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_EXTERNAL_PROFILE_PAGE, chkEnableExtProfilePage.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.EXTERNAL_PROFILE_PAGE, ddlExtProfilePageID.SelectedValue)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.EXTERNAL_PROFILE_USER_PARAM, txtExtProfileUserParam.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.EXTERNAL_PROFILE_PARAM_NAME, txtExtProfileParamName.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.EXTERNAL_PROFILE_PARAM_VALUE, txtExtProfileParamValue.Text)
 
 				Configuration.ResetForumConfig(ModuleId)
 
@@ -96,7 +91,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		End Sub
 
 		''' <summary>
-		''' Enables/Disabled External Profile Pages.
+		''' Enables/Disabled external profile fields in the user interface.
 		''' </summary>
 		''' <param name="sender"></param>
 		''' <param name="e"></param>

@@ -40,6 +40,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			chkNoFollowWeb.Checked = objConfig.NoFollowWeb
 			chkOverrideTitle.Checked = objConfig.OverrideTitle
 			chkOverrideDescription.Checked = objConfig.OverrideDescription
+			chkOverrideKeyWords.Checked = objConfig.OverrideKeyWords
 			chkNoFollowLatestThreads.Checked = objConfig.NoFollowLatestThreads
 			txtSitemapPriority.Text = objConfig.SitemapPriority.ToString()
 		End Sub
@@ -57,13 +58,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </remarks>
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
-				' Update settings in the database
 				Dim ctlModule As New Entities.Modules.ModuleController
-				ctlModule.UpdateModuleSetting(ModuleId, "NoFollowWeb", chkNoFollowWeb.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "OverrideTitle", chkOverrideTitle.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "OverrideDescription", chkOverrideDescription.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "NoFollowLatestThreads", chkNoFollowLatestThreads.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "SitemapPriority", txtSitemapPriority.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_NO_FOLLOW_WEBSITE_LINK, chkNoFollowWeb.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_OVERRIDE_PAGE_TITLE, chkOverrideTitle.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_OVERRIDE_PAGE_DESCRIPTION, chkOverrideDescription.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_OVERRIDE_PAGE_KEYWORDS, chkOverrideKeyWords.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_NO_FOLLOW_LATEST_THREAD_LINKS, chkNoFollowLatestThreads.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.SITEMAP_PRIORITY, txtSitemapPriority.Text)
 
 				Configuration.ResetForumConfig(ModuleId)
 

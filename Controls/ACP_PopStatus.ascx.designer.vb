@@ -96,6 +96,42 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected WithEvents valReply As Global.System.Web.UI.WebControls.RegularExpressionValidator
 
 		'''<summary>
+		'''plDays control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents plDays As Global.DotNetNuke.UI.UserControls.LabelControl
+
+		'''<summary>
+		'''txtDays control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents txtDays As Global.System.Web.UI.WebControls.TextBox
+
+		'''<summary>
+		'''valreqDays control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents valreqDays As Global.System.Web.UI.WebControls.RequiredFieldValidator
+
+		'''<summary>
+		'''valDays control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents valDays As Global.System.Web.UI.WebControls.RegularExpressionValidator
+
+		'''<summary>
 		'''cmdUpdate control.
 		'''</summary>
 		'''<remarks>

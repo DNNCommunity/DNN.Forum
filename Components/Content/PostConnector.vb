@@ -62,8 +62,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="Provider">A unique string used to identify how the post was submitted (this should be your own unique value for your module/task).</param>
 		''' <returns>An enumerator PostMessage that tells what happend (post moderated, post approved, reason rejected, etc.).</returns>
 		''' <remarks>This is available for all outside modules/applications to post to the forum module.</remarks>
-		Public Function SubmitExternalPost(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer, ByVal UserID As Integer, ByVal PostSubject As String, ByVal PostBody As String, ByVal ForumID As Integer, ByVal ParentPostID As Integer, ByVal Attachments As String, ByVal Provider As String, ByVal ParentThreadID As Integer) As PostMessage
-			Return PostingValidation(TabID, ModuleID, PortalID, UserID, PostSubject, PostBody, ForumID, ParentPostID, -1, False, False, False, Forum.ThreadStatus.NotSet, Attachments, "0.0.0.0", -1, False, Provider, ParentThreadID)
+		Public Function SubmitExternalPost(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer, ByVal UserID As Integer, ByVal PostSubject As String, ByVal PostBody As String, ByVal ForumID As Integer, ByVal ParentPostID As Integer, ByVal Attachments As String, ByVal Provider As String, ByVal ParentThreadID As Integer, ByVal Terms As List(Of DotNetNuke.Entities.Content.Taxonomy.Term)) As PostMessage
+			Return PostingValidation(TabID, ModuleID, PortalID, UserID, PostSubject, PostBody, ForumID, ParentPostID, -1, False, False, False, Forum.ThreadStatus.NotSet, Attachments, "0.0.0.0", -1, False, Provider, ParentThreadID, Terms)
 		End Function
 
 		''' <summary>
@@ -173,8 +173,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ThreadID"></param>
 		''' <returns></returns>
 		''' <remarks>This is set as friend so only PostEdit uses this method. We want to avoid threadstatus, polls, thread icon changes from external sources (for now). Also avoiding post edits externally,.</remarks>
-		Friend Function SubmitInternalPost(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer, ByVal UserID As Integer, ByVal PostSubject As String, ByVal PostBody As String, ByVal ForumID As Integer, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal IsPinned As Boolean, ByVal IsClosed As Boolean, ByVal ReplyNotify As Boolean, ByVal Status As Forum.ThreadStatus, ByVal AttachmentFileIDs As String, ByVal RemoteAddress As String, ByVal PollID As Integer, ByVal IsQuote As Boolean, ByVal ThreadID As Integer) As PostMessage
-			Return PostingValidation(TabID, ModuleID, PortalID, UserID, PostSubject, PostBody, ForumID, ParentPostID, PostID, IsPinned, IsClosed, ReplyNotify, Status, AttachmentFileIDs, RemoteAddress, PollID, IsQuote, "InterModule", ThreadID)
+		Friend Function SubmitInternalPost(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer, ByVal UserID As Integer, ByVal PostSubject As String, ByVal PostBody As String, ByVal ForumID As Integer, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal IsPinned As Boolean, ByVal IsClosed As Boolean, ByVal ReplyNotify As Boolean, ByVal Status As Forum.ThreadStatus, ByVal AttachmentFileIDs As String, ByVal RemoteAddress As String, ByVal PollID As Integer, ByVal IsQuote As Boolean, ByVal ThreadID As Integer, ByVal Terms As List(Of DotNetNuke.Entities.Content.Taxonomy.Term)) As PostMessage
+			Return PostingValidation(TabID, ModuleID, PortalID, UserID, PostSubject, PostBody, ForumID, ParentPostID, PostID, IsPinned, IsClosed, ReplyNotify, Status, AttachmentFileIDs, RemoteAddress, PollID, IsQuote, "InterModule", ThreadID, Terms)
 		End Function
 
 #End Region
@@ -204,7 +204,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ThreadID"></param>
 		''' <returns>A message indicating what happend, ie. if the post was successfull or why it failed.</returns>
 		''' <remarks>Internal and external methods for posting call this.</remarks>
-		Private Function PostingValidation(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer, ByVal UserID As Integer, ByVal PostSubject As String, ByVal PostBody As String, ByVal ForumID As Integer, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal IsPinned As Boolean, ByVal IsClosed As Boolean, ByVal ReplyNotify As Boolean, ByVal Status As Forum.ThreadStatus, ByVal lstAttachmentFileIDs As String, ByVal RemoteAddress As String, ByVal PollID As Integer, ByVal IsQuote As Boolean, ByVal Provider As String, ByVal ThreadID As Integer) As PostMessage
+		Private Function PostingValidation(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer, ByVal UserID As Integer, ByVal PostSubject As String, ByVal PostBody As String, ByVal ForumID As Integer, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal IsPinned As Boolean, ByVal IsClosed As Boolean, ByVal ReplyNotify As Boolean, ByVal Status As Forum.ThreadStatus, ByVal lstAttachmentFileIDs As String, ByVal RemoteAddress As String, ByVal PollID As Integer, ByVal IsQuote As Boolean, ByVal Provider As String, ByVal ThreadID As Integer, ByVal Terms As List(Of DotNetNuke.Entities.Content.Taxonomy.Term)) As PostMessage
 			Dim cntForum As New ForumController
 			Dim objForum As New ForumInfo
 			Dim cntForumUser As New ForumUserController
@@ -317,7 +317,7 @@ Namespace DotNetNuke.Modules.Forum
 				Dim FinalBody As String = ProcessPostBody(PostBody, objConfig, PortalID, objAction, objForumUser.UserID)
 				Dim NewPostID As Integer = -1
 
-				NewPostID = PostToDatabase(TabID, ModuleID, objConfig, PortalID, objForumUser, FinalSubject, FinalBody, objForum, ParentPostID, PostID, IsPinned, IsClosed, ReplyNotify, Status, lstAttachmentFileIDs, RemoteAddress, PollID, ThreadID, objAction, IsModerated)
+				NewPostID = PostToDatabase(TabID, ModuleID, objConfig, PortalID, objForumUser, FinalSubject, FinalBody, objForum, ParentPostID, PostID, IsPinned, IsClosed, ReplyNotify, Status, lstAttachmentFileIDs, RemoteAddress, PollID, ThreadID, objAction, IsModerated, Terms)
 
 				If NewPostID > 0 Then
 					If IsModerated Then
@@ -338,7 +338,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' for security reasons as well as bad words (if enabled), and calls all parsing (for image replacement, etc.).
 		''' </summary>
 		''' <remarks>All permissions and validation checks should be done prior to this method.</remarks>
-		Private Function PostToDatabase(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal objConfig As Forum.Configuration, ByVal PortalID As Integer, ByVal objForumUser As ForumUserInfo, ByVal PostSubject As String, ByVal PostBody As String, ByVal objForum As ForumInfo, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal IsPinned As Boolean, ByVal IsClosed As Boolean, ByVal ReplyNotify As Boolean, ByVal Status As Forum.ThreadStatus, ByVal lstAttachmentFileIDs As String, ByVal RemoteAddress As String, ByVal PollID As Integer, ByVal ThreadID As Integer, ByVal objAction As PostAction, ByVal IsModerated As Boolean) As Integer
+		Private Function PostToDatabase(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal objConfig As Forum.Configuration, ByVal PortalID As Integer, ByVal objForumUser As ForumUserInfo, ByVal PostSubject As String, ByVal PostBody As String, ByVal objForum As ForumInfo, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal IsPinned As Boolean, ByVal IsClosed As Boolean, ByVal ReplyNotify As Boolean, ByVal Status As Forum.ThreadStatus, ByVal lstAttachmentFileIDs As String, ByVal RemoteAddress As String, ByVal PollID As Integer, ByVal ThreadID As Integer, ByVal objAction As PostAction, ByVal IsModerated As Boolean, ByVal Terms As List(Of DotNetNuke.Entities.Content.Taxonomy.Term)) As Integer
 			Dim objSecurity As New PortalSecurity
 			Dim newPostID As Integer
 			Dim objNewPost As New PostInfo
@@ -400,6 +400,8 @@ Namespace DotNetNuke.Modules.Forum
 						objThread.ModuleID = ModuleID
 						objThread.TabID = TabID
 						objThread.SitemapInclude = objForum.EnableSitemap
+						objThread.Terms.Clear()
+						objThread.Terms.AddRange(Terms)
 
 						Dim cntContent As New Content
 						cntContent.CreateContentItem(objThread, TabID)
@@ -436,6 +438,10 @@ Namespace DotNetNuke.Modules.Forum
 
 						objThread.ModuleID = objConfig.ModuleID
 						objThread.TabID = TabID
+						objThread.SitemapInclude = objForum.EnableSitemap
+						objThread.Terms.Clear()
+						objThread.Terms.AddRange(Terms)
+
 						Dim cntContent As New Content
 						cntContent.UpdateContentItem(objThread, TabID)
 					End If

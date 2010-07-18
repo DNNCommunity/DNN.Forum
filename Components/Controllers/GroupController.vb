@@ -100,7 +100,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="NoLinkForums">True if no link type forums should be added to the collection.</param>
 		''' <returns>A Generics collection of ForumInfo items.</returns>
 		''' <remarks></remarks>
-		Public Function AuthorizedNoParentForums(ByVal UserID As Integer, ByVal GroupID As Integer, ByVal NoLinkForums As Boolean, ByVal ModuleID As Integer, ByVal TabID As Integer) As List(Of ForumInfo)
+		Public Function AuthorizedTopLevelForums(ByVal UserID As Integer, ByVal GroupID As Integer, ByVal NoLinkForums As Boolean, ByVal ModuleID As Integer, ByVal TabID As Integer) As List(Of ForumInfo)
 			Dim cntForum As New ForumController
 			Dim arrAuthForums As New List(Of ForumInfo)
 			Dim arrAllForums As New List(Of ForumInfo)

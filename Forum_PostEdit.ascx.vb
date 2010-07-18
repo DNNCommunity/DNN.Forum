@@ -41,6 +41,23 @@ Namespace DotNetNuke.Modules.Forum
 		Const COLUMN_MOVE_UP As Integer = 2
 		Const COLUMN_ANSWER As Integer = 3
 
+		Private _objThread As ThreadInfo
+
+		''' <summary>
+		''' The ThreadInfo object of the post being rendered.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Property objThread() As ThreadInfo
+			Get
+				Return _objThread
+			End Get
+			Set(ByVal Value As ThreadInfo)
+				_objThread = Value
+			End Set
+		End Property
+
 #End Region
 
 #Region "Optional Interfaces"
@@ -104,40 +121,28 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 			Try
-				Dim securityForumID As Integer = -1
 				Dim cntPost As New PostController()
 				Dim objParentPost As New PostInfo
-				objParentPost = Nothing
-
-				' If this is not a new thread, obtain original post/thread
-				If Not Request.QueryString("postid") Is Nothing Then
-					Dim PostID As Integer = -1
-
-					PostID = Int32.Parse(Request.QueryString("postid"))
-					objParentPost = cntPost.GetPostInfo(PostID, PortalId)
-					securityForumID = objParentPost.ForumID
-				End If
-
-				Dim ForumID As Integer = -1
 				Dim objForum As New ForumInfo
 
-				' Obtain forum info object
-				If Not Request.QueryString("forumid") Is Nothing Then
-					ForumID = Int32.Parse(Request.QueryString("forumid"))
-					If ForumID <> -1 Then
+				' If this is not a new thread, obtain original post/thread
+				If Request.QueryString("postid") IsNot Nothing Then
+					Dim PostID As Integer = Int32.Parse(Request.QueryString("postid"))
+
+					objParentPost = cntPost.GetPostInfo(PostID, PortalId)
+					objThread = objParentPost.ParentThread
+					objForum = objThread.ContainingForum
+				Else
+					If ForumID > 0 Then
 						Dim cntForum As New ForumController
 						objForum = cntForum.GetForumItemCache(ForumID)
-						securityForumID = objForum.ForumID
-						' if the forumid in the querystring does not match the one assigned to the postid, someone is editing the querystring trying to gain posting access they may not have
-						If Not objParentPost Is Nothing Then
-							If Not ForumID = objParentPost.ParentThread.ForumID Then
-								HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
-							End If
+
+						If objForum Is Nothing Then
+							HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
 						End If
+					Else
+						HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
 					End If
-				Else
-					' This is done here to make sure we have the current ForumID set properly. (Noticed previous issues in security class when not doing this)
-					securityForumID = objForum.ForumID
 				End If
 
 				With Me.cmdCalEndDate
@@ -147,22 +152,13 @@ Namespace DotNetNuke.Modules.Forum
 				End With
 
 				If Page.IsPostBack = False Then
-
 					Localization.LocalizeDataGrid(dgAnswers, Me.LocalResourceFile)
-
 					txtPollID.Text = "-1"
-					Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, securityForumID, UserId)
-					Dim objForumUser As ForumUserInfo = Nothing
-					Dim objLoggedOnUserID As Integer = -1
+					Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, objForum.ForumID, UserId)
 
-					' Before we do anything, see if the user is logged in and has permission to be here
-					objLoggedOnUserID = Users.UserController.GetCurrentUserInfo.UserID
-					If Request.IsAuthenticated And objLoggedOnUserID > 0 Then
-						Dim cntForumUser As New ForumUserController
-						objForumUser = cntForumUser.GetForumUser(objLoggedOnUserID, False, ModuleId, PortalId)
-
+					If Request.IsAuthenticated And CurrentForumUser.UserID > 0 Then
 						' Before anything else, make sure the user is not banned
-						If objForumUser.IsBanned Then
+						If CurrentForumUser.IsBanned Then
 							HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
 						End If
 					Else
@@ -204,12 +200,12 @@ Namespace DotNetNuke.Modules.Forum
 
 							' Make sure user IsTrusted too before they can edit (but only if a moderated forum, if its not moderated we don't care)
 							' First check to see if user is original author 
-							If objLoggedOnUserID > 0 And (objParentPost.UserID = objForumUser.UserID) And (objParentPost.ParentThread.ContainingForum.IsModerated = False Or objForumUser.IsTrusted Or Security.IsUnmoderated) And (objParentPost.ParentThread.ContainingForum.IsActive) Then
+							If CurrentForumUser.UserID > 0 And (objParentPost.UserID = CurrentForumUser.UserID) And (objParentPost.ParentThread.ContainingForum.IsModerated = False Or CurrentForumUser.IsTrusted Or Security.IsUnmoderated) And (objParentPost.ParentThread.ContainingForum.IsActive) Then
 								AllowUserEdit = True
 							Else
 								' The user is not the original author
 								' See if they are admin or moderator - always have to be some type of mod or admin to edit (aka logged in)
-								If objLoggedOnUserID > 0 And (Security.IsForumModerator = True) Then
+								If CurrentForumUser.UserID > 0 And (Security.IsForumModerator = True) Then
 									AllowUserEdit = True
 								End If
 							End If
@@ -222,7 +218,7 @@ Namespace DotNetNuke.Modules.Forum
 								End If
 							End If
 
-							If objLoggedOnUserID > 0 And (objForum.IsActive = True) Then
+							If CurrentForumUser.UserID > 0 And (objForum.IsActive = True) Then
 								' have to add some check to make sure the forum is still active
 
 								' Rework if allowing anonymous posting, for now this is good
@@ -240,10 +236,10 @@ Namespace DotNetNuke.Modules.Forum
 							End If
 
 							' Rework if allowing anonymous posting, for now this is good
-							If objLoggedOnUserID > 0 And (objParentPost.ParentThread.ContainingForum.IsActive) Then
+							If CurrentForumUser.UserID > 0 And (objParentPost.ParentThread.ContainingForum.IsActive) Then
 								If (objParentPost.ParentThread.IsClosed = True) Then
 									'see if reply is coming from the original thread author
-									If objParentPost.ParentThread.StartedByUserID = objLoggedOnUserID Then
+									If objParentPost.ParentThread.StartedByUserID = CurrentForumUser.UserID Then
 										AllowUserEdit = True
 									End If
 								Else
@@ -302,7 +298,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					rowNotify.Visible = False
 					' Make sure this is a logged on user (shouldn't get here if not logged in anyways)
-					If objForumUser.UserID > 0 Then
+					If CurrentForumUser.UserID > 0 Then
 						' If the user is admin or moderator or trusted
 						If (Security.CanLockThread) Then
 							' Allow them to lock(close) a thread
@@ -338,12 +334,22 @@ Namespace DotNetNuke.Modules.Forum
 							ddlForum.Enabled = False
 						End If
 
+						Select Case objAction
+							Case PostAction.Edit
+								HandleTaxonomy(False, objParentPost.PostID, objForum.PublicView)
+							Case PostAction.New
+								' should we show tagging control here (for all)?
+								HandleTaxonomy(True, -1, objForum.PublicView)
+							Case Else
+								' quote/reply 
+						End Select
+
 						If objConfig.MailNotification Then
-							If Not objForumUser.TrackedModule Then
+							If Not CurrentForumUser.TrackedModule Then
 								' handle Forum tracking
 								Dim blnTrackedForum As Boolean = False
 
-								For Each trackedForum As TrackingInfo In objForumUser.TrackedForums
+								For Each trackedForum As TrackingInfo In CurrentForumUser.TrackedForums
 									If trackedForum.ForumID = ForumID Then
 										blnTrackedForum = True
 										Exit For
@@ -358,7 +364,7 @@ Namespace DotNetNuke.Modules.Forum
 										Case PostAction.Edit
 											' user may already be tracking the thread
 											' we may not have threadID, we definately have postid
-											For Each trackedThread As TrackingInfo In objForumUser.TrackedThreads
+											For Each trackedThread As TrackingInfo In CurrentForumUser.TrackedThreads
 												If trackedThread.ThreadID = objParentPost.ThreadID Then
 													blnTrackedThread = True
 													Exit For
@@ -369,7 +375,7 @@ Namespace DotNetNuke.Modules.Forum
 										Case Else	  ' reply/quote
 											' user may already be tracking the thread
 											' we may not have threadID, we definately have postid
-											For Each trackedThread As TrackingInfo In objForumUser.TrackedThreads
+											For Each trackedThread As TrackingInfo In CurrentForumUser.TrackedThreads
 												If trackedThread.ThreadID = objParentPost.ThreadID Then
 													blnTrackedThread = True
 													Exit For
@@ -382,7 +388,6 @@ Namespace DotNetNuke.Modules.Forum
 									End If
 								End If
 							Else
-								' user is tracking subscriptions at the module level (not implemented)
 								rowNotify.Visible = True
 							End If
 						End If
@@ -392,8 +397,6 @@ Namespace DotNetNuke.Modules.Forum
 						' Store URL Referrer to return to portal
 						ViewState("UrlReferrer") = Request.UrlReferrer.ToString()
 					End If
-					'' Set the form focus to the subject textbox(avoid users missing subject)
-					'SetFormFocus(txtSubject)
 				End If
 			Catch exc As Exception
 				ProcessModuleLoadException(Me, exc)
@@ -411,7 +414,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Protected Sub cmdSubmit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSubmit.Click
 			Try
-
 				If Len(teContent.Text) = 0 Then
 					If ViewState("PostContent") IsNot Nothing Then
 						teContent.Text = ViewState("PostContent").ToString()
@@ -421,8 +423,6 @@ Namespace DotNetNuke.Modules.Forum
 						Exit Sub
 					End If
 				End If
-
-				Dim objLoggedOnUserID As Integer = -1
 
 				Dim ParentPostID As Integer = 0
 				Dim PostID As Integer = -1
@@ -438,11 +438,8 @@ Namespace DotNetNuke.Modules.Forum
 					' CP - Consider a way to save subject, body, etc so user can comeback and post if they timed out.
 					HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
 					Exit Sub
-				Else
-					objLoggedOnUserID = Users.UserController.GetCurrentUserInfo.UserID
 				End If
-				Dim cntForumUser As New ForumUserController
-				Dim objForumUser As ForumUserInfo = cntForumUser.GetForumUser(objLoggedOnUserID, False, ModuleId, PortalId)
+
 				Dim objAction As New PostAction
 
 				' Validation (from UI)
@@ -472,8 +469,9 @@ Namespace DotNetNuke.Modules.Forum
 
 				Dim cntForum As New ForumController
 				Dim objForum As ForumInfo = cntForum.GetForumItemCache(Integer.Parse(ddlForum.SelectedItem.Value))
-				Dim objModSecurity As New Forum.ModuleSecurity(ModuleId, TabId, objForum.ForumID, objLoggedOnUserID)
+				Dim objModSecurity As New Forum.ModuleSecurity(ModuleId, TabId, objForum.ForumID, CurrentForumUser.UserID)
 				Dim ThreadID As Integer = -1
+				Dim Terms As List(Of DotNetNuke.Entities.Content.Taxonomy.Term)
 
 				Select Case objAction
 					Case PostAction.Edit
@@ -492,6 +490,13 @@ Namespace DotNetNuke.Modules.Forum
 								Exit Sub
 							End If
 						End If
+
+						If objThread.ThreadID = objEditPost.PostID Then
+							objThread.Terms.Clear()
+							objThread.Terms.AddRange(tsTerms.Terms)
+						End If
+
+						Terms = objThread.Terms
 					Case PostAction.New
 						' not sure this is correct (first line below)
 						ParentPostID = URLPostID
@@ -503,6 +508,12 @@ Namespace DotNetNuke.Modules.Forum
 						ElseIf objForum.AllowPolls Then
 							OrphanPollCleanup()
 						End If
+
+						Dim tempThread As New ThreadInfo
+						tempThread.Terms.Clear()
+						tempThread.Terms.AddRange(tsTerms.Terms)
+
+						Terms = tempThread.Terms
 					Case PostAction.Quote
 						Dim cntPost As New PostController
 						Dim objReplyToPost As New PostInfo
@@ -512,6 +523,7 @@ Namespace DotNetNuke.Modules.Forum
 						ParentPostID = URLPostID
 						IsQuote = True
 						ThreadID = objReplyToPost.ThreadID
+						Terms = objThread.Terms
 					Case Else	  ' reply
 						Dim cntPost As New PostController
 						Dim objReplyToPost As New PostInfo
@@ -520,6 +532,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						ParentPostID = URLPostID
 						ThreadID = objReplyToPost.ThreadID
+						Terms = objThread.Terms
 				End Select
 
 				If ParentPostID = 0 And objForum.AllowPolls Then
@@ -539,7 +552,7 @@ Namespace DotNetNuke.Modules.Forum
 				Dim cntPostConnect As New PostConnector
 				Dim PostMessage As PostMessage
 
-				PostMessage = cntPostConnect.SubmitInternalPost(TabId, ModuleId, PortalId, objLoggedOnUserID, txtSubject.Text, teContent.Text, objForum.ForumID, ParentPostID, PostID, chkIsPinned.Checked, chkIsClosed.Checked, chkNotify.Checked, ThreadStatus, ctlAttachment.lstAttachmentIDs, RemoteAddress, PollID, IsQuote, ThreadID)
+				PostMessage = cntPostConnect.SubmitInternalPost(TabId, ModuleId, PortalId, CurrentForumUser.UserID, txtSubject.Text, teContent.Text, objForum.ForumID, ParentPostID, PostID, chkIsPinned.Checked, chkIsClosed.Checked, chkNotify.Checked, ThreadStatus, ctlAttachment.lstAttachmentIDs, RemoteAddress, PollID, IsQuote, ThreadID, Terms)
 
 				Select Case PostMessage
 					Case PostMessage.PostApproved
@@ -1121,9 +1134,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	11/28/2005	Created
-		''' </history>
 		Private Sub EnableControls(ByVal objAction As PostAction)
 			If (objAction = PostAction.Reply) Then
 				tblOldPost.Visible = True
@@ -1143,9 +1153,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	11/28/2005	Created
-		''' </history>
 		Private Sub GeneratePost(ByVal objAction As PostAction, ByVal objForum As ForumInfo, ByVal objParentPost As PostInfo)
 			Dim ctlForum As New ForumController
 			' generate post content
@@ -1282,33 +1289,6 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 		End Sub
 
-		'''' <summary>
-		'''' Gets the URL to return the posting user too.
-		'''' </summary>
-		'''' <param name="Post"></param>
-		'''' <returns></returns>
-		'''' <remarks></remarks>
-		'Private Function GetApprovedPostReturnURL(ByVal Post As PostInfo) As String
-		'	Dim url As String
-
-		'	' This only needs to be handled for moderators (which are trusted by no matter what, so it only happens at this point)
-		'	Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, Post.ForumID, UserId)
-
-		'	If Security.IsModerator Then
-		'		If Not ViewState("UrlReferrer") Is Nothing Then
-		'			url = (CType(ViewState("UrlReferrer"), String))
-		'		Else
-		'			' behave as before (normal usage)
-		'			url = Utils.ContainerViewPostLink(TabId, Post.ForumID, Post.ThreadID, Post.PostID)
-		'		End If
-		'	Else
-		'		' behave as before (normal usage)
-		'		url = Utils.ContainerViewPostLink(TabId, Post.ForumID, Post.ThreadID, Post.PostID)
-		'	End If
-
-		'	Return url
-		'End Function
-
 		''' <summary>
 		''' Binds the list of available thread status choices.
 		''' </summary>
@@ -1339,6 +1319,41 @@ Namespace DotNetNuke.Modules.Forum
 			Catch ex As Exception
 
 			End Try
+		End Sub
+
+		''' <summary>
+		''' Handles taxonomy controls for the user interface.
+		''' </summary>
+		''' <param name="NewThread"></param>
+		''' <param name="PostID"></param>
+		''' <param name="IsPublic"></param>
+		''' <remarks>We are only allowing tagging in public forums, because of security concerns in tag search results (we go one level deeper in perms than core).</remarks>
+		Private Sub HandleTaxonomy(ByVal NewThread As Boolean, ByVal PostID As Integer, ByVal IsPublic As Boolean)
+			If IsPublic Then
+				If NewThread Then
+					rowTagging.Visible = True
+				Else
+					' we need to see if the thread id = postid. If so, we need to show the terms selector if moderator
+					'If objSecurity.IsForumModerator Then
+					If (PostID = objThread.ThreadID) Then
+						' we are editing the original post in the thread
+						rowTagging.Visible = True
+					End If
+
+					'End If
+				End If
+
+				tsTerms.PortalId = PortalId
+
+				If objThread IsNot Nothing Then
+					tsTerms.Terms = objThread.Terms
+				Else
+					tsTerms.Terms = New List(Of DotNetNuke.Entities.Content.Taxonomy.Term)
+				End If
+				tsTerms.DataBind()
+			Else
+				rowTagging.Visible = False
+			End If
 		End Sub
 
 #End Region

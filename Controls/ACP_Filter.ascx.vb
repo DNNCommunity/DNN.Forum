@@ -62,11 +62,10 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <remarks></remarks>
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
-				' Update settings in the database
 				Dim ctlModule As New Entities.Modules.ModuleController
-				ctlModule.UpdateModuleSetting(ModuleId, "EnableBadWordFilter", chkBadWord.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "FilterSubject", chkFilterSubject.Checked.ToString)
-				' Reset configuration (normally cached)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_WORD_FILTER, chkBadWord.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.FILTER_SUBJECTS, chkFilterSubject.Checked.ToString)
+
 				Configuration.ResetForumConfig(ModuleId)
 
 				lblUpdateDone.Visible = True

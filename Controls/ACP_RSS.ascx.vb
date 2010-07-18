@@ -58,11 +58,10 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </remarks>
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
-				' Update settings in the database
 				Dim ctlModule As New Entities.Modules.ModuleController
-				ctlModule.UpdateModuleSetting(ModuleId, "EnableRSS", chkRSSFeeds.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "RSSThreadsPerFeed", txtRSSThreadsPerFeed.Text)
-				ctlModule.UpdateModuleSetting(ModuleId, "RSSUpdateInterval", txtTTL.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_RSS_FEEDS, chkRSSFeeds.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.RSS_FEEDS_PER_PAGE, txtRSSThreadsPerFeed.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.RSS_UPDATE_INTERVAL, txtTTL.Text)
 
 				Configuration.ResetForumConfig(ModuleId)
 

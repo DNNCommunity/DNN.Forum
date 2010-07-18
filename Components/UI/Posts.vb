@@ -357,7 +357,7 @@ Namespace DotNetNuke.Modules.Forum
 				Dim cntPostConnect As New PostConnector
 				Dim PostMessage As PostMessage
 
-				PostMessage = cntPostConnect.SubmitInternalPost(TabID, ModuleID, PortalID, CurrentForumUser.UserID, strSubject, txtQuickReply.Text, ForumID, objThread.ThreadID, -1, objThread.IsPinned, False, False, objThread.ThreadStatus, "", RemoteAddress, objThread.PollID, False, objThread.ThreadID)
+				PostMessage = cntPostConnect.SubmitInternalPost(TabID, ModuleID, PortalID, CurrentForumUser.UserID, strSubject, txtQuickReply.Text, ForumID, objThread.ThreadID, -1, objThread.IsPinned, False, False, objThread.ThreadStatus, "", RemoteAddress, objThread.PollID, False, objThread.ThreadID, objThread.Terms)
 
 				Select Case PostMessage
 					Case PostMessage.PostApproved
@@ -468,24 +468,15 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 
 				Dim TotalPosts As Integer = objThread.Replies + 1
-				Dim userPostsPerPage As Integer = 1
-
-				If CurrentForumUser.UserID > 0 Then
-					userPostsPerPage = user.PostsPerPage
-				Else
-					userPostsPerPage = objConfig.PostsPerPage
-				End If
-
-				Dim TotalPages As Integer = (CInt(TotalPosts / userPostsPerPage))
+				Dim TotalPages As Integer = (CInt(TotalPosts / CurrentForumUser.PostsPerPage))
 				Dim ThreadPageToShow As Integer = 1
 
-				' we need to use flatsortorder and totalpages to determine which page to view          
+				' we need to use flatsortorder and totalpages to determine which page to view    
+				' TODO: We need to know where this specific post is, like a sort order, so we know which page to show.
 				If user.ViewDescending Then
-					'ThreadPageToShow = CInt(Math.Ceiling((TotalPosts - FlatSortOrder) / userPostsPerPage))
-					' TODO: Calculate
+					'ThreadPageToShow = CInt(Math.Ceiling((TotalPosts) / userPostsPerPage))
 				Else
 					'ThreadPageToShow = CInt(Math.Ceiling((FlatSortOrder + 1) / userPostsPerPage))
-					' TODO: Calculate
 				End If
 				' DO NOT FACTOR IN ThreadPage in URL HERE!!! (It will cause errors so never check what it says)
 				PostPage = ThreadPageToShow
@@ -512,15 +503,8 @@ Namespace DotNetNuke.Modules.Forum
 					If Not HttpContext.Current.Request.QueryString("threadpage") Is Nothing Then
 						Dim urlThreadPage As Integer = Int32.Parse(HttpContext.Current.Request.QueryString("threadpage"))
 						Dim TotalPosts As Integer = objThread.Replies + 1
-						Dim userPostsPerPage As Integer
 
-						If CurrentForumUser.UserID > 0 Then
-							userPostsPerPage = user.PostsPerPage
-						Else
-							userPostsPerPage = objConfig.PostsPerPage
-						End If
-
-						Dim TotalPages As Integer = CInt(Math.Ceiling(TotalPosts / userPostsPerPage))
+						Dim TotalPages As Integer = CInt(Math.Ceiling(TotalPosts / CurrentForumUser.PostsPerPage))
 						Dim ThreadPageToShow As Integer
 
 						' We need to check if it is possible for a pagesize in the URL for the user browsing (happens when coming from posted link by other user)
@@ -558,15 +542,74 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 			End If
 
-			'We are past knowing the user should be here, let's handle SEO oriented things
 			If objConfig.OverrideTitle Then
-				MyBase.BasePage.Title = objThread.Subject & " - " & objThread.ContainingForum.Name & " - " & Me.BaseControl.PortalName
+				Dim Title As String
+				Dim Subject As String
+
+				If objThread.Subject.Length > Constants.SEO_TITLE_LIMIT Then
+					Subject = objThread.Subject.Substring(0, Constants.SEO_TITLE_LIMIT)
+				Else
+					Subject = objThread.Subject
+				End If
+
+				If Not Subject.Length > Constants.SEO_TITLE_LIMIT Then
+					Title = Subject
+
+					Subject += " - " & objThread.ContainingForum.Name
+					If Not Subject.Length > Constants.SEO_TITLE_LIMIT Then
+						Title = Subject
+
+						Subject += " - " & Me.BaseControl.PortalName
+						If Not Subject.Length > Constants.SEO_TITLE_LIMIT Then
+							Title = Subject
+						End If
+					End If
+				Else
+					Title = Subject
+				End If
+
+				MyBase.BasePage.Title = Title
 			End If
 
 			If objConfig.OverrideDescription Then
-				MyBase.BasePage.Description = objThread.Subject + "," + objThread.ContainingForum.Name + "," + Me.BaseControl.PortalName
+				Dim Description As String
+
+				If objThread.Subject.Length < Constants.SEO_DESCRIPTION_LIMIT Then
+					Description = objThread.Subject
+				Else
+					Description = objThread.Subject.Substring(0, Constants.SEO_DESCRIPTION_LIMIT)
+				End If
+
+				MyBase.BasePage.Description = Description
 			End If
-			' Consider add metakeywords via applied tags, when taxonomy is integrated
+
+			If objConfig.OverrideKeyWords Then
+				Dim KeyWords As String
+				Dim keyCount As Integer = 0
+
+				If objThread.ContainingForum.IsParentForum Then
+					KeyWords = objThread.ContainingForum.Name
+					keyCount = 1
+				Else
+					KeyWords = objThread.ContainingForum.ParentForum.Name + "," + objThread.ContainingForum.Name
+					keyCount = 2
+				End If
+
+				For Each Term As Entities.Content.Taxonomy.Term In objThread.Terms
+					If keyCount < Constants.SEO_KEYWORDS_LIMIT Then
+						KeyWords += "," + Term.Name
+						keyCount += 1
+					Else
+						Exit For
+					End If
+				Next
+
+				If keyCount < Constants.SEO_KEYWORDS_LIMIT Then
+					KeyWords += "," + Me.BaseControl.PortalName
+				End If
+
+				MyBase.BasePage.KeyWords = KeyWords
+			End If
 
 			If PostPage > 0 Then
 				PostPage = PostPage - 1
@@ -691,11 +734,13 @@ Namespace DotNetNuke.Modules.Forum
 			Me.tagsControl = New DotNetNuke.Web.UI.WebControls.Tags
 			With tagsControl
 				.ID = "tagsControl"
-				.AllowTagging = True
+				' if we come up w/ our own tagging window, this needs to be changed to false.
+				.AllowTagging = HttpContext.Current.Request.IsAuthenticated
 				.NavigateUrlFormatString = DotNetNuke.Common.Globals.NavigateURL(objConfig.SearchTabID, "", "Tag={0}")
 				.RepeatDirection = "Horizontal"
 				.Separator = ","
-				.ShowCategories = True
+				' TODO: We may want to show this in future, for now we are leaving categories out of the mix.
+				.ShowCategories = False
 				.ShowTags = True
 				.AddImageUrl = "~/images/add.gif"
 				.CancelImageUrl = "~/images/lt.gif"
@@ -2656,15 +2701,24 @@ Namespace DotNetNuke.Modules.Forum
 		''' Renders the tags area, which is blow the bottom breadcrumb. 
 		''' </summary>
 		''' <param name="wr"></param>
-		''' <remarks></remarks>
+		''' <remarks>We are only allowing tagging in public forums, because of security concerns in tag search results (we go one level deeper in perms than core).</remarks>
 		Private Sub RenderTags(ByVal wr As HtmlTextWriter)
-			RenderRowBegin(wr) '<tr>
+			If objThread.ContainingForum.PublicView Then
+				RenderRowBegin(wr) '<tr>
 
-			RenderCellBegin(wr, "", "", "98%", "left", "", "2", "")	' <td> 
-			tagsControl.RenderControl(wr)
-			RenderCellEnd(wr) ' </td> 
+				RenderCellBegin(wr, "", "", "98%", "left", "", "2", "")	' <td> 
+				tagsControl.RenderControl(wr)
+				RenderCellEnd(wr) ' </td> 
 
-			RenderRowEnd(wr) ' </tr>  
+				If objSecurity.IsForumModerator Then
+					' reserved for an edit button, or control, to manage tags.
+					'RenderCellBegin(wr, "", "", "5%", "left", "", "", "")	' <td> 
+					'tagsControl.RenderControl(wr)
+					'RenderCellEnd(wr) ' </td> 
+				End If
+
+				RenderRowEnd(wr) ' </tr>  
+			End If
 		End Sub
 
 		''' <summary>

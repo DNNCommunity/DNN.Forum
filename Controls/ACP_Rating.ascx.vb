@@ -58,11 +58,10 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </remarks>
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
-				' Update settings in the database
 				Dim ctlModule As New Entities.Modules.ModuleController
 
-				ctlModule.UpdateModuleSetting(ModuleId, "EnableRatings", chkRatings.Checked.ToString())
-				ctlModule.UpdateModuleSetting(ModuleId, "RatingScale", txtRatingScale.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_RATINGS, chkRatings.Checked.ToString())
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.RATING_SCALE, txtRatingScale.Text)
 
 				Configuration.ResetForumConfig(ModuleId)
 

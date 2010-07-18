@@ -231,7 +231,11 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property IsPopular() As Boolean
 			Get
-				Return (TotalPosts > objConfig.PopularThreadReply) OrElse (Views > objConfig.PopularThreadView)
+				If LastApprovedPost.CreatedDate > DateAdd(DateInterval.Day, -objConfig.PopularThreadDays, Date.Now) Then
+					Return (TotalPosts > objConfig.PopularThreadReply) OrElse (Views > objConfig.PopularThreadView)
+				Else
+					Return False
+				End If
 			End Get
 		End Property
 

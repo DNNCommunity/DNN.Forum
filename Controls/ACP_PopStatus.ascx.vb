@@ -42,6 +42,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
 			txtPopularThreadView.Text = Convert.ToString(objConfig.PopularThreadView)
 			txtPopularThreadReply.Text = Convert.ToString(objConfig.PopularThreadReply)
+			txtDays.Text = Convert.ToString(objConfig.PopularThreadDays)
 		End Sub
 
 #End Region
@@ -58,10 +59,11 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </remarks>
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
-				' Update settings in the database
 				Dim ctlModule As New Entities.Modules.ModuleController
-				ctlModule.UpdateModuleSetting(ModuleId, "PopularThreadView", txtPopularThreadView.Text)
-				ctlModule.UpdateModuleSetting(ModuleId, "PopularThreadReply", txtPopularThreadReply.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.POPULAR_THREAD_VIEWS, txtPopularThreadView.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.POPULAR_THREAD_REPLIES, txtPopularThreadReply.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.POPULAR_THREAD_DAYS, txtDays.Text)
+
 				Configuration.ResetForumConfig(ModuleId)
 
 				lblUpdateDone.Visible = True

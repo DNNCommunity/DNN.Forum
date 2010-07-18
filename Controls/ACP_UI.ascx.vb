@@ -64,7 +64,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
 		''' <remarks></remarks>
-		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+		Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 			BindThemes()
 			BindPosterLocation()
 		End Sub
@@ -78,17 +78,15 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </remarks>
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
-				' Update settings in the database
 				Dim ctlModule As New Entities.Modules.ModuleController
-				ctlModule.UpdateModuleSetting(ModuleId, "ThreadsPerPage", txtTheardsPerPage.Text)
-				ctlModule.UpdateModuleSetting(ModuleId, "PostsPerPage", txtPostsPerPage.Text)
-				ctlModule.UpdateModuleSetting(ModuleId, "PostPagesCount", txtThreadPageCount.Text)
-				ctlModule.UpdateModuleSetting(ModuleId, "ForumSkin", ddlSkins.SelectedItem.Value)
-				ctlModule.UpdateModuleSetting(ModuleId, "ImageExtension", txtImageExtension.Text)
-				ctlModule.UpdateModuleSetting(ModuleId, "DisplayPosterLocation", ddlDisplayPosterLocation.SelectedItem.Value)
-				ctlModule.UpdateModuleSetting(ModuleId, "DisplayPosterRegion", chkDisplayPosterRegion.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "DisplayPosterRegion", chkDisplayPosterRegion.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "EnableQuickReply", chkEnableQuickReply.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.THREADS_PER_PAGE, txtTheardsPerPage.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.POSTS_PER_PAGE, txtPostsPerPage.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.POST_PAGE_COUNT_LIMIT, txtThreadPageCount.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.FORUM_THEME, ddlSkins.SelectedItem.Value)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.IMAGE_EXTENSIONS, txtImageExtension.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.DISPLAY_POSTER_LOCATION, ddlDisplayPosterLocation.SelectedItem.Value)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.DISPLAY_POSTER_REGION, chkDisplayPosterRegion.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_QUICK_REPLY, chkEnableQuickReply.Checked.ToString)
 
 				Configuration.ResetForumConfig(ModuleId)
 

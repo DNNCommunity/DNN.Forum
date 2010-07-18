@@ -138,4 +138,10 @@
   <data name="lblUpdateDone.Text" xml:space="preserve">
     <value>Updated Successfully!</value>
   </data>
+  <data name="plDays.Help" xml:space="preserve">
+    <value>This is the number of days the thread's last post must have been posted wtihin. If set to 14, threads without activity for two weeks will no longer be popular.</value>
+  </data>
+  <data name="plDays.Text" xml:space="preserve">
+    <value>Active Within</value>
+  </data>
 </root>

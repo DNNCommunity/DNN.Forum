@@ -3,6 +3,7 @@
 <%@ Register TagPrefix="forum" TagName="Attachment" Src="~/DesktopModules/Forum/controls/AttachmentControl.ascx" %>
 <%@ Control language="vb" CodeBehind="Forum_PostEdit.ascx.vb" AutoEventWireup="True" Inherits="DotNetNuke.Modules.Forum.PostEdit" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
+<%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <div class="Post-Edit">
     <table class="Forum_SearchContainer" cellspacing="0" cellpadding="0" width="100%" align="center">
 	    <tr>
@@ -104,10 +105,20 @@
                                 <dnn:Label ID="plThreadStatus" runat="server" ControlName="ddlThreadStatus" Suffix=":" />
                             </span>
                         </td>
-                        <td align="left" class="Forum_Row_AdminR" width="80%">
+                        <td align="left" class="Forum_Row_AdminR">
 						<asp:dropdownlist id="ddlThreadStatus" runat="server" CssClass="Forum_NormalTextBox" Width="350px" AutoPostBack="true" />
                         </td>
                     </tr>
+				<tr id="rowTagging" runat="server" visible="false">
+					<td class="Forum_Row_AdminL" width="200px">
+						<span class="Forum_Row_AdminText">
+                                <dnn:Label ID="plTerms" runat="server" ControlName="tsTerms" Suffix=":" />
+                            </span>
+					</td>
+					<td align="left" class="Forum_Row_AdminR">
+						<dnnweb:TermsSelector ID="tsTerms" runat="server" Height="250" Width="350px" />
+					</td>
+				</tr>
 	                <tr>
 				     <td class="Forum_Row_Admin_Foot" colspan="2">&nbsp;</td>
 				 </tr>
@@ -279,7 +290,7 @@
 		   <td align="center" width="100%">
                 <asp:label id="lblModerate" Runat="server" CssClass="Forum_NormalBold" resourcekey="lblModerate"/>
 		   </td>
-	    </tr>
+	</tr>
 	<tr>
 	        <td align="center" width="100%">
 			  <asp:linkbutton cssclass="CommandButton" id="cmdBackToForum" runat="server" resourcekey="cmdBackToForum" />

@@ -80,13 +80,12 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </remarks>
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
-				' Update settings in the database
 				Dim ctlModule As New Entities.Modules.ModuleController
-				ctlModule.UpdateModuleSetting(ModuleId, "AggregatedForums", chkAggregatedForums.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "EnableThreadStatus", chkEnableThreadStatus.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "EnablePostAbuse", chkEnablePostAbuse.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "DisableHTMLPosting", chkDisableHTMLPosting.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "PrimaryAlias", ddlPrimaryAlias.SelectedValue.ToString())
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_AGGREGATED_FORUM, chkAggregatedForums.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_THREAD_STATUS, chkEnableThreadStatus.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_POST_ABUSE, chkEnablePostAbuse.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.DISABLE_HTML_POSTING, chkDisableHTMLPosting.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.PRIMARY_SITE_ALIAS, ddlPrimaryAlias.SelectedValue.ToString())
 
 				Configuration.ResetForumConfig(ModuleId)
 
@@ -108,7 +107,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </remarks>
 		Protected Sub cmdResetDate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdResetDate.Click
 			Dim objModules As New Entities.Modules.ModuleController
-			objModules.UpdateModuleSetting(ModuleId, "LastIndexDate", Utilities.ForumUtils.DateToNum(Null.NullDate).ToString)
+			objModules.UpdateModuleSetting(ModuleId, Constants.LAST_INDEX_DATE, Utilities.ForumUtils.DateToNum(Null.NullDate).ToString)
 			lblDateIndexed.Text = Utilities.ForumUtils.ConvertTimeZone(Null.NullDate, objConfig).ToString
 		End Sub
 

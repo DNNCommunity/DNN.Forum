@@ -133,7 +133,7 @@
     <value>User's Website No Follow</value>
   </data>
   <data name="plOverrideTitle.Help" xml:space="preserve">
-    <value>If checked, the page title set by DotNetNuke will be overriden with the forum name or thread name depending on view.</value>
+    <value>If checked, the page title set by DotNetNuke will be overriden with the forum name or thread name depending on view (up to 64 chars).</value>
   </data>
   <data name="plOverrideTitle.Text" xml:space="preserve">
     <value>Override Page Title</value>
@@ -145,7 +145,7 @@
     <value>Latest Threads No Follow</value>
   </data>
   <data name="plOverrideDescription.Help" xml:space="preserve">
-    <value>If checked, the page meta description set by DotNetNuke will be overriden with the initial post content at the thread level (when view posts). If in forum view (ie. lists of threads) the description of the forum will be set here. </value>
+    <value>If checked, the page meta description set by DotNetNuke will be overriden with the initial post content at the thread level (when view posts). If in forum view (ie. lists of threads) the description of the forum will be set here (up to 150 chars). </value>
   </data>
   <data name="plOverrideDescription.Text" xml:space="preserve">
     <value>Override Page Description</value>
@@ -155,5 +155,11 @@
   </data>
   <data name="plSitemapPriority.Text" xml:space="preserve">
     <value>Sitemap Priority</value>
+  </data>
+  <data name="plOverrideKeyWords.Help" xml:space="preserve">
+    <value>If checked, the page keywords set by DotNetNuke will be overriden with the forum name and any applied tags (up to 15 total words).</value>
+  </data>
+  <data name="plOverrideKeyWords.Text" xml:space="preserve">
+    <value>Override Keywords</value>
   </data>
 </root>

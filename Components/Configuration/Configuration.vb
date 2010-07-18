@@ -35,11 +35,17 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Members"
 
-		' General Configuration
+		' Misc
 		Dim _ModuleID As Integer
 		Dim _HasConfiguration As Boolean = False
+
 		Dim _EnableAttachment As Boolean = False
 		Dim _AggregatedForums As Boolean = False
+		' Popular
+		Dim _PopularThreadView As Integer = 200
+		Dim _PopularThreadReply As Integer = 10
+		Dim _PopularThreadDays As Integer = 7
+
 		Dim _ThreadsPerPage As Integer = 10
 		Dim _PostsPerPage As Integer = 5
 		Dim _PostPagesCount As Integer = 3
@@ -65,9 +71,6 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _EnableEditEmails As Boolean = False
 		Dim _EnableListServer As Boolean = False
 		Dim _ListServerFolder As String = "Forums/ListServer/"
-		'Stats & Rankings
-		Dim _PopularThreadView As Integer = 200
-		Dim _PopularThreadReply As Integer = 10
 		' Poster Rankings
 		Dim _Ranking As Boolean = True
 		Dim _EnableRankingImage As Boolean = True
@@ -106,7 +109,7 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _EnableUsersOnline As Boolean = DefaultEnableUsersOnline
 		Dim _EnableExternalProfile As Boolean = False
 		Dim _ExternalProfilePage As Integer = 0
-		Dim _ExternalProfileParam As String = String.Empty
+		Dim _ExternalProfileUserParam As String = String.Empty
 		Dim _ExternalProfileParamName As String = String.Empty
 		Dim _ExternalProfileParamValue As String = String.Empty
 		Dim _EnablePostAbuse As Boolean = True
@@ -140,10 +143,10 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _NoFollowWeb As Boolean = False
 		Dim _OverrideTitle As Boolean = True
 		Dim _NoFollowLatestThreads As Boolean = True
-		' new seo
 		Dim _OverrideDescription As Boolean = True
+		Dim _OverrideKeyWords As Boolean = True
 		Dim _SitemapPriority As Double = 0.5
-		' primary http alias (not implemented)
+		' primary http alias (not implemented in UI)
 		Dim _PrimarySiteAlias As String
 		Dim _EnableUserReadManagement As Boolean = True
 
@@ -358,7 +361,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' 
+		''' This is necessary for tagging/taxonomy. It is portal wide.
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
@@ -711,7 +714,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property ExternalProfileParam() As String
 			Get
-				Return _ExternalProfileParam
+				Return _ExternalProfileUserParam
 			End Get
 		End Property
 
@@ -904,6 +907,18 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
+		''' Determines if the meta keywords will be overriden. This will get associated terms (first 15) and add forum name and portal name if space is available.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property OverrideKeyWords() As Boolean
+			Get
+				Return _OverrideKeyWords
+			End Get
+		End Property
+
+		''' <summary>
 		''' This determines the sitemap priority for SEO generated pages. 
 		''' </summary>
 		''' <value></value>
@@ -942,6 +957,18 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property PopularThreadReply() As Integer
 			Get
 				Return _PopularThreadReply
+			End Get
+		End Property
+
+		''' <summary>
+		''' Gets the number of days which the thread must have a post within to remain popular.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property PopularThreadDays() As Integer
+			Get
+				Return _PopularThreadDays
 			End Get
 		End Property
 
@@ -1641,64 +1668,32 @@ Namespace DotNetNuke.Modules.Forum
 				End Try
 			End If
 
-			' post attachments
-			If Not settings(Constants.ENABLE_ATTACHMENT) Is Nothing Then
-				If Not settings(Constants.ENABLE_ATTACHMENT).ToString = String.Empty Then
-					_EnableAttachment = CBool(GetValue(settings(Constants.ENABLE_ATTACHMENT), CStr(_EnableAttachment)))
-				End If
-			End If
-
-			' notification email
-			If Not settings(Constants.EMAIL_AUTO_FROM_ADDRESS) Is Nothing Then
-				If Not settings(Constants.EMAIL_AUTO_FROM_ADDRESS).ToString = String.Empty Then
-					_AutomatedEmailAddress = CStr(GetValue(settings(Constants.EMAIL_AUTO_FROM_ADDRESS), CStr(_AutomatedEmailAddress)))
-				End If
-			End If
-
-			If Not settings(Constants.ENABLE_MAIL_NOTIFICATIONS) Is Nothing Then
-				If Not settings(Constants.ENABLE_MAIL_NOTIFICATIONS).ToString = String.Empty Then
-					_MailNotification = CBool(GetValue(settings(Constants.ENABLE_MAIL_NOTIFICATIONS), CStr(_MailNotification)))
-				End If
-			End If
-
-			If Not settings(Constants.ENABLE_PER_FORUM_EMAILS) Is Nothing Then
-				If Not settings(Constants.ENABLE_PER_FORUM_EMAILS).ToString = String.Empty Then
-					_EnablePerForumFrom = CBool(GetValue(settings(Constants.ENABLE_PER_FORUM_EMAILS), CStr(_EnablePerForumFrom)))
-				End If
-			End If
-
-			' Not implemented
-			If Not settings(Constants.ENABLE_LIST_SERVER) Is Nothing Then
-				If Not settings(Constants.ENABLE_LIST_SERVER).ToString = String.Empty Then
-					_EnableListServer = CBool(GetValue(settings(Constants.ENABLE_LIST_SERVER), CStr(_EnableListServer)))
-				End If
-			End If
-
-			' Not implemented
-			If Not settings(Constants.LIST_SERVER_FOLDER) Is Nothing Then
-				If Not settings(Constants.LIST_SERVER_FOLDER).ToString = String.Empty Then
-					_ListServerFolder = CStr(GetValue(settings(Constants.LIST_SERVER_FOLDER), CStr(_ListServerFolder)))
-				End If
-			End If
-
+			' General
 			If Not settings(Constants.ENABLE_AGGREGATED_FORUM) Is Nothing Then
 				If Not settings(Constants.ENABLE_AGGREGATED_FORUM).ToString = String.Empty Then
 					_AggregatedForums = CBool(GetValue(settings(Constants.ENABLE_AGGREGATED_FORUM), CStr(_AggregatedForums)))
 				End If
 			End If
 
-			If Not settings(Constants.THREADS_PER_PAGE) Is Nothing Then
-				If Not settings(Constants.THREADS_PER_PAGE).ToString = String.Empty Then
-					_ThreadsPerPage = CInt(GetValue(settings(Constants.THREADS_PER_PAGE), CStr(_ThreadsPerPage)))
+			If Not settings(Constants.ENABLE_THREAD_STATUS) Is Nothing Then
+				If Not settings(Constants.ENABLE_THREAD_STATUS).ToString = String.Empty Then
+					_EnableThreadStatus = CBool(GetValue(settings(Constants.ENABLE_THREAD_STATUS), CStr(_EnableThreadStatus)))
 				End If
 			End If
 
-			If Not settings(Constants.POSTS_PER_PAGE) Is Nothing Then
-				If Not settings(Constants.POSTS_PER_PAGE).ToString = String.Empty Then
-					_PostsPerPage = CInt(GetValue(settings(Constants.POSTS_PER_PAGE), CStr(_PostsPerPage)))
+			If Not settings(Constants.ENABLE_POST_ABUSE) Is Nothing Then
+				If Not settings(Constants.ENABLE_POST_ABUSE).ToString = String.Empty Then
+					_EnablePostAbuse = CBool(GetValue(settings(Constants.ENABLE_POST_ABUSE), CStr(_EnablePostAbuse)))
 				End If
 			End If
 
+			If Not settings(Constants.DISABLE_HTML_POSTING) Is Nothing Then
+				If Not settings(Constants.DISABLE_HTML_POSTING).ToString = String.Empty Then
+					_DisableHTMLPosting = CBool(GetValue(settings(Constants.DISABLE_HTML_POSTING), CStr(_DisableHTMLPosting)))
+				End If
+			End If
+
+			' Popular
 			If Not settings(Constants.POPULAR_THREAD_VIEWS) Is Nothing Then
 				If Not settings(Constants.POPULAR_THREAD_VIEWS).ToString = String.Empty Then
 					_PopularThreadView = CInt(GetValue(settings(Constants.POPULAR_THREAD_VIEWS), CStr(_PopularThreadView)))
@@ -1711,10 +1706,22 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 			End If
 
-			' Ranking post count
+			If Not settings(Constants.POPULAR_THREAD_DAYS) Is Nothing Then
+				If Not settings(Constants.POPULAR_THREAD_DAYS).ToString = String.Empty Then
+					_PopularThreadDays = CInt(GetValue(settings(Constants.POPULAR_THREAD_DAYS), CStr(_PopularThreadDays)))
+				End If
+			End If
+
+			' Rankings
 			If Not settings(Constants.ENABLE_RANKINGS) Is Nothing Then
 				If Not settings(Constants.ENABLE_RANKINGS).ToString = String.Empty Then
 					_Ranking = CBool(GetValue(settings(Constants.ENABLE_RANKINGS), CStr(_Ranking)))
+				End If
+			End If
+
+			If Not settings(Constants.ENABLE_RANKING_IMAGES) Is Nothing Then
+				If Not settings(Constants.ENABLE_RANKING_IMAGES).ToString = String.Empty Then
+					_EnableRankingImage = CBool(GetValue(settings(Constants.ENABLE_RANKING_IMAGES), CStr(_EnableRankingImage)))
 				End If
 			End If
 
@@ -1778,6 +1785,72 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 			End If
 
+			If Not settings(Constants.RANKING_1_TITLE) Is Nothing Then
+				If Not settings(Constants.RANKING_1_TITLE).ToString = String.Empty Then
+					_Rank_1_Title = CStr(GetValue(settings(Constants.RANKING_1_TITLE), _Rank_1_Title))
+				End If
+			End If
+
+			If Not settings(Constants.RANKING_2_TITLE) Is Nothing Then
+				If Not settings(Constants.RANKING_2_TITLE).ToString = String.Empty Then
+					_Rank_2_Title = CStr(GetValue(settings(Constants.RANKING_2_TITLE), _Rank_2_Title))
+				End If
+			End If
+
+			If Not settings(Constants.RANKING_3_TITLE) Is Nothing Then
+				If Not settings(Constants.RANKING_3_TITLE).ToString = String.Empty Then
+					_Rank_3_Title = CStr(GetValue(settings(Constants.RANKING_3_TITLE), _Rank_3_Title))
+				End If
+			End If
+
+			If Not settings(Constants.RANKING_4_TITLE) Is Nothing Then
+				If Not settings(Constants.RANKING_4_TITLE).ToString = String.Empty Then
+					_Rank_4_Title = CStr(GetValue(settings(Constants.RANKING_4_TITLE), _Rank_4_Title))
+				End If
+			End If
+
+			If Not settings(Constants.RANKING_5_TITLE) Is Nothing Then
+				If Not settings(Constants.RANKING_5_TITLE).ToString = String.Empty Then
+					_Rank_5_Title = CStr(GetValue(settings(Constants.RANKING_5_TITLE), _Rank_5_Title))
+				End If
+			End If
+
+			If Not settings(Constants.RANKING_6_TITLE) Is Nothing Then
+				If Not settings(Constants.RANKING_6_TITLE).ToString = String.Empty Then
+					_Rank_6_Title = CStr(GetValue(settings(Constants.RANKING_6_TITLE), _Rank_6_Title))
+				End If
+			End If
+
+			If Not settings(Constants.RANKING_7_TITLE) Is Nothing Then
+				If Not settings(Constants.RANKING_7_TITLE).ToString = String.Empty Then
+					_Rank_7_Title = CStr(GetValue(settings(Constants.RANKING_7_TITLE), _Rank_7_Title))
+				End If
+			End If
+
+			If Not settings(Constants.RANKING_8_TITLE) Is Nothing Then
+				If Not settings(Constants.RANKING_8_TITLE).ToString = String.Empty Then
+					_Rank_8_Title = CStr(GetValue(settings(Constants.RANKING_8_TITLE), _Rank_8_Title))
+				End If
+			End If
+
+			If Not settings(Constants.RANKING_9_TITLE) Is Nothing Then
+				If Not settings(Constants.RANKING_9_TITLE).ToString = String.Empty Then
+					_Rank_9_Title = CStr(GetValue(settings(Constants.RANKING_9_TITLE), _Rank_9_Title))
+				End If
+			End If
+
+			If Not settings(Constants.RANKING_10_TITLE) Is Nothing Then
+				If Not settings(Constants.RANKING_10_TITLE).ToString = String.Empty Then
+					_Rank_10_Title = CStr(GetValue(settings(Constants.RANKING_10_TITLE), _Rank_10_Title))
+				End If
+			End If
+
+			If Not settings(Constants.RANKING_0_TITLE) Is Nothing Then
+				If Not settings(Constants.RANKING_0_TITLE).ToString = String.Empty Then
+					_Rank_0_Title = CStr(GetValue(settings(Constants.RANKING_0_TITLE), _Rank_0_Title))
+				End If
+			End If
+
 			' RSS
 			If Not settings(Constants.ENABLE_RSS_FEEDS) Is Nothing Then
 				If Not settings(Constants.ENABLE_RSS_FEEDS).ToString = String.Empty Then
@@ -1797,29 +1870,7 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 			End If
 
-			If Not settings(Constants.FORUM_THEME) Is Nothing Then
-				If Not settings(Constants.FORUM_THEME).ToString = String.Empty Then
-					_ForumSkin = CStr(GetValue(settings(Constants.FORUM_THEME), CStr(_ForumSkin)))
-				End If
-			End If
-
-			If Not settings(Constants.DISPLAY_POSTER_LOCATION) Is Nothing Then
-				If Not settings(Constants.DISPLAY_POSTER_LOCATION).ToString = String.Empty Then
-					_DisplayPosterLocation = _
-					 CType( _
-					  [Enum].Parse(GetType(ShowPosterLocation), _
-					    CStr(GetValue(settings(Constants.DISPLAY_POSTER_LOCATION), _DisplayPosterLocation.ToString))),  _
-					  ShowPosterLocation)
-				End If
-			End If
-
-			If Not settings(Constants.DISPLAY_POSTER_REGION) Is Nothing Then
-				If Not settings(Constants.DISPLAY_POSTER_REGION).ToString = String.Empty Then
-					_DisplayPosterRegion = CBool(GetValue(settings(Constants.DISPLAY_POSTER_REGION), CStr(_DisplayPosterRegion)))
-				End If
-			End If
-
-			' Bad words filter
+			' Word Filter
 			If Not settings(Constants.ENABLE_WORD_FILTER) Is Nothing Then
 				If Not settings(Constants.ENABLE_WORD_FILTER).ToString = String.Empty Then
 					_EnableBadWordFilter = CBool(GetValue(settings(Constants.ENABLE_WORD_FILTER), CStr(_EnableBadWordFilter)))
@@ -1839,39 +1890,59 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 			End If
 
+			If Not settings(Constants.ENABLE_EXTERNAL_PROFILE_PAGE) Is Nothing Then
+				If Not settings(Constants.ENABLE_EXTERNAL_PROFILE_PAGE).ToString = String.Empty Then
+					_EnableExternalProfile = CBool(GetValue(settings(Constants.ENABLE_EXTERNAL_PROFILE_PAGE), CStr(_EnableExternalProfile)))
+				End If
+			End If
+
+			If Not settings(Constants.EXTERNAL_PROFILE_PAGE) Is Nothing Then
+				If Not settings(Constants.EXTERNAL_PROFILE_PAGE).ToString = String.Empty Then
+					_ExternalProfilePage = CInt(GetValue(settings(Constants.EXTERNAL_PROFILE_PAGE), CStr(_ExternalProfilePage)))
+				End If
+			End If
+
+			If Not settings(Constants.EXTERNAL_PROFILE_USER_PARAM) Is Nothing Then
+				If Not settings(Constants.EXTERNAL_PROFILE_USER_PARAM).ToString = String.Empty Then
+					_ExternalProfileUserParam = CStr(GetValue(settings(Constants.EXTERNAL_PROFILE_USER_PARAM), CStr(_ExternalProfileUserParam)))
+				End If
+			End If
+
+			If Not settings(Constants.EXTERNAL_PROFILE_PARAM_NAME) Is Nothing Then
+				If Not settings(Constants.EXTERNAL_PROFILE_PARAM_NAME).ToString = String.Empty Then
+					_ExternalProfileParamName = CStr(GetValue(settings(Constants.EXTERNAL_PROFILE_PARAM_NAME), CStr(_ExternalProfileParamName)))
+				End If
+			End If
+
 			If Not settings(Constants.EXTERNAL_PROFILE_PARAM_VALUE) Is Nothing Then
 				If Not settings(Constants.EXTERNAL_PROFILE_PARAM_VALUE).ToString = String.Empty Then
 					_ExternalProfileParamValue = CStr(GetValue(settings(Constants.EXTERNAL_PROFILE_PARAM_VALUE), CStr(_ExternalProfileParamValue)))
 				End If
 			End If
 
+			' Ratings
 			If Not settings(Constants.ENABLE_RATINGS) Is Nothing Then
 				If Not settings(Constants.ENABLE_RATINGS).ToString = String.Empty Then
 					_EnableRatings = CBool(GetValue(settings(Constants.ENABLE_RATINGS), CStr(_EnableRatings)))
 				End If
 			End If
 
-			If Not settings(Constants.ENABLE_THREAD_STATUS) Is Nothing Then
-				If Not settings(Constants.ENABLE_THREAD_STATUS).ToString = String.Empty Then
-					_EnableThreadStatus = CBool(GetValue(settings(Constants.ENABLE_THREAD_STATUS), CStr(_EnableThreadStatus)))
+			If Not settings(Constants.RATING_SCALE) Is Nothing Then
+				If Not settings(Constants.RATING_SCALE).ToString = String.Empty Then
+					_RatingScale = CInt(GetValue(settings(Constants.RATING_SCALE), CStr(_RatingScale)))
 				End If
 			End If
 
-			If Not settings(Constants.ENABLE_POST_ABUSE) Is Nothing Then
-				If Not settings(Constants.ENABLE_POST_ABUSE).ToString = String.Empty Then
-					_EnablePostAbuse = CBool(GetValue(settings(Constants.ENABLE_POST_ABUSE), CStr(_EnablePostAbuse)))
-				End If
-			End If
-
-			If Not settings(Constants.DISABLE_HTML_POSTING) Is Nothing Then
-				If Not settings(Constants.DISABLE_HTML_POSTING).ToString = String.Empty Then
-					_DisableHTMLPosting = CBool(GetValue(settings(Constants.DISABLE_HTML_POSTING), CStr(_DisableHTMLPosting)))
-				End If
-			End If
-
+			' User Settings
 			If Not settings(Constants.MEMBER_NAME_DISPLAY_FORMAT) Is Nothing Then
 				If Not settings(Constants.MEMBER_NAME_DISPLAY_FORMAT).ToString = String.Empty Then
 					_ForumMemberName = CInt(GetValue(settings(Constants.MEMBER_NAME_DISPLAY_FORMAT), CStr(_ForumMemberName)))
+				End If
+			End If
+
+			If Not settings(Constants.POST_EDIT_WINDOW) Is Nothing Then
+				If Not settings(Constants.POST_EDIT_WINDOW).ToString = String.Empty Then
+					_PostEditWindow = CInt(GetValue(settings(Constants.POST_EDIT_WINDOW), CStr(_PostEditWindow)))
 				End If
 			End If
 
@@ -1887,310 +1958,304 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 			End If
 
-			If Not settings(Constants.IMAGE_EXTENSIONS) Is Nothing Then
-				If Not settings(Constants.IMAGE_EXTENSIONS).ToString = String.Empty Then
-					_ImageExtension = CStr(GetValue(settings(Constants.IMAGE_EXTENSIONS), CStr(_ImageExtension)))
-				End If
-			End If
-
-			' Attachments
-			If Not settings("AnonDownloads") Is Nothing Then
-				If Not settings("AnonDownloads").ToString = String.Empty Then
-					_AnonDownloads = CBool(GetValue(settings("AnonDownloads"), CStr(_AnonDownloads)))
-				End If
-			End If
-
-			If Not settings("AttachmentPath") Is Nothing Then
-				If Not settings("AttachmentPath").ToString = String.Empty Then
-					_AttachmentPath = CStr(GetValue(settings("AttachmentPath"), CStr(_AttachmentPath)))
-				End If
-			End If
-
-			If Not settings("MaxAttachmentSize") Is Nothing Then
-				If Not settings("MaxAttachmentSize").ToString = String.Empty Then
-					_MaxAttachmentSize = CInt(GetValue(settings("MaxAttachmentSize"), CStr(_MaxAttachmentSize)))
-				End If
-			End If
-
-			'Avatar properties
-			If Not settings("EnableUserAvatar") Is Nothing Then
-				If Not settings("EnableUserAvatar").ToString = String.Empty Then
-					_EnableUserAvatar = CBool(GetValue(settings("EnableUserAvatar"), CStr(_EnableUserAvatar)))
-				End If
-			End If
-
-			If Not settings("EnableProfileUserFolders") Is Nothing Then
-				If Not settings("EnableProfileUserFolders").ToString = String.Empty Then
-					_EnableProfileUserFolders = CBool(GetValue(settings("EnableProfileUserFolders"), CStr(_EnableProfileUserFolders)))
-				End If
-			End If
-
-			If Not settings("EnableProfileAvatar") Is Nothing Then
-				If Not settings("EnableProfileAvatar").ToString = String.Empty Then
-					_EnableProfileAvatar = CBool(GetValue(settings("EnableProfileAvatar"), CStr(_EnableProfileAvatar)))
-				End If
-			End If
-
-			If Not settings("AvatarProfilePropName") Is Nothing Then
-				If Not settings("AvatarProfilePropName").ToString = String.Empty Then
-					_AvatarProfilePropName = CStr(GetValue(settings("AvatarProfilePropName"), CStr(_AvatarProfilePropName)))
-				End If
-			End If
-
-			If Not settings("EnableUserAvatarPool") Is Nothing Then
-				If Not settings("EnableUserAvatarPool").ToString = String.Empty Then
-					_EnableUserAvatarPool = CBool(GetValue(settings("EnableUserAvatarPool"), CStr(_EnableUserAvatarPool)))
-				End If
-			End If
-
-			If Not settings("UserAvatarPath") Is Nothing Then
-				If Not settings("UserAvatarPath").ToString = String.Empty Then
-					_UserAvatarPath = CStr(GetValue(settings("UserAvatarPath"), _UserAvatarPath))
-				End If
-			End If
-
-			If Not settings("UserAvatarPoolPath") Is Nothing Then
-				If Not settings("UserAvatarPoolPath").ToString = String.Empty Then
-					_UserAvatarPoolPath = CStr(GetValue(settings("UserAvatarPoolPath"), _UserAvatarPoolPath))
-				End If
-			End If
-
-			If Not settings("UserAvatarWidth") Is Nothing Then
-				If Not settings("UserAvatarWidth").ToString = String.Empty Then
-					_UserAvatarWidth = CInt(GetValue(settings("UserAvatarWidth"), CStr(_UserAvatarWidth)))
-				End If
-			End If
-
-			If Not settings("UserAvatarHeight") Is Nothing Then
-				If Not settings("UserAvatarHeight").ToString = String.Empty Then
-					_UserAvatarHeight = CInt(GetValue(settings("UserAvatarHeight"), CStr(_UserAvatarHeight)))
-				End If
-			End If
-
-			If Not settings("UserAvatarMaxSize") Is Nothing Then
-				If Not settings("UserAvatarMaxSize").ToString = String.Empty Then
-					_UserAvatarMaxSize = CInt(GetValue(settings("UserAvatarMaxSize"), CStr(_UserAvatarMaxSize)))
-				End If
-			End If
-
-			If Not settings("EnableSystemAvatar") Is Nothing Then
-				If Not settings("EnableSystemAvatar").ToString = String.Empty Then
-					_EnableSystemAvatar = CBool(GetValue(settings("EnableSystemAvatar"), CStr(_EnableSystemAvatar)))
-				End If
-			End If
-
-			If Not settings("SystemAvatarPath") Is Nothing Then
-				If Not settings("SystemAvatarPath").ToString = String.Empty Then
-					_SystemAvatarPath = CStr(GetValue(settings("SystemAvatarPath"), _SystemAvatarPath))
-				End If
-			End If
-
-			If Not settings("EnableRoleAvatar") Is Nothing Then
-				If Not settings("EnableRoleAvatar").ToString = String.Empty Then
-					_EnableRoleAvatar = CBool(GetValue(settings("EnableRoleAvatar"), CStr(_EnableRoleAvatar)))
-				End If
-			End If
-
-			If Not settings("RoleAvatarPath") Is Nothing Then
-				If Not settings("RoleAvatarPath").ToString = String.Empty Then
-					_RoleAvatarPath = CStr(GetValue(settings("RoleAvatarPath"), _RoleAvatarPath))
-				End If
-			End If
-
-			If Not settings("MaxPostImageWidth") Is Nothing Then
-				If Not settings("MaxPostImageWidth").ToString = String.Empty Then
-					_MaxPostImageWidth = CInt(GetValue(settings("MaxPostImageWidth"), CStr(_MaxPostImageWidth)))
-				End If
-			End If
-
-			If Not settings("EmailAddressDisplayName") Is Nothing Then
-				If Not settings("EmailAddressDisplayName").ToString = String.Empty Then
-					_EmailAddressDisplayName = CStr(GetValue(settings("EmailAddressDisplayName"), CStr(_EmailAddressDisplayName)))
-				End If
-			End If
-
-			If Not settings("EnableEmailQueueTask") Is Nothing Then
-				If Not settings("EnableEmailQueueTask").ToString = String.Empty Then
-					_EnableEmailQueueTask = CBool(GetValue(settings("EnableEmailQueueTask"), CStr(_EnableEmailQueueTask)))
-				End If
-			End If
-
-			'Rankings
-			If Not settings("EnableRankingImage") Is Nothing Then
-				If Not settings("EnableRankingImage").ToString = String.Empty Then
-					_EnableRankingImage = CBool(GetValue(settings("EnableRankingImage"), CStr(_EnableRankingImage)))
-				End If
-			End If
-
-			If Not settings("Rank_1_Title") Is Nothing Then
-				If Not settings("Rank_1_Title").ToString = String.Empty Then
-					_Rank_1_Title = CStr(GetValue(settings("Rank_1_Title"), _Rank_1_Title))
-				End If
-			End If
-
-			If Not settings("Rank_2_Title") Is Nothing Then
-				If Not settings("Rank_2_Title").ToString = String.Empty Then
-					_Rank_2_Title = CStr(GetValue(settings("Rank_2_Title"), _Rank_2_Title))
-				End If
-			End If
-
-			If Not settings("Rank_3_Title") Is Nothing Then
-				If Not settings("Rank_3_Title").ToString = String.Empty Then
-					_Rank_3_Title = CStr(GetValue(settings("Rank_3_Title"), _Rank_3_Title))
-				End If
-			End If
-
-			If Not settings("Rank_4_Title") Is Nothing Then
-				If Not settings("Rank_4_Title").ToString = String.Empty Then
-					_Rank_4_Title = CStr(GetValue(settings("Rank_4_Title"), _Rank_4_Title))
-				End If
-			End If
-
-			If Not settings("Rank_5_Title") Is Nothing Then
-				If Not settings("Rank_5_Title").ToString = String.Empty Then
-					_Rank_5_Title = CStr(GetValue(settings("Rank_5_Title"), _Rank_5_Title))
-				End If
-			End If
-
-			If Not settings("Rank_6_Title") Is Nothing Then
-				If Not settings("Rank_6_Title").ToString = String.Empty Then
-					_Rank_6_Title = CStr(GetValue(settings("Rank_6_Title"), _Rank_6_Title))
-				End If
-			End If
-
-			If Not settings("Rank_7_Title") Is Nothing Then
-				If Not settings("Rank_7_Title").ToString = String.Empty Then
-					_Rank_7_Title = CStr(GetValue(settings("Rank_7_Title"), _Rank_7_Title))
-				End If
-			End If
-
-			If Not settings("Rank_8_Title") Is Nothing Then
-				If Not settings("Rank_8_Title").ToString = String.Empty Then
-					_Rank_8_Title = CStr(GetValue(settings("Rank_8_Title"), _Rank_8_Title))
-				End If
-			End If
-
-			If Not settings("Rank_9_Title") Is Nothing Then
-				If Not settings("Rank_9_Title").ToString = String.Empty Then
-					_Rank_9_Title = CStr(GetValue(settings("Rank_9_Title"), _Rank_9_Title))
-				End If
-			End If
-
-			If Not settings("Rank_10_Title") Is Nothing Then
-				If Not settings("Rank_10_Title").ToString = String.Empty Then
-					_Rank_10_Title = CStr(GetValue(settings("Rank_10_Title"), _Rank_10_Title))
-				End If
-			End If
-
-			If Not settings("Rank_0_Title") Is Nothing Then
-				If Not settings("Rank_0_Title").ToString = String.Empty Then
-					_Rank_0_Title = CStr(GetValue(settings("Rank_0_Title"), _Rank_0_Title))
-				End If
-			End If
-
-			If Not settings("EnableQuickReply") Is Nothing Then
-				If Not settings("EnableQuickReply").ToString = String.Empty Then
-					_EnableQuickReply = CBool(GetValue(settings("EnableQuickReply"), CStr(_EnableQuickReply)))
-				End If
-			End If
-
-			If Not settings("EnableUserSignatures") Is Nothing Then
-				If Not settings("EnableUserSignatures").ToString = String.Empty Then
-					_EnableUserSignatures = CBool(GetValue(settings("EnableUserSignatures"), CStr(_EnableUserSignatures)))
-				End If
-			End If
-
-			If Not settings("EnableModSigUpdates") Is Nothing Then
-				If Not settings("EnableModSigUpdates").ToString = String.Empty Then
-					_EnableModSigUpdates = CBool(GetValue(settings("EnableModSigUpdates"), CStr(_EnableModSigUpdates)))
-				End If
-			End If
-
-			If Not settings("EnableHTMLSignatures") Is Nothing Then
-				If Not settings("EnableHTMLSignatures").ToString = String.Empty Then
-					_EnableHTMLSignatures = CBool(GetValue(settings("EnableHTMLSignatures"), CStr(_EnableHTMLSignatures)))
-				End If
-			End If
-
-			If Not settings("PostEditWindow") Is Nothing Then
-				If Not settings("PostEditWindow").ToString = String.Empty Then
-					_PostEditWindow = CInt(GetValue(settings("PostEditWindow"), CStr(_PostEditWindow)))
-				End If
-			End If
-
-			If Not settings("HideModEdits") Is Nothing Then
-				If Not settings("HideModEdits").ToString = String.Empty Then
-					_HideModEdits = CBool(GetValue(settings("HideModEdits"), CStr(_HideModEdits)))
-				End If
-			End If
-
-			If Not settings("PostPagesCount") Is Nothing Then
-				If Not settings("PostPagesCount").ToString = String.Empty Then
-					_PostPagesCount = CInt(GetValue(settings("PostPagesCount"), CStr(_PostPagesCount)))
-				End If
-			End If
-
-			If Not settings("EnableUserBanning") Is Nothing Then
-				If Not settings("EnableUserBanning").ToString = String.Empty Then
-					_EnableUserBanning = CBool(GetValue(settings("EnableUserBanning"), CStr(_EnableUserBanning)))
-				End If
-			End If
-
-			If Not settings("EnableEditEmails") Is Nothing Then
-				If Not settings("EnableEditEmails").ToString = String.Empty Then
-					_EnableEditEmails = CBool(GetValue(settings("EnableEditEmails"), CStr(_EnableEditEmails)))
-				End If
-			End If
-
-			'SEO
-			If Not settings("NoFollowWeb") Is Nothing Then
-				If Not settings("NoFollowWeb").ToString = String.Empty Then
-					_NoFollowWeb = CBool(GetValue(settings("NoFollowWeb"), CStr(_NoFollowWeb)))
-				End If
-			End If
-
-			If Not settings("OverrideTitle") Is Nothing Then
-				If Not settings("OverrideTitle").ToString = String.Empty Then
-					_OverrideTitle = CBool(GetValue(settings("OverrideTitle"), CStr(_OverrideTitle)))
-				End If
-			End If
-
-			If Not settings("NoFollowLatestThreads") Is Nothing Then
-				If Not settings("NoFollowLatestThreads").ToString = String.Empty Then
-					_NoFollowLatestThreads = CBool(GetValue(settings("NoFollowLatestThreads"), CStr(_NoFollowLatestThreads)))
-				End If
-			End If
-
-			If Not settings("OverrideDescription") Is Nothing Then
-				If Not settings("OverrideDescription").ToString = String.Empty Then
-					_OverrideDescription = CBool(GetValue(settings("OverrideDescription"), CStr(_OverrideDescription)))
-				End If
-			End If
-
-			If Not settings("SitemapPriority") Is Nothing Then
-				If Not settings("SitemapPriority").ToString = String.Empty Then
-					_SitemapPriority = CType(GetValue(settings("SitemapPriority"), CStr(_SitemapPriority)), Double)
-				End If
-			End If
-
-			If Not settings("PrimaryAlias") Is Nothing Then
-				If Not settings("PrimaryAlias").ToString = String.Empty Then
-					_PrimarySiteAlias = GetValue(settings("PrimaryAlias"), CStr(_PrimarySiteAlias))
-				End If
-			End If
-
-			If Not settings("RatingScale") Is Nothing Then
-				If Not settings("RatingScale").ToString = String.Empty Then
-					_RatingScale = CInt(GetValue(settings("RatingScale"), CStr(_RatingScale)))
-				End If
-			End If
-
 			If Not settings(Constants.ENABLE_USER_READ_MANAGEMENT) Is Nothing Then
 				If Not settings(Constants.ENABLE_USER_READ_MANAGEMENT).ToString = String.Empty Then
 					_EnableUserReadManagement = CBool(GetValue(settings(Constants.ENABLE_USER_READ_MANAGEMENT), CStr(_EnableUserReadManagement)))
 				End If
 			End If
 
+			If Not settings(Constants.ENABLE_USER_SIGNATURES) Is Nothing Then
+				If Not settings(Constants.ENABLE_USER_SIGNATURES).ToString = String.Empty Then
+					_EnableUserSignatures = CBool(GetValue(settings(Constants.ENABLE_USER_SIGNATURES), CStr(_EnableUserSignatures)))
+				End If
+			End If
+
+			If Not settings(Constants.ENABLE_MOD_SIGNATURE_EDITS) Is Nothing Then
+				If Not settings(Constants.ENABLE_MOD_SIGNATURE_EDITS).ToString = String.Empty Then
+					_EnableModSigUpdates = CBool(GetValue(settings(Constants.ENABLE_MOD_SIGNATURE_EDITS), CStr(_EnableModSigUpdates)))
+				End If
+			End If
+
+			If Not settings(Constants.ENABLE_HTML_IN_SIGNATURES) Is Nothing Then
+				If Not settings(Constants.ENABLE_HTML_IN_SIGNATURES).ToString = String.Empty Then
+					_EnableHTMLSignatures = CBool(GetValue(settings(Constants.ENABLE_HTML_IN_SIGNATURES), CStr(_EnableHTMLSignatures)))
+				End If
+			End If
+
+			If Not settings(Constants.HIDE_MODERATOR_EDITS) Is Nothing Then
+				If Not settings(Constants.HIDE_MODERATOR_EDITS).ToString = String.Empty Then
+					_HideModEdits = CBool(GetValue(settings(Constants.HIDE_MODERATOR_EDITS), CStr(_HideModEdits)))
+				End If
+			End If
+
+			If Not settings(Constants.ENABLE_USER_BANNING) Is Nothing Then
+				If Not settings(Constants.ENABLE_USER_BANNING).ToString = String.Empty Then
+					_EnableUserBanning = CBool(GetValue(settings(Constants.ENABLE_USER_BANNING), CStr(_EnableUserBanning)))
+				End If
+			End If
+
+			' Attachments
+			If Not settings(Constants.ENABLE_ATTACHMENT) Is Nothing Then
+				If Not settings(Constants.ENABLE_ATTACHMENT).ToString = String.Empty Then
+					_EnableAttachment = CBool(GetValue(settings(Constants.ENABLE_ATTACHMENT), CStr(_EnableAttachment)))
+				End If
+			End If
+
+			If Not settings(Constants.ENABLE_ANONYMOUS_DOWNLOADS) Is Nothing Then
+				If Not settings(Constants.ENABLE_ANONYMOUS_DOWNLOADS).ToString = String.Empty Then
+					_AnonDownloads = CBool(GetValue(settings(Constants.ENABLE_ANONYMOUS_DOWNLOADS), CStr(_AnonDownloads)))
+				End If
+			End If
+
+			If Not settings(Constants.ATTACHMENT_PATH) Is Nothing Then
+				If Not settings(Constants.ATTACHMENT_PATH).ToString = String.Empty Then
+					_AttachmentPath = CStr(GetValue(settings(Constants.ATTACHMENT_PATH), CStr(_AttachmentPath)))
+				End If
+			End If
+
+			If Not settings(Constants.MAX_ATTACHMENT_SIZE) Is Nothing Then
+				If Not settings(Constants.MAX_ATTACHMENT_SIZE).ToString = String.Empty Then
+					_MaxAttachmentSize = CInt(GetValue(settings(Constants.MAX_ATTACHMENT_SIZE), CStr(_MaxAttachmentSize)))
+				End If
+			End If
+
+			'Avatar properties
+			If Not settings(Constants.ENABLE_USER_AVATARS) Is Nothing Then
+				If Not settings(Constants.ENABLE_USER_AVATARS).ToString = String.Empty Then
+					_EnableUserAvatar = CBool(GetValue(settings(Constants.ENABLE_USER_AVATARS), CStr(_EnableUserAvatar)))
+				End If
+			End If
+
+			If Not settings(Constants.ENABLE_PROFILE_USER_FOLDERS) Is Nothing Then
+				If Not settings(Constants.ENABLE_PROFILE_USER_FOLDERS).ToString = String.Empty Then
+					_EnableProfileUserFolders = CBool(GetValue(settings(Constants.ENABLE_PROFILE_USER_FOLDERS), CStr(_EnableProfileUserFolders)))
+				End If
+			End If
+
+			If Not settings(Constants.ENABLE_PROFILE_AVATAR) Is Nothing Then
+				If Not settings(Constants.ENABLE_PROFILE_AVATAR).ToString = String.Empty Then
+					_EnableProfileAvatar = CBool(GetValue(settings(Constants.ENABLE_PROFILE_AVATAR), CStr(_EnableProfileAvatar)))
+				End If
+			End If
+
+			If Not settings(Constants.AVATAR_PROFILE_PROP_NAME) Is Nothing Then
+				If Not settings(Constants.AVATAR_PROFILE_PROP_NAME).ToString = String.Empty Then
+					_AvatarProfilePropName = CStr(GetValue(settings(Constants.AVATAR_PROFILE_PROP_NAME), CStr(_AvatarProfilePropName)))
+				End If
+			End If
+
+			If Not settings(Constants.ENABLE_USER_AVATAR_POOL) Is Nothing Then
+				If Not settings(Constants.ENABLE_USER_AVATAR_POOL).ToString = String.Empty Then
+					_EnableUserAvatarPool = CBool(GetValue(settings(Constants.ENABLE_USER_AVATAR_POOL), CStr(_EnableUserAvatarPool)))
+				End If
+			End If
+
+			If Not settings(Constants.USER_AVATAR_PATH) Is Nothing Then
+				If Not settings(Constants.USER_AVATAR_PATH).ToString = String.Empty Then
+					_UserAvatarPath = CStr(GetValue(settings(Constants.USER_AVATAR_PATH), _UserAvatarPath))
+				End If
+			End If
+
+			If Not settings(Constants.USER_AVATAR_POOL_PATH) Is Nothing Then
+				If Not settings(Constants.USER_AVATAR_POOL_PATH).ToString = String.Empty Then
+					_UserAvatarPoolPath = CStr(GetValue(settings(Constants.USER_AVATAR_POOL_PATH), _UserAvatarPoolPath))
+				End If
+			End If
+
+			If Not settings(Constants.USER_AVATAR_WIDTH) Is Nothing Then
+				If Not settings(Constants.USER_AVATAR_WIDTH).ToString = String.Empty Then
+					_UserAvatarWidth = CInt(GetValue(settings(Constants.USER_AVATAR_WIDTH), CStr(_UserAvatarWidth)))
+				End If
+			End If
+
+			If Not settings(Constants.USER_AVATAR_HEIGHT) Is Nothing Then
+				If Not settings(Constants.USER_AVATAR_HEIGHT).ToString = String.Empty Then
+					_UserAvatarHeight = CInt(GetValue(settings(Constants.USER_AVATAR_HEIGHT), CStr(_UserAvatarHeight)))
+				End If
+			End If
+
+			If Not settings(Constants.USER_AVATAR_MAX_SIZE) Is Nothing Then
+				If Not settings(Constants.USER_AVATAR_MAX_SIZE).ToString = String.Empty Then
+					_UserAvatarMaxSize = CInt(GetValue(settings(Constants.USER_AVATAR_MAX_SIZE), CStr(_UserAvatarMaxSize)))
+				End If
+			End If
+
+			If Not settings(Constants.ENABLE_SYSTEM_AVATARS) Is Nothing Then
+				If Not settings(Constants.ENABLE_SYSTEM_AVATARS).ToString = String.Empty Then
+					_EnableSystemAvatar = CBool(GetValue(settings(Constants.ENABLE_SYSTEM_AVATARS), CStr(_EnableSystemAvatar)))
+				End If
+			End If
+
+			If Not settings(Constants.SYSTEM_AVATAR_PATH) Is Nothing Then
+				If Not settings(Constants.SYSTEM_AVATAR_PATH).ToString = String.Empty Then
+					_SystemAvatarPath = CStr(GetValue(settings(Constants.SYSTEM_AVATAR_PATH), _SystemAvatarPath))
+				End If
+			End If
+
+			If Not settings(Constants.ENABLE_ROLE_AVATARS) Is Nothing Then
+				If Not settings(Constants.ENABLE_ROLE_AVATARS).ToString = String.Empty Then
+					_EnableRoleAvatar = CBool(GetValue(settings(Constants.ENABLE_ROLE_AVATARS), CStr(_EnableRoleAvatar)))
+				End If
+			End If
+
+			If Not settings(Constants.ROLE_AVATAR_PATH) Is Nothing Then
+				If Not settings(Constants.ROLE_AVATAR_PATH).ToString = String.Empty Then
+					_RoleAvatarPath = CStr(GetValue(settings(Constants.ROLE_AVATAR_PATH), _RoleAvatarPath))
+				End If
+			End If
+
+			' Email
+			If Not settings(Constants.EMAIL_AUTO_FROM_ADDRESS) Is Nothing Then
+				If Not settings(Constants.EMAIL_AUTO_FROM_ADDRESS).ToString = String.Empty Then
+					_AutomatedEmailAddress = CStr(GetValue(settings(Constants.EMAIL_AUTO_FROM_ADDRESS), CStr(_AutomatedEmailAddress)))
+				End If
+			End If
+
+			If Not settings(Constants.ENABLE_MAIL_NOTIFICATIONS) Is Nothing Then
+				If Not settings(Constants.ENABLE_MAIL_NOTIFICATIONS).ToString = String.Empty Then
+					_MailNotification = CBool(GetValue(settings(Constants.ENABLE_MAIL_NOTIFICATIONS), CStr(_MailNotification)))
+				End If
+			End If
+
+			If Not settings(Constants.ENABLE_PER_FORUM_EMAILS) Is Nothing Then
+				If Not settings(Constants.ENABLE_PER_FORUM_EMAILS).ToString = String.Empty Then
+					_EnablePerForumFrom = CBool(GetValue(settings(Constants.ENABLE_PER_FORUM_EMAILS), CStr(_EnablePerForumFrom)))
+				End If
+			End If
+
+			If Not settings(Constants.EMAIL_ADDRESS_DISPLAY_NAME) Is Nothing Then
+				If Not settings(Constants.EMAIL_ADDRESS_DISPLAY_NAME).ToString = String.Empty Then
+					_EmailAddressDisplayName = CStr(GetValue(settings(Constants.EMAIL_ADDRESS_DISPLAY_NAME), CStr(_EmailAddressDisplayName)))
+				End If
+			End If
+
+			If Not settings(Constants.ENABLE_EMAILE_SEND_QUEUE) Is Nothing Then
+				If Not settings(Constants.ENABLE_EMAILE_SEND_QUEUE).ToString = String.Empty Then
+					_EnableEmailQueueTask = CBool(GetValue(settings(Constants.ENABLE_EMAILE_SEND_QUEUE), CStr(_EnableEmailQueueTask)))
+				End If
+			End If
+
+			If Not settings(Constants.ENABLE_EDIT_EMAILS) Is Nothing Then
+				If Not settings(Constants.ENABLE_EDIT_EMAILS).ToString = String.Empty Then
+					_EnableEditEmails = CBool(GetValue(settings(Constants.ENABLE_EDIT_EMAILS), CStr(_EnableEditEmails)))
+				End If
+			End If
+
+			' Not implemented
+			If Not settings(Constants.ENABLE_LIST_SERVER) Is Nothing Then
+				If Not settings(Constants.ENABLE_LIST_SERVER).ToString = String.Empty Then
+					_EnableListServer = CBool(GetValue(settings(Constants.ENABLE_LIST_SERVER), CStr(_EnableListServer)))
+				End If
+			End If
+
+			' Not implemented
+			If Not settings(Constants.LIST_SERVER_FOLDER) Is Nothing Then
+				If Not settings(Constants.LIST_SERVER_FOLDER).ToString = String.Empty Then
+					_ListServerFolder = CStr(GetValue(settings(Constants.LIST_SERVER_FOLDER), CStr(_ListServerFolder)))
+				End If
+			End If
+
+			' UI
+			If Not settings(Constants.THREADS_PER_PAGE) Is Nothing Then
+				If Not settings(Constants.THREADS_PER_PAGE).ToString = String.Empty Then
+					_ThreadsPerPage = CInt(GetValue(settings(Constants.THREADS_PER_PAGE), CStr(_ThreadsPerPage)))
+				End If
+			End If
+
+			If Not settings(Constants.POSTS_PER_PAGE) Is Nothing Then
+				If Not settings(Constants.POSTS_PER_PAGE).ToString = String.Empty Then
+					_PostsPerPage = CInt(GetValue(settings(Constants.POSTS_PER_PAGE), CStr(_PostsPerPage)))
+				End If
+			End If
+
+			If Not settings(Constants.POST_PAGE_COUNT_LIMIT) Is Nothing Then
+				If Not settings(Constants.POST_PAGE_COUNT_LIMIT).ToString = String.Empty Then
+					_PostPagesCount = CInt(GetValue(settings(Constants.POST_PAGE_COUNT_LIMIT), CStr(_PostPagesCount)))
+				End If
+			End If
+
+			If Not settings(Constants.MAX_POST_IMAGE_WIDTH) Is Nothing Then
+				If Not settings(Constants.MAX_POST_IMAGE_WIDTH).ToString = String.Empty Then
+					_MaxPostImageWidth = CInt(GetValue(settings(Constants.MAX_POST_IMAGE_WIDTH), CStr(_MaxPostImageWidth)))
+				End If
+			End If
+
+			If Not settings(Constants.FORUM_THEME) Is Nothing Then
+				If Not settings(Constants.FORUM_THEME).ToString = String.Empty Then
+					_ForumSkin = CStr(GetValue(settings(Constants.FORUM_THEME), CStr(_ForumSkin)))
+				End If
+			End If
+
+			If Not settings(Constants.IMAGE_EXTENSIONS) Is Nothing Then
+				If Not settings(Constants.IMAGE_EXTENSIONS).ToString = String.Empty Then
+					_ImageExtension = CStr(GetValue(settings(Constants.IMAGE_EXTENSIONS), CStr(_ImageExtension)))
+				End If
+			End If
+
+			If Not settings(Constants.DISPLAY_POSTER_LOCATION) Is Nothing Then
+				If Not settings(Constants.DISPLAY_POSTER_LOCATION).ToString = String.Empty Then
+					_DisplayPosterLocation = _
+					 CType( _
+					  [Enum].Parse(GetType(ShowPosterLocation), _
+					    CStr(GetValue(settings(Constants.DISPLAY_POSTER_LOCATION), _DisplayPosterLocation.ToString))),  _
+					  ShowPosterLocation)
+				End If
+			End If
+
+			If Not settings(Constants.DISPLAY_POSTER_REGION) Is Nothing Then
+				If Not settings(Constants.DISPLAY_POSTER_REGION).ToString = String.Empty Then
+					_DisplayPosterRegion = CBool(GetValue(settings(Constants.DISPLAY_POSTER_REGION), CStr(_DisplayPosterRegion)))
+				End If
+			End If
+
+			If Not settings(Constants.ENABLE_QUICK_REPLY) Is Nothing Then
+				If Not settings(Constants.ENABLE_QUICK_REPLY).ToString = String.Empty Then
+					_EnableQuickReply = CBool(GetValue(settings(Constants.ENABLE_QUICK_REPLY), CStr(_EnableQuickReply)))
+				End If
+			End If
+
+			'SEO
+			If Not settings(Constants.ENABLE_NO_FOLLOW_WEBSITE_LINK) Is Nothing Then
+				If Not settings(Constants.ENABLE_NO_FOLLOW_WEBSITE_LINK).ToString = String.Empty Then
+					_NoFollowWeb = CBool(GetValue(settings(Constants.ENABLE_NO_FOLLOW_WEBSITE_LINK), CStr(_NoFollowWeb)))
+				End If
+			End If
+
+			If Not settings(Constants.ENABLE_OVERRIDE_PAGE_TITLE) Is Nothing Then
+				If Not settings(Constants.ENABLE_OVERRIDE_PAGE_TITLE).ToString = String.Empty Then
+					_OverrideTitle = CBool(GetValue(settings(Constants.ENABLE_OVERRIDE_PAGE_TITLE), CStr(_OverrideTitle)))
+				End If
+			End If
+
+			If Not settings(Constants.ENABLE_OVERRIDE_PAGE_DESCRIPTION) Is Nothing Then
+				If Not settings(Constants.ENABLE_OVERRIDE_PAGE_DESCRIPTION).ToString = String.Empty Then
+					_OverrideDescription = CBool(GetValue(settings(Constants.ENABLE_OVERRIDE_PAGE_DESCRIPTION), CStr(_OverrideDescription)))
+				End If
+			End If
+
+			If Not settings(Constants.ENABLE_OVERRIDE_PAGE_KEYWORDS) Is Nothing Then
+				If Not settings(Constants.ENABLE_OVERRIDE_PAGE_KEYWORDS).ToString = String.Empty Then
+					_OverrideKeyWords = CBool(GetValue(settings(Constants.ENABLE_OVERRIDE_PAGE_KEYWORDS), CStr(_OverrideKeyWords)))
+				End If
+			End If
+
+			If Not settings(Constants.ENABLE_NO_FOLLOW_LATEST_THREAD_LINKS) Is Nothing Then
+				If Not settings(Constants.ENABLE_NO_FOLLOW_LATEST_THREAD_LINKS).ToString = String.Empty Then
+					_NoFollowLatestThreads = CBool(GetValue(settings(Constants.ENABLE_NO_FOLLOW_LATEST_THREAD_LINKS), CStr(_NoFollowLatestThreads)))
+				End If
+			End If
+
+			If Not settings(Constants.SITEMAP_PRIORITY) Is Nothing Then
+				If Not settings(Constants.SITEMAP_PRIORITY).ToString = String.Empty Then
+					_SitemapPriority = CType(GetValue(settings(Constants.SITEMAP_PRIORITY), CStr(_SitemapPriority)), Double)
+				End If
+			End If
+
+			If Not settings(Constants.PRIMARY_SITE_ALIAS) Is Nothing Then
+				If Not settings(Constants.PRIMARY_SITE_ALIAS).ToString = String.Empty Then
+					_PrimarySiteAlias = GetValue(settings(Constants.PRIMARY_SITE_ALIAS), CStr(_PrimarySiteAlias))
+				End If
+			End If
 		End Sub
 
 #End Region

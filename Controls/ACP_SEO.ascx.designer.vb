@@ -87,6 +87,24 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected WithEvents chkOverrideDescription As Global.System.Web.UI.WebControls.CheckBox
 
 		'''<summary>
+		'''plOverrideKeyWords control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents plOverrideKeyWords As Global.DotNetNuke.UI.UserControls.LabelControl
+
+		'''<summary>
+		'''chkOverrideKeyWords control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents chkOverrideKeyWords As Global.System.Web.UI.WebControls.CheckBox
+
+		'''<summary>
 		'''plNoFollowLatestThreads control.
 		'''</summary>
 		'''<remarks>

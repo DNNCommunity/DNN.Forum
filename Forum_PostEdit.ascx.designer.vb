@@ -258,6 +258,33 @@ Namespace DotNetNuke.Modules.Forum
 		Protected WithEvents ddlThreadStatus As Global.System.Web.UI.WebControls.DropDownList
 
 		'''<summary>
+		'''rowTagging control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents rowTagging As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+		'''<summary>
+		'''plTerms control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents plTerms As Global.DotNetNuke.UI.UserControls.LabelControl
+
+		'''<summary>
+		'''tsTerms control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents tsTerms As Global.DotNetNuke.Web.UI.WebControls.TermsSelector
+
+		'''<summary>
 		'''tblPoll control.
 		'''</summary>
 		'''<remarks>

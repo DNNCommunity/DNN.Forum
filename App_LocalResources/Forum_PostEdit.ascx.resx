@@ -315,4 +315,10 @@
   <data name="ReplyToToolTip.Text" xml:space="preserve">
     <value>The Author of the post you are replying</value>
   </data>
+  <data name="plTerms.Help" xml:space="preserve">
+    <value>The terms associated with the thread. </value>
+  </data>
+  <data name="plTerms.Text" xml:space="preserve">
+    <value>Terms</value>
+  </data>
 </root>

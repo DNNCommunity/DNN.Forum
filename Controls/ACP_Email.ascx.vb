@@ -87,25 +87,21 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <param name="e"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	7/13/2005	Created
-		''' </history>
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
-				' Update settings in the database
 				Dim ctlModule As New Entities.Modules.ModuleController
 
-				ctlModule.UpdateModuleSetting(ModuleId, "MailNotification", chkNotify.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "EnablePerForumFrom", chkEnablePerForumFrom.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "AutomatedEmailAddress", txtAutomatedAddress.Text)
-				ctlModule.UpdateModuleSetting(ModuleId, "EmailAddressDisplayName", txtEmailAddressDisplayName.Text)
-				ctlModule.UpdateModuleSetting(ModuleId, "EnableEditEmails", chkEnableEditEmails.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "EnableEmailQueueTask", chkEmailQueueTask.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_MAIL_NOTIFICATIONS, chkNotify.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_PER_FORUM_EMAILS, chkEnablePerForumFrom.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.EMAIL_AUTO_FROM_ADDRESS, txtAutomatedAddress.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.EMAIL_ADDRESS_DISPLAY_NAME, txtEmailAddressDisplayName.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_EDIT_EMAILS, chkEnableEditEmails.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_EMAILE_SEND_QUEUE, chkEmailQueueTask.Checked.ToString)
 
 				' Not implemented (YET): NOTE: This can only be handled via a task when implemented.
-				ctlModule.UpdateModuleSetting(ModuleId, "EnableListServer", chkEnableListServer.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_LIST_SERVER, chkEnableListServer.Checked.ToString)
 				' Not implemented (YET): NOTE: Don't forget to create folder in DNN File System too. 
-				'ctlModule.UpdateModuleSetting(ModuleId, "ListServerFolder", txtListServerFolder.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.LIST_SERVER_FOLDER, txtListServerFolder.Text)
 
 				Configuration.ResetForumConfig(ModuleId)
 

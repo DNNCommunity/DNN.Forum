@@ -68,17 +68,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <param name="e"></param>
 		''' <remarks>Saves the module settings shown in this view.
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	7/13/2005	Created
-		''' </history>
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
-				' Update settings in the database
 				Dim ctlModule As New Entities.Modules.ModuleController
-				ctlModule.UpdateModuleSetting(ModuleId, "EnableAttachment", chkAttachment.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "AnonDownloads", chkAnonDownloads.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, "AttachmentPath", txtAttachmentPath.Text.Trim())
-				ctlModule.UpdateModuleSetting(ModuleId, "MaxAttachmentSize", txtMaxAttachmentSize.Text.Trim())
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_ATTACHMENT, chkAttachment.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_ANONYMOUS_DOWNLOADS, chkAnonDownloads.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ATTACHMENT_PATH, txtAttachmentPath.Text.Trim())
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.MAX_ATTACHMENT_SIZE, txtMaxAttachmentSize.Text.Trim())
 
 				Utilities.ForumUtils.CheckFolder(txtAttachmentPath.Text.Trim())
 
@@ -100,9 +96,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <param name="e"></param>
 		''' <remarks>Changes viewable/editable items when checked/unchecked.
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	2/11/2006	Created
-		''' </history>
 		Protected Sub chkAttachment_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAttachment.CheckedChanged
 			If chkAttachment.Checked Then
 				rowAnonDownloads.Visible = True

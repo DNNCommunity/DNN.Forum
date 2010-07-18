@@ -40,6 +40,16 @@
 						  <asp:checkbox id="chkOverrideDescription" runat="server" CssClass="Forum_NormalTextBox" EnableViewState="false" />
 					   </td>
 				    </tr>
+				    	<tr>
+					   <td width="35%">
+                  				<span class="Forum_Row_AdminText">
+	                				<dnn:label id="plOverrideKeyWords" runat="server" Suffix=":" controlname="chkOverrideKeyWords"></dnn:label>
+							</span>
+					   </td>
+					   <td  valign="middle" align="left">
+						  <asp:checkbox id="chkOverrideKeyWords" runat="server" CssClass="Forum_NormalTextBox" EnableViewState="false" />
+					   </td>
+				    </tr>
 					<tr>
 					   <td width="35%">
                   				<span class="Forum_Row_AdminText">

@@ -18,7 +18,7 @@
 							</span>
 						</td>
 						<td align="left">
-							<asp:TextBox ID="txtPopularThreadView" runat="server" CssClass="Forum_NormalTextBox" Width="180px" MaxLength="10" EnableViewState="false" />
+							<asp:TextBox ID="txtPopularThreadView" runat="server" CssClass="Forum_NormalTextBox" Width="180px" MaxLength="4" EnableViewState="false" />
 							<asp:RequiredFieldValidator ID="valreqView" runat="server" ErrorMessage="*" CssClass="NormalRed" Display="Dynamic" ControlToValidate="txtPopularThreadView" EnableViewState="false" />
 							<asp:RegularExpressionValidator ID="valView" runat="server" ControlToValidate="txtPopularThreadView" CssClass="NormalRed" resourcekey="NumericValidation.ErrorMessage" ValidationExpression="[0-9]{1,}" Display="Dynamic" EnableViewState="false" />
 						</td>
@@ -30,9 +30,21 @@
 							</span>
 						</td>
 						<td align="left">
-							<asp:TextBox ID="txtPopularThreadReply" runat="server" CssClass="Forum_NormalTextBox" Width="180px" MaxLength="10" EnableViewState="false" />
+							<asp:TextBox ID="txtPopularThreadReply" runat="server" CssClass="Forum_NormalTextBox" Width="180px" MaxLength="4" EnableViewState="false" />
 							<asp:RequiredFieldValidator ID="valreqReply" runat="server" ErrorMessage="*" CssClass="NormalRed" Display="Dynamic" ControlToValidate="txtPopularThreadReply" EnableViewState="false" />
 							<asp:RegularExpressionValidator ID="valReply" runat="server" ControlToValidate="txtPopularThreadReply" CssClass="NormalRed" resourcekey="NumericValidation.ErrorMessage" ValidationExpression="[0-9]{1,}" Display="Dynamic" EnableViewState="false" />
+						</td>
+					</tr>
+					<tr>
+						<td width="35%">
+							<span class="Forum_Row_AdminText">
+								<dnn:Label ID="plDays" runat="server" ControlName="txtDays" Suffix=":" />
+							</span>
+						</td>
+						<td align="left">
+							<asp:TextBox ID="txtDays" runat="server" CssClass="Forum_NormalTextBox" Width="180px" MaxLength="4" EnableViewState="false" />
+							<asp:RequiredFieldValidator ID="valreqDays" runat="server" ErrorMessage="*" CssClass="NormalRed" Display="Dynamic" ControlToValidate="txtDays" EnableViewState="false" />
+							<asp:RegularExpressionValidator ID="valDays" runat="server" ControlToValidate="txtDays" CssClass="NormalRed" resourcekey="NumericValidation.ErrorMessage" ValidationExpression="[0-9]{1,}" Display="Dynamic" EnableViewState="false" />
 						</td>
 					</tr>
 				</table>

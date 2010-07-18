@@ -490,7 +490,7 @@ Namespace DotNetNuke.Modules.Forum
 						If SelectedForumID > 0 Then
 							arrForums = cntGroup.AuthorizedSubForums(CurrentForumUser.UserID, objGroup.GroupID, False, SelectedForumID, ModuleID, TabID)
 						Else
-							arrForums = cntGroup.AuthorizedNoParentForums(CurrentForumUser.UserID, objGroup.GroupID, False, ModuleID, TabID)
+							arrForums = cntGroup.AuthorizedTopLevelForums(CurrentForumUser.UserID, objGroup.GroupID, False, ModuleID, TabID)
 						End If
 
 						' display group only if group contains atleast one authorized forum
@@ -561,7 +561,7 @@ Namespace DotNetNuke.Modules.Forum
 					For Each objSearch As ThreadInfo In SearchCollection
 						If objSearch IsNot Nothing Then
 							objForum.MostRecentPostID = objSearch.LastApprovedPostID
-							'objForum.MostRecentThreadID = objSearch.ThreadID
+							objForum.ForumID = objSearch.ForumID
 						End If
 					Next
 				End If
