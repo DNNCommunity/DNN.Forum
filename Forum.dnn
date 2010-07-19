@@ -23,10 +23,6 @@
 							<version>03.00.00</version>
 						</script>
 						<script type="Install">
-							<name>03.10.02.SqlDataProvider</name>
-							<version>03.10.02</version>
-						</script>
-						<script type="Install">
 							<name>03.10.05.SqlDataProvider</name>
 							<version>03.10.05</version>
 						</script>
@@ -37,10 +33,6 @@
 						<script type="Install">
 							<name>04.03.04.SqlDataProvider</name>
 							<version>04.03.04</version>
-						</script>
-						<script type="Install">
-							<name>04.04.02.SqlDataProvider</name>
-							<version>04.04.02</version>
 						</script>
 						<script type="Install">
 							<name>04.04.03.SqlDataProvider</name>
