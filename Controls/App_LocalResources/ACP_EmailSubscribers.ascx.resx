@@ -138,4 +138,7 @@
   <data name="Username.Header" xml:space="preserve">
     <value>Username</value>
   </data>
+  <data name="DisplayName.Header" xml:space="preserve">
+    <value>Display Name</value>
+  </data>
 </root>

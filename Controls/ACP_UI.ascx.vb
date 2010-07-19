@@ -46,8 +46,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			txtMaxPostImageWidth.Text = objConfig.MaxPostImageWidth.ToString
 			chkDisplayPosterRegion.Checked = objConfig.DisplayPosterRegion
 			chkEnableQuickReply.Checked = objConfig.EnableQuickReply
+			ddlDisplayPosterLocation.Items.FindByValue(objConfig.DisplayPosterLocation.ToString).Selected = True
 
-			If System.IO.Directory.Exists(objConfig.ThemeDirectory) Then
+			If System.IO.Directory.Exists(System.IO.Path.Combine(Server.MapPath(objConfig.SourceDirectory), "Themes/" + objConfig.ForumTheme)) Then
 				ddlSkins.Items.FindByValue(objConfig.ForumTheme).Selected = True
 			Else
 				ddlSkins.Items(0).Selected = True
@@ -132,9 +133,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			ddlDisplayPosterLocation.Items.Insert(0, New ListItem(Localization.GetString("None", objConfig.SharedResourceFile), "0"))
 			ddlDisplayPosterLocation.Items.Insert(1, New ListItem(Localization.GetString("ToAdmin", objConfig.SharedResourceFile), "1"))
 			ddlDisplayPosterLocation.Items.Insert(2, New ListItem(Localization.GetString("ToAll", objConfig.SharedResourceFile), "2"))
-
-			' Now Bind the items
-			ddlDisplayPosterLocation.Items.FindByValue(objConfig.DisplayPosterLocation.ToString).Selected = True
 		End Sub
 
 #End Region

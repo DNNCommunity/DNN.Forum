@@ -46,7 +46,7 @@
 							<asp:regularexpressionvalidator id="valThreadPageCount" runat="server" resourcekey="NumericValidation.ErrorMessage" ValidationExpression="[0-9]{1,}" ControlToValidate="txtThreadPageCount" CssClass="NormalRed" Display="Dynamic" />
 						</td>
 					</tr>
-					<tr>
+					<tr id="rowPostImageWidth" runat="server" visible="false">
 						<td width="35%">
 							<span class="Forum_Row_AdminText">
 								<dnn:label id="plMaxPostImageWidth" runat="server" Suffix=":" controlname="txtMaxPostImageWidth"></dnn:label>

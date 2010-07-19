@@ -726,10 +726,6 @@ Namespace DotNetNuke.Modules.Forum
 			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "EmailQueue_GetPortalSendTasks", PortalID, PageIndex, PageSize), IDataReader)
 		End Function
 
-		Public Overrides Function GetPortalEmailTaskCount(ByVal PortalID As Integer) As Integer
-			Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "EmailQueue_PortalTaskCount", PortalID), Integer)
-		End Function
-
 #End Region
 
 #Region "Task Emails"

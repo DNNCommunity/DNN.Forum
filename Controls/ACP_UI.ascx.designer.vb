@@ -141,6 +141,15 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected WithEvents valThreadPageCount As Global.System.Web.UI.WebControls.RegularExpressionValidator
 
 		'''<summary>
+		'''rowPostImageWidth control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents rowPostImageWidth As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+		'''<summary>
 		'''plMaxPostImageWidth control.
 		'''</summary>
 		'''<remarks>

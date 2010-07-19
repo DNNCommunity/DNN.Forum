@@ -295,7 +295,6 @@ Namespace DotNetNuke.Modules.Forum
 		Public MustOverride Sub EmailQueueTaskCleanTasks(ByVal DeleteDate As Date)
 		Public MustOverride Function EmailQueueTaskScheduleItemIDGet(ByVal DeleteTask As Boolean) As Integer
 		Public MustOverride Function GetPortalEmailSendTasks(ByVal PortalID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
-		Public MustOverride Function GetPortalEmailTaskCount(ByVal PortalID As Integer) As Integer
 
 #End Region
 

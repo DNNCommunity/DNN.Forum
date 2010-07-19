@@ -74,7 +74,7 @@ Namespace DotNetNuke.Modules.Forum
 		Private _FailedSendCount As Integer
 		Private _TaskFailed As Boolean
 		Private _TaskFailedCount As Integer
-
+		Private _TotalRecords As Integer
 		' reserved for later usage
 		Private _ScheduleStartDate As Date
 		Private _PersonalizeEmail As Boolean
@@ -511,6 +511,21 @@ Namespace DotNetNuke.Modules.Forum
 			End Set
 		End Property
 
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property TotalRecords() As Integer
+			Get
+				Return _TotalRecords
+			End Get
+			Set(ByVal Value As Integer)
+				_TotalRecords = Value
+			End Set
+		End Property
+
 #End Region
 
 	End Class
@@ -624,10 +639,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Function GetPortalEmailSendTasks(ByVal PortalID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer) As List(Of EmailQueueTaskInfo)
 			Return CBO.FillCollection(Of EmailQueueTaskInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().GetPortalEmailSendTasks(PortalID, PageIndex, PageSize))
-		End Function
-
-		Public Function GetPortalEmailTaskCount(ByVal PortalID As Integer) As Integer
-			Return DotNetNuke.Modules.Forum.DataProvider.Instance().GetPortalEmailTaskCount(PortalID)
 		End Function
 
 #End Region

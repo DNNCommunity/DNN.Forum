@@ -70,7 +70,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				'Else
 				'	Return 10
 				'End If
-				Return 20
+				Return 3
 			End Get
 		End Property
 
@@ -155,14 +155,20 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			End If
 		End Sub
 
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="source"></param>
+		''' <param name="e"></param>
+		''' <remarks></remarks>
 		Protected Sub rgTaskDetails_PageChange(ByVal source As Object, ByVal e As Telerik.Web.UI.GridPageChangedEventArgs) Handles rgTaskDetails.PageIndexChanged
 			PageIndex = e.NewPageIndex
 
-			BindGrid(False)
+			BindGrid(True)
 		End Sub
 
 		''' <summary>
-		''' 
+		''' This populates the detail table, when necessary, based on the EmailQueueID of the parent. 
 		''' </summary>
 		''' <param name="source"></param>
 		''' <param name="e"></param>
@@ -195,12 +201,10 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
 			colEmailTasks = cntEmailTask.GetPortalEmailSendTasks(PortalId, PageIndex, PageSize)
 
-			Dim cntEmailTask2 As New EmailQueueTaskController
-
-			rgTaskDetails.VirtualItemCount = cntEmailTask2.GetPortalEmailTaskCount(PortalId)
-
 			If Not colEmailTasks Is Nothing Then
 				rgTaskDetails.DataSource = colEmailTasks
+				rgTaskDetails.MasterTableView.VirtualItemCount = colEmailTasks(0).TotalRecords
+
 				If BindIt Then
 					rgTaskDetails.DataBind()
 				End If

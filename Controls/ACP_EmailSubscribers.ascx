@@ -16,9 +16,6 @@
 						<asp:TextBox ID="txtThreadID" runat="server" Width="50" Visible="false" />
 					</div>
 					<telerik:RadGrid ID="rgForums" runat="server" AutoGenerateColumns="false" AllowSorting="true" AllowPaging="true" PageSize="20" >
-						<ClientSettings AllowColumnsReorder="false" EnableRowHoverStyle="true">
-							<Resizing AllowColumnResize="true" />
-						</ClientSettings>
 						<MasterTableView DataKeyNames="ForumID">
 							<NoRecordsTemplate>
 								<asp:Label ID="lblNoRecords" runat="server" resourcekey="lblNoRecords" CssClass="NormalBold" />
@@ -26,6 +23,7 @@
 							<Columns>
 								<telerik:GridBoundColumn UniqueName="Email" HeaderText="Email" DataField="Email" />
 								<telerik:GridBoundColumn UniqueName="Username" HeaderText="Username" DataField="Username" />	
+								<telerik:GridBoundColumn UniqueName="DisplayName" HeaderText="DisplayName" DataField="DisplayName" />
 								<telerik:GridBoundColumn UniqueName="Name" HeaderText="Name" DataField="Name" HeaderStyle-Width="100px" ItemStyle-Width="100px" />
 								<telerik:GridBoundColumn UniqueName="CreatedDate" HeaderText="CreatedDate" DataField="CreatedDate" HeaderStyle-Width="100px" ItemStyle-Width="100px" />
 							</Columns>
@@ -42,6 +40,7 @@
 							<Columns>
 								<telerik:GridBoundColumn UniqueName="Email" HeaderText="Email" DataField="Email" />
 								<telerik:GridBoundColumn UniqueName="Username" HeaderText="Username" DataField="Username" />	
+								<telerik:GridBoundColumn UniqueName="DisplayName" HeaderText="DisplayName" DataField="DisplayName" />
 								<telerik:GridBoundColumn UniqueName="Subject" HeaderText="Subject" DataField="Subject" HeaderStyle-Width="100px" ItemStyle-Width="100px" />
 								<telerik:GridBoundColumn UniqueName="CreatedDate" HeaderText="CreatedDate" DataField="CreatedDate" HeaderStyle-Width="100px" ItemStyle-Width="100px" />
 							</Columns>
