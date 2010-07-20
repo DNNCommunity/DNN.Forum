@@ -47,7 +47,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="PortalID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Function PostGetAll(ByVal ThreadID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal Descending As Boolean, ByVal PortalID As Integer) As List(Of PostInfo)
+		Friend Function PostGetAll(ByVal ThreadID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal Descending As Boolean, ByVal PortalID As Integer) As List(Of PostInfo)
 			Return CBO.FillCollection(Of PostInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().PostGetAll(ThreadID, PageIndex, PageSize, Descending, PortalID))
 		End Function
 
@@ -58,7 +58,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks>
 		''' </remarks>
-		Public Function GetPostInfo(ByVal PostID As Integer, ByVal PortalID As Integer) As PostInfo
+		Friend Function GetPostInfo(ByVal PostID As Integer, ByVal PortalID As Integer) As PostInfo
 			Dim strCacheKey As String = PostCacheKeyPrefix & CStr(PostID)
 			Dim objPost As PostInfo = CType(DataCache.GetCache(strCacheKey), PostInfo)
 
@@ -93,7 +93,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ThreadID">The ThreadID to retrieve all the posts for.</param>
 		''' <returns></returns>
 		''' <remarks>This must always sort by CreatedDate DESC (in the sproc) so we are delete posts with newest ones being deleted first.</remarks>
-		Public Function PostGetAllForThread(ByVal ThreadID As Integer) As List(Of PostInfo)
+		Friend Function PostGetAllForThread(ByVal ThreadID As Integer) As List(Of PostInfo)
 			Return CBO.FillCollection(Of PostInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().PostGetEntireThread(ThreadID))
 		End Function
 
@@ -104,7 +104,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="PortalID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Function PostGet(ByVal PostID As Integer, ByVal PortalID As Integer) As PostInfo
+		Friend Function PostGet(ByVal PostID As Integer, ByVal PortalID As Integer) As PostInfo
 			Return CType(CBO.FillObject(DotNetNuke.Modules.Forum.DataProvider.Instance().PostGet(PostID, PortalID), GetType(PostInfo)), PostInfo)
 		End Function
 
