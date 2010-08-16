@@ -633,7 +633,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				Dim forum As ForumInfo = cntForum.GetForumItemCache(forumID)
 
 				Dim ctlForum As New ForumController
-				ctlForum.ForumSortOrderUpdate(forum.ParentID, forum.GroupID, forumID, True)
+				ctlForum.ForumSortOrderUpdate(forum.ParentID, forum.GroupID, forumID, True, ModuleId)
 
 				BindGroupList()
 			Catch exc As Exception
@@ -655,7 +655,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				Dim forum As ForumInfo = cntForum.GetForumItemCache(forumID)
 				Dim GroupID As Integer = forum.GroupID
 				Dim ctlForum As New ForumController
-				ctlForum.ForumSortOrderUpdate(forum.ParentID, forum.GroupID, forumID, False)
+				ctlForum.ForumSortOrderUpdate(forum.ParentID, forum.GroupID, forumID, False, ModuleId)
 
 				BindGroupList()
 			Catch exc As Exception

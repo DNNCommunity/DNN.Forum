@@ -268,12 +268,16 @@ Namespace DotNetNuke.Modules.Forum
 		''' <summary>
 		''' Updates the sort order for a forum in the data store.
 		''' </summary>
+		''' <param name="ParentID"></param>
 		''' <param name="GroupID"></param>
 		''' <param name="ForumId"></param>
 		''' <param name="MoveUp"></param>
+		''' <param name="ModuleID"></param>
 		''' <remarks></remarks>
-		Friend Sub ForumSortOrderUpdate(ByVal ParentID As Integer, ByVal GroupID As Integer, ByVal ForumId As Integer, ByVal MoveUp As Boolean)
-			DotNetNuke.Modules.Forum.DataProvider.Instance().ForumSortOrderUpdate(GroupID, ForumId, MoveUp)
+		Friend Sub ForumSortOrderUpdate(ByVal ParentID As Integer, ByVal GroupID As Integer, ByVal ForumID As Integer, ByVal MoveUp As Boolean, ByVal ModuleID As Integer)
+			DotNetNuke.Modules.Forum.DataProvider.Instance().ForumSortOrderUpdate(GroupID, ForumID, MoveUp)
+			' need to update cache here
+			Forum.Components.Utilities.Caching.UpdateForumCache(ForumID, GroupID, ModuleID, ParentID)
 		End Sub
 
 #End Region
