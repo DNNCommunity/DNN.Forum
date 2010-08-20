@@ -132,11 +132,11 @@ Namespace DotNetNuke.Modules.Forum
 		Public MustOverride Function PostAdd(ByVal ParentPostID As Integer, ByVal ForumID As Integer, ByVal UserID As Integer, ByVal RemoteAddr As String, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal IsModerated As Boolean, ByVal ParseInfo As Integer) As Integer
 		Public MustOverride Function PostUpdate(ByVal ThreadID As Integer, ByVal PostID As Integer, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal UpdatedBy As Integer, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal ParseInfo As Integer) As Integer
 		Public MustOverride Sub PostDelete(ByVal PostID As Integer, ByVal ModID As Integer, ByVal Notes As String, ByVal PortalID As Integer)
-		Public MustOverride Function PostReportCheck(ByVal PostID As Integer, ByVal UserID As Integer) As Boolean
+		'Public MustOverride Function PostReportCheck(ByVal PostID As Integer, ByVal UserID As Integer) As Boolean
 		Public MustOverride Function PostMove(ByVal PostID As Integer, ByVal oldThreadID As Integer, ByVal newThreadID As Integer, ByVal newForumID As Integer, ByVal oldForumID As Integer, ByVal ModID As Integer, ByVal SortOrder As Integer, ByVal Notes As String) As IDataReader
 
 		' Get children Posts (for thread split)
-		Public MustOverride Function PostGetChildren(ByVal PostID As Integer) As IDataReader
+		'Public MustOverride Function PostGetChildren(ByVal PostID As Integer) As IDataReader
 		Public MustOverride Function PostGetEntireThread(ByVal ThreadID As Integer) As IDataReader
 		Public MustOverride Sub PostUpdateParseInfo(ByVal PostID As Integer, ByVal ParseInfo As Integer)
 

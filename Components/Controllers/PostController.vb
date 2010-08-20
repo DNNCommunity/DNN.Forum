@@ -23,9 +23,9 @@ Option Explicit On
 Namespace DotNetNuke.Modules.Forum
 
 	''' <summary>
-	''' Communicates with the Forum_Posts table in the data store. Note that some items in the data store also interact with the Forum_Threads table as well. 
+	''' Communicates with the Forum_Posts table in the data store. 
 	''' </summary>
-	''' <remarks>
+	''' <remarks>Some items in the data store also interact with the Forum_Threads table as well. 
 	''' </remarks>
 	Public Class PostController
 
@@ -38,7 +38,7 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Public Methods"
 
 		''' <summary>
-		''' 
+		''' Returns a collection of posts in a specific thread.
 		''' </summary>
 		''' <param name="ThreadID"></param>
 		''' <param name="PageIndex"></param>
@@ -98,11 +98,11 @@ Namespace DotNetNuke.Modules.Forum
 		End Function
 
 		''' <summary>
-		''' 
+		''' Returns a single post from the data store. 
 		''' </summary>
-		''' <param name="PostID"></param>
-		''' <param name="PortalID"></param>
-		''' <returns></returns>
+		''' <param name="PostID">The post we are attempting to retrieve.</param>
+		''' <param name="PortalID">The portal the post is related to.</param>
+		''' <returns>A single post.</returns>
 		''' <remarks></remarks>
 		Friend Function PostGet(ByVal PostID As Integer, ByVal PortalID As Integer) As PostInfo
 			Return CType(CBO.FillObject(DotNetNuke.Modules.Forum.DataProvider.Instance().PostGet(PostID, PortalID), GetType(PostInfo)), PostInfo)
@@ -143,20 +143,9 @@ Namespace DotNetNuke.Modules.Forum
 			DotNetNuke.Modules.Forum.DataProvider.Instance().PostUpdateParseInfo(PostID, ParseInfo)
 			Forum.Components.Utilities.Caching.UpdatePostCache(PostID)
 		End Sub
-
+		
 		''' <summary>
-		''' 
-		''' </summary>
-		''' <param name="PostID"></param>
-		''' <param name="UserID"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Friend Function PostReportCheck(ByVal PostID As Integer, ByVal UserID As Integer) As Boolean
-			Return DotNetNuke.Modules.Forum.DataProvider.Instance().PostReportCheck(PostID, UserID)
-		End Function
-
-		''' <summary>
-		''' 
+		''' Moves a post in the data store. 
 		''' </summary>
 		''' <param name="PostID"></param>
 		''' <param name="oldThreadID"></param>
@@ -184,9 +173,8 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 			End Try
 		End Sub
-
 		''' <summary>
-		''' 
+		''' Adds a post to the data store.
 		''' </summary>
 		''' <param name="ParentPostID"></param>
 		''' <param name="ForumID"></param>
@@ -208,9 +196,8 @@ Namespace DotNetNuke.Modules.Forum
 		Friend Function PostAdd(ByVal ParentPostID As Integer, ByVal ForumID As Integer, ByVal UserID As Integer, ByVal RemoteAddr As String, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal IsModerated As Boolean, ByVal GroupID As Integer, ByVal ParentID As Integer, ByVal ParseInfo As Integer) As Integer
 			Return DotNetNuke.Modules.Forum.DataProvider.Instance().PostAdd(ParentPostID, ForumID, UserID, RemoteAddr, Subject, Body, IsPinned, PinnedDate, IsClosed, PortalID, PollID, IsModerated, ParseInfo)
 		End Function
-
 		''' <summary>
-		''' 
+		''' Updates a post in the data store.
 		''' </summary>
 		''' <param name="ThreadID"></param>
 		''' <param name="PostID"></param>
@@ -228,16 +215,6 @@ Namespace DotNetNuke.Modules.Forum
 		Friend Sub PostUpdate(ByVal ThreadID As Integer, ByVal PostID As Integer, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal UpdatedBy As Integer, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal ParentID As Integer, ByVal ParseInfo As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().PostUpdate(ThreadID, PostID, Subject, Body, IsPinned, PinnedDate, IsClosed, UpdatedBy, PortalID, PollID, ParseInfo)
 		End Sub
-
-		''' <summary>
-		''' 
-		''' </summary>
-		''' <param name="PostID"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Friend Function PostGetChildren(ByVal PostID As Integer) As ArrayList
-			Return CBO.FillCollection(DotNetNuke.Modules.Forum.DataProvider.Instance().PostGetChildren(PostID), GetType(PostInfo))
-		End Function
 
 #End Region
 

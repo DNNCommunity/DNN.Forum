@@ -305,10 +305,6 @@ Namespace DotNetNuke.Modules.Forum
 			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Post_GetEntireThread", ThreadID), IDataReader)
 		End Function
 
-		Public Overrides Function PostGetChildren(ByVal PostID As Integer) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "PostGetChildren", PostID), IDataReader)
-		End Function
-
 		Public Overrides Function PostGet(ByVal PostID As Integer, ByVal PortalID As Integer) As IDataReader
 			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Post_Get", PostID, PortalID), IDataReader)
 		End Function
@@ -316,10 +312,6 @@ Namespace DotNetNuke.Modules.Forum
 		Public Overrides Sub PostDelete(ByVal PostID As Integer, ByVal ModID As Integer, ByVal Notes As String, ByVal PortalID As Integer)
 			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "Post_Delete", PostID, ModID, Notes, PortalID)
 		End Sub
-
-		Public Overrides Function PostReportCheck(ByVal PostID As Integer, ByVal UserID As Integer) As Boolean
-			Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "PostReportCheck", PostID, UserID), Boolean)
-		End Function
 
 		Public Overrides Function PostMove(ByVal PostID As Integer, ByVal oldThreadID As Integer, ByVal newThreadID As Integer, ByVal newForumID As Integer, ByVal oldForumID As Integer, ByVal ModID As Integer, ByVal SortOrder As Integer, ByVal Notes As String) As IDataReader
 			Return SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Post_Move", PostID, oldThreadID, newThreadID, newForumID, oldForumID, ModID, SortOrder, Notes)

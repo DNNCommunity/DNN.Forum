@@ -417,11 +417,11 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' 
+		''' The number of approved posts before the current one. 
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
-		''' <remarks></remarks>
+		''' <remarks>Replaces sort order, in combination with post after.</remarks>
 		Public Property PostsBefore() As Integer
 			Get
 				Return _PostsBefore
@@ -432,11 +432,11 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' 
+		''' The number of approved posts after the current one. 
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
-		''' <remarks></remarks>
+		''' <remarks>Replaces sort order, in combination with post before.</remarks>
 		Public Property PostsAfter() As Integer
 			Get
 				Return _PostsAfter
@@ -447,11 +447,11 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' 
+		''' Total number of posts that meet the criteria (of whatever retrieved them). 
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
-		''' <remarks></remarks>
+		''' <remarks>Used for paging.</remarks>
 		Public Property TotalRecords() As Integer
 			Get
 				Return _TotalRecords
