@@ -133,6 +133,16 @@ Namespace DotNetNuke.Modules.Forum.Components.Utilities
 			GroupController.ResetModuleGroups(ModuleID)
 		End Sub
 
+		''' <summary>
+		''' This will reset the cached user data. It should happen when a user has a post added or when they change their post display order (or any other settings from "My Settings"). 
+		''' </summary>
+		''' <param name="UserID"></param>
+		''' <param name="PortalID"></param>
+		''' <remarks></remarks>
+		Public Shared Sub UpdateUserCache(ByVal UserID As Integer, ByVal PortalID As Integer)
+			ForumUserController.ResetForumUser(UserID, PortalID)
+		End Sub
+
 	End Class
 
 End Namespace

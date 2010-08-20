@@ -173,7 +173,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public MustOverride Function UserGet(ByVal UsersID As Integer, ByVal PortalID As Integer) As IDataReader
 		Public MustOverride Sub UserAdd(ByVal UserId As Integer, ByVal UserAvatar As Integer, ByVal Avatar As String, ByVal AdditionalAvatars As String, ByVal Signature As String, ByVal IsTrusted As Boolean, ByVal EnableOnlineStatus As Boolean, ByVal ThreadsPerPage As Integer, ByVal PostsPerPage As Integer, ByVal EnablePublicEmail As Boolean, ByVal PortalID As Integer)
 		Public MustOverride Sub UserUpdate(ByVal UserId As Integer, ByVal UserAvatar As Integer, ByVal Avatar As String, ByVal AdditionalAvatars As String, ByVal Signature As String, ByVal IsTrusted As Boolean, ByVal EnableOnlineStatus As Boolean, ByVal ThreadsPerPage As Integer, ByVal PostsPerPage As Integer, ByVal EnableModNotification As Boolean, ByVal EnablePublicEmail As Boolean, ByVal EmailFormat As Integer, ByVal PortalID As Integer, ByVal LockTrust As Boolean, ByVal EnableProfileWeb As Boolean, ByVal EnableDefaultPostNotify As Boolean, ByVal EnableSelfNotifications As Boolean, ByVal IsBanned As Boolean, ByVal LiftBanDate As Date, ByVal StartBanDate As Date)
-		Public MustOverride Sub UserViewUpdate(ByVal UserId As Integer, ByVal FlatView As Boolean, ByVal ViewDescending As Boolean)
+		Public MustOverride Sub UpdateUsersView(ByVal UserID As Integer, ByVal PortalID As Integer, ByVal ViewDescending As Boolean)
 
 		Public MustOverride Function GetBannedUsers(ByVal PortalID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
 
@@ -186,16 +186,16 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-#Region "MemberList"
+		'#Region "MemberList"
 
-		Public MustOverride Function MembersGetByUsername(ByVal PortalID As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
-		Public MustOverride Function MembersGetByDisplayName(ByVal PortalID As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
-		Public MustOverride Function MembersGetAll(ByVal PortalID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
-		Public MustOverride Function MembersGetByEmail(ByVal PortalID As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
-		Public MustOverride Function MembersGetByProfileProp(ByVal PortalID As Integer, ByVal PropertyName As String, ByVal PropertyValue As String, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
-		Public MustOverride Function MembersGetOnline(ByVal PortalID As Integer) As IDataReader
+		'		Public MustOverride Function MembersGetByUsername(ByVal PortalID As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
+		'		Public MustOverride Function MembersGetByDisplayName(ByVal PortalID As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
+		'		Public MustOverride Function MembersGetAll(ByVal PortalID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
+		'		Public MustOverride Function MembersGetByEmail(ByVal PortalID As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
+		'		Public MustOverride Function MembersGetByProfileProp(ByVal PortalID As Integer, ByVal PropertyName As String, ByVal PropertyValue As String, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
+		'		Public MustOverride Function MembersGetOnline(ByVal PortalID As Integer) As IDataReader
 
-#End Region
+		'#End Region
 
 #Region "Manage Users"
 

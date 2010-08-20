@@ -47,6 +47,8 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _PostReported As Integer
 		Dim _Addressed As Integer
 		Dim _ParseInfo As Integer
+		Dim _PostsBefore As Integer
+		Dim _PostsAfter As Integer
 		Dim _TotalRecords As Integer
 
 #End Region
@@ -411,6 +413,36 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 			Set(ByVal Value As Integer)
 				_ParseInfo = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property PostsBefore() As Integer
+			Get
+				Return _PostsBefore
+			End Get
+			Set(ByVal Value As Integer)
+				_PostsBefore = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property PostsAfter() As Integer
+			Get
+				Return _PostsAfter
+			End Get
+			Set(ByVal Value As Integer)
+				_PostsAfter = Value
 			End Set
 		End Property
 

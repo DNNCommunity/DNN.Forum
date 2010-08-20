@@ -33,15 +33,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected WithEvents rcbForums As Global.Telerik.Web.UI.RadComboBox
 
 		'''<summary>
-		'''txtThreadID control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtThreadID As Global.System.Web.UI.WebControls.TextBox
-
-		'''<summary>
 		'''rgForums control.
 		'''</summary>
 		'''<remarks>

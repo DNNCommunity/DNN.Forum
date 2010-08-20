@@ -129,7 +129,7 @@ Namespace DotNetNuke.Modules.Forum
 						Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(TabId, objPost.ForumID, objPost.PostID)
 
 						ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, objPost.ForumID, objPost.ThreadID)
-						ForumUserController.ResetForumUser(objPost.Author.UserID, PortalId)
+						DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(objPost.Author.UserID, PortalId)
 
 						' Rebind latest non-approved posts to datalist
 						BindList()
@@ -157,7 +157,7 @@ Namespace DotNetNuke.Modules.Forum
 						Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(TabId, objPost.ForumID, objPost.PostID)
 
 						ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, objPost.ForumID, objPost.ThreadID)
-						ForumUserController.ResetForumUser(objPost.Author.UserID, PortalId)
+						DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(objPost.Author.UserID, PortalId)
 
 						'"moderatorreturn=1"
 						Dim url As String = Utilities.Links.NewPostLink(TabId, objPost.ForumID, objPost.PostID, "edit", ModuleId)
@@ -169,7 +169,7 @@ Namespace DotNetNuke.Modules.Forum
 						Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(TabId, objPost.ForumID, objPost.PostID)
 
 						ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, objPost.ForumID, objPost.ThreadID)
-						ForumUserController.ResetForumUser(objPost.Author.UserID, PortalId)
+						DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(objPost.Author.UserID, PortalId)
 
 						' "moderatorreturn=1"
 						Dim url As String = Utilities.Links.NewPostLink(TabId, objPost.ForumID, objPost.PostID, "reply", ModuleId)

@@ -224,7 +224,7 @@ Namespace DotNetNuke.Modules.Forum
 				'update the user profile
 				Dim fUserCnt As New ForumUserController
 				fUserCnt.UserUpdateTrackingDuration(CType(dFilter, Integer), CurrentForumUser.UserID, ForumControl.PortalID)
-				Forum.ForumUserController.ResetForumUser(CurrentForumUser.UserID, PortalID)
+				DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(CurrentForumUser.UserID, PortalID)
 			End If
 
 			MyBase.BasePage.Response.Redirect(url, False)

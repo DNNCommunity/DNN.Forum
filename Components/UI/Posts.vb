@@ -196,16 +196,14 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Protected Sub ddlThreadStatus_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
 			Dim ThreadStatus As Integer = ddlThreadStatus.SelectedIndex
-			If ThreadStatus > 0 Then
-				Dim ctlThread As New ThreadController
+			Dim ctlThread As New ThreadController
 
-				Dim ModeratorID As Integer = -1
-				If CurrentForumUser.UserID <> objThread.StartedByUserID Then
-					ModeratorID = CurrentForumUser.UserID
-				End If
-
-				ctlThread.ChangeThreadStatus(ThreadID, CurrentForumUser.UserID, ThreadStatus, 0, ModeratorID, PortalID)
+			Dim ModeratorID As Integer = -1
+			If CurrentForumUser.UserID <> objThread.StartedByUserID Then
+				ModeratorID = CurrentForumUser.UserID
 			End If
+
+			ctlThread.ChangeThreadStatus(ThreadID, CurrentForumUser.UserID, ThreadStatus, 0, ModeratorID, PortalID)
 
 			Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID)
 		End Sub
@@ -311,17 +309,9 @@ Namespace DotNetNuke.Modules.Forum
 			Dim ctlPost As New PostController
 			PostCollection = ctlPost.PostGetAll(ThreadID, PostPage, CurrentForumUser.PostsPerPage, ForumControl.Descending, PortalID)
 
-			'<tam:note value=update database if it's an authenticated user>
 			If CurrentForumUser.UserID > 0 Then
-				CurrentForumUser.ViewDescending = (ForumControl.Descending)
 				Dim ctlForumUser As New ForumUserController
-				ctlForumUser.UserViewUpdate(CurrentForumUser.UserID, True, CurrentForumUser.ViewDescending)
-				'Else
-				'    If Not HttpContext.Current.Request.Cookies(".ASPXANONYMOUS") Is Nothing Then
-				'        Dim c As System.Web.HttpCookie
-				'        c = HttpContext.Current.Request.Cookies(".ASPXANONYMOUS")
-				'        c.Values.Add("ForumDescending", ForumControl.Descending.ToString)
-				'    End If
+				ctlForumUser.UpdateUsersView(CurrentForumUser.UserID, PortalID, ForumControl.Descending)
 			End If
 		End Sub
 
@@ -471,14 +461,11 @@ Namespace DotNetNuke.Modules.Forum
 				Dim TotalPages As Integer = (CInt(TotalPosts / CurrentForumUser.PostsPerPage))
 				Dim ThreadPageToShow As Integer = 1
 
-				' we need to use flatsortorder and totalpages to determine which page to view    
-				' TODO: We need to know where this specific post is, like a sort order, so we know which page to show.
 				If user.ViewDescending Then
-					'ThreadPageToShow = CInt(Math.Ceiling((TotalPosts) / userPostsPerPage))
+					ThreadPageToShow = CInt(Math.Ceiling((objPost.PostsAfter + 1) / CurrentForumUser.PostsPerPage))
 				Else
-					'ThreadPageToShow = CInt(Math.Ceiling((FlatSortOrder + 1) / userPostsPerPage))
+					ThreadPageToShow = CInt(Math.Ceiling((objPost.PostsBefore + 1) / CurrentForumUser.PostsPerPage))
 				End If
-				' DO NOT FACTOR IN ThreadPage in URL HERE!!! (It will cause errors so never check what it says)
 				PostPage = ThreadPageToShow
 			Else
 				If ThreadID > 0 Then
@@ -868,14 +855,13 @@ Namespace DotNetNuke.Modules.Forum
 					AddHandler trcRating.Rate, AddressOf trcRating_Rate
 				End If
 
-				AddHandler cmdVote.Click, AddressOf cmdVote_Click
-
 				If CurrentForumUser.UserID > 0 Then
 					AddHandler cmdBookmark.Click, AddressOf cmdBookmark_Click
 					AddHandler cmdThreadSubscribers.Click, AddressOf cmdThreadSubscribers_Click
-
-					' Remove for anon posting (if we allow quick reply via anonymous posting)
+					' Move out to support anon posting (if we allow quick reply via anonymous posting)
 					AddHandler cmdSubmit.Click, AddressOf cmdSubmit_Click
+					' Move otu to support anon poll voting (after posting is supported)
+					AddHandler cmdVote.Click, AddressOf cmdVote_Click
 				End If
 
 				AddHandler ddlViewDescending.SelectedIndexChanged, AddressOf ddlViewDescending_SelectedIndexChanged
@@ -910,9 +896,10 @@ Namespace DotNetNuke.Modules.Forum
 					Controls.Add(cmdBookmark)
 					Controls.Add(cmdThreadSubscribers)
 
-					' Remove for anon posting (if we allow quick reply via anonymous posting)
+					' move for anon posting (if we allow quick reply via anonymous posting)
 					Controls.Add(txtQuickReply)
 					Controls.Add(cmdSubmit)
+					Controls.Add(cmdVote)
 				End If
 
 				Controls.Add(tagsControl)

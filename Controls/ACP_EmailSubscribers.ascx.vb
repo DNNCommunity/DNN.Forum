@@ -32,6 +32,26 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Inherits ForumModuleBase
 		Implements Utilities.AjaxLoader.IPageLoad
 
+#Region "Private Properties"
+
+		''' <summary>
+		''' If this was linked to from the posts view, this variable is populated to also display a list of subscribers at the thread level. 
+		''' </summary>
+		''' <value></value>
+		''' <returns>A the threadid we are attempting subscribers of.</returns>
+		''' <remarks></remarks>
+		Private ReadOnly Property ThreadID As Integer
+			Get
+				Dim _threadID As Integer = -1
+				If Request.QueryString("ThreadID") IsNot Nothing Then
+					_threadID = CInt(Request.QueryString("ThreadID"))
+				End If
+				Return _threadID
+			End Get
+		End Property
+		
+#End Region
+
 #Region "Interfaces"
 
 		''' <summary>
@@ -39,36 +59,23 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </summary>
 		''' <remarks></remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
-			' need a check here for querystring for forum or thread id (we need this here too because we are doing it more than on initial page load). 
 			BindForums()
 
-			Dim ForumID As Integer = -1
-			Dim ThreadID As Integer = -1
-
-			If Request.QueryString("ForumID") IsNot Nothing Then
-				ForumID = CInt(Request.QueryString("ForumID"))
-				rcbForums.SelectedValue = ForumID.ToString()
-			End If
-
-			If Request.QueryString("ThreadID") IsNot Nothing Then
-				ThreadID = CInt(Request.QueryString("ThreadID"))
-				txtThreadID.Text = ThreadID.ToString()
-			End If
+			rcbForums.SelectedValue = ForumID.ToString()
 
 			If ThreadID > 0 Then
 				rgForums.Visible = True
 				rgThreads.Visible = True
-				BindThreadGrid(False)
-
+				BindThreadGrid(True)
 				If ForumID > 0 Then
 					rcbForums.SelectedValue = ForumID.ToString()
 				End If
 			Else
-				txtThreadID.Text = "-1"
 				rgForums.Visible = True
 				rgThreads.Visible = False
-				BindForumGrid(False)
 			End If
+
+			BindForumGrid(True)
 		End Sub
 
 #End Region
@@ -86,25 +93,12 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		End Sub
 
 		''' <summary>
-		''' Used to populate the grid with a datasource when one is not found (and is needed).  
-		''' </summary>
-		''' <param name="source"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
-		Protected Sub rgForums_NeedsDataSource(ByVal source As Object, ByVal e As Telerik.Web.UI.GridNeedDataSourceEventArgs) Handles rgForums.NeedDataSource
-			'If Not e.IsFromDetailTable Then
-			BindForumGrid(False)
-			'End If
-		End Sub
-
-		''' <summary>
-		''' 
+		''' Fires when a user changes the selected forum combobox. 
 		''' </summary>
 		''' <param name="source"></param>
 		''' <param name="e"></param>
 		''' <remarks></remarks>
 		Protected Sub rcbForums_SelectedIndexChange(ByVal source As Object, ByVal e As Telerik.Web.UI.RadComboBoxSelectedIndexChangedEventArgs) Handles rcbForums.SelectedIndexChanged
-			txtThreadID.Text = "-1"
 			rgForums.Visible = True
 			rgThreads.Visible = False
 			BindForumGrid(True)
@@ -115,7 +109,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 #Region "Private Methods"
 
 		''' <summary>
-		''' 
+		''' Binds a list of forums to the combobox. 
 		''' </summary>
 		''' <remarks></remarks>
 		Private Sub BindForums()
@@ -131,19 +125,11 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		End Sub
 
 		''' <summary>
-		''' 
+		''' Used to bind data to the forum subscriptions grid. 
 		''' </summary>
 		''' <param name="BindIt"></param>
 		''' <remarks></remarks>
 		Private Sub BindForumGrid(ByVal BindIt As Boolean)
-			' need a check here for querystring for forum or thread id (we need this here too because we are doing it more than on initial page load). 
-			Dim ForumID As Integer = -1
-			Dim ThreadID As Integer = -1
-
-			If rcbForums.SelectedValue <> "" Then
-				ForumID = CInt(rcbForums.SelectedValue)
-			End If
-
 			Dim cntUserTracking As New UserTrackingController
 			Dim colUserTracking As List(Of UserTrackingInfo)
 
@@ -158,14 +144,11 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		End Sub
 
 		''' <summary>
-		''' 
+		''' Used to bind data to the thread subscriptions grid. 
 		''' </summary>
 		''' <param name="BindIt"></param>
 		''' <remarks></remarks>
 		Private Sub BindThreadGrid(ByVal BindIt As Boolean)
-			' need a check here for querystring for forum or thread id (we need this here too because we are doing it more than on initial page load). 
-			Dim ThreadID As Integer = -1
-
 			Dim cntUserTracking As New UserTrackingController
 			Dim colUserTracking As List(Of UserTrackingInfo)
 
@@ -182,7 +165,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		End Sub
 
 		''' <summary>
-		''' Used to localized the grid headers (a replacement for core method). 
+		''' Used to localize the grid headers for the forums grid (a replacement for core method). 
 		''' </summary>
 		''' <remarks></remarks>
 		Private Sub SetLocalization()
@@ -193,6 +176,10 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			Next
 		End Sub
 
+		''' <summary>
+		''' Used to localize the grid headers for the threads grid (a replacement for core method). 
+		''' </summary>
+		''' <remarks></remarks>
 		Private Sub SetThreadLocalization()
 			For Each gc As Telerik.Web.UI.GridColumn In rgThreads.MasterTableView.Columns
 				If gc.HeaderText <> "" Then

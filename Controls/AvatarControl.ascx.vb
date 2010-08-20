@@ -20,6 +20,8 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Entities.Modules
+
 Namespace DotNetNuke.Modules.Forum
 
 	''' <summary>
@@ -27,7 +29,8 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks></remarks>
 	Partial Public Class AvatarControl
-		Inherits ForumModuleBase
+		Inherits PortalModuleBase
+
 
 #Region "Private Members"
 
@@ -45,6 +48,25 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 #Region "Public Properties"
+
+		''' <summary>
+		''' We need the ModuleID set so we can get configuration settings for the avatar control. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Overloads Property ModuleID() As Integer
+			Get
+				If ViewState("ModuleID") IsNot Nothing Then
+					Return CType(ViewState("ModuleID").ToString(), Integer)
+				Else
+					Return -1
+				End If
+			End Get
+			Set(ByVal value As Integer)
+				ViewState("ModuleID") = CInt(value)
+			End Set
+		End Property
 
 		''' <summary>
 		''' Local Resource file for localization. 
@@ -155,6 +177,48 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 #Region "Private ReadOnly Properties"
+
+		''' <summary>
+		''' This is the user who is viewing the forum.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private ReadOnly Property CurrentForumUser() As ForumUserInfo
+			Get
+				Dim cntForumUser As New ForumUserController
+				Return cntForumUser.GetForumUser(Users.UserController.GetCurrentUserInfo.UserID, False, ModuleID, objConfig.CurrentPortalSettings.PortalId)
+			End Get
+		End Property
+
+		''' <summary>
+		''' The userid of the person currently using this control. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private ReadOnly Property CurrentUserID() As Integer
+			Get
+				If ViewState("CurrentUserID") IsNot Nothing Then
+					Return CType(ViewState("CurrentUserID").ToString(), Integer)
+				Else
+					ViewState("CurrentUserID") = CurrentForumUser.UserID
+					Return CurrentForumUser.UserID
+				End If
+			End Get
+		End Property
+
+		''' <summary>
+		''' This is the forum's configuration so it can be used by loaded controls.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property objConfig() As Forum.Configuration
+			Get
+				Return Configuration.GetForumConfig(ModuleID)
+			End Get
+		End Property
 
 		''' <summary>
 		''' Post portal root folder path setting.
@@ -290,15 +354,14 @@ Namespace DotNetNuke.Modules.Forum
 				Else
 					If Not SourceFileName = DestFileName Then
 						' Just need to rename the image here, it is smaller than the size limitations
-						FileSystemUtils.MoveFile(SourceFileName, DestFileName, PortalSettings)
+						FileSystemUtils.MoveFile(SourceFileName, DestFileName, objConfig.CurrentPortalSettings)
 					End If
 					srcImage.Dispose()
 				End If
 
-				'[skeel] Now delete the source file
 				Try
 					If Not SourceFileName = DestFileName Then
-						DotNetNuke.Common.Utilities.FileSystemUtils.DeleteFile(SourceFileName, PortalSettings)
+						DotNetNuke.Common.Utilities.FileSystemUtils.DeleteFile(SourceFileName, objConfig.CurrentPortalSettings)
 					End If
 				Catch ex As Exception
 					DotNetNuke.Services.Exceptions.LogException(ex)
@@ -329,10 +392,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>Added by Skeel</remarks>
 		Private Sub DeleteUploadedAvatarAndSaveProfile()
 			Dim cntForumUser As New ForumUserController
-			Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
+			Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(CurrentUserID, False, ModuleID, objConfig.CurrentPortalSettings.PortalId)
 
 			'Get the parent folder
-			Dim ParentFolderName As String = PortalSettings.HomeDirectoryMapPath
+			Dim ParentFolderName As String = objConfig.CurrentPortalSettings.HomeDirectoryMapPath
 			ParentFolderName += objConfig.UserAvatarPath
 			ParentFolderName = ParentFolderName.Replace("/", "\")
 			If ParentFolderName.EndsWith("\") = False Then ParentFolderName += "\"
@@ -342,7 +405,7 @@ Namespace DotNetNuke.Modules.Forum
 			FileName = FileName.Replace(";", "")
 
 			Try
-				DotNetNuke.Common.Utilities.FileSystemUtils.DeleteFile(ParentFolderName + FileName, PortalSettings)
+				DotNetNuke.Common.Utilities.FileSystemUtils.DeleteFile(ParentFolderName + FileName, objConfig.CurrentPortalSettings)
 			Catch ex As Exception
 				DotNetNuke.Services.Exceptions.LogException(ex)
 			End Try
@@ -356,7 +419,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim ctlForumUser As New ForumUserController
 			ctlForumUser.Update(ProfileUser)
 
-			ForumUserController.ResetForumUser(ProfileUserID, PortalId)
+			DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(CurrentUserID, objConfig.CurrentPortalSettings.PortalId)
 		End Sub
 
 #End Region
@@ -386,7 +449,6 @@ Namespace DotNetNuke.Modules.Forum
 			ViewState("ImageList") = Images.Replace(lbl.Text + ";", "")
 			BindImages()
 
-			'[skeel] 'delete the file if it was an uploaded avatar
 			If AvatarType = AvatarControlType.User AndAlso IsPoolAvatar = False Then
 				DeleteUploadedAvatarAndSaveProfile()
 			End If
@@ -410,9 +472,9 @@ Namespace DotNetNuke.Modules.Forum
 
 			lbl.Text = imageList(e.Item.ItemIndex)
 			If IsPoolAvatar Then
-				img.ImageUrl = PortalSettings.HomeDirectory + PoolFolder + lbl.Text
+				img.ImageUrl = objConfig.CurrentPortalSettings.HomeDirectory + PoolFolder + lbl.Text
 			Else
-				img.ImageUrl = PortalSettings.HomeDirectory + BaseFolder + lbl.Text
+				img.ImageUrl = objConfig.CurrentPortalSettings.HomeDirectory + BaseFolder + lbl.Text
 			End If
 		End Sub
 
@@ -431,7 +493,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				lblMessage.Text = String.Empty
 
-				Dim ParentFolderName As String = PortalSettings.HomeDirectoryMapPath
+				Dim ParentFolderName As String = objConfig.CurrentPortalSettings.HomeDirectoryMapPath
 				Dim FileName As String = System.IO.Path.GetFileName(fuFile.PostedFile.FileName)
 				Dim destFileName As String
 
@@ -471,7 +533,7 @@ Namespace DotNetNuke.Modules.Forum
 					Dim oldFileName As String = Images.Trim(";"c)
 					If oldFileName <> String.Empty Then
 						Try
-							DotNetNuke.Common.Utilities.FileSystemUtils.DeleteFile(ParentFolderName + oldFileName, PortalSettings)
+							DotNetNuke.Common.Utilities.FileSystemUtils.DeleteFile(ParentFolderName + oldFileName, objConfig.CurrentPortalSettings)
 						Catch ex As Exception
 							DotNetNuke.Services.Exceptions.LogException(ex)
 						End Try
@@ -495,7 +557,7 @@ Namespace DotNetNuke.Modules.Forum
 				'to ensure uploaded avatars are always deleted when not in use
 				If AvatarType = AvatarControlType.User Then
 					Dim cntForumUser As New ForumUserController
-					Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
+					Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(CurrentUserID, False, ModuleID, objConfig.CurrentPortalSettings.PortalId)
 
 					With ProfileUser
 						.UserAvatar = UserAvatarType.UserAvatar
@@ -505,7 +567,7 @@ Namespace DotNetNuke.Modules.Forum
 					Dim ctlForumUser As New ForumUserController
 					ctlForumUser.Update(ProfileUser)
 
-					ForumUserController.ResetForumUser(ProfileUserID, PortalId)
+					DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(CurrentUserID, objConfig.CurrentPortalSettings.PortalId)
 				End If
 			Catch exc As Exception
 				ProcessModuleLoadException(Me, exc)
@@ -585,7 +647,7 @@ Namespace DotNetNuke.Modules.Forum
 					'Display Pool for Users?
 					If objConfig.EnableUserAvatarPool Then
 						'Check if any avatars are available from the pool 
-						Dim tmpArray As ArrayList = Common.Globals.GetFileList(PortalId, FileFilter, False, PoolFolder, False)
+						Dim tmpArray As ArrayList = Common.Globals.GetFileList(objConfig.CurrentPortalSettings.PortalId, FileFilter, False, PoolFolder, False)
 						If tmpArray.Count > 0 Then
 							trAvatarPool.Visible = True
 						Else
@@ -623,7 +685,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			If ImageName <> "spacer.gif" Then
 				'If AvatarType = AvatarControlType.System Then
-				imgb.ImageUrl = PortalSettings.HomeDirectory + BaseFolder + ImageName
+				imgb.ImageUrl = objConfig.CurrentPortalSettings.HomeDirectory + BaseFolder + ImageName
 				'Else
 				'	imgb.ImageUrl = PortalSettings.HomeDirectory + PoolFolder + ImageName
 				'End If
@@ -660,7 +722,7 @@ Namespace DotNetNuke.Modules.Forum
 			If AvatarType = AvatarControlType.User Then
 				'[skeel] At this point, we need to check if the current avatar needs to be deleted
 				Dim cntForumUser As New ForumUserController
-				Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
+				Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(CurrentUserID, False, ModuleID, objConfig.CurrentPortalSettings.PortalId)
 
 				If ProfileUser.UserAvatar = UserAvatarType.UserAvatar Then
 					DeleteUploadedAvatarAndSaveProfile()
@@ -673,7 +735,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					Dim ctlUser As New ForumUserController
 					ctlUser.Update(ProfileUser)
-					ForumUserController.ResetForumUser(ProfileUserID, PortalId)
+					DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(CurrentUserID, objConfig.CurrentPortalSettings.PortalId)
 				End If
 			End If
 		End Sub
@@ -703,7 +765,7 @@ Namespace DotNetNuke.Modules.Forum
 		Private Sub BindData(ByVal PageSize As Integer, ByVal CurrentPage As Integer, ByVal Folder As String)
 			Dim NoneSpecified As Boolean = False
 
-			Dim arr As ArrayList = Common.Globals.GetFileList(PortalId, FileFilter, NoneSpecified, Folder, False)
+			Dim arr As ArrayList = Common.Globals.GetFileList(objConfig.CurrentPortalSettings.PortalId, FileFilter, NoneSpecified, Folder, False)
 			BottomPager.TotalRecords = arr.Count
 
 			Dim dsTemp As DataSet = New DataSet()

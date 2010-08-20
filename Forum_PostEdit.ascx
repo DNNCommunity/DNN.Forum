@@ -106,7 +106,7 @@
                             </span>
                         </td>
                         <td align="left" class="Forum_Row_AdminR">
-						<asp:dropdownlist id="ddlThreadStatus" runat="server" CssClass="Forum_NormalTextBox" Width="350px" AutoPostBack="true" />
+						<dnnweb:DnnComboBox ID="dnncbThreadStatus" runat="server" AutoPostBack="true" CausesValidation="false" />
                         </td>
                     </tr>
 				<tr id="rowTagging" runat="server" visible="false">

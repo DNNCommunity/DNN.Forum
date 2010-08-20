@@ -170,6 +170,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					Dim ctlRoleAvatar As DotNetNuke.Modules.Forum.AvatarControl = CType(imgColumnControl, DotNetNuke.Modules.Forum.AvatarControl)
 					ctlRoleAvatar.Images = ";" & objTemp.Avatar & ";"
 					ctlRoleAvatar.AvatarType = AvatarControlType.Role
+					ctlRoleAvatar.ModuleID = ModuleId
 					Dim objSecurity As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
 					ctlRoleAvatar.Security = objSecurity
 					ctlRoleAvatar.LoadInitialView()

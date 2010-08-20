@@ -129,7 +129,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			' We need to delete the Content Item here
 			Forum.Content.DeleteContentItem(objThread)
-			ForumUserController.ResetForumUser(objPost.Author.UserID, PortalID)
+			DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(objPost.Author.UserID, PortalID)
 		End Sub
 
 		''' <summary>

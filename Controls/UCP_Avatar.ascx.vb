@@ -46,11 +46,13 @@ Namespace DotNetNuke.Modules.Forum.UCP
 				If objConfig.EnableSystemAvatar Then
 					ctlSystemAvatar.Security = objSecurity
 					ctlSystemAvatar.AvatarType = AvatarControlType.System
+					ctlSystemAvatar.ModuleID = ModuleId
 				End If
 			End If
 
 			ctlUserAvatar.Security = objSecurity
 			ctlUserAvatar.AvatarType = AvatarControlType.User
+			ctlUserAvatar.ModuleID = ModuleId
 
 			' Hide the avatar if we are using profile avatars. 
 			If objConfig.EnableProfileAvatar Then
@@ -83,7 +85,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' </remarks>
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
-				ForumUserController.ResetForumUser(ProfileUserID, PortalId)
+				DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(ProfileUserID, PortalId)
 				Dim cntForumUser As New ForumUserController
 
 				Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
@@ -110,7 +112,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 				Dim cntUser As New ForumUserController
 				cntUser.Update(ProfileUser)
 
-				ForumUserController.ResetForumUser(ProfileUser.UserID, PortalId)
+				DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(ProfileUser.UserID, PortalId)
 				lblUpdateDone.Visible = True
 			Catch Exc As System.Exception
 				LogException(Exc)

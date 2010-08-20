@@ -89,7 +89,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 					Dim cntUser As New ForumUserController
 					cntUser.Update(ProfileUser)
 
-					ForumUserController.ResetForumUser(ProfileUser.UserID, PortalId)
+					DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(ProfileUser.UserID, PortalId)
 					lblUpdateDone.Visible = True
 				End With
 			Catch Exc As System.Exception

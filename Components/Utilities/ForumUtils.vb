@@ -809,7 +809,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 						'Check if this is a sub forum
 						If objThreadInfo.ContainingForum.ParentID > 0 Then
 							'Render Parent Forum Name
-							sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerParentForumLink(TabID, objThreadInfo.ContainingForum.GroupID, objThreadInfo.ContainingForum.ForumID), objThreadInfo.ContainingForum.ParentForum.Name, imageURL))
+							sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerParentForumLink(TabID, objThreadInfo.ContainingForum.GroupID, objThreadInfo.ContainingForum.ParentID), objThreadInfo.ContainingForum.ParentForum.Name, imageURL))
 						End If
 
 						sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(TabID, objThreadInfo.ForumID, False), TrimString(objThreadInfo.ContainingForum.Name, 15), imageURL))

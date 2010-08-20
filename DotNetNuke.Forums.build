@@ -26,7 +26,7 @@
 		<property name="ModuleName" value="Forum"  overwrite="false"  />
 	   	<property name="subproject.name" value="DotNetNuke.${ModuleName}" />
 		<property name="module.dll" value="${bin.dir}/DotNetNuke.Modules.${ModuleName}.dll" />
-		<property name="fullversion" value="04.08.00" />
+		<property name="fullversion" value="04.09.00" />
 
 		<property name="debug" value="false" overwrite="false" />
 		<property name="config" value="debug" if="${debug}" />

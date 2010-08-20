@@ -54,7 +54,9 @@ Namespace DotNetNuke.Modules.Forum.UCP
 				chkIsTrusted.Checked = .IsTrusted
 				chkLockTrust.Checked = .LockTrust
 				chkIsBanned.Checked = .IsBanned
-				rdpLiftBan.SelectedDate = .LiftBanDate
+				If .LiftBanDate >= rdpLiftBan.MinDate Then
+					rdpLiftBan.SelectedDate = .LiftBanDate
+				End If
 			End With
 
 			If objConfig.EnableUserBanning And Security.IsForumAdmin Then
@@ -117,7 +119,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 					Dim ctlForumUser As New ForumUserController
 					ctlForumUser.Update(ProfileUser)
 
-					ForumUserController.ResetForumUser(.UserID, PortalId)
+					DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(.UserID, PortalId)
 					' We need an audit trail for banning users, check to see if the user was banned before this visit
 					If (Not PreviouslyBanned) And chkIsBanned.Checked Then
 						' Audit the user as being banned in moderation audit table

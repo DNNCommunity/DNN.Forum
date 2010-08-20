@@ -60,24 +60,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks>Added by Skeel</remarks>
 		Public Function TrackingForumGetAll(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As List(Of TrackingInfo)
-			Dim objThreads As New List(Of TrackingInfo)
-			Dim dr As IDataReader = Nothing
-			Try
-				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().TrackingForumGet(UserID, ModuleID, PageSize, PageIndex)
-				While dr.Read
-					Dim objTrackingInfo As TrackingInfo = FillTrackingInfo(dr)
-					objThreads.Add(objTrackingInfo)
-				End While
-				dr.NextResult()
-			Catch ex As Exception
-				LogException(ex)
-			Finally
-				If Not dr Is Nothing Then
-					dr.Close()
-				End If
-			End Try
-
-			Return objThreads
+			Return CBO.FillCollection(Of TrackingInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().TrackingForumGet(UserID, ModuleID, PageSize, PageIndex))
 		End Function
 
 		''' <summary>
@@ -90,73 +73,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks>Added by Skeel</remarks>
 		Public Function TrackingThreadGetAll(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As List(Of TrackingInfo)
-			Dim objThreads As New List(Of TrackingInfo)
-			Dim dr As IDataReader = Nothing
-			Try
-				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().TrackingThreadGet(UserID, ModuleID, PageSize, PageIndex)
-				While dr.Read
-					Dim objTrackingInfo As TrackingInfo = FillTrackingInfo(dr)
-					objThreads.Add(objTrackingInfo)
-				End While
-				dr.NextResult()
-			Catch ex As Exception
-				LogException(ex)
-			Finally
-				If Not dr Is Nothing Then
-					dr.Close()
-				End If
-			End Try
-
-			Return objThreads
-		End Function
-
-		''' <summary>
-		''' Custom Hydrator to fill the TrackingInfo object.
-		''' </summary>
-		''' <param name="dr">The datareader to populate the TrackingInfo object.</param>
-		''' <returns>A TrackingInfo object populated from a datareader.</returns>
-		''' <remarks>Added by Skeel</remarks>
-		Private Function FillTrackingInfo(ByVal dr As IDataReader) As TrackingInfo
-			Dim objThreadInfo As New TrackingInfo
-
-			Try
-				objThreadInfo.ForumID = Convert.ToInt32(Null.SetNull(dr("ForumID"), objThreadInfo.ForumID))
-			Catch
-			End Try
-			Try
-				objThreadInfo.LastApprovedPostCreatedDate = Convert.ToDateTime(Null.SetNull(dr("LastApprovedPostCreatedDate"), objThreadInfo.LastApprovedPostCreatedDate))
-			Catch
-			End Try
-			Try
-				objThreadInfo.LastApprovedPosterID = Convert.ToInt32(Null.SetNull(dr("LastApprovedPosterID"), objThreadInfo.LastApprovedPosterID))
-			Catch
-			End Try
-			Try
-				objThreadInfo.LastApprovedPostID = Convert.ToInt32(Null.SetNull(dr("LastApprovedPostID"), objThreadInfo.LastApprovedPostID))
-			Catch
-			End Try
-			Try
-				objThreadInfo.ModuleID = Convert.ToInt32(Null.SetNull(dr("ModuleID"), objThreadInfo.ModuleID))
-			Catch
-			End Try
-			Try
-				objThreadInfo.Subject = Convert.ToString(Null.SetNull(dr("Subject"), objThreadInfo.Subject))
-			Catch
-			End Try
-			Try
-				objThreadInfo.ThreadID = Convert.ToInt32(Null.SetNull(dr("ThreadID"), objThreadInfo.ThreadID))
-			Catch
-			End Try
-			Try
-				objThreadInfo.UserID = Convert.ToInt32(Null.SetNull(dr("UserID"), objThreadInfo.UserID))
-			Catch
-			End Try
-			Try
-				objThreadInfo.TotalRecords = Convert.ToInt32(Null.SetNull(dr("TotalRecords"), objThreadInfo.TotalRecords))
-			Catch
-			End Try
-
-			Return objThreadInfo
+			Return CBO.FillCollection(Of TrackingInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().TrackingThreadGet(UserID, ModuleID, PageSize, PageIndex))
 		End Function
 
 		''' <summary>
@@ -185,7 +102,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Sub
 
 	End Class
-
 
 	''' <summary>
 	''' Tracking info object.

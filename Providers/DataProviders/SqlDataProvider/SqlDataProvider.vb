@@ -325,7 +325,8 @@ Namespace DotNetNuke.Modules.Forum
 			Return SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Post_Move", PostID, oldThreadID, newThreadID, newForumID, oldForumID, ModID, SortOrder, Notes)
 		End Function
 		Public Overrides Function PostAdd(ByVal ParentPostID As Integer, ByVal ForumID As Integer, ByVal UserID As Integer, ByVal RemoteAddr As String, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal IsModerated As Boolean, ByVal ParseInfo As Integer) As Integer
-			Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "Post_Add", ParentPostID, ForumID, UserID, RemoteAddr, Subject, Body, IsPinned, GetNull(PinnedDate), IsClosed, PortalID, PollID, IsModerated, ParseInfo), Integer)
+			Dim postid As Integer = CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "Post_Add", ParentPostID, ForumID, UserID, RemoteAddr, Subject, Body, IsPinned, GetNull(PinnedDate), IsClosed, PortalID, PollID, IsModerated, ParseInfo), Integer)
+			Return postid
 		End Function
 
 		Public Overrides Function PostUpdate(ByVal ThreadID As Integer, ByVal PostID As Integer, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal UpdatedBy As Integer, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal ParseInfo As Integer) As Integer
@@ -427,9 +428,9 @@ Namespace DotNetNuke.Modules.Forum
 		Public Overrides Sub UserAdd(ByVal UserId As Integer, ByVal UserAvatar As Integer, ByVal Avatar As String, ByVal AdditionalAvatars As String, ByVal Signature As String, ByVal IsTrusted As Boolean, ByVal EnableOnlineStatus As Boolean, ByVal ThreadsPerPage As Integer, ByVal PostsPerPage As Integer, ByVal EnablePublicEmail As Boolean, ByVal PortalID As Integer)
 			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "User_Add", UserId, UserAvatar, Avatar, AdditionalAvatars, Signature, IsTrusted, EnableOnlineStatus, ThreadsPerPage, PostsPerPage, EnablePublicEmail, PortalID)
 		End Sub
-		' Requires db rename (to include _)
-		Public Overrides Sub UserViewUpdate(ByVal UserId As Integer, ByVal FlatView As Boolean, ByVal ViewDescending As Boolean)
-			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "UserViewUpdate", UserId, FlatView, ViewDescending)
+
+		Public Overrides Sub UpdateUsersView(ByVal UserID As Integer, ByVal PortalID As Integer, ByVal ViewDescending As Boolean)
+			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "User_UpdateView", UserID, PortalID, ViewDescending)
 		End Sub
 
 #Region "Banning"
@@ -452,33 +453,33 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-#Region "MemberList"
+		'#Region "MemberList"
 
-		Public Overrides Function MembersGetAll(ByVal PortalID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Members_GetAll", PortalID, PageIndex, PageSize), IDataReader)
-		End Function
+		'		Public Overrides Function MembersGetAll(ByVal PortalID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
+		'			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Members_GetAll", PortalID, PageIndex, PageSize), IDataReader)
+		'		End Function
 
-		Public Overrides Function MembersGetByUsername(ByVal PortalID As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Members_GetByUsername", PortalID, Filter, PageIndex, PageSize), IDataReader)
-		End Function
+		'		Public Overrides Function MembersGetByUsername(ByVal PortalID As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
+		'			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Members_GetByUsername", PortalID, Filter, PageIndex, PageSize), IDataReader)
+		'		End Function
 
-		Public Overrides Function MembersGetByDisplayName(ByVal PortalID As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Members_GetByDisplayName", PortalID, Filter, PageIndex, PageSize), IDataReader)
-		End Function
+		'		Public Overrides Function MembersGetByDisplayName(ByVal PortalID As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
+		'			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Members_GetByDisplayName", PortalID, Filter, PageIndex, PageSize), IDataReader)
+		'		End Function
 
-		Public Overrides Function MembersGetByEmail(ByVal PortalID As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Members_GetByEmail", PortalID, Filter, PageIndex, PageSize), IDataReader)
-		End Function
+		'		Public Overrides Function MembersGetByEmail(ByVal PortalID As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
+		'			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Members_GetByEmail", PortalID, Filter, PageIndex, PageSize), IDataReader)
+		'		End Function
 
-		Public Overrides Function MembersGetByProfileProp(ByVal PortalID As Integer, ByVal PropertyName As String, ByVal PropertyValue As String, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Members_GetByProfileProp", PortalID, PropertyName, PropertyValue, PageIndex, PageSize), IDataReader)
-		End Function
+		'		Public Overrides Function MembersGetByProfileProp(ByVal PortalID As Integer, ByVal PropertyName As String, ByVal PropertyValue As String, ByVal PageIndex As Integer, ByVal PageSize As Integer) As IDataReader
+		'			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Members_GetByProfileProp", PortalID, PropertyName, PropertyValue, PageIndex, PageSize), IDataReader)
+		'		End Function
 
-		Public Overrides Function MembersGetOnline(ByVal PortalID As Integer) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Members_GetOnline", PortalID), IDataReader)
-		End Function
+		'		Public Overrides Function MembersGetOnline(ByVal PortalID As Integer) As IDataReader
+		'			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Members_GetOnline", PortalID), IDataReader)
+		'		End Function
 
-#End Region
+		'#End Region
 
 #Region "Manage Users"
 

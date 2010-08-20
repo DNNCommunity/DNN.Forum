@@ -467,11 +467,21 @@ Namespace DotNetNuke.Modules.Forum
 					URLPostID = Integer.Parse(Request.QueryString("postid"))
 				End If
 
+				If dnncbThreadStatus.SelectedIndex > 0 Then
+					ThreadStatus = CType(dnncbThreadStatus.SelectedValue, Forum.ThreadStatus)
+				Else
+					ThreadStatus = Forum.ThreadStatus.NotSet
+				End If
+
 				Dim cntForum As New ForumController
 				Dim objForum As ForumInfo = cntForum.GetForumItemCache(Integer.Parse(ddlForum.SelectedItem.Value))
 				Dim objModSecurity As New Forum.ModuleSecurity(ModuleId, TabId, objForum.ForumID, CurrentForumUser.UserID)
 				Dim ThreadID As Integer = -1
 				Dim Terms As List(Of DotNetNuke.Entities.Content.Taxonomy.Term)
+
+				If objForum.AllowPolls Then
+					PollID = CType(txtPollID.Text, Integer)
+				End If
 
 				Select Case objAction
 					Case PostAction.Edit
@@ -485,7 +495,7 @@ Namespace DotNetNuke.Modules.Forum
 						ThreadID = objEditPost.ThreadID
 
 						' if polls are enabled, make sure db is properly setup
-						If objForum.AllowPolls And PollID > 0 Then
+						If ParentPostID = 0 And PollID > 0 Then
 							If Not HandlePoll(PollID, False) Then
 								Exit Sub
 							End If
@@ -501,7 +511,7 @@ Namespace DotNetNuke.Modules.Forum
 						' not sure this is correct (first line below)
 						ParentPostID = URLPostID
 
-						If objForum.AllowPolls And PollID > 0 Then
+						If PollID > 0 Then
 							If Not HandlePoll(PollID, False) Then
 								Return
 							End If
@@ -535,18 +545,8 @@ Namespace DotNetNuke.Modules.Forum
 						Terms = objThread.Terms
 				End Select
 
-				If ParentPostID = 0 And objForum.AllowPolls Then
-					PollID = CType(txtPollID.Text, Integer)
-				End If
-
 				If Not Request.ServerVariables("REMOTE_ADDR") Is Nothing Then
 					RemoteAddress = Request.ServerVariables("REMOTE_ADDR")
-				End If
-
-				If ddlThreadStatus.SelectedIndex > 0 Then
-					ThreadStatus = CType(ddlThreadStatus.SelectedValue, Forum.ThreadStatus)
-				Else
-					ThreadStatus = Forum.ThreadStatus.NotSet
 				End If
 
 				Dim cntPostConnect As New PostConnector
@@ -738,7 +738,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Protected Sub cmdAddAnswer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdAddAnswer.Click
 			lblInfo.Visible = False
-			ddlThreadStatus.Enabled = False
+			dnncbThreadStatus.Enabled = False
 			ApplyAnswerOrder()
 			AddPollAnswer()
 			txtAddAnswer.Text = String.Empty
@@ -750,8 +750,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
 		''' <remarks></remarks>
-		Protected Sub ddlThreadStatus_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ddlThreadStatus.SelectedIndexChanged
-			If ddlThreadStatus.SelectedValue = CInt(ThreadStatus.Poll).ToString() Then
+		Protected Sub dnncbThreadStatus_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles dnncbThreadStatus.SelectedIndexChanged
+			If dnncbThreadStatus.SelectedValue = CInt(ThreadStatus.Poll).ToString() Then
 				tblPoll.Visible = True
 			Else
 				tblPoll.Visible = False
@@ -1071,8 +1071,8 @@ Namespace DotNetNuke.Modules.Forum
 				boolContinue = False
 			Else
 				' no answers for poll, delete it (first make sure thread status is not set to poll)
-				If ddlThreadStatus.SelectedValue = CInt(ThreadStatus.Poll).ToString() Then
-					ddlThreadStatus.SelectedValue = CInt(ThreadStatus.NotSet).ToString()
+				If dnncbThreadStatus.SelectedValue = CInt(ThreadStatus.Poll).ToString() Then
+					dnncbThreadStatus.SelectedValue = CInt(ThreadStatus.NotSet).ToString()
 				End If
 				' answers removed, delete poll
 				Dim cntPoll As New PollController
@@ -1099,7 +1099,7 @@ Namespace DotNetNuke.Modules.Forum
 				Next
 			End If
 
-			ddlThreadStatus.SelectedValue = CInt(ThreadStatus.NotSet).ToString()
+			dnncbThreadStatus.SelectedValue = CInt(ThreadStatus.NotSet).ToString()
 		End Sub
 
 		''' <summary>
@@ -1233,16 +1233,16 @@ Namespace DotNetNuke.Modules.Forum
 
 						If objConfig.EnableThreadStatus And objParentPost.ParentPostID = 0 And objForum.EnableForumsThreadStatus Then
 							rowThreadStatus.Visible = True
-							ddlThreadStatus.SelectedIndex = CType(objParentPost.ParentThread.ThreadStatus, Integer)
+							dnncbThreadStatus.SelectedIndex = CType(objParentPost.ParentThread.ThreadStatus, Integer)
 						Else
 							If objForum.AllowPolls And objParentPost.ParentPostID = 0 Then
-								ddlThreadStatus.SelectedIndex = CType(objParentPost.ParentThread.ThreadStatus, Integer)
+								dnncbThreadStatus.SelectedIndex = CType(objParentPost.ParentThread.ThreadStatus, Integer)
 							End If
 							rowThreadStatus.Visible = False
 						End If
 
 						' handle if editing first post, show polling options if enabled
-						If objForum.AllowPolls And objParentPost.ParentPostID = 0 And ddlThreadStatus.SelectedValue = CInt(ThreadStatus.Poll).ToString() Then
+						If objForum.AllowPolls And objParentPost.ParentPostID = 0 And dnncbThreadStatus.SelectedValue = CInt(ThreadStatus.Poll).ToString() Then
 							tblPoll.Visible = True
 							txtPollID.Text = objParentPost.ParentThread.PollID.ToString()
 							Dim cntPoll As New PollController
@@ -1294,27 +1294,21 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <remarks></remarks>
 		Private Sub BindThreadStatus()
-			ddlThreadStatus.Items.Clear()
+			dnncbThreadStatus.Items.Clear()
 
-			ddlThreadStatus.Items.Insert(0, New ListItem(Localization.GetString("NoneSpecified", LocalResourceFile), "0"))
-			ddlThreadStatus.Items.Insert(1, New ListItem(Localization.GetString("Unanswered", LocalResourceFile), "1"))
-			ddlThreadStatus.Items.Insert(2, New ListItem(Localization.GetString("Answered", LocalResourceFile), "2"))
-			ddlThreadStatus.Items.Insert(3, New ListItem(Localization.GetString("Informative", LocalResourceFile), "3"))
+			dnncbThreadStatus.Items.Insert(0, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("NoneSpecified", LocalResourceFile), "0"))
+			dnncbThreadStatus.Items.Insert(1, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Unanswered", LocalResourceFile), "1"))
+			dnncbThreadStatus.Items.Insert(2, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Answered", LocalResourceFile), "2"))
+			dnncbThreadStatus.Items.Insert(3, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Informative", LocalResourceFile), "3"))
 
 			'polling changes
 			Try
-				Dim ForumID As Integer
-
-				If Not Request.QueryString("forumid") Is Nothing Then
-					ForumID = CInt(Request.QueryString("forumid"))
-				End If
-
 				Dim cntForum As New ForumController
 				Dim objForum As ForumInfo = cntForum.GetForumItemCache(ForumID)
 
 				If objForum.AllowPolls Then
-					Dim statusEntry As New ListItem(Localization.GetString("Poll", objConfig.SharedResourceFile), CInt(ThreadStatus.Poll).ToString())
-					ddlThreadStatus.Items.Add(statusEntry)
+					Dim statusEntry As New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Poll", objConfig.SharedResourceFile), CInt(ThreadStatus.Poll).ToString())
+					dnncbThreadStatus.Items.Add(statusEntry)
 				End If
 			Catch ex As Exception
 

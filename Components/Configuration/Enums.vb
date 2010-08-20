@@ -549,6 +549,7 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks>Currently only handles a few options, should expand later. Not stored anywhere in db for lookup.</remarks>
 	Public Enum ThreadStatus
+		None = -1
 		''' <summary>
 		''' No set thread status.
 		''' </summary>

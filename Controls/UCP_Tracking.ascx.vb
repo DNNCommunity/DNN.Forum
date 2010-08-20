@@ -189,7 +189,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 				hl.Text = dataItem.Subject
 			End If
 
-			hl.NavigateUrl = Utilities.Links.ContainerViewThreadLink(TabId, ModuleId, dataItem.ThreadID)
+			hl.NavigateUrl = Utilities.Links.ContainerViewThreadLink(TabId, dataItem.ForumID, dataItem.ThreadID)
 			img = CType(e.Item.FindControl("imgStatus"), Image)
 			' switch view status and icon depending on read/unread
 			If HasNewPosts(UserId, dataItem.ThreadID) Then

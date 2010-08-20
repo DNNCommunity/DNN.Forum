@@ -29,9 +29,6 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	''' <history>
-	''' 	[cpaterra]	12/4/2005	Created
-	''' </history>
 	Public Class ForumUserController
 
 #Region "Members"
@@ -348,12 +345,13 @@ Namespace DotNetNuke.Modules.Forum
 		''' <summary>
 		''' Not Implemented
 		''' </summary>
-		''' <param name="UserId"></param>
-		''' <param name="FlatView"></param>
+		''' <param name="UserID"></param>
+		''' <param name="PortalID"></param>
 		''' <param name="ViewDescending"></param>
 		''' <remarks></remarks>
-		Public Sub UserViewUpdate(ByVal UserId As Integer, ByVal FlatView As Boolean, ByVal ViewDescending As Boolean)
-			DotNetNuke.Modules.Forum.DataProvider.Instance().UserViewUpdate(UserId, FlatView, ViewDescending)
+		Public Sub UpdateUsersView(ByVal UserID As Integer, ByVal PortalID As Integer, ByVal ViewDescending As Boolean)
+			DotNetNuke.Modules.Forum.DataProvider.Instance().UpdateUsersView(UserID, PortalID, ViewDescending)
+			DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(UserID, PortalID)
 		End Sub
 
 #Region "Not Implemented"
@@ -381,203 +379,203 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "MemberList"
 
-		''' <summary>
-		''' Gets forum users for member directory by username (all w/ setting enabled)
-		''' </summary>
-		''' <param name="PortalId"></param>
-		''' <param name="Filter"></param>
-		''' <param name="PageIndex"></param>
-		''' <param name="PageSize"></param>
-		''' <param name="TotalRecords"></param>
-		''' <param name="ModuleID"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Function MembersGetByUsername(ByVal PortalId As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUserInfo)
-			Dim objUsers As New List(Of ForumUserInfo)
-			Dim dr As IDataReader = Nothing
+		' ''' <summary>
+		' ''' Gets forum users for member directory by username (all w/ setting enabled)
+		' ''' </summary>
+		' ''' <param name="PortalId"></param>
+		' ''' <param name="Filter"></param>
+		' ''' <param name="PageIndex"></param>
+		' ''' <param name="PageSize"></param>
+		' ''' <param name="TotalRecords"></param>
+		' ''' <param name="ModuleID"></param>
+		' ''' <returns></returns>
+		' ''' <remarks></remarks>
+		'Public Function MembersGetByUsername(ByVal PortalId As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUserInfo)
+		'	Dim objUsers As New List(Of ForumUserInfo)
+		'	Dim dr As IDataReader = Nothing
 
-			Try
-				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().MembersGetByUsername(PortalId, Filter, PageIndex, PageSize)
-				While dr.Read
-					Dim objUserInfo As ForumUserInfo = FillForumUserInfo(dr, PortalId, ModuleID)
-					objUsers.Add(objUserInfo)
-				End While
-				dr.NextResult()
-			Catch exc As Exception
-				LogException(exc)
-			Finally
-				If Not dr Is Nothing Then
-					dr.Close()
-				End If
-			End Try
+		'	Try
+		'		dr = DotNetNuke.Modules.Forum.DataProvider.Instance().MembersGetByUsername(PortalId, Filter, PageIndex, PageSize)
+		'		While dr.Read
+		'			Dim objUserInfo As ForumUserInfo = FillForumUserInfo(dr, PortalId, ModuleID)
+		'			objUsers.Add(objUserInfo)
+		'		End While
+		'		dr.NextResult()
+		'	Catch exc As Exception
+		'		LogException(exc)
+		'	Finally
+		'		If Not dr Is Nothing Then
+		'			dr.Close()
+		'		End If
+		'	End Try
 
-			Return objUsers
-		End Function
+		'	Return objUsers
+		'End Function
 
-		''' <summary>
-		''' Gets forum users for member directory by displayname (all w/ setting enabled)
-		''' </summary>
-		''' <param name="PortalId"></param>
-		''' <param name="Filter"></param>
-		''' <param name="PageIndex"></param>
-		''' <param name="PageSize"></param>
-		''' <param name="TotalRecords"></param>
-		''' <param name="ModuleID"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Function MembersGetByDisplayName(ByVal PortalId As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUserInfo)
-			Dim objUsers As New List(Of ForumUserInfo)
-			Dim dr As IDataReader = Nothing
+		' ''' <summary>
+		' ''' Gets forum users for member directory by displayname (all w/ setting enabled)
+		' ''' </summary>
+		' ''' <param name="PortalId"></param>
+		' ''' <param name="Filter"></param>
+		' ''' <param name="PageIndex"></param>
+		' ''' <param name="PageSize"></param>
+		' ''' <param name="TotalRecords"></param>
+		' ''' <param name="ModuleID"></param>
+		' ''' <returns></returns>
+		' ''' <remarks></remarks>
+		'Public Function MembersGetByDisplayName(ByVal PortalId As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUserInfo)
+		'	Dim objUsers As New List(Of ForumUserInfo)
+		'	Dim dr As IDataReader = Nothing
 
-			Try
-				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().MembersGetByDisplayName(PortalId, Filter, PageIndex, PageSize)
-				While dr.Read
-					Dim objUserInfo As ForumUserInfo = FillForumUserInfo(dr, PortalId, ModuleID)
-					objUsers.Add(objUserInfo)
-				End While
-				dr.NextResult()
-			Catch exc As Exception
-				LogException(exc)
-			Finally
-				If Not dr Is Nothing Then
-					dr.Close()
-				End If
-			End Try
+		'	Try
+		'		dr = DotNetNuke.Modules.Forum.DataProvider.Instance().MembersGetByDisplayName(PortalId, Filter, PageIndex, PageSize)
+		'		While dr.Read
+		'			Dim objUserInfo As ForumUserInfo = FillForumUserInfo(dr, PortalId, ModuleID)
+		'			objUsers.Add(objUserInfo)
+		'		End While
+		'		dr.NextResult()
+		'	Catch exc As Exception
+		'		LogException(exc)
+		'	Finally
+		'		If Not dr Is Nothing Then
+		'			dr.Close()
+		'		End If
+		'	End Try
 
-			Return objUsers
-		End Function
+		'	Return objUsers
+		'End Function
 
-		''' <summary>
-		''' Gets forum users for member directory (all w/ setting enabled)
-		''' </summary>
-		''' <param name="PortalId"></param>
-		''' <param name="PageIndex"></param>
-		''' <param name="PageSize"></param>
-		''' <param name="TotalRecords"></param>
-		''' <param name="ModuleID"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Function MembersGetAll(ByVal PortalId As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUserInfo)
-			Dim objUsers As New List(Of ForumUserInfo)
-			Dim dr As IDataReader = Nothing
+		' ''' <summary>
+		' ''' Gets forum users for member directory (all w/ setting enabled)
+		' ''' </summary>
+		' ''' <param name="PortalId"></param>
+		' ''' <param name="PageIndex"></param>
+		' ''' <param name="PageSize"></param>
+		' ''' <param name="TotalRecords"></param>
+		' ''' <param name="ModuleID"></param>
+		' ''' <returns></returns>
+		' ''' <remarks></remarks>
+		'Public Function MembersGetAll(ByVal PortalId As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUserInfo)
+		'	Dim objUsers As New List(Of ForumUserInfo)
+		'	Dim dr As IDataReader = Nothing
 
-			Try
-				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().MembersGetAll(PortalId, PageIndex, PageSize)
-				While dr.Read
-					Dim objUserInfo As ForumUserInfo = FillForumUserInfo(dr, PortalId, ModuleID)
-					objUsers.Add(objUserInfo)
-				End While
-				dr.NextResult()
-			Catch exc As Exception
-				LogException(exc)
-			Finally
-				If Not dr Is Nothing Then
-					dr.Close()
-				End If
-			End Try
+		'	Try
+		'		dr = DotNetNuke.Modules.Forum.DataProvider.Instance().MembersGetAll(PortalId, PageIndex, PageSize)
+		'		While dr.Read
+		'			Dim objUserInfo As ForumUserInfo = FillForumUserInfo(dr, PortalId, ModuleID)
+		'			objUsers.Add(objUserInfo)
+		'		End While
+		'		dr.NextResult()
+		'	Catch exc As Exception
+		'		LogException(exc)
+		'	Finally
+		'		If Not dr Is Nothing Then
+		'			dr.Close()
+		'		End If
+		'	End Try
 
-			Return objUsers
-		End Function
+		'	Return objUsers
+		'End Function
 
-		''' <summary>
-		''' Gets forum users for member directory by email address (all w/ setting enabled)
-		''' </summary>
-		''' <param name="PortalId"></param>
-		''' <param name="Filter"></param>
-		''' <param name="PageIndex"></param>
-		''' <param name="PageSize"></param>
-		''' <param name="TotalRecords"></param>
-		''' <param name="ModuleID"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Function MembersGetByEmail(ByVal PortalId As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUserInfo)
-			Dim objUsers As New List(Of ForumUserInfo)
-			Dim dr As IDataReader = Nothing
+		' ''' <summary>
+		' ''' Gets forum users for member directory by email address (all w/ setting enabled)
+		' ''' </summary>
+		' ''' <param name="PortalId"></param>
+		' ''' <param name="Filter"></param>
+		' ''' <param name="PageIndex"></param>
+		' ''' <param name="PageSize"></param>
+		' ''' <param name="TotalRecords"></param>
+		' ''' <param name="ModuleID"></param>
+		' ''' <returns></returns>
+		' ''' <remarks></remarks>
+		'Public Function MembersGetByEmail(ByVal PortalId As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUserInfo)
+		'	Dim objUsers As New List(Of ForumUserInfo)
+		'	Dim dr As IDataReader = Nothing
 
-			Try
-				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().MembersGetByEmail(PortalId, Filter, PageIndex, PageSize)
-				While dr.Read
-					Dim objUserInfo As ForumUserInfo = FillForumUserInfo(dr, PortalId, ModuleID)
-					objUsers.Add(objUserInfo)
-				End While
-				dr.NextResult()
-			Catch exc As Exception
-				LogException(exc)
-			Finally
-				If Not dr Is Nothing Then
-					dr.Close()
-				End If
-			End Try
+		'	Try
+		'		dr = DotNetNuke.Modules.Forum.DataProvider.Instance().MembersGetByEmail(PortalId, Filter, PageIndex, PageSize)
+		'		While dr.Read
+		'			Dim objUserInfo As ForumUserInfo = FillForumUserInfo(dr, PortalId, ModuleID)
+		'			objUsers.Add(objUserInfo)
+		'		End While
+		'		dr.NextResult()
+		'	Catch exc As Exception
+		'		LogException(exc)
+		'	Finally
+		'		If Not dr Is Nothing Then
+		'			dr.Close()
+		'		End If
+		'	End Try
 
-			Return objUsers
-		End Function
+		'	Return objUsers
+		'End Function
 
-		''' <summary>
-		''' Gets forum users for member directory by profile property (all w/ setting enabled)
-		''' </summary>
-		''' <param name="PortalId"></param>
-		''' <param name="PropertyName"></param>
-		''' <param name="PropertyValue"></param>
-		''' <param name="PageIndex"></param>
-		''' <param name="PageSize"></param>
-		''' <param name="TotalRecords"></param>
-		''' <param name="ModuleID"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Function MembersGetByProfileProp(ByVal PortalId As Integer, ByVal PropertyName As String, ByVal PropertyValue As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUserInfo)
-			Dim objUsers As New List(Of ForumUserInfo)
-			Dim dr As IDataReader = Nothing
+		' ''' <summary>
+		' ''' Gets forum users for member directory by profile property (all w/ setting enabled)
+		' ''' </summary>
+		' ''' <param name="PortalId"></param>
+		' ''' <param name="PropertyName"></param>
+		' ''' <param name="PropertyValue"></param>
+		' ''' <param name="PageIndex"></param>
+		' ''' <param name="PageSize"></param>
+		' ''' <param name="TotalRecords"></param>
+		' ''' <param name="ModuleID"></param>
+		' ''' <returns></returns>
+		' ''' <remarks></remarks>
+		'Public Function MembersGetByProfileProp(ByVal PortalId As Integer, ByVal PropertyName As String, ByVal PropertyValue As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUserInfo)
+		'	Dim objUsers As New List(Of ForumUserInfo)
+		'	Dim dr As IDataReader = Nothing
 
-			Try
-				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().MembersGetByProfileProp(PortalId, PropertyName, PropertyValue, PageIndex, PageSize)
-				While dr.Read
-					Dim objUserInfo As ForumUserInfo = FillForumUserInfo(dr, PortalId, ModuleID)
-					objUsers.Add(objUserInfo)
-				End While
-				dr.NextResult()
-			Catch exc As Exception
-				LogException(exc)
-			Finally
-				If Not dr Is Nothing Then
-					dr.Close()
-				End If
-			End Try
+		'	Try
+		'		dr = DotNetNuke.Modules.Forum.DataProvider.Instance().MembersGetByProfileProp(PortalId, PropertyName, PropertyValue, PageIndex, PageSize)
+		'		While dr.Read
+		'			Dim objUserInfo As ForumUserInfo = FillForumUserInfo(dr, PortalId, ModuleID)
+		'			objUsers.Add(objUserInfo)
+		'		End While
+		'		dr.NextResult()
+		'	Catch exc As Exception
+		'		LogException(exc)
+		'	Finally
+		'		If Not dr Is Nothing Then
+		'			dr.Close()
+		'		End If
+		'	End Try
 
-			Return objUsers
-		End Function
+		'	Return objUsers
+		'End Function
 
-		''' <summary>
-		''' Gets all the forum users currently online for the member directory (all w/ setting enabled)
-		''' </summary>
-		''' <param name="PortalId"></param>
-		''' <param name="Filter"></param>
-		''' <param name="PageIndex"></param>
-		''' <param name="PageSize"></param>
-		''' <param name="TotalRecords"></param>
-		''' <param name="ModuleID"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Function MembersGetOnline(ByVal PortalId As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUserInfo)
-			Dim objUsers As New List(Of ForumUserInfo)
-			Dim dr As IDataReader = Nothing
+		' ''' <summary>
+		' ''' Gets all the forum users currently online for the member directory (all w/ setting enabled)
+		' ''' </summary>
+		' ''' <param name="PortalId"></param>
+		' ''' <param name="Filter"></param>
+		' ''' <param name="PageIndex"></param>
+		' ''' <param name="PageSize"></param>
+		' ''' <param name="TotalRecords"></param>
+		' ''' <param name="ModuleID"></param>
+		' ''' <returns></returns>
+		' ''' <remarks></remarks>
+		'Public Function MembersGetOnline(ByVal PortalId As Integer, ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer, ByVal ModuleID As Integer) As List(Of ForumUserInfo)
+		'	Dim objUsers As New List(Of ForumUserInfo)
+		'	Dim dr As IDataReader = Nothing
 
-			Try
-				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().MembersGetOnline(PortalId)
-				While dr.Read
-					Dim objUserInfo As ForumUserInfo = FillForumUserInfo(dr, PortalId, ModuleID)
-					objUsers.Add(objUserInfo)
-				End While
-				dr.NextResult()
-			Catch exc As Exception
-				LogException(exc)
-			Finally
-				If Not dr Is Nothing Then
-					dr.Close()
-				End If
-			End Try
+		'	Try
+		'		dr = DotNetNuke.Modules.Forum.DataProvider.Instance().MembersGetOnline(PortalId)
+		'		While dr.Read
+		'			Dim objUserInfo As ForumUserInfo = FillForumUserInfo(dr, PortalId, ModuleID)
+		'			objUsers.Add(objUserInfo)
+		'		End While
+		'		dr.NextResult()
+		'	Catch exc As Exception
+		'		LogException(exc)
+		'	Finally
+		'		If Not dr Is Nothing Then
+		'			dr.Close()
+		'		End If
+		'	End Try
 
-			Return objUsers
-		End Function
+		'	Return objUsers
+		'End Function
 
 #End Region
 
@@ -806,7 +804,7 @@ Namespace DotNetNuke.Modules.Forum
 			fUser.EnableSelfNotifications = False
 
 			cntForumUser.UserAdd(fUser)
-			ResetForumUser(UserID, PortalID)
+			DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(UserID, PortalID)
 
 			Return fUser
 		End Function

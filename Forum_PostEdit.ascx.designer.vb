@@ -249,13 +249,13 @@ Namespace DotNetNuke.Modules.Forum
 		Protected WithEvents plThreadStatus As Global.DotNetNuke.UI.UserControls.LabelControl
 
 		'''<summary>
-		'''ddlThreadStatus control.
+		'''dnncbThreadStatus control.
 		'''</summary>
 		'''<remarks>
 		'''Auto-generated field.
 		'''To modify move field declaration from designer file to code-behind file.
 		'''</remarks>
-		Protected WithEvents ddlThreadStatus As Global.System.Web.UI.WebControls.DropDownList
+		Protected WithEvents dnncbThreadStatus As Global.DotNetNuke.Web.UI.WebControls.DnnComboBox
 
 		'''<summary>
 		'''rowTagging control.

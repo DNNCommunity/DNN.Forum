@@ -118,16 +118,16 @@ Namespace DotNetNuke.Modules.Forum
 
 			If read Then
 				Dim threadController As New ThreadController
-				Dim forumThreads As List(Of ThreadInfo) = threadController.GetByForum(userID, forumID)
-				For Each forumThread As ThreadInfo In forumThreads
+				Dim colThreads As List(Of ThreadInfo) = threadController.GetByForum(userID, forumID)
+				For Each objThread As ThreadInfo In colThreads
 					Dim userThread As New UserThreadsInfo
 					With userThread
 						.UserID = userID
-						.ThreadID = forumThread.ThreadID
+						.ThreadID = objThread.ThreadID
 						.LastVisitDate = Now
 					End With
 					Add(userThread)
-					ResetUserThreadReadCache(userID, forumThread.ThreadID)
+					ResetUserThreadReadCache(userID, objThread.ThreadID)
 				Next
 
 				Dim userForum As New UserForumsInfo

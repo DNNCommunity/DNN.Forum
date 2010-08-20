@@ -437,11 +437,8 @@ Namespace DotNetNuke.Modules.Forum
 					ctlPost.PostUpdate(ThreadID, newPostID, PostSubject, PostBody, IsPinned, _PinnedDate, IsClosed, objForumUser.UserID, PortalID, PollID, objForum.ParentID, ParsingType)
 					' If thread status is enabled and there is an edit on the first post in a thread, make sure we set the thread status
 					If objConfig.EnableThreadStatus And ParentPostID = 0 Then
-						If Status > 0 Then
-							Dim ctlThread As New ThreadController
-							'NOTE: CP - COMEBACK: It may be possible for a thread status to be edited on the original post, for which we should send an update if it is a moderator.
-							ctlThread.ChangeThreadStatus(ThreadID, objForumUser.UserID, Status, 0, -1, PortalID)
-						End If
+						Dim ctlThread As New ThreadController
+						ctlThread.ChangeThreadStatus(ThreadID, objForumUser.UserID, Status, 0, -1, PortalID)
 						' even if thread status is off, user may be allowed to add a poll which means we need to set the status to "Poll"
 					ElseIf objForum.AllowPolls And PollID > 0 And ParentPostID = 0 Then
 						Dim ctlThread As New ThreadController
@@ -478,7 +475,8 @@ Namespace DotNetNuke.Modules.Forum
 			'	Forum.Components.Utilities.Caching.UpdateForumCache(objForum.ParentID, objForum.GroupID, objConfig.ModuleID, objForum.ParentID)
 			'End If
 
-			ForumUserController.ResetForumUser(objForumUser.UserID, PortalID)
+			UserThreadsController.ResetUserThreadReadCache(objForumUser.UserID, ThreadID)
+			DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(objForumUser.UserID, PortalID)
 
 			' Obtain a new instance of postinfo 
 			Dim cntPost As New PostController()

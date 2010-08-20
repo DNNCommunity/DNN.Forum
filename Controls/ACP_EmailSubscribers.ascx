@@ -13,7 +13,6 @@
 				<div>
 					<div align="center">
 						<telerik:RadComboBox ID="rcbForums" runat="server" Width="250" DataTextField="Name" DataValueField="ForumID" AutoPostBack="true" /> <br /><br />
-						<asp:TextBox ID="txtThreadID" runat="server" Width="50" Visible="false" />
 					</div>
 					<telerik:RadGrid ID="rgForums" runat="server" AutoGenerateColumns="false" AllowSorting="true" AllowPaging="true" PageSize="20" >
 						<MasterTableView DataKeyNames="ForumID">
