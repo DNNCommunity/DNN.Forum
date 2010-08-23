@@ -209,7 +209,6 @@ Namespace DotNetNuke.Modules.Forum
 						lbl = CType(e.Item.FindControl("lblQuestion"), System.Web.UI.WebControls.Label)
 						lbl.Text = objPoll.Question
 
-
 						rblst = CType(e.Item.FindControl("rblstAnswers"), System.Web.UI.WebControls.RadioButtonList)
 						rblst.DataTextField = "Answer"
 						rblst.DataValueField = "AnswerID"
@@ -453,6 +452,16 @@ Namespace DotNetNuke.Modules.Forum
 		End Function
 
 		''' <summary>
+		''' Provides a link to the user control panel's profile section for moderators. 
+		''' </summary>
+		''' <param name="UserID"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Protected Function EditProfileLink(ByVal UserID As Integer) As String
+			Return Utilities.Links.UCP_AdminLinks(TabId, ModuleId, UserID, UserAjaxControl.Profile)
+		End Function
+
+		''' <summary>
 		''' Turns link visibility on/off - deprecated
 		''' </summary>
 		''' <param name="ParentPostId"></param>
@@ -491,6 +500,15 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Protected Function SpacerImage() As String
 			Return objConfig.GetThemeImageURL("alt_headfoot_height.gif")
+		End Function
+
+		''' <summary>
+		''' Sets the image path for the edit profile image.
+		''' </summary>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Protected Function EditImage() As String
+			Return objConfig.GetThemeImageURL("s_edit." + objConfig.ImageExtension)
 		End Function
 
 #End Region

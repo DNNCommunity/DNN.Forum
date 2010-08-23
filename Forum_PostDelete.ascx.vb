@@ -20,6 +20,7 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Entities.Content
 Imports DotNetNuke.Modules.Forum.Utilities
 
 Namespace DotNetNuke.Modules.Forum
@@ -65,7 +66,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="e"></param>
 		''' <remarks></remarks>
 		Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-			' Ajax
 			If DotNetNuke.Framework.AJAX.IsInstalled Then
 				DotNetNuke.Framework.AJAX.RegisterScriptManager()
 				DotNetNuke.Framework.AJAX.RegisterPostBackControl(cmdCancel)
@@ -87,7 +87,9 @@ Namespace DotNetNuke.Modules.Forum
 		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 			Try
 				Dim PostID As Integer
-				Dim ForumID As Integer
+				If Not Request.UrlReferrer Is Nothing Then
+					ViewState("UrlReferrer") = Request.UrlReferrer.ToString()
+				End If
 
 				If Not Request.QueryString("postid") Is Nothing Then
 					Dim objPost As New PostInfo
@@ -95,8 +97,12 @@ Namespace DotNetNuke.Modules.Forum
 
 					PostID = Int32.Parse(Request.QueryString("postid"))
 					objPost = cntPost.GetPostInfo(PostID, PortalId)
-					ForumID = objPost.ForumID
-					_IsThreadDelete = False
+
+					If objPost Is Nothing Then
+						HttpContext.Current.Response.Redirect(GetReturnURL(-1, ForumID), True)
+					Else
+						_IsThreadDelete = False
+					End If
 				Else
 					If Not Request.QueryString("threadid") Is Nothing Then
 						Dim ThreadID As Integer
@@ -105,10 +111,13 @@ Namespace DotNetNuke.Modules.Forum
 						ThreadID = Int32.Parse(Request.QueryString("threadid"))
 						Dim cntThread As New ThreadController()
 						objThread = cntThread.GetThread(ThreadID)
-						ForumID = objThread.ForumID
-						' we will get info for first post, since we are deleting the thread
-						PostID = ThreadID
-						_IsThreadDelete = True
+
+						If objThread Is Nothing Then
+							HttpContext.Current.Response.Redirect(GetReturnURL(-1, ForumID), True)
+						Else
+							PostID = ThreadID
+							_IsThreadDelete = True
+						End If
 					End If
 				End If
 
@@ -137,10 +146,6 @@ Namespace DotNetNuke.Modules.Forum
 						Else
 							cmdDelete.Attributes.Add("onClick", "javascript:return confirm('" & Localization.GetString("DeleteItem") & "');")
 						End If
-
-						If Not Request.UrlReferrer Is Nothing Then
-							ViewState("UrlReferrer") = Request.UrlReferrer.ToString()
-						End If
 					End If
 				Else
 					HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
@@ -167,7 +172,6 @@ Namespace DotNetNuke.Modules.Forum
 					If _IsThreadDelete Then
 						Dim cntThread As New ThreadController
 						Dim objThread As New ThreadInfo
-						Dim ForumID As Integer
 
 						' Get most recent info on this thread
 						If Not Request.QueryString("threadid") Is Nothing Then
@@ -175,41 +179,37 @@ Namespace DotNetNuke.Modules.Forum
 
 							ThreadID = Int32.Parse(Request.QueryString("threadid"))
 							objThread = cntThread.GetThread(ThreadID)
-							ForumID = objThread.ForumID
+
+							If objThread Is Nothing Then
+								Response.Redirect(GetReturnURL(-1, ForumID), True)
+							End If
 						Else
 							Exit Sub
 						End If
 
 						Dim Notes As String = txtReason.Text
-						'Dim ProfileUrl As String = Utils.MySettingsLink(TabId, ModuleId)
 						Dim ProfileUrl As String = Utilities.Links.UCP_UserLinks(TabId, ModuleId, UserAjaxControl.Tracking, PortalSettings)
 						Dim url As String = Utilities.Links.ContainerViewForumLink(TabId, ForumID, False)
 
 						If objConfig.MailNotification Then
-							'If chkEmailUsers.Checked Then
-							'	' first send notice to the user
-							'	Utils.SendForumMail(objThread.ThreadID, url, ForumEmailType.UserPostDeleted, Notes, mForumConfig, ProfileUrl, PortalId)
-							'End If
+							If chkEmailUsers.Checked Then
+								' first send notice to the user
+								' CP - NOTE: We need to add a user thread deleted template and handle in parsing
+								Utilities.ForumUtils.SendForumMail(objThread.ThreadID, url, ForumEmailType.UserPostDeleted, Notes, objConfig, ProfileUrl, PortalId)
+							End If
 							' now send notice to the forum moderators
 							Utilities.ForumUtils.SendForumMail(objThread.ThreadID, url, ForumEmailType.ModeratorPostDeleted, Notes, objConfig, ProfileUrl, PortalId)
 						End If
 
 						' Delete thread (SEND MAIL BEFORE DELETE, we need the thread still in the db)
-						cntThread.DeleteThread(objThread.ThreadID, PortalId, Notes)
-
-						Forum.Components.Utilities.Caching.UpdatePostCache(objThread.ThreadID, objThread.ThreadID, objThread.ForumID, objThread.ContainingForum.GroupID, ModuleId, objThread.ContainingForum.ParentID)
-
-						'' We need to clear all users who posted in the thread. (Otherwise cached user objects will not reflect proper post count) KNOWN ISSUE
-						'ForumUserController.ResetForumUser(AuthorID, PortalId)
+						cntThread.DeleteThread(objThread, PortalId, Notes)
 
 						' have to handle that the post we just removed deleted the entire thread
 						Response.Redirect(GetReturnURL(-1, ForumID), True)
 					Else
 						Dim cntPost As New PostController
 						Dim objPost As New PostInfo
-						Dim ForumID As Integer
 						Dim ThreadID As Integer
-						Dim AuthorID As Integer
 
 						' Get most recent info on this post
 						If Not Request.QueryString("postid") Is Nothing Then
@@ -217,16 +217,17 @@ Namespace DotNetNuke.Modules.Forum
 
 							PostID = Int32.Parse(Request.QueryString("postid"))
 							objPost = cntPost.GetPostInfo(PostID, PortalId)
-							ForumID = objPost.ForumID
-							ThreadID = objPost.ThreadID
-							AuthorID = objPost.Author.UserID
+
+							If objPost Is Nothing Then
+								Response.Redirect(GetReturnURL(-1, ForumID), True)
+							Else
+								ThreadID = objPost.ThreadID
+							End If
 						Else
-							' we have some type of issue if we are here and no postid in url
 							Exit Sub
 						End If
 
 						Dim Notes As String = txtReason.Text
-						'Dim ProfileUrl As String = Utils.MySettingsLink(TabId, ModuleId)
 						Dim ProfileUrl As String = Utilities.Links.UCP_UserLinks(TabId, ModuleId, UserAjaxControl.Tracking, PortalSettings)
 						Dim url As String = Utilities.Links.ContainerViewForumLink(TabId, ForumID, False)
 
@@ -238,15 +239,25 @@ Namespace DotNetNuke.Modules.Forum
 							' now send notice to the forum moderators
 							Utilities.ForumUtils.SendForumMail(objPost.PostID, url, ForumEmailType.ModeratorPostDeleted, Notes, objConfig, ProfileUrl, PortalId)
 						End If
-						' CP - TEMP Hack
-						If objPost.PostID = objPost.ThreadID Then
-							_IsThreadDelete = True
-						End If
-						' Delete post (SEND MAIL BEFORE DELETE, we need the post still in the db)
-						cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objPost.ParentThread.ContainingForum.GroupID, False, objPost.ParentThread.ContainingForum.ParentID)
-						Forum.Components.Utilities.Caching.UpdatePostCache(objPost.PostID, ThreadID, ForumID, objPost.ParentThread.ContainingForum.GroupID, ModuleId, objPost.ParentThread.ContainingForum.ParentID)
-						DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(AuthorID, PortalId)
 
+						If objPost.PostID = objPost.ThreadID Then
+							Dim cntThread As New ThreadController
+							Dim objThread As ThreadInfo = cntThread.GetThread(objPost.ThreadID)
+
+							If objThread IsNot Nothing Then
+								' Delete post (SEND MAIL BEFORE DELETE, we need the post still in the db)
+								Dim NewThreadID As Integer = cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objPost.Author.UserID)
+								Dim objContent As ContentItem
+								objContent = DotNetNuke.Entities.Content.Common.Util.GetContentController().GetContentItem(objThread.ContentItemId)
+								objContent.ContentKey = "forumid=" + objThread.ForumID.ToString() + "&threadid=" + NewThreadID.ToString() + "&scope=posts"
+								DotNetNuke.Entities.Content.Common.Util.GetContentController().UpdateContentItem(objContent)
+							End If
+						Else
+							' Delete post (SEND MAIL BEFORE DELETE, we need the post still in the db)
+							cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objPost.Author.UserID)
+						End If
+
+						Forum.Components.Utilities.Caching.UpdatePostCache(objPost.PostID, ThreadID, ForumID, objPost.ParentThread.ContainingForum.GroupID, ModuleId, objPost.ParentThread.ContainingForum.ParentID)
 						Response.Redirect(GetReturnURL(ThreadID, ForumID), True)
 					End If
 				End If
@@ -260,8 +271,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
-		''' <remarks>
-		''' </remarks>
+		''' <remarks></remarks>
 		Protected Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
 			Try
 				If Not ViewState("UrlReferrer") Is Nothing Then

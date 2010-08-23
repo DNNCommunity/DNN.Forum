@@ -29,7 +29,7 @@
 												<asp:hyperlink CssClass="Forum_HeaderText" NavigateUrl='<%# ThreadLink(CType(DataBinder.Eval(Container.DataItem, "ThreadID"), Integer), CType(DataBinder.Eval(Container.DataItem, "ForumID"), Integer), CType(DataBinder.Eval(Container.DataItem, "ParentPostID"), Integer))  %>' runat="server" ID="lblSubject" Target="_blank" Text='<%# FormatCreatedDate(DataBinder.Eval(Container.DataItem, "CreatedDate")) %>' />
 											</td>
 											<td class="Forum_HeaderCapRight">
-												<asp:image ImageUrl='<%# SpacerImage() %>' runat="server" ID="Image2"/>
+												<asp:Image ImageUrl='<%# SpacerImage() %>' runat="server" ID="Image2" />
 											</td>
 										</tr>
 									</table>
@@ -44,6 +44,9 @@
 													<tr>
 														<td width="100%" align="center">
 															<asp:HyperLink CssClass="Forum_Profile" Text='<%# FormatUserAlias(CType(DataBinder.Eval(Container.DataItem, "UserID"), Integer)) %>' runat="server" ID="lblAlias" NavigateURL='<%# UserProfileLink(CType(DataBinder.Eval(Container.DataItem, "UserID"), Integer)) %>' target="_blank" />
+															<asp:HyperLink ID="hlEdit" runat="server" NavigateUrl='<%# EditProfileLink(DataBinder.Eval(Container.DataItem, "UserID")) %>'>
+																<asp:Image ID="imgEdit" runat="server" ImageUrl='<%# EditImage() %>' />
+															</asp:HyperLink>
 														</td>
 													</tr>
 													<tr>

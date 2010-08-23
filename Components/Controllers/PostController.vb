@@ -115,22 +115,14 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ModeratorID">The ModuleID that contains the post that will be deleted.</param>
 		''' <param name="Notes">Notes that will be written to the data store for auditing purposes.</param>
 		''' <param name="PortalID">The PortalID of the post that is going to be deleted, necessary for user post count updates.</param>
-		''' <param name="GroupID">The GroupID of the post that is going to be deleted, necessary for updating group statistics and for data verification reasons.</param>
+		''' <param name="UserID"></param>
 		''' <remarks>Never handle email sends from here. Also, the post delete sproc handles related attachment deletes in the data store.</remarks>
-		Friend Sub PostDelete(ByVal PostID As Integer, ByVal ModeratorID As Integer, ByVal Notes As String, ByVal PortalID As Integer, ByVal GroupID As Integer, ByVal DeleteThread As Boolean, ByVal ParentID As Integer)
-			Dim objPost As New PostInfo
-			Dim objThread As New ThreadInfo
-			Dim cntThread As New ThreadController
+		Friend Function PostDelete(ByVal PostID As Integer, ByVal ModeratorID As Integer, ByVal Notes As String, ByVal PortalID As Integer, ByVal UserID As Integer) As Integer
+			Dim NewThreadID As Integer = DotNetNuke.Modules.Forum.DataProvider.Instance().PostDelete(PostID, ModeratorID, Notes, PortalID)
+			DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(UserID, PortalID)
 
-			objPost = PostGet(PostID, PortalID)
-			objThread = cntThread.GetThread(objPost.PostID)
-
-			DotNetNuke.Modules.Forum.DataProvider.Instance().PostDelete(PostID, ModeratorID, Notes, PortalID)
-
-			' We need to delete the Content Item here
-			Forum.Content.DeleteContentItem(objThread)
-			DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(objPost.Author.UserID, PortalID)
-		End Sub
+			Return NewThreadID
+		End Function
 
 		''' <summary>
 		''' This sub will update the ParseInfo field for a specific post. ParseInfo should be the sum of

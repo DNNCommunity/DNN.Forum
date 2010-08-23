@@ -969,10 +969,6 @@ Namespace DotNetNuke.Modules.Forum
 
 				' sloppy code, but quick fix
 				RenderImage(wr, objConfig.GetThemeImageURL("row_spacer.gif"), "", "")
-				RenderImage(wr, objConfig.GetThemeImageURL("row_spacer.gif"), "", "")
-				RenderImage(wr, objConfig.GetThemeImageURL("row_spacer.gif"), "", "")
-				RenderImage(wr, objConfig.GetThemeImageURL("row_spacer.gif"), "", "")
-				RenderImage(wr, objConfig.GetThemeImageURL("row_spacer.gif"), "", "")
 
 				RenderCellEnd(wr) ' </td>
 				' cell for thread subject

@@ -309,9 +309,9 @@ Namespace DotNetNuke.Modules.Forum
 			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Post_Get", PostID, PortalID), IDataReader)
 		End Function
 
-		Public Overrides Sub PostDelete(ByVal PostID As Integer, ByVal ModID As Integer, ByVal Notes As String, ByVal PortalID As Integer)
-			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "Post_Delete", PostID, ModID, Notes, PortalID)
-		End Sub
+		Public Overrides Function PostDelete(ByVal PostID As Integer, ByVal ModID As Integer, ByVal Notes As String, ByVal PortalID As Integer) As Integer
+			Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "Post_Delete", PostID, ModID, Notes, PortalID), Integer)
+		End Function
 
 		Public Overrides Function PostMove(ByVal PostID As Integer, ByVal oldThreadID As Integer, ByVal newThreadID As Integer, ByVal newForumID As Integer, ByVal oldForumID As Integer, ByVal ModID As Integer, ByVal SortOrder As Integer, ByVal Notes As String) As IDataReader
 			Return SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Post_Move", PostID, oldThreadID, newThreadID, newForumID, oldForumID, ModID, SortOrder, Notes)
@@ -320,7 +320,6 @@ Namespace DotNetNuke.Modules.Forum
 			Dim postid As Integer = CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "Post_Add", ParentPostID, ForumID, UserID, RemoteAddr, Subject, Body, IsPinned, GetNull(PinnedDate), IsClosed, PortalID, PollID, IsModerated, ParseInfo), Integer)
 			Return postid
 		End Function
-
 		Public Overrides Function PostUpdate(ByVal ThreadID As Integer, ByVal PostID As Integer, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal UpdatedBy As Integer, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal ParseInfo As Integer) As Integer
 			Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "Post_Update", ThreadID, PostID, Subject, Body, IsPinned, PinnedDate, IsClosed, UpdatedBy, PortalID, PollID, ParseInfo), Integer)
 		End Function

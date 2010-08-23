@@ -111,8 +111,12 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property LastApprovedUser() As ForumUserInfo
 			Get
-				Dim cntForumUser As New ForumUserController
-				Return cntForumUser.GetForumUser(LastApprovedPost.Author.UserID, False, ContainingForum.ModuleID, PortalID)
+				If LastApprovedPost IsNot Nothing Then
+					Dim cntForumUser As New ForumUserController
+					Return cntForumUser.GetForumUser(LastApprovedPost.Author.UserID, False, ContainingForum.ModuleID, PortalID)
+				Else
+					Return Nothing
+				End If			
 			End Get
 		End Property
 

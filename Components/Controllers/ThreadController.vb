@@ -164,21 +164,23 @@ Namespace DotNetNuke.Modules.Forum
 		''' <summary>
 		''' Deletes a thread (and the initial post which is the thread) but first deletes all posts in that thread individually. The Delete Thread sproc simply deletes any poll related data prior to thread deletion. 
 		''' </summary>
-		''' <param name="ThreadID"></param>
+		''' <param name="objThread"></param>
+		''' <param name="PortalID"></param>
+		''' <param name="Notes"></param>
 		''' <remarks>Never handle email sends from here. All posts are deleted 1 by 1 so that all statistics are easily updated minimizing the potential for error. 
 		''' </remarks>
-		Friend Sub DeleteThread(ByVal ThreadID As Integer, ByVal PortalID As Integer, ByVal Notes As String)
+		Friend Sub DeleteThread(ByVal objThread As ThreadInfo, ByVal PortalID As Integer, ByVal Notes As String)
 			' we need to get all the posts in the thread so each can be deleted properly (and thus decrease user post counts)
 			Dim cntPost As New PostController
 			Dim arrPost As New List(Of PostInfo)
 			Dim objThreadPost As New PostInfo
 
-			arrPost = cntPost.PostGetAllForThread(ThreadID)
+			arrPost = cntPost.PostGetAllForThread(objThread.ThreadID)
 
 			For Each objPost As PostInfo In arrPost
 				' we need to make sure we delete the threadid last (because of split and possibly move). 
-				If Not objPost.PostID = ThreadID Then
-					cntPost.PostDelete(objPost.PostID, objPost.ModuleId, Notes, PortalID, objPost.ParentThread.ContainingForum.GroupID, True, objPost.ParentThread.ContainingForum.ParentID)
+				If Not objPost.PostID = objThread.ThreadID Then
+					cntPost.PostDelete(objPost.PostID, objPost.ModuleId, Notes, PortalID, objPost.Author.UserID)
 				Else
 					objThreadPost = objPost
 				End If
@@ -186,9 +188,12 @@ Namespace DotNetNuke.Modules.Forum
 
 			' we deleted all posts in the thread but the threadid one
 			If Not objThreadPost Is Nothing Then
-				' not sure how this would happen, but just to be safe
-				cntPost.PostDelete(objThreadPost.PostID, objThreadPost.ModuleId, Notes, PortalID, objThreadPost.ParentThread.ContainingForum.GroupID, True, objThreadPost.ParentThread.ContainingForum.ParentID)
+				cntPost.PostDelete(objThreadPost.PostID, objThreadPost.ModuleId, Notes, PortalID, objThreadPost.Author.UserID)
 			End If
+
+			' We need to delete the Content Item here
+			Forum.Content.DeleteContentItem(objThread)
+			Forum.Components.Utilities.Caching.UpdatePostCache(objThread.ThreadID, objThread.ThreadID, objThread.ForumID, objThread.ContainingForum.GroupID, objThread.ModuleID, objThread.ContainingForum.ParentID)
 		End Sub
 
 		''' <summary>
