@@ -60,24 +60,6 @@ Namespace DotNetNuke.Modules.Forum
 		Protected WithEvents rdpTo As Global.Telerik.Web.UI.RadDatePicker
 
 		'''<summary>
-		'''plUserSuggest control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plUserSuggest As Global.DotNetNuke.UI.UserControls.LabelControl
-
-		'''<summary>
-		'''txtForumUserSuggest control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtForumUserSuggest As Global.DotNetNuke.UI.WebControls.DNNTextSuggest
-
-		'''<summary>
 		'''plSubject control.
 		'''</summary>
 		'''<remarks>

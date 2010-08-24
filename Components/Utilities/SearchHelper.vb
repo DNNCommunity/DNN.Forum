@@ -252,8 +252,14 @@ Namespace DotNetNuke.Modules.Forum
 					sb.Append(Term.Condition & "(")
 					sb.Append(Term.Field)
 					sb.Append(" LIKE N':perc:")
+
+					'' we need to split words here
+					'Dim arr As Array = Term.Value.Split(CChar(" "))
+					'For Each s As String In arr
 					sb.Append(FormatQuery(Term.Value))
 					sb.Append(":perc:'")
+					'Next
+
 					sb.Append(")")
 				Case CompareOperator.StartWith
 					sb.Append(Term.Condition & "(")
@@ -307,16 +313,12 @@ Namespace DotNetNuke.Modules.Forum
 					sb.Append(" > ")
 					sb.Append(Term.Value)
 					sb.Append(")")
-
 				Case CompareOperator.LeftParentes
 					sb.Append("(")
-
 				Case CompareOperator.RightParentes
 					sb.Append(")")
-
 				Case CompareOperator.And
 					sb.Append(" AND ")
-
 			End Select
 
 			If hasEnd Then

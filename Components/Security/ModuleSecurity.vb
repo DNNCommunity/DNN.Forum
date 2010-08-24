@@ -22,8 +22,6 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "ModuleSecurity"
-
 	''' <summary>
 	''' The central class where all non-core security related checks should be done.
 	''' </summary>
@@ -315,7 +313,5 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 	End Class
-
-#End Region
 
 End Namespace

@@ -36,18 +36,6 @@
 					<tr>
 						<td valign="top" width="150">
 							<span class="Forum_Row_AdminText">
-								<dnn:label id="plUserSuggest" runat="server"  Suffix=":" controlname="txtForumUserSuggest"></dnn:label>
-							</span></td>
-						<td valign="top" align="left">
-							<DNN:DNNTEXTSUGGEST id="txtForumUserSuggest" runat="server" Width="250px" LookupDelay="250" MaxSuggestRows="20" CssClass="Forum_NormalTextBox" >	
-							</DNN:DNNTEXTSUGGEST>
-							<br />
-							<br />
-						</td>
-					</tr>
-					<tr>
-						<td valign="top" width="150">
-							<span class="Forum_Row_AdminText">
 								<dnn:label id="plSubject" Suffix=":" runat="server" controlname="txtSubject"></dnn:label>
 							</span>
 						</td>

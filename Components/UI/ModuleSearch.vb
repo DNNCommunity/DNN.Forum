@@ -358,12 +358,19 @@ Namespace DotNetNuke.Modules.Forum
 				subject = HttpContext.Current.Request.Params("subject")
 				If subject.Length > 0 AndAlso subject <> " " Then
 					subject = HttpUtility.UrlDecode(subject.Trim())
+					Dim ExactMatch As Boolean = False
+
 					' Complex language support
 					subject = HttpUtility.HtmlEncode(subject)
 					subject = subject.Replace(";", ":semi:")
 
 					HasSubject = True
-					Term.AddSearchTerm("(Subject", CompareOperator.Contains, subject)
+
+					If ExactMatch Then
+						Term.AddSearchTerm("Subject", CompareOperator.EqualString, subject)
+					Else
+						Term.AddSearchTerm("Subject", CompareOperator.Contains, subject)
+					End If
 				End If
 				body = HttpContext.Current.Request.Params("body")
 				If body.Length > 0 AndAlso body <> " " Then
@@ -380,12 +387,24 @@ Namespace DotNetNuke.Modules.Forum
 					subject = HttpContext.Current.Request.Params("subject")
 					If subject.Length > 0 AndAlso subject <> " " Then
 						subject = HttpUtility.UrlDecode(subject.Trim())
+						Dim ExactMatch As Boolean = False
+
+						'If subject.StartsWith("""") Then
+						'	ExactMatch = True
+						'	subject = subject.Replace("""", "")
+						'End If
+
 						' Complex language support
 						subject = HttpUtility.HtmlEncode(subject)
 						subject = subject.Replace(";", ":semi:")
 
 						HasSubject = True
-						Term.AddSearchTerm("Subject", CompareOperator.Contains, subject)
+
+						If ExactMatch Then
+							Term.AddSearchTerm("Subject", CompareOperator.EqualString, subject)
+						Else
+							Term.AddSearchTerm("Subject", CompareOperator.Contains, subject)
+						End If
 					End If
 				End If
 

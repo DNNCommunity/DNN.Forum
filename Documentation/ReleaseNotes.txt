@@ -1,16 +1,15 @@
-<h3>Forum 4.8.0</h3>
+<h3>Forum 4.9.0</h3>
 <p class="Contributor">
 	DotNetNuke&reg; <br />
-	<a href="mailto:support@dotnetnuke.com">support@dotnetnuke.com</a><br />
+	<a href="mailto:support@9dotnetnuke.com">support@dotnetnuke.com</a><br />
 	<a href=http://www.dotnetnuke.com>http://www.dotnetnuke.com</a><br />
 </p>
 <hr/>
 <div class="License">
 	<h3>About the Core Forum</h3>
 	<p class="Owner">
-		<b>Version 4.8.0</b><br /><br />
-		This version of the module is a beta. It requires DotNetNuke Core 5.4.1 or greater. The module is now tightly integrated with the core user profile to determine visibility of profile items displayed in the module as well as for displaying a member's profile.
-		Also, because private messaging has also been added to the core it has been removed from the module itself. 
+		<b>Version 4.9.0</b><br /><br />
+		This version of the module is a beta. It requires DotNetNuke Core 5.4.1 or greater. The module is now tightly integrated with the core user profile to determine visibility of profile items displayed in the module as well as for displaying a member's profile. It also utilizes core tagging and has an SEO sitemap provider available (not fully available without web.config changes). Also, because private messaging has also been added to the core it has been removed from the module itself. 
 		FYI: Developers should be aware that the module uses Visual Studio 2010 only. 
 	</p>
 	<ul>
@@ -50,7 +49,7 @@
 		<li>Removed custom emoticon control, back to being offloaded to HTML Provider.</li>
 		<li>Made My Threads work like it previously did so users can see all threads they are participating in, not just the ones they started.</li>
 		<li>Fixed issues where Telerik HTML Provider (shipped with newer core versions) causes problems with preview and editing of existing posts.</li>
-		<li>Removed Default theme from package, now ships with Blue that is used on www.dotnetnuke.com currently.</li>
+		<li>Removed Default theme from package, now ships with Blue that is used on www.dotnetnuke.com at time of release.</li>
 		<li>Fixed issues that remained that if a user was deleted (hard delete) and they had a post, it could screw up any of the views that were linked to such a post/thread.</li>
 	</ul>
 </div>

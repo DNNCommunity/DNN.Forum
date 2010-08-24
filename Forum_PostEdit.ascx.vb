@@ -41,7 +41,21 @@ Namespace DotNetNuke.Modules.Forum
 		Const COLUMN_MOVE_UP As Integer = 2
 		Const COLUMN_ANSWER As Integer = 3
 
-		Private _objThread As ThreadInfo
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private ReadOnly Property PostID As Integer
+			Get
+				If Request.QueryString("postid") IsNot Nothing Then
+					Return Int32.Parse(Request.QueryString("postid"))
+				Else
+					Return -1
+				End If
+			End Get
+		End Property
 
 		''' <summary>
 		''' The ThreadInfo object of the post being rendered.
@@ -49,13 +63,35 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Private Property objThread() As ThreadInfo
+		Private ReadOnly Property objThread() As ThreadInfo
 			Get
-				Return _objThread
+				If PostID > 0 Then
+					Dim cntPost As New PostController()
+					Dim objParentPost As New PostInfo
+
+					objParentPost = cntPost.GetPostInfo(PostID, PortalId)
+					Return objParentPost.ParentThread
+				Else
+					Return Nothing
+				End If
 			End Get
-			Set(ByVal Value As ThreadInfo)
-				_objThread = Value
-			End Set
+		End Property
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private ReadOnly Property objForum() As ForumInfo
+			Get
+				If PostID > 0 Then
+					Return objThread.ContainingForum
+				Else
+					Dim cntForum As New ForumController
+					Return cntForum.GetForumItemCache(ForumID)
+				End If
+			End Get
 		End Property
 
 #End Region
@@ -121,22 +157,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 			Try
-				Dim cntPost As New PostController()
-				Dim objParentPost As New PostInfo
-				Dim objForum As New ForumInfo
-
-				' If this is not a new thread, obtain original post/thread
-				If Request.QueryString("postid") IsNot Nothing Then
-					Dim PostID As Integer = Int32.Parse(Request.QueryString("postid"))
-
-					objParentPost = cntPost.GetPostInfo(PostID, PortalId)
-					objThread = objParentPost.ParentThread
-					objForum = objThread.ContainingForum
-				Else
+				If PostID < 1 Then
 					If ForumID > 0 Then
-						Dim cntForum As New ForumController
-						objForum = cntForum.GetForumItemCache(ForumID)
-
 						If objForum Is Nothing Then
 							HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
 						End If
@@ -180,7 +202,14 @@ Namespace DotNetNuke.Modules.Forum
 						cmdSubmit.CommandName = objAction.ToString
 					End If
 
-					If objAction <> PostAction.[New] AndAlso Not objParentPost Is Nothing Then
+					Dim objParentPost As PostInfo
+					Dim cntPost As New PostController()
+
+					If PostID > 0 Then
+						objParentPost = cntPost.GetPostInfo(PostID, PortalId)
+					End If
+
+					If objAction <> PostAction.[New] AndAlso objParentPost IsNot Nothing Then
 						If objParentPost.ParentPostID <> 0 Then chkIsPinned.Enabled = False
 						If objParentPost.ParentPostID <> 0 Then chkIsClosed.Enabled = False
 					End If
@@ -191,7 +220,7 @@ Namespace DotNetNuke.Modules.Forum
 					Select Case objAction
 						Case PostAction.Edit
 							' security check
-							If Not objParentPost.ParentThread.ContainingForum.PublicPosting Then
+							If Not objThread.ContainingForum.PublicPosting Then
 								'restricted posting forum
 								If Not (Security.IsAllowedToPostRestrictedReply Or Security.IsAllowedToStartRestrictedThread) Then
 									HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
@@ -200,7 +229,7 @@ Namespace DotNetNuke.Modules.Forum
 
 							' Make sure user IsTrusted too before they can edit (but only if a moderated forum, if its not moderated we don't care)
 							' First check to see if user is original author 
-							If CurrentForumUser.UserID > 0 And (objParentPost.UserID = CurrentForumUser.UserID) And (objParentPost.ParentThread.ContainingForum.IsModerated = False Or CurrentForumUser.IsTrusted Or Security.IsUnmoderated) And (objParentPost.ParentThread.ContainingForum.IsActive) Then
+							If CurrentForumUser.UserID > 0 And (objParentPost.UserID = CurrentForumUser.UserID) And (objThread.ContainingForum.IsModerated = False Or CurrentForumUser.IsTrusted Or Security.IsUnmoderated) And (objThread.ContainingForum.IsActive) Then
 								AllowUserEdit = True
 							Else
 								' The user is not the original author
@@ -228,7 +257,7 @@ Namespace DotNetNuke.Modules.Forum
 							' If we reach this point, we know it is a reply, quote
 
 							' security check
-							If Not objParentPost.ParentThread.ContainingForum.PublicPosting Then
+							If Not objThread.ContainingForum.PublicPosting Then
 								'restricted posting forum
 								If Not (Security.IsAllowedToPostRestrictedReply) Then
 									HttpContext.Current.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
@@ -236,10 +265,10 @@ Namespace DotNetNuke.Modules.Forum
 							End If
 
 							' Rework if allowing anonymous posting, for now this is good
-							If CurrentForumUser.UserID > 0 And (objParentPost.ParentThread.ContainingForum.IsActive) Then
-								If (objParentPost.ParentThread.IsClosed = True) Then
+							If CurrentForumUser.UserID > 0 And (objThread.ContainingForum.IsActive) Then
+								If (objThread.IsClosed = True) Then
 									'see if reply is coming from the original thread author
-									If objParentPost.ParentThread.StartedByUserID = CurrentForumUser.UserID Then
+									If objThread.StartedByUserID = CurrentForumUser.UserID Then
 										AllowUserEdit = True
 									End If
 								Else
@@ -320,8 +349,8 @@ Namespace DotNetNuke.Modules.Forum
 						For Each objGroup As GroupInfo In cntGroup.GroupsGetByModuleID(ModuleId)
 							arrForums = cntGroup.AuthorizedForums(UserId, objGroup.GroupID, True, ModuleId, TabId)
 							If arrForums.Count > 0 Then
-								For Each objForum In arrForums
-									ddlForum.Items.Add(New ListItem(objGroup.Name & " - " & objForum.Name, objForum.ForumID.ToString))
+								For Each objSingleForum As ForumInfo In arrForums
+									ddlForum.Items.Add(New ListItem(objGroup.Name & " - " & objSingleForum.Name, objSingleForum.ForumID.ToString))
 								Next
 							End If
 						Next
@@ -336,7 +365,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						Select Case objAction
 							Case PostAction.Edit
-								HandleTaxonomy(False, objParentPost.PostID, objForum.PublicView)
+								HandleTaxonomy(False, PostID, objForum.PublicView)
 							Case PostAction.New
 								' should we show tagging control here (for all)?
 								HandleTaxonomy(True, -1, objForum.PublicView)
@@ -365,7 +394,7 @@ Namespace DotNetNuke.Modules.Forum
 											' user may already be tracking the thread
 											' we may not have threadID, we definately have postid
 											For Each trackedThread As TrackingInfo In CurrentForumUser.TrackedThreads
-												If trackedThread.ThreadID = objParentPost.ThreadID Then
+												If trackedThread.ThreadID = objThread.ThreadID Then
 													blnTrackedThread = True
 													Exit For
 												End If
@@ -376,7 +405,7 @@ Namespace DotNetNuke.Modules.Forum
 											' user may already be tracking the thread
 											' we may not have threadID, we definately have postid
 											For Each trackedThread As TrackingInfo In CurrentForumUser.TrackedThreads
-												If trackedThread.ThreadID = objParentPost.ThreadID Then
+												If trackedThread.ThreadID = objThread.ThreadID Then
 													blnTrackedThread = True
 													Exit For
 												End If
@@ -501,12 +530,14 @@ Namespace DotNetNuke.Modules.Forum
 							End If
 						End If
 
+						Terms = objThread.Terms
+
 						If objThread.ThreadID = objEditPost.PostID Then
 							objThread.Terms.Clear()
 							objThread.Terms.AddRange(tsTerms.Terms)
 						End If
 
-						Terms = objThread.Terms
+
 					Case PostAction.New
 						' not sure this is correct (first line below)
 						ParentPostID = URLPostID
@@ -1122,6 +1153,7 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 
 				'AJAX
+				ctlAttachment.ModuleID = ModuleId
 				ctlAttachment.LoadInitialView()
 			Else
 				ctlAttachment.Visible = False

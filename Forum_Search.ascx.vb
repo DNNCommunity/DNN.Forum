@@ -28,8 +28,6 @@ Namespace DotNetNuke.Modules.Forum
 	''' Gathers search criteria from the end user then uses this to navigate
 	''' to the search results page.
 	''' </summary>
-	''' <remarks> 2/11/2006 - CP - Added In ClientAPI
-	''' </remarks>
 	Public Class SearchPage
 		Inherits ForumModuleBase
 		Implements Entities.Modules.IActionable
@@ -67,17 +65,17 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Event Handlers"
 
-		''' <summary>
-		''' POD For Client API Text Suggest
-		''' </summary>
-		''' <param name="source"></param>
-		''' <param name="e"></param>
-		''' <remarks>
-		''' </remarks>
-		Protected Sub txtForumUserSuggest_PopulateOnDemand(ByVal source As Object, ByVal e As UI.WebControls.DNNTextSuggestEventArgs) Handles txtForumUserSuggest.PopulateOnDemand
-			' Here is where we would count e.Text (if we had minimum character requirements - needed for huge sites)
-			PopulateList(e.Nodes, e.Text)
-		End Sub
+		' ''' <summary>
+		' ''' POD For Client API Text Suggest
+		' ''' </summary>
+		' ''' <param name="source"></param>
+		' ''' <param name="e"></param>
+		' ''' <remarks>
+		' ''' </remarks>
+		'Protected Sub txtForumUserSuggest_PopulateOnDemand(ByVal source As Object, ByVal e As UI.WebControls.DNNTextSuggestEventArgs) Handles txtForumUserSuggest.PopulateOnDemand
+		'	' Here is where we would count e.Text (if we had minimum character requirements - needed for huge sites)
+		'	PopulateList(e.Nodes, e.Text)
+		'End Sub
 
 		''' <summary>
 		''' Page Load/Re-Load handler
@@ -86,9 +84,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="e"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	7/13/2005	Created
-		''' </history>
 		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 			Try
 				Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
@@ -127,7 +122,7 @@ Namespace DotNetNuke.Modules.Forum
 						rcbThreadStatus.Items.Insert(3, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Informative", objConfig.SharedResourceFile), "3"))
 					End With
 
-					InitializeTextSuggest()
+					'InitializeTextSuggest()
 					ForumTreeview.PopulateTelerikTree(objConfig, rtvForums, UserId, TabId)
 				End If
 
@@ -208,24 +203,24 @@ Namespace DotNetNuke.Modules.Forum
 					sb.Append(Trim(SelectedForumIds))
 				End If
 
-				If txtForumUserSuggest.Text.Trim() <> String.Empty Then
-					' we know sometihng is there, do a lookup
+				'If txtForumUserSuggest.Text.Trim() <> String.Empty Then
+				'	' we know sometihng is there, do a lookup
 
-					If txtForumUserSuggest.SelectedNodes.Count > 0 Then
-						Dim loopCount As Integer = 0
+				'	If txtForumUserSuggest.SelectedNodes.Count > 0 Then
+				'		Dim loopCount As Integer = 0
 
-						For Each Node As DotNetNuke.UI.WebControls.DNNNode In Me.txtForumUserSuggest.SelectedNodes
-							If Node.Key.Trim() <> String.Empty Then
-								If loopCount < 1 Then
-									sb.Append("&authors=")
-								End If
-								sb.Append(Node.Key)
-								sb.Append(";")
-								loopCount += 1
-							End If
-						Next
-					End If
-				End If
+				'		For Each Node As DotNetNuke.UI.WebControls.DNNNode In Me.txtForumUserSuggest.SelectedNodes
+				'			If Node.Key.Trim() <> String.Empty Then
+				'				If loopCount < 1 Then
+				'					sb.Append("&authors=")
+				'				End If
+				'				sb.Append(Node.Key)
+				'				sb.Append(";")
+				'				loopCount += 1
+				'			End If
+				'		Next
+				'	End If
+				'End If
 
 				If rcbThreadStatus.SelectedIndex > 0 Then
 					sb.Append("&threadstatusid=")
@@ -273,56 +268,56 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "DNNTextSuggest"
 
-		''' <summary>
-		''' Setup the DNNTextSuggest for use here
-		''' </summary>
-		''' <remarks>
-		''' </remarks>
-		''' <history>
-		''' </history>
-		Private Sub InitializeTextSuggest()
-			txtForumUserSuggest.ForceDownLevel = False
-			txtForumUserSuggest.Target = "MyTarget"
-			' can't use min char lookup because a user could potentially have a single character username or display name. 
-			'txtForumUserSuggest.MinCharacterLookup = 2
-			txtForumUserSuggest.IDToken = UI.WebControls.DNNTextSuggest.eIDTokenChar.Brackets
-			' comment out delimiter when not wanting multi-select
-			txtForumUserSuggest.Delimiter = ";"c
-			txtForumUserSuggest.TextSuggestCssClass = "Forum_Suggest"
-			txtForumUserSuggest.DefaultChildNodeCssClass = "Forum_Suggest_DefaultChildNode"
-			txtForumUserSuggest.DefaultNodeCssClass = "Forum_Suggest_DefaultNode"
-			txtForumUserSuggest.DefaultNodeCssClassOver = "Forum_Suggest_DefaultNodeOver"
-			txtForumUserSuggest.DefaultNodeCssClassSelected = "Forum_Suggest_DefaultNodeSelected"
-		End Sub
+		' ''' <summary>
+		' ''' Setup the DNNTextSuggest for use here
+		' ''' </summary>
+		' ''' <remarks>
+		' ''' </remarks>
+		' ''' <history>
+		' ''' </history>
+		'Private Sub InitializeTextSuggest()
+		'	txtForumUserSuggest.ForceDownLevel = False
+		'	txtForumUserSuggest.Target = "MyTarget"
+		'	' can't use min char lookup because a user could potentially have a single character username or display name. 
+		'	'txtForumUserSuggest.MinCharacterLookup = 2
+		'	txtForumUserSuggest.IDToken = UI.WebControls.DNNTextSuggest.eIDTokenChar.Brackets
+		'	' comment out delimiter when not wanting multi-select
+		'	txtForumUserSuggest.Delimiter = ";"c
+		'	txtForumUserSuggest.TextSuggestCssClass = "Forum_Suggest"
+		'	txtForumUserSuggest.DefaultChildNodeCssClass = "Forum_Suggest_DefaultChildNode"
+		'	txtForumUserSuggest.DefaultNodeCssClass = "Forum_Suggest_DefaultNode"
+		'	txtForumUserSuggest.DefaultNodeCssClassOver = "Forum_Suggest_DefaultNodeOver"
+		'	txtForumUserSuggest.DefaultNodeCssClassSelected = "Forum_Suggest_DefaultNodeSelected"
+		'End Sub
 
-		''' <summary>
-		''' Used to populate the DNNTextSuggest w/ results as user types
-		''' </summary>
-		''' <param name="objNodes"></param>
-		''' <param name="strText"></param>
-		''' <remarks>
-		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	8/6/2006	Created
-		''' </history>
-		Private Sub PopulateList(ByVal objNodes As UI.WebControls.DNNNodeCollection, ByVal strText As String)
-			Dim o As UI.WebControls.DNNNode
-			Dim arrUsers As ArrayList
-			Dim objForumUser As ForumUserInfo
-			Dim objUserCnt As New ForumUserController
+		' ''' <summary>
+		' ''' Used to populate the DNNTextSuggest w/ results as user types
+		' ''' </summary>
+		' ''' <param name="objNodes"></param>
+		' ''' <param name="strText"></param>
+		' ''' <remarks>
+		' ''' </remarks>
+		' ''' <history>
+		' ''' 	[cpaterra]	8/6/2006	Created
+		' ''' </history>
+		'Private Sub PopulateList(ByVal objNodes As UI.WebControls.DNNNodeCollection, ByVal strText As String)
+		'	Dim o As UI.WebControls.DNNNode
+		'	Dim arrUsers As ArrayList
+		'	Dim objForumUser As ForumUserInfo
+		'	Dim objUserCnt As New ForumUserController
 
-			arrUsers = objUserCnt.UserGetAll(PortalId, strText, 10, 0, 100, ModuleId)
+		'	arrUsers = objUserCnt.UserGetAll(PortalId, strText, 10, 0, 100, ModuleId)
 
-			For Each objForumUser In arrUsers
-				If Me.txtForumUserSuggest.MaxSuggestRows = 0 OrElse objNodes.Count < (Me.txtForumUserSuggest.MaxSuggestRows + 1) Then	 '+1 to let control know there is more "pending"
-					o = New UI.WebControls.DNNNode(objForumUser.SiteAlias)
-					o.ID = objForumUser.UserID.ToString
-					o.Key = (objForumUser.UserID.ToString)
-					o.CSSClass = "SpecialNode"
-					objNodes.Add(o)
-				End If
-			Next
-		End Sub
+		'	For Each objForumUser In arrUsers
+		'		If Me.txtForumUserSuggest.MaxSuggestRows = 0 OrElse objNodes.Count < (Me.txtForumUserSuggest.MaxSuggestRows + 1) Then	 '+1 to let control know there is more "pending"
+		'			o = New UI.WebControls.DNNNode(objForumUser.SiteAlias)
+		'			o.ID = objForumUser.UserID.ToString
+		'			o.Key = (objForumUser.UserID.ToString)
+		'			o.CSSClass = "SpecialNode"
+		'			objNodes.Add(o)
+		'		End If
+		'	Next
+		'End Sub
 
 #End Region
 

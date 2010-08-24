@@ -20,6 +20,8 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Entities.Modules
+
 Namespace DotNetNuke.Modules.Forum.WebControls
 
 	''' <summary>
@@ -27,14 +29,13 @@ Namespace DotNetNuke.Modules.Forum.WebControls
 	''' </summary>
 	''' <remarks></remarks>
 	Partial Public Class AttachmentControl
-		Inherits ForumModuleBase
+		Inherits PortalModuleBase
 
 #Region " Private Members "
 
-		Private mBaseFolder As String = String.Empty
-		Private mlocalResourceFile As String = String.Empty
-		Private FileFilter As String = String.Empty
-		Private mForumConfig As Forum.Configuration
+		Private _baseFolder As String = String.Empty
+		Private _localResourceFile As String = String.Empty
+		Private _fileFilter As String = String.Empty
 
 #End Region
 
@@ -50,15 +51,15 @@ Namespace DotNetNuke.Modules.Forum.WebControls
 			Get
 				Dim fileRoot As String
 
-				If mlocalResourceFile = String.Empty Then
+				If _localResourceFile = String.Empty Then
 					fileRoot = Me.TemplateSourceDirectory & "/" & Localization.LocalResourceDirectory & "/AttachmentControl.ascx"
 				Else
-					fileRoot = mlocalResourceFile
+					fileRoot = _localResourceFile
 				End If
 				Return fileRoot
 			End Get
 			Set(ByVal Value As String)
-				mlocalResourceFile = Value
+				_localResourceFile = Value
 			End Set
 		End Property
 
@@ -121,7 +122,7 @@ Namespace DotNetNuke.Modules.Forum.WebControls
 
 #End Region
 
-#Region " Private Properties "
+#Region " Private ReadOnly Properties "
 
 		''' <summary>
 		''' Post portal root folder path setting.
@@ -131,26 +132,33 @@ Namespace DotNetNuke.Modules.Forum.WebControls
 		''' <remarks></remarks>
 		Private ReadOnly Property BaseFolder() As String
 			Get
-				If mBaseFolder = String.Empty Then
-					mBaseFolder = objConfig.AttachmentPath
+				If _baseFolder = String.Empty Then
+					_baseFolder = objConfig.AttachmentPath
 				End If
 
-				If mBaseFolder.EndsWith("/") = False Then mBaseFolder += "/"
+				If _baseFolder.EndsWith("/") = False Then _baseFolder += "/"
 
-				Return mBaseFolder
+				Return _baseFolder
 			End Get
 		End Property
 
 		''' <summary>
-		''' ModuleId
+		''' We need the ModuleID set so we can get configuration settings for the avatar control. 
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Private Shadows ReadOnly Property ModuleId() As Integer
+		Public Overloads Property ModuleID() As Integer
 			Get
-				Return CInt(Request.QueryString("mid").ToString())
+				If ViewState("ModuleID") IsNot Nothing Then
+					Return CType(ViewState("ModuleID").ToString(), Integer)
+				Else
+					Return -1
+				End If
 			End Get
+			Set(ByVal value As Integer)
+				ViewState("ModuleID") = CInt(value)
+			End Set
 		End Property
 
 		''' <summary>
@@ -189,6 +197,48 @@ Namespace DotNetNuke.Modules.Forum.WebControls
 			Set(ByVal value As String)
 				ViewState("DeleteItems") = value
 			End Set
+		End Property
+
+		''' <summary>
+		''' This is the user who is viewing the forum.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private ReadOnly Property CurrentForumUser() As ForumUserInfo
+			Get
+				Dim cntForumUser As New ForumUserController
+				Return cntForumUser.GetForumUser(Users.UserController.GetCurrentUserInfo.UserID, False, ModuleId, objConfig.CurrentPortalSettings.PortalId)
+			End Get
+		End Property
+
+		''' <summary>
+		''' The userid of the person currently using this control. 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private ReadOnly Property CurrentUserID() As Integer
+			Get
+				If ViewState("CurrentUserID") IsNot Nothing Then
+					Return CType(ViewState("CurrentUserID").ToString(), Integer)
+				Else
+					ViewState("CurrentUserID") = CurrentForumUser.UserID
+					Return CurrentForumUser.UserID
+				End If
+			End Get
+		End Property
+
+		''' <summary>
+		''' This is the forum's configuration so it can be used by loaded controls.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property objConfig() As Forum.Configuration
+			Get
+				Return Configuration.GetForumConfig(ModuleId)
+			End Get
 		End Property
 
 #End Region
@@ -286,9 +336,9 @@ Namespace DotNetNuke.Modules.Forum.WebControls
 				If ParentFolderName.EndsWith("\") = False Then ParentFolderName += "\"
 
 				Dim strExtension As String = Replace(IO.Path.GetExtension(fuFile.PostedFile.FileName), ".", "")
-				If FileFilter <> String.Empty And InStr("," & FileFilter.ToLower, "," & strExtension.ToLower) = 0 Then
+				If _fileFilter <> String.Empty And InStr("," & _fileFilter.ToLower, "," & strExtension.ToLower) = 0 Then
 					' trying to upload a file not allowed for current filter
-					lblMessage.Text = String.Format(Localization.GetString("UploadError", Me.LocalResourceFile), FileFilter, strExtension)
+					lblMessage.Text = String.Format(Localization.GetString("UploadError", Me.LocalResourceFile), _fileFilter, strExtension)
 				End If
 
 				If lblMessage.Text = String.Empty Then
@@ -371,7 +421,7 @@ Namespace DotNetNuke.Modules.Forum.WebControls
 		''' <remarks></remarks>
 		Public Sub LoadInitialView()
 			'Not get the host filefilter
-			FileFilter = Entities.Host.Host.GetHostSettingsDictionary("FileExtensions").ToString()
+			_fileFilter = Entities.Host.Host.GetHostSettingsDictionary("FileExtensions").ToString()
 			'Bind the lists
 			BindFileList()
 		End Sub

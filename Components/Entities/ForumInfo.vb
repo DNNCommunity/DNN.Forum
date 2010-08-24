@@ -501,7 +501,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Property ForumPermissions() As DotNetNuke.Modules.Forum.ForumPermissionCollection
 			Get
-				Return _ForumPermissions
+				Dim objFPController As New DotNetNuke.Modules.Forum.ForumPermissionController
+				Return objFPController.GetForumPermissionsCollection(ForumID)
 			End Get
 			Set(ByVal Value As DotNetNuke.Modules.Forum.ForumPermissionCollection)
 				_ForumPermissions = Value

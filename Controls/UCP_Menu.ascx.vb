@@ -494,7 +494,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 
 				Dim objSecurity As New ModuleSecurity(ModuleID, TabID, -1, CurrentUserID)
 
-				If objSecurity.IsForumModerator Then
+				If objSecurity.IsModerator Then
 					cmdProfile.RenderControl(wr)
 				Else
 					' link to core profile.
