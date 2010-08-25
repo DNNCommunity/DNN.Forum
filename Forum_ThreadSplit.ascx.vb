@@ -98,10 +98,14 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Private Property ThreadID() As Integer
 			Get
+				If CStr(ViewState("ThreadID")) <> String.Empty Then
+					_ThreadID = CInt(ViewState("ThreadID"))
+				End If
 				Return _ThreadID
 			End Get
-			Set(ByVal Value As Integer)
-				_ThreadID = Value
+			Set(ByVal value As Integer)
+				_ThreadID = value
+				ViewState("ThreadID") = value
 			End Set
 		End Property
 

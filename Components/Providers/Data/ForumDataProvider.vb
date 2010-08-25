@@ -312,6 +312,7 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Tracking"
 
 		Public MustOverride Function TrackingForumGet(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As IDataReader
+		Public MustOverride Function GetUsersForumsTracked(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As IDataReader
 		Public MustOverride Function TrackingThreadGet(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As IDataReader
 		Public MustOverride Sub TrackingForumDeleteAll(ByVal UserID As Integer, ByVal ModuleID As Integer)
 		Public MustOverride Sub TrackingForumCreateDelete(ByVal ForumID As Integer, ByVal UserID As Integer, ByVal Add As Boolean, ByVal ModuleID As Integer)

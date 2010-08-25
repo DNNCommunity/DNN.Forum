@@ -165,7 +165,7 @@
   <data name="lblUpdateDone.Text" xml:space="preserve">
     <value>Updated Successfully!</value>
   </data>
-  <data name="Forum.Header" xml:space="preserve">
+  <data name="Name.Header" xml:space="preserve">
     <value>Forum</value>
   </data>
   <data name="TabForums.Text" xml:space="preserve">
@@ -173,5 +173,8 @@
   </data>
   <data name="TabThreads.Text" xml:space="preserve">
     <value>Threads</value>
+  </data>
+  <data name="Delete.Text" xml:space="preserve">
+    <value>Delete</value>
   </data>
 </root>

@@ -18,7 +18,9 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 Option Strict On
-Option Explicit On 
+Option Explicit On
+
+Imports Telerik.Web.UI
 
 Namespace DotNetNuke.Modules.Forum.UCP
 
@@ -27,18 +29,9 @@ Namespace DotNetNuke.Modules.Forum.UCP
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	''' <history>
-	''' 	[skeel]	11/29/2008	Created
-	''' </history>
 	Partial Public Class Tracking
 		Inherits ForumModuleBase
 		Implements Utilities.AjaxLoader.IPageLoad
-
-#Region "Private Members"
-
-		Private _PageSize As Integer
-
-#End Region
 
 #Region "Interfaces"
 
@@ -49,13 +42,11 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
 			BuildTabs()
 
-			ForumPager.PageSize = Convert.ToInt32(CurrentForumUser.ThreadsPerPage)
 			ThreadPager.PageSize = Convert.ToInt32(CurrentForumUser.ThreadsPerPage)
 
-			cmdForumRemove.Attributes.Add("onClick", "javascript:return confirm('" & Localization.GetString("RemoveItem", Me.LocalResourceFile) & "');")
 			cmdThreadRemove.Attributes.Add("onClick", "javascript:return confirm('" & Localization.GetString("RemoveItem", Me.LocalResourceFile) & "');")
 
-			BindForumData(ForumPager.PageSize, 1)
+			BindForumData(CurrentForumUser.ThreadsPerPage, 0)
 			BindThreadData(ThreadPager.PageSize, 1)
 		End Sub
 
@@ -70,34 +61,8 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' <param name="e"></param>
 		''' <remarks>All controls containing grids should localize the grid headers here. </remarks>
 		Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-			'SetLocalization()
-			Localization.LocalizeDataGrid(dgForums, Me.LocalResourceFile)
+			SetLocalization()
 			Localization.LocalizeDataGrid(dgThreads, Me.LocalResourceFile)
-		End Sub
-
-		''' <summary>
-		''' Deletes selected tracked forums for a user. 
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
-		Protected Sub cmdForumRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdForumRemove.Click
-			Dim I, Count As Integer
-			Dim TrackCtl As New TrackingController
-
-			Count = dgForums.Items.Count - 1
-
-			For I = 0 To Count
-				Dim chk As CheckBox = CType(dgForums.Items(I).FindControl("chkForum"), CheckBox)
-
-				'Item checked for delete.
-				If chk.Checked Then
-					Dim ForumId As Integer = CInt(dgForums.DataKeys(I))
-					TrackCtl.TrackingForumCreateDelete(ForumId, UserId, False, ModuleId)
-				End If
-			Next
-
-			BindForumData(ForumPager.PageSize, 1)
 		End Sub
 
 		''' <summary>
@@ -125,42 +90,46 @@ Namespace DotNetNuke.Modules.Forum.UCP
 			BindThreadData(ThreadPager.PageSize, 1)
 		End Sub
 
-		''' <summary>
-		''' Used to set properties for various sever controls used in &gt;ItemTempate&lt;.
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
-		Protected Sub dgForums_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles dgForums.ItemDataBound
-			If e.Item.ItemType <> ListItemType.AlternatingItem AndAlso e.Item.ItemType <> ListItemType.Item Then Exit Sub
+		Protected Sub gridForumTracking_ItemDataBound(ByVal sender As Object, ByVal e As GridItemEventArgs) Handles gridForumTracking.ItemDataBound
+			If TypeOf e.Item Is GridDataItem Then
+				Dim item As GridDataItem = CType(e.Item, GridDataItem)
+				Dim keyForumID As Integer = CInt(e.Item.OwnerTableView.DataKeyValues(item.ItemIndex)("ForumID"))
+				Dim keyMostRecentPostID As Integer = CInt(item.OwnerTableView.DataKeyValues(item.ItemIndex)("MostRecentPostID"))
 
-			Dim dataItem As TrackingInfo = CType(e.Item.DataItem, TrackingInfo)
-			Dim cntForum As New ForumController
-			Dim objForum As ForumInfo
-			Dim hl As HyperLink
-			Dim lbl As Label
-			Dim lit As Literal
+				Dim imgDelete As ImageButton = CType((item)("imgDelete").Controls(0), ImageButton)
+				imgDelete.ToolTip = Localization.GetString("Delete", LocalResourceFile)
+				imgDelete.Attributes.Add("onClick", "javascript:return confirm('" + Localization.GetString("DeleteItem") + "');")
+				imgDelete.CommandArgument = keyForumID.ToString()
 
-			objForum = cntForum.GetForumItemCache(dataItem.ForumID)
+				Dim hlForum As HyperLink = CType((item)("hlName").Controls(0), HyperLink)
+				hlForum.NavigateUrl = Utilities.Links.ContainerViewForumLink(TabId, keyForumID, False)
 
-			hl = CType(e.Item.FindControl("hlName"), HyperLink)
-			hl.Text = dataItem.Subject
-			hl.NavigateUrl = Utilities.Links.ContainerViewForumLink(TabId, dataItem.ForumID, False)
+				Dim hlLastPost As HyperLink = CType((item)("hlLastPost").Controls(0), HyperLink)
+				Dim cntPost As New PostController
+				If keyMostRecentPostID > 0 Then
+					Dim objPost As PostInfo = cntPost.GetPostInfo(keyMostRecentPostID, PortalId)
+					hlLastPost.Text = Utilities.ForumUtils.GetCreatedDateInfo(objPost.CreatedDate, objConfig, "")
+					hlLastPost.NavigateUrl = Utilities.Links.ContainerViewPostLink(TabId, keyForumID, objPost.PostID)
+				Else
+					hlLastPost.Text = "-"
+				End If
+			End If
+		End Sub
 
-			lit = CType(e.Item.FindControl("imgStatus"), Literal)
-			lit.Text = GenerateForumIcon(objForum)
+		Protected Sub gridForumTracking_ItemCommand(ByVal sender As Object, ByVal e As GridCommandEventArgs) Handles gridForumTracking.ItemCommand
+			If e.Item.ItemType = GridItemType.AlternatingItem Or e.Item.ItemType = GridItemType.Item Then
+				Select Case e.CommandName
+					Case "DeleteItem"
+						Dim keyForumID As Integer = CInt(e.Item.OwnerTableView.DataKeyValues(e.Item.ItemIndex)("ForumID"))
+						Dim cntTracking As New TrackingController
+						cntTracking.TrackingForumCreateDelete(keyForumID, ProfileUserID, False, ModuleId)
+						BindForumData(CurrentForumUser.ThreadsPerPage, 0)
+				End Select
+			End If
+		End Sub
 
-			lbl = CType(e.Item.FindControl("lblTotalPosts"), Label)
-			lbl.Text = CStr(objForum.TotalPosts)
-
-			lbl = CType(e.Item.FindControl("lblTotalThreads"), Label)
-			lbl.Text = CStr(objForum.TotalThreads)
-
-			lbl = CType(e.Item.FindControl("lblLastPostInfo"), Label)
-
-			Dim cntForumUser As New ForumUserController
-			Dim objUser As ForumUserInfo = cntForumUser.GetForumUser(dataItem.LastApprovedPosterID, False, ModuleId, PortalId)
-			lbl.Text = LastPostDetails(dataItem.ForumID, dataItem.LastApprovedPostCreatedDate, objUser, dataItem.LastApprovedPostID)
+		Protected Sub gridForumTracking_PageIndexChanged(ByVal sender As Object, ByVal e As GridPageChangedEventArgs) Handles gridForumTracking.PageIndexChanged
+			BindForumData(CurrentForumUser.ThreadsPerPage, e.NewPageIndex)
 		End Sub
 
 		''' <summary>
@@ -215,18 +184,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		End Sub
 
 		''' <summary>
-		''' Changes the selected page for the tracked forums datagrid. 
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
-		Protected Sub ForumPager_Command(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.CommandEventArgs) Handles ForumPager.Command
-			Dim CurrentPage As Int32 = CType(e.CommandArgument, Int32)
-			ForumPager.CurrentPage = CurrentPage
-			BindForumData(ForumPager.PageSize, CurrentPage)
-		End Sub
-
-		''' <summary>
 		''' Changes the selected page of the tracked threads datagrid. 
 		''' </summary>
 		''' <param name="sender"></param>
@@ -266,36 +223,13 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' <remarks></remarks>
 		Private Sub BindForumData(ByVal PageSize As Integer, ByVal CurrentPage As Integer)
 			Dim TrackCtl As New TrackingController
-			Dim arrForums As New List(Of TrackingInfo)
-			arrForums = TrackCtl.TrackingForumGetAll(ProfileUserID, ModuleId, PageSize, CurrentPage - 1)
+			Dim colTrackedForums As New List(Of ForumInfo)
+			colTrackedForums = TrackCtl.GetUsersForumsTracked(ProfileUserID, ModuleId, PageSize, CurrentPage)
 
-			If Not arrForums Is Nothing Then
-				If arrForums.Count > 0 Then
-					Dim objBookmarks As TrackingInfo = arrForums.Item(0)
+			gridForumTracking.DataSource = colTrackedForums
+			gridForumTracking.DataBind()
 
-					dgForums.DataKeyField = "ForumID"
-					dgForums.DataSource = arrForums
-					dgForums.DataBind()
-
-					cmdForumRemove.Visible = True
-					dgForums.Visible = True
-					ForumPager.TotalRecords = objBookmarks.TotalRecords
-					ForumPager.Visible = True
-					lblForums.Visible = False
-				Else
-					cmdForumRemove.Visible = False
-					dgForums.Visible = False
-					ForumPager.Visible = False
-					lblForums.Text = "<br />" & Localization.GetString("NoForums", Me.LocalResourceFile)
-					lblForums.Visible = True
-				End If
-			Else
-				cmdForumRemove.Visible = False
-				dgForums.Visible = False
-				ForumPager.Visible = False
-				lblForums.Text = "<br />" & Localization.GetString("NoForums", Me.LocalResourceFile)
-				lblForums.Visible = True
-			End If
+			gridForumTracking.VirtualItemCount = colTrackedForums(0).TotalRecords
 		End Sub
 
 		''' <summary>
@@ -500,6 +434,14 @@ Namespace DotNetNuke.Modules.Forum.UCP
 			str += "<img src=""" & ImageUrl & """ border=""0"" alt=""" & Tooltip & """ title=""" & Tooltip & """ /></a>"
 			Return str
 		End Function
+
+		Private Sub SetLocalization()
+			For Each gc As GridColumn In gridForumTracking.MasterTableView.Columns
+				If gc.HeaderText <> "" Then
+					gc.HeaderText = Localization.GetString(gc.HeaderText + ".Header", LocalResourceFile)
+				End If
+			Next
+		End Sub
 
 #End Region
 

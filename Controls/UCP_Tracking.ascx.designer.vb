@@ -51,40 +51,13 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		Protected WithEvents rpvForums As Global.Telerik.Web.UI.RadPageView
 
 		'''<summary>
-		'''lblForums control.
+		'''gridForumTracking control.
 		'''</summary>
 		'''<remarks>
 		'''Auto-generated field.
 		'''To modify move field declaration from designer file to code-behind file.
 		'''</remarks>
-		Protected WithEvents lblForums As Global.System.Web.UI.WebControls.Label
-
-		'''<summary>
-		'''dgForums control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents dgForums As Global.System.Web.UI.WebControls.DataGrid
-
-		'''<summary>
-		'''ForumPager control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents ForumPager As Global.DotNetNuke.Modules.Forum.WebControls.AjaxPager
-
-		'''<summary>
-		'''cmdForumRemove control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdForumRemove As Global.System.Web.UI.WebControls.LinkButton
+		Protected WithEvents gridForumTracking As Global.DotNetNuke.Web.UI.WebControls.DnnGrid
 
 		'''<summary>
 		'''rpvThreads control.

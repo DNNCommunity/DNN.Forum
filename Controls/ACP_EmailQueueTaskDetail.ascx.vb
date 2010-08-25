@@ -203,8 +203,11 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
 			If Not colEmailTasks Is Nothing Then
 				rgTaskDetails.DataSource = colEmailTasks
-				rgTaskDetails.MasterTableView.VirtualItemCount = colEmailTasks(0).TotalRecords
-
+				If colEmailTasks.Count > 0 Then
+					rgTaskDetails.MasterTableView.VirtualItemCount = colEmailTasks(0).TotalRecords
+				Else
+					rgTaskDetails.MasterTableView.VirtualItemCount = 0
+				End If
 				If BindIt Then
 					rgTaskDetails.DataBind()
 				End If

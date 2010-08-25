@@ -625,17 +625,17 @@ Namespace DotNetNuke.Modules.Forum
 		''' System avatar is accessible only to module admin.
 		''' </summary>
 		''' <remarks></remarks>
-		System
+		System = 0
 		''' <summary>
 		''' Users assign their own avatars.
 		''' </summary>
 		''' <remarks></remarks>
-		User
+		User = 1
 		''' <summary>
 		''' Avatars assigned by role, only accessible to module admin.
 		''' </summary>
 		''' <remarks></remarks>
-		Role
+		Role = 2
 	End Enum
 
 	''' <summary>
@@ -643,31 +643,31 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks></remarks>
 	Public Enum ForumPage
-		ACP
-		ContainerHome
-		ContainerSingleGroup
-		ContainerThread
-		ContainerPost
-		ContainerThreadSearch
-		ContainerPortalSearch
+		ACP = 0
+		ContainerHome = 1
+		ContainerSingleGroup = 2
+		ContainerThread = 3
+		ContainerPost = 4
+		ContainerThreadSearch = 5
+		ContainerPortalSearch = 6
 		' soon to be legacy (below)
-		ContainerModQueue
-		ContentRemoved
-		EmailTemplates
-		ForumEdit
-		ForumManage
-		ForumSearch
-		MCP
-		MemberList
-		PostDelete
-		PostEdit
-		PostModerate ' consider load in mcp via ajax
-		PostReport
-		PublicProfile
-		RoleAvatar
-		ThreadMove
-		ThreadSplit
-		UCP
+		ContainerModQueue = 7
+		ContentRemoved = 8
+		EmailTemplates = 9
+		ForumEdit = 10
+		ForumManage = 11
+		ForumSearch = 12
+		MCP = 13
+		MemberList = 14
+		PostDelete = 15
+		PostEdit = 16
+		PostModerate = 17 ' consider load in mcp via ajax
+		PostReport = 18
+		PublicProfile = 19
+		RoleAvatar = 20
+		ThreadMove = 21
+		ThreadSplit = 22
+		UCP = 23
 	End Enum
 
 	''' <summary>
@@ -689,12 +689,12 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks></remarks>
 	Public Enum ModeratorAjaxControl
-		Main
-		ModQueue
-		ReportedPosts
-		BannedUsers
-		ReportedUsers
-		'UntrustedUsers
+		Main = 0
+		ModQueue = 1
+		ReportedPosts = 2
+		BannedUsers = 3
+		ReportedUsers = 4
+		'UntrustedUsers = 5
 	End Enum
 
 	''' <summary>
@@ -702,37 +702,37 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks>Because of core issues, there are a few items not available via Aajx.</remarks>
 	Public Enum AdminAjaxControl
-		Main
-		General
-		Community
-		Attachment
-		RSS
-		SEO
-		ForumManage
+		Main = 0
+		General = 1
+		Community = 2
+		Attachment = 3
+		RSS = 4
+		SEO = 5
+		ForumManage = 6
 		''' <summary>
 		''' 
 		''' </summary>
 		''' <remarks>No Ajax</remarks>
-		ForumEdit
-		Users
-		Avatar
-		RoleAvatar
-		UserSettings
-		UserInterface
-		FilterMain
-		FilterWord
-		Rating
-		Ranking
-		PopStatus
-		EmailSettings
+		ForumEdit = 7
+		Users = 8
+		Avatar = 9
+		RoleAvatar = 10
+		UserSettings = 11
+		UserInterface = 12
+		FilterMain = 13
+		FilterWord = 14
+		Rating = 15
+		Ranking = 16
+		PopStatus = 17
+		EmailSettings = 18
 		''' <summary>
 		''' 
 		''' </summary>
 		''' <remarks>No Ajax</remarks>
-		EmailTemplate
-		EmailQueue
-		EmailQueueTaskDetail
-		EmailSubscribers
+		EmailTemplate = 19
+		EmailQueue = 20
+		EmailQueueTaskDetail = 21
+		EmailSubscribers = 22
 	End Enum
 
 	''' <summary>

@@ -50,17 +50,21 @@ Namespace DotNetNuke.Modules.Forum
 			Return CBO.FillCollection(Of TrackingInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().TrackingThreadGet(UserID, ModuleID, 10000, 0))
 		End Function
 
-		''' <summary>
-		''' Returns dataset needed for UCP Tracking
-		''' </summary>
-		''' <param name="ModuleID"></param>
-		''' <param name="PageIndex"></param>
-		''' <param name="PageSize"></param>
-		''' <param name="UserID"></param>
-		''' <returns></returns>
-		''' <remarks>Added by Skeel</remarks>
-		Public Function TrackingForumGetAll(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As List(Of TrackingInfo)
-			Return CBO.FillCollection(Of TrackingInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().TrackingForumGet(UserID, ModuleID, PageSize, PageIndex))
+		' ''' <summary>
+		' ''' Returns dataset needed for UCP Tracking
+		' ''' </summary>
+		' ''' <param name="ModuleID"></param>
+		' ''' <param name="PageIndex"></param>
+		' ''' <param name="PageSize"></param>
+		' ''' <param name="UserID"></param>
+		' ''' <returns></returns>
+		' ''' <remarks>Added by Skeel</remarks>
+		'Public Function TrackingForumGetAll(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As List(Of TrackingInfo)
+		'	Return CBO.FillCollection(Of TrackingInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().TrackingForumGet(UserID, ModuleID, PageSize, PageIndex))
+		'End Function
+
+		Public Function GetUsersForumsTracked(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As List(Of ForumInfo)
+			Return CBO.FillCollection(Of ForumInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().GetUsersForumsTracked(UserID, ModuleID, PageSize, PageIndex))
 		End Function
 
 		''' <summary>

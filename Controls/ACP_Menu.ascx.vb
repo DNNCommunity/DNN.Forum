@@ -1093,7 +1093,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				If EnableAjax Then
 					cmdEmailSubscribers.RenderControl(wr)
 				Else
-					url = Utilities.Links.ACPControlLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID, AdminAjaxControl.EmailQueueTaskDetail)
+					url = Utilities.Links.ACPControlLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID, AdminAjaxControl.EmailSubscribers)
 					RenderLinkButton(wr, url, Localization.GetString("cmdEmailSubscribers", Me.LocalResourceFile), "Forum_Link")
 				End If
 
@@ -1133,9 +1133,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </summary>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	11/29/2008	Created
-		''' </history>
 		Protected Overrides Sub CreateChildControls()
 			Controls.Clear()
 

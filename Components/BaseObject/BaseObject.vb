@@ -22,14 +22,12 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "ForumBaseObject"
-
-    ''' <summary>
-    ''' The base object is responsible for common methods used to build the forum UI in vb code including:
-    ''' ForumPost, ForumThread, ForumGroup, ForumThreadSearch, ForumPortalSearch, ForumModerate
-    ''' </summary>
-    ''' <remarks>This is loaded by BaseControl.vb which is loaded by DNNForum.vb, which is loaded by forum container.
-    ''' </remarks>
+	''' <summary>
+	''' The base object is responsible for common methods used to build the forum UI in vb code including:
+	''' ForumPost, ForumThread, ForumGroup, ForumThreadSearch, ForumPortalSearch, ForumModerate
+	''' </summary>
+	''' <remarks>This is loaded by BaseControl.vb which is loaded by DNNForum.vb, which is loaded by forum container.
+	''' </remarks>
 	Public Class ForumBaseObject
 		Inherits ForumModuleBase
 
@@ -674,7 +672,5 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 	End Class
-
-#End Region
 
 End Namespace

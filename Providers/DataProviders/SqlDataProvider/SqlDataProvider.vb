@@ -752,6 +752,10 @@ Namespace DotNetNuke.Modules.Forum
 			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Tracking_ForumGet", UserID, ModuleID, PageSize, PageIndex), IDataReader)
 		End Function
 
+		Public Overrides Function GetUsersForumsTracked(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As IDataReader
+			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Tracking_GetUsersForums", UserID, ModuleID, PageSize, PageIndex), IDataReader)
+		End Function
+
 		Public Overrides Function TrackingThreadGet(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As IDataReader
 			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Tracking_ThreadGet", UserID, ModuleID, PageSize, PageIndex), IDataReader)
 		End Function

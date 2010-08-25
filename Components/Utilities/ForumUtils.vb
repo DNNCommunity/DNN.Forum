@@ -886,7 +886,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 #Region "Date/Time Handling"
 
 		''' <summary>
-		''' All time displayed to all users should come through this fuctnion. It convert it to the users preferred timezone and uses "Today/Yesterday" where applicable
+		''' All time displayed to all users should come through this fuctnion. It converts it to the users preferred timezone and uses "Today/Yesterday" where applicable
 		''' </summary>
 		''' <param name="serverPostedDate"></param>
 		''' <param name="objConfig"></param>

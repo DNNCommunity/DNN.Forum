@@ -33,47 +33,49 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Members"
 
-		Dim _GroupID As Integer
-		Dim _ModuleID As Integer
-		Dim _ForumID As Integer
-		Dim _IsActive As Boolean = True
-		Dim _ParentID As Integer
-		Dim _Name As String = Null.NullString
-		Dim _Description As String = Null.NullString
-		Dim _CreatedDate As DateTime = Null.NullDate
-		Dim _CreatedByUser As Integer
-		Dim _IsModerated As Boolean = False
-		Dim _SortOrder As Integer
-		Dim _ForumType As Integer
-		Dim _UpdatedDate As DateTime
-		Dim _UpdatedByUser As Integer
-		Dim _ForumPermissions As DotNetNuke.Modules.Forum.ForumPermissionCollection
-		Dim _PublicPosting As Boolean = True
-		Dim _EnableForumsThreadStatus As Boolean = True
-		Dim _EnableForumsRating As Boolean = True
-		Dim _ForumLink As String
-		Dim _ForumBehavior As DotNetNuke.Modules.Forum.ForumBehavior
-		Dim _EnableRSS As Boolean = True
-		Dim _AllowPolls As Boolean = False
-		Dim _SubForums As Integer
-		Dim _MostRecentPostID As Integer
-		Dim _PostsToModerate As Integer
-		Dim _TotalPosts As Integer
-		Dim _TotalThreads As Integer
-		Dim _PortalID As Integer
+		Private _GroupID As Integer
+		Private _ModuleID As Integer
+		Private _ForumID As Integer
+		Private _IsActive As Boolean = True
+		Private _ParentID As Integer
+		Private _Name As String = Null.NullString
+		Private _Description As String = Null.NullString
+		Private _CreatedDate As DateTime = Null.NullDate
+		Private _CreatedByUser As Integer
+		Private _IsModerated As Boolean = False
+		Private _SortOrder As Integer
+		Private _ForumType As Integer
+		Private _UpdatedDate As DateTime
+		Private _UpdatedByUser As Integer
+		Private _ForumPermissions As DotNetNuke.Modules.Forum.ForumPermissionCollection
+		Private _PublicPosting As Boolean = True
+		Private _EnableForumsThreadStatus As Boolean = True
+		Private _EnableForumsRating As Boolean = True
+		Private _ForumLink As String
+		Private _ForumBehavior As DotNetNuke.Modules.Forum.ForumBehavior
+		Private _EnableRSS As Boolean = True
+		Private _AllowPolls As Boolean = False
+		Private _SubForums As Integer
+		Private _MostRecentPostID As Integer
+		Private _PostsToModerate As Integer
+		Private _TotalPosts As Integer
+		Private _TotalThreads As Integer
+		Private _PortalID As Integer
+
 		' Email
-		Dim _EmailAddress As String
-		Dim _EmailFriendlyFrom As String
-		Dim _NotifyByDefault As Boolean = False
-		Dim _EmailStatusChange As Boolean = False
-		Dim _EmailServer As String
-		Dim _EmailUser As String
-		Dim _EmailPass As String
-		Dim _EmailEnableSSL As Boolean = False
-		Dim _EmailAuth As Integer = 0	' 0 = none (for now, eventually need an enum)
-		Dim _EmailPort As Integer = 110 ' 995 also used for gmail
+		Private _EmailAddress As String
+		Private _EmailFriendlyFrom As String
+		Private _NotifyByDefault As Boolean = False
+		Private _EmailStatusChange As Boolean = False
+		Private _EmailServer As String
+		Private _EmailUser As String
+		Private _EmailPass As String
+		Private _EmailEnableSSL As Boolean = False
+		Private _EmailAuth As Integer = 0	' 0 = none (for now, eventually need an enum)
+		Private _EmailPort As Integer = 110 ' 995 also used for gmail
 		Private _EnableSitemap As Boolean
 		Private _SitemapPriority As Single
+		Private _TotalRecords As Integer
 
 #End Region
 
@@ -611,6 +613,16 @@ Namespace DotNetNuke.Modules.Forum
 				_SitemapPriority = Value
 			End Set
 		End Property
+
+		Public Property TotalRecords() As Integer
+			Get
+				Return _TotalRecords
+			End Get
+			Set(ByVal Value As Integer)
+				_TotalRecords = Value
+			End Set
+		End Property
+
 
 		''' <summary>
 		''' The FROM email addressed used for outgoing emails. 
