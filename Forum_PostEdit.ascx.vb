@@ -536,8 +536,6 @@ Namespace DotNetNuke.Modules.Forum
 							objThread.Terms.Clear()
 							objThread.Terms.AddRange(tsTerms.Terms)
 						End If
-
-
 					Case PostAction.New
 						' not sure this is correct (first line below)
 						ParentPostID = URLPostID
@@ -1355,31 +1353,30 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="IsPublic"></param>
 		''' <remarks>We are only allowing tagging in public forums, because of security concerns in tag search results (we go one level deeper in perms than core).</remarks>
 		Private Sub HandleTaxonomy(ByVal NewThread As Boolean, ByVal PostID As Integer, ByVal IsPublic As Boolean)
+			tsTerms.PortalId = PortalId
+
 			If IsPublic Then
 				If NewThread Then
 					rowTagging.Visible = True
 				Else
 					' we need to see if the thread id = postid. If so, we need to show the terms selector if moderator
-					'If objSecurity.IsForumModerator Then
 					If (PostID = objThread.ThreadID) Then
 						' we are editing the original post in the thread
 						rowTagging.Visible = True
 					End If
-
-					'End If
 				End If
-
-				tsTerms.PortalId = PortalId
 
 				If objThread IsNot Nothing Then
 					tsTerms.Terms = objThread.Terms
 				Else
 					tsTerms.Terms = New List(Of DotNetNuke.Entities.Content.Taxonomy.Term)
 				End If
-				tsTerms.DataBind()
 			Else
+				tsTerms.Terms = New List(Of DotNetNuke.Entities.Content.Taxonomy.Term)
 				rowTagging.Visible = False
 			End If
+
+			tsTerms.DataBind()
 		End Sub
 
 #End Region

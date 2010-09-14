@@ -96,6 +96,11 @@ Namespace DotNetNuke.Modules.Forum
 
 					If fp IsNot Nothing Then
 						HasPrivateViewPerms = ForumPermissionController.HasForumPermission(fp, _HasPrivateViewPerms, UserID, objMod.PortalID, moduleId)
+						If ForumId = 11 Then
+							If HasPrivateViewPerms Then
+								' do nothing
+							End If
+						End If
 						HasRestrictedStartThreadPerms = ForumPermissionController.HasForumPermission(fp, _HasRestrictedStartThreadPerms, UserID, objMod.PortalID, moduleId)
 						HasRestrictedPostReplyPerms = ForumPermissionController.HasForumPermission(fp, _HasRestrictedPostReplyPerms, UserID, objMod.PortalID, moduleId)
 						HasForumModeratePerms = ForumPermissionController.HasForumPermission(fp, _HasForumModeratePerms, UserID, objMod.PortalID, moduleId)
@@ -145,11 +150,13 @@ Namespace DotNetNuke.Modules.Forum
 								For Each objForum As ForumInfo In arrAllForums
 									'CP - Use to see if user is a moderator in any forum. 
 									If objForum IsNot Nothing Then
-										Dim Security As New Forum.ModuleSecurity(moduleId, tabId, objForum.ForumID, UserID)
-										If Security.IsForumModerator Then
-											HasModeratePermisson = True
-											HasUnmoderatedPerms = True
-											Exit For
+										If objForum.ForumID > 0 Then
+											Dim Security As New Forum.ModuleSecurity(moduleId, tabId, objForum.ForumID, UserID)
+											If Security.IsForumModerator Then
+												HasModeratePermisson = True
+												HasUnmoderatedPerms = True
+												Exit For
+											End If
 										End If
 									End If
 								Next

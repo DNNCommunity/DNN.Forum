@@ -609,7 +609,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' 
+		''' Total number of records retrieved with the query. 
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>

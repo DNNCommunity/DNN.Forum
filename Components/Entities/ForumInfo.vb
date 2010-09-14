@@ -20,6 +20,8 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Entities.Modules
+
 Namespace DotNetNuke.Modules.Forum
 
 	''' <summary>
@@ -30,6 +32,7 @@ Namespace DotNetNuke.Modules.Forum
 	''' <remarks>
 	''' </remarks>
 	Public Class ForumInfo
+		Implements IHydratable
 
 #Region "Private Members"
 
@@ -60,8 +63,6 @@ Namespace DotNetNuke.Modules.Forum
 		Private _PostsToModerate As Integer
 		Private _TotalPosts As Integer
 		Private _TotalThreads As Integer
-		Private _PortalID As Integer
-
 		' Email
 		Private _EmailAddress As String
 		Private _EmailFriendlyFrom As String
@@ -503,8 +504,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Property ForumPermissions() As DotNetNuke.Modules.Forum.ForumPermissionCollection
 			Get
-				Dim objFPController As New DotNetNuke.Modules.Forum.ForumPermissionController
-				Return objFPController.GetForumPermissionsCollection(ForumID)
+				Return _ForumPermissions
 			End Get
 			Set(ByVal Value As DotNetNuke.Modules.Forum.ForumPermissionCollection)
 				_ForumPermissions = Value
@@ -622,7 +622,6 @@ Namespace DotNetNuke.Modules.Forum
 				_TotalRecords = Value
 			End Set
 		End Property
-
 
 		''' <summary>
 		''' The FROM email addressed used for outgoing emails. 
@@ -771,6 +770,67 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 			Set(ByVal Value As Integer)
 				_EmailPort = Value
+			End Set
+		End Property
+
+#End Region
+
+#Region "IHydratable Implementation"
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="dr"></param>
+		''' <remarks></remarks>
+		Public Sub Fill(ByVal dr As System.Data.IDataReader) Implements IHydratable.Fill
+			GroupID = Null.SetNullInteger(dr("GroupID"))
+			ModuleID = Null.SetNullInteger(dr("ModuleID"))
+			ForumID = Null.SetNullInteger(dr("ForumID"))
+			IsActive = Null.SetNullBoolean(dr("IsActive"))
+			ParentID = Null.SetNullInteger(dr("ParentID"))
+			Name = Null.SetNullString(dr("Name"))
+			Description = Null.SetNullString(dr("Description"))
+			CreatedDate = Null.SetNullDateTime(dr("CreatedDate"))
+			CreatedByUser = Null.SetNullInteger(dr("CreatedByUser"))
+			SortOrder = Null.SetNullInteger(dr("SortOrder"))
+			ForumType = Null.SetNullInteger(dr("ForumType"))
+			UpdatedByUser = Null.SetNullInteger(dr("UpdatedByUser"))
+			UpdatedDate = Null.SetNullDateTime(dr("UpdatedDate"))
+			ForumLink = Null.SetNullString(dr("ForumLink"))
+			ForumBehavior = CType(Null.SetNullInteger(dr("ForumBehavior")), Forum.ForumBehavior)
+			EnableForumsThreadStatus = Null.SetNullBoolean(dr("EnableForumsThreadStatus"))
+			EnableForumsRating = Null.SetNullBoolean(dr("EnableForumsRating"))
+			AllowPolls = Null.SetNullBoolean(dr("AllowPolls"))
+			EnableRSS = Null.SetNullBoolean(dr("EnableRSS"))
+			MostRecentPostID = Null.SetNullInteger(dr("MostRecentPostID"))
+			PostsToModerate = Null.SetNullInteger(dr("PostsToModerate"))
+			TotalPosts = Null.SetNullInteger(dr("TotalPosts"))
+			TotalThreads = Null.SetNullInteger(dr("TotalThreads"))
+			SubForums = Null.SetNullInteger(dr("SubForums"))
+			EnableSitemap = Null.SetNullBoolean(dr("EnableSitemap"))
+			SitemapPriority = Null.SetNullInteger(dr("SitemapPriority")) '''''''''''''''''''''''''''''''''''''''
+			TotalRecords = Null.SetNullInteger(dr("TotalRecords"))
+			EmailAddress = Null.SetNullString(dr("EmailAddress"))
+			EmailFriendlyFrom = Null.SetNullString(dr("EmailFriendlyFrom"))
+			NotifyByDefault = Null.SetNullBoolean(dr("NotifyByDefault"))
+			EmailStatusChange = Null.SetNullBoolean(dr("EmailStatusChange"))
+			EmailServer = Null.SetNullString(dr("EmailServer"))
+			EmailUser = Null.SetNullString(dr("EmailUser"))
+			EmailPass = Null.SetNullString(dr("EmailPass"))
+			EmailEnableSSL = Null.SetNullBoolean(dr("EmailEnableSSL"))
+			EmailAuth = Null.SetNullInteger(dr("EmailAuth"))
+			EmailPort = Null.SetNullInteger(dr("EmailPort"))
+
+			Dim objFPController As New DotNetNuke.Modules.Forum.ForumPermissionController
+			ForumPermissions = objFPController.GetForumPermissionsCollection(ForumID)
+		End Sub
+
+		Public Property KeyID() As Integer Implements IHydratable.KeyID
+			Get
+				Return ForumID
+			End Get
+			Set(ByVal value As Integer)
+				ForumID = value
 			End Set
 		End Property
 

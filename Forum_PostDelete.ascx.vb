@@ -230,6 +230,7 @@ Namespace DotNetNuke.Modules.Forum
 						Dim Notes As String = txtReason.Text
 						Dim ProfileUrl As String = Utilities.Links.UCP_UserLinks(TabId, ModuleId, UserAjaxControl.Tracking, PortalSettings)
 						Dim url As String = Utilities.Links.ContainerViewForumLink(TabId, ForumID, False)
+						Dim NewThreadID As Integer = ThreadID
 
 						If objConfig.MailNotification Then
 							If chkEmailUsers.Checked Then
@@ -246,7 +247,7 @@ Namespace DotNetNuke.Modules.Forum
 
 							If objThread IsNot Nothing Then
 								' Delete post (SEND MAIL BEFORE DELETE, we need the post still in the db)
-								Dim NewThreadID As Integer = cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objPost.Author.UserID)
+								NewThreadID = cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objPost.Author.UserID)
 								Dim objContent As ContentItem
 								objContent = DotNetNuke.Entities.Content.Common.Util.GetContentController().GetContentItem(objThread.ContentItemId)
 								objContent.ContentKey = "forumid=" + objThread.ForumID.ToString() + "&threadid=" + NewThreadID.ToString() + "&scope=posts"
@@ -254,11 +255,11 @@ Namespace DotNetNuke.Modules.Forum
 							End If
 						Else
 							' Delete post (SEND MAIL BEFORE DELETE, we need the post still in the db)
-							cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objPost.Author.UserID)
+							NewThreadID = cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objPost.Author.UserID)
 						End If
 
 						Forum.Components.Utilities.Caching.UpdatePostCache(objPost.PostID, ThreadID, ForumID, objPost.ParentThread.ContainingForum.GroupID, ModuleId, objPost.ParentThread.ContainingForum.ParentID)
-						Response.Redirect(GetReturnURL(ThreadID, ForumID), True)
+						Response.Redirect(GetReturnURL(NewThreadID, ForumID), True)
 					End If
 				End If
 			Catch exc As Exception
@@ -417,7 +418,7 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 				End If
 			Else
-				If _IsThreadDelete Then
+				If _IsThreadDelete Or ThreadID = -1 Then
 					url = Utilities.Links.ContainerViewForumLink(TabId, ForumID, False)
 				Else
 					' behave as before (normal usage)
