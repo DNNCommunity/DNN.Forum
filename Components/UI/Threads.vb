@@ -1393,8 +1393,7 @@ Namespace DotNetNuke.Modules.Forum
 			RenderCellEnd(wr) ' </td>
 			RenderRowEnd(wr) ' </tr>
 
-			' Display tracking option if user is authenticated and thread count > 0
-			' CP - Removed (Total Records > 0) as why shouldn't a user be able to subscribe to a new forum
+			' Display tracking option if user is authenticated 
 			If (CurrentForumUser.UserID > 0) And (objConfig.MailNotification) And (ForumID <> -1) Then
 				' check email
 				RenderRowBegin(wr) ' <tr>
@@ -1406,19 +1405,6 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 
 				chkEmail.RenderControl(wr)
-
-				'' We check if user is subscribed in this forum
-				'Dim blnTrackedForum As Boolean = False
-
-				'For Each objTrackedForum As TrackingInfo In ForumControl.LoggedOnUser.TrackedForums
-				'	If objTrackedForum.ForumID = ForumId Then
-				'		blnTrackedForum = True
-				'		Exit For
-				'	End If
-				'Next
-
-				'chkEmail.Visible = True
-				'chkEmail.Checked = blnTrackedForum
 
 				RenderCellEnd(wr) ' </td>
 				RenderRowEnd(wr) ' </tr>

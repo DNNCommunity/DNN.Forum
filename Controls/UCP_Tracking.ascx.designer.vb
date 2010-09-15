@@ -69,39 +69,12 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		Protected WithEvents rpvThreads As Global.Telerik.Web.UI.RadPageView
 
 		'''<summary>
-		'''lblThreads control.
+		'''gridThreadTracking control.
 		'''</summary>
 		'''<remarks>
 		'''Auto-generated field.
 		'''To modify move field declaration from designer file to code-behind file.
 		'''</remarks>
-		Protected WithEvents lblThreads As Global.System.Web.UI.WebControls.Label
-
-		'''<summary>
-		'''dgThreads control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents dgThreads As Global.System.Web.UI.WebControls.DataGrid
-
-		'''<summary>
-		'''ThreadPager control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents ThreadPager As Global.DotNetNuke.Modules.Forum.WebControls.AjaxPager
-
-		'''<summary>
-		'''cmdThreadRemove control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdThreadRemove As Global.System.Web.UI.WebControls.LinkButton
+		Protected WithEvents gridThreadTracking As Global.DotNetNuke.Web.UI.WebControls.DnnGrid
 	End Class
 End Namespace

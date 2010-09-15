@@ -47,12 +47,14 @@ Namespace DotNetNuke.Modules.Forum.UCP
 					ctlSystemAvatar.Security = objSecurity
 					ctlSystemAvatar.AvatarType = AvatarControlType.System
 					ctlSystemAvatar.ModuleID = ModuleId
+					ctlSystemAvatar.ProfileUserID = ProfileUserID
 				End If
 			End If
 
 			ctlUserAvatar.Security = objSecurity
 			ctlUserAvatar.AvatarType = AvatarControlType.User
 			ctlUserAvatar.ModuleID = ModuleId
+			ctlUserAvatar.ProfileUserID = ProfileUserID
 
 			' Hide the avatar if we are using profile avatars. 
 			If objConfig.EnableProfileAvatar Then
@@ -85,13 +87,10 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' </remarks>
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
-				DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(ProfileUserID, PortalId)
 				Dim cntForumUser As New ForumUserController
-
 				Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
 				With ProfileUser
-
 					'Was the avatar removed?
 					If ctlUserAvatar.Images.Replace(";", "") = String.Empty Then
 						.UserAvatar = UserAvatarType.None
@@ -106,11 +105,9 @@ Namespace DotNetNuke.Modules.Forum.UCP
 					End If
 					.Avatar = ctlUserAvatar.Images
 					.SystemAvatars = ctlSystemAvatar.Images
-
 				End With
 
-				Dim cntUser As New ForumUserController
-				cntUser.Update(ProfileUser)
+				cntForumUser.Update(ProfileUser)
 
 				DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(ProfileUser.UserID, PortalId)
 				lblUpdateDone.Visible = True

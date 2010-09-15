@@ -31,9 +31,6 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	''' <history>
-	''' 	[cpaterra]	8/6/2006	Created
-	''' </history>
 	Public Class ForumPermissionController
 
 		Private Const ForumInfoCacheTimeout As Integer = 20
