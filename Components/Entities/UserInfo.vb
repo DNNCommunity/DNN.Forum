@@ -168,10 +168,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public ReadOnly Property TrackedForums() As List(Of TrackingInfo)
+		Public ReadOnly Property TrackedForums(ByVal ModuleID As Integer) As List(Of TrackingInfo)
 			Get
 				Dim ctlForumTracking As New TrackingController
-				Dim lstTracking As List(Of TrackingInfo) = ctlForumTracking.TrackingForumGet(UserID, objConfig.ModuleID)
+				Dim lstTracking As List(Of TrackingInfo) = ctlForumTracking.TrackingForumGet(UserID, ModuleID)
 				Return lstTracking
 			End Get
 		End Property
@@ -182,10 +182,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public ReadOnly Property TrackedThreads() As List(Of TrackingInfo)
+		Public ReadOnly Property TrackedThreads(ByVal ModuleID As Integer) As List(Of TrackingInfo)
 			Get
 				Dim ctlForumTracking As New TrackingController
-				Dim lstTracking As List(Of TrackingInfo) = ctlForumTracking.TrackingThreadGet(UserID, objConfig.ModuleID)
+				Dim lstTracking As List(Of TrackingInfo) = ctlForumTracking.TrackingThreadGet(UserID, ModuleID)
 				Return lstTracking
 			End Get
 		End Property

@@ -5,6 +5,7 @@
 <%@ Register TagPrefix="forum" TagName="ACPmenu" src="~/DesktopModules/Forum/Controls/ACP_Menu.ascx" %>
 <%@ Control language="vb" CodeBehind="ACP_ForumEdit.ascx.vb" AutoEventWireup="false" Explicit="true" Inherits="DotNetNuke.Modules.Forum.ACP.ForumEdit" %>
 <%@ Register TagPrefix="DNN" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke.WebControls" %>
+<%@ Register Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
 <%@ Register assembly="Telerik.Web.UI" namespace="Telerik.Web.UI" tagprefix="telerik" %>
 <div class="ACP-ForumEdit">
     <table cellpadding="0" cellspacing="0" width="100%" border="0" class="Forum_SearchContainer" >
@@ -220,8 +221,7 @@
 												</span>
 											</td>
 											<td align="left">
-												<asp:TextBox ID="txtSitemapPriority" runat="server" MaxLength="6" Width="50px" />
-												<asp:RangeValidator ID="valNumeric" runat="server" ControlToValidate="txtSitemapPriority" MaximumValue="1.0" MinimumValue="0" Type="Double" resourcekey="NumericValidation.ErrorMessage" Display="Dynamic" CssClass="NormalRed"/>
+												<telerik:RadNumericTextBox ID="textSitemapPriority" runat="server" MinValue="0" MaxValue="1" />
 											</td>
 										</tr>
 										<tr id="rowPermissions" runat="server">

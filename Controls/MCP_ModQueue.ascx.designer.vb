@@ -15,57 +15,12 @@ Namespace DotNetNuke.Modules.Forum.MCP
 	Partial Public Class ModQueue
 
 		'''<summary>
-		'''pnlModQueue control.
+		'''gridPostsToModerate control.
 		'''</summary>
 		'''<remarks>
 		'''Auto-generated field.
 		'''To modify move field declaration from designer file to code-behind file.
 		'''</remarks>
-		Protected WithEvents pnlModQueue As Global.System.Web.UI.WebControls.Panel
-
-		'''<summary>
-		'''dgModQueue control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents dgModQueue As Global.System.Web.UI.WebControls.DataGrid
-
-		'''<summary>
-		'''BottomPager control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents BottomPager As Global.DotNetNuke.Modules.Forum.WebControls.AjaxPager
-
-		'''<summary>
-		'''pnlNoItems control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents pnlNoItems As Global.System.Web.UI.WebControls.Panel
-
-		'''<summary>
-		'''lblInbox control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblInbox As Global.System.Web.UI.WebControls.Label
-
-		'''<summary>
-		'''lblNoResults control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblNoResults As Global.System.Web.UI.WebControls.Label
+		Protected WithEvents gridPostsToModerate As Global.DotNetNuke.Web.UI.WebControls.DnnGrid
 	End Class
 End Namespace

@@ -537,22 +537,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected WithEvents plSitemapPriority As Global.DotNetNuke.UI.UserControls.LabelControl
 
 		'''<summary>
-		'''txtSitemapPriority control.
+		'''textSitemapPriority control.
 		'''</summary>
 		'''<remarks>
 		'''Auto-generated field.
 		'''To modify move field declaration from designer file to code-behind file.
 		'''</remarks>
-		Protected WithEvents txtSitemapPriority As Global.System.Web.UI.WebControls.TextBox
-
-		'''<summary>
-		'''valNumeric control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valNumeric As Global.System.Web.UI.WebControls.RangeValidator
+		Protected WithEvents textSitemapPriority As Global.Telerik.Web.UI.RadNumericTextBox
 
 		'''<summary>
 		'''rowPermissions control.

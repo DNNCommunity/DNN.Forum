@@ -25,6 +25,7 @@ Namespace DotNetNuke.Modules.Forum
 	''' <summary>
 	''' Communicates with the Forum_Bookmarks table in the data store.
 	''' </summary>
+	''' NOTE: This will be replaced with a core 'favorites' control in the future. 
 	Public Class BookmarkController
 
 #Region " Public Methods "
@@ -37,25 +38,23 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="Add"></param>
 		''' <param name="ModuleID"></param>
 		''' <remarks></remarks>
-		Public Sub BookmarkCreateDelete(ByVal ThreadID As Integer, ByVal UserID As Integer, ByVal Add As Boolean, ByVal ModuleID As Integer)
+		Friend Sub BookmarkCreateDelete(ByVal ThreadID As Integer, ByVal UserID As Integer, ByVal Add As Boolean, ByVal ModuleID As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().BookmarkCreateDelete(ThreadID, UserID, Add, ModuleID)
 		End Sub
 
 		''' <summary>
 		''' Returns dataset needed for UCP Bookmarks
 		''' </summary>
-		''' <param name="ForumMemberName"></param>
 		''' <param name="ModuleID"></param>
 		''' <param name="PageIndex"></param>
 		''' <param name="PageSize"></param>
 		''' <param name="UserID"></param>
 		''' <returns></returns>
-		''' <remarks>Added by Skeel</remarks>
-		Public Function BookmarkThreadGet(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal ForumMemberName As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As List(Of TrackingInfo)
+		Friend Function BookmarkThreadGet(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As List(Of TrackingInfo)
 			Dim objThreads As New List(Of TrackingInfo)
 			Dim dr As IDataReader = Nothing
 			Try
-				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().BookmarkThreadGet(UserID, ModuleID, ForumMemberName, PageSize, PageIndex)
+				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().BookmarkThreadGet(UserID, ModuleID, PageSize, PageIndex)
 				While dr.Read
 					Dim objTrackingInfo As TrackingInfo = FillTrackingInfo(dr)
 					objThreads.Add(objTrackingInfo)
@@ -80,7 +79,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ModuleID"></param>
 		''' <returns></returns>
 		''' <remarks>Added by Skeel</remarks>
-		Public Function BookmarkCheck(ByVal UserID As Integer, ByVal ThreadID As Integer, ByVal ModuleID As Integer) As Boolean
+		Friend Function BookmarkCheck(ByVal UserID As Integer, ByVal ThreadID As Integer, ByVal ModuleID As Integer) As Boolean
 			Dim bookmarked As Boolean
 			bookmarked = DotNetNuke.Modules.Forum.DataProvider.Instance().BookmarkCheck(UserID, ThreadID, ModuleID)
 			Return bookmarked
@@ -95,7 +94,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <param name="dr">The datareader to populate the TrackingInfo object.</param>
 		''' <returns>A TrackingInfo object populated from a datareader.</returns>
-		''' <remarks>Added by Skeel</remarks>
 		Private Function FillTrackingInfo(ByVal dr As IDataReader) As TrackingInfo
 			Dim objThreadInfo As New TrackingInfo
 
@@ -104,15 +102,7 @@ Namespace DotNetNuke.Modules.Forum
 			Catch
 			End Try
 			Try
-				objThreadInfo.LastApprovedPostCreatedDate = Convert.ToDateTime(Null.SetNull(dr("LastApprovedPostCreatedDate"), objThreadInfo.LastApprovedPostCreatedDate))
-			Catch
-			End Try
-			Try
-				objThreadInfo.LastApprovedPosterID = Convert.ToInt32(Null.SetNull(dr("LastApprovedPosterID"), objThreadInfo.LastApprovedPosterID))
-			Catch
-			End Try
-			Try
-				objThreadInfo.LastApprovedPostID = Convert.ToInt32(Null.SetNull(dr("LastApprovedPostID"), objThreadInfo.LastApprovedPostID))
+				objThreadInfo.MostRecentPostID = Convert.ToInt32(Null.SetNull(dr("MostRecentPostID"), objThreadInfo.MostRecentPostID))
 			Catch
 			End Try
 			Try
@@ -129,6 +119,10 @@ Namespace DotNetNuke.Modules.Forum
 			End Try
 			Try
 				objThreadInfo.UserID = Convert.ToInt32(Null.SetNull(dr("UserID"), objThreadInfo.UserID))
+			Catch
+			End Try
+			Try
+				objThreadInfo.TotalPosts = Convert.ToInt32(Null.SetNull(dr("TotalPosts"), objThreadInfo.TotalPosts))
 			Catch
 			End Try
 			Try

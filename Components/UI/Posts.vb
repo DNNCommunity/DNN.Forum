@@ -948,7 +948,7 @@ Namespace DotNetNuke.Modules.Forum
 					' display tracking option only if user is authenticated and the forum module allows tracking
 					If objConfig.MailNotification Then
 						' check to see if the user is tracking at the forum level
-						For Each objTrackForum As TrackingInfo In CurrentForumUser.TrackedForums
+						For Each objTrackForum As TrackingInfo In CurrentForumUser.TrackedForums(ModuleID)
 							If objTrackForum.ForumID = ForumID Then
 								TrackedForum = True
 								Exit For
@@ -956,7 +956,7 @@ Namespace DotNetNuke.Modules.Forum
 						Next
 
 						If Not TrackedForum Then
-							Dim arrTrackThreads As List(Of TrackingInfo) = CurrentForumUser.TrackedThreads
+							Dim arrTrackThreads As List(Of TrackingInfo) = CurrentForumUser.TrackedThreads(ModuleID)
 							Dim objTrackThread As TrackingInfo
 
 							' check to see if the user is tracking at the thread level

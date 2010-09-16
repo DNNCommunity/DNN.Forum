@@ -24,39 +24,12 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
 		'''<summary>
-		'''lblInfo control.
+		'''gridBookmarks control.
 		'''</summary>
 		'''<remarks>
 		'''Auto-generated field.
 		'''To modify move field declaration from designer file to code-behind file.
 		'''</remarks>
-		Protected WithEvents lblInfo As Global.System.Web.UI.WebControls.Label
-
-		'''<summary>
-		'''dgBookmarks control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents dgBookmarks As Global.System.Web.UI.WebControls.DataGrid
-
-		'''<summary>
-		'''BottomPager control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents BottomPager As Global.DotNetNuke.Modules.Forum.WebControls.AjaxPager
-
-		'''<summary>
-		'''cmdRemove control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdRemove As Global.System.Web.UI.WebControls.LinkButton
+		Protected WithEvents gridBookmarks As Global.DotNetNuke.Web.UI.WebControls.DnnGrid
 	End Class
 End Namespace

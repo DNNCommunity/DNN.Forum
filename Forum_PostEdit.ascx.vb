@@ -378,7 +378,7 @@ Namespace DotNetNuke.Modules.Forum
 								' handle Forum tracking
 								Dim blnTrackedForum As Boolean = False
 
-								For Each trackedForum As TrackingInfo In CurrentForumUser.TrackedForums
+								For Each trackedForum As TrackingInfo In CurrentForumUser.TrackedForums(ModuleId)
 									If trackedForum.ForumID = ForumID Then
 										blnTrackedForum = True
 										Exit For
@@ -393,7 +393,7 @@ Namespace DotNetNuke.Modules.Forum
 										Case PostAction.Edit
 											' user may already be tracking the thread
 											' we may not have threadID, we definately have postid
-											For Each trackedThread As TrackingInfo In CurrentForumUser.TrackedThreads
+											For Each trackedThread As TrackingInfo In CurrentForumUser.TrackedThreads(ModuleId)
 												If trackedThread.ThreadID = objThread.ThreadID Then
 													blnTrackedThread = True
 													Exit For
@@ -404,7 +404,7 @@ Namespace DotNetNuke.Modules.Forum
 										Case Else	  ' reply/quote
 											' user may already be tracking the thread
 											' we may not have threadID, we definately have postid
-											For Each trackedThread As TrackingInfo In CurrentForumUser.TrackedThreads
+											For Each trackedThread As TrackingInfo In CurrentForumUser.TrackedThreads(ModuleId)
 												If trackedThread.ThreadID = objThread.ThreadID Then
 													blnTrackedThread = True
 													Exit For

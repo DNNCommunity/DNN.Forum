@@ -200,7 +200,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 							txtEmailAddress.Text = objConfig.AutomatedEmailAddress
 							txtEmailFriendlyFrom.Text = objConfig.EmailAddressDisplayName
 							chkEnableRSS.Checked = objConfig.EnableRSS
-							txtSitemapPriority.Text = objConfig.SitemapPriority.ToString()
+							textSitemapPriority.Value = objConfig.SitemapPriority
 
 							SetPageView(False)
 							Dim objForum As ForumInfo = New ForumInfo
@@ -212,18 +212,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 							Exit Sub
 						End If
 					End If
-
-					'tblGeneral.Visible = True
-					'cmdGeneral.Enabled = False
-					'tblBehavior.Visible = False
-					'cmdBehavior.Enabled = True
-					'tblEmail.Visible = False
-
-					'If objConfig.MailNotification And objConfig.EnablePerForumFrom Then
-					'	cmdEmail.Enabled = True
-					'Else
-					'	cmdEmail.Enabled = False
-					'End If
 				End If
 			Catch exc As Exception
 				ProcessModuleLoadException(Me, exc)
@@ -284,12 +272,11 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				.EmailUser = txtEmailUser.Text
 				.EmailPass = txtEmailPass.Text
 				.EnableSitemap = chkEnableSitemap.Checked
-				If txtSitemapPriority.Text <> "" Then
-					.SitemapPriority = Convert.ToSingle(txtSitemapPriority.Text)
+				If textSitemapPriority.Text <> "" Then
+					.SitemapPriority = CType(textSitemapPriority.Value, Single)
 				Else
 					.SitemapPriority = 0.5
 				End If
-
 
 				If Not txtEmailPort.Text.Trim = String.Empty Then
 					.EmailPort = CType(txtEmailPort.Text, Integer)
@@ -362,8 +349,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				.EmailUser = txtEmailUser.Text
 				.EmailPass = txtEmailPass.Text
 				.EnableSitemap = chkEnableSitemap.Checked
-				If txtSitemapPriority.Text <> "" Then
-					.SitemapPriority = Convert.ToSingle(txtSitemapPriority.Text)
+				If textSitemapPriority.Text <> "" Then
+					.SitemapPriority = Convert.ToSingle(textSitemapPriority.Text)
 				Else
 					.SitemapPriority = 0.5
 				End If
@@ -599,12 +586,14 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				txtEmailPass.Text = .EmailPass
 				txtEmailPort.Text = .EmailPort.ToString()
 				chkEmailEnableSSL.Checked = .EmailEnableSSL
-				'ddlEmailAuth.SelectedValue = .EmailAuth.ToString()
 				' sitemap
 				chkEnableSitemap.Checked = .EnableSitemap
-				txtSitemapPriority.Text = .SitemapPriority.ToString()
+				If .SitemapPriority > 1 Then
+					textSitemapPriority.Value = 0.5
+				Else
+					textSitemapPriority.Value = .SitemapPriority
+				End If
 
-				'Dim i As Integer = .ParentID
 				If .SubForums = 0 AndAlso .ForumType <> ForumType.Link Then
 					BindParentForums()
 					If .IsParentForum Or (.TotalThreads = 0) Then

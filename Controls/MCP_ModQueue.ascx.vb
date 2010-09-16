@@ -18,7 +18,9 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 Option Strict On
-Option Explicit On 
+Option Explicit On
+
+Imports Telerik.Web.UI
 
 Namespace DotNetNuke.Modules.Forum.MCP
 
@@ -44,8 +46,6 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		''' </summary>
 		''' <remarks>So far this is a static page</remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
-			Localization.LocalizeDataGrid(dgModQueue, Me.LocalResourceFile)
-			BottomPager.PageSize = Convert.ToInt32(CurrentForumUser.ThreadsPerPage)
 			BindData()
 		End Sub
 
@@ -54,32 +54,29 @@ Namespace DotNetNuke.Modules.Forum.MCP
 #Region "Event Handlers"
 
 		''' <summary>
-		''' Used to set properties for various sever controls used in the grid's template.
+		''' Runs when the control is initialized, even before anything in LoadInitialView runs. 
+		''' </summary>
+		''' <param name="sender"></param>
+		''' <param name="e"></param>
+		''' <remarks>All controls containing grids should localize the grid headers here. </remarks>
+		Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+			SetLocalization()
+		End Sub
+
+		''' <summary>
+		''' Alters data as it is bound to the grid.
 		''' </summary>
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
 		''' <remarks></remarks>
-		Protected Sub dgModQueue_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles dgModQueue.ItemDataBound
-			If e.Item.ItemType <> ListItemType.AlternatingItem AndAlso e.Item.ItemType <> ListItemType.Item Then Exit Sub
+		Protected Sub gridPostsToModerate_ItemDataBound(ByVal sender As Object, ByVal e As GridItemEventArgs) Handles gridPostsToModerate.ItemDataBound
+			If TypeOf e.Item Is GridDataItem Then
+				Dim item As GridDataItem = CType(e.Item, GridDataItem)
+				Dim keyForumID As Integer = CInt(e.Item.OwnerTableView.DataKeyValues(item.ItemIndex)("ForumID"))
 
-			Dim dataItem As ForumInfo = CType(e.Item.DataItem, ForumInfo)
-
-			Dim img As System.Web.UI.WebControls.Image
-			Dim hl As HyperLink
-			Dim url As String
-
-			url = Utilities.Links.ContainerPostToModerateLink(TabId, dataItem.ForumID, ModuleId)
-
-			hl = CType(e.Item.FindControl("hlStatus"), HyperLink)
-			hl.NavigateUrl = url
-
-			img = CType(e.Item.FindControl("imgStatus"), Image)
-			img.ToolTip = Services.Localization.Localization.GetString("imgStatus.Text", LocalResourceFile)
-			img.ImageUrl = objConfig.GetThemeImageURL("s_postunread.") & objConfig.ImageExtension
-
-			hl = CType(e.Item.FindControl("hlSubject"), HyperLink)
-			hl.Text = dataItem.Name
-			hl.NavigateUrl = url
+				Dim hlForum As HyperLink = CType((item)("hlName").Controls(0), HyperLink)
+				hlForum.NavigateUrl = Utilities.Links.ContainerPostToModerateLink(TabId, keyForumID, ModuleId)
+			End If
 		End Sub
 
 #End Region
@@ -92,28 +89,30 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		''' <remarks></remarks>
 		Private Sub BindData()
 			Dim ctlModerate As New PostModerationController
-			Dim arrPostsToModerate As List(Of ForumInfo)
+			Dim colForums As List(Of ForumInfo)
 
-			arrPostsToModerate = ctlModerate.ModerateForumGetByModeratorThreads(CurrentForumUser.UserID, ModuleId, PortalId)
+			colForums = ctlModerate.ModerateForumGetByModeratorThreads(CurrentForumUser.UserID, ModuleId, PortalId)
 
-			If Not arrPostsToModerate Is Nothing Then
-				If arrPostsToModerate.Count > 0 Then
-					dgModQueue.DataKeyField = "ForumID"
-					dgModQueue.DataSource = arrPostsToModerate
-					dgModQueue.DataBind()
+			gridPostsToModerate.DataSource = colForums
+			gridPostsToModerate.DataBind()
 
-					BottomPager.TotalRecords = 1
-					dgModQueue.Visible = True
-					pnlNoItems.Visible = False
-					pnlModQueue.Visible = True
-				Else
-					pnlNoItems.Visible = True
-					pnlModQueue.Visible = False
-				End If
+			If colForums.Count > 0 Then
+				gridPostsToModerate.VirtualItemCount = colForums(0).TotalRecords
 			Else
-				pnlNoItems.Visible = True
-				pnlModQueue.Visible = False
+				gridPostsToModerate.VirtualItemCount = 0
 			End If
+		End Sub
+
+		''' <summary>
+		''' Localizes the data grid headers for all grids on the page (that utilize Telerik).
+		''' </summary>
+		''' <remarks></remarks>
+		Private Sub SetLocalization()
+			For Each gc As GridColumn In gridPostsToModerate.MasterTableView.Columns
+				If gc.HeaderText <> "" Then
+					gc.HeaderText = Localization.GetString(gc.HeaderText + ".Header", LocalResourceFile)
+				End If
+			Next
 		End Sub
 
 #End Region

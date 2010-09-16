@@ -35,7 +35,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ModuleID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Function TrackingForumGet(ByVal UserID As Integer, ByVal ModuleID As Integer) As List(Of TrackingInfo)
+		Friend Function TrackingForumGet(ByVal UserID As Integer, ByVal ModuleID As Integer) As List(Of TrackingInfo)
 			Return CBO.FillCollection(Of TrackingInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().TrackingForumGet(UserID, ModuleID, 10000, 0))
 		End Function
 
@@ -46,24 +46,20 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="ModuleID"></param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Function TrackingThreadGet(ByVal UserID As Integer, ByVal ModuleID As Integer) As List(Of TrackingInfo)
+		Friend Function TrackingThreadGet(ByVal UserID As Integer, ByVal ModuleID As Integer) As List(Of TrackingInfo)
 			Return CBO.FillCollection(Of TrackingInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().TrackingThreadGet(UserID, ModuleID, 10000, 0))
 		End Function
 
-		' ''' <summary>
-		' ''' Returns dataset needed for UCP Tracking
-		' ''' </summary>
-		' ''' <param name="ModuleID"></param>
-		' ''' <param name="PageIndex"></param>
-		' ''' <param name="PageSize"></param>
-		' ''' <param name="UserID"></param>
-		' ''' <returns></returns>
-		' ''' <remarks>Added by Skeel</remarks>
-		'Public Function TrackingForumGetAll(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As List(Of TrackingInfo)
-		'	Return CBO.FillCollection(Of TrackingInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().TrackingForumGet(UserID, ModuleID, PageSize, PageIndex))
-		'End Function
-
-		Public Function GetUsersForumsTracked(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As List(Of ForumInfo)
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="UserID"></param>
+		''' <param name="ModuleID"></param>
+		''' <param name="PageSize"></param>
+		''' <param name="PageIndex"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Friend Function GetUsersForumsTracked(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As List(Of ForumInfo)
 			Return CBO.FillCollection(Of ForumInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().GetUsersForumsTracked(UserID, ModuleID, PageSize, PageIndex))
 		End Function
 
@@ -76,7 +72,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="UserID"></param>
 		''' <returns></returns>
 		''' <remarks>Added by Skeel</remarks>
-		Public Function TrackingThreadGetAll(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As List(Of TrackingInfo)
+		Friend Function TrackingThreadGetAll(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As List(Of TrackingInfo)
 			Return CBO.FillCollection(Of TrackingInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().TrackingThreadGet(UserID, ModuleID, PageSize, PageIndex))
 		End Function
 
@@ -88,7 +84,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="Add"></param>
 		''' <param name="ModuleID"></param>
 		''' <remarks></remarks>
-		Public Sub TrackingForumCreateDelete(ByVal ForumID As Integer, ByVal UserID As Integer, ByVal Add As Boolean, ByVal ModuleID As Integer)
+		Friend Sub TrackingForumCreateDelete(ByVal ForumID As Integer, ByVal UserID As Integer, ByVal Add As Boolean, ByVal ModuleID As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().TrackingForumCreateDelete(ForumID, UserID, Add, ModuleID)
 		End Sub
 
@@ -101,7 +97,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="Add"></param>
 		''' <param name="ModuleID"></param>
 		''' <remarks></remarks>
-		Public Sub TrackingThreadCreateDelete(ByVal ForumID As Integer, ByVal ThreadID As Integer, ByVal UserID As Integer, ByVal Add As Boolean, ByVal ModuleID As Integer)
+		Friend Sub TrackingThreadCreateDelete(ByVal ForumID As Integer, ByVal ThreadID As Integer, ByVal UserID As Integer, ByVal Add As Boolean, ByVal ModuleID As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().TrackingThreadCreateDelete(ForumID, ThreadID, UserID, Add, ModuleID)
 		End Sub
 
@@ -120,12 +116,9 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _UserID As Integer
 		Dim _ModuleID As Integer
 		Dim _Subject As String
-		Dim _LastApprovedPostID As Integer
-		Dim _LastApprovedPostCreatedDate As Date
-		Dim _LastApprovedPosterID As Integer
+		Dim _MostRecentPostID As Integer
+		Dim _TotalPosts As Integer
 		Dim _TotalRecords As Integer
-		Dim _RatingImage As String
-		Dim _RatingText As String
 
 #End Region
 
@@ -212,47 +205,32 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Property LastApprovedPostID() As Integer
+		Public Property MostRecentPostID() As Integer
 			Get
-				Return _LastApprovedPostID
+				Return _MostRecentPostID
 			End Get
 			Set(ByVal value As Integer)
-				_LastApprovedPostID = value
+				_MostRecentPostID = value
 			End Set
 		End Property
 
 		''' <summary>
-		''' CreatedDate of last post in tracked thread.
+		''' The total posts in the forum or thread.
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Property LastApprovedPostCreatedDate() As Date
+		Public Property TotalPosts() As Integer
 			Get
-				Return _LastApprovedPostCreatedDate
-			End Get
-			Set(ByVal value As Date)
-				_LastApprovedPostCreatedDate = value
-			End Set
-		End Property
-
-		''' <summary>
-		''' PosterID of last post in tracked thread.
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property LastApprovedPosterID() As Integer
-			Get
-				Return _LastApprovedPosterID
+				Return _TotalPosts
 			End Get
 			Set(ByVal value As Integer)
-				_LastApprovedPosterID = value
+				_TotalPosts = value
 			End Set
 		End Property
 
 		''' <summary>
-		''' 
+		''' The number of total records the could be returned (for use w/ paging). 
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>

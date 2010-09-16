@@ -632,7 +632,7 @@ Namespace DotNetNuke.Modules.Forum
 					' We check if user is subscribed in this forum
 					Dim blnTrackedForum As Boolean = False
 
-					For Each objTrackedForum As TrackingInfo In CurrentForumUser.TrackedForums
+					For Each objTrackedForum As TrackingInfo In CurrentForumUser.TrackedForums(ModuleID)
 						If objTrackedForum.ForumID = ForumID Then
 							blnTrackedForum = True
 							Exit For

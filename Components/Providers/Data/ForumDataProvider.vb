@@ -329,7 +329,7 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Bookmark"
 
-		Public MustOverride Function BookmarkThreadGet(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal ForumMemberName As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As IDataReader
+		Public MustOverride Function BookmarkThreadGet(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As IDataReader
 		Public MustOverride Sub BookmarkCreateDelete(ByVal ForumID As Integer, ByVal UserID As Integer, ByVal Add As Boolean, ByVal ModuleID As Integer)
 		Public MustOverride Function BookmarkCheck(ByVal UserID As Integer, ByVal ThreadID As Integer, ByVal ModuleID As Integer) As Boolean
 

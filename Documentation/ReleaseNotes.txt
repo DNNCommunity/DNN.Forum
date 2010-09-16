@@ -1,4 +1,4 @@
-<h3>Forum 4.9.0</h3>
+<h3>Forum 4.9.1</h3>
 <p class="Contributor">
 	DotNetNuke&reg; <br />
 	<a href="mailto:support@9dotnetnuke.com">support@dotnetnuke.com</a><br />
@@ -8,48 +8,11 @@
 <div class="License">
 	<h3>About the Core Forum</h3>
 	<p class="Owner">
-		<b>Version 4.9.0</b><br /><br />
-		This version of the module is a beta. It requires DotNetNuke Core 5.4.1 or greater. The module is now tightly integrated with the core user profile to determine visibility of profile items displayed in the module as well as for displaying a member's profile. It also utilizes core tagging and has an SEO sitemap provider available (not fully available without web.config changes). Also, because private messaging has also been added to the core it has been removed from the module itself. 
+		<b>Version 4.9.1</b><br /><br />
+		This version of the module is a beta. It requires DotNetNuke Core 5.4.1 or greater. The module is now tightly integrated with the core user profile to determine visibility of profile items displayed in the module as well as for displaying a member's profile. It also utilizes core tagging and has an SEO sitemap provider available (not fully available without web.config changes). Also, because private messaging has also been added to the core it has been removed from the module itself. Users can also manage their forum avatars from their core profile now too. 
 		FYI: Developers should be aware that the module uses Visual Studio 2010 only. 
 	</p>
 	<ul>
-		<li>Updated manifest file for Core 5.x format.</li>
-		<li>Removed IUpgradeable usage for custom permissions, offloaded to .dnn manifest file.</li>
-		<li>Removed IUpgradeable usage for remainder of module, mainly localization Lists support, to avoid long standing bugs based on changes to localization over the years.</li>
-		<li>Posting was abstracted to an API so it no longer depends on HttpContext and can be used via other modules/providers/tasks without requiring HttpContext.</li>
-		<li>Umlaut usage (Html Encoding) in Aggregate Subject corrected.</li>
-		<li>Display Name not being rendered properly in Post Report corrected.</li>
-		<li>ACP/MCP/UCP Forum Home link moved to bottom center, removed from menu (usability reasons). </li>
-		<li>Z-Index issue for contorl panels corrected for default core skin.</li>
-		<li>Fixed an uninstall error that could occur depending on version of the module previously installed.</li>
-		<li>Fixed a problem where enable/disable rating was no longer taking effect via user interface.</li>
-		<li>Fixed issue where disabling user avatar also disabled system avatars.</li>
-		<li>Fixed a problem in restricted forums where posting a reply may not be possible depending on permissions (and it should have been).</li>
-		<li>Fixed several spelling errors throughout the module.</li>
-		<li>Fixed issue where, depending on HTML provider, users could not easily quote a post and type without switching to HTML code view.</li>
-		<li>Corrected issue w/ SetFocus isses in PostEdit, users are no longer able to reply/quote and change the subject either.</li>
-		<li>Changed security class to minimize db hits (using a core GetUser method which is capable of utilizing core caching).</li>
-		<li>Removed email icon for notifications in Posts, Threads View. Also removed next/previous button images in posts view.</li>
-		<li>Added quick reply capability (is a module setting).</li>
-		<li>Added ability for forum administrators to view details about email queue (what is in queue, what has/hasn't been sent).</li>
-		<li>Added ability for forum administrators to view who is subscribed to a forum or a thread.</li>
-		<li>Added tracking for the date a thread was marked as answered.</li>
-		<li>Removed module's own user profile view, now redirects to core profile. (Thus we implemented core user profile integration as well).</li>
-		<li>Removed module's own custom private messaging (although the tables remain for future export potential depending on feedback).</li>
-		<li>Removed totals for aggregated threads/posts counts (this reduces overhead, since it was unique per user in many situations).</li>
-		<li>Made all profile visibility dependent on core profile visibility of user.</li>
-		<li>Updates to correct Forum_Users not being created (on initial viewing) in sites with high volume.</li>
-		<li>Fixed several issues with Move Thread (around user interface).</li>
-		<li>Switched ratings to utilize Telerik Rating control.</li>
-		<li>Updated tree views used throughout moudle to use Telerik Treeview.</li>
-		<li>Integrated Telerik tab strip in control panels to replace the tab effect I previously mimiced.</li>
-		<li>Removed legacy stored procedures no longer called.</li>
-		<li>Added ability to use Core User Avatars (via profile).</li>
-		<li>Several changes to handle high volume sites such as www.dotnetnuke.com.</li>
-		<li>Removed custom emoticon control, back to being offloaded to HTML Provider.</li>
-		<li>Made My Threads work like it previously did so users can see all threads they are participating in, not just the ones they started.</li>
-		<li>Fixed issues where Telerik HTML Provider (shipped with newer core versions) causes problems with preview and editing of existing posts.</li>
-		<li>Removed Default theme from package, now ships with Blue that is used on www.dotnetnuke.com at time of release.</li>
-		<li>Fixed issues that remained that if a user was deleted (hard delete) and they had a post, it could screw up any of the views that were linked to such a post/thread.</li>
+		<li>Too many changes since the last public release to list!</li>
 	</ul>
 </div>

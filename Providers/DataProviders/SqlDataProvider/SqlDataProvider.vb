@@ -788,8 +788,8 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Bookmark"
 
-		Public Overrides Function BookmarkThreadGet(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal ForumMemberName As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As IDataReader
-			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Bookmark_Threads_Get", UserID, ModuleID, ForumMemberName, PageSize, PageIndex), IDataReader)
+		Public Overrides Function BookmarkThreadGet(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As IDataReader
+			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Bookmark_Threads_Get", UserID, ModuleID, PageSize, PageIndex), IDataReader)
 		End Function
 
 		Public Overrides Sub BookmarkCreateDelete(ByVal ThreadID As Integer, ByVal UserID As Integer, ByVal Add As Boolean, ByVal ModuleID As Integer)

@@ -42,7 +42,11 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			chkOverrideDescription.Checked = objConfig.OverrideDescription
 			chkOverrideKeyWords.Checked = objConfig.OverrideKeyWords
 			chkNoFollowLatestThreads.Checked = objConfig.NoFollowLatestThreads
-			txtSitemapPriority.Text = objConfig.SitemapPriority.ToString()
+			If objConfig.SitemapPriority > 1 Then
+				textSitemapPriority.Value = 0.5
+			Else
+				textSitemapPriority.Value = objConfig.SitemapPriority
+			End If
 		End Sub
 
 #End Region
@@ -64,7 +68,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_OVERRIDE_PAGE_DESCRIPTION, chkOverrideDescription.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_OVERRIDE_PAGE_KEYWORDS, chkOverrideKeyWords.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_NO_FOLLOW_LATEST_THREAD_LINKS, chkNoFollowLatestThreads.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.SITEMAP_PRIORITY, txtSitemapPriority.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.SITEMAP_PRIORITY, textSitemapPriority.Value.ToString())
 
 				Configuration.ResetForumConfig(ModuleId)
 
