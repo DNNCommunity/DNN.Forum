@@ -118,6 +118,7 @@ Namespace DotNetNuke.Modules.Forum
 		Public Const DISPLAY_POSTER_LOCATION As String = "DisplayPosterLocation"
 		Public Const DISPLAY_POSTER_REGION As String = "DisplayPosterRegion"
 		Public Const ENABLE_QUICK_REPLY As String = "EnableQuickReply"
+		Public Const ENABLE_TAGGING As String = "EnableTagging"
 		Public Const ENABLE_NO_FOLLOW_WEBSITE_LINK As String = "NoFollowWeb"
 		Public Const ENABLE_OVERRIDE_PAGE_TITLE As String = "OverrideTitle"
 		Public Const ENABLE_NO_FOLLOW_LATEST_THREAD_LINKS As String = "NoFollowLatestThreads"

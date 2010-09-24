@@ -180,4 +180,10 @@
   <data name="plEnableQuickReply.Text" xml:space="preserve">
     <value>Enable Quick Reply</value>
   </data>
+  <data name="plEnableTagging.Help" xml:space="preserve">
+    <value>When checked, logged in users will be permitted to tag threads in public forums.</value>
+  </data>
+  <data name="plEnableTagging.Text" xml:space="preserve">
+    <value>Enable User Tagging</value>
+  </data>
 </root>

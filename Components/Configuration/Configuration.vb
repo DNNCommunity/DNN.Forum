@@ -56,6 +56,7 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _ForumSkin As String = "Blue"
 		Dim _EnableThreadStatus As Boolean = True
 		Dim _EnableQuickReply As Boolean = False
+		Dim _EnableTagging As Boolean = True
 		Dim _EnableUserSignatures As Boolean = True
 		Dim _EnableModSigUpdates As Boolean = True
 		Dim _EnableHTMLSignatures As Boolean = True
@@ -497,7 +498,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' 
+		''' Determines if users w/ reply permissions will see the quick reply section in posts view.
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
@@ -505,6 +506,18 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property EnableQuickReply() As Boolean
 			Get
 				Return _EnableQuickReply
+			End Get
+		End Property
+
+		''' <summary>
+		''' Determines if publicly viewable forums will permit end user tagging (must be logged in). 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property EnableTagging() As Boolean
+			Get
+				Return _EnableTagging
 			End Get
 		End Property
 
@@ -2211,6 +2224,12 @@ Namespace DotNetNuke.Modules.Forum
 			If Not settings(Constants.ENABLE_QUICK_REPLY) Is Nothing Then
 				If Not settings(Constants.ENABLE_QUICK_REPLY).ToString = String.Empty Then
 					_EnableQuickReply = CBool(GetValue(settings(Constants.ENABLE_QUICK_REPLY), CStr(_EnableQuickReply)))
+				End If
+			End If
+
+			If Not settings(Constants.ENABLE_TAGGING) Is Nothing Then
+				If Not settings(Constants.ENABLE_TAGGING).ToString = String.Empty Then
+					_EnableTagging = CBool(GetValue(settings(Constants.ENABLE_TAGGING), CStr(_EnableTagging)))
 				End If
 			End If
 

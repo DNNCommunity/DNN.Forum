@@ -367,9 +367,9 @@ Namespace DotNetNuke.Modules.Forum
 					HasSubject = True
 
 					If ExactMatch Then
-						Term.AddSearchTerm("Subject", CompareOperator.EqualString, subject)
+						Term.AddSearchTerm("(Subject", CompareOperator.EqualString, subject)
 					Else
-						Term.AddSearchTerm("Subject", CompareOperator.Contains, subject)
+						Term.AddSearchTerm("(Subject", CompareOperator.Contains, subject)
 					End If
 				End If
 				body = HttpContext.Current.Request.Params("body")

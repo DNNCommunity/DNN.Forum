@@ -2260,65 +2260,51 @@ Namespace DotNetNuke.Modules.Forum
 			'RenderRowEnd(wr) ' </tr> done with perPostRating
 
 			'New Attachments type
-			Select Case Post.ParseInfo
-				Case 4, 5, 6, 7, 15
-					RenderRowBegin(wr) '<tr> 
-					RenderCellBegin(wr, attachmentClass, "1px", "100%", "left", "middle", "", "") ' <td>
+			'Select Case Post.ParseInfo
+			'Case 4, 5, 6, 7, 15
+			If Post.AttachmentCollection.Count > 0 Then
+				RenderRowBegin(wr) '<tr> 
+				RenderCellBegin(wr, attachmentClass, "1px", "100%", "left", "middle", "", "") ' <td>
 
-					' create table to hold link and image
-					RenderTableBegin(wr, "", "", "", "", "0", "0", "", "middle", "0") ' <table>
+				' create table to hold link and image
+				RenderTableBegin(wr, "", "", "", "", "0", "0", "", "middle", "0") ' <table>
 
-					For Each objFile As AttachmentInfo In Post.AttachmentCollection
-						'Here we only handle attachments not inline type
-						If objFile.Inline = False Then
+				For Each objFile As AttachmentInfo In Post.AttachmentCollection
+					'Here we only handle attachments not inline type
+					If objFile.Inline = False Then
 
-							RenderRowBegin(wr) ' <tr>
-							RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
+						RenderRowBegin(wr) ' <tr>
+						RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
 
-							Dim strlink As String
-							Dim strFileName As String
+						Dim strlink As String
+						Dim strFileName As String
 
-							If (objConfig.AnonDownloads = False) Then
-								If HttpContext.Current.Request.IsAuthenticated = False Then
-									'AnonDownloads are Disabled
-									strFileName = Localization.GetString("NoAnonDownloads", ForumControl.objConfig.SharedResourceFile)
+						If (objConfig.AnonDownloads = False) Then
+							If HttpContext.Current.Request.IsAuthenticated = False Then
+								'AnonDownloads are Disabled
+								strFileName = Localization.GetString("NoAnonDownloads", ForumControl.objConfig.SharedResourceFile)
 
-									RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
-									RenderImage(wr, objConfig.GetThemeImageURL("s_attachment.") & objConfig.ImageExtension, "", "")
-									RenderCellEnd(wr) ' </td>
+								RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
+								RenderImage(wr, objConfig.GetThemeImageURL("s_attachment.") & objConfig.ImageExtension, "", "")
+								RenderCellEnd(wr) ' </td>
 
-									RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
-									wr.Write("&nbsp;")
-									wr.Write("<span class=Forum_NormalBold>" & strFileName & "</span>")
-									RenderCellEnd(wr) ' </td>
+								RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
+								wr.Write("&nbsp;")
+								wr.Write("<span class=Forum_NormalBold>" & strFileName & "</span>")
+								RenderCellEnd(wr) ' </td>
 
-									'We only want to display this information once..
-									RenderCellEnd(wr) ' </td>
-									RenderRowEnd(wr) ' </tr>
-									Exit For
-
-								Else
-									'User is Authenticated
-									strlink = FormatURL("FileID=" & objFile.FileID, False, True)
-									strFileName = objFile.LocalFileName
-
-									RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
-									RenderImageButton(wr, objFile.FileName, objConfig.GetThemeImageURL("s_attachment.") & objConfig.ImageExtension, "", "", True)
-									RenderCellEnd(wr) ' </td>
-
-									RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
-									wr.Write("&nbsp;")
-									RenderLinkButton(wr, strlink, strFileName, "Forum_Link", "", True, False)
-									RenderCellEnd(wr) ' </td>
-								End If
+								'We only want to display this information once..
+								RenderCellEnd(wr) ' </td>
+								RenderRowEnd(wr) ' </tr>
+								Exit For
 
 							Else
-								'AnonDownloads are Enabled
+								'User is Authenticated
 								strlink = FormatURL("FileID=" & objFile.FileID, False, True)
 								strFileName = objFile.LocalFileName
 
 								RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
-								RenderImageButton(wr, strlink, objConfig.GetThemeImageURL("s_attachment.") & objConfig.ImageExtension, "", "", True)
+								RenderImageButton(wr, objFile.FileName, objConfig.GetThemeImageURL("s_attachment.") & objConfig.ImageExtension, "", "", True)
 								RenderCellEnd(wr) ' </td>
 
 								RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
@@ -2327,16 +2313,32 @@ Namespace DotNetNuke.Modules.Forum
 								RenderCellEnd(wr) ' </td>
 							End If
 
+						Else
+							'AnonDownloads are Enabled
+							strlink = FormatURL("FileID=" & objFile.FileID, False, True)
+							strFileName = objFile.LocalFileName
+
+							RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
+							RenderImageButton(wr, strlink, objConfig.GetThemeImageURL("s_attachment.") & objConfig.ImageExtension, "", "", True)
 							RenderCellEnd(wr) ' </td>
-							RenderRowEnd(wr) ' </tr> 
+
+							RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
+							wr.Write("&nbsp;")
+							RenderLinkButton(wr, strlink, strFileName, "Forum_Link", "", True, False)
+							RenderCellEnd(wr) ' </td>
 						End If
-					Next
 
-					RenderTableEnd(wr) ' </table>
-					RenderCellEnd(wr) ' </td>
-					RenderRowEnd(wr) ' </tr> 
+						RenderCellEnd(wr) ' </td>
+						RenderRowEnd(wr) ' </tr> 
+					End If
+				Next
 
-			End Select
+				RenderTableEnd(wr) ' </table>
+				RenderCellEnd(wr) ' </td>
+				RenderRowEnd(wr) ' </tr> 
+
+			End If
+			'End Select
 			RenderTableEnd(wr) ' </table> 
 		End Sub
 
@@ -2686,7 +2688,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="wr"></param>
 		''' <remarks>We are only allowing tagging in public forums, because of security concerns in tag search results (we go one level deeper in perms than core).</remarks>
 		Private Sub RenderTags(ByVal wr As HtmlTextWriter)
-			If objThread.ContainingForum.PublicView Then
+			If objThread.ContainingForum.PublicView AndAlso objConfig.EnableTagging Then
 				RenderRowBegin(wr) '<tr>
 
 				RenderCellBegin(wr, "", "", "98%", "left", "", "2", "")	' <td> 

@@ -47,6 +47,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			chkDisplayPosterRegion.Checked = objConfig.DisplayPosterRegion
 			chkEnableQuickReply.Checked = objConfig.EnableQuickReply
 			ddlDisplayPosterLocation.Items.FindByValue(objConfig.DisplayPosterLocation.ToString).Selected = True
+			chkEnableTagging.Checked = objConfig.EnableTagging
 
 			If System.IO.Directory.Exists(System.IO.Path.Combine(Server.MapPath(objConfig.SourceDirectory), "Themes/" + objConfig.ForumTheme)) Then
 				ddlSkins.Items.FindByValue(objConfig.ForumTheme).Selected = True
@@ -88,6 +89,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.DISPLAY_POSTER_LOCATION, ddlDisplayPosterLocation.SelectedItem.Value)
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.DISPLAY_POSTER_REGION, chkDisplayPosterRegion.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_QUICK_REPLY, chkEnableQuickReply.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_TAGGING, chkEnableTagging.Checked.ToString)
 
 				Configuration.ResetForumConfig(ModuleId)
 

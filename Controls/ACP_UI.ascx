@@ -109,6 +109,16 @@
 							<asp:checkbox id="chkEnableQuickReply" runat="server" CssClass="Forum_NormalTextBox" />
 						</td>
 					</tr>
+					<tr>
+						<td width="35%">
+							<span class="Forum_Row_AdminText">
+								<dnn:Label ID="plEnableTagging" runat="server" ControlName="chkEnableQuickReply" Suffix=":"></dnn:Label>
+							</span>
+						</td>
+						<td align="left">
+							<asp:checkbox id="chkEnableTagging" runat="server" CssClass="Forum_NormalTextBox" />
+						</td>
+					</tr>
 				</table>
 				<div align="center">
 					<asp:linkbutton cssclass="CommandButton primary-action" id="cmdUpdate" runat="server" text="Update" resourcekey="cmdUpdate" EnableViewState="false" />

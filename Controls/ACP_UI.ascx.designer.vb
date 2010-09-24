@@ -285,6 +285,24 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected WithEvents chkEnableQuickReply As Global.System.Web.UI.WebControls.CheckBox
 
 		'''<summary>
+		'''plEnableTagging control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents plEnableTagging As Global.DotNetNuke.UI.UserControls.LabelControl
+
+		'''<summary>
+		'''chkEnableTagging control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents chkEnableTagging As Global.System.Web.UI.WebControls.CheckBox
+
+		'''<summary>
 		'''cmdUpdate control.
 		'''</summary>
 		'''<remarks>
