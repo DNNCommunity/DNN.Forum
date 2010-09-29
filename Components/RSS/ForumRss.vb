@@ -20,6 +20,8 @@
 Option Strict On
 Option Explicit On
 
+Imports System.Xml
+
 Namespace DotNetNuke.Modules.Forum
 
 #Region "RssDocument"
@@ -36,8 +38,8 @@ Namespace DotNetNuke.Modules.Forum
 
 		Private Const wellformedwebUri As String = "http://wellformedweb.org/CommentAPI/"
 		Private Const slashUri As String = "http://purl.org/rss/1.0/modules/slash/"
-
-		Private Const dublinCore As String = "http://purl.org/dc/elements/1.1/"
+		Private Const dublinCoreUri As String = "http://purl.org/dc/elements/1.1/"
+		Private Const atomUri As String = "http://www.w3.org/2005/Atom"
 		'writer.WriteAttributeString("xmlns:trackback", "http://madskills.com/public/xml/rss/module/trackback/")
 
 		Private mForumConfig As Forum.Configuration
@@ -140,21 +142,16 @@ Namespace DotNetNuke.Modules.Forum
 			Dim forum As New ForumInfo
 			mForumConfig = Configuration.GetForumConfig(ModuleId)
 
-			' If Not an Aggregated forum
 			If ForumID <> -1 Then
 				Dim cntForum As New ForumController
 				forum = cntForum.GetForumItemCache(ForumID)
 			Else
-				' Aggregated
-				forum = New ForumInfo
 				forum.Name = Localization.GetString("AggregatedForumName", mForumConfig.SharedResourceFile)
 				forum.Description = Localization.GetString("AggregatedForumDescription", mForumConfig.SharedResourceFile)
-				forum.MostRecentPost.CreatedDate = Now
-				forum.TotalThreads = 0
 			End If
 
 			mThreadsPage = ThreadsPage
-			mCreationTime = DateTime.Now
+			mCreationTime = DateTime.Now.ToUniversalTime
 
 			Dim declaration As System.Xml.XmlDeclaration = CreateXmlDeclaration("1.0", Nothing, Nothing)
 			InsertBefore(declaration, DocumentElement)
@@ -174,39 +171,47 @@ Namespace DotNetNuke.Modules.Forum
 			rssElement.Attributes.Append(slash)
 
 			Dim dublin As System.Xml.XmlAttribute = CreateAttribute("xmlns:dc")
-			dublin.InnerText = dublinCore
+			dublin.InnerText = dublinCoreUri
 			rssElement.Attributes.Append(dublin)
 
+			'Dim rel As System.Xml.XmlAttribute = CreateAttribute("rel")
+			Dim atom As System.Xml.XmlAttribute = CreateAttribute("xmlns:atom")
+			atom.InnerText = atomUri
+			rssElement.Attributes.Append(atom)
+
 			'xmlns:trackback
-
-
 			AppendChild(rssElement)
 
 			Dim channel As New RssChannel
 			With channel
 				.Title = forum.Name
 				.Description = forum.Description
-				.PubDate = System.Xml.XmlConvert.ToString(mCreationTime.ToUniversalTime(), "yyyy-MM-ddTHH:mm:ssZ")
-				.LastBuildDate = System.Xml.XmlConvert.ToString(forum.MostRecentPost.CreatedDate.ToUniversalTime(), "yyyy-MM-ddTHH:mm:ssZ")
+				.PubDate = System.Xml.XmlConvert.ToString(mCreationTime, "r")
+
+				If forum.MostRecentPost IsNot Nothing Then
+					.LastBuildDate = System.Xml.XmlConvert.ToString(forum.MostRecentPost.CreatedDate.ToUniversalTime(), "r")
+				Else
+					.LastBuildDate = .PubDate
+				End If
+
 				.TimeToLive = mForumConfig.RSSUpdateInterval.ToString
 
 				If ThreadsPage > 1 Then
 					If ForumID = -1 Then
 						.Link = Utilities.Links.ContainerAggregatedLink(TabId, False)
 					Else
-						.Link = Utilities.Links.ContainerViewForumLink(TabId, ForumID, False)	' had threads per page
+						.Link = Utilities.Links.ContainerViewForumLink(TabId, ForumID, False)
 					End If
 				Else
 					If ForumID = -1 Then
 						.Link = Utilities.Links.ContainerAggregatedLink(TabId, False)
 					Else
-						.Link = Utilities.Links.ContainerViewForumLink(TabId, ForumID, False)	' had threads per page
+						.Link = Utilities.Links.ContainerViewForumLink(TabId, ForumID, False)
 					End If
 				End If
 			End With
 
 			AddChannel(channel)
-
 
 			' For rss threads to be obtained w/ anonymous perms
 			Dim server As HttpServerUtility = HttpContext.Current.Server
@@ -232,8 +237,9 @@ Namespace DotNetNuke.Modules.Forum
 					With threadItem
 						.Title = objThread.Subject
 						.Author = objThread.LastApprovedUser.SiteAlias
-						.Description = cleanBody	' bodyForumText.ProcessPlainText
-						.PostedDate = System.Xml.XmlConvert.ToString(objThread.CreatedDate.ToUniversalTime(), "yyyy-MM-ddTHH:mm:ssZ")	'thread.LastPostedDate.ToString
+						.Description = cleanBody
+						' Date format r is RFC 1123, same as RFC 822 necessary for RSS
+						.PostedDate = System.Xml.XmlConvert.ToString(objThread.CreatedDate.ToUniversalTime, "r")
 						.Link = Utilities.Links.ContainerViewThreadLink(TabId, ForumID, objThread.ThreadID)
 						.CommentCount = objThread.Replies
 					End With
@@ -262,15 +268,15 @@ Namespace DotNetNuke.Modules.Forum
 					With threadItem
 						.Title = objSearch.Subject
 						.Author = objSearch.LastApprovedUser.SiteAlias
-						.Description = cleanBody	' bodyForumText.ProcessPlainText
-						.PostedDate = System.Xml.XmlConvert.ToString(objSearch.CreatedDate.ToUniversalTime(), "yyyy-MM-ddTHH:mm:ssZ")	'thread.LastPostedDate.ToString
+						.Description = cleanBody
+						' Date format r is RFC 1123, same as RFC 822 necessary for RSS
+						.PostedDate = System.Xml.XmlConvert.ToString(objSearch.CreatedDate.ToUniversalTime, "r")
 						.Link = Utilities.Links.ContainerViewThreadLink(TabId, objSearch.ForumID, objSearch.ThreadID)
 						.CommentCount = objSearch.Replies
 					End With
 					AddItem(threadItem)
 				Next
 			End If
-
 
 			If forum.TotalThreads > mForumConfig.ThreadsPerPage * ThreadsPage Then
 				AddEndItem()
@@ -323,20 +329,34 @@ Namespace DotNetNuke.Modules.Forum
 			Dim channelElement As System.Xml.XmlNode = SelectSingleNode("rss/channel")
 
 			Dim titleElement As System.Xml.XmlElement = CreateElement("title")
-			titleElement.InnerText = ThreadItem.Title
+			' need to strip html from title here
+			titleElement.InnerText = HttpUtility.HtmlDecode(ThreadItem.Title)
 			itemElement.AppendChild(titleElement)
 
 			Dim dateElement As System.Xml.XmlElement = CreateElement("pubDate")
 			dateElement.InnerText = ThreadItem.PostedDate
 			itemElement.AppendChild(dateElement)
 
-			Dim authorElement As System.Xml.XmlElement = CreateElement("author")
+			' We aren't using actual author element because it wants email, nothing else.
+			'Dim authorElement As System.Xml.XmlElement = CreateElement("author")
+			'authorElement.InnerText = ThreadItem.Author
+			'itemElement.AppendChild(authorElement)
+
+			Dim authorElement As System.Xml.XmlElement = CreateElement("dc", "creator", dublinCoreUri)
 			authorElement.InnerText = ThreadItem.Author
 			itemElement.AppendChild(authorElement)
 
 			Dim linkElement As System.Xml.XmlElement = CreateElement("link")
 			linkElement.InnerText = ThreadItem.Link
 			itemElement.AppendChild(linkElement)
+
+			Dim guidElement As System.Xml.XmlElement = CreateElement("guid")
+			guidElement.InnerText = ThreadItem.Link
+			itemElement.AppendChild(guidElement)
+
+			'Dim atomlinkElement As System.Xml.XmlElement = CreateElement("atom", "link", atomUri)
+			'atomlinkElement.SetAttributeNode("rel", "self")
+			'itemElement.AppendChild(atomlinkElement)
 
 			Dim descriptionElement As System.Xml.XmlElement = CreateElement("description")
 			descriptionElement.InnerText = ThreadItem.Description

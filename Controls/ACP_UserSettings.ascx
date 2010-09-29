@@ -34,11 +34,22 @@
 					<tr>
 						<td  width="35%">
 							<span class="Forum_Row_AdminText">
-								<dnn:Label ID="plTrustNewUsers" runat="server" ControlName="chkTrustNewUsers" Suffix=":"></dnn:Label>
+								<dnn:Label ID="plAutoTrustEnabled" runat="server" ControlName="chkEnableAutoTrust" Suffix=":"></dnn:Label>
 							</span>
 						</td>
 						<td align="left" >
-							<asp:CheckBox ID="chkTrustNewUsers" runat="server" CssClass="Forum_NormalTextBox" />
+							<asp:CheckBox ID="chkEnableAutoTrust" runat="server" CssClass="Forum_NormalTextBox" AutoPostBack="true" />
+						</td>
+					</tr>
+					<tr id="rowAutoTrustTime" runat="server">
+						<td  width="35%">
+							<span class="Forum_Row_AdminText">
+								<dnn:Label ID="plAutoTrustTime" runat="server" ControlName="chkTrustNewUsers" Suffix=":"></dnn:Label>
+							</span>
+						</td>
+						<td align="left" >
+							<asp:TextBox id="txtAutoTrustTime" runat="server" CssClass="Forum_NormalTextBox" Width="50px" />
+							<asp:RangeValidator ID="valAutoTrustTime" runat="server" CssClass="NormalRed" ControlToValidate="txtAutoTrustTime" Display="Dynamic" resourcekey="AutoTrustTime.ErrorMessage" MaximumValue="1000" MinimumValue="0" Type="Integer" />
 						</td>
 					</tr>
 					<tr>

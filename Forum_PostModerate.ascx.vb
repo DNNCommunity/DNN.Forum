@@ -129,7 +129,20 @@ Namespace DotNetNuke.Modules.Forum
 						Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(TabId, objPost.ForumID, objPost.PostID)
 
 						ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, objPost.ForumID, objPost.ThreadID)
-						DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(objPost.Author.UserID, PortalId)
+
+						If (objPost.Author.IsTrusted = False) AndAlso (objConfig.EnableAutoTrust) Then
+							If objConfig.AutoTrustTime = objPost.Author.PostCount + 1 Then
+								' we need to update the user's trust status
+								Dim cntForumUser As New ForumUserController
+								Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
+								ProfileUser.IsTrusted = True
+								cntForumUser.Update(ProfileUser)
+							Else
+								DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(objPost.Author.UserID, PortalId)
+							End If
+						Else
+							DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(objPost.Author.UserID, PortalId)
+						End If
 
 						' Rebind latest non-approved posts to datalist
 						BindList()

@@ -116,7 +116,8 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _EnablePostAbuse As Boolean = True
 		Dim _ImageExtension As String = "png"
 		Dim _DisableHTMLPosting As Boolean = False
-		Dim _TrustNewUsers As Boolean = False
+		Dim _EnableAutoTrust As Boolean = False
+		Dim _AutoTrustTime As Integer = 1
 		Dim _AutoLockTrust As Boolean = False
 		' Attachments
 		Dim _AttachmentPath As String = "Forums/Attachments/"
@@ -614,14 +615,26 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' Gets if the module automatically 'trusts' new users. 
+		''' Gets if the module automatically 'trusts' users based on a threshold (separate setting).
 		''' </summary>
 		''' <value></value>
-		''' <returns>True if newly created forum users should be automatically trusted.</returns>
+		''' <returns>True if users should be trusted after x posts.</returns>
 		''' <remarks>Trusted users can post in moderated forums w/out awaiting post approval.</remarks>
-		Public ReadOnly Property TrustNewUsers() As Boolean
+		Public ReadOnly Property EnableAutoTrust() As Boolean
 			Get
-				Return _TrustNewUsers
+				Return _EnableAutoTrust
+			End Get
+		End Property
+
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public ReadOnly Property AutoTrustTime() As Integer
+			Get
+				Return _AutoTrustTime
 			End Get
 		End Property
 
@@ -649,6 +662,12 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 		End Property
 
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
 		Public ReadOnly Property HideModEdits() As Boolean
 			Get
 				Return _HideModEdits
@@ -1959,9 +1978,15 @@ Namespace DotNetNuke.Modules.Forum
 				End If
 			End If
 
-			If Not settings(Constants.TRUST_NEW_USERS) Is Nothing Then
-				If Not settings(Constants.TRUST_NEW_USERS).ToString = String.Empty Then
-					_TrustNewUsers = CBool(GetValue(settings(Constants.TRUST_NEW_USERS), CStr(_TrustNewUsers)))
+			If Not settings(Constants.ENABLE_AUTO_TRUST) Is Nothing Then
+				If Not settings(Constants.ENABLE_AUTO_TRUST).ToString = String.Empty Then
+					_EnableAutoTrust = CBool(GetValue(settings(Constants.ENABLE_AUTO_TRUST), CStr(_EnableAutoTrust)))
+				End If
+			End If
+
+			If Not settings(Constants.AUTO_TRUST_THRESHOLD) Is Nothing Then
+				If Not settings(Constants.AUTO_TRUST_THRESHOLD).ToString = String.Empty Then
+					_AutoTrustTime = CInt(GetValue(settings(Constants.AUTO_TRUST_THRESHOLD), CStr(_AutoTrustTime)))
 				End If
 			End If
 

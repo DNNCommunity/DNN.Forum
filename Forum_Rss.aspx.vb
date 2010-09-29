@@ -27,9 +27,6 @@ Namespace DotNetNuke.Modules.Forum
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	''' <history>
-	''' 	[cpaterra]	7/13/2005	Created
-	''' </history>
 	Public Class Rss
 		Inherits System.Web.UI.Page
 
@@ -59,7 +56,7 @@ Namespace DotNetNuke.Modules.Forum
 			Try
 				If Not Request.QueryString("forumid") Is Nothing Then
 					mForumID = Int32.Parse(Request.QueryString("forumid"))
-					Dim mForumInfo As ForumInfo
+					Dim mForumInfo As New ForumInfo
 
 					If Not Request.QueryString("tabid") Is Nothing Then
 						mTabId = Int32.Parse(Request.QueryString("tabid"))
@@ -79,14 +76,6 @@ Namespace DotNetNuke.Modules.Forum
 						' We need this to make sure the forum is enabled and not private
 						Dim cntForum As New ForumController
 						mForumInfo = cntForum.GetForumItemCache(mForumID)
-					Else
-						' Aggregated
-						mForumInfo = New ForumInfo
-						mForumInfo.Name = Localization.GetString("AggregatedForumName", mForumConfig.SharedResourceFile)
-						mForumInfo.Description = Localization.GetString("AggregatedForumDescription", mForumConfig.SharedResourceFile)
-						mForumInfo.MostRecentPost.CreatedDate = Now
-						mForumInfo.TotalThreads = 0
-						mForumInfo.EnableRSS = mForumConfig.EnableRSS
 					End If
 
 					Response.ContentType = "text/xml"

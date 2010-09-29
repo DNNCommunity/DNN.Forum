@@ -87,22 +87,58 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected WithEvents valPostEditWindow As Global.System.Web.UI.WebControls.RangeValidator
 
 		'''<summary>
-		'''plTrustNewUsers control.
+		'''plAutoTrustEnabled control.
 		'''</summary>
 		'''<remarks>
 		'''Auto-generated field.
 		'''To modify move field declaration from designer file to code-behind file.
 		'''</remarks>
-		Protected WithEvents plTrustNewUsers As Global.DotNetNuke.UI.UserControls.LabelControl
+		Protected WithEvents plAutoTrustEnabled As Global.DotNetNuke.UI.UserControls.LabelControl
 
 		'''<summary>
-		'''chkTrustNewUsers control.
+		'''chkEnableAutoTrust control.
 		'''</summary>
 		'''<remarks>
 		'''Auto-generated field.
 		'''To modify move field declaration from designer file to code-behind file.
 		'''</remarks>
-		Protected WithEvents chkTrustNewUsers As Global.System.Web.UI.WebControls.CheckBox
+		Protected WithEvents chkEnableAutoTrust As Global.System.Web.UI.WebControls.CheckBox
+
+		'''<summary>
+		'''rowAutoTrustTime control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents rowAutoTrustTime As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+		'''<summary>
+		'''plAutoTrustTime control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents plAutoTrustTime As Global.DotNetNuke.UI.UserControls.LabelControl
+
+		'''<summary>
+		'''txtAutoTrustTime control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents txtAutoTrustTime As Global.System.Web.UI.WebControls.TextBox
+
+		'''<summary>
+		'''valAutoTrustTime control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents valAutoTrustTime As Global.System.Web.UI.WebControls.RangeValidator
 
 		'''<summary>
 		'''plAutoLockTrust control.

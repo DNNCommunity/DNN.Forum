@@ -120,17 +120,11 @@
   <data name="NumericValidation.ErrorMessage" xml:space="preserve">
     <value>Needs to be numeric!</value>
   </data>
-  <data name="plTrustNewUsers.Text" xml:space="preserve">
-    <value>Trust New Users</value>
-  </data>
   <data name="plNameDisplay.Help" xml:space="preserve">
     <value>This is the format the sites users will appear to users of this forum module. </value>
   </data>
   <data name="plNameDisplay.Text" xml:space="preserve">
     <value>Member Name Display</value>
-  </data>
-  <data name="plTrustNewUsers.Help" xml:space="preserve">
-    <value>If checked, all new forum users will be trusted by default. This means they will not require moderation in moderated forums.&lt;br&gt;&lt;b&gt;NOTE&lt;/b&gt;&lt;br&gt;This will not update existing users status. It only affects users who have not visited a forum module per portal install.</value>
   </data>
   <data name="plAutoLockTrust.Help" xml:space="preserve">
     <value>If checked, only administrators and not moderators can change the status of a user's trust level for newly created forum users.&lt;br&gt;&lt;b&gt;NOTE&lt;/b&gt;&lt;br&gt;User trust level locking is controlled on a per users basis.</value>
@@ -178,9 +172,24 @@
     <value>Updated Successfully!</value>
   </data>
   <data name="plUserReadManagement.Help" xml:space="preserve">
-    <value>If checked, users will be permitted to mark all threads as read and also clear read status of all thread items. When unchecked, users will not see these links (ie. so community activity reporting can factor in thread reads). </value>
+    <value>If checked, users will be permitted to mark all threads as read and also clear read status of all thread items. When unchecked, users will not see these links (ie. so community activity reporting can factor in thread reads).</value>
   </data>
   <data name="plUserReadManagement.Text" xml:space="preserve">
     <value>Enable User Read Management</value>
+  </data>
+  <data name="plAutoTrustEnabled.Help" xml:space="preserve">
+    <value>If checked, users will be trusted after they meet the Auto Trust threshold setting.</value>
+  </data>
+  <data name="plAutoTrustEnabled.Text" xml:space="preserve">
+    <value>Enable Auto Trust</value>
+  </data>
+  <data name="plAutoTrustTime.Help" xml:space="preserve">
+    <value>The number of posts required before auto trust kicks in (if enabled). For example, if this number is set to 10 after the untrusted user has their 10th post approved they will automatically have their trust status changed and their 11th post will go unmoderated (provided they have no other posts already in the queue). &lt;br /&gt;&lt;b&gt;NOTE:&lt;/b&gt;&lt;br /&gt; Setting this to 0 will automatically trust new users.</value>
+  </data>
+  <data name="plAutoTrustTime.Text" xml:space="preserve">
+    <value>Auto Trust Threshold</value>
+  </data>
+  <data name="AutoTrustTime.ErrorMessage" xml:space="preserve">
+    <value>Value must be between 0 and 999.</value>
   </data>
 </root>

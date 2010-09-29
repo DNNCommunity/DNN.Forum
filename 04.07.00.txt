@@ -21,20 +21,14 @@ DesktopModules\Forum\Controls\App_LocalResources\ACP_Emoticon.ascx.resx
 DesktopModules\Forum\Controls\App_LocalResources\EmoticonControl.ascx.resx
 DesktopModules\Forum\Controls\App_LocalResources\PM_Inbox.ascx.resx
 DesktopModules\Forum\Controls\App_LocalResources\PM_Outbox.ascx.resx
-DesktopModules\Forum\Controls\ACP_Emoticon.ascx
 DesktopModules\Forum\Controls\ACP_Emoticon.ascx.designer.vb
 DesktopModules\Forum\Controls\ACP_Emoticon.ascx.vb
-DesktopModules\Forum\Controls\EmoticonControl.ascx
 DesktopModules\Forum\Controls\EmoticonControl.ascx.designer.vb
 DesktopModules\Forum\Controls\EmoticonControl.ascx.vb
-DesktopModules\Forum\Controls\PM_Inbox.ascx
 DesktopModules\Forum\Controls\PM_Inbox.ascx.designer.vb
 DesktopModules\Forum\Controls\PM_Inbox.ascx.vb
-DesktopModules\Forum\Controls\PM_Outbox.ascx
 DesktopModules\Forum\Controls\PM_Outbox.ascx.designer.vb
 DesktopModules\Forum\Controls\PM_Outbox.ascx.vb
-DesktopModules\Forum\js\emoticon.js
-DesktopModules\Forum\js\pngfix.js
 DesktopModules\Forum\Themes\Default\images\ib_inbox.png
 DesktopModules\Forum\Themes\Default\images\ib_inbox_hover.png
 DesktopModules\Forum\Themes\Default\images\ib_inbox_new.gif
@@ -56,13 +50,10 @@ DesktopModules\Forum\Themes\Default\images\s_subscribe.png
 DesktopModules\Forum\Themes\Default\images\s_save.png
 DesktopModules\Forum\Themes\Default\images\s_remove.png
 DesktopModules\Forum\Themes\Default\images\s_preview.png
-DesktopModules\Forum\Forum_Memberlist.ascx
 DesktopModules\Forum\Forum_Memberlist.ascx.designer.vb
 DesktopModules\Forum\Forum_Memberlist.ascx.vb
-DesktopModules\Forum\PM_Edit.ascx
 DesktopModules\Forum\PM_Edit.ascx.designer.vb
 DesktopModules\Forum\PM_Edit.ascx.vb
-DesktopModules\Forum\PM_Thread.ascx
 DesktopModules\Forum\PM_Thread.ascx.designer.vb
 DesktopModules\Forum\PM_Thread.ascx.vb
 

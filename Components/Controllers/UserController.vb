@@ -799,7 +799,7 @@ Namespace DotNetNuke.Modules.Forum
 			fUser.ThreadsPerPage = myConfig.ThreadsPerPage
 			fUser.PostsPerPage = myConfig.PostsPerPage
 			fUser.EnableOnlineStatus = myConfig.EnableUsersOnline
-			fUser.IsTrusted = myConfig.TrustNewUsers
+			fUser.IsTrusted = myConfig.EnableAutoTrust And myConfig.AutoTrustTime = 0
 			fUser.EnableModNotification = myConfig.MailNotification
 			fUser.EnableSelfNotifications = False
 

@@ -41,7 +41,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
 			BindMemberNameTypes()
 			ddlNameDisplay.SelectedIndex = objConfig.ForumMemberName
-			chkTrustNewUsers.Checked = objConfig.TrustNewUsers
+			chkEnableAutoTrust.Checked = objConfig.EnableAutoTrust
+			txtAutoTrustTime.Text = objConfig.AutoTrustTime.ToString()
 			chkAutoLockTrust.Checked = objConfig.AutoLockTrust
 			chkEnableUserSignatures.Checked = objConfig.EnableUserSignatures
 			chkEnableModSigUpdates.Checked = objConfig.EnableModSigUpdates
@@ -77,7 +78,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					ctlModule.UpdateModuleSetting(ModuleId, Constants.POST_EDIT_WINDOW, "0")
 				End If
 
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.TRUST_NEW_USERS, chkTrustNewUsers.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_AUTO_TRUST, chkEnableAutoTrust.Checked.ToString)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.AUTO_TRUST_THRESHOLD, txtAutoTrustTime.Text)
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.AUTO_LOCK_TRUST, chkAutoLockTrust.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_USER_READ_MANAGEMENT, chkUserReadManagement.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_USER_SIGNATURES, chkEnableUserSignatures.Checked.ToString)
@@ -104,12 +106,22 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			SetVisibleItems()
 		End Sub
 
+		''' <summary>
+		''' Enables/Disables auto trust time period row depending on selection.
+		''' </summary>
+		''' <param name="sender"></param>
+		''' <param name="e"></param>
+		''' <remarks></remarks>
+		Protected Sub chkEnableAutoTrust_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnableAutoTrust.CheckedChanged
+			SetVisibleItems()
+		End Sub
+
 #End Region
 
 #Region "Private Methods"
 
 		''' <summary>
-		''' Sets visiblity for rows on page depending on user signatures being enabled.
+		''' Sets visiblity for rows on page depending on user signatures being enabled as well as if auto trust is enabled.
 		''' </summary>
 		''' <remarks>Uses forum configuration settings to show/hide items.</remarks>
 		Private Sub SetVisibleItems()
@@ -119,6 +131,12 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			Else
 				rowModSigUpdates.Visible = False
 				rowHTMLSignatures.Visible = False
+			End If
+
+			If chkEnableAutoTrust.Checked Then
+				rowAutoTrustTime.Visible = True
+			Else
+				rowAutoTrustTime.Visible = False
 			End If
 		End Sub
 
