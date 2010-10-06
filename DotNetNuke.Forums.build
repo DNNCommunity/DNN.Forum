@@ -26,19 +26,17 @@
 		<property name="ModuleName" value="Forum"  overwrite="false"  />
 	   	<property name="subproject.name" value="DotNetNuke.${ModuleName}" />
 		<property name="module.dll" value="${bin.dir}/DotNetNuke.Modules.${ModuleName}.dll" />
-		<property name="fullversion" value="04.09.01" />
+		<property name="fullversion" value="05.00.00" />
 
 		<property name="debug" value="false" overwrite="false" />
 		<property name="config" value="debug" if="${debug}" />
 		<property name="config" value="release" unless="${debug}" />
 
-		
 		<if test="${verbose}">
 			<echo message="solutionName: ${subproject.name}" />
 			<echo message="debug:        ${debug}" />
 			<echo message="config:       ${config}" />
 		</if>
-		
 	</target>	
 	
 	<target name="Compile" depends="init">
@@ -57,9 +55,7 @@
 		<if test="${verbose}">
 			<echo message="shortVersion: ${shortVersion}" />
 			<echo message="version: ${version}" />
-
 		</if>
-
 	</target>
 
 	<target name="CleanPackageBin" depends="init VersionInfo">
@@ -91,8 +87,6 @@
 				<include name="**/js/*" />
 				<include name="**/Themes/Blue/*" />
 				<include name="**/Resources/**/*" />
-				<include name="**/Documentation/Contributors.txt" />
-				<include name="**/Documentation/Readme.txt" />
 				<include name="**/${localresource.dir}/*.resx" />
 				<include name="**/${globalresource.dir}/*.resx" />
 				<include name="**/${globalresource.dir}/*.xml" />
@@ -121,19 +115,15 @@
 				<exclude name="**Documentation/${ModuleName}_${fullversion}_TestCases.txt" />
 			</fileset>
 		</copy>
-		
 		<mkdir dir="${resourcezip.dir}" unless="${directory::exists(resourcezip.dir)}" />
 		<zip zipfile="${resourcezip.dir}/Resources.zip">
 			<fileset basedir="temp">
 				<include name="**/*" />
 				<exclude name="**/*.dll" />
-
 			</fileset>
-		</zip>
-		
+		</zip>	
 		<!--Delete temp directory -->
 		<delete dir="temp" failonerror="false" />
-
 	</target>
 <!-- End area for resourcezip creation -->
 <!-- Begin area for creating resourcezip for installable PA zips (should depend on target that clears where this will build zip file to)-->
@@ -149,8 +139,6 @@
 				<include name="**/js/*" />
 				<include name="**/Themes/Blue/*" />
 				<include name="**/Resources/**/*" />
-				<include name="**/Documentation/Contributors.txt" />
-				<include name="**/Documentation/Readme.txt" />
 				<include name="**/${localresource.dir}/*.resx" />
 				<include name="**/${globalresource.dir}/*.resx" />
 				<include name="**/${globalresource.dir}/*.xml" />
@@ -203,6 +191,7 @@
 				<include name="${module.dll}" />
 				<include name="**/*.sqldataprovider" />
 				<include name="**/*.dnn" />
+				<include name="**/05.00.00.txt" />
 				<include name="**/Documentation/License.txt" />
 				<include name="**/Documentation/ReleaseNotes.txt" />
 				<exclude name="**/*.ascx" />
@@ -212,17 +201,14 @@
 				<exclude name="**/BuildSupport/**/*" />
 			</fileset>
 		</copy>
-
 		<mkdir dir="${package.dir}" unless="${directory::exists(package.dir)}" />
 		<zip zipfile="${package.dir}/${ModuleName}_${fullversion}${binZip}.zip">
 			<fileset basedir="temp">
 				<include name="**/*" />
 			</fileset>
 		</zip>
-
 		<!--Delete temp directory -->
 		<delete dir="temp" failonerror="false" />
-
 	</target>
 <!-- End area for installable PA -->
 <!-- Begin area for distributable source code zip (should depend on target that clears where this will build zip file to)-->
@@ -234,6 +220,7 @@
 				<include name="${module.dll}" />
 				<include name="**/*.sqldataprovider" />
 				<include name="**/*.dnn" />
+				<include name="**/05.00.00.txt" />
 				<include name="**/Documentation/License.txt" />
 				<include name="**/Documentation/ReleaseNotes.txt" />
 				<exclude name="**/*.ascx" />
@@ -243,17 +230,14 @@
 				<exclude name="**/BuildSupport/**/*" />
 			</fileset>
 		</copy>
-
 		<mkdir dir="${package.dir}" unless="${directory::exists(package.dir)}" />
 		<zip zipfile="${package.dir}/${ModuleName}_${fullversion}${srcZip}.zip">
 			<fileset basedir="temp">
 				<include name="**/*" />
 			</fileset>
 		</zip>
-
 		<!--Delete temp directory -->
 		<delete dir="temp" failonerror="false" />
-
 	</target>
 <!-- End area for distributable source code zip -->
 <!-- Begin area for creating DotNetNuke Module Release Package -->
@@ -263,21 +247,17 @@
 				<include name="**${package.dir}/${ModuleName}_${fullversion}${srcZip}.zip" />
 				<include name="**${package.dir}/${ModuleName}_${fullversion}${binZip}.zip" />
 				<include name="**Documentation/${ModuleName}_${fullversion}_ReleaseNotes.txt" />
-				<include name="**Documentation/${ModuleName}_${fullversion}_TestCases.txt" />
-				
+				<include name="**Documentation/${ModuleName}_${fullversion}_TestCases.txt" />	
 			</fileset>
 		</copy>
-
 		<mkdir dir="${package.dir}" unless="${directory::exists(package.dir)}" />
 		<zip zipfile="${package.dir}/${ModuleName}_${fullversion}${pckZip}.zip"> 
 			<fileset basedir="temp">
 				<include name="**/*" />
 			</fileset>
 		</zip>
-
 		<!--Delete temp directory -->
 		<delete dir="temp" failonerror="false" />
-
 	</target>
 <!-- End area for DotNetNuke Release Package -->
 <!--  SYNTHETIC TASKS  --> 

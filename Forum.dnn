@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DNN_Forum" type="Module" version="04.09.01">
+		<package name="DNN_Forum" type="Module" version="05.00.00">
 			<friendlyName>Forum</friendlyName>
 			<description>The core forum module for DotNetNuke.</description>
 			<owner>
@@ -59,10 +59,6 @@
 							<version>04.07.00</version>
 						</script>
 						<script type="Install">
-							<name>04.08.00.SqlDataProvider</name>
-							<version>04.08.00</version>
-						</script>
-						<script type="Install">
 							<name>04.09.00.SqlDataProvider</name>
 							<version>04.09.00</version>
 						</script>
@@ -72,7 +68,7 @@
 						</script>
 						<script type="UnInstall">
 							<name>Uninstall.SqlDataProvider</name>
-							<version>04.09.01</version>
+							<version>05.00.00</version>
 						</script>
 					</scripts>
 				</component>			
@@ -283,7 +279,7 @@
 						<assembly>
 							<name>DotNetNuke.Modules.Forum.dll</name>
 							<sourceFileName>DotNetNuke.Modules.Forum.dll</sourceFileName>
-							<version>04.09.01</version>
+							<version>05.00.00</version>
 						</assembly>
 					</assemblies>
 				</component>
@@ -307,86 +303,7 @@
 						</file>
 					</files>
 				</component>
-				<component type="Cleanup">
-					<files>
-						<file>
-							<path>DesktopModules\Forum\</path>
-							<name>Forum_MemberList.ascx.resx</name>
-						</file>
-						<file>
-							<path>DesktopModules\Forum\</path>
-							<name>PM_Edit.ascx.resx</name>
-						</file>
-						<file>
-							<path>DesktopModules\Forum\</path>
-							<name>PM_Thread.ascx.resx</name>
-						</file>
-						<file>
-							<path>DesktopModules\Forum\</path>
-							<name>PublicProfile.ascx.resx</name>
-						</file>		
-						<file>
-							<path>DesktopModules\Forum\</path>
-							<name>Forum_MemberList.ascx</name>
-						</file>
-						<file>
-							<path>DesktopModules\Forum\</path>
-							<name>PM_Edit.ascx</name>
-						</file>
-						<file>
-							<path>DesktopModules\Forum\</path>
-							<name>PM_Thread.ascx</name>
-						</file>
-						<file>
-							<path>DesktopModules\Forum\Documentation</path>
-							<name>Contributors.txt</name>
-						</file>
-						<file>
-							<path>DesktopModules\Forum\Documentation</path>
-							<name>Readme.txt</name>
-						</file>
-						<file>
-							<path>DesktopModules\Forum\js</path>
-							<name>emoticons.js</name>
-						</file>
-						<file>
-							<path>DesktopModules\Forum\js</path>
-							<name>pngfix.js</name>
-						</file>
-						<file>
-							<path>DesktopModules\Forum\Controls</path>
-							<name>ACP_Emoticon.ascx</name>
-						</file>
-						<file>
-							<path>DesktopModules\Forum\Controls</path>
-							<name>EmoticonsControls.ascx</name>
-						</file>
-						<file>
-							<path>DesktopModules\Forum\Controls</path>
-							<name>PM_Inbox.ascx</name>
-						</file>
-						<file>
-							<path>DesktopModules\Forum\Controls</path>
-							<name>PM_Outbox.ascx</name>
-						</file>		
-						<file>
-							<path>Install\Module</path>
-							<name>Forum_03.20.08_Install.resources</name>
-						</file>
-						<file>
-							<path>Install\Module</path>
-							<name>Forum_03.20.09_Install.resources</name>
-						</file>
-						<file>
-							<path>Install\Module</path>
-							<name>Forum_04.04.03_Install.resources</name>
-						</file>
-						<file>
-							<path>Install\Module</path>
-							<name>Forum_04.05.03_Install.resources</name>
-						</file>
-					</files>
-				</component>
+				<component type="Cleanup" version="05.00.00" fileName="05.00.00.txt" />	
 			</components>
 		</package>
 	</packages>

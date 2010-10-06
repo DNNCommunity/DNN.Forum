@@ -785,7 +785,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>
 		''' </remarks>
 		Public Overrides Sub Render(ByVal wr As HtmlTextWriter)
-			RenderTableBegin(wr, "tblForumContainer", "Forum_Container", "", "100%", "0", "0", "left", "top", "0")
+			RenderTableBegin(wr, "tblForumContainer", "Forum_Container", "", "100%", "0", "0", "", "", "0")
 			RenderNavBar(wr, objConfig, ForumControl)
 			RenderSearchBar(wr)
 			RenderTopBreadcrumb(wr)

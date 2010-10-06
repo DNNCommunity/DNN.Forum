@@ -1,4 +1,4 @@
-<h3>Forum 4.9.1</h3>
+<h3>Forum 5.0.0</h3>
 <p class="Contributor">
 	DotNetNuke&reg; <br />
 	<a href="mailto:support@9dotnetnuke.com">support@dotnetnuke.com</a><br />
@@ -8,11 +8,26 @@
 <div class="License">
 	<h3>About the Core Forum</h3>
 	<p class="Owner">
-		<b>Version 4.9.1</b><br /><br />
-		This version of the module is a beta. It requires DotNetNuke Core 5.4.1 or greater. The module is now tightly integrated with the core user profile to determine visibility of profile items displayed in the module as well as for displaying a member's profile. It also utilizes core tagging and has an SEO sitemap provider available (not fully available without web.config changes). Also, because private messaging has also been added to the core it has been removed from the module itself. Users can also manage their forum avatars from their core profile now too. 
+		<b>Version 5.0.0</b><br /><br />
+		This version of the module requires DotNetNuke Core 5.4.1 or greater. The module is also integrated with new core features/options available since the previous release.
 		FYI: Developers should be aware that the module uses Visual Studio 2010 only. 
 	</p>
 	<ul>
-		<li>Too many changes since the last public release to list!</li>
+		<li>Many bug fixes.</li>
+		<li>New Feature: Auto Trust Users based on approved Post Count.</li>
+		<li>New Blue theme included and Default theme has been retired (although it will still work, not included with release).</li>
+		<li>Telerik controls integrated throughout the module where it made sense (not completely integrated everywhere yet).</li>
+		<li>Private Messaging Removed: Offloaded to core.</li>
+		<li>Profile Display Removed: Offloaded to core.</li>
+		<li>New Feature: Taxonomy Integration (ie. Tagging at Thread Level).</li>
+		<li>New Feature: SEO Sitemap Provider (Requires manual updating of web.config).</li>
+		<li>New Feature: Core Profile Photo Integration.</li>
+		<li>New Feature: Ability to integrate with third party profile modules.</li>
+		<li>Enhancement: Better SEO options available following best practices.</li>
+		<li>New Feature: Added Quick Reply.</li>
+		<li>Enhancement: Made My Threads work how it worked in previous versions.</li>
+		<li>Removed inline attachment support, all image options offloaded to HTML provided as they were working prior to 4.5.3 version of module.</li>
+		<li>New Feature: Created API for posting (ie. using something outside of forum module itself).</li>
+		<li>Enhancement: Moved all notifications to a standard format in database (now in 2 places instead of 3).</li>
 	</ul>
 </div>

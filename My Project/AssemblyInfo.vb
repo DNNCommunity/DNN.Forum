@@ -27,7 +27,7 @@ Imports System.Reflection
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("DotNetNuke.Modules.Forum")> 
-<Assembly: AssemblyDescription("Open Source Web Application Framework's Forum Module")> 
+<Assembly: AssemblyDescription("Open Source Web Application Framework's Discussion Forum Module")> 
 <Assembly: AssemblyCompany("DotNetNuke Corporation")> 
 <Assembly: AssemblyProduct("http://www.dotnetnuke.com")> 
 <Assembly: AssemblyCopyright("DotNetNuke® is copyright 2002-2010 by DotNetNuke Corporation. All Rights Reserved.")> 
@@ -44,4 +44,4 @@ Imports System.Reflection
 ' You can specify all the values or you can default the Build and Revision Numbers 
 ' by using the '*' as shown below:
 
-<Assembly: AssemblyVersion("04.09.01.*")> 
+<Assembly: AssemblyVersion("05.00.00.*")> 
