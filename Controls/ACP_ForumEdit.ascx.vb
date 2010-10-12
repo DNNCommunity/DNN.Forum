@@ -596,10 +596,10 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
 				If .SubForums = 0 AndAlso .ForumType <> ForumType.Link Then
 					BindParentForums()
-					If .IsParentForum Or (.TotalThreads = 0) Then
+					If .ContainsChildForums Or (.TotalThreads = 0) Then
 						rowParentForum.Visible = True
 					Else
-						If .IsParentForum = False Then
+						If .ContainsChildForums = False Then
 							rowParentForum.Visible = True
 						Else
 							rowParentForum.Visible = False
@@ -773,7 +773,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					' we can't use lastpostid or mostrecentpostid here, not can we use total threads/posts (since a parent is inclusive of all children). Unfortunately, this means we have to get the forumn info direct from db. 
 					Dim singleForum As ForumInfo = cntForum.GetForumItemCache(fInfo.ForumID)
 
-					If singleForum.IsParentForum Or (singleForum.TotalThreads = 0) Then
+					If singleForum.ContainsChildForums Or (singleForum.TotalThreads = 0) Then
 						myItem = New ListItem
 						myItem.Text = singleForum.Name
 						myItem.Value = CStr(singleForum.ForumID)

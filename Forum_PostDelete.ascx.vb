@@ -210,6 +210,8 @@ Namespace DotNetNuke.Modules.Forum
 						Dim cntPost As New PostController
 						Dim objPost As New PostInfo
 						Dim ThreadID As Integer
+						Dim cntThread As New ThreadController
+						Dim objThread As New ThreadInfo
 
 						' Get most recent info on this post
 						If Not Request.QueryString("postid") Is Nothing Then
@@ -227,6 +229,8 @@ Namespace DotNetNuke.Modules.Forum
 							Exit Sub
 						End If
 
+						objThread = cntThread.GetThread(ThreadID)
+
 						Dim Notes As String = txtReason.Text
 						Dim ProfileUrl As String = Utilities.Links.UCP_UserLinks(TabId, ModuleId, UserAjaxControl.Tracking, PortalSettings)
 						Dim url As String = Utilities.Links.ContainerViewForumLink(TabId, ForumID, False)
@@ -242,9 +246,6 @@ Namespace DotNetNuke.Modules.Forum
 						End If
 
 						If objPost.PostID = objPost.ThreadID Then
-							Dim cntThread As New ThreadController
-							Dim objThread As ThreadInfo = cntThread.GetThread(objPost.ThreadID)
-
 							If objThread IsNot Nothing Then
 								' Delete post (SEND MAIL BEFORE DELETE, we need the post still in the db)
 								NewThreadID = cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objPost.Author.UserID)
@@ -258,7 +259,7 @@ Namespace DotNetNuke.Modules.Forum
 							NewThreadID = cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objPost.Author.UserID)
 						End If
 
-						Forum.Components.Utilities.Caching.UpdatePostCache(objPost.PostID, ThreadID, ForumID, objPost.ParentThread.ContainingForum.GroupID, ModuleId, objPost.ParentThread.ContainingForum.ParentID)
+						Forum.Components.Utilities.Caching.UpdatePostCache(objPost.PostID, ThreadID, ForumID, objThread.ContainingForum.GroupID, ModuleId, objThread.ContainingForum.ParentID)
 						Response.Redirect(GetReturnURL(NewThreadID, ForumID), True)
 					End If
 				End If

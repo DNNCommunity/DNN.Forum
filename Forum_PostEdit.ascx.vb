@@ -1356,13 +1356,15 @@ Namespace DotNetNuke.Modules.Forum
 			tsTerms.PortalId = PortalId
 
 			If IsPublic Then
-				If NewThread Then
+				If NewThread And objConfig.EnableTagging Then
 					rowTagging.Visible = True
 				Else
-					' we need to see if the thread id = postid. If so, we need to show the terms selector if moderator
-					If (PostID = objThread.ThreadID) Then
-						' we are editing the original post in the thread
-						rowTagging.Visible = True
+					If (PostID = objThread.ThreadID) AndAlso (objConfig.EnableTagging) Then
+						Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, objForum.ForumID, UserId)
+
+						If Security.IsForumModerator Then
+							rowTagging.Visible = True
+						End If
 					End If
 				End If
 

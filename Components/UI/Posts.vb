@@ -571,10 +571,10 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			If objConfig.OverrideKeyWords Then
-				Dim KeyWords As String
+				Dim KeyWords As String = ""
 				Dim keyCount As Integer = 0
 
-				If objThread.ContainingForum.IsParentForum Then
+				If objThread.ContainingForum.ParentID = 0 Then
 					KeyWords = objThread.ContainingForum.Name
 					keyCount = 1
 				Else
@@ -582,17 +582,20 @@ Namespace DotNetNuke.Modules.Forum
 					keyCount = 2
 				End If
 
-				For Each Term As Entities.Content.Taxonomy.Term In objThread.Terms
-					If keyCount < Constants.SEO_KEYWORDS_LIMIT Then
-						KeyWords += "," + Term.Name
-						keyCount += 1
-					Else
-						Exit For
-					End If
-				Next
+				If objConfig.EnableTagging Then
+					For Each Term As Entities.Content.Taxonomy.Term In objThread.Terms
+						If keyCount < Constants.SEO_KEYWORDS_LIMIT Then
+							KeyWords += "," + Term.Name
+							keyCount += 1
+						Else
+							Exit For
+						End If
+					Next
 
-				If keyCount < Constants.SEO_KEYWORDS_LIMIT Then
-					KeyWords += "," + Me.BaseControl.PortalName
+					' If we haven't hit the keyword limit, let's add portal name to the list.
+					If keyCount < Constants.SEO_KEYWORDS_LIMIT Then
+						KeyWords += "," + Me.BaseControl.PortalName
+					End If
 				End If
 
 				MyBase.BasePage.KeyWords = KeyWords

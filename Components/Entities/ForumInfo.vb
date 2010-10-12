@@ -88,7 +88,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns>True/False</returns>
 		''' <remarks>Added by Skeel</remarks>
-		Public ReadOnly Property IsParentForum() As Boolean
+		Public ReadOnly Property ContainsChildForums() As Boolean
 			Get
 				If SubForums > 0 Then
 					Return True

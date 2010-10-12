@@ -255,7 +255,7 @@ Namespace DotNetNuke.Modules.Forum
 			If objForum Is Nothing Then
 				Return PostMessage.ForumDoesntExist
 			Else
-				If objForum.IsParentForum Then
+				If objForum.ContainsChildForums Then
 					Return PostMessage.ForumIsParent
 				End If
 

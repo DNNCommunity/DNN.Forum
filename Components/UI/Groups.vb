@@ -618,7 +618,7 @@ Namespace DotNetNuke.Modules.Forum
 							url = Utilities.Links.ContainerAggregatedLink(TabID, False)
 						Else
 							'[Skeel] Check if this is a parent forum
-							If objForum.IsParentForum = True Then
+							If objForum.ContainsChildForums = True Then
 								'Parent forum, link to group view
 								url = Utilities.Links.ContainerParentForumLink(TabID, objForum.GroupID, objForum.ForumID)
 							Else
@@ -637,7 +637,7 @@ Namespace DotNetNuke.Modules.Forum
 						Dim userForumController As New UserForumsController
 
 						'[skeel] added support for subforums
-						If objForum.IsParentForum = True Then
+						If objForum.ContainsChildForums = True Then
 							'Parent Forum
 							Dim LastVisitDate As Date = Now.AddYears(1)
 							Dim cntForum As New ForumController()
@@ -702,7 +702,7 @@ Namespace DotNetNuke.Modules.Forum
 						End If
 					Else
 						' See if the forum is a Link Type forum
-						If objForum.IsParentForum = True Then
+						If objForum.ContainsChildForums = True Then
 							'[skeel] parent forum
 							If HasNewThreads AndAlso objForum.TotalThreads > 0 Then
 								RenderImageButton(wr, url, objConfig.GetThemeImageURL("forum_parent_new.") & objConfig.ImageExtension, Me.BaseControl.LocalizedText("imgNewUnmoderated"), "", False)
@@ -784,7 +784,7 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 
 					'[skeel] here we place subforums, if any
-					If objForum.IsParentForum Then
+					If objForum.ContainsChildForums Then
 						wr.Write("<br />")
 						wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_SubForumContainer")
 						wr.RenderBeginTag(HtmlTextWriterTag.Div) '<div>
