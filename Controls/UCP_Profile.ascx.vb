@@ -38,7 +38,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' </summary>
 		''' <remarks></remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
-			Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
+			Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, -1, CurrentForumUser.UserID)
 			Dim cntForumUser As New ForumUserController
 			Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
@@ -72,7 +72,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 				rowLiftBanDate.Visible = False
 			End If
 
-			rowTrust.Visible = Security.IsForumModerator
+			rowTrust.Visible = Security.IsModerator
 			rowLockTrust.Visible = Security.IsForumAdmin
 
 			ViewState("Alias") = ProfileUser.SiteAlias

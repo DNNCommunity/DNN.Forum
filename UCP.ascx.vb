@@ -85,7 +85,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
 			Try
-				Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
+				Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, -1, CurrentForumUser.UserID)
 
 				If Not Security.IsModerator Then
 					If Request.IsAuthenticated Then

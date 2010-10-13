@@ -347,7 +347,13 @@ Namespace DotNetNuke.Modules.Forum
 				Dim cntPostConnect As New PostConnector
 				Dim PostMessage As PostMessage
 
-				PostMessage = cntPostConnect.SubmitInternalPost(TabID, ModuleID, PortalID, CurrentForumUser.UserID, strSubject, txtQuickReply.Text, ForumID, objThread.ThreadID, -1, objThread.IsPinned, False, False, objThread.ThreadStatus, "", RemoteAddress, objThread.PollID, False, objThread.ThreadID, objThread.Terms)
+				Dim textReply As String = txtQuickReply.Text
+
+				'textReply = textReply.Replace(vbCrLf, "<br />")
+				textReply = textReply.Replace(Environment.NewLine, "<br />")
+				'textReply = textReply.Replace("\n", "<br />")
+
+				PostMessage = cntPostConnect.SubmitInternalPost(TabID, ModuleID, PortalID, CurrentForumUser.UserID, strSubject, textReply, ForumID, objThread.ThreadID, -1, objThread.IsPinned, False, False, objThread.ThreadStatus, "", RemoteAddress, objThread.PollID, False, objThread.ThreadID, objThread.Terms)
 
 				Select Case PostMessage
 					Case PostMessage.PostApproved
@@ -746,6 +752,7 @@ Namespace DotNetNuke.Modules.Forum
 				.Width = Unit.Percentage(99)
 				.Height = 150
 				.TextMode = TextBoxMode.MultiLine
+				'.Text
 			End With
 
 			Me.cmdSubmit = New LinkButton

@@ -6,7 +6,7 @@
 		<MasterTableView DataKeyNames="ForumID" >
 			<Columns>
 				<dnnweb:DnnGridHyperlinkColumn UniqueName="hlName" HeaderText="Name" DataTextField="Name" />
-				<telerik:GridBoundColumn UniqueName="Posts" DataField="TotalPosts" HeaderText="TotalPosts" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" ItemStyle-Width="100px" HeaderStyle-Width="100px" />
+				<telerik:GridBoundColumn UniqueName="PostsToModerate" DataField="PostsToModerate" HeaderText="PostsToModerate" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" ItemStyle-Width="100px" HeaderStyle-Width="100px" />
 			</Columns>
 		</MasterTableView>			
 	</dnnweb:DnnGrid>

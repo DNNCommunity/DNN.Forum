@@ -132,7 +132,7 @@
   <data name="Name.Header" xml:space="preserve">
     <value>Forum</value>
   </data>
-  <data name="TotalPosts.Header" xml:space="preserve">
+  <data name="PostsToModerate.Header" xml:space="preserve">
     <value>Posts</value>
   </data>
 </root>
