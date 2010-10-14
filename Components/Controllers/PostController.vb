@@ -35,7 +35,7 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-#Region "Public Methods"
+#Region "Friend Methods"
 
 		''' <summary>
 		''' Returns a collection of posts in a specific thread.
@@ -48,6 +48,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Friend Function PostGetAll(ByVal ThreadID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal Descending As Boolean, ByVal PortalID As Integer) As List(Of PostInfo)
+			'NOTE: Consider caching for standard pagesize?
 			Return CBO.FillCollection(Of PostInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().PostGetAll(ThreadID, PageIndex, PageSize, Descending, PortalID))
 		End Function
 
@@ -98,17 +99,6 @@ Namespace DotNetNuke.Modules.Forum
 		End Function
 
 		''' <summary>
-		''' Returns a single post from the data store. 
-		''' </summary>
-		''' <param name="PostID">The post we are attempting to retrieve.</param>
-		''' <param name="PortalID">The portal the post is related to.</param>
-		''' <returns>A single post.</returns>
-		''' <remarks></remarks>
-		Friend Function PostGet(ByVal PostID As Integer, ByVal PortalID As Integer) As PostInfo
-			Return CType(CBO.FillObject(DotNetNuke.Modules.Forum.DataProvider.Instance().PostGet(PostID, PortalID), GetType(PostInfo)), PostInfo)
-		End Function
-
-		''' <summary>
 		''' Post delete removes a single post from the database and updates the cache. It also updates user post count as well as the forum/thread related statistics (ie. last post). 
 		''' </summary>
 		''' <param name="PostID">The post PK that is going to be deleted.</param>
@@ -135,7 +125,7 @@ Namespace DotNetNuke.Modules.Forum
 			DotNetNuke.Modules.Forum.DataProvider.Instance().PostUpdateParseInfo(PostID, ParseInfo)
 			Forum.Components.Utilities.Caching.UpdatePostCache(PostID)
 		End Sub
-		
+
 		''' <summary>
 		''' Moves a post in the data store. 
 		''' </summary>
@@ -207,6 +197,21 @@ Namespace DotNetNuke.Modules.Forum
 		Friend Sub PostUpdate(ByVal ThreadID As Integer, ByVal PostID As Integer, ByVal Subject As String, ByVal Body As String, ByVal IsPinned As Boolean, ByVal PinnedDate As DateTime, ByVal IsClosed As Boolean, ByVal UpdatedBy As Integer, ByVal PortalID As Integer, ByVal PollID As Integer, ByVal ParentID As Integer, ByVal ParseInfo As Integer)
 			DotNetNuke.Modules.Forum.DataProvider.Instance().PostUpdate(ThreadID, PostID, Subject, Body, IsPinned, PinnedDate, IsClosed, UpdatedBy, PortalID, PollID, ParseInfo)
 		End Sub
+
+#End Region
+
+#Region "Private Methods"
+
+		''' <summary>
+		''' Returns a single post from the data store. 
+		''' </summary>
+		''' <param name="PostID">The post we are attempting to retrieve.</param>
+		''' <param name="PortalID">The portal the post is related to.</param>
+		''' <returns>A single post.</returns>
+		''' <remarks></remarks>
+		Private Function PostGet(ByVal PostID As Integer, ByVal PortalID As Integer) As PostInfo
+			Return CType(CBO.FillObject(DotNetNuke.Modules.Forum.DataProvider.Instance().PostGet(PostID, PortalID), GetType(PostInfo)), PostInfo)
+		End Function
 
 #End Region
 

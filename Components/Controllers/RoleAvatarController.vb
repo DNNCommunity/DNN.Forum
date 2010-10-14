@@ -25,7 +25,6 @@ Namespace DotNetNuke.Modules.Forum
 	''' <summary>
 	''' CRUD (and all db methods) RoleAvatar Methods
 	''' </summary>
-	''' <remarks>Added by Skeel</remarks>
 	Public Class RoleAvatarController
 
 #Region " Private Members "
@@ -74,7 +73,6 @@ Namespace DotNetNuke.Modules.Forum
 			End Try
 
 			Return objAvatars
-
 		End Function
 
 		''' <summary>
@@ -115,7 +113,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Private Function GetFromCache(ByVal RoleID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer) As String
-
 			Dim strAvatar As String = String.Empty
 			' moving this 
 			Dim list As List(Of RoleAvatarInfo) = GetAllFromCache(ModuleID, PortalID)
@@ -187,7 +184,7 @@ Namespace DotNetNuke.Modules.Forum
 #Region " Public Methods "
 
 		''' <summary>
-		''' Attempts to load the stats from cache, if not available it retrieves it and places it in cache. 
+		''' Attempts to load the role avatars from cache, if not available it retrieves it and places it in cache. 
 		''' </summary>
 		''' <param name="ModuleID"></param>
 		''' <param name="PortalID"></param>

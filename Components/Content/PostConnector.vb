@@ -311,7 +311,7 @@ Namespace DotNetNuke.Modules.Forum
 					Dim cntPost As New PostController
 					Dim CanAlwaysEdit As Boolean = False
 
-					objPost = cntPost.PostGet(PostID, PortalID)
+					objPost = cntPost.GetPostInfo(PostID, PortalID)
 
 					If objModSecurity.IsForumAdmin = True Then CanAlwaysEdit = True
 					If objModSecurity.IsForumModerator = True Then CanAlwaysEdit = True
@@ -383,9 +383,11 @@ Namespace DotNetNuke.Modules.Forum
 			If objAction = PostAction.New Then
 				ParsingType = 0
 			Else
-				If lstAttachmentFileIDs <> String.Empty Then
-					Dim cntAttachment As New AttachmentController
-					ParsingType = CalculateParseInfo(PostBody, cntAttachment.GetAllByPostID(PostID), objConfig)
+				If objConfig.EnableAttachment Then
+					If lstAttachmentFileIDs <> String.Empty Then
+						Dim cntAttachment As New AttachmentController
+						ParsingType = CalculateParseInfo(PostBody, cntAttachment.GetAllByPostID(PostID), objConfig)
+					End If
 				End If
 			End If
 			'End If

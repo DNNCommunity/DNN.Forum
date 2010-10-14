@@ -517,7 +517,7 @@ Namespace DotNetNuke.Modules.Forum
 						Dim cntPost As New PostController
 						Dim objEditPost As New PostInfo
 
-						objEditPost = cntPost.PostGet(URLPostID, PortalId)
+						objEditPost = cntPost.GetPostInfo(URLPostID, PortalId)
 
 						ParentPostID = objEditPost.ParentPostID
 						PostID = objEditPost.PostID
@@ -557,7 +557,7 @@ Namespace DotNetNuke.Modules.Forum
 						Dim cntPost As New PostController
 						Dim objReplyToPost As New PostInfo
 
-						objReplyToPost = cntPost.PostGet(URLPostID, PortalId)
+						objReplyToPost = cntPost.GetPostInfo(URLPostID, PortalId)
 
 						ParentPostID = URLPostID
 						IsQuote = True
@@ -567,7 +567,7 @@ Namespace DotNetNuke.Modules.Forum
 						Dim cntPost As New PostController
 						Dim objReplyToPost As New PostInfo
 
-						objReplyToPost = cntPost.PostGet(URLPostID, PortalId)
+						objReplyToPost = cntPost.GetPostInfo(URLPostID, PortalId)
 
 						ParentPostID = URLPostID
 						ThreadID = objReplyToPost.ThreadID
@@ -1219,7 +1219,7 @@ Namespace DotNetNuke.Modules.Forum
 								End If
 							ElseIf objAction = PostAction.Reply Then
 								'Ignore the inlines, this is a parentpost
-								fTextDecode = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(objParentPost.Body), objConfig, objParentPost.ParseInfo, objParentPost.AttachmentCollection, True)
+								fTextDecode = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(objParentPost.Body), objConfig, objParentPost.ParseInfo, objParentPost.AttachmentCollection(objConfig.EnableAttachment), True)
 							End If
 						End If
 					End If

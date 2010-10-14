@@ -64,29 +64,29 @@ Namespace DotNetNuke.Modules.Forum
         ''' <param name="PostID"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetAllByPostID(ByVal PostID As Integer) As List(Of AttachmentInfo)
+		Public Function GetAllByPostID(ByVal PostID As Integer) As List(Of AttachmentInfo)
 
-            Dim objAttachments As New List(Of AttachmentInfo)
+			Dim objAttachments As New List(Of AttachmentInfo)
 			Dim dr As IDataReader = Nothing
-            Try
-                dr = DotNetNuke.Modules.Forum.DataProvider.Instance().Attachment_GetAllByPostID(PostID)
-                While dr.Read
-                    Dim objAttachment As AttachmentInfo = FillAttachmentInfo(dr)
-                    objAttachments.Add(objAttachment)
-                End While
-                dr.NextResult()
+			Try
+				dr = DotNetNuke.Modules.Forum.DataProvider.Instance().Attachment_GetAllByPostID(PostID)
+				While dr.Read
+					Dim objAttachment As AttachmentInfo = FillAttachmentInfo(dr)
+					objAttachments.Add(objAttachment)
+				End While
+				dr.NextResult()
 
-            Catch ex As Exception
-                LogException(ex)
-            Finally
-                If Not dr Is Nothing Then
-                    dr.Close()
-                End If
-            End Try
+			Catch ex As Exception
+				LogException(ex)
+			Finally
+				If Not dr Is Nothing Then
+					dr.Close()
+				End If
+			End Try
 
-            Return objAttachments
+			Return objAttachments
 
-        End Function
+		End Function
 
         ''' <summary>
         ''' Gets a list of AttachmentInfo related to a UserId and NOT related to any posts

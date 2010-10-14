@@ -492,7 +492,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Property RoleAvatar() As String
 			Get
-				If _RoleAvatars = String.Empty Then
+				If _RoleAvatars = String.Empty And objConfig.EnableRoleAvatar Then
 					Dim ctlRoleAvatar As New RoleAvatarController
 					_RoleAvatars = ctlRoleAvatar.GetUsersRoleAvatars(UserID, objConfig.ModuleID, PortalID)
 				End If

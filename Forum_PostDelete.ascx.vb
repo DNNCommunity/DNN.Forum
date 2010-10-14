@@ -86,11 +86,13 @@ Namespace DotNetNuke.Modules.Forum
 		''' </remarks>
 		Protected Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 			Try
-				Dim PostID As Integer
-				If Not Request.UrlReferrer Is Nothing Then
-					ViewState("UrlReferrer") = Request.UrlReferrer.ToString()
+				If Page.IsPostBack = False Then
+					If Not Request.UrlReferrer Is Nothing Then
+						ViewState("UrlReferrer") = Request.UrlReferrer.ToString()
+					End If
 				End If
 
+				Dim PostID As Integer
 				If Not Request.QueryString("postid") Is Nothing Then
 					Dim objPost As New PostInfo
 					Dim cntPost As New PostController()
@@ -256,7 +258,7 @@ Namespace DotNetNuke.Modules.Forum
 							End If
 						Else
 							' Delete post (SEND MAIL BEFORE DELETE, we need the post still in the db)
-							NewThreadID = cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objPost.Author.UserID)
+							cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objPost.Author.UserID)
 						End If
 
 						Forum.Components.Utilities.Caching.UpdatePostCache(objPost.PostID, ThreadID, ForumID, objThread.ContainingForum.GroupID, ModuleId, objThread.ContainingForum.ParentID)

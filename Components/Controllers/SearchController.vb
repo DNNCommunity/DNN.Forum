@@ -44,6 +44,7 @@ Namespace DotNetNuke.Modules.Forum
         ''' <returns>A collection of search results.</returns>
         ''' <remarks></remarks>
 		Public Function SearchGetResults(ByVal Filter As String, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal FromDate As DateTime, ByVal ToDate As DateTime, ByVal ThreadStatusID As Integer) As List(Of ThreadInfo)
+			' NOTE: Consider caching for anonymous users
 			Return CBO.FillCollection(Of ThreadInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().SearchGetResults(Filter, PageIndex, PageSize, UserID, ModuleID, FromDate, ToDate, ThreadStatusID))
 		End Function
 

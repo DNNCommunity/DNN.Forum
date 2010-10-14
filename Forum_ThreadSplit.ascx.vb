@@ -168,7 +168,7 @@ Namespace DotNetNuke.Modules.Forum
 				If Page.IsPostBack = False Then
 					Dim cntPost As New PostController
 					Dim objPost As New PostInfo
-					objPost = cntPost.PostGet(PostID, PortalId)
+					objPost = cntPost.GetPostInfo(PostID, PortalId)
 
 					' if the post is nothing here, it was deleted
 					If objPost Is Nothing Then
@@ -287,7 +287,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					Dim objPost As PostInfo
 					Dim PostCnt As New PostController
-					objPost = PostCnt.PostGet(PostID, PortalId)
+					objPost = PostCnt.GetPostInfo(PostID, PortalId)
 
 					Response.Redirect(GetReturnURL(objPost), False)
 				End If
@@ -484,7 +484,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim objPost As New PostInfo
 			Dim cntPost As New PostController
 
-			objPost = cntPost.PostGet(PostID, PortalId)
+			objPost = cntPost.GetPostInfo(PostID, PortalId)
 
 
 			If Not objPost Is Nothing Then
@@ -500,9 +500,9 @@ Namespace DotNetNuke.Modules.Forum
 					Else
 						'At lease Inline to Parse
 						If Users.UserController.GetCurrentUserInfo.UserID > 0 Then
-							bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(objPost.Body), objConfig, objPost.ParseInfo, objPost.AttachmentCollection, True)
+							bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(objPost.Body), objConfig, objPost.ParseInfo, objPost.AttachmentCollection(objConfig.EnableAttachment), True)
 						Else
-							bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(objPost.Body), objConfig, objPost.ParseInfo, objPost.AttachmentCollection, False)
+							bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(objPost.Body), objConfig, objPost.ParseInfo, objPost.AttachmentCollection(objConfig.EnableAttachment), False)
 						End If
 					End If
 				End If

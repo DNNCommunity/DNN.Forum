@@ -215,7 +215,7 @@ Namespace DotNetNuke.Modules.Forum
 
 						Dim objPost As PostInfo
 						Dim PostCnt As New PostController
-						objPost = PostCnt.PostGet(ThreadID, PortalId)
+						objPost = PostCnt.GetPostInfo(ThreadID, PortalId)
 
 						Response.Redirect(GetReturnURL(objPost), False)
 					End If

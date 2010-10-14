@@ -413,7 +413,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				Dim ctlPost As New PostController
 				Dim objPostInfo As PostInfo
-				objPostInfo = ctlPost.PostGet(answerPostID, PortalID)
+				objPostInfo = ctlPost.GetPostInfo(answerPostID, PortalID)
 
 				Dim ModeratorID As Integer = -1
 				If objThread.StartedByUserID <> CurrentForumUser.UserID Then
@@ -441,9 +441,8 @@ Namespace DotNetNuke.Modules.Forum
 			Dim user As ForumUserInfo = CurrentForumUser
 
 			If PostID > 0 Then
-				' If a specific postid is in the url
 				Dim objPostCnt As New PostController
-				Dim objPost As PostInfo = objPostCnt.PostGet(PostID, PortalID)
+				Dim objPost As PostInfo = objPostCnt.GetPostInfo(PostID, PortalID)
 				ThreadID = objPost.ThreadID
 
 				' we need to determine which page to return based on number of posts in this thread, the users posts per page count, and their asc/desc view, where this post is
@@ -2174,9 +2173,9 @@ Namespace DotNetNuke.Modules.Forum
 				Else
 					'At lease Inline to Parse
 					If CurrentForumUser.UserID > 0 Then
-						bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(Post.Body), objConfig, Post.ParseInfo, Post.AttachmentCollection, True)
+						bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(Post.Body), objConfig, Post.ParseInfo, Post.AttachmentCollection(objConfig.EnableAttachment), True)
 					Else
-						bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(Post.Body), objConfig, Post.ParseInfo, Post.AttachmentCollection, False)
+						bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(Post.Body), objConfig, Post.ParseInfo, Post.AttachmentCollection(objConfig.EnableAttachment), False)
 					End If
 				End If
 			End If
@@ -2272,14 +2271,14 @@ Namespace DotNetNuke.Modules.Forum
 			'New Attachments type
 			'Select Case Post.ParseInfo
 			'Case 4, 5, 6, 7, 15
-			If Post.AttachmentCollection.Count > 0 Then
+			If objConfig.EnableAttachment AndAlso Post.AttachmentCollection(objConfig.EnableAttachment).Count > 0 Then
 				RenderRowBegin(wr) '<tr> 
 				RenderCellBegin(wr, attachmentClass, "1px", "100%", "left", "middle", "", "") ' <td>
 
 				' create table to hold link and image
 				RenderTableBegin(wr, "", "", "", "", "0", "0", "", "middle", "0") ' <table>
 
-				For Each objFile As AttachmentInfo In Post.AttachmentCollection
+				For Each objFile As AttachmentInfo In Post.AttachmentCollection(objConfig.EnableAttachment)
 					'Here we only handle attachments not inline type
 					If objFile.Inline = False Then
 

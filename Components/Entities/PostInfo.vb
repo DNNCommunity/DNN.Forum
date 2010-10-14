@@ -169,10 +169,14 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks>Returns a list of AttachmentInfo, use Attachments.Count to see if anything is there</remarks>
-		Public ReadOnly Property AttachmentCollection() As List(Of AttachmentInfo)
+		Public ReadOnly Property AttachmentCollection(ByVal Enabled As Boolean) As List(Of AttachmentInfo)
 			Get
-				Dim cntAttachment As New AttachmentController
-				Return cntAttachment.GetAllByPostID(PostID)
+				If Enabled Then
+					Dim cntAttachment As New AttachmentController
+					Return cntAttachment.GetAllByPostID(PostID)
+				Else
+					Return Nothing
+				End If
 			End Get
 		End Property
 
