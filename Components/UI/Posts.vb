@@ -1642,7 +1642,8 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			'[skeel] add Bookmark to post
-			RenderPostBookmark(wr, "p" & CStr(Post.PostID))
+			'RenderPostBookmark(wr, "p" & CStr(Post.PostID))
+			RenderPostBookmark(wr, CStr(Post.PostID))
 			'Make table to hold per post header
 			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "center", "middle", "0")  ' <table> 
 			RenderRowBegin(wr) ' <tr>
@@ -2068,7 +2069,8 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 				End If
 			End If
-			RenderTableBegin(wr, Post.PostID.ToString, "", "100%", "100%", "0", "0", "", "", "0") ' <table>
+			'RenderTableBegin(wr, Post.PostID.ToString, "", "100%", "100%", "0", "0", "", "", "0") ' <table>
+			RenderTableBegin(wr, "", "", "100%", "100%", "0", "0", "", "", "0") ' <table>
 			RenderRowBegin(wr) ' <tr>
 
 			RenderCellBegin(wr, "", "", "100%", "", "", "", "") ' <td>
@@ -2203,9 +2205,9 @@ Namespace DotNetNuke.Modules.Forum
 			' cell for post body, set cell attributes           
 			RenderCellBegin(wr, "", "", "100%", "left", "top", "", "") ' <td>
 
-			RenderDivBegin(wr, "spBody", "Forum_Normal")	' <span>
+			RenderDivBegin(wr, "spBody", "Forum_Normal")	' <div>
 			wr.Write(cleanBody)
-			RenderDivEnd(wr) ' </span>
+			RenderDivEnd(wr) ' </div>
 
 			If objConfig.EnableUserSignatures Then
 				' insert signature if exists
@@ -2237,18 +2239,28 @@ Namespace DotNetNuke.Modules.Forum
 				RenderTableBegin(wr, "", "", "", "", "0", "0", "", "middle", "0") ' <table>
 				RenderRowBegin(wr) ' <tr>
 
+				Dim renderSpace As Boolean = True
+
 				If Post.PostReported > 0 Then
 					RenderCellBegin(wr, "", "", "", "right", "middle", "", "") ' <td>
 					' make a link to take users to see whom reported this post and why
 					RenderImage(wr, objConfig.GetThemeImageURL("s_postabuse.") & objConfig.ImageExtension, Post.PostReported.ToString & " " & Localization.GetString("AbuseReports", ForumControl.objConfig.SharedResourceFile), "")
 					wr.Write("&nbsp;")
 					RenderCellEnd(wr) ' </td>
+					renderSpace = False
 				End If
 
 				If CurrentForumUser.UserID > 0 Then
 					RenderCellBegin(wr, "Forum_ReplyCell", "", "", "right", "middle", "", "") ' <td>
 					' Warn link
 					RenderLinkButton(wr, Url, ForumControl.LocalizedText("ReportAbuse"), "Forum_Link")
+					RenderCellEnd(wr) ' </td>
+					renderSpace = False
+				End If
+
+				If renderSpace Then
+					RenderCellBegin(wr, "", "", "", "right", "middle", "", "") ' <td>
+					wr.Write("&nbsp;")
 					RenderCellEnd(wr) ' </td>
 				End If
 
@@ -2750,6 +2762,7 @@ Namespace DotNetNuke.Modules.Forum
 			If PostCollection.Count > 0 Then
 				wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 				wr.AddAttribute(HtmlTextWriterAttribute.Src, objConfig.GetThemeImageURL("spacer.gif"))
+				wr.AddAttribute(HtmlTextWriterAttribute.Alt, "")
 				wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <Img>
 				wr.RenderEndTag() ' </Img>
 				ddlViewDescending.RenderControl(wr)
@@ -3002,6 +3015,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 				wr.AddAttribute(HtmlTextWriterAttribute.Src, objConfig.GetThemeImageURL("spacer.gif"))
+				wr.AddAttribute(HtmlTextWriterAttribute.Alt, "")
 				wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <Img>
 				wr.RenderEndTag() ' </Img>
 			End If
@@ -3028,6 +3042,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, objConfig.GetThemeImageURL("spacer.gif"))
+					wr.AddAttribute(HtmlTextWriterAttribute.Alt, "")
 					wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <Img>
 					wr.RenderEndTag() ' </Img>
 				End If
@@ -3053,6 +3068,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, objConfig.GetThemeImageURL("spacer.gif"))
+					wr.AddAttribute(HtmlTextWriterAttribute.Alt, "")
 					wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <Img>
 					wr.RenderEndTag() ' </Img>
 				End If
@@ -3077,6 +3093,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, objConfig.GetThemeImageURL("spacer.gif"))
+					wr.AddAttribute(HtmlTextWriterAttribute.Alt, "")
 					wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <Img>
 					wr.RenderEndTag() ' </Img>
 				End If
@@ -3093,6 +3110,7 @@ Namespace DotNetNuke.Modules.Forum
 
 				wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 				wr.AddAttribute(HtmlTextWriterAttribute.Src, objConfig.GetThemeImageURL("spacer.gif"))
+				wr.AddAttribute(HtmlTextWriterAttribute.Alt, "")
 				wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <Img>
 				wr.RenderEndTag() ' </Img>
 			End If

@@ -789,9 +789,9 @@ Namespace DotNetNuke.Modules.Forum
 				RenderTableEnd(wr) ' </table>
 
 				'End Cell 
-				RenderCellEnd(wr) ' </Td>
+				RenderCellEnd(wr) ' </td>
 				RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
-				RenderRowEnd(wr) ' </Tr>
+				RenderRowEnd(wr) ' </tr>
 
 				'Add spacer
 				If Count < PostCollection.Count Then
@@ -820,9 +820,9 @@ Namespace DotNetNuke.Modules.Forum
 				wr.Write("<br />" & Localization.GetString("SearchNoResult", objConfig.SharedResourceFile))
 
 				'End Cell 
-				RenderCellEnd(wr) ' </Td>
+				RenderCellEnd(wr) ' </td>
 				RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
-				RenderRowEnd(wr) ' </Tr>
+				RenderRowEnd(wr) ' </tr>
 				NoResults = True
 				Exit Sub
 			Else
@@ -840,9 +840,9 @@ Namespace DotNetNuke.Modules.Forum
 					End If
 
 					'End Cell 
-					RenderCellEnd(wr) ' </Td>
+					RenderCellEnd(wr) ' </td>
 					RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
-					RenderRowEnd(wr) ' </Tr>
+					RenderRowEnd(wr) ' </tr>
 				End If
 			End If
 
@@ -851,18 +851,18 @@ Namespace DotNetNuke.Modules.Forum
 			RenderCellBegin(wr, "", "", "100%", "", "", "", "") ' <td>
 
 			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0") ' <table>
-			RenderRowBegin(wr) ' <Tr>
+			RenderRowBegin(wr) ' <tr>
 			' Threads column
 			RenderCellBegin(wr, "", "", "52%", "left", "middle", "", "") '<td>
 			'This table is made simply so we can have a height controlling image and apply left cap here
 			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0") '<table>
-			RenderRowBegin(wr) ' <Tr>
+			RenderRowBegin(wr) ' <tr>
 			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "Forum_HeaderCapLeft", "") ' <td></td>
 			RenderCellBegin(wr, "Forum_Header", "", "", "", "", "", "")	' <td>
 			RenderDivBegin(wr, "", "Forum_HeaderText") ' <span>
 			wr.Write("&nbsp;" & ForumControl.LocalizedText("Threads"))
 			RenderDivEnd(wr) ' </span>
-			RenderCellEnd(wr) ' </Td>
+			RenderCellEnd(wr) ' </td>
 
 			RenderRowEnd(wr) ' </tr>
 			RenderTableEnd(wr) ' </table>
@@ -885,7 +885,7 @@ Namespace DotNetNuke.Modules.Forum
 			' Last Post column
 			RenderCellBegin(wr, "", "", "26%", "center", "", "", "") ' <td>
 			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0") '<table>
-			RenderRowBegin(wr) ' <Tr>
+			RenderRowBegin(wr) ' <tr>
 			RenderCellBegin(wr, "Forum_Header", "", "", "center", "", "", "") ' <td>
 			RenderDivBegin(wr, "", "Forum_HeaderText") ' <span>
 			wr.Write("&nbsp;" & ForumControl.LocalizedText("LastPost"))
@@ -896,7 +896,7 @@ Namespace DotNetNuke.Modules.Forum
 			RenderTableEnd(wr) ' </table>
 			RenderCellEnd(wr) ' </td>
 
-			RenderRowEnd(wr) ' </Tr>
+			RenderRowEnd(wr) ' </tr>
 			RenderSearchInfo(wr)
 		End Sub
 
@@ -913,7 +913,7 @@ Namespace DotNetNuke.Modules.Forum
 			For Each objThread As ThreadInfo In ThreadCollection
 				Dim even As Boolean = ThreadIsEven(Count)
 
-				RenderRowBegin(wr) ' <Tr>
+				RenderRowBegin(wr) ' <tr>
 				' cell holds table for post icon/thread subject/rating
 				If even Then
 					RenderCellBegin(wr, "Forum_Row", "", "52%", "left", "", "", "") ' <td>
@@ -1200,10 +1200,10 @@ Namespace DotNetNuke.Modules.Forum
 
 				Count = Count + 1
 			Next
+			RenderTableEnd(wr) ' </table>
 			RenderCellEnd(wr) ' </td>
-
-			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
-			RenderRowEnd(wr) ' </Tr>
+			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")	' <td><img/></td>
+			RenderRowEnd(wr) ' </tr>
 		End Sub
 
 		''' <summary>
@@ -1277,7 +1277,7 @@ Namespace DotNetNuke.Modules.Forum
 			RenderCellBegin(wr, "Forum_NormalSmall", "", "", "", "top", "2", "")	 ' <td>
 
 			'Post count
-			RenderDivBegin(wr, "spAuthorPostCount", "Forum_NormalSmall")
+			RenderDivBegin(wr, "", "Forum_NormalSmall")
 			wr.Write(ForumControl.LocalizedText("PostCount").Replace("[PostCount]", objPost.Author.PostCount.ToString))
 			RenderDivEnd(wr)
 
@@ -1295,11 +1295,11 @@ Namespace DotNetNuke.Modules.Forum
 		Private Sub RenderSpacerRow(ByVal wr As HtmlTextWriter)
 			RenderRowBegin(wr) '<tr> 
 			RenderCellBegin(wr, "Forum_SpacerRow", "", "", "", "", "", "")  ' <td>
-			RenderImage(wr, objConfig.GetThemeImageURL("height_spacer.gif"), "", "")
-			RenderCellEnd(wr)
+			RenderImage(wr, objConfig.GetThemeImageURL("height_spacer.gif"), "", "") ' <img />
+			RenderCellEnd(wr) ' </td>
 
 			RenderCellBegin(wr, "Forum_SpacerRow", "", "", "", "", "", "")  ' <td>
-			RenderImage(wr, objConfig.GetThemeImageURL("height_spacer.gif"), "", "")
+			RenderImage(wr, objConfig.GetThemeImageURL("height_spacer.gif"), "", "") ' <img />
 			RenderCellEnd(wr) '</td>
 			RenderRowEnd(wr) ' </tr>
 		End Sub

@@ -1,3 +1,7 @@
+.Forum_Container {
+	width: 100%;
+}
+
 .Forum_Container, .Forum_Container th, .Forum_Container td, .Forum_Container div, .Forum_Container p, .Forum_Container table, .Forum_Container a{font-family:Helvetica, Arial, San-Serif;line-height:16px;}
 .Forum_MenuItem{width:auto;background: url('images/header_bg.jpg') top left repeat-x;line-height:26px;padding:5px 10px;border-bottom:#50697D 1px solid;cursor:pointer;display:block;position:relative;vertical-align:middle;}
 .Forum_MenuGroup /* submenu */{height:100px;padding:5px 0px 5px 10px;border:1px solid #B8D7F3;}

@@ -918,7 +918,7 @@ Namespace DotNetNuke.Modules.Forum
 						Dim even As Boolean = ThreadIsEven(Count)
 						TotalRecords = objThread.TotalRecords
 
-						RenderRowBegin(wr) ' <Tr>
+						RenderRowBegin(wr) ' <tr>
 
 						' cell holds table for post icon/thread subject/rating
 						If even Then
@@ -1228,7 +1228,7 @@ Namespace DotNetNuke.Modules.Forum
 				RenderTableEnd(wr) ' </table>
 				RenderCellEnd(wr) ' </td>
 				RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")	' <td><img/></td>
-				RenderRowEnd(wr) ' </Tr>
+				RenderRowEnd(wr) ' </tr>
 			Catch ex As Exception
 				LogException(ex)
 			End Try

@@ -52,8 +52,11 @@ Namespace DotNetNuke.Modules.Forum
 			wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 			wr.AddAttribute(HtmlTextWriterAttribute.Cellspacing, cellspacing.ToString())
 			wr.AddAttribute(HtmlTextWriterAttribute.Cellpadding, cellpadding.ToString())
-			wr.AddAttribute(HtmlTextWriterAttribute.Width, "100%")
-			wr.AddAttribute(HtmlTextWriterAttribute.Id, id)
+
+			If id.Length > 0 Then
+				wr.AddAttribute(HtmlTextWriterAttribute.Id, id)
+			End If
+
 			wr.RenderBeginTag(HtmlTextWriterTag.Table) ' <table>
 		End Sub
 
@@ -78,9 +81,9 @@ Namespace DotNetNuke.Modules.Forum
 			If CssClass.Length > 0 Then
 				wr.AddAttribute(HtmlTextWriterAttribute.Class, CssClass)
 			End If
-			'If Height.Length > 0 Then
-			'    wr.AddAttribute(HtmlTextWriterAttribute.Height, Height)
-			'End If
+			''If Height.Length > 0 Then
+			''    wr.AddAttribute(HtmlTextWriterAttribute.Height, Height)
+			''End If
 			If Width.Length > 0 Then
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, Width)
 			End If
@@ -93,9 +96,9 @@ Namespace DotNetNuke.Modules.Forum
 			If Align.Length > 0 Then
 				wr.AddAttribute(HtmlTextWriterAttribute.Align, Align)
 			End If
-			If Valign.Length > 0 Then
-				wr.AddAttribute(HtmlTextWriterAttribute.Valign, Valign)
-			End If
+			'If Valign.Length > 0 Then
+			'	wr.AddAttribute(HtmlTextWriterAttribute.Valign, Valign)
+			'End If
 			If Border.Length > 0 Then
 				wr.AddAttribute(HtmlTextWriterAttribute.Border, Border)
 			End If
@@ -178,7 +181,6 @@ Namespace DotNetNuke.Modules.Forum
 			End If
 
 			wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
-
 		End Sub
 
 		''' <summary>
@@ -239,6 +241,7 @@ Namespace DotNetNuke.Modules.Forum
 			'wr.AddAttribute(HtmlTextWriterAttribute.Valign, "middle")
 			wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 			wr.AddAttribute(HtmlTextWriterAttribute.Src, Image)
+			wr.AddAttribute(HtmlTextWriterAttribute.Alt, "")
 			wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <Img>
 			wr.RenderEndTag() ' </Img>
 
@@ -269,6 +272,8 @@ Namespace DotNetNuke.Modules.Forum
 			If Tooltip.Length > 0 Then
 				wr.AddAttribute(HtmlTextWriterAttribute.Alt, Tooltip)
 				wr.AddAttribute(HtmlTextWriterAttribute.Title, Tooltip)
+			Else
+				wr.AddAttribute(HtmlTextWriterAttribute.Alt, "")
 			End If
 
 			wr.RenderBeginTag(HtmlTextWriterTag.Img) ' img 
@@ -304,6 +309,8 @@ Namespace DotNetNuke.Modules.Forum
 			If Tooltip.Length > 0 Then
 				wr.AddAttribute(HtmlTextWriterAttribute.Alt, Tooltip)
 				wr.AddAttribute(HtmlTextWriterAttribute.Title, Tooltip)
+			Else
+				wr.AddAttribute(HtmlTextWriterAttribute.Alt, "")
 			End If
 
 			If TargetBlank Then
@@ -339,6 +346,9 @@ Namespace DotNetNuke.Modules.Forum
 			If Tooltip.Length > 0 Then
 				wr.AddAttribute(HtmlTextWriterAttribute.Alt, Tooltip)
 				wr.AddAttribute(HtmlTextWriterAttribute.Title, Tooltip)
+			Else
+				wr.AddAttribute(HtmlTextWriterAttribute.Alt, "")
+				'wr.AddAttribute(HtmlTextWriterAttribute.Alt, "&quot;" + "&quot;")
 			End If
 
 			If TargetBlank Then
@@ -369,6 +379,8 @@ Namespace DotNetNuke.Modules.Forum
 			If Tooltip.Length > 0 Then
 				wr.AddAttribute(HtmlTextWriterAttribute.Alt, Tooltip)
 				wr.AddAttribute(HtmlTextWriterAttribute.Title, Tooltip)
+			Else
+				wr.AddAttribute(HtmlTextWriterAttribute.Alt, "")
 			End If
 
 			wr.RenderBeginTag(HtmlTextWriterTag.Img) ' img 
@@ -404,6 +416,8 @@ Namespace DotNetNuke.Modules.Forum
 			If Tooltip.Length > 0 Then
 				wr.AddAttribute(HtmlTextWriterAttribute.Alt, Tooltip)
 				wr.AddAttribute(HtmlTextWriterAttribute.Title, Tooltip)
+			Else
+				wr.AddAttribute(HtmlTextWriterAttribute.Alt, "")
 			End If
 
 			wr.RenderBeginTag(HtmlTextWriterTag.Img) ' img 

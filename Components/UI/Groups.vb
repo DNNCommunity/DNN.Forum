@@ -587,7 +587,7 @@ Namespace DotNetNuke.Modules.Forum
 					wr.AddAttribute(HtmlTextWriterAttribute.Cellpadding, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Cellspacing, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Width, "100%")
-					wr.AddAttribute(HtmlTextWriterAttribute.Valign, "top")
+					'wr.AddAttribute(HtmlTextWriterAttribute.Valign, "top")
 					wr.RenderBeginTag(HtmlTextWriterTag.Table) ' <table>
 					wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>
 
@@ -754,6 +754,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, objConfig.GetThemeImageURL("row_spacer.gif"))
+					wr.AddAttribute(HtmlTextWriterAttribute.Alt, "")
 					wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <Img>
 					wr.RenderEndTag() ' </Img>
 
@@ -878,6 +879,7 @@ Namespace DotNetNuke.Modules.Forum
 					wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, objConfig.GetThemeImageURL("row_spacer.gif"))
+					wr.AddAttribute(HtmlTextWriterAttribute.Alt, "")
 					wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <Img>
 					wr.RenderEndTag() ' </Img>
 
@@ -980,6 +982,7 @@ Namespace DotNetNuke.Modules.Forum
 
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, objConfig.GetThemeImageURL("row_spacer.gif"))
+					wr.AddAttribute(HtmlTextWriterAttribute.Alt, "")
 					wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <Img>
 					wr.RenderEndTag() ' </Img>
 

@@ -51,8 +51,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Library\Controls\CountryListBox\bin\CountryListBox.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke, Version=4.4.0.28454, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke, Version=5.5.0.653, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Library\bin\DotNetNuke.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Web, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -1014,9 +1015,9 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>4825</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/DotNetNuke/DesktopModules/Forum</IISUrl>
+          <IISUrl>http://localhost/DotNetNuke_Community/DesktopModules/Forum</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>http://localhost/DotNetNuke</IISAppRootUrl>
+          <IISAppRootUrl>http://localhost/DotNetNuke_Community</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
