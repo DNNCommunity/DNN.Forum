@@ -22,71 +22,79 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.WebControls
 
+	''' <summary>
+	''' A replication of the core paging control for use in the forum module. 
+	''' </summary>
+	''' <remarks></remarks>
     <ToolboxData("<{0}:PagingControl runat=server></{0}:PagingControl>")> Public Class PagingControl
         Inherits System.Web.UI.WebControls.WebControl
 
-        Protected tablePageNumbers As System.Web.UI.WebControls.Table
-        Protected WithEvents PageNumbers As System.Web.UI.WebControls.Repeater
-        Protected cellDisplayStatus As System.Web.UI.WebControls.TableCell
-        Protected cellDisplayLinks As System.Web.UI.WebControls.TableCell
+#Region "Private Members"
 
-        Private TotalPages As Integer = -1
-        Private _TotalRecords As Integer
-        Private _PageSize As Integer
-        Private _CurrentPage As Integer
-        Private _QuerystringParams As String
-        Private _TabID As Integer
-        Private _CSSClassLinkActive As String
-        Private _CSSClassLinkInactive As String
-        Private _CSSClassPagingStatus As String
+		Protected tablePageNumbers As System.Web.UI.WebControls.Table
+		Protected WithEvents PageNumbers As System.Web.UI.WebControls.Repeater
+		Protected cellDisplayStatus As System.Web.UI.WebControls.TableCell
+		Protected cellDisplayLinks As System.Web.UI.WebControls.TableCell
 
-        <System.ComponentModel.Bindable(True), System.ComponentModel.Category("Behavior"), System.ComponentModel.DefaultValue("0")> Property TotalRecords() As Integer
-            Get
-                Return _TotalRecords
-            End Get
+		Private TotalPages As Integer = -1
+		Private _TotalRecords As Integer
+		Private _PageSize As Integer
+		Private _CurrentPage As Integer
+		Private _QuerystringParams As String
+		Private _TabID As Integer
+		Private _CSSClassLinkActive As String
+		Private _CSSClassLinkInactive As String
+		Private _CSSClassPagingStatus As String
 
-            Set(ByVal Value As Integer)
-                _TotalRecords = Value
-            End Set
-        End Property
-        <System.ComponentModel.Bindable(True), System.ComponentModel.Category("Behavior"), System.ComponentModel.DefaultValue("10")> Property PageSize() As Integer
-            Get
-                Return _PageSize
-            End Get
+#End Region
 
-            Set(ByVal Value As Integer)
-                _PageSize = Value
-            End Set
-        End Property
-        <System.ComponentModel.Bindable(True), System.ComponentModel.Category("Behavior"), System.ComponentModel.DefaultValue("1")> Property CurrentPage() As Integer
-            Get
-                Return _CurrentPage
-            End Get
+		<System.ComponentModel.Bindable(True), System.ComponentModel.Category("Behavior"), System.ComponentModel.DefaultValue("0")> Property TotalRecords() As Integer
+			Get
+				Return _TotalRecords
+			End Get
 
-            Set(ByVal Value As Integer)
-                _CurrentPage = Value
-            End Set
-        End Property
-        <System.ComponentModel.Bindable(True), System.ComponentModel.Category("Behavior"), System.ComponentModel.DefaultValue("")> Property QuerystringParams() As String
-            Get
-                Return _QuerystringParams
-            End Get
+			Set(ByVal Value As Integer)
+				_TotalRecords = Value
+			End Set
+		End Property
+		<System.ComponentModel.Bindable(True), System.ComponentModel.Category("Behavior"), System.ComponentModel.DefaultValue("10")> Property PageSize() As Integer
+			Get
+				Return _PageSize
+			End Get
 
-            Set(ByVal Value As String)
-                _QuerystringParams = Value
-            End Set
-        End Property
-        <System.ComponentModel.Bindable(True), System.ComponentModel.Category("Behavior"), System.ComponentModel.DefaultValue("-1")> Property TabID() As Integer
-            Get
-                Return _TabID
-            End Get
+			Set(ByVal Value As Integer)
+				_PageSize = Value
+			End Set
+		End Property
+		<System.ComponentModel.Bindable(True), System.ComponentModel.Category("Behavior"), System.ComponentModel.DefaultValue("1")> Property CurrentPage() As Integer
+			Get
+				Return _CurrentPage
+			End Get
 
-            Set(ByVal Value As Integer)
-                _TabID = Value
-            End Set
-        End Property
-        <System.ComponentModel.Bindable(True), System.ComponentModel.Category("Behavior"), System.ComponentModel.DefaultValue("Normal")> Property CSSClassLinkActive() As String
-            Get
+			Set(ByVal Value As Integer)
+				_CurrentPage = Value
+			End Set
+		End Property
+		<System.ComponentModel.Bindable(True), System.ComponentModel.Category("Behavior"), System.ComponentModel.DefaultValue("")> Property QuerystringParams() As String
+			Get
+				Return _QuerystringParams
+			End Get
+
+			Set(ByVal Value As String)
+				_QuerystringParams = Value
+			End Set
+		End Property
+		<System.ComponentModel.Bindable(True), System.ComponentModel.Category("Behavior"), System.ComponentModel.DefaultValue("-1")> Property TabID() As Integer
+			Get
+				Return _TabID
+			End Get
+
+			Set(ByVal Value As Integer)
+				_TabID = Value
+			End Set
+		End Property
+		<System.ComponentModel.Bindable(True), System.ComponentModel.Category("Behavior"), System.ComponentModel.DefaultValue("Normal")> Property CSSClassLinkActive() As String
+			Get
 				If _CSSClassLinkActive = String.Empty Then
 					Return "Forum_FooterText"
 				Else
@@ -125,6 +133,10 @@ Namespace DotNetNuke.Modules.Forum.WebControls
 			End Set
 		End Property
 
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <remarks></remarks>
 		Protected Overrides Sub CreateChildControls()
 			tablePageNumbers = New System.Web.UI.WebControls.Table
 			cellDisplayStatus = New System.Web.UI.WebControls.TableCell
@@ -171,6 +183,11 @@ Namespace DotNetNuke.Modules.Forum.WebControls
 
 		End Sub
 
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="output"></param>
+		''' <remarks></remarks>
 		Protected Overrides Sub Render(ByVal output As System.Web.UI.HtmlTextWriter)
 			If PageNumbers Is Nothing Then
 				CreateChildControls()
@@ -190,60 +207,72 @@ Namespace DotNetNuke.Modules.Forum.WebControls
 			tablePageNumbers.RenderControl(output)
 		End Sub
 
-        Private Sub BindPageNumbers(ByVal TotalRecords As Integer, ByVal RecordsPerPage As Integer)
-            Dim PageLinksPerPage As Integer = 10
-            If TotalRecords / RecordsPerPage >= 1 Then
-                TotalPages = Convert.ToInt32(Math.Ceiling(CType(TotalRecords / RecordsPerPage, Double)))
-            Else
-                TotalPages = 0
-            End If
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="TotalRecords"></param>
+		''' <param name="RecordsPerPage"></param>
+		''' <remarks></remarks>
+		Private Sub BindPageNumbers(ByVal TotalRecords As Integer, ByVal RecordsPerPage As Integer)
+			Dim PageLinksPerPage As Integer = 10
+			If TotalRecords / RecordsPerPage >= 1 Then
+				TotalPages = Convert.ToInt32(Math.Ceiling(CType(TotalRecords / RecordsPerPage, Double)))
+			Else
+				TotalPages = 0
+			End If
 
-            If TotalPages > 0 Then
-                Dim ht As New DataTable
-                ht.Columns.Add("PageNum")
-                Dim tmpRow As DataRow
+			If TotalPages > 0 Then
+				Dim ht As New DataTable
+				ht.Columns.Add("PageNum")
+				Dim tmpRow As DataRow
 
-                Dim LowNum As Integer = 1
-                Dim HighNum As Integer = CType(TotalPages, Integer)
+				Dim LowNum As Integer = 1
+				Dim HighNum As Integer = CType(TotalPages, Integer)
 
-                Dim tmpNum As Double
-                tmpNum = CurrentPage - PageLinksPerPage / 2
-                If tmpNum < 1 Then tmpNum = 1
+				Dim tmpNum As Double
+				tmpNum = CurrentPage - PageLinksPerPage / 2
+				If tmpNum < 1 Then tmpNum = 1
 
-                If CurrentPage > (PageLinksPerPage / 2) Then
-                    LowNum = CType(Math.Floor(tmpNum), Integer)
-                End If
+				If CurrentPage > (PageLinksPerPage / 2) Then
+					LowNum = CType(Math.Floor(tmpNum), Integer)
+				End If
 
-                If CType(TotalPages, Integer) <= PageLinksPerPage Then
-                    HighNum = CType(TotalPages, Integer)
-                Else
-                    HighNum = LowNum + PageLinksPerPage - 1
-                End If
+				If CType(TotalPages, Integer) <= PageLinksPerPage Then
+					HighNum = CType(TotalPages, Integer)
+				Else
+					HighNum = LowNum + PageLinksPerPage - 1
+				End If
 
-                If HighNum > CType(TotalPages, Integer) Then
-                    HighNum = CType(TotalPages, Integer)
-                    If HighNum - LowNum < PageLinksPerPage Then
-                        LowNum = HighNum - PageLinksPerPage + 1
-                    End If
-                End If
+				If HighNum > CType(TotalPages, Integer) Then
+					HighNum = CType(TotalPages, Integer)
+					If HighNum - LowNum < PageLinksPerPage Then
+						LowNum = HighNum - PageLinksPerPage + 1
+					End If
+				End If
 
-                If HighNum > CType(TotalPages, Integer) Then HighNum = CType(TotalPages, Integer)
-                If LowNum < 1 Then LowNum = 1
+				If HighNum > CType(TotalPages, Integer) Then HighNum = CType(TotalPages, Integer)
+				If LowNum < 1 Then LowNum = 1
 
-                Dim i As Integer
-                For i = LowNum To HighNum
-                    tmpRow = ht.NewRow
-                    tmpRow("PageNum") = i
-                    ht.Rows.Add(tmpRow)
-                Next
+				Dim i As Integer
+				For i = LowNum To HighNum
+					tmpRow = ht.NewRow
+					tmpRow("PageNum") = i
+					ht.Rows.Add(tmpRow)
+				Next
 
-                PageNumbers.DataSource = ht
-                PageNumbers.DataBind()
-            End If
+				PageNumbers.DataSource = ht
+				PageNumbers.DataBind()
+			End If
 
-        End Sub
+		End Sub
 
-        Private Function CreateURL(ByVal CurrentPage As String) As String
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="CurrentPage"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Private Function CreateURL(ByVal CurrentPage As String) As String
 
 			If QuerystringParams <> String.Empty Then
 				If CurrentPage <> String.Empty Then
@@ -259,125 +288,119 @@ Namespace DotNetNuke.Modules.Forum.WebControls
 				End If
 			End If
 
-        End Function
+		End Function
 
-        ''' -----------------------------------------------------------------------------
-        ''' <summary>
-        ''' GetLink returns the page number links for paging.
-        ''' </summary>
-        ''' <remarks>
-        ''' </remarks>
-        ''' <history>
-        ''' 	[dancaron]	10/28/2004	Initial Version
-        ''' </history>
-        ''' -----------------------------------------------------------------------------
-        Private Function GetLink(ByVal PageNum As Integer) As String
-            If PageNum = CurrentPage Then
-                Return "<span class=""" + CSSClassLinkInactive + """>[" + PageNum.ToString + "]</span>"
-            Else
-                Return "<a href=""" + CreateURL(PageNum.ToString) + """ class=""" + CSSClassLinkActive + """>" + PageNum.ToString + "</a>"
-            End If
-        End Function
+		''' <summary>
+		''' GetLink returns the page number links for paging.
+		''' </summary>
+		''' <remarks>
+		''' </remarks>
+		Private Function GetLink(ByVal PageNum As Integer) As String
+			If PageNum = CurrentPage Then
+				Return "<span class=""" + CSSClassLinkInactive + """>[" + PageNum.ToString + "]</span>"
+			Else
+				Return "<a href=""" + CreateURL(PageNum.ToString) + """ class=""" + CSSClassLinkActive + """>" + PageNum.ToString + "</a>"
+			End If
+		End Function
 
-        ''' -----------------------------------------------------------------------------
-        ''' <summary>
-        ''' GetPreviousLink returns the link for the Previous page for paging.
-        ''' </summary>
-        ''' <remarks>
-        ''' </remarks>
-        ''' <history>
-        ''' 	[dancaron]	10/28/2004	Initial Version
-        ''' </history>
-        ''' -----------------------------------------------------------------------------
-        Private Function GetPreviousLink() As String
-            If CurrentPage > 1 AndAlso TotalPages > 0 Then
-                Return "<a href=""" + CreateURL((CurrentPage - 1).ToString) + """ class=""" + CSSClassLinkActive + """>" & Services.Localization.Localization.GetString("Previous", DotNetNuke.Services.Localization.Localization.SharedResourceFile) & "</a>"
-            Else
-                Return "<span class=""" + CSSClassLinkInactive + """>" & Services.Localization.Localization.GetString("Previous", DotNetNuke.Services.Localization.Localization.SharedResourceFile) & "</span>"
-            End If
-        End Function
+		''' <summary>
+		''' GetPreviousLink returns the link for the Previous page for paging.
+		''' </summary>
+		''' <remarks>
+		''' </remarks>
+		Private Function GetPreviousLink() As String
+			If CurrentPage > 1 AndAlso TotalPages > 0 Then
+				Return "<a href=""" + CreateURL((CurrentPage - 1).ToString) + """ class=""" + CSSClassLinkActive + """>" & Services.Localization.Localization.GetString("Previous", DotNetNuke.Services.Localization.Localization.SharedResourceFile) & "</a>"
+			Else
+				Return "<span class=""" + CSSClassLinkInactive + """>" & Services.Localization.Localization.GetString("Previous", DotNetNuke.Services.Localization.Localization.SharedResourceFile) & "</span>"
+			End If
+		End Function
 
-        ''' -----------------------------------------------------------------------------
-        ''' <summary>
-        ''' GetNextLink returns the link for the Next Page for paging.
-        ''' </summary>
-        ''' <remarks>
-        ''' </remarks>
-        ''' <history>
-        ''' 	[dancaron]	10/28/2004	Initial Version
-        ''' </history>
-        ''' -----------------------------------------------------------------------------
-        Private Function GetNextLink() As String
-            If CurrentPage <> TotalPages And TotalPages > 0 Then
-                Return "<a href=""" + CreateURL((CurrentPage + 1).ToString) + """ class=""" + CSSClassLinkActive + """>" & Services.Localization.Localization.GetString("Next", DotNetNuke.Services.Localization.Localization.SharedResourceFile) & "</a>"
-            Else
-                Return "<span class=""" + CSSClassLinkInactive + """>" & Services.Localization.Localization.GetString("Next", DotNetNuke.Services.Localization.Localization.SharedResourceFile) & "</span>"
-            End If
-        End Function
+		''' <summary>
+		''' GetNextLink returns the link for the Next Page for paging.
+		''' </summary>
+		''' <remarks>
+		''' </remarks>
+		Private Function GetNextLink() As String
+			If CurrentPage <> TotalPages And TotalPages > 0 Then
+				Return "<a href=""" + CreateURL((CurrentPage + 1).ToString) + """ class=""" + CSSClassLinkActive + """>" & Services.Localization.Localization.GetString("Next", DotNetNuke.Services.Localization.Localization.SharedResourceFile) & "</a>"
+			Else
+				Return "<span class=""" + CSSClassLinkInactive + """>" & Services.Localization.Localization.GetString("Next", DotNetNuke.Services.Localization.Localization.SharedResourceFile) & "</span>"
+			End If
+		End Function
 
-        ''' -----------------------------------------------------------------------------
-        ''' <summary>
-        ''' GetFirstLink returns the First Page link for paging.
-        ''' </summary>
-        ''' <remarks>
-        ''' </remarks>
-        ''' <history>
-        ''' 	[dancaron]	10/28/2004	Initial Version
-        ''' </history>
-        ''' -----------------------------------------------------------------------------
-        Private Function GetFirstLink() As String
-            If CurrentPage > 1 AndAlso TotalPages > 0 Then
-                Return "<a href=""" + CreateURL("1") + """ class=""" + CSSClassLinkActive + """>" & Services.Localization.Localization.GetString("First", DotNetNuke.Services.Localization.Localization.SharedResourceFile) & "</a>"
-            Else
-                Return "<span class=""" + CSSClassLinkInactive + """>" & Services.Localization.Localization.GetString("First", DotNetNuke.Services.Localization.Localization.SharedResourceFile) & "</span>"
-            End If
-        End Function
+		''' <summary>
+		''' GetFirstLink returns the First Page link for paging.
+		''' </summary>
+		''' <remarks>
+		''' </remarks>
+		Private Function GetFirstLink() As String
+			If CurrentPage > 1 AndAlso TotalPages > 0 Then
+				Return "<a href=""" + CreateURL("1") + """ class=""" + CSSClassLinkActive + """>" & Services.Localization.Localization.GetString("First", DotNetNuke.Services.Localization.Localization.SharedResourceFile) & "</a>"
+			Else
+				Return "<span class=""" + CSSClassLinkInactive + """>" & Services.Localization.Localization.GetString("First", DotNetNuke.Services.Localization.Localization.SharedResourceFile) & "</span>"
+			End If
+		End Function
 
-        ''' -----------------------------------------------------------------------------
-        ''' <summary>
-        ''' GetLastLink returns the Last Page link for paging.
-        ''' </summary>
-        ''' <remarks>
-        ''' </remarks>
-        ''' <history>
-        ''' 	[dancaron]	10/28/2004	Initial Version
-        ''' </history>
-        ''' -----------------------------------------------------------------------------
-        Private Function GetLastLink() As String
-            If CurrentPage <> TotalPages And TotalPages > 0 Then
-                Return "<a href=""" + CreateURL(TotalPages.ToString) + """ class=""" + CSSClassLinkActive + """>" & Services.Localization.Localization.GetString("Last", DotNetNuke.Services.Localization.Localization.SharedResourceFile) & "</a>"
-            Else
-                Return "<span class=""" + CSSClassLinkInactive + """>" & Services.Localization.Localization.GetString("Last", DotNetNuke.Services.Localization.Localization.SharedResourceFile) & "</span>"
-            End If
-        End Function
+		''' <summary>
+		''' GetLastLink returns the Last Page link for paging.
+		''' </summary>
+		''' <remarks>
+		''' </remarks>
+		Private Function GetLastLink() As String
+			If CurrentPage <> TotalPages And TotalPages > 0 Then
+				Return "<a href=""" + CreateURL(TotalPages.ToString) + """ class=""" + CSSClassLinkActive + """>" & Services.Localization.Localization.GetString("Last", DotNetNuke.Services.Localization.Localization.SharedResourceFile) & "</a>"
+			Else
+				Return "<span class=""" + CSSClassLinkInactive + """>" & Services.Localization.Localization.GetString("Last", DotNetNuke.Services.Localization.Localization.SharedResourceFile) & "</span>"
+			End If
+		End Function
 
-        Public Class PageNumberLinkTemplate
-            Implements ITemplate
-            Shared itemcount As Integer = 0
-            Private _PagingControl As PagingControl
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <remarks></remarks>
+		Public Class PageNumberLinkTemplate
+			Implements ITemplate
+			Shared itemcount As Integer = 0
+			Private _PagingControl As PagingControl
 
-            Sub New(ByVal ctlPagingControl As PagingControl)
-                _PagingControl = ctlPagingControl
-            End Sub
+			''' <summary>
+			''' 
+			''' </summary>
+			''' <param name="ctlPagingControl"></param>
+			''' <remarks></remarks>
+			Sub New(ByVal ctlPagingControl As PagingControl)
+				_PagingControl = ctlPagingControl
+			End Sub
 
-            Sub InstantiateIn(ByVal container As Control) _
-                  Implements ITemplate.InstantiateIn
+			''' <summary>
+			''' 
+			''' </summary>
+			''' <param name="container"></param>
+			''' <remarks></remarks>
+			Sub InstantiateIn(ByVal container As Control) _
+				 Implements ITemplate.InstantiateIn
 
-                Dim l As New Literal
-                AddHandler l.DataBinding, AddressOf Me.BindData
-                container.Controls.Add(l)
-            End Sub
+				Dim l As New Literal
+				AddHandler l.DataBinding, AddressOf Me.BindData
+				container.Controls.Add(l)
+			End Sub
 
-            Private Sub BindData(ByVal sender As Object, ByVal e As System.EventArgs)
-                Dim lc As Literal
-                lc = CType(sender, Literal)
-                Dim container As RepeaterItem
-                container = CType(lc.NamingContainer, RepeaterItem)
-                lc.Text = _PagingControl.GetLink(Convert.ToInt32(DataBinder.Eval(container.DataItem, "PageNum"))) + "&nbsp;&nbsp;"
-            End Sub
+			''' <summary>
+			''' 
+			''' </summary>
+			''' <param name="sender"></param>
+			''' <param name="e"></param>
+			''' <remarks></remarks>
+			Private Sub BindData(ByVal sender As Object, ByVal e As System.EventArgs)
+				Dim lc As Literal
+				lc = CType(sender, Literal)
+				Dim container As RepeaterItem
+				container = CType(lc.NamingContainer, RepeaterItem)
+				lc.Text = _PagingControl.GetLink(Convert.ToInt32(DataBinder.Eval(container.DataItem, "PageNum"))) + "&nbsp;&nbsp;"
+			End Sub
 
-
-        End Class
+		End Class
 
     End Class
 

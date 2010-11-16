@@ -25,7 +25,7 @@ Imports Microsoft.ApplicationBlocks.Data
 Namespace DotNetNuke.Modules.Forum
 
 	''' <summary>
-	''' The Microsoft SQL specific provider to allow Forum module to communicate with a data store. 
+	''' The Microsoft SQL specific provider to allow Forum module to communicate with a data store (ie. a concrete provider). 
 	''' </summary>
 	''' <remarks></remarks>
 	Public Class SqlDataProvider
@@ -79,24 +79,48 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Properties"
 
+		''' <summary>
+		''' The connection string used by our data provider.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
 		Public ReadOnly Property ConnectionString() As String
 			Get
 				Return _connectionString
 			End Get
 		End Property
 
+		''' <summary>
+		''' The path of our data provider.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
 		Public ReadOnly Property ProviderPath() As String
 			Get
 				Return _providerPath
 			End Get
 		End Property
 
+		''' <summary>
+		''' The object qualifier used for the provider (ie. dnn_).
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
 		Public ReadOnly Property ObjectQualifier() As String
 			Get
 				Return _objectQualifier
 			End Get
 		End Property
 
+		''' <summary>
+		''' The database owner used for the provider (ie. dbo). 
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
 		Public ReadOnly Property DatabaseOwner() As String
 			Get
 				Return _databaseOwner

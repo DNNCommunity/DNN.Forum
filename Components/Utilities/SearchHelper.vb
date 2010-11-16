@@ -48,7 +48,7 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Methods"
 
 			''' <summary>
-			''' 
+			''' Sets the property values.
 			''' </summary>
 			''' <param name="Field"></param>
 			''' <param name="Operator"></param>
@@ -67,7 +67,7 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Properties"
 
 			''' <summary>
-			''' 
+			''' The field we are working with (typically, this is a column). 
 			''' </summary>
 			''' <value></value>
 			''' <returns></returns>
@@ -82,7 +82,7 @@ Namespace DotNetNuke.Modules.Forum
 			End Property
 
 			''' <summary>
-			''' 
+			''' The value we are trying to match in our SQL.
 			''' </summary>
 			''' <value></value>
 			''' <returns></returns>
@@ -94,7 +94,7 @@ Namespace DotNetNuke.Modules.Forum
 			End Property
 
 			''' <summary>
-			''' 
+			''' The compare operator used in our SQL (this will be =, >, etc.). 
 			''' </summary>
 			''' <value></value>
 			''' <returns></returns>
@@ -106,7 +106,7 @@ Namespace DotNetNuke.Modules.Forum
 			End Property
 
 			''' <summary>
-			''' 
+			''' The SQL condition.
 			''' </summary>
 			''' <value></value>
 			''' <returns></returns>
@@ -136,8 +136,8 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Members"
 
-		Private mSearchTerms As New ArrayList
-		Private mWhereClause As String
+		Private _SearchTerms As New ArrayList
+		Private _WhereClause As String
 
 #End Region
 
@@ -165,7 +165,7 @@ Namespace DotNetNuke.Modules.Forum
 			Dim term As New SearchTerm
 			term.SetProperty(Field, [Operator], Value, Condition)
 
-			mSearchTerms.Add(term)
+			_SearchTerms.Add(term)
 		End Sub
 
 #End Region
@@ -180,10 +180,10 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Property SearchTerms() As ArrayList
 			Get
-				Return mSearchTerms
+				Return _SearchTerms
 			End Get
 			Set(ByVal Value As ArrayList)
-				mSearchTerms = Value
+				_SearchTerms = Value
 			End Set
 		End Property
 

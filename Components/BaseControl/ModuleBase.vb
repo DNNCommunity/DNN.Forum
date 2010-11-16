@@ -61,6 +61,12 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 		End Property
 
+		''' <summary>
+		''' The current forum the user is viewing. 
+		''' </summary>
+		''' <value></value>
+		''' <returns>An integer representing the current forum the usre is viewing. It will return -1 if there is no forumid parameter in the URL.</returns>
+		''' <remarks>The module depends heavily on this always being available in the URL. However, this is typically not used for security reasons.</remarks>
 		Public ReadOnly Property ForumID() As Integer
 			Get
 				If HttpContext.Current.Request.QueryString("forumid") IsNot Nothing Then

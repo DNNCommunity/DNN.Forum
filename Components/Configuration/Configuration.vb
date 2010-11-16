@@ -250,7 +250,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' 
+		''' The base folder for all forum themes.
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
@@ -262,7 +262,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' 
+		''' The full path to the current forum theme's folder on the file system.
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
@@ -627,7 +627,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' 
+		''' The number of approved posts a user must have to be auto-trusted.
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
@@ -663,7 +663,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' 
+		''' Determines if moderator edits should be displayed in the post user interface.
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
@@ -1390,12 +1390,24 @@ Namespace DotNetNuke.Modules.Forum
 			End Get
 		End Property
 
+		''' <summary>
+		''' Determines if third party extension should be used for receiving emails for a posting API.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks>This is currently not available in the user interface.</remarks>
 		Public ReadOnly Property EnableListServer() As Boolean
 			Get
 				Return _EnableListServer
 			End Get
 		End Property
 
+		''' <summary>
+		''' A folder path on the file system that should be used for storing emails.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
 		Public ReadOnly Property ListServerFolder() As String
 			Get
 				Return _ListServerFolder
@@ -2329,9 +2341,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns>The string value to use for the module setting.</returns>
 		''' <remarks>This avoids any non-set configuration items and sets defaults for them.
 		''' </remarks>
-		''' <history>
-		''' 	[cpaterra]	2/11/2006	Created
-		''' </history>
 		Public Shared Function GetValue(ByVal Input As Object, ByVal DefaultValue As String) As String
 			If Input Is Nothing Then
 				Return DefaultValue

@@ -181,7 +181,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		End Sub
 
 		''' <summary>
-		''' 
+		''' Enables/Disabled role avatar support and fields.
 		''' </summary>
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
@@ -195,7 +195,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		End Sub
 
 		''' <summary>
-		''' 
+		''' Enables/Disables profile avatar support and fields.
 		''' </summary>
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
@@ -205,7 +205,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		End Sub
 
 		''' <summary>
-		''' 
+		''' Enables/Disableds core user folder support and fields.
 		''' </summary>
 		''' <param name="sender"></param>
 		''' <param name="e"></param>

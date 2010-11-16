@@ -97,8 +97,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
-		''' <remarks>
-		''' </remarks>
+		''' <remarks></remarks>
 		Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
 			Try
 				Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
@@ -190,8 +189,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' This method is used to load the proper user control. 
 		''' It is also responsible for finding the control and firing off the interface all controls loaded by Forum_UserSettings via Ajax use.
 		''' </summary>
-		''' <param name="control"></param>
-		''' <returns></returns>
+		''' <param name="control">The ascx control we are attempting to load.</param>
+		''' <returns>An instance of the ascx control we loaded in the module.</returns>
 		''' <remarks>We need viewstate to load the same subcontrol at postback.</remarks>
 		Protected Function LoadForumControl(ByVal control As String) As Entities.Modules.PortalModuleBase
 			Dim objControl As Entities.Modules.PortalModuleBase = Nothing

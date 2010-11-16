@@ -22,101 +22,101 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-    ''' <summary>
-    ''' All properties associated with the Forum_Polls_Answers table. 
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Class AnswerInfo
+	''' <summary>
+	''' All properties associated with the Forum_Polls_Answers table. 
+	''' </summary>
+	''' <remarks></remarks>
+	Public Class AnswerInfo
 
 #Region "Private Members"
 
-        Private _AnswerID As Integer
-        Private _PollID As Integer
-        Private _Answer As String
-        Private _SortOrder As Integer
-        Private _AnswerCount As Integer
+		Private _AnswerID As Integer
+		Private _PollID As Integer
+		Private _Answer As String
+		Private _SortOrder As Integer
+		Private _AnswerCount As Integer
 
 #End Region
 
 #Region "Public Properties"
 
-        ''' <summary>
-        ''' The primary key value for the Answers table.
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property AnswerID() As Integer
-            Get
-                Return _AnswerID
-            End Get
-            Set(ByVal Value As Integer)
-                _AnswerID = Value
-            End Set
-        End Property
-
-        ''' <summary>
-        ''' The foreign key value for the Polls table.
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property PollID() As Integer
-            Get
-                Return _PollID
-            End Get
-            Set(ByVal Value As Integer)
-                _PollID = Value
-            End Set
-        End Property
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property Answer() As String
-            Get
-                Return _Answer
-            End Get
-            Set(ByVal Value As String)
-                _Answer = Value
-            End Set
-        End Property
-
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property SortOrder() As Integer
-            Get
-                Return _SortOrder
-            End Get
-            Set(ByVal Value As Integer)
-                _SortOrder = Value
-            End Set
-        End Property
-
 		''' <summary>
-		''' 
+		''' The primary key value for the Answers table.
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-        Public Property AnswerCount() As Integer
-            Get
-                Return _AnswerCount
-            End Get
-            Set(ByVal Value As Integer)
-                _AnswerCount = Value
-            End Set
-        End Property
+		Public Property AnswerID() As Integer
+			Get
+				Return _AnswerID
+			End Get
+			Set(ByVal Value As Integer)
+				_AnswerID = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' The foreign key value for the Polls table.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property PollID() As Integer
+			Get
+				Return _PollID
+			End Get
+			Set(ByVal Value As Integer)
+				_PollID = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' The text string of the answer for a forum poll.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property Answer() As String
+			Get
+				Return _Answer
+			End Get
+			Set(ByVal Value As String)
+				_Answer = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' The index sort order the answer should be displayed in.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property SortOrder() As Integer
+			Get
+				Return _SortOrder
+			End Get
+			Set(ByVal Value As Integer)
+				_SortOrder = Value
+			End Set
+		End Property
+
+		''' <summary>
+		''' The total number of anwsers.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Property AnswerCount() As Integer
+			Get
+				Return _AnswerCount
+			End Get
+			Set(ByVal Value As Integer)
+				_AnswerCount = Value
+			End Set
+		End Property
 
 #End Region
 
-    End Class
+	End Class
 
 End Namespace

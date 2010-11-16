@@ -24,6 +24,10 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "PostReportedInfo"
 
+	''' <summary>
+	''' Constructs PostReported object based on the Forum_Post_Reported table, focusing on the posts.
+	''' </summary>
+	''' <remarks></remarks>
 	Public Class PostReportedInfo
 
 #Region "Private Members"
@@ -134,7 +138,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' Total number of records.
 		''' </summary>
 		''' <value></value>
-		''' <returns></returns>
+		''' <returns>An integer that represents the total number of records.</returns>
 		''' <remarks>This is only used for paging counts.</remarks>
 		Public Property TotalRecords() As Integer
 			Get
@@ -149,7 +153,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' The user information about the user who reported the post.
 		''' </summary>
 		''' <value></value>
-		''' <returns></returns>
+		''' <returns>A forum object.</returns>
 		''' <remarks></remarks>
 		Public ReadOnly Property Author(ByVal ModuleID As Integer, ByVal PortalID As Integer) As ForumUserInfo
 			Get
@@ -159,11 +163,11 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' 
+		''' Retrieves a specific post for a portal, which has been or is being reported.
 		''' </summary>
-		''' <param name="PortalID"></param>
+		''' <param name="PortalID">The portal containing the post.</param>
 		''' <value></value>
-		''' <returns></returns>
+		''' <returns>A post object.</returns>
 		''' <remarks></remarks>
 		Public ReadOnly Property Post(ByVal PortalID As Integer) As PostInfo
 			Get
@@ -180,6 +184,10 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "ReportedUserInfo"
 
+	''' <summary>
+	''' Constructs PostReported object based on the Forum_Post_Reported table, focusing on the users.
+	''' </summary>
+	''' <remarks></remarks>
 	Public Class ReportedUserInfo
 
 #Region "Private Members"

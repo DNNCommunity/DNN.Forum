@@ -54,6 +54,14 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 			Return url
 		End Function
 
+		''' <summary>
+		''' Navigates the user to the email subscriber list for a forum.
+		''' </summary>
+		''' <param name="TabId"></param>
+		''' <param name="ModuleID"></param>
+		''' <param name="ForumID"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
 		Shared Function ForumEmailSubscribers(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal ForumID As Integer) As String
 			Dim url As String
 			Dim params As String()
@@ -65,6 +73,15 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 			Return url
 		End Function
 
+		''' <summary>
+		''' Navigates the user to the email subscribers list for a specific thread.
+		''' </summary>
+		''' <param name="TabId"></param>
+		''' <param name="ModuleID"></param>
+		''' <param name="ForumID"></param>
+		''' <param name="ThreadID"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
 		Shared Function ThreadEmailSubscribers(ByVal TabId As Integer, ByVal ModuleID As Integer, ByVal ForumID As Integer, ByVal ThreadID As Integer) As String
 			Dim url As String
 			Dim params As String()
@@ -851,4 +868,5 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 #End Region
 
 	End Class
+
 End Namespace

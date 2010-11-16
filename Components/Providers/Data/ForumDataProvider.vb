@@ -39,12 +39,19 @@ Namespace DotNetNuke.Modules.Forum
 			CreateProvider()
 		End Sub
 
-		' dynamically create provider
+		''' <summary>
+		''' Dynamically create the data provider.
+		''' </summary>
+		''' <remarks></remarks>
 		Private Shared Sub CreateProvider()
 			objProvider = CType(Framework.Reflection.CreateObject("data", "DotNetNuke.Modules.Forum", ""), DataProvider)
 		End Sub
 
-		' return the provider
+		''' <summary>
+		''' Return the data provider.
+		''' </summary>
+		''' <returns></returns>
+		''' <remarks></remarks>
 		Public Shared Shadows Function Instance() As DataProvider
 			Return objProvider
 		End Function

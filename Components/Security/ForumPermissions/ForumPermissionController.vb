@@ -22,8 +22,6 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "ForumPermissionController"
-
 	''' <summary>
 	''' Basically a copy of ModulePermissionController. This allows the forum
 	''' module ot implement permissions on a per module basis overriding module
@@ -295,6 +293,11 @@ Namespace DotNetNuke.Modules.Forum
 			DataProvider.Instance().UpdateForumPermission(objForumPermission.ForumPermissionID, objForumPermission.ForumID, objForumPermission.PermissionID, objForumPermission.RoleID, objForumPermission.AllowAccess, objForumPermission.UserID)
 		End Sub
 
+		''' <summary>
+		''' Clears a forum's permission cache.
+		''' </summary>
+		''' <param name="ForumID"></param>
+		''' <remarks></remarks>
 		Public Shared Sub ClearCache_GetForumPermissionsDictionary(ByVal ForumID As Integer)
 			Dim strCacheKey As String = "ForumPermsDic" + "-" + CStr(ForumID)
 
@@ -304,7 +307,5 @@ Namespace DotNetNuke.Modules.Forum
 #End Region
 
 	End Class
-
-#End Region
 
 End Namespace

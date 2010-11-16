@@ -397,7 +397,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		End Function
 
 		''' <summary>
-		''' 
+		''' Removes duplicate email address from the collection. 
 		''' </summary>
 		''' <param name="inputList"></param>
 		''' <returns></returns>
@@ -419,7 +419,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 #Region "String Replacement"
 
 		''' <summary>
-		''' 
+		''' This is used to used to set the reply subject of posts.
 		''' </summary>
 		''' <param name="PostSubject"></param>
 		''' <returns></returns>

@@ -25,19 +25,19 @@ Imports System.IO
 Imports System.Web.Hosting
 
 Namespace DotNetNuke.Modules.Forum
+
 	''' <summary>
 	''' Simply put, this is called to populate a 'fake' HttpContext object when HttpContext is not available (ie. scheduled tasks). 
 	''' </summary>
 	''' <remarks>Although originally from the core, this is converted from a Bruce Chapman blog.</remarks>
 	Public Class ForumPortalSettings
 		Inherits BaseEntityInfo
-		'Implements IPropertyAccess
 
 		''' <summary>
-		''' 
+		''' Creates a new instance of portal settings. This is used when HttpContext is not available (ie. scheduled tasks).
 		''' </summary>
-		''' <param name="portalId"></param>
-		''' <returns></returns>
+		''' <param name="portalId">The portal we are creating settings for.</param>
+		''' <returns>An instance of portal settings.</returns>
 		''' <remarks></remarks>
 		Public Shared Function CreateNewPortalSettings(ByVal portalId As Integer) As PortalSettings
 			'new settings object
@@ -180,112 +180,6 @@ Namespace DotNetNuke.Modules.Forum
 			Return ps
 		End Function
 
-#Region "IPropertyAccess Implementation"
-
-		'Public Function GetProperty(ByVal strPropertyName As String, ByVal strFormat As String, ByVal formatProvider As System.Globalization.CultureInfo, ByVal AccessingUser As UserInfo, ByVal AccessLevel As Scope, ByRef PropertyNotFound As Boolean) As String Implements IPropertyAccess.GetProperty
-		'	Dim OutputFormat As String = String.Empty
-		'	If strFormat = String.Empty Then OutputFormat = "g"
-		'	Dim lowerPropertyName As String = strPropertyName.ToLower
-
-		'	'Content locked for NoSettings
-		'	If AccessLevel = Scope.NoSettings Then PropertyNotFound = True : Return PropertyAccess.ContentLocked
-
-		'	PropertyNotFound = True
-		'	Dim result As String = String.Empty
-		'	Dim PublicProperty As Boolean = True
-
-		'	Select Case lowerPropertyName
-		'		Case "url"
-		'			PublicProperty = True : PropertyNotFound = False : result = PropertyAccess.FormatString(Me.PortalAlias.HTTPAlias(), strFormat)
-		'		Case "portalid"
-		'			PublicProperty = True : PropertyNotFound = False : result = (Me.PortalId.ToString(OutputFormat, formatProvider))
-		'		Case "portalname"
-		'			PublicProperty = True : PropertyNotFound = False : result = PropertyAccess.FormatString(Me.PortalName, strFormat)
-		'		Case "homedirectory"
-		'			PublicProperty = True : PropertyNotFound = False : result = PropertyAccess.FormatString(Me.HomeDirectory, strFormat)
-		'		Case "homedirectorymappath"
-		'			PublicProperty = False : PropertyNotFound = False : result = PropertyAccess.FormatString(Me.HomeDirectoryMapPath, strFormat)
-		'		Case "logofile"
-		'			PublicProperty = True : PropertyNotFound = False : result = PropertyAccess.FormatString(Me.LogoFile, strFormat)
-		'		Case "footertext"
-		'			PublicProperty = True : PropertyNotFound = False : result = PropertyAccess.FormatString(Me.FooterText, strFormat)
-		'		Case "expirydate"
-		'			PublicProperty = False : PropertyNotFound = False : result = (Me.ExpiryDate.ToString(OutputFormat, formatProvider))
-		'		Case "userregistration"
-		'			PublicProperty = False : PropertyNotFound = False : result = (Me.UserRegistration.ToString(OutputFormat, formatProvider))
-		'		Case "banneradvertising"
-		'			PublicProperty = False : PropertyNotFound = False : result = (Me.BannerAdvertising.ToString(OutputFormat, formatProvider))
-		'		Case "currency"
-		'			PublicProperty = True : PropertyNotFound = False : result = PropertyAccess.FormatString(Me.Currency, strFormat)
-		'		Case "administratorid"
-		'			PublicProperty = False : PropertyNotFound = False : result = (Me.AdministratorId.ToString(OutputFormat, formatProvider))
-		'		Case "email"
-		'			PublicProperty = True : PropertyNotFound = False : result = PropertyAccess.FormatString(Me.Email, strFormat)
-		'		Case "hostfee"
-		'			PublicProperty = False : PropertyNotFound = False : result = (Me.HostFee.ToString(OutputFormat, formatProvider))
-		'		Case "hostspace"
-		'			PublicProperty = False : PropertyNotFound = False : result = (Me.HostSpace.ToString(OutputFormat, formatProvider))
-		'		Case "pagequota"
-		'			PublicProperty = False : PropertyNotFound = False : result = (Me.PageQuota.ToString(OutputFormat, formatProvider))
-		'		Case "userquota"
-		'			PublicProperty = False : PropertyNotFound = False : result = (Me.UserQuota.ToString(OutputFormat, formatProvider))
-		'		Case "administratorroleid"
-		'			PublicProperty = False : PropertyNotFound = False : result = (Me.AdministratorRoleId.ToString(OutputFormat, formatProvider))
-		'		Case "administratorrolename"
-		'			PublicProperty = False : PropertyNotFound = False : result = PropertyAccess.FormatString(Me.AdministratorRoleName, strFormat)
-		'		Case "registeredroleid"
-		'			PublicProperty = False : PropertyNotFound = False : result = (Me.RegisteredRoleId.ToString(OutputFormat, formatProvider))
-		'		Case "registeredrolename"
-		'			PublicProperty = False : PropertyNotFound = False : result = PropertyAccess.FormatString(Me.RegisteredRoleName, strFormat)
-		'		Case "description"
-		'			PublicProperty = True : PropertyNotFound = False : result = PropertyAccess.FormatString(Me.Description, strFormat)
-		'		Case "keywords"
-		'			PublicProperty = True : PropertyNotFound = False : result = PropertyAccess.FormatString(Me.KeyWords, strFormat)
-		'		Case "backgroundfile"
-		'			PublicProperty = True : PropertyNotFound = False : result = PropertyAccess.FormatString(Me.BackgroundFile, strFormat)
-		'		Case "siteloghistory"
-		'			PublicProperty = False : PropertyNotFound = False : result = (Me.SiteLogHistory.ToString(OutputFormat, formatProvider))
-		'		Case "admintabid"
-		'			PublicProperty = False : PropertyNotFound = False : result = (Me.AdminTabId.ToString(OutputFormat, formatProvider))
-		'		Case "supertabid"
-		'			PublicProperty = False : PropertyNotFound = False : result = (Me.SuperTabId.ToString(OutputFormat, formatProvider))
-		'		Case "splashtabid"
-		'			PublicProperty = False : PropertyNotFound = False : result = (Me.SplashTabId.ToString(OutputFormat, formatProvider))
-		'		Case "hometabid"
-		'			PublicProperty = False : PropertyNotFound = False : result = (Me.HomeTabId.ToString(OutputFormat, formatProvider))
-		'		Case "logintabid"
-		'			PublicProperty = False : PropertyNotFound = False : result = (Me.LoginTabId.ToString(OutputFormat, formatProvider))
-		'		Case "usertabid"
-		'			PublicProperty = False : PropertyNotFound = False : result = (Me.UserTabId.ToString(OutputFormat, formatProvider))
-		'		Case "defaultlanguage"
-		'			PublicProperty = True : PropertyNotFound = False : result = PropertyAccess.FormatString(Me.DefaultLanguage, strFormat)
-		'		Case "timezoneoffset"
-		'			PublicProperty = True : PropertyNotFound = False : result = (Me.TimeZoneOffset.ToString(OutputFormat, formatProvider))
-		'		Case "users"
-		'			PublicProperty = False : PropertyNotFound = False : result = (Me.Users.ToString(OutputFormat, formatProvider))
-		'		Case "pages"
-		'			PublicProperty = False : PropertyNotFound = False : result = (Me.Pages.ToString(OutputFormat, formatProvider))
-		'		Case "contentvisible"
-		'			'Property deprecated
-		'			PublicProperty = False : PropertyNotFound = True
-		'		Case "controlpanelvisible"
-		'			PublicProperty = False : PropertyNotFound = False : result = (PropertyAccess.Boolean2LocalizedYesNo(Me.ControlPanelVisible, formatProvider))
-		'	End Select
-
-		'	If Not PublicProperty And AccessLevel <> Scope.Debug Then
-		'		PropertyNotFound = True
-		'		result = PropertyAccess.ContentLocked
-		'	End If
-
-		'	Return result
-		'End Function
-
-		'Public ReadOnly Property Cacheability() As CacheLevel Implements Services.Tokens.IPropertyAccess.Cacheability
-		'	Get
-		'		Return CacheLevel.fullyCacheable
-		'	End Get
-		'End Property
-
-#End Region
 	End Class
+
 End Namespace

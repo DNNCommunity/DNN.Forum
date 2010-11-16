@@ -25,6 +25,10 @@ Imports DotNetNuke.Entities.Content.Common
 
 Namespace DotNetNuke.Modules.Forum
 
+	''' <summary>
+	''' This class handles all core content item integration methods. This is abstracted to create a centralized spot within the module to manage it's own content items.
+	''' </summary>
+	''' <remarks></remarks>
 	Public Class Content
 
 #Region "Private Members"

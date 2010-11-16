@@ -24,6 +24,10 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "PostReportedController"
 
+	''' <summary>
+	''' Communicates with the Forum_Post_Reported table in the data store. 
+	''' </summary>
+	''' <remarks></remarks>
 	Public Class PostReportedController
 
 #Region "Public Methods"
@@ -93,10 +97,23 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "ReportedUserController"
 
+	''' <summary>
+	''' Properties associated with reported forum users. This is a combination of the Forum_Users table as well as the Forum_Post_Reported table. 
+	''' </summary>
+	''' <remarks></remarks>
 	Public Class ReportedUserController
 
 #Region "Public Methods"
 
+		''' <summary>
+		''' Retrieves a collection of reported forum users from the data store.
+		''' </summary>
+		''' <param name="PortalID">The portal to retrieve reported posts for.</param>
+		''' <param name="PageIndex">The current SQL page we are retrieving.</param>
+		''' <param name="PageSize">The number of records to return from one request.</param>
+		''' <param name="TotalRecords">The total number of records available for retrieval.</param>
+		''' <returns>A collection of reported forum users.</returns>
+		''' <remarks></remarks>
 		Public Function GetReportedUsers(ByVal PortalID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer) As List(Of ReportedUserInfo)
 			Return CBO.FillCollection(Of ReportedUserInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().GetReportedUsers(PortalID, PageIndex, PageSize))
 		End Function

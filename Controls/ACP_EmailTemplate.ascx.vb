@@ -139,7 +139,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		End Sub
 
 		''' <summary>
-		''' 
+		''' Formats content as it is bound to the data grid.
 		''' </summary>
 		''' <param name="sender"></param>
 		''' <param name="e"></param>

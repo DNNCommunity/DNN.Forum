@@ -22,33 +22,35 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.Controls
 
-#Region "PermissionsGrid"
-
-    Public MustInherit Class PermissionsGrid
-        Inherits Control
-        Implements INamingContainer
+	''' <summary>
+	''' A base classed used to contruct permissions grids.
+	''' </summary>
+	''' <remarks></remarks>
+	Public MustInherit Class PermissionsGrid
+		Inherits Control
+		Implements INamingContainer
 
 #Region "Controls"
 
-        Private dgRolePermissions As DataGrid
-        Private pnlPermissions As Panel
-        Private lblGroups As Label
-        Private WithEvents cboRoleGroups As DropDownList
-        Private lblUser As Label
-        Private txtUser As TextBox
-        Private WithEvents cmdUser As LinkButton
-        Private dgUserPermissions As DataGrid
+		Private dgRolePermissions As DataGrid
+		Private pnlPermissions As Panel
+		Private lblGroups As Label
+		Private WithEvents cboRoleGroups As DropDownList
+		Private lblUser As Label
+		Private txtUser As TextBox
+		Private WithEvents cmdUser As LinkButton
+		Private dgUserPermissions As DataGrid
 
 #End Region
 
 #Region "Private Members"
 
-        Private _dtForumPermissions As New DataTable
-        Private _dtUserPermissions As New DataTable
-        Private _roles As ArrayList
-        Private _users As ArrayList
-        Private _permissions As ArrayList
-        Private _resourceFile As String
+		Private _dtForumPermissions As New DataTable
+		Private _dtUserPermissions As New DataTable
+		Private _roles As ArrayList
+		Private _users As ArrayList
+		Private _permissions As ArrayList
+		Private _resourceFile As String
 
 #End Region
 
@@ -56,370 +58,370 @@ Namespace DotNetNuke.Modules.Forum.Controls
 
 #Region "DataGrid Properties"
 
-        Public ReadOnly Property AlternatingItemStyle() As TableItemStyle
-            Get
-                Return dgRolePermissions.AlternatingItemStyle
-            End Get
-        End Property
+		Public ReadOnly Property AlternatingItemStyle() As TableItemStyle
+			Get
+				Return dgRolePermissions.AlternatingItemStyle
+			End Get
+		End Property
 
-        Public Property AutoGenerateColumns() As Boolean
-            Get
-                Return dgRolePermissions.AutoGenerateColumns
-            End Get
-            Set(ByVal Value As Boolean)
-                dgRolePermissions.AutoGenerateColumns = Value
-                dgUserPermissions.AutoGenerateColumns = Value
-            End Set
-        End Property
+		Public Property AutoGenerateColumns() As Boolean
+			Get
+				Return dgRolePermissions.AutoGenerateColumns
+			End Get
+			Set(ByVal Value As Boolean)
+				dgRolePermissions.AutoGenerateColumns = Value
+				dgUserPermissions.AutoGenerateColumns = Value
+			End Set
+		End Property
 
-        Public Property CellSpacing() As Integer
-            Get
-                Return dgRolePermissions.CellSpacing
-            End Get
-            Set(ByVal Value As Integer)
-                dgRolePermissions.CellSpacing = Value
-                dgUserPermissions.CellSpacing = Value
-            End Set
-        End Property
+		Public Property CellSpacing() As Integer
+			Get
+				Return dgRolePermissions.CellSpacing
+			End Get
+			Set(ByVal Value As Integer)
+				dgRolePermissions.CellSpacing = Value
+				dgUserPermissions.CellSpacing = Value
+			End Set
+		End Property
 
-        Public ReadOnly Property Columns() As DataGridColumnCollection
-            Get
-                Return dgRolePermissions.Columns()
-            End Get
-        End Property
+		Public ReadOnly Property Columns() As DataGridColumnCollection
+			Get
+				Return dgRolePermissions.Columns()
+			End Get
+		End Property
 
-        Public ReadOnly Property FooterStyle() As TableItemStyle
-            Get
-                Return dgRolePermissions.FooterStyle
-            End Get
-        End Property
+		Public ReadOnly Property FooterStyle() As TableItemStyle
+			Get
+				Return dgRolePermissions.FooterStyle
+			End Get
+		End Property
 
-        Public Property GridLines() As GridLines
-            Get
-                Return dgRolePermissions.GridLines
-            End Get
-            Set(ByVal Value As GridLines)
-                dgRolePermissions.GridLines = Value
-                dgUserPermissions.GridLines = Value
-            End Set
-        End Property
+		Public Property GridLines() As GridLines
+			Get
+				Return dgRolePermissions.GridLines
+			End Get
+			Set(ByVal Value As GridLines)
+				dgRolePermissions.GridLines = Value
+				dgUserPermissions.GridLines = Value
+			End Set
+		End Property
 
-        Public ReadOnly Property HeaderStyle() As TableItemStyle
-            Get
-                Return dgRolePermissions.HeaderStyle
-            End Get
-        End Property
+		Public ReadOnly Property HeaderStyle() As TableItemStyle
+			Get
+				Return dgRolePermissions.HeaderStyle
+			End Get
+		End Property
 
-        Public ReadOnly Property ItemStyle() As TableItemStyle
-            Get
-                Return dgRolePermissions.ItemStyle
-            End Get
-        End Property
+		Public ReadOnly Property ItemStyle() As TableItemStyle
+			Get
+				Return dgRolePermissions.ItemStyle
+			End Get
+		End Property
 
-        Public ReadOnly Property Items() As DataGridItemCollection
-            Get
-                Return dgRolePermissions.Items()
-            End Get
-        End Property
+		Public ReadOnly Property Items() As DataGridItemCollection
+			Get
+				Return dgRolePermissions.Items()
+			End Get
+		End Property
 
-        Public ReadOnly Property SelectedItemStyle() As TableItemStyle
-            Get
-                Return dgRolePermissions.SelectedItemStyle
-            End Get
-        End Property
+		Public ReadOnly Property SelectedItemStyle() As TableItemStyle
+			Get
+				Return dgRolePermissions.SelectedItemStyle
+			End Get
+		End Property
 
 #End Region
 
-        ''' <summary>
-        ''' Gets the Id of the Administrator Role
-        ''' </summary>
-        Public ReadOnly Property AdministratorRoleId() As Integer
-            Get
-                Return Portals.PortalController.GetCurrentPortalSettings.AdministratorRoleId
-            End Get
-        End Property
+		''' <summary>
+		''' Gets the Id of the Administrator Role
+		''' </summary>
+		Public ReadOnly Property AdministratorRoleId() As Integer
+			Get
+				Return Portals.PortalController.GetCurrentPortalSettings.AdministratorRoleId
+			End Get
+		End Property
 
-        ''' <summary>
-        ''' Gets the Id of the Registered Users Role
-        ''' </summary>
-        Public ReadOnly Property RegisteredUsersRoleId() As Integer
-            Get
-                Return Portals.PortalController.GetCurrentPortalSettings.RegisteredRoleId
-            End Get
-        End Property
+		''' <summary>
+		''' Gets the Id of the Registered Users Role
+		''' </summary>
+		Public ReadOnly Property RegisteredUsersRoleId() As Integer
+			Get
+				Return Portals.PortalController.GetCurrentPortalSettings.RegisteredRoleId
+			End Get
+		End Property
 
-        ''' <summary>
-        ''' Gets and Sets whether a Dynamic Column has been added
-        ''' </summary>
-        Public Property DynamicColumnAdded() As Boolean
-            Get
-                If ViewState("ColumnAdded") Is Nothing Then
-                    Return False
-                Else
-                    Return True
-                End If
-            End Get
-            Set(ByVal Value As Boolean)
-                ViewState("ColumnAdded") = Value
-            End Set
-        End Property
+		''' <summary>
+		''' Gets and Sets whether a Dynamic Column has been added
+		''' </summary>
+		Public Property DynamicColumnAdded() As Boolean
+			Get
+				If ViewState("ColumnAdded") Is Nothing Then
+					Return False
+				Else
+					Return True
+				End If
+			End Get
+			Set(ByVal Value As Boolean)
+				ViewState("ColumnAdded") = Value
+			End Set
+		End Property
 
-        ''' <summary>
-        ''' Gets the underlying Permissions Data Table
-        ''' </summary>
-        Public ReadOnly Property dtForumPermissions() As DataTable
-            Get
-                Return _dtForumPermissions
-            End Get
-        End Property
+		''' <summary>
+		''' Gets the underlying Permissions Data Table
+		''' </summary>
+		Public ReadOnly Property dtForumPermissions() As DataTable
+			Get
+				Return _dtForumPermissions
+			End Get
+		End Property
 
-        ''' <summary>
-        ''' Gets the underlying Permissions Data Table
-        ''' </summary>
-        Public ReadOnly Property dtUserPermissions() As DataTable
-            Get
-                Return _dtUserPermissions
-            End Get
-        End Property
+		''' <summary>
+		''' Gets the underlying Permissions Data Table
+		''' </summary>
+		Public ReadOnly Property dtUserPermissions() As DataTable
+			Get
+				Return _dtUserPermissions
+			End Get
+		End Property
 
-        ''' <summary>
-        ''' Gets the Id of the Portal
-        ''' </summary>
-        Public ReadOnly Property PortalId() As Integer
-            Get
-                ' Obtain PortalSettings from Current Context
-                Dim _portalSettings As Portals.PortalSettings = Portals.PortalController.GetCurrentPortalSettings
-                Dim intPortalID As Integer
+		''' <summary>
+		''' Gets the Id of the Portal
+		''' </summary>
+		Public ReadOnly Property PortalId() As Integer
+			Get
+				' Obtain PortalSettings from Current Context
+				Dim _portalSettings As Portals.PortalSettings = Portals.PortalController.GetCurrentPortalSettings
+				Dim intPortalID As Integer
 
-                If _portalSettings.ActiveTab.ParentId = _portalSettings.SuperTabId Then 'if we are in host filemanager then we need to pass a null portal id
-                    intPortalID = Null.NullInteger
-                Else
-                    intPortalID = _portalSettings.PortalId
-                End If
+				If _portalSettings.ActiveTab.ParentId = _portalSettings.SuperTabId Then 'if we are in host filemanager then we need to pass a null portal id
+					intPortalID = Null.NullInteger
+				Else
+					intPortalID = _portalSettings.PortalId
+				End If
 
-                Return intPortalID
-            End Get
-        End Property
+				Return intPortalID
+			End Get
+		End Property
 
-        ''' <summary>
-        ''' Gets and Sets the collection of Roles to display
-        ''' </summary>
-        Public Property Roles() As ArrayList
-            Get
-                Return _roles
-            End Get
-            Set(ByVal Value As ArrayList)
-                _roles = Value
-            End Set
-        End Property
+		''' <summary>
+		''' Gets and Sets the collection of Roles to display
+		''' </summary>
+		Public Property Roles() As ArrayList
+			Get
+				Return _roles
+			End Get
+			Set(ByVal Value As ArrayList)
+				_roles = Value
+			End Set
+		End Property
 
-        ''' <summary>
-        ''' Gets and Sets the ResourceFile to localize permissions
-        ''' </summary>
-        Public Property ResourceFile() As String
-            Get
-                Return _resourceFile
-            End Get
-            Set(ByVal Value As String)
-                _resourceFile = Value
-            End Set
-        End Property
+		''' <summary>
+		''' Gets and Sets the ResourceFile to localize permissions
+		''' </summary>
+		Public Property ResourceFile() As String
+			Get
+				Return _resourceFile
+			End Get
+			Set(ByVal Value As String)
+				_resourceFile = Value
+			End Set
+		End Property
 
 #End Region
 
 #Region "Abstract Methods"
 
-        ''' <summary>
-        ''' Generate the Data Grid
-        ''' </summary>
-        ''' <history>
-        ''' </history>
-        Public MustOverride Sub GenerateDataGrid()
+		''' <summary>
+		''' Generate the Data Grid
+		''' </summary>
+		''' <history>
+		''' </history>
+		Public MustOverride Sub GenerateDataGrid()
 
 #End Region
 
 #Region "Private Methods"
 
-        ''' <summary>
-        ''' Bind the data to the controls
-        ''' </summary>
-        ''' <history>
-        ''' </history>
-        Private Sub BindData()
-            Me.EnsureChildControls()
+		''' <summary>
+		''' Bind the data to the controls
+		''' </summary>
+		''' <history>
+		''' </history>
+		Private Sub BindData()
+			Me.EnsureChildControls()
 
-            BindRolesGrid()
-            BindUsersGrid()
-        End Sub
+			BindRolesGrid()
+			BindUsersGrid()
+		End Sub
 
-        ''' <summary>
-        ''' Bind the Roles data to the Grid
-        ''' </summary>
-        Private Sub BindRolesGrid()
-            dtForumPermissions.Columns.Clear()
-            dtForumPermissions.Rows.Clear()
+		''' <summary>
+		''' Bind the Roles data to the Grid
+		''' </summary>
+		Private Sub BindRolesGrid()
+			dtForumPermissions.Columns.Clear()
+			dtForumPermissions.Rows.Clear()
 
-            Dim col As DataColumn
+			Dim col As DataColumn
 
-            'Add Roles Column
-            col = New DataColumn("RoleId")
-            dtForumPermissions.Columns.Add(col)
+			'Add Roles Column
+			col = New DataColumn("RoleId")
+			dtForumPermissions.Columns.Add(col)
 
-            'Add Roles Column
-            col = New DataColumn("RoleName")
-            dtForumPermissions.Columns.Add(col)
+			'Add Roles Column
+			col = New DataColumn("RoleName")
+			dtForumPermissions.Columns.Add(col)
 
-            Dim i As Integer
-            For i = 0 To _Permissions.Count - 1
-                Dim objPerm As PermissionInfo
-                objPerm = CType(_Permissions(i), PermissionInfo)
+			Dim i As Integer
+			For i = 0 To _permissions.Count - 1
+				Dim objPerm As PermissionInfo
+				objPerm = CType(_permissions(i), PermissionInfo)
 
-                'Add Enabled Column
-                col = New DataColumn(objPerm.PermissionName & "_Enabled")
-                dtForumPermissions.Columns.Add(col)
+				'Add Enabled Column
+				col = New DataColumn(objPerm.PermissionName & "_Enabled")
+				dtForumPermissions.Columns.Add(col)
 
-                'Add Permission Column
-                col = New DataColumn(objPerm.PermissionName)
-                dtForumPermissions.Columns.Add(col)
-            Next
+				'Add Permission Column
+				col = New DataColumn(objPerm.PermissionName)
+				dtForumPermissions.Columns.Add(col)
+			Next
 
-            GetRoles()
+			GetRoles()
 
-            UpdateRolePermissions()
-            Dim row As DataRow
-            For i = 0 To Roles.Count - 1
-                Dim role As Security.Roles.RoleInfo = DirectCast(Roles(i), Security.Roles.RoleInfo)
-                row = dtForumPermissions.NewRow
-                row("RoleId") = role.RoleID
-                row("RoleName") = Localization.LocalizeRole(role.RoleName)
+			UpdateRolePermissions()
+			Dim row As DataRow
+			For i = 0 To Roles.Count - 1
+				Dim role As Security.Roles.RoleInfo = DirectCast(Roles(i), Security.Roles.RoleInfo)
+				row = dtForumPermissions.NewRow
+				row("RoleId") = role.RoleID
+				row("RoleName") = Localization.LocalizeRole(role.RoleName)
 
-                Dim j As Integer
-                For j = 0 To _Permissions.Count - 1
-                    Dim objPerm As PermissionInfo
-                    objPerm = CType(_Permissions(j), PermissionInfo)
+				Dim j As Integer
+				For j = 0 To _permissions.Count - 1
+					Dim objPerm As PermissionInfo
+					objPerm = CType(_permissions(j), PermissionInfo)
 
-                    row(objPerm.PermissionName & "_Enabled") = GetEnabled(objPerm, role, j + 1)
-                    row(objPerm.PermissionName) = GetPermission(objPerm, role, j + 1)
-                Next
-                dtForumPermissions.Rows.Add(row)
-            Next
+					row(objPerm.PermissionName & "_Enabled") = GetEnabled(objPerm, role, j + 1)
+					row(objPerm.PermissionName) = GetPermission(objPerm, role, j + 1)
+				Next
+				dtForumPermissions.Rows.Add(row)
+			Next
 
-            dgRolePermissions.DataSource = dtForumPermissions
-            dgRolePermissions.DataBind()
-        End Sub
+			dgRolePermissions.DataSource = dtForumPermissions
+			dgRolePermissions.DataBind()
+		End Sub
 
-        ''' <summary>
-        ''' Bind the Roles data to the Grid
-        ''' </summary>
-        Private Sub BindUsersGrid()
-            dtUserPermissions.Columns.Clear()
-            dtUserPermissions.Rows.Clear()
+		''' <summary>
+		''' Bind the Roles data to the Grid
+		''' </summary>
+		Private Sub BindUsersGrid()
+			dtUserPermissions.Columns.Clear()
+			dtUserPermissions.Rows.Clear()
 
-            Dim col As DataColumn
+			Dim col As DataColumn
 
-            'Add Roles Column
-            col = New DataColumn("UserId")
-            dtUserPermissions.Columns.Add(col)
+			'Add Roles Column
+			col = New DataColumn("UserId")
+			dtUserPermissions.Columns.Add(col)
 
-            'Add Roles Column
-            col = New DataColumn("DisplayName")
-            dtUserPermissions.Columns.Add(col)
+			'Add Roles Column
+			col = New DataColumn("DisplayName")
+			dtUserPermissions.Columns.Add(col)
 
-            Dim i As Integer
-            For i = 0 To _permissions.Count - 1
-                Dim objPerm As PermissionInfo
-                objPerm = CType(_permissions(i), PermissionInfo)
+			Dim i As Integer
+			For i = 0 To _permissions.Count - 1
+				Dim objPerm As PermissionInfo
+				objPerm = CType(_permissions(i), PermissionInfo)
 
-                'Add Enabled Column
-                col = New DataColumn(objPerm.PermissionName & "_Enabled")
-                dtUserPermissions.Columns.Add(col)
+				'Add Enabled Column
+				col = New DataColumn(objPerm.PermissionName & "_Enabled")
+				dtUserPermissions.Columns.Add(col)
 
-                'Add Permission Column
-                col = New DataColumn(objPerm.PermissionName)
-                dtUserPermissions.Columns.Add(col)
-            Next
+				'Add Permission Column
+				col = New DataColumn(objPerm.PermissionName)
+				dtUserPermissions.Columns.Add(col)
+			Next
 
-            If Not dgUserPermissions Is Nothing Then
-                _users = GetUsers()
+			If Not dgUserPermissions Is Nothing Then
+				_users = GetUsers()
 
-                If _users.Count <> 0 Then
-                    dgUserPermissions.Visible = True
+				If _users.Count <> 0 Then
+					dgUserPermissions.Visible = True
 
-                    UpdateUserPermissions()
+					UpdateUserPermissions()
 
-                    Dim row As DataRow
-                    For i = 0 To _users.Count - 1
-                        Dim user As Users.UserInfo = DirectCast(_users(i), Users.UserInfo)
-                        row = dtUserPermissions.NewRow
-                        row("UserId") = user.UserID
-                        row("DisplayName") = user.DisplayName
+					Dim row As DataRow
+					For i = 0 To _users.Count - 1
+						Dim user As Users.UserInfo = DirectCast(_users(i), Users.UserInfo)
+						row = dtUserPermissions.NewRow
+						row("UserId") = user.UserID
+						row("DisplayName") = user.DisplayName
 
-                        Dim j As Integer
-                        For j = 0 To _permissions.Count - 1
-                            Dim objPerm As PermissionInfo
-                            objPerm = CType(_permissions(j), PermissionInfo)
+						Dim j As Integer
+						For j = 0 To _permissions.Count - 1
+							Dim objPerm As PermissionInfo
+							objPerm = CType(_permissions(j), PermissionInfo)
 
-                            row(objPerm.PermissionName & "_Enabled") = GetEnabled(objPerm, user, j + 1)
-                            row(objPerm.PermissionName) = GetPermission(objPerm, user, j + 1)
-                        Next
-                        dtUserPermissions.Rows.Add(row)
-                    Next
+							row(objPerm.PermissionName & "_Enabled") = GetEnabled(objPerm, user, j + 1)
+							row(objPerm.PermissionName) = GetPermission(objPerm, user, j + 1)
+						Next
+						dtUserPermissions.Rows.Add(row)
+					Next
 
-                    dgUserPermissions.DataSource = dtUserPermissions
-                    dgUserPermissions.DataBind()
-                Else
-                    dgUserPermissions.Visible = False
-                End If
-            End If
-        End Sub
+					dgUserPermissions.DataSource = dtUserPermissions
+					dgUserPermissions.DataBind()
+				Else
+					dgUserPermissions.Visible = False
+				End If
+			End If
+		End Sub
 
-        ''' <summary>
-        ''' Gets the roles from the Database and loads them into the Roles property
-        ''' </summary>
-        ''' <history>
-        ''' </history>
-        Private Sub GetRoles()
-            Dim objRoleController As New Security.Roles.RoleController
-            Dim RoleGroupId As Integer = -2
-            If (Not cboRoleGroups Is Nothing) AndAlso (Not cboRoleGroups.SelectedValue Is Nothing) Then
-                RoleGroupId = Integer.Parse(cboRoleGroups.SelectedValue)
-            End If
+		''' <summary>
+		''' Gets the roles from the Database and loads them into the Roles property
+		''' </summary>
+		''' <history>
+		''' </history>
+		Private Sub GetRoles()
+			Dim objRoleController As New Security.Roles.RoleController
+			Dim RoleGroupId As Integer = -2
+			If (Not cboRoleGroups Is Nothing) AndAlso (Not cboRoleGroups.SelectedValue Is Nothing) Then
+				RoleGroupId = Integer.Parse(cboRoleGroups.SelectedValue)
+			End If
 
-            If RoleGroupId > -2 Then
-                _roles = objRoleController.GetRolesByGroup(Portals.PortalController.GetCurrentPortalSettings.PortalId, RoleGroupId)
-            Else
-                _roles = objRoleController.GetPortalRoles(Portals.PortalController.GetCurrentPortalSettings.PortalId)
-            End If
+			If RoleGroupId > -2 Then
+				_roles = objRoleController.GetRolesByGroup(Portals.PortalController.GetCurrentPortalSettings.PortalId, RoleGroupId)
+			Else
+				_roles = objRoleController.GetPortalRoles(Portals.PortalController.GetCurrentPortalSettings.PortalId)
+			End If
 
-            'CP - This is commented out to avoid showing all users and unauthenticated user rows in permissions grid
-            ' We will need to enable All Users if allowing anonymous posting (we don't need unauth as all users are unauth too, don't need to have permission ability for unauth to be only users to view/post/etc)
-            'If RoleGroupId < 0 Then
-            '    Dim r As New RoleInfo
-            '    r.RoleID = Integer.Parse(glbRoleUnauthUser)
-            '    r.RoleName = glbRoleUnauthUserName
-            '    _roles.Add(r)
-            '    r = New RoleInfo
-            '    r.RoleID = Integer.Parse(glbRoleAllUsers)
-            '    r.RoleName = glbRoleAllUsersName
-            '    _roles.Add(r)
-            'End If
-            _roles.Reverse()
-            _roles.Sort(New Security.Roles.RoleComparer)
-        End Sub
+			'CP - This is commented out to avoid showing all users and unauthenticated user rows in permissions grid
+			' We will need to enable All Users if allowing anonymous posting (we don't need unauth as all users are unauth too, don't need to have permission ability for unauth to be only users to view/post/etc)
+			'If RoleGroupId < 0 Then
+			'    Dim r As New RoleInfo
+			'    r.RoleID = Integer.Parse(glbRoleUnauthUser)
+			'    r.RoleName = glbRoleUnauthUserName
+			'    _roles.Add(r)
+			'    r = New RoleInfo
+			'    r.RoleID = Integer.Parse(glbRoleAllUsers)
+			'    r.RoleName = glbRoleAllUsersName
+			'    _roles.Add(r)
+			'End If
+			_roles.Reverse()
+			_roles.Sort(New Security.Roles.RoleComparer)
+		End Sub
 
-        ''' <summary>
-        ''' Sets up the columns for the Grid
-        ''' </summary>
-        Private Sub SetUpRolesGrid()
-            dgRolePermissions.Columns.Clear()
+		''' <summary>
+		''' Sets up the columns for the Grid
+		''' </summary>
+		Private Sub SetUpRolesGrid()
+			dgRolePermissions.Columns.Clear()
 
-            Dim textCol As New BoundColumn
-            textCol.HeaderText = "&nbsp;"
-            textCol.DataField = "RoleName"
-            textCol.ItemStyle.Width = Unit.Parse("100px")
-            dgRolePermissions.Columns.Add(textCol)
+			Dim textCol As New BoundColumn
+			textCol.HeaderText = "&nbsp;"
+			textCol.DataField = "RoleName"
+			textCol.ItemStyle.Width = Unit.Parse("100px")
+			dgRolePermissions.Columns.Add(textCol)
 
-            Dim idCol As New BoundColumn
+			Dim idCol As New BoundColumn
 			idCol.HeaderText = String.Empty
 			idCol.DataField = "roleid"
 			idCol.Visible = False
@@ -837,8 +839,6 @@ Namespace DotNetNuke.Modules.Forum.Controls
 
 #End Region
 
-    End Class
-
-#End Region
+	End Class
 
 End Namespace

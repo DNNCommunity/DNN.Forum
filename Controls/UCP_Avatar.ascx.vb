@@ -46,14 +46,14 @@ Namespace DotNetNuke.Modules.Forum.UCP
 				If objConfig.EnableSystemAvatar Then
 					ctlSystemAvatar.Security = objSecurity
 					ctlSystemAvatar.AvatarType = AvatarControlType.System
-					ctlSystemAvatar.ModuleID = ModuleId
+					ctlSystemAvatar.ModuleId = ModuleId
 					ctlSystemAvatar.ProfileUserID = ProfileUserID
 				End If
 			End If
 
 			ctlUserAvatar.Security = objSecurity
 			ctlUserAvatar.AvatarType = AvatarControlType.User
-			ctlUserAvatar.ModuleID = ModuleId
+			ctlUserAvatar.ModuleId = ModuleId
 			ctlUserAvatar.ProfileUserID = ProfileUserID
 
 			' Hide the avatar if we are using profile avatars. 

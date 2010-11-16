@@ -22,8 +22,6 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "ForumTreeview"
-
 	''' <summary>
 	''' Used to build the DNNTree in User Settings, Search views. 
 	''' </summary>
@@ -37,13 +35,29 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <remarks></remarks>
 		Public Enum eImageType
+			''' <summary>
+			''' Forum Group tree node.
+			''' </summary>
+			''' <remarks></remarks>
 			Group = 0
+			''' <summary>
+			''' Forum tree node.
+			''' </summary>
+			''' <remarks></remarks>
 			Forum = 1
 		End Enum
 
 #End Region
 
-		Public Shared Sub PopulateTelerikTree(ByVal objConfig As Forum.Configuration, ByVal ForumTree As Telerik.Web.UI.RadTreeView, ByVal UserID As Integer, ByVal TabID As Integer)
+		''' <summary>
+		''' Method used to populate a Telerik treeview control. It looks through all groups using the current user's permissions and then populates necessary nodes by calling other methods.
+		''' </summary>
+		''' <param name="objConfig">The module configuration.</param>
+		''' <param name="ForumTree">The RadTreeView object being populated.</param>
+		''' <param name="UserID">The user currently viewing the group/forum tree.</param>
+		''' <param name="TabID">The page the user is viewing.</param>
+		''' <remarks></remarks>
+		Friend Shared Sub PopulateTelerikTree(ByVal objConfig As Forum.Configuration, ByVal ForumTree As Telerik.Web.UI.RadTreeView, ByVal UserID As Integer, ByVal TabID As Integer)
 			ForumTree.Nodes.Clear()
 
 			Dim cntGroup As New GroupController
@@ -68,7 +82,16 @@ Namespace DotNetNuke.Modules.Forum
 			Next
 		End Sub
 
-		Public Shared Sub AddTelerikForums(ByVal objGroup As GroupInfo, ByVal objNode As Telerik.Web.UI.RadTreeNode, ByVal objConfig As Forum.Configuration, ByVal UserID As Integer, ByVal TabID As Integer)
+		''' <summary>
+		''' Adds a series of child nodes for a group (depending on permissions). 
+		''' </summary>
+		''' <param name="objGroup">The Group object we are creating a node for.</param>
+		''' <param name="objNode">A single Tree node.</param>
+		''' <param name="objConfig">The module configuration.</param>
+		''' <param name="UserID">The user currently viewing the group/forum tree.</param>
+		''' <param name="TabID">The page the user is viewing.</param>
+		''' <remarks></remarks>
+		Private Shared Sub AddTelerikForums(ByVal objGroup As GroupInfo, ByVal objNode As Telerik.Web.UI.RadTreeNode, ByVal objConfig As Forum.Configuration, ByVal UserID As Integer, ByVal TabID As Integer)
 			Dim cntGroup As New GroupController()
 			Dim arrAuthForums As List(Of ForumInfo) = cntGroup.AuthorizedForums(UserID, objGroup.GroupID, True, objConfig.ModuleID, TabID)
 			Dim forumNode As Telerik.Web.UI.RadTreeNode
@@ -88,7 +111,20 @@ Namespace DotNetNuke.Modules.Forum
 			Next
 		End Sub
 
-		Public Shared Function AddTelerikNode(ByVal strName As String, ByVal strType As String, ByVal strKey As String, ByVal eImage As eImageType, ByVal objNodes As Telerik.Web.UI.RadTreeNodeCollection, ByVal GroupID As Integer, ByVal objConfig As Forum.Configuration, ByVal UserID As Integer) As Telerik.Web.UI.RadTreeNode
+		''' <summary>
+		''' Adds a node to the Telerik treeview control.
+		''' </summary>
+		''' <param name="strName">The name of the node we are working with.</param>
+		''' <param name="strType">The tree node type.</param>
+		''' <param name="strKey">The key used for lookup (parent forum id).</param>
+		''' <param name="eImage">The image to be used for the node (if applicable).</param>
+		''' <param name="objNodes">The Tree node collection.</param>
+		''' <param name="GroupID">The group we are populating.</param>
+		''' <param name="objConfig">The module configuration.</param>
+		''' <param name="UserID">The user currently viewing the group/forum tree.</param>
+		''' <returns></returns>
+		''' <remarks>We are currently not supporting images using this control.</remarks>
+		Private Shared Function AddTelerikNode(ByVal strName As String, ByVal strType As String, ByVal strKey As String, ByVal eImage As eImageType, ByVal objNodes As Telerik.Web.UI.RadTreeNodeCollection, ByVal GroupID As Integer, ByVal objConfig As Forum.Configuration, ByVal UserID As Integer) As Telerik.Web.UI.RadTreeNode
 			' CP - COMEBACK - we would add a check here to see if it has any children, if it does we would force an add node for each child in the list (recursion)
 			' take the strKey (forumid) to see if it is a parent.
 			Dim cntForum As New ForumController
@@ -136,7 +172,5 @@ Namespace DotNetNuke.Modules.Forum
 		End Function
 
 	End Class
-
-#End Region
 
 End Namespace

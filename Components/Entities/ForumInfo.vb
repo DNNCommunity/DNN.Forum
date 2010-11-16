@@ -614,6 +614,12 @@ Namespace DotNetNuke.Modules.Forum
 			End Set
 		End Property
 
+		''' <summary>
+		''' The total number of records in the data store, used for paging.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
 		Public Property TotalRecords() As Integer
 			Get
 				Return _TotalRecords
@@ -780,7 +786,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <summary>
 		''' 
 		''' </summary>
-		''' <param name="dr"></param>
+		''' <param name="dr">The datareader we are using to populate the object.</param>
 		''' <remarks></remarks>
 		Public Sub Fill(ByVal dr As System.Data.IDataReader) Implements IHydratable.Fill
 			GroupID = Null.SetNullInteger(dr("GroupID"))
@@ -825,6 +831,12 @@ Namespace DotNetNuke.Modules.Forum
 			ForumPermissions = objFPController.GetForumPermissionsCollection(ForumID)
 		End Sub
 
+		''' <summary>
+		''' The primary key necessary for IHdryatable. In this case, the value will be set to the ForumID.
+		''' </summary>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
 		Public Property KeyID() As Integer Implements IHydratable.KeyID
 			Get
 				Return ForumID

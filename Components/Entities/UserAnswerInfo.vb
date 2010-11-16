@@ -78,7 +78,7 @@ Namespace DotNetNuke.Modules.Forum
         End Property
 
         ''' <summary>
-        ''' 
+		''' The user who provided the answer.
         ''' </summary>
         ''' <value></value>
         ''' <returns></returns>
@@ -93,7 +93,7 @@ Namespace DotNetNuke.Modules.Forum
         End Property
 
         ''' <summary>
-        ''' 
+		''' The primary key value of the answer.
         ''' </summary>
         ''' <value></value>
         ''' <returns></returns>
@@ -108,7 +108,7 @@ Namespace DotNetNuke.Modules.Forum
         End Property
 
         ''' <summary>
-        ''' 
+		''' The date the answer was added.
         ''' </summary>
         ''' <value></value>
         ''' <returns></returns>

@@ -23,13 +23,13 @@ Option Explicit On
 Namespace DotNetNuke.Modules.Forum
 
 	''' <summary>
-	''' 
+	''' Used to retrieve email subscribers for both the forum and the thread level subscriptions. Only used for displaying information.
 	''' </summary>
-	''' <remarks></remarks>
+	''' <remarks>This is only exposed in the Admin control panel's Subscribers view.</remarks>
 	Public Class UserTrackingController
 
 		''' <summary>
-		''' 
+		''' Retrieves a colleciton of email subscribers for a specific forum.
 		''' </summary>
 		''' <param name="ForumID"></param>
 		''' <returns></returns>
@@ -39,7 +39,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Function
 
 		''' <summary>
-		''' 
+		''' Retrieves a collection of email subscribers for a specific thread.
 		''' </summary>
 		''' <param name="ThreadID"></param>
 		''' <returns></returns>
@@ -52,7 +52,7 @@ Namespace DotNetNuke.Modules.Forum
 
 
 	''' <summary>
-	''' UserTracking info object.
+	''' Properties associated with email subscribers, mainly pulled from TrackedForums and TrackedThreads tables.
 	''' </summary>
 	''' <remarks></remarks>
 	Public Class UserTrackingInfo
@@ -88,7 +88,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' tracked forum name 
+		''' tracked forum name.
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
@@ -118,7 +118,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' tracked thread subject
+		''' tracked thread subject.
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
@@ -163,7 +163,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' 
+		''' The username of the email subscriber.
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
@@ -178,7 +178,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' CreatedDate of ltracked item (forum/thread)
+		''' CreatedDate of the tracked item (forum/thread).
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>

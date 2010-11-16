@@ -24,147 +24,182 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "ForumPermissionCollection"
 
-    ''' <summary>
-    ''' Basically a copy of the core ModulePermissionCollection.
-    ''' </summary>
-    ''' <remarks>
-    ''' </remarks>
-    Public Class ForumPermissionCollection
-        Inherits CollectionBase
+	''' <summary>
+	''' Basically a copy of the core ModulePermissionCollection.
+	''' </summary>
+	''' <remarks>
+	''' </remarks>
+	Public Class ForumPermissionCollection
+		Inherits CollectionBase
 
 #Region "Constructors"
 
-        ''' <summary>
-        ''' Instantiates the class.
-        ''' </summary>
-        ''' <remarks></remarks>
-        Public Sub New()
-            MyBase.New()
-        End Sub
+		''' <summary>
+		''' Instantiates the class.
+		''' </summary>
+		''' <remarks></remarks>
+		Public Sub New()
+			MyBase.New()
+		End Sub
 
-        ''' <summary>
-        ''' Instantiates the class.
-        ''' </summary>
-        ''' <param name="ForumPermissions">A collection of forum permissions.</param>
-        ''' <remarks></remarks>
-        Public Sub New(ByVal ForumPermissions As ArrayList)
-            Dim i As Integer
-            For i = 0 To ForumPermissions.Count - 1
-                Dim objForumPerm As ForumPermissionInfo = CType(ForumPermissions(i), ForumPermissionInfo)
-                Add(objForumPerm)
-            Next
-        End Sub
+		''' <summary>
+		''' Instantiates the class.
+		''' </summary>
+		''' <param name="ForumPermissions">A collection of forum permissions.</param>
+		''' <remarks></remarks>
+		Public Sub New(ByVal ForumPermissions As ArrayList)
+			Dim i As Integer
+			For i = 0 To ForumPermissions.Count - 1
+				Dim objForumPerm As ForumPermissionInfo = CType(ForumPermissions(i), ForumPermissionInfo)
+				Add(objForumPerm)
+			Next
+		End Sub
 
-        ''' <summary>
-        ''' Instantiates the class.
-        ''' </summary>
-        ''' <param name="ForumPermissions">A collection of forum permissions.</param>
-        ''' <param name="ForumID">The specific forum.</param>
-        ''' <remarks></remarks>
-        Public Sub New(ByVal ForumPermissions As ArrayList, ByVal ForumID As Integer)
-            Dim i As Integer
-            For i = 0 To ForumPermissions.Count - 1
-                Dim objForumPerm As ForumPermissionInfo = CType(ForumPermissions(i), ForumPermissionInfo)
-                If objForumPerm.ForumID = ForumID Then
-                    Add(objForumPerm)
-                End If
-            Next
-        End Sub
+		''' <summary>
+		''' Instantiates the class.
+		''' </summary>
+		''' <param name="ForumPermissions">A collection of forum permissions.</param>
+		''' <param name="ForumID">The specific forum.</param>
+		''' <remarks></remarks>
+		Public Sub New(ByVal ForumPermissions As ArrayList, ByVal ForumID As Integer)
+			Dim i As Integer
+			For i = 0 To ForumPermissions.Count - 1
+				Dim objForumPerm As ForumPermissionInfo = CType(ForumPermissions(i), ForumPermissionInfo)
+				If objForumPerm.ForumID = ForumID Then
+					Add(objForumPerm)
+				End If
+			Next
+		End Sub
 
 #End Region
 
 #Region "Properties"
 
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <param name="index"></param>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Default Public Property Item(ByVal index As Integer) As ForumPermissionInfo
-            Get
-                Return CType(List(index), ForumPermissionInfo)
-            End Get
-            Set(ByVal Value As ForumPermissionInfo)
-                List(index) = Value
-            End Set
-        End Property
+		''' <summary>
+		''' A single ForumPermissionInfo object.
+		''' </summary>
+		''' <param name="index"></param>
+		''' <value></value>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Default Public Property Item(ByVal index As Integer) As ForumPermissionInfo
+			Get
+				Return CType(List(index), ForumPermissionInfo)
+			End Get
+			Set(ByVal Value As ForumPermissionInfo)
+				List(index) = Value
+			End Set
+		End Property
 
 #End Region
 
 #Region "Public Methods"
 
-        Public Function Add(ByVal value As ForumPermissionInfo) As Integer
-            Return List.Add(value)
-        End Function
+		''' <summary>
+		''' Add an item to the collection.
+		''' </summary>
+		''' <param name="value"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Function Add(ByVal value As ForumPermissionInfo) As Integer
+			Return List.Add(value)
+		End Function
 
-        Public Function IndexOf(ByVal value As ForumPermissionInfo) As Integer
-            Return List.IndexOf(value)
-        End Function
+		''' <summary>
+		''' Finds the index value of an item in the collection.
+		''' </summary>
+		''' <param name="value"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Function IndexOf(ByVal value As ForumPermissionInfo) As Integer
+			Return List.IndexOf(value)
+		End Function
 
-        Public Sub Insert(ByVal index As Integer, ByVal value As ForumPermissionInfo)
-            List.Insert(index, value)
-        End Sub
+		''' <summary>
+		''' Inserts an item into the collection.
+		''' </summary>
+		''' <param name="index"></param>
+		''' <param name="value"></param>
+		''' <remarks></remarks>
+		Public Sub Insert(ByVal index As Integer, ByVal value As ForumPermissionInfo)
+			List.Insert(index, value)
+		End Sub
 
-        Public Sub Remove(ByVal value As ForumPermissionInfo)
-            List.Remove(value)
-        End Sub
+		''' <summary>
+		''' Removes an item from the collection.
+		''' </summary>
+		''' <param name="value"></param>
+		''' <remarks></remarks>
+		Public Sub Remove(ByVal value As ForumPermissionInfo)
+			List.Remove(value)
+		End Sub
 
-        Public Function Contains(ByVal value As ForumPermissionInfo) As Boolean
-            Return List.Contains(value)
-        End Function
+		''' <summary>
+		''' Determines if an item already exists in the collection.
+		''' </summary>
+		''' <param name="value"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Function Contains(ByVal value As ForumPermissionInfo) As Boolean
+			Return List.Contains(value)
+		End Function
 
-        Public Function CompareTo(ByVal objForumPermissionCollection As ForumPermissionCollection) As Boolean
-            If objForumPermissionCollection.Count <> Me.Count Then
-                Return False
-            End If
-            InnerList.Sort(New CompareForumPermissions)
-            objForumPermissionCollection.InnerList.Sort(New CompareForumPermissions)
+		''' <summary>
+		''' Compares two items.
+		''' </summary>
+		''' <param name="objForumPermissionCollection"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Function CompareTo(ByVal objForumPermissionCollection As ForumPermissionCollection) As Boolean
+			If objForumPermissionCollection.Count <> Me.Count Then
+				Return False
+			End If
+			InnerList.Sort(New CompareForumPermissions)
+			objForumPermissionCollection.InnerList.Sort(New CompareForumPermissions)
 
-            Dim objForumPermission As ForumPermissionInfo
-            Dim i As Integer
-            For Each objForumPermission In objForumPermissionCollection
-                If objForumPermissionCollection(i).PermissionID <> Me(i).PermissionID _
-                Or objForumPermissionCollection(i).AllowAccess <> Me(i).AllowAccess Then
-                    Return False
-                End If
-                i += 1
-            Next
-            Return True
-        End Function
+			Dim objForumPermission As ForumPermissionInfo
+			Dim i As Integer
+			For Each objForumPermission In objForumPermissionCollection
+				If objForumPermissionCollection(i).PermissionID <> Me(i).PermissionID _
+				Or objForumPermissionCollection(i).AllowAccess <> Me(i).AllowAccess Then
+					Return False
+				End If
+				i += 1
+			Next
+			Return True
+		End Function
 
 #End Region
 
-    End Class
+	End Class
+
+#End Region
 
 #Region "CompareForumPermissions"
 
-    ''' <summary>
-    ''' Compares two sets of forum permission collections.
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Class CompareForumPermissions
-        Implements System.Collections.IComparer
+	''' <summary>
+	''' Compares two sets of forum permission collections.
+	''' </summary>
+	''' <remarks></remarks>
+	Public Class CompareForumPermissions
+		Implements System.Collections.IComparer
 
 #Region "IComparer Interface"
 
-        ''' <summary>
-        ''' Compares two sets of forum permissions.
-        ''' </summary>
-        ''' <param name="x">A forum permissions object.</param>
-        ''' <param name="y">A forum permissions object.</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Function Compare(ByVal x As Object, ByVal y As Object) As Integer Implements System.Collections.IComparer.Compare
-            Return CType(x, ForumPermissionInfo).PermissionID.CompareTo(CType(y, ForumPermissionInfo).PermissionID)
-        End Function
+		''' <summary>
+		''' Compares two sets of forum permissions.
+		''' </summary>
+		''' <param name="x">A forum permissions object.</param>
+		''' <param name="y">A forum permissions object.</param>
+		''' <returns>An integer indicating whether one is less than, equal to or greater than the other.</returns>
+		''' <remarks></remarks>
+		Public Function Compare(ByVal x As Object, ByVal y As Object) As Integer Implements System.Collections.IComparer.Compare
+			Return CType(x, ForumPermissionInfo).PermissionID.CompareTo(CType(y, ForumPermissionInfo).PermissionID)
+		End Function
 
 #End Region
 
-    End Class
-
-#End Region
+	End Class
 
 #End Region
 

@@ -23,7 +23,6 @@ Option Explicit On
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Services.Sitemap
 
-
 Namespace DotNetNuke.Modules.Forum.Components.Providers
 
 	''' <summary>

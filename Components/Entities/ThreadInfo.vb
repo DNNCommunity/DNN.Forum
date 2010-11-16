@@ -25,7 +25,7 @@ Imports DotNetNuke.Entities.Modules
 Namespace DotNetNuke.Modules.Forum
 
 	''' <summary>
-	''' A cached instance of a thread info object.
+	''' An instance of the Thread object, based on the Forum_Threads and Forum_Posts tables.
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
@@ -75,10 +75,11 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Constructors"
 
+		''' <summary>
+		''' Instantiates an instance of the class.
+		''' </summary>
+		''' <remarks>Initialize the properties that can be null in the database.</remarks>
 		Public Sub New()
-			'initialize the properties that
-			'can be null in the database
-
 			_RatingCount = -1
 			_TotalRecords = 0
 			_NextThreadID = -1
@@ -489,7 +490,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' 
+		''' The userid of a person who provided an answer (if applicable). 
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
@@ -534,7 +535,7 @@ Namespace DotNetNuke.Modules.Forum
 		End Property
 
 		''' <summary>
-		''' 
+		''' Determines if a thread should/should not be included in the SEO sitemap provider for the forum module (which works w/ the core default provider).
 		''' </summary>
 		''' <value></value>
 		''' <returns></returns>
@@ -630,8 +631,8 @@ Namespace DotNetNuke.Modules.Forum
 		''' <summary>
 		''' 
 		''' </summary>
-		''' <param name="dr"></param>
-		''' <remarks></remarks>
+		''' <param name="dr">The datareader we are using to populate the object.</param>
+		''' <remarks>This is required for anything that inherits from ContentItem.</remarks>
 		Public Overrides Sub Fill(ByVal dr As System.Data.IDataReader)
 			'Call the base classes fill method to populate base class proeprties
 			MyBase.FillInternal(dr)

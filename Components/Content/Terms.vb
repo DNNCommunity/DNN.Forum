@@ -25,6 +25,10 @@ Imports DotNetNuke.Entities.Content.Common
 
 Namespace DotNetNuke.Modules.Forum
 
+	''' <summary>
+	''' This class is used for managing taxonomy/folksonomy related terms via integration with the core.
+	''' </summary>
+	''' <remarks></remarks>
 	Public Class Terms
 
 		''' <summary>

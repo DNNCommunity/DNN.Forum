@@ -22,63 +22,61 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-#Region "WordFilterController"
-
-    ''' <summary>
-    ''' Communicates with the Forum_WordFilter table in the data store. 
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Class WordFilterController
+	''' <summary>
+	''' Communicates with the Forum_WordFilter table in the data store. 
+	''' </summary>
+	''' <remarks></remarks>
+	Public Class WordFilterController
 
 #Region "Private Members"
 
-        Private Const FilterWordsCacheKeyPrefix As String = "FilterWords"
-        Private Const FilterWordsCacheTimeout As Integer = 20
+		Private Const FilterWordsCacheKeyPrefix As String = "FilterWords"
+		Private Const FilterWordsCacheTimeout As Integer = 20
 
 #End Region
 
 #Region "Public Methods"
 
-        ''' <summary>
-        ''' Checks the cache for a list of filtered words, if the item doesn't exist it populates the cache
-        ''' </summary>
-        ''' <param name="PortalID"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Shared Function GetWords(ByVal PortalID As Integer) As FilterWordCollection
-            Dim strCacheKey As String = FilterWordsCacheKeyPrefix & PortalID.ToString
-            Dim filterWords As FilterWordCollection = CType(DataCache.GetCache(strCacheKey), FilterWordCollection)
+		''' <summary>
+		''' Checks the cache for a list of filtered words, if the item doesn't exist it populates the cache
+		''' </summary>
+		''' <param name="PortalID"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Shared Function GetWords(ByVal PortalID As Integer) As FilterWordCollection
+			Dim strCacheKey As String = FilterWordsCacheKeyPrefix & PortalID.ToString
+			Dim filterWords As FilterWordCollection = CType(DataCache.GetCache(strCacheKey), FilterWordCollection)
 
-            If filterWords Is Nothing Then
+			If filterWords Is Nothing Then
 				Dim timeOut As Int32 = FilterWordsCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
 
-                filterWords = New FilterWordCollection(PortalID)
+				filterWords = New FilterWordCollection(PortalID)
 
-                'Cache Thread if timeout > 0 and Thread is not null
-                If timeOut > 0 And filterWords IsNot Nothing Then
+				'Cache Thread if timeout > 0 and Thread is not null
+				If timeOut > 0 And filterWords IsNot Nothing Then
 					DataCache.SetCache(strCacheKey, filterWords, TimeSpan.FromMinutes(timeOut))
-                End If
-            End If
+				End If
+			End If
 
-            Return filterWords
-        End Function
+			Return filterWords
+		End Function
 
-        ''' <summary>
-        ''' Clears the cached object of filtered words. 
-        ''' </summary>
-        ''' <param name="PortalID"></param>
-        ''' <remarks></remarks>
-        Public Shared Sub ResetWords(ByVal PortalID As Integer)
-            Dim strCacheKey As String = FilterWordsCacheKeyPrefix & PortalID.ToString
-            DataCache.RemoveCache(strCacheKey)
-        End Sub
+		''' <summary>
+		''' Clears the cached object of filtered words. 
+		''' </summary>
+		''' <param name="PortalID"></param>
+		''' <remarks></remarks>
+		Public Shared Sub ResetWords(ByVal PortalID As Integer)
+			Dim strCacheKey As String = FilterWordsCacheKeyPrefix & PortalID.ToString
+			DataCache.RemoveCache(strCacheKey)
+		End Sub
 
-        ''' <summary>
-        ''' Filters passed in text against list of words to filter for. 
-        ''' </summary>
-        ''' <param name="Text"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
+		''' <summary>
+		''' Filters passed in text against list of words to filter for. 
+		''' </summary>
+		''' <param name="Text"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
 		Public Function FilterBadWord(ByVal Text As String, ByVal PortalID As Integer) As String
 			Dim colFilterWord As FilterWordCollection = GetWords(PortalID)
 
@@ -125,30 +123,61 @@ Namespace DotNetNuke.Modules.Forum
 			Return Text
 		End Function
 
-        Public Function FilterWordGetAll(ByVal PortalID As Integer, ByVal Filter As String) As List(Of FilterWordInfo)
-            Return CBO.FillCollection(Of FilterWordInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().FilterWordGetAll(PortalID, Filter))
-        End Function
+		''' <summary>
+		''' Retrieves a collection of filtered words from the data store.
+		''' </summary>
+		''' <param name="PortalID"></param>
+		''' <param name="Filter"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Function FilterWordGetAll(ByVal PortalID As Integer, ByVal Filter As String) As List(Of FilterWordInfo)
+			Return CBO.FillCollection(Of FilterWordInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().FilterWordGetAll(PortalID, Filter))
+		End Function
 
-        Public Function FilterWordGet(ByVal ItemId As Integer) As FilterWordInfo
-            Return CType(CBO.FillObject(DotNetNuke.Modules.Forum.DataProvider.Instance().FilterWordGet(ItemId), GetType(FilterWordInfo)), FilterWordInfo)
-        End Function
+		''' <summary>
+		''' Returns a single filtered word.
+		''' </summary>
+		''' <param name="ItemId"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Function FilterWordGet(ByVal ItemId As Integer) As FilterWordInfo
+			Return CType(CBO.FillObject(DotNetNuke.Modules.Forum.DataProvider.Instance().FilterWordGet(ItemId), GetType(FilterWordInfo)), FilterWordInfo)
+		End Function
 
-        Public Sub FilterWordUpdate(ByVal PortalID As Integer, ByVal BadWord As String, ByVal ReplacedWord As String, ByVal CreatedBy As Integer)
-            DotNetNuke.Modules.Forum.DataProvider.Instance().FilterWordUpdate(PortalID, BadWord, ReplacedWord, CreatedBy)
-        End Sub
+		''' <summary>
+		''' Updates a single filtered word in the data store.
+		''' </summary>
+		''' <param name="PortalID"></param>
+		''' <param name="BadWord"></param>
+		''' <param name="ReplacedWord"></param>
+		''' <param name="CreatedBy"></param>
+		''' <remarks></remarks>
+		Public Sub FilterWordUpdate(ByVal PortalID As Integer, ByVal BadWord As String, ByVal ReplacedWord As String, ByVal CreatedBy As Integer)
+			DotNetNuke.Modules.Forum.DataProvider.Instance().FilterWordUpdate(PortalID, BadWord, ReplacedWord, CreatedBy)
+		End Sub
 
-        Public Sub FilterWordDelete(ByVal ItemID As Integer)
-            DotNetNuke.Modules.Forum.DataProvider.Instance().FilterWordDelete(ItemID)
-        End Sub
+		''' <summary>
+		''' Deletes a filtered word from the data store.
+		''' </summary>
+		''' <param name="ItemID"></param>
+		''' <remarks></remarks>
+		Public Sub FilterWordDelete(ByVal ItemID As Integer)
+			DotNetNuke.Modules.Forum.DataProvider.Instance().FilterWordDelete(ItemID)
+		End Sub
 
-        Public Function FilterWordGetByWord(ByVal FilteredWord As String, ByVal PortalID As Integer) As Boolean
-            Return DotNetNuke.Modules.Forum.DataProvider.Instance().FilterWordGetByWord(FilteredWord, PortalID)
-        End Function
+		''' <summary>
+		''' Determines if a filtered word exists in the data store for the particular portal.
+		''' </summary>
+		''' <param name="FilteredWord"></param>
+		''' <param name="PortalID"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Function FilterWordGetByWord(ByVal FilteredWord As String, ByVal PortalID As Integer) As Boolean
+			Return DotNetNuke.Modules.Forum.DataProvider.Instance().FilterWordGetByWord(FilteredWord, PortalID)
+		End Function
 
 #End Region
 
-    End Class
-
-#End Region
+	End Class
 
 End Namespace

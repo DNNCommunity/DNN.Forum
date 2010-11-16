@@ -127,7 +127,7 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Event Handlers"
 
 		''' <summary>
-		''' 
+		''' Determines if we can use Ajax in this page before anything is rendered. 
 		''' </summary>
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
