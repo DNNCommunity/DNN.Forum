@@ -100,14 +100,14 @@ Namespace DotNetNuke.Modules.Forum.UCP
 					.PortalID = PortalId
 					.IsTrusted = chkIsTrusted.Checked
 					.LockTrust = chkLockTrust.Checked
-
 					PreviouslyBanned = .IsBanned
-
 					.IsBanned = chkIsBanned.Checked
+
 					If chkIsBanned.Checked Then
-						If rdpLiftBan.SelectedDate < Date.Now() Then
+						If rdpLiftBan.SelectedDate > Date.Now() Then
 							.LiftBanDate = CDate(rdpLiftBan.SelectedDate)
 						End If
+
 						If Not PreviouslyBanned Then
 							.StartBanDate = Date.Now()
 						End If

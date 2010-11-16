@@ -145,10 +145,10 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				ACPmenu.ModuleID = ModuleId
 				ACPmenu.EnableAjax = False
 
-				If Not Page.IsPostBack Then
-					Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
-					ForumUtils.LoadCssFile(DefaultPage, objConfig)
+				Dim DefaultPage As CDefault = DirectCast(Page, CDefault)
+				ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
+				If Not Page.IsPostBack Then
 					BuildTabs()
 					SetURLController()
 					BindGroup()

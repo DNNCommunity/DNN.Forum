@@ -1359,11 +1359,14 @@ Namespace DotNetNuke.Modules.Forum
 				If NewThread And objConfig.EnableTagging Then
 					rowTagging.Visible = True
 				Else
-					If (PostID = objThread.ThreadID) AndAlso (objConfig.EnableTagging) Then
-						Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, objForum.ForumID, UserId)
+					' this is either not a new thread or taxonomy is disabled
+					If Not NewThread Then
+						If (PostID = objThread.ThreadID) AndAlso (objConfig.EnableTagging) Then
+							Dim Security As New Forum.ModuleSecurity(ModuleId, TabId, objForum.ForumID, UserId)
 
-						If Security.IsForumModerator Then
-							rowTagging.Visible = True
+							If Security.IsForumModerator Then
+								rowTagging.Visible = True
+							End If
 						End If
 					End If
 				End If
