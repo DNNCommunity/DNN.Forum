@@ -113,32 +113,36 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		''' <param name="CurrentPage"></param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' </history>
 		Private Sub BindData(ByVal PageSize As Integer, ByVal CurrentPage As Integer)
 			Dim cntReportedUsers As New ReportedUserController
 			Dim arrReportedUsers As New List(Of ReportedUserInfo)
 			arrReportedUsers = cntReportedUsers.GetReportedUsers(PortalId, CurrentPage - 1, PageSize, BottomPager.TotalRecords)
 
-			If Not arrReportedUsers Is Nothing Then
+			'If Not arrReportedUsers Is Nothing Then
+			If arrReportedUsers.Count > 0 Then
+				Dim objReportedUserInfo As ReportedUserInfo = arrReportedUsers.Item(0)
+
+				dgReportedUsers.DataSource = arrReportedUsers
+				dgReportedUsers.DataBind()
+
 				If arrReportedUsers.Count > 0 Then
-					Dim objReportedUserInfo As ReportedUserInfo = arrReportedUsers.Item(0)
-
-					dgReportedUsers.DataSource = arrReportedUsers
-					dgReportedUsers.DataBind()
-
-					BottomPager.TotalRecords = arrReportedUsers.Count
-
-					pnlReportedUsers.Visible = True
-					pnlNoItems.Visible = False
+					dgReportedUsers.VirtualItemCount = arrReportedUsers(0).TotalRecords
+					BottomPager.TotalRecords = arrReportedUsers(0).TotalRecords
 				Else
-					pnlReportedUsers.Visible = False
-					pnlNoItems.Visible = True
+					dgReportedUsers.VirtualItemCount = 0
+					BottomPager.TotalRecords = 0
 				End If
+
+				pnlReportedUsers.Visible = True
+				pnlNoItems.Visible = False
 			Else
 				pnlReportedUsers.Visible = False
 				pnlNoItems.Visible = True
 			End If
+			'Else
+			'	pnlReportedUsers.Visible = False
+			'	pnlNoItems.Visible = True
+			'End If
 		End Sub
 
 #End Region
