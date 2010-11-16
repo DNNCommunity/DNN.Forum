@@ -34,7 +34,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 #Region "Private Members"
 
 		Dim _LocalResourceFile As String = String.Empty
-		Dim _DefaultControlToLoad As String = "UCP_Main.ascx"
+		Dim _DefaultControlToLoad As String = Constants.ctlUCPOverview
 		Dim _objConfig As Forum.Configuration
 		Dim _ProfileUserID As Integer
 		Dim _CurrentUserID As Integer
@@ -42,13 +42,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		Dim _ModuleID As Integer
 		Dim _TabID As Integer
 		Dim SectionNumber As Integer = 1
-		Dim ctlOverview As String = "UCP_Main.ascx"
-		Dim ctlTracking As String = "UCP_Tracking.ascx"
-		Dim ctlBookmark As String = "UCP_Bookmark.ascx"
-		Dim ctlSettings As String = "UCP_Settings.ascx"
-		Dim ctlProfile As String = "UCP_Profile.ascx"
-		Dim ctlAvatar As String = "UCP_Avatar.ascx"
-		Dim ctlSignature As String = "UCP_Signature.ascx"
+
 		Dim cmdOverview As LinkButton
 		Dim cmdTracking As LinkButton
 		Dim cmdBookmark As LinkButton
@@ -227,19 +221,19 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		Private Function IdentifyControl(ByVal CurrentPage As UserAjaxControl, ByVal sender As Object, ByVal e As EventArgs) As String
 			Select Case CurrentPage
 				Case UserAjaxControl.Tracking
-					ControlToLoad = ctlTracking
+					ControlToLoad = Constants.ctlTracking
 				Case UserAjaxControl.Bookmark
-					ControlToLoad = ctlBookmark
+					ControlToLoad = Constants.ctlBookmark
 				Case UserAjaxControl.Settings
-					ControlToLoad = ctlSettings
+					ControlToLoad = Constants.ctlSettings
 				Case UserAjaxControl.Profile
-					ControlToLoad = ctlProfile
+					ControlToLoad = Constants.ctlProfile
 				Case UserAjaxControl.Avatar
-					ControlToLoad = ctlAvatar
+					ControlToLoad = Constants.ctlUsersAvatar
 				Case UserAjaxControl.Signature
-					ControlToLoad = ctlSignature
+					ControlToLoad = Constants.ctlSignature
 				Case Else
-					ControlToLoad = ctlOverview
+					ControlToLoad = Constants.ctlUCPOverview
 			End Select
 
 			Return ControlToLoad
@@ -334,19 +328,19 @@ Namespace DotNetNuke.Modules.Forum.UCP
 				Dim url As String = String.Empty
 
 				Select Case ControlToLoad
-					Case ctlOverview
+					Case Constants.ctlUCPOverview
 						ExpandSection = ExpandMenuSection.ControlPanel
-					Case ctlTracking
+					Case Constants.ctlTracking
 						ExpandSection = ExpandMenuSection.ControlPanel
-					Case ctlBookmark
+					Case Constants.ctlBookmark
 						ExpandSection = ExpandMenuSection.ControlPanel
-					Case ctlSettings
+					Case Constants.ctlSettings
 						ExpandSection = ExpandMenuSection.ForumSettings
-					Case ctlProfile
+					Case Constants.ctlProfile
 						ExpandSection = ExpandMenuSection.ProfileManager
-					Case ctlAvatar
+					Case Constants.ctlUsersAvatar
 						ExpandSection = ExpandMenuSection.ProfileManager
-					Case ctlSignature
+					Case Constants.ctlSignature
 						ExpandSection = ExpandMenuSection.ProfileManager
 				End Select
 
@@ -370,7 +364,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlOverview Then
+				If ControlToLoad = Constants.ctlUCPOverview Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -392,7 +386,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 					wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 					wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-					If ControlToLoad = ctlTracking Then
+					If ControlToLoad = Constants.ctlTracking Then
 						wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 						wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 						wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -414,7 +408,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlBookmark Then
+				If ControlToLoad = Constants.ctlBookmark Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -446,7 +440,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlSettings Then
+				If ControlToLoad = Constants.ctlSettings Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -479,7 +473,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlProfile Then
+				If ControlToLoad = Constants.ctlProfile Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -515,7 +509,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 					wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 					wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-					If ControlToLoad = ctlAvatar Then
+					If ControlToLoad = Constants.ctlUsersAvatar Then
 						wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 						wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 						wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -536,7 +530,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 						wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 						wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-						If ControlToLoad = ctlAvatar Then
+						If ControlToLoad = Constants.ctlUsersAvatar Then
 							wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 							wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 							wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -560,7 +554,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 					wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 					wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-					If ControlToLoad = ctlSignature Then
+					If ControlToLoad = Constants.ctlSignature Then
 						wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 						wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 						wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)

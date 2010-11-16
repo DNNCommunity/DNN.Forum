@@ -35,29 +35,6 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Members"
 
-		Dim ctlOverview As String = "ACP_Main.ascx"
-		Dim ctlGeneral As String = "ACP_General.ascx"
-		Dim ctlCommunity As String = "ACP_Community.ascx"
-		Dim ctlAttachment As String = "ACP_Attachment.ascx"
-		Dim ctlRSS As String = "ACP_RSS.ascx"
-		Dim ctlSEO As String = "ACP_SEO.ascx"
-		'Dim ctlForumManage As String = "ACP_ForumManage.ascx"
-		Dim ctlManageUsers As String = "ACP_User.ascx"
-		Dim ctlAvatar As String = "ACP_Avatar.ascx"
-		Dim ctlUser As String = "ACP_User.ascx"
-		Dim ctlUserSettings As String = "ACP_UserSettings.ascx"
-		Dim ctlUserInterface As String = "ACP_UI.ascx"
-		Dim ctlFilterMain As String = "ACP_Filter.ascx"
-		Dim ctlFilterWords As String = "ACP_FilterWord.ascx"
-		Dim ctlRanking As String = "ACP_Ranking.ascx"
-		Dim ctlRating As String = "ACP_Rating.ascx"
-		Dim ctlPopStatus As String = "ACP_PopStatus.ascx"
-		Dim ctlEmailSettings As String = "ACP_Email.ascx"
-		'Dim ctlEmailTemplate As String = "ACP_EmailTemplate.ascx"
-		Dim ctlEmailQueue As String = "ACP_EmailQueue.ascx"
-		Dim ctlEmailQueueTaskDetail As String = "ACP_EmailQueueTaskDetail.ascx"
-		Dim ctlEmailSubscribers As String = "ACP_EmailSubscribers.ascx"
-
 		Dim _CtlToLoad As String
 
 #End Region
@@ -118,45 +95,45 @@ Namespace DotNetNuke.Modules.Forum
 
 						Select Case strTempControl
 							Case CStr(AdminAjaxControl.General)
-								ACPmenu.ControlToLoad = ctlGeneral
+								ACPmenu.ControlToLoad = Constants.ctlGeneral
 							Case CStr(AdminAjaxControl.Community)
-								ACPmenu.ControlToLoad = ctlCommunity
+								ACPmenu.ControlToLoad = Constants.ctlCommunity
 							Case CStr(AdminAjaxControl.Attachment)
-								ACPmenu.ControlToLoad = ctlAttachment
+								ACPmenu.ControlToLoad = Constants.ctlAttachment
 							Case CStr(AdminAjaxControl.RSS)
-								ACPmenu.ControlToLoad = ctlRSS
+								ACPmenu.ControlToLoad = Constants.ctlRSS
 							Case CStr(AdminAjaxControl.SEO)
-								ACPmenu.ControlToLoad = ctlSEO
+								ACPmenu.ControlToLoad = Constants.ctlSEO
 								' Forum Manage
 							Case CStr(AdminAjaxControl.Users)
-								ACPmenu.ControlToLoad = ctlUser
+								ACPmenu.ControlToLoad = Constants.ctlUser
 							Case CStr(AdminAjaxControl.Avatar)
-								ACPmenu.ControlToLoad = ctlAvatar
+								ACPmenu.ControlToLoad = Constants.ctlAdminAvatar
 							Case CStr(AdminAjaxControl.UserSettings)
-								ACPmenu.ControlToLoad = ctlUserSettings
+								ACPmenu.ControlToLoad = Constants.ctlUserSettings
 							Case CStr(AdminAjaxControl.UserInterface)
-								ACPmenu.ControlToLoad = ctlUserInterface
+								ACPmenu.ControlToLoad = Constants.ctlUserInterface
 							Case CStr(AdminAjaxControl.FilterMain)
-								ACPmenu.ControlToLoad = ctlFilterMain
+								ACPmenu.ControlToLoad = Constants.ctlFilterMain
 							Case CStr(AdminAjaxControl.FilterWord)
-								ACPmenu.ControlToLoad = ctlFilterWords
+								ACPmenu.ControlToLoad = Constants.ctlFilterWords
 							Case CStr(AdminAjaxControl.Rating)
-								ACPmenu.ControlToLoad = ctlRating
+								ACPmenu.ControlToLoad = Constants.ctlRating
 							Case CStr(AdminAjaxControl.Ranking)
-								ACPmenu.ControlToLoad = ctlRanking
+								ACPmenu.ControlToLoad = Constants.ctlRanking
 							Case CStr(AdminAjaxControl.PopStatus)
-								ACPmenu.ControlToLoad = ctlPopStatus
+								ACPmenu.ControlToLoad = Constants.ctlPopStatus
 							Case CStr(AdminAjaxControl.EmailSettings)
-								ACPmenu.ControlToLoad = ctlEmailSettings
+								ACPmenu.ControlToLoad = Constants.ctlEmailSettings
 								' Email Template
 							Case CStr(AdminAjaxControl.EmailQueue)
-								ACPmenu.ControlToLoad = ctlEmailQueue
+								ACPmenu.ControlToLoad = Constants.ctlEmailQueue
 							Case CStr(AdminAjaxControl.EmailQueueTaskDetail)
-								ACPmenu.ControlToLoad = ctlEmailQueueTaskDetail
+								ACPmenu.ControlToLoad = Constants.ctlEmailQueueTaskDetail
 							Case CStr(AdminAjaxControl.EmailSubscribers)
-								ACPmenu.ControlToLoad = ctlEmailSubscribers
+								ACPmenu.ControlToLoad = Constants.ctlEmailSubscribers
 							Case Else
-								ACPmenu.ControlToLoad = ctlOverview
+								ACPmenu.ControlToLoad = Constants.ctlACPOverview
 						End Select
 					End If
 				End If

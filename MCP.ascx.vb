@@ -35,12 +35,6 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Members"
 
-		Dim ctlOverview As String = "MCP_Main.ascx"
-		Dim ctlModQueue As String = "MCP_ModQueue.ascx"
-		Dim ctlReportedPosts As String = "MCP_ReportedPost.ascx"
-		Dim ctlBannedUsers As String = "MCP_BannedUsers.ascx"
-		Dim ctlReportedUsers As String = "MCP_ReportedUsers.ascx"
-		'Dim ctlUntrustedUsers As String = "MCP_UntrustedUsers.ascx"
 		Dim _CtlToLoad As String
 
 #End Region
@@ -102,17 +96,17 @@ Namespace DotNetNuke.Modules.Forum
 
 						Select Case strTempControl
 							Case CStr(ModeratorAjaxControl.ModQueue)
-								MCPmenu.ControlToLoad = ctlModQueue
+								MCPmenu.ControlToLoad = Constants.ctlModQueue
 							Case CStr(ModeratorAjaxControl.ReportedPosts)
-								MCPmenu.ControlToLoad = ctlReportedPosts
+								MCPmenu.ControlToLoad = Constants.ctlReportedPosts
 							Case CStr(ModeratorAjaxControl.BannedUsers)
-								MCPmenu.ControlToLoad = ctlBannedUsers
+								MCPmenu.ControlToLoad = Constants.ctlBannedUsers
 							Case CStr(ModeratorAjaxControl.ReportedUsers)
-								MCPmenu.ControlToLoad = ctlReportedUsers
+								MCPmenu.ControlToLoad = Constants.ctlReportedUsers
 								'Case CStr(ModeratorAjaxControl.UntrustedUsers)
-								'	MCPmenu.ControlToLoad = ctlUntrustedUsers
+								'	MCPmenu.ControlToLoad = Constants.ctlUntrustedUsers
 							Case Else
-								MCPmenu.ControlToLoad = ctlOverview
+								MCPmenu.ControlToLoad = Constants.ctlMCPOverview
 						End Select
 					End If
 				End If

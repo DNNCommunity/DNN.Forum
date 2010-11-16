@@ -27,9 +27,6 @@ Namespace DotNetNuke.Modules.Forum.MCP
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	''' <history>
-	''' 	[skeel]	11/11/2008	Created
-	''' </history>
 	Partial Public Class Menu
 		Inherits System.Web.UI.UserControl
 
@@ -41,12 +38,6 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		Dim _PortalID As Integer
 		Dim _ModuleID As Integer
 		Dim SectionNumber As Integer = 1
-		Dim ctlOverview As String = "MCP_Main.ascx"
-		Dim ctlModQueue As String = "MCP_ModQueue.ascx"
-		Dim ctlReportedPosts As String = "MCP_ReportedPost.ascx"
-		Dim ctlBannedUsers As String = "MCP_BannedUsers.ascx"
-		Dim ctlReportedUsers As String = "MCP_ReportedUsers.ascx"
-		'Dim ctlUntrustedUsers As String = "MCP_UntrustedUsers.ascx"
 
 		Dim cmdOverview As LinkButton
 		Dim cmdModQueue As LinkButton
@@ -179,17 +170,17 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		Private Function IdentifyControl(ByVal CurrentPage As ModeratorAjaxControl, ByVal sender As Object, ByVal e As EventArgs) As String
 			Select Case CurrentPage
 				Case ModeratorAjaxControl.ModQueue
-					ControlToLoad = ctlModQueue
+					ControlToLoad = Constants.ctlModQueue
 				Case ModeratorAjaxControl.ReportedPosts
-					ControlToLoad = ctlReportedPosts
+					ControlToLoad = Constants.ctlReportedPosts
 				Case ModeratorAjaxControl.BannedUsers
-					ControlToLoad = ctlBannedUsers
+					ControlToLoad = Constants.ctlBannedUsers
 				Case ModeratorAjaxControl.ReportedUsers
-					ControlToLoad = ctlReportedUsers
+					ControlToLoad = Constants.ctlReportedUsers
 					'Case ModeratorAjaxControl.UntrustedUsers
-					'	ControlToLoad = ctlUntrustedUsers
+					'	ControlToLoad = Constants.ctlUntrustedUsers
 				Case Else
-					ControlToLoad = ctlOverview
+					ControlToLoad = Constants.ctlMCPOverview
 			End Select
 
 			Return ControlToLoad
@@ -284,17 +275,17 @@ Namespace DotNetNuke.Modules.Forum.MCP
 				Dim url As String = String.Empty
 
 				Select Case ControlToLoad
-					Case ctlOverview
+					Case Constants.ctlMCPOverview
 						ExpandSection = ExpandMenuSection.ControlPanel
-					Case ctlModQueue
+					Case Constants.ctlModQueue
 						ExpandSection = ExpandMenuSection.ControlPanel
-					Case ctlReportedPosts
+					Case Constants.ctlReportedPosts
 						ExpandSection = ExpandMenuSection.ControlPanel
-					Case ctlBannedUsers
+					Case Constants.ctlBannedUsers
 						ExpandSection = ExpandMenuSection.Users
-					Case ctlReportedUsers
+					Case Constants.ctlReportedUsers
 						ExpandSection = ExpandMenuSection.Users
-						'Case ctlUntrustedUsers
+						'Case Constants.ctlUntrustedUsers
 						'	ExpandSection = ExpandMenuSection.Users
 				End Select
 
@@ -318,7 +309,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlOverview Then
+				If ControlToLoad = Constants.ctlMCPOverview Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -339,7 +330,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlModQueue Then
+				If ControlToLoad = Constants.ctlModQueue Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -360,7 +351,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlReportedPosts Then
+				If ControlToLoad = Constants.ctlReportedPosts Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -392,7 +383,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlBannedUsers Then
+				If ControlToLoad = Constants.ctlBannedUsers Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -413,7 +404,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlReportedUsers Then
+				If ControlToLoad = Constants.ctlReportedUsers Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -434,7 +425,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 				'wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				'wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				'If ControlToLoad = ctlUntrustedUsers Then
+				'If ControlToLoad = Constants.ctlUntrustedUsers Then
 				'	wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 				'	wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 				'	wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)

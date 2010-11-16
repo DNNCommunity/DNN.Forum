@@ -35,35 +35,11 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
 		Dim _EnableAjax As Boolean = True
 		Dim _LocalResourceFile As String = String.Empty
-		Dim _DefaultControlToLoad As String = "ACP_Main.ascx"
+		Dim _DefaultControlToLoad As String = Constants.ctlACPOverview
 		Dim _objConfig As Forum.Configuration
 		Dim _PortalID As Integer
 		Dim _ModuleID As Integer
 		Dim SectionNumber As Integer = 1
-		Dim ctlOverview As String = "ACP_Main.ascx"
-		Dim ctlGeneral As String = "ACP_General.ascx"
-		Dim ctlCommunity As String = "ACP_Community.ascx"
-		Dim ctlAttachment As String = "ACP_Attachment.ascx"
-		Dim ctlRSS As String = "ACP_RSS.ascx"
-		Dim ctlSEO As String = "ACP_SEO.ascx"
-		Dim ctlForumManager As String = "ACP_ForumManage.ascx"
-		Dim ctlManageUsers As String = "ACP_User.ascx"
-		Dim ctlAvatar As String = "ACP_Avatar.ascx"
-		Dim ctlRoleAvatar As String = "ACP_RoleAvatar.ascx"
-		Dim ctlUserSettings As String = "ACP_UserSettings.ascx"
-		Dim ctlUserInterface As String = "ACP_UI.ascx"
-		Dim ctlFilterMain As String = "ACP_Filter.ascx"
-		Dim ctlFilterWords As String = "ACP_FilterWord.ascx"
-		Dim ctlRanking As String = "ACP_Ranking.ascx"
-		Dim ctlRating As String = "ACP_Rating.ascx"
-		Dim ctlPopStatus As String = "ACP_PopStatus.ascx"
-		Dim ctlEmailSettings As String = "ACP_Email.ascx"
-		Dim ctlEmailTemplate As String = "ACP_EmailTemplate.ascx"
-		Dim ctlEmailQueue As String = "ACP_EmailQueue.ascx"
-		Dim ctlEmailQueueTaskDetail As String = "ACP_EmailQueueTaskDetail.ascx"
-		Dim ctlEmailSubscribers As String = "ACP_EmailSubscribers.ascx"
-		Dim ctlUser As String = "ACP_User.ascx"
-		Dim ctlForumEdit As String = "ACP_ForumEdit.ascx"
 		Dim cmdOverview As LinkButton
 		Dim cmdGeneral As LinkButton
 		Dim cmdCommunity As LinkButton
@@ -226,51 +202,51 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Private Function IdentifyControl(ByVal CurrentPage As AdminAjaxControl, ByVal sender As Object, ByVal e As EventArgs) As String
 			Select Case CurrentPage
 				Case AdminAjaxControl.General
-					ControlToLoad = ctlGeneral
+					ControlToLoad = Constants.ctlGeneral
 				Case AdminAjaxControl.Community
-					ControlToLoad = ctlCommunity
+					ControlToLoad = Constants.ctlCommunity
 				Case AdminAjaxControl.Attachment
-					ControlToLoad = ctlAttachment
+					ControlToLoad = Constants.ctlAttachment
 				Case AdminAjaxControl.RSS
-					ControlToLoad = ctlRSS
+					ControlToLoad = Constants.ctlRSS
 				Case AdminAjaxControl.SEO
-					ControlToLoad = ctlSEO
+					ControlToLoad = Constants.ctlSEO
 				Case AdminAjaxControl.ForumManage
-					ControlToLoad = ctlForumManager
+					ControlToLoad = Constants.ctlForumManager
 				Case AdminAjaxControl.ForumEdit
-					ControlToLoad = ctlForumEdit
+					ControlToLoad = Constants.ctlForumEdit
 				Case AdminAjaxControl.Users
-					ControlToLoad = ctlManageUsers
+					ControlToLoad = Constants.ctlManageUsers
 				Case AdminAjaxControl.Avatar
-					ControlToLoad = ctlAvatar
+					ControlToLoad = Constants.ctlAdminAvatar
 				Case AdminAjaxControl.RoleAvatar
-					ControlToLoad = ctlRoleAvatar
+					ControlToLoad = Constants.ctlRoleAvatar
 				Case AdminAjaxControl.UserSettings
-					ControlToLoad = ctlUserSettings
+					ControlToLoad = Constants.ctlUserSettings
 				Case AdminAjaxControl.UserInterface
-					ControlToLoad = ctlUserInterface
+					ControlToLoad = Constants.ctlUserInterface
 				Case AdminAjaxControl.FilterMain
-					ControlToLoad = ctlFilterMain
+					ControlToLoad = Constants.ctlFilterMain
 				Case AdminAjaxControl.FilterWord
-					ControlToLoad = ctlFilterWords
+					ControlToLoad = Constants.ctlFilterWords
 				Case AdminAjaxControl.Ranking
-					ControlToLoad = ctlRanking
+					ControlToLoad = Constants.ctlRanking
 				Case AdminAjaxControl.Rating
-					ControlToLoad = ctlRating
+					ControlToLoad = Constants.ctlRating
 				Case AdminAjaxControl.PopStatus
-					ControlToLoad = ctlPopStatus
+					ControlToLoad = Constants.ctlPopStatus
 				Case AdminAjaxControl.EmailSettings
-					ControlToLoad = ctlEmailSettings
+					ControlToLoad = Constants.ctlEmailSettings
 				Case AdminAjaxControl.EmailTemplate
-					ControlToLoad = ctlEmailTemplate
+					ControlToLoad = Constants.ctlEmailTemplate
 				Case AdminAjaxControl.EmailQueue
-					ControlToLoad = ctlEmailQueue
+					ControlToLoad = Constants.ctlEmailQueue
 				Case AdminAjaxControl.EmailQueueTaskDetail
-					ControlToLoad = ctlEmailQueueTaskDetail
+					ControlToLoad = Constants.ctlEmailQueueTaskDetail
 				Case AdminAjaxControl.EmailSubscribers
-					ControlToLoad = ctlEmailSubscribers
+					ControlToLoad = Constants.ctlEmailSubscribers
 				Case Else
-					ControlToLoad = ctlOverview
+					ControlToLoad = Constants.ctlACPOverview
 			End Select
 
 			Return ControlToLoad
@@ -366,51 +342,51 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				Dim url As String = String.Empty
 
 				Select Case ControlToLoad
-					Case ctlOverview
+					Case Constants.ctlACPOverview
 						ExpandSection = ExpandMenuSection.MainConfiguration
-					Case ctlGeneral
+					Case Constants.ctlGeneral
 						ExpandSection = ExpandMenuSection.MainConfiguration
-					Case ctlCommunity
+					Case Constants.ctlCommunity
 						ExpandSection = ExpandMenuSection.MainConfiguration
-					Case ctlAttachment
+					Case Constants.ctlAttachment
 						ExpandSection = ExpandMenuSection.MainConfiguration
-					Case ctlRSS
+					Case Constants.ctlRSS
 						ExpandSection = ExpandMenuSection.MainConfiguration
-					Case ctlSEO
+					Case Constants.ctlSEO
 						ExpandSection = ExpandMenuSection.MainConfiguration
-					Case ctlForumManager
+					Case Constants.ctlForumManager
 						ExpandSection = ExpandMenuSection.Forums
-					Case ctlForumEdit
+					Case Constants.ctlForumEdit
 						ExpandSection = ExpandMenuSection.Forums
-					Case ctlManageUsers
+					Case Constants.ctlManageUsers
 						ExpandSection = ExpandMenuSection.UserOriented
-					Case ctlAvatar
+					Case Constants.ctlAdminAvatar
 						ExpandSection = ExpandMenuSection.UserOriented
-					Case ctlRoleAvatar
+					Case Constants.ctlRoleAvatar
 						ExpandSection = ExpandMenuSection.UserOriented
-					Case ctlUserSettings
+					Case Constants.ctlUserSettings
 						ExpandSection = ExpandMenuSection.UserOriented
-					Case ctlUserInterface
+					Case Constants.ctlUserInterface
 						ExpandSection = ExpandMenuSection.UserOriented
-					Case ctlFilterMain
+					Case Constants.ctlFilterMain
 						ExpandSection = ExpandMenuSection.Content
-					Case ctlFilterWords
+					Case Constants.ctlFilterWords
 						ExpandSection = ExpandMenuSection.Content
-					Case ctlRanking
+					Case Constants.ctlRanking
 						ExpandSection = ExpandMenuSection.Content
-					Case ctlRating
+					Case Constants.ctlRating
 						ExpandSection = ExpandMenuSection.Content
-					Case ctlPopStatus
+					Case Constants.ctlPopStatus
 						ExpandSection = ExpandMenuSection.Content
-					Case ctlEmailSettings
+					Case Constants.ctlEmailSettings
 						ExpandSection = ExpandMenuSection.Email
-					Case ctlEmailTemplate
+					Case Constants.ctlEmailTemplate
 						ExpandSection = ExpandMenuSection.Email
-					Case ctlEmailQueue
+					Case Constants.ctlEmailQueue
 						ExpandSection = ExpandMenuSection.Email
-					Case ctlEmailQueueTaskDetail
+					Case Constants.ctlEmailQueueTaskDetail
 						ExpandSection = ExpandMenuSection.Email
-					Case ctlEmailSubscribers
+					Case Constants.ctlEmailSubscribers
 						ExpandSection = ExpandMenuSection.Email
 				End Select
 
@@ -435,7 +411,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlOverview Then
+				If ControlToLoad = Constants.ctlACPOverview Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -462,7 +438,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlGeneral Then
+				If ControlToLoad = Constants.ctlGeneral Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -489,7 +465,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlCommunity Then
+				If ControlToLoad = Constants.ctlCommunity Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -515,7 +491,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlAttachment Then
+				If ControlToLoad = Constants.ctlAttachment Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -542,7 +518,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlRSS Then
+				If ControlToLoad = Constants.ctlRSS Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -568,7 +544,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlSEO Then
+				If ControlToLoad = Constants.ctlSEO Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -606,7 +582,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlForumManager Then
+				If ControlToLoad = Constants.ctlForumManager Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -627,7 +603,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.RenderEndTag() ' </tr>
 
 				' Forum Edit
-				If ControlToLoad = ctlForumEdit Then
+				If ControlToLoad = Constants.ctlForumEdit Then
 					wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>
 
 					wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
@@ -678,7 +654,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlManageUsers Then
+				If ControlToLoad = Constants.ctlManageUsers Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -705,7 +681,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlAvatar Then
+				If ControlToLoad = Constants.ctlAdminAvatar Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -734,7 +710,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 					wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-					If ControlToLoad = ctlRoleAvatar Then
+					If ControlToLoad = Constants.ctlRoleAvatar Then
 						wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 						wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 						wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -759,7 +735,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlUserSettings Then
+				If ControlToLoad = Constants.ctlUserSettings Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -786,7 +762,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlUserInterface Then
+				If ControlToLoad = Constants.ctlUserInterface Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -825,7 +801,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlFilterMain Then
+				If ControlToLoad = Constants.ctlFilterMain Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -852,7 +828,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlFilterWords Then
+				If ControlToLoad = Constants.ctlFilterWords Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -878,7 +854,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlRating Then
+				If ControlToLoad = Constants.ctlRating Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -905,7 +881,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlRanking Then
+				If ControlToLoad = Constants.ctlRanking Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -932,7 +908,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlPopStatus Then
+				If ControlToLoad = Constants.ctlPopStatus Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -970,7 +946,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlEmailSettings Then
+				If ControlToLoad = Constants.ctlEmailSettings Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -997,7 +973,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlEmailTemplate Then
+				If ControlToLoad = Constants.ctlEmailTemplate Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -1022,7 +998,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 						wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 						wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-						If ControlToLoad = ctlEmailQueue Then
+						If ControlToLoad = Constants.ctlEmailQueue Then
 							wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 							wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 							wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -1050,7 +1026,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 					wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-					If ControlToLoad = ctlEmailQueueTaskDetail Then
+					If ControlToLoad = Constants.ctlEmailQueueTaskDetail Then
 						wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 						wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 						wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
@@ -1078,7 +1054,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
 
-				If ControlToLoad = ctlEmailSubscribers Then
+				If ControlToLoad = Constants.ctlEmailSubscribers Then
 					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
 					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
 					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)

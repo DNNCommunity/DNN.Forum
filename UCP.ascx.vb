@@ -35,13 +35,13 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Members"
 
-		Dim ctlOverview As String = "UCP_Main.ascx"
-		Dim ctlTracking As String = "UCP_Tracking.ascx"
-		Dim ctlBookmark As String = "UCP_Bookmark.ascx"
-		Dim ctlSettings As String = "UCP_Settings.ascx"
-		Dim ctlProfile As String = "UCP_Profile.ascx"
-		Dim ctlAvatar As String = "UCP_Avatar.ascx"
-		Dim ctlSignature As String = "UCP_Signature.ascx"
+		'Dim ctlOverview As String = "UCP_Main.ascx"
+		'Dim ctlTracking As String = "UCP_Tracking.ascx"
+		'Dim ctlBookmark As String = "UCP_Bookmark.ascx"
+		'Dim ctlSettings As String = "UCP_Settings.ascx"
+		'Dim ctlProfile As String = "UCP_Profile.ascx"
+		'Dim ctlAvatar As String = "UCP_Avatar.ascx"
+		'Dim ctlSignature As String = "UCP_Signature.ascx"
 		Dim _CtlToLoad As String
 
 #End Region
@@ -110,19 +110,19 @@ Namespace DotNetNuke.Modules.Forum
 
 						Select Case strTempControl
 							Case CStr(UserAjaxControl.Tracking)
-								UCPmenu.ControlToLoad = ctlTracking
+								UCPmenu.ControlToLoad = Constants.ctlTracking
 							Case CStr(UserAjaxControl.Bookmark)
-								UCPmenu.ControlToLoad = ctlBookmark
+								UCPmenu.ControlToLoad = Constants.ctlBookmark
 							Case CStr(UserAjaxControl.Settings)
-								UCPmenu.ControlToLoad = ctlSettings
+								UCPmenu.ControlToLoad = Constants.ctlSettings
 							Case CStr(UserAjaxControl.Profile)
-								UCPmenu.ControlToLoad = ctlProfile
+								UCPmenu.ControlToLoad = Constants.ctlProfile
 							Case CStr(UserAjaxControl.Avatar)
-								UCPmenu.ControlToLoad = ctlAvatar
+								UCPmenu.ControlToLoad = Constants.ctlUsersAvatar
 							Case CStr(UserAjaxControl.Signature)
-								UCPmenu.ControlToLoad = ctlSignature
+								UCPmenu.ControlToLoad = Constants.ctlSignature
 							Case Else
-								UCPmenu.ControlToLoad = ctlOverview
+								UCPmenu.ControlToLoad = Constants.ctlUCPOverview
 						End Select
 					End If
 				End If

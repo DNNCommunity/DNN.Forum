@@ -614,6 +614,53 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
+#Region "Controls"
+
+		' ACP
+		Public Const ctlACPOverview As String = "ACP_Main.ascx"
+		Public Const ctlGeneral As String = "ACP_General.ascx"
+		Public Const ctlCommunity As String = "ACP_Community.ascx"
+		Public Const ctlAttachment As String = "ACP_Attachment.ascx"
+		Public Const ctlRSS As String = "ACP_RSS.ascx"
+		Public Const ctlSEO As String = "ACP_SEO.ascx"
+		Public Const ctlForumManager As String = "ACP_ForumManage.ascx"
+		Public Const ctlManageUsers As String = "ACP_User.ascx"
+		Public Const ctlAdminAvatar As String = "ACP_Avatar.ascx"
+		Public Const ctlUser As String = "ACP_User.ascx"
+		Public Const ctlUserSettings As String = "ACP_UserSettings.ascx"
+		Public Const ctlUserInterface As String = "ACP_UI.ascx"
+		Public Const ctlFilterMain As String = "ACP_Filter.ascx"
+		Public Const ctlFilterWords As String = "ACP_FilterWord.ascx"
+		Public Const ctlRanking As String = "ACP_Ranking.ascx"
+		Public Const ctlRating As String = "ACP_Rating.ascx"
+		Public Const ctlPopStatus As String = "ACP_PopStatus.ascx"
+		Public Const ctlEmailSettings As String = "ACP_Email.ascx"
+		Public Const ctlEmailTemplate As String = "ACP_EmailTemplate.ascx"
+		Public Const ctlEmailQueue As String = "ACP_EmailQueue.ascx"
+		Public Const ctlEmailQueueTaskDetail As String = "ACP_EmailQueueTaskDetail.ascx"
+		Public Const ctlEmailSubscribers As String = "ACP_EmailSubscribers.ascx"
+		Public Const ctlRoleAvatar As String = "ACP_RoleAvatar.ascx"
+		Public Const ctlForumEdit As String = "ACP_ForumEdit.ascx"
+
+		' MCP
+		Public Const ctlMCPOverview As String = "MCP_Main.ascx"
+		Public Const ctlModQueue As String = "MCP_ModQueue.ascx"
+		Public Const ctlReportedPosts As String = "MCP_ReportedPost.ascx"
+		Public Const ctlBannedUsers As String = "MCP_BannedUsers.ascx"
+		Public Const ctlReportedUsers As String = "MCP_ReportedUsers.ascx"
+		'Public Const ctlUntrustedUsers As String = "MCP_UntrustedUsers.ascx"
+
+		' UCP
+		Public Const ctlUCPOverview As String = "UCP_Main.ascx"
+		Public Const ctlTracking As String = "UCP_Tracking.ascx"
+		Public Const ctlBookmark As String = "UCP_Bookmark.ascx"
+		Public Const ctlSettings As String = "UCP_Settings.ascx"
+		Public Const ctlProfile As String = "UCP_Profile.ascx"
+		Public Const ctlUsersAvatar As String = "UCP_Avatar.ascx"
+		Public Const ctlSignature As String = "UCP_Signature.ascx"
+
+#End Region
+
 #Region "Misc Constants"
 
 		''' <summary>
