@@ -35,13 +35,6 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Members"
 
-		'Dim ctlOverview As String = "UCP_Main.ascx"
-		'Dim ctlTracking As String = "UCP_Tracking.ascx"
-		'Dim ctlBookmark As String = "UCP_Bookmark.ascx"
-		'Dim ctlSettings As String = "UCP_Settings.ascx"
-		'Dim ctlProfile As String = "UCP_Profile.ascx"
-		'Dim ctlAvatar As String = "UCP_Avatar.ascx"
-		'Dim ctlSignature As String = "UCP_Signature.ascx"
 		Dim _CtlToLoad As String
 
 #End Region

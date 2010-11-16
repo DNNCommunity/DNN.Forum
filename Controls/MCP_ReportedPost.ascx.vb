@@ -204,14 +204,11 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		''' <param name="CurrentPage">The current page index the end user will be viewing.</param>
 		''' <remarks>
 		''' </remarks>
-		''' <history>
-		''' </history>
 		Private Sub BindData(ByVal PageSize As Integer, ByVal CurrentPage As Integer)
 			Dim cntPostReport As New PostReportedController
 			Dim arrPosts As New List(Of PostInfo)
-			Dim TotalRecords As Integer
 
-			arrPosts = cntPostReport.GetReportedPosts(PortalId, CurrentPage - 1, PageSize, TotalRecords)
+			arrPosts = cntPostReport.GetReportedPosts(PortalId, CurrentPage - 1, PageSize)
 
 			If Not arrPosts Is Nothing Then
 				If arrPosts.Count > 0 Then

@@ -31,5 +31,23 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		'''To modify move field declaration from designer file to code-behind file.
 		'''</remarks>
 		Protected WithEvents lblInfo As Global.System.Web.UI.WebControls.Label
+
+		'''<summary>
+		'''lblPostQueue control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents lblPostQueue As Global.System.Web.UI.WebControls.Label
+
+		'''<summary>
+		'''lblReportedPosts control.
+		'''</summary>
+		'''<remarks>
+		'''Auto-generated field.
+		'''To modify move field declaration from designer file to code-behind file.
+		'''</remarks>
+		Protected WithEvents lblReportedPosts As Global.System.Web.UI.WebControls.Label
 	End Class
 End Namespace

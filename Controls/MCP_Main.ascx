@@ -9,6 +9,8 @@
 		 <tr>
 			<td class="Forum_UCP_HeaderInfo">
 			    <asp:Label ID="lblInfo" runat="server" CssClass="Forum_Normal" resourcekey="lblInfo" EnableViewState="false" />
+			    <asp:Label ID="lblPostQueue" runat="server" EnableViewState="false" CssClass="Forum_Normal" /><br />
+			    <asp:Label ID="lblReportedPosts" runat="server" EnableViewState="false" CssClass="Forum_Normal" />
 			</td>
 		 </tr>
 	</table>

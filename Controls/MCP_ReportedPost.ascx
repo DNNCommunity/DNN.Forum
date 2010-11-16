@@ -1,5 +1,7 @@
 <%@ Control Language="vb" AutoEventWireup="false" Explicit="true" Codebehind="MCP_ReportedPost.ascx.vb" Inherits="DotNetNuke.Modules.Forum.MCP.ReportedPost" %>
 <%@ Register TagPrefix="dnnforum" Namespace="DotNetNuke.Modules.Forum.WebControls" Assembly="DotNetNuke.Modules.Forum" %>
+<%@ Register Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
+<%@ Register assembly="Telerik.Web.UI" namespace="Telerik.Web.UI" tagprefix="telerik" %>
 <div class="MCP-ReportedPost">
 	<asp:Panel ID="pnlReportedPost" runat="server">
     <asp:datagrid ID="dgReportedPost" runat="server" DataKeyField="ForumID" Width="100%" AutoGenerateColumns="false" CssClass="Forum_Grid" GridLines="None" >

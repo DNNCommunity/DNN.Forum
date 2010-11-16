@@ -27,9 +27,6 @@ Namespace DotNetNuke.Modules.Forum.MCP
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	''' <history>
-	''' 	[cpaterra]	12/21/2008	Created
-	''' </history>
 	Partial Public Class Main
 		Inherits ForumModuleBase
 		Implements Utilities.AjaxLoader.IPageLoad
@@ -41,6 +38,34 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		''' </summary>
 		''' <remarks>So far this is a static page</remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
+			BuildOverview()
+		End Sub
+
+#End Region
+
+#Region "Private Methods"
+
+		Private Sub BuildOverview()
+			Dim cntPostReport As New PostReportedController
+			Dim arrPosts As New List(Of PostInfo)
+			Dim ctlModerate As New PostModerationController
+			Dim colForums As List(Of ForumInfo)
+			Dim PostsToModerate As Integer = 0
+			Dim ReportedPosts As Integer = 0
+
+			arrPosts = cntPostReport.GetReportedPosts(PortalId, 0, 10)
+			colForums = ctlModerate.ModerateForumGetByModeratorThreads(CurrentForumUser.UserID, ModuleId, PortalId)
+
+			If arrPosts.Count > 0 Then
+				ReportedPosts = arrPosts(0).TotalRecords
+			End If
+
+			If colForums.Count > 0 Then
+				PostsToModerate = colForums(0).TotalRecords
+			End If
+
+			lblPostQueue.Text = Localization.GetString("lblPostQueue", LocalResourceFile) + PostsToModerate.ToString()
+			lblReportedPosts.Text = Localization.GetString("lblReportedPosts", LocalResourceFile) + ReportedPosts.ToString()
 		End Sub
 
 #End Region

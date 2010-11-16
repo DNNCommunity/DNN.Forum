@@ -64,7 +64,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <param name="TotalRecords">The total number of records (reference).</param>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public Function GetReportedPosts(ByVal PortalID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByRef TotalRecords As Integer) As List(Of PostInfo)
+		Public Function GetReportedPosts(ByVal PortalID As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer) As List(Of PostInfo)
 			Return CBO.FillCollection(Of PostInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().GetReportedPosts(PortalID, PageIndex, PageSize))
 		End Function
 

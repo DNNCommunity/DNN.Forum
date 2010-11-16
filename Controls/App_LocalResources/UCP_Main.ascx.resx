@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lblInfo.Text" xml:space="preserve">
-    <value>&lt;p&gt;Welcome to the DotNetNuke Forum User Control Panel.&lt;br /&gt;You will notice, that the control panel consists of several sections located to the left. You can click on a section to expand it and gain access to the various settings related to the forum module and your experience.&lt;/p&gt;</value>
+    <value>&lt;h3&gt;Forum User Control Panel&lt;/h3&gt;&lt;p&gt;You will notice, that the control panel consists of several sections located to the left. You can click on a section to expand it and gain access to the various settings related to the forum module and your experience.&lt;/p&gt;</value>
   </data>
   <data name="UCP.Text" xml:space="preserve">
     <value>Instructions</value>

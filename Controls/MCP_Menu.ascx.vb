@@ -33,7 +33,7 @@ Namespace DotNetNuke.Modules.Forum.MCP
 #Region "Private Members"
 
 		Dim _LocalResourceFile As String = String.Empty
-		Dim _DefaultControlToLoad As String = "MCP_Main.ascx"
+		Dim _DefaultControlToLoad As String = Constants.ctlMCPOverview
 		Dim _objConfig As Forum.Configuration
 		Dim _PortalID As Integer
 		Dim _ModuleID As Integer
