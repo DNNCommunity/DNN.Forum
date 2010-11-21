@@ -241,6 +241,13 @@
     <Compile Include="Components\Utilities\Links.vb" />
     <Compile Include="Components\Utilities\SearchHelper.vb" />
     <Compile Include="Components\WordFilter\ForumFilterWordCollection.vb" />
+    <Compile Include="Controls\ACP_Advertisement.ascx.designer.vb">
+      <DependentUpon>ACP_Advertisement.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ACP_Advertisement.ascx.vb">
+      <DependentUpon>ACP_Advertisement.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Controls\ACP_ForumEdit.ascx.designer.vb">
       <DependentUpon>ACP_ForumEdit.ascx</DependentUpon>
     </Compile>
@@ -661,6 +668,7 @@
     <Content Include="App_LocalResources\ACP.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Controls\ACP_Advertisement.ascx" />
     <Content Include="Controls\App_LocalResources\ACP_Filter.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
@@ -1002,6 +1010,7 @@
     <Content Include="Controls\App_LocalResources\ACP_EmailSubscribers.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Controls\App_LocalResources\ACP_Advertisement.ascx.resx" />
     <EmbeddedResource Include="js\forum.js" />
   </ItemGroup>
   <ItemGroup />

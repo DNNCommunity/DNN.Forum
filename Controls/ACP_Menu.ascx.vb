@@ -54,7 +54,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Dim cmdFilterWords As LinkButton
 		Dim cmdRanking As LinkButton
 		Dim cmdRating As LinkButton
-		Dim cmdPopStatus As LinkButton
+        Dim cmdPopStatus As LinkButton
+        Dim cmdAdvertisement As LinkButton
 		Dim cmdEmailSettings As LinkButton
 		Dim cmdEmailQueue As LinkButton
 		Dim cmdEmailQueueTaskDetail As LinkButton
@@ -234,9 +235,11 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				Case AdminAjaxControl.Rating
 					ControlToLoad = Constants.ctlRating
 				Case AdminAjaxControl.PopStatus
-					ControlToLoad = Constants.ctlPopStatus
-				Case AdminAjaxControl.EmailSettings
-					ControlToLoad = Constants.ctlEmailSettings
+                    ControlToLoad = Constants.ctlPopStatus
+                Case AdminAjaxControl.Advertisement
+                    ControlToLoad = Constants.ctlAdvertisement
+                Case AdminAjaxControl.EmailSettings
+                    ControlToLoad = Constants.ctlEmailSettings
 				Case AdminAjaxControl.EmailTemplate
 					ControlToLoad = Constants.ctlEmailTemplate
 				Case AdminAjaxControl.EmailQueue
@@ -789,7 +792,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.RenderEndTag() ' </div>
 
 				'Fourth Menu section, Content
-				GenerateMenuSection(wr, Localization.GetString("ContentSection", Me.LocalResourceFile), IsExpanded(4, ExpandSection), 100)
+                GenerateMenuSection(wr, Localization.GetString("ContentSection", Me.LocalResourceFile), IsExpanded(4, ExpandSection), 120)
 
 				wr.AddAttribute(HtmlTextWriterAttribute.Cellpadding, "0")
 				wr.AddAttribute(HtmlTextWriterAttribute.Cellspacing, "0")
@@ -930,161 +933,187 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.RenderEndTag() ' </td>
 				wr.RenderEndTag() ' </tr>
 
-				'Close Section
-				wr.RenderEndTag() ' </table>
-				wr.RenderEndTag() ' </div>
+                'Advertisement tab
+                wr.RenderBeginTag(HtmlTextWriterTag.Tr) ' <tr>
+                wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
+                wr.RenderBeginTag(HtmlTextWriterTag.Td) '<td> 
 
-				' Fifth Menu Section, Email
-				GenerateMenuSection(wr, Localization.GetString("EmailSection", Me.LocalResourceFile), IsExpanded(5, ExpandSection), 100)
-				wr.AddAttribute(HtmlTextWriterAttribute.Cellpadding, "0")
-				wr.AddAttribute(HtmlTextWriterAttribute.Cellspacing, "0")
-				wr.AddAttribute(HtmlTextWriterAttribute.Align, "left")
-				wr.RenderBeginTag(HtmlTextWriterTag.Table) ' <table>
+                If ControlToLoad = Constants.ctlAdvertisement Then
+                    wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
+                    wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
+                    wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
+                    wr.AddAttribute(HtmlTextWriterAttribute.Title, imgSelectedToolTip)
+                    wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <img> 
+                    wr.RenderEndTag() ' </img>
+                End If
+                wr.RenderEndTag() ' </td>
 
-				' Email Settings
-				wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>
-				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
-				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
+                wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
+                wr.RenderBeginTag(HtmlTextWriterTag.Td) '<td> 
+                If EnableAjax Then
+                    cmdAdvertisement.RenderControl(wr)
+                Else
+                    url = Utilities.Links.ACPControlLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID, AdminAjaxControl.Advertisement)
+                    RenderLinkButton(wr, url, Localization.GetString("cmdAdvertisement", Me.LocalResourceFile), "Forum_Link")
+                End If
+                wr.RenderEndTag() ' </td>
+                wr.RenderEndTag() ' </tr>
 
-				If ControlToLoad = Constants.ctlEmailSettings Then
-					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
-					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
-					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
-					wr.AddAttribute(HtmlTextWriterAttribute.Title, imgSelectedToolTip)
-					wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <img> 
-					wr.RenderEndTag() ' </img>
-				End If
-				wr.RenderEndTag() ' </td>
+                'Close Section
+                wr.RenderEndTag() ' </table>
+                wr.RenderEndTag() ' </div>
 
-				wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
-				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
-				If EnableAjax Then
-					cmdEmailSettings.RenderControl(wr)
-				Else
-					url = Utilities.Links.ACPControlLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID, AdminAjaxControl.EmailSettings)
-					RenderLinkButton(wr, url, Localization.GetString("cmdEmailSettings", Me.LocalResourceFile), "Forum_Link")
-				End If
+                ' Fifth Menu Section, Email
+                GenerateMenuSection(wr, Localization.GetString("EmailSection", Me.LocalResourceFile), IsExpanded(5, ExpandSection), 100)
+                wr.AddAttribute(HtmlTextWriterAttribute.Cellpadding, "0")
+                wr.AddAttribute(HtmlTextWriterAttribute.Cellspacing, "0")
+                wr.AddAttribute(HtmlTextWriterAttribute.Align, "left")
+                wr.RenderBeginTag(HtmlTextWriterTag.Table) ' <table>
 
-				wr.RenderEndTag() ' </td>
-				wr.RenderEndTag() ' </tr>
+                ' Email Settings
+                wr.RenderBeginTag(HtmlTextWriterTag.Tr) ' <tr>
+                wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
+                wr.RenderBeginTag(HtmlTextWriterTag.Td) '<td> 
 
-				'Email Template 
-				wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>
-				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
-				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
+                If ControlToLoad = Constants.ctlEmailSettings Then
+                    wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
+                    wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
+                    wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
+                    wr.AddAttribute(HtmlTextWriterAttribute.Title, imgSelectedToolTip)
+                    wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <img> 
+                    wr.RenderEndTag() ' </img>
+                End If
+                wr.RenderEndTag() ' </td>
 
-				If ControlToLoad = Constants.ctlEmailTemplate Then
-					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
-					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
-					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
-					wr.AddAttribute(HtmlTextWriterAttribute.Title, imgSelectedToolTip)
-					wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <img> 
-					wr.RenderEndTag() ' </img>
-				End If
-				wr.RenderEndTag() ' </td>
+                wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
+                wr.RenderBeginTag(HtmlTextWriterTag.Td) '<td> 
+                If EnableAjax Then
+                    cmdEmailSettings.RenderControl(wr)
+                Else
+                    url = Utilities.Links.ACPControlLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID, AdminAjaxControl.EmailSettings)
+                    RenderLinkButton(wr, url, Localization.GetString("cmdEmailSettings", Me.LocalResourceFile), "Forum_Link")
+                End If
 
-				wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
-				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
+                wr.RenderEndTag() ' </td>
+                wr.RenderEndTag() ' </tr>
 
-				url = Utilities.Links.ACPEmailTemplateManagerLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID)
-				RenderLinkButton(wr, url, Localization.GetString("cmdEmailTemplate", Me.LocalResourceFile), "Forum_Link")
-				wr.RenderEndTag() ' </td>
-				wr.RenderEndTag() ' </tr>
+                'Email Template 
+                wr.RenderBeginTag(HtmlTextWriterTag.Tr) ' <tr>
+                wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
+                wr.RenderBeginTag(HtmlTextWriterTag.Td) '<td> 
 
-				If objConfig.EnableEmailQueueTask Then
-					'Email Queue
-					If Users.UserController.GetCurrentUserInfo.IsSuperUser Then
-						wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>
-						wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
-						wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
+                If ControlToLoad = Constants.ctlEmailTemplate Then
+                    wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
+                    wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
+                    wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
+                    wr.AddAttribute(HtmlTextWriterAttribute.Title, imgSelectedToolTip)
+                    wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <img> 
+                    wr.RenderEndTag() ' </img>
+                End If
+                wr.RenderEndTag() ' </td>
 
-						If ControlToLoad = Constants.ctlEmailQueue Then
-							wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
-							wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
-							wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
-							wr.AddAttribute(HtmlTextWriterAttribute.Title, imgSelectedToolTip)
-							wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <img> 
-							wr.RenderEndTag() ' </img>
-						End If
-						wr.RenderEndTag() ' </td>
+                wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
+                wr.RenderBeginTag(HtmlTextWriterTag.Td) '<td> 
 
-						wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
-						wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
-						If EnableAjax Then
-							cmdEmailQueue.RenderControl(wr)
-						Else
-							url = Utilities.Links.ACPControlLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID, AdminAjaxControl.EmailQueue)
-							RenderLinkButton(wr, url, Localization.GetString("cmdEmailQueue", Me.LocalResourceFile), "Forum_Link")
-						End If
+                url = Utilities.Links.ACPEmailTemplateManagerLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID)
+                RenderLinkButton(wr, url, Localization.GetString("cmdEmailTemplate", Me.LocalResourceFile), "Forum_Link")
+                wr.RenderEndTag() ' </td>
+                wr.RenderEndTag() ' </tr>
 
-						wr.RenderEndTag() ' </td>
-						wr.RenderEndTag() ' </tr>
-					End If
+                If objConfig.EnableEmailQueueTask Then
+                    'Email Queue
+                    If Users.UserController.GetCurrentUserInfo.IsSuperUser Then
+                        wr.RenderBeginTag(HtmlTextWriterTag.Tr) ' <tr>
+                        wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
+                        wr.RenderBeginTag(HtmlTextWriterTag.Td) '<td> 
 
-					' Queue Task Detail
-					wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>
-					wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
-					wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
+                        If ControlToLoad = Constants.ctlEmailQueue Then
+                            wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
+                            wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
+                            wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
+                            wr.AddAttribute(HtmlTextWriterAttribute.Title, imgSelectedToolTip)
+                            wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <img> 
+                            wr.RenderEndTag() ' </img>
+                        End If
+                        wr.RenderEndTag() ' </td>
 
-					If ControlToLoad = Constants.ctlEmailQueueTaskDetail Then
-						wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
-						wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
-						wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
-						wr.AddAttribute(HtmlTextWriterAttribute.Title, imgSelectedToolTip)
-						wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <img> 
-						wr.RenderEndTag() ' </img>
-					End If
-					wr.RenderEndTag() ' </td>
+                        wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
+                        wr.RenderBeginTag(HtmlTextWriterTag.Td) '<td> 
+                        If EnableAjax Then
+                            cmdEmailQueue.RenderControl(wr)
+                        Else
+                            url = Utilities.Links.ACPControlLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID, AdminAjaxControl.EmailQueue)
+                            RenderLinkButton(wr, url, Localization.GetString("cmdEmailQueue", Me.LocalResourceFile), "Forum_Link")
+                        End If
 
-					wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
-					wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
-					If EnableAjax Then
-						cmdEmailQueueTaskDetail.RenderControl(wr)
-					Else
-						url = Utilities.Links.ACPControlLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID, AdminAjaxControl.EmailQueueTaskDetail)
-						RenderLinkButton(wr, url, Localization.GetString("cmdEmailQueueTaskDetail", Me.LocalResourceFile), "Forum_Link")
-					End If
+                        wr.RenderEndTag() ' </td>
+                        wr.RenderEndTag() ' </tr>
+                    End If
 
-					wr.RenderEndTag() ' </td>
-					wr.RenderEndTag() ' </tr>
-				End If
+                    ' Queue Task Detail
+                    wr.RenderBeginTag(HtmlTextWriterTag.Tr) ' <tr>
+                    wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
+                    wr.RenderBeginTag(HtmlTextWriterTag.Td) '<td> 
 
-				' Email Subscribers
-				wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>
-				wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
-				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
+                    If ControlToLoad = Constants.ctlEmailQueueTaskDetail Then
+                        wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
+                        wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
+                        wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
+                        wr.AddAttribute(HtmlTextWriterAttribute.Title, imgSelectedToolTip)
+                        wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <img> 
+                        wr.RenderEndTag() ' </img>
+                    End If
+                    wr.RenderEndTag() ' </td>
 
-				If ControlToLoad = Constants.ctlEmailSubscribers Then
-					wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
-					wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
-					wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
-					wr.AddAttribute(HtmlTextWriterAttribute.Title, imgSelectedToolTip)
-					wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <img> 
-					wr.RenderEndTag() ' </img>
-				End If
-				wr.RenderEndTag() ' </td>
+                    wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
+                    wr.RenderBeginTag(HtmlTextWriterTag.Td) '<td> 
+                    If EnableAjax Then
+                        cmdEmailQueueTaskDetail.RenderControl(wr)
+                    Else
+                        url = Utilities.Links.ACPControlLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID, AdminAjaxControl.EmailQueueTaskDetail)
+                        RenderLinkButton(wr, url, Localization.GetString("cmdEmailQueueTaskDetail", Me.LocalResourceFile), "Forum_Link")
+                    End If
 
-				wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
-				wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
-				If EnableAjax Then
-					cmdEmailSubscribers.RenderControl(wr)
-				Else
-					url = Utilities.Links.ACPControlLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID, AdminAjaxControl.EmailSubscribers)
-					RenderLinkButton(wr, url, Localization.GetString("cmdEmailSubscribers", Me.LocalResourceFile), "Forum_Link")
-				End If
+                    wr.RenderEndTag() ' </td>
+                    wr.RenderEndTag() ' </tr>
+                End If
 
-				wr.RenderEndTag() ' </td>
-				wr.RenderEndTag() ' </tr>
+                ' Email Subscribers
+                wr.RenderBeginTag(HtmlTextWriterTag.Tr) ' <tr>
+                wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
+                wr.RenderBeginTag(HtmlTextWriterTag.Td) '<td> 
 
-				'Close Section
-				wr.RenderEndTag() ' </table>
-				wr.RenderEndTag() ' </div>
+                If ControlToLoad = Constants.ctlEmailSubscribers Then
+                    wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
+                    wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
+                    wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
+                    wr.AddAttribute(HtmlTextWriterAttribute.Title, imgSelectedToolTip)
+                    wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <img> 
+                    wr.RenderEndTag() ' </img>
+                End If
+                wr.RenderEndTag() ' </td>
 
-				'Section end, close the div.
-				wr.RenderEndTag() ' </div>
-			Catch ex As Exception
-				'Do nothing, main control will handle errors
-			End Try
+                wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
+                wr.RenderBeginTag(HtmlTextWriterTag.Td) '<td> 
+                If EnableAjax Then
+                    cmdEmailSubscribers.RenderControl(wr)
+                Else
+                    url = Utilities.Links.ACPControlLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID, AdminAjaxControl.EmailSubscribers)
+                    RenderLinkButton(wr, url, Localization.GetString("cmdEmailSubscribers", Me.LocalResourceFile), "Forum_Link")
+                End If
+
+                wr.RenderEndTag() ' </td>
+                wr.RenderEndTag() ' </tr>
+
+                'Close Section
+                wr.RenderEndTag() ' </table>
+                wr.RenderEndTag() ' </div>
+
+                'Section end, close the div.
+                wr.RenderEndTag() ' </div>
+            Catch ex As Exception
+                'Do nothing, main control will handle errors
+            End Try
 		End Sub
 
 		''' <summary>
@@ -1288,61 +1317,72 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			End With
 			Controls.Add(cmdPopStatus)
 
-			Me.cmdEmailSettings = New LinkButton
-			With cmdEmailSettings
-				.CssClass = "Forum_Link"
-				.ID = "cmdEmailSettings"
-				.Text = Localization.GetString("cmdEmailSettings", Me.LocalResourceFile)
-				.CommandArgument = (CInt(AdminAjaxControl.EmailSettings)).ToString()
-				.CausesValidation = False
-				AddHandler cmdEmailSettings.Click, AddressOf PageButton_Click
-			End With
-			Controls.Add(cmdEmailSettings)
+            Me.cmdAdvertisement = New LinkButton
+            With cmdAdvertisement
+                .CssClass = "Forum_Link"
+                .ID = "cmdAdvertisement"
+                .Text = Localization.GetString("cmdAdvertisement", Me.LocalResourceFile)
+                .CommandArgument = (CInt(AdminAjaxControl.Advertisement)).ToString()
+                .CausesValidation = False
+                AddHandler cmdAdvertisement.Click, AddressOf PageButton_Click
+            End With
+            Controls.Add(cmdAdvertisement)
 
-			'Me.cmdEmailTemplate = New LinkButton
-			'With cmdEmailTemplate
-			'	.CssClass = "Forum_Link"
-			'	.ID = "cmdEmailTemplate"
-			'	.Text = Localization.GetString("cmdEmailTemplate", Me.LocalResourceFile)
-			'	.CommandArgument = (CInt(AdminAjaxControl.EmailTemplate)).ToString()
-			'   .CausesValidation = False
-			'	AddHandler cmdEmailTemplate.Click, AddressOf PageButton_Click
-			'End With
-			'Controls.Add(cmdEmailTemplate)
+            Me.cmdEmailSettings = New LinkButton
+            With cmdEmailSettings
+                .CssClass = "Forum_Link"
+                .ID = "cmdEmailSettings"
+                .Text = Localization.GetString("cmdEmailSettings", Me.LocalResourceFile)
+                .CommandArgument = (CInt(AdminAjaxControl.EmailSettings)).ToString()
+                .CausesValidation = False
+                AddHandler cmdEmailSettings.Click, AddressOf PageButton_Click
+            End With
+            Controls.Add(cmdEmailSettings)
 
-			Me.cmdEmailQueue = New LinkButton
-			With cmdEmailQueue
-				.CssClass = "Forum_Link"
-				.ID = "cmdEmailQueue"
-				.Text = Localization.GetString("cmdEmailQueue", Me.LocalResourceFile)
-				.CommandArgument = (CInt(AdminAjaxControl.EmailQueue)).ToString()
-				.CausesValidation = False
-				AddHandler cmdEmailQueue.Click, AddressOf PageButton_Click
-			End With
-			Controls.Add(cmdEmailQueue)
+            'Me.cmdEmailTemplate = New LinkButton
+            'With cmdEmailTemplate
+            '	.CssClass = "Forum_Link"
+            '	.ID = "cmdEmailTemplate"
+            '	.Text = Localization.GetString("cmdEmailTemplate", Me.LocalResourceFile)
+            '	.CommandArgument = (CInt(AdminAjaxControl.EmailTemplate)).ToString()
+            '   .CausesValidation = False
+            '	AddHandler cmdEmailTemplate.Click, AddressOf PageButton_Click
+            'End With
+            'Controls.Add(cmdEmailTemplate)
 
-			Me.cmdEmailQueueTaskDetail = New LinkButton
-			With cmdEmailQueueTaskDetail
-				.CssClass = "Forum_Link"
-				.ID = "cmdEmailQueueTaskDetail"
-				.Text = Localization.GetString("cmdEmailQueueTaskDetail", Me.LocalResourceFile)
-				.CommandArgument = (CInt(AdminAjaxControl.EmailQueueTaskDetail)).ToString()
-				.CausesValidation = False
-				AddHandler cmdEmailQueueTaskDetail.Click, AddressOf PageButton_Click
-			End With
-			Controls.Add(cmdEmailQueueTaskDetail)
+            Me.cmdEmailQueue = New LinkButton
+            With cmdEmailQueue
+                .CssClass = "Forum_Link"
+                .ID = "cmdEmailQueue"
+                .Text = Localization.GetString("cmdEmailQueue", Me.LocalResourceFile)
+                .CommandArgument = (CInt(AdminAjaxControl.EmailQueue)).ToString()
+                .CausesValidation = False
+                AddHandler cmdEmailQueue.Click, AddressOf PageButton_Click
+            End With
+            Controls.Add(cmdEmailQueue)
 
-			Me.cmdEmailSubscribers = New LinkButton
-			With cmdEmailSubscribers
-				.CssClass = "Forum_Link"
-				.ID = "cmdEmailSubscribers"
-				.Text = Localization.GetString("cmdEmailSubscribers", Me.LocalResourceFile)
-				.CommandArgument = (CInt(AdminAjaxControl.EmailSubscribers)).ToString()
-				.CausesValidation = False
-				AddHandler cmdEmailSubscribers.Click, AddressOf PageButton_Click
-			End With
-			Controls.Add(cmdEmailSubscribers)
-		End Sub
+            Me.cmdEmailQueueTaskDetail = New LinkButton
+            With cmdEmailQueueTaskDetail
+                .CssClass = "Forum_Link"
+                .ID = "cmdEmailQueueTaskDetail"
+                .Text = Localization.GetString("cmdEmailQueueTaskDetail", Me.LocalResourceFile)
+                .CommandArgument = (CInt(AdminAjaxControl.EmailQueueTaskDetail)).ToString()
+                .CausesValidation = False
+                AddHandler cmdEmailQueueTaskDetail.Click, AddressOf PageButton_Click
+            End With
+            Controls.Add(cmdEmailQueueTaskDetail)
+
+            Me.cmdEmailSubscribers = New LinkButton
+            With cmdEmailSubscribers
+                .CssClass = "Forum_Link"
+                .ID = "cmdEmailSubscribers"
+                .Text = Localization.GetString("cmdEmailSubscribers", Me.LocalResourceFile)
+                .CommandArgument = (CInt(AdminAjaxControl.EmailSubscribers)).ToString()
+                .CausesValidation = False
+                AddHandler cmdEmailSubscribers.Click, AddressOf PageButton_Click
+            End With
+            Controls.Add(cmdEmailSubscribers)
+        End Sub
 
 #End Region
 

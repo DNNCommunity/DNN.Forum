@@ -732,7 +732,8 @@ Namespace DotNetNuke.Modules.Forum
 		EmailTemplate = 19
 		EmailQueue = 20
 		EmailQueueTaskDetail = 21
-		EmailSubscribers = 22
+        EmailSubscribers = 22
+        Advertisement = 23
 	End Enum
 
 	''' <summary>

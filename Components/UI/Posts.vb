@@ -1595,7 +1595,13 @@ Namespace DotNetNuke.Modules.Forum
 					RenderSpacerRow(wr)
 					currentCount += 1
 				End If
-				intPostCount += 1
+                intPostCount += 1
+
+                ' inject Advertisment into forum post list
+                If (objConfig.AdsAfterFirstPost AndAlso intPostCount = 2) OrElse ((objConfig.AddAdverAfterPostNo <> 0) AndAlso ((intPostCount - 1) Mod objConfig.AddAdverAfterPostNo = 0)) Then
+                    Me.RenderAdvertisementPost(wr)
+                    RenderSpacerRow(wr)
+                End If
 			Next
 			RenderTableEnd(wr) ' </table>
 			RenderCellEnd(wr) ' </td> 
@@ -3187,8 +3193,21 @@ Namespace DotNetNuke.Modules.Forum
 			RenderRowEnd(wr) ' </tr>  
 		End Sub
 
+        ''' <summary>
+        ''' Renders structure of ADVERTISEMENT post
+        ''' </summary>
+        ''' <history>
+        ''' 	[b.waluszko]	21/10/2010	Created
+        ''' </history>
+        Private Sub RenderAdvertisementPost(ByVal wr As HtmlTextWriter)
+            RenderRowBegin(wr) ' <tr>
+            wr.Write("<td class=""AdvertisementPost"" colspan=""2"">")
+            wr.Write(objConfig.AdvertisementText)
+            wr.Write("</td>")
+            RenderRowEnd(wr) ' </tr>
+        End Sub
 #End Region
 
-	End Class
+    End Class
 
 End Namespace

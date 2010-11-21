@@ -150,7 +150,11 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _SitemapPriority As Double = 0.5
 		' primary http alias (not implemented in UI)
 		Dim _PrimarySiteAlias As String
-		Dim _EnableUserReadManagement As Boolean = True
+        Dim _EnableUserReadManagement As Boolean = True
+        ' Advertisement Post
+        Dim _AdsAfterFirstPost As Boolean = False
+        Dim _AddAdverAfterPostNo As Integer = 0
+        Dim _AdvertisementText As String = String.Empty
 
 #End Region
 
@@ -584,18 +588,51 @@ Namespace DotNetNuke.Modules.Forum
 			Get
 				Return _EnableUserReadManagement
 			End Get
-		End Property
+        End Property
+
+        ''' <summary>
+        ''' Determines if advertisement can be added after first post
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns>True, if advertisement can be added after first post. False otherwise.</returns>
+        ''' <remarks></remarks>
+        Public ReadOnly Property AdsAfterFirstPost() As Boolean
+            Get
+                Return _AdsAfterFirstPost
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Defines after witch number of post advertisement will be added 
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns>Post numer after with advertisement will be added</returns>
+        Public ReadOnly Property AddAdverAfterPostNo() As Integer
+            Get
+                Return _AddAdverAfterPostNo
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Advertisement content, HTML tags allowed
+        ''' </summary>
+        ''' <returns>Text of the advertisement</returns>
+        Public ReadOnly Property AdvertisementText() As String
+            Get
+                Return _AdvertisementText
+            End Get
+        End Property
 
 #End Region
 
 #Region "Moderator Settings"
 
-		''' <summary>
-		''' Gets integer value which represents how to handle poster location displaying. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>An integer representing how to display poster location.</returns>
-		''' <remarks>Uses 3 list localized values, which correspond w/ an enum.</remarks>
+                ''' <summary>
+                ''' Gets integer value which represents how to handle poster location displaying. 
+                ''' </summary>
+                ''' <value></value>
+                ''' <returns>An integer representing how to display poster location.</returns>
+                ''' <remarks>Uses 3 list localized values, which correspond w/ an enum.</remarks>
 		Public ReadOnly Property DisplayPosterLocation() As Integer
 			Get
 				Return _DisplayPosterLocation
@@ -2311,8 +2348,25 @@ Namespace DotNetNuke.Modules.Forum
 				If Not settings(Constants.PRIMARY_SITE_ALIAS).ToString = String.Empty Then
 					_PrimarySiteAlias = GetValue(settings(Constants.PRIMARY_SITE_ALIAS), CStr(_PrimarySiteAlias))
 				End If
-			End If
-		End Sub
+            End If
+
+            'Advertisement
+            If Not settings(Constants.ADS_AFTER_FIRST_POST) Is Nothing Then
+                If Not settings(Constants.ADS_AFTER_FIRST_POST).ToString = String.Empty Then
+                    _AdsAfterFirstPost = CBool(GetValue(settings(Constants.ADS_AFTER_FIRST_POST), CStr(_AdsAfterFirstPost)))
+                End If
+            End If
+            If Not settings(Constants.ADD_ADVER_AFTER_POST_NO) Is Nothing Then
+                If Not settings(Constants.ADD_ADVER_AFTER_POST_NO).ToString = String.Empty Then
+                    _AddAdverAfterPostNo = CInt(GetValue(settings(Constants.ADD_ADVER_AFTER_POST_NO), CStr(_AddAdverAfterPostNo)))
+                End If
+            End If
+            If Not settings(Constants.ADVERTISEMENT_TEXT) Is Nothing Then
+                If Not settings(Constants.ADVERTISEMENT_TEXT).ToString = String.Empty Then
+                    _AdvertisementText = CStr(GetValue(settings(Constants.ADVERTISEMENT_TEXT), _AdvertisementText))
+                End If
+            End If
+        End Sub
 
 #End Region
 
