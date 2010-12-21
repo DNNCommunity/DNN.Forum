@@ -364,8 +364,13 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-		Public MustOverride Function GetModulesPortalID(ByVal ModuleID As Integer) As Integer
+#Region "Advertisements Vendors"
+        Public MustOverride Function VendorsGet(ByVal ModuleID As Integer) As IDataReader
+        Public MustOverride Sub VendorUpdate(ByVal VendorID As Integer, ByVal IsEnabled As Boolean, ByVal ModuleID As Integer)
+#End Region
 
-	End Class
+        Public MustOverride Function GetModulesPortalID(ByVal ModuleID As Integer) As Integer
+
+    End Class
 
 End Namespace

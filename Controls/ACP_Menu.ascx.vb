@@ -380,9 +380,11 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					Case Constants.ctlRating
 						ExpandSection = ExpandMenuSection.Content
 					Case Constants.ctlPopStatus
-						ExpandSection = ExpandMenuSection.Content
-					Case Constants.ctlEmailSettings
-						ExpandSection = ExpandMenuSection.Email
+                        ExpandSection = ExpandMenuSection.Content
+                    Case Constants.ctlAdvertisement
+                        ExpandSection = ExpandMenuSection.Content
+                    Case Constants.ctlEmailSettings
+                        ExpandSection = ExpandMenuSection.Email
 					Case Constants.ctlEmailTemplate
 						ExpandSection = ExpandMenuSection.Email
 					Case Constants.ctlEmailQueue

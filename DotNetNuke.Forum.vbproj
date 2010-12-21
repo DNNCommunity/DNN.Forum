@@ -158,6 +158,7 @@
     <Compile Include="Components\Configuration\ForumPreConfig.vb" />
     <Compile Include="Components\Content\PostConnector.vb" />
     <Compile Include="Components\Content\Terms.vb" />
+    <Compile Include="Components\Controllers\AdvertController.vb" />
     <Compile Include="Components\Controllers\AnswerController.vb" />
     <Compile Include="Components\Controllers\AttachmentController.vb" />
     <Compile Include="Components\Controllers\EmailTemplateController.vb" />
@@ -187,6 +188,7 @@
     <Compile Include="Components\Email\Queue\EmailQueueTask.vb" />
     <Compile Include="Components\Email\Queue\IEmailQueueable.vb" />
     <Compile Include="Components\Email\Queue\IEmailQueueableCleanupTask.vb" />
+    <Compile Include="Components\Entities\AdvertInfo.vb" />
     <Compile Include="Components\Entities\AnswerInfo.vb" />
     <Compile Include="Components\Entities\AttachmentInfo.vb" />
     <Compile Include="Components\Entities\EmailTemplateInfo.vb" />

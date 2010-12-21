@@ -114,6 +114,24 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents lblHelp As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
+        '''plVendorsList control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plVendorsList As Global.DotNetNuke.UI.UserControls.LabelControl
+
+        '''<summary>
+        '''rgVendors control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rgVendors As Global.Telerik.Web.UI.RadGrid
+
+        '''<summary>
         '''cmdUpdate control.
         '''</summary>
         '''<remarks>

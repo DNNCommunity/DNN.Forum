@@ -150,4 +150,13 @@
   <data name="lblHelp.Text" xml:space="preserve">
     <value>Use css class &lt;i&gt;AdvertisementPost&lt;/i&gt; in &lt;i&gt;Themes/Blue/Blue.css&lt;/i&gt; to precisly set Advertisement layout</value>
   </data>
+  <data name="plVendorsList.Help" xml:space="preserve">
+    <value>Select vendors to add their banners in advertisement content</value>
+  </data>
+  <data name="plVendorsList.Text" xml:space="preserve">
+    <value>Vendors list</value>
+  </data>
+  <data name="lblNoAdvertisements.Text" xml:space="preserve">
+    <value>No advertisements</value>
+  </data>
 </root>

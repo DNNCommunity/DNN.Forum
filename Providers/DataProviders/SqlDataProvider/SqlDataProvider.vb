@@ -885,9 +885,19 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-		Public Overrides Function GetModulesPortalID(ByVal ModuleID As Integer) As Integer
-			Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "Module_GetPortalID", ModuleID), Integer)
-		End Function
+#Region "Advertisements - Vendors"
+        Public Overrides Function VendorsGet(ByVal ModuleID As Integer) As System.Data.IDataReader
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Ad_Vendors_Get", ModuleID), IDataReader)
+        End Function
+        Public Overrides Sub VendorUpdate(ByVal VendorID As Integer, ByVal IsEnabled As Boolean, ByVal ModuleID As Integer)
+            SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "Ad_Vendors_Update", VendorID, IsEnabled, ModuleID)
+        End Sub
+#End Region
+
+
+        Public Overrides Function GetModulesPortalID(ByVal ModuleID As Integer) As Integer
+            Return CType(SqlHelper.ExecuteScalar(ConnectionString, _fullModuleQualifier & "Module_GetPortalID", ModuleID), Integer)
+        End Function
 
 #End Region
 

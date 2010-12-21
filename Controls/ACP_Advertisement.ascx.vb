@@ -21,6 +21,10 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Services.Vendors
+Imports Telerik.Web.UI
+Imports DotNetNuke.Services.FileSystem
+
 Namespace DotNetNuke.Modules.Forum.ACP
 
 
@@ -47,6 +51,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
             tbAddAdverAfterPostNo.Text = objConfig.AddAdverAfterPostNo.ToString()
             tbAdvertisementText.Text = objConfig.AdvertisementText
 
+            rgVendors.ClientSettings.Selecting.AllowRowSelect = True
+
+            VendorsGridBind()
         End Sub
 
         ''' <summary>
@@ -65,11 +72,77 @@ Namespace DotNetNuke.Modules.Forum.ACP
                 Configuration.ResetForumConfig(ModuleId)
 
                 lblUpdateDone.Visible = True
+
+                VendorsGridUpdate()
+
             Catch exc As Exception
                 ProcessModuleLoadException(Me, exc)
             End Try
         End Sub
 
-    End Class
 
+        Protected Sub rgVendors_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles rgVendors.PreRender
+            'select RadGrid rows that have enabled vendors
+            Dim advertController As New AdvertController
+            Dim vendors As List(Of AdvertInfo) = advertController.VendorsGet(ModuleId)
+            If (vendors IsNot Nothing) AndAlso rgVendors.Items.Count > 0 Then
+                For Each item As GridDataItem In rgVendors.Items
+                    Dim i As Integer = CInt(item("VendorID").Text())
+                    item.Selected = vendors.Where(Function(v) v.VendorId = i).FirstOrDefault().IsEnabled
+                Next
+            End If
+            
+
+        End Sub
+
+        ''' <summary>
+        ''' Save to DB enabled/disabled vendors
+        ''' </summary>
+        Private Sub VendorsGridUpdate()
+            Dim advertController As New AdvertController
+            For Each item As GridDataItem In rgVendors.Items
+                advertController.VendorUpdate(CInt(item("VendorID").Text), item.Selected, ModuleId)
+            Next
+        End Sub
+
+        ''' <summary>
+        ''' Bind data to the Vendors list grid
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Sub VendorsGridBind()
+            Dim advertController As New AdvertController
+            Dim bannersController As New BannerController
+            Dim adverts As New List(Of AdvertInfo)
+            Try
+                adverts = advertController.VendorsGet(Me.ModuleId)
+                For Each item As AdvertInfo In adverts
+                    'vendor logo
+                    If String.IsNullOrEmpty(item.LogoFile) = False Then
+                        item.LogoFile = DotNetNuke.Common.Globals.LinkClick(item.LogoFile, Me.TabId, Me.ModuleId)
+                    End If
+
+                    'banners
+                    Dim bannersList As ArrayList = bannersController.GetBanners(item.VendorId)
+                    If (bannersList IsNot Nothing) AndAlso bannersList.Count > 0 Then
+                        item.BannerUrl = ""
+                        For Each banner As BannerInfo In bannersList
+                            item.BannerUrl += "<img src=""" & DotNetNuke.Common.Globals.LinkClick(banner.ImageFile, Me.TabId, Me.ModuleId) & """ />&nbsp;"
+                        Next
+                    End If
+
+                    If String.IsNullOrEmpty(item.BannerUrl) Then
+                        item.BannerUrl = "No banners"
+                    End If
+
+
+                Next
+                rgVendors.DataSource = adverts
+                rgVendors.DataBind()
+            Catch ex As Exception
+                Exceptions.ProcessModuleLoadException(Me, ex)
+            End Try
+
+        End Sub
+
+    End Class
 End Namespace
