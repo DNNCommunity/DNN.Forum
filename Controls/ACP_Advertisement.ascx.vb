@@ -23,126 +23,136 @@ Option Explicit On
 
 Imports DotNetNuke.Services.Vendors
 Imports Telerik.Web.UI
-Imports DotNetNuke.Services.FileSystem
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
+	''' <summary>
+	''' The control which allows forum administrators to add advertisements between posts.
+	''' Here you can add advertisement text and how densely it will be injected
+	''' </summary>
+	''' <remarks>
+	''' </remarks>
+	''' <history>
+	''' 	[b.waluszko]	21/10/2010	Created
+	''' </history>
+	Partial Public Class Advertisement
+		Inherits ForumModuleBase
+		Implements Utilities.AjaxLoader.IPageLoad
 
-    ''' <summary>
-    ''' The control which allows forum administrators to add advertisements between posts 
-    ''' Here you can add advertisement text and how densely it will be injected
-    ''' </summary>
-    ''' <remarks>
-    ''' </remarks>
-    ''' <history>
-    ''' 	[b.waluszko]	21/10/2010	Created
-    ''' </history>
-    Partial Public Class Advertisement
-        Inherits ForumModuleBase
-        Implements Utilities.AjaxLoader.IPageLoad
+#Region "Interfaces"
 
+		''' <summary>
+		''' This is required to replace If Page.IsPostBack = False because controls are dynamically loaded via Ajax. 
+		''' </summary>
+		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
+			cbAdsAfterFirstPost.Checked = objConfig.AdsAfterFirstPost
+			tbAddAdverAfterPostNo.Text = objConfig.AddAdverAfterPostNo.ToString()
+			tbAdvertisementText.Text = objConfig.AdvertisementText
 
+			rgVendors.ClientSettings.Selecting.AllowRowSelect = True
 
-        ''' <summary>
-        ''' This is required to replace If Page.IsPostBack = False because controls are dynamically loaded via Ajax. 
-        ''' </summary>
-        Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
-            cbAdsAfterFirstPost.Checked = objConfig.AdsAfterFirstPost
-            tbAddAdverAfterPostNo.Text = objConfig.AddAdverAfterPostNo.ToString()
-            tbAdvertisementText.Text = objConfig.AdvertisementText
+			VendorsGridBind()
+		End Sub
 
-            rgVendors.ClientSettings.Selecting.AllowRowSelect = True
+#End Region
 
-            VendorsGridBind()
-        End Sub
+#Region "Event Handlers"
 
-        ''' <summary>
-        ''' Updates the module's configuration (module settings)
-        ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks>Saves the module settings shown in this view.</remarks>
-        Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
-            Try
-                ' Update settings in the database
-                Dim ctlModule As New Entities.Modules.ModuleController
-                ctlModule.UpdateModuleSetting(ModuleId, Constants.ADS_AFTER_FIRST_POST, cbAdsAfterFirstPost.Checked.ToString())
-                ctlModule.UpdateModuleSetting(ModuleId, Constants.ADD_ADVER_AFTER_POST_NO, tbAddAdverAfterPostNo.Text)
-                ctlModule.UpdateModuleSetting(ModuleId, Constants.ADVERTISEMENT_TEXT, tbAdvertisementText.Text.Trim())
-                Configuration.ResetForumConfig(ModuleId)
+		''' <summary>
+		''' Updates the module's configuration (module settings)
+		''' </summary>
+		''' <param name="sender"></param>
+		''' <param name="e"></param>
+		''' <remarks>Saves the module settings shown in this view.</remarks>
+		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
+			Try
+				' Update settings in the database
+				Dim ctlModule As New Entities.Modules.ModuleController
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ADS_AFTER_FIRST_POST, cbAdsAfterFirstPost.Checked.ToString())
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ADD_ADVER_AFTER_POST_NO, tbAddAdverAfterPostNo.Text)
+				ctlModule.UpdateModuleSetting(ModuleId, Constants.ADVERTISEMENT_TEXT, tbAdvertisementText.Text.Trim())
+				Configuration.ResetForumConfig(ModuleId)
 
-                lblUpdateDone.Visible = True
+				lblUpdateDone.Visible = True
 
-                VendorsGridUpdate()
+				VendorsGridUpdate()
+			Catch exc As Exception
+				ProcessModuleLoadException(Me, exc)
+			End Try
+		End Sub
 
-            Catch exc As Exception
-                ProcessModuleLoadException(Me, exc)
-            End Try
-        End Sub
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="sender"></param>
+		''' <param name="e"></param>
+		''' <remarks></remarks>
+		Protected Sub rgVendors_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles rgVendors.PreRender
+			'select RadGrid rows that have enabled vendors
+			Dim advertController As New AdvertController
+			Dim vendors As List(Of AdvertInfo) = advertController.VendorsGet(ModuleId)
 
+			If (vendors IsNot Nothing) AndAlso rgVendors.Items.Count > 0 Then
+				For Each item As GridDataItem In rgVendors.Items
+					Dim i As Integer = CInt(item("VendorID").Text())
+					item.Selected = vendors.Where(Function(v) v.VendorId = i).FirstOrDefault().IsEnabled
+				Next
+			End If
+		End Sub
 
-        Protected Sub rgVendors_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles rgVendors.PreRender
-            'select RadGrid rows that have enabled vendors
-            Dim advertController As New AdvertController
-            Dim vendors As List(Of AdvertInfo) = advertController.VendorsGet(ModuleId)
-            If (vendors IsNot Nothing) AndAlso rgVendors.Items.Count > 0 Then
-                For Each item As GridDataItem In rgVendors.Items
-                    Dim i As Integer = CInt(item("VendorID").Text())
-                    item.Selected = vendors.Where(Function(v) v.VendorId = i).FirstOrDefault().IsEnabled
-                Next
-            End If
-            
+#End Region
 
-        End Sub
+#Region "Private Methods"
 
-        ''' <summary>
-        ''' Save to DB enabled/disabled vendors
-        ''' </summary>
-        Private Sub VendorsGridUpdate()
-            Dim advertController As New AdvertController
-            For Each item As GridDataItem In rgVendors.Items
-                advertController.VendorUpdate(CInt(item("VendorID").Text), item.Selected, ModuleId)
-            Next
-        End Sub
+		''' <summary>
+		''' Save to DB enabled/disabled vendors
+		''' </summary>
+		Private Sub VendorsGridUpdate()
+			Dim advertController As New AdvertController
+			For Each item As GridDataItem In rgVendors.Items
+				advertController.VendorUpdate(CInt(item("VendorID").Text), item.Selected, ModuleId)
+			Next
+		End Sub
 
-        ''' <summary>
-        ''' Bind data to the Vendors list grid
-        ''' </summary>
-        ''' <remarks></remarks>
-        Private Sub VendorsGridBind()
-            Dim advertController As New AdvertController
-            Dim bannersController As New BannerController
-            Dim adverts As New List(Of AdvertInfo)
-            Try
-                adverts = advertController.VendorsGet(Me.ModuleId)
-                For Each item As AdvertInfo In adverts
-                    'vendor logo
-                    If String.IsNullOrEmpty(item.LogoFile) = False Then
-                        item.LogoFile = DotNetNuke.Common.Globals.LinkClick(item.LogoFile, Me.TabId, Me.ModuleId)
-                    End If
+		''' <summary>
+		''' Bind data to the Vendors list grid
+		''' </summary>
+		''' <remarks></remarks>
+		Private Sub VendorsGridBind()
+			Dim advertController As New AdvertController
+			Dim bannersController As New BannerController
+			Dim adverts As New List(Of AdvertInfo)
+			Try
+				adverts = advertController.VendorsGet(Me.ModuleId)
+				For Each item As AdvertInfo In adverts
+					'vendor logo
+					If String.IsNullOrEmpty(item.LogoFile) = False Then
+						item.LogoFile = DotNetNuke.Common.Globals.LinkClick(item.LogoFile, Me.TabId, Me.ModuleId)
+					End If
 
-                    'banners
-                    Dim bannersList As ArrayList = bannersController.GetBanners(item.VendorId)
-                    If (bannersList IsNot Nothing) AndAlso bannersList.Count > 0 Then
-                        item.BannerUrl = ""
-                        For Each banner As BannerInfo In bannersList
-                            item.BannerUrl += "<img src=""" & DotNetNuke.Common.Globals.LinkClick(banner.ImageFile, Me.TabId, Me.ModuleId) & """ />&nbsp;"
-                        Next
-                    End If
+					'banners
+					Dim bannersList As ArrayList = bannersController.GetBanners(item.VendorId)
+					If (bannersList IsNot Nothing) AndAlso bannersList.Count > 0 Then
+						item.BannerUrl = ""
+						For Each banner As BannerInfo In bannersList
+							item.BannerUrl += "<img src=""" & DotNetNuke.Common.Globals.LinkClick(banner.ImageFile, Me.TabId, Me.ModuleId) & """ />&nbsp;"
+						Next
+					End If
 
-                    If String.IsNullOrEmpty(item.BannerUrl) Then
-                        item.BannerUrl = "No banners"
-                    End If
+					If String.IsNullOrEmpty(item.BannerUrl) Then
+						item.BannerUrl = "No banners"
+					End If
 
+				Next
+				rgVendors.DataSource = adverts
+				rgVendors.DataBind()
+			Catch ex As Exception
+				Exceptions.ProcessModuleLoadException(Me, ex)
+			End Try
+		End Sub
 
-                Next
-                rgVendors.DataSource = adverts
-                rgVendors.DataBind()
-            Catch ex As Exception
-                Exceptions.ProcessModuleLoadException(Me, ex)
-            End Try
+#End Region
 
-        End Sub
+	End Class
 
-    End Class
 End Namespace

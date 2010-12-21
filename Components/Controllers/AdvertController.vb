@@ -22,28 +22,36 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-    ''' <summary>
-    ''' Connects the business layer to the data layer for forum advertisements
-    ''' </summary>
-    ''' <remarks></remarks>
-    ''' <history>
-    ''' Bartłomiej Waluszko 12/16/2010 Created
-    ''' </history>
-    Public Class AdvertController
+	''' <summary>
+	''' Connects the business layer to the data layer for forum advertisements
+	''' </summary>
+	''' <remarks></remarks>
+	''' <history>
+	''' Bartłomiej Waluszko 12/16/2010 Created
+	''' </history>
+	Public Class AdvertController
 
-        ''' <summary>
-        '''  Returns a collection of Vendors for a specific moduleID, and vendors not connected to moduleID
-        ''' </summary>
-        ''' <param name="ModuleID"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Function VendorsGet(ByVal ModuleID As Integer) As List(Of AdvertInfo)
-            Return CBO.FillCollection(Of AdvertInfo)(DataProvider.Instance().VendorsGet(ModuleID))
-        End Function
+		''' <summary>
+		'''  Returns a collection of Vendors for a specific moduleID, and vendors not connected to moduleID
+		''' </summary>
+		''' <param name="ModuleID"></param>
+		''' <returns></returns>
+		''' <remarks></remarks>
+		Public Function VendorsGet(ByVal ModuleID As Integer) As List(Of AdvertInfo)
+			Return CBO.FillCollection(Of AdvertInfo)(DataProvider.Instance().VendorsGet(ModuleID))
+		End Function
 
-        Public Sub VendorUpdate(ByVal VendorID As Integer, ByVal IsEnabled As Boolean, ByVal ModuleID As Integer)
-            DataProvider.Instance().VendorUpdate(VendorID, IsEnabled, ModuleID)
-        End Sub
+		''' <summary>
+		''' 
+		''' </summary>
+		''' <param name="VendorID"></param>
+		''' <param name="IsEnabled"></param>
+		''' <param name="ModuleID"></param>
+		''' <remarks></remarks>
+		Public Sub VendorUpdate(ByVal VendorID As Integer, ByVal IsEnabled As Boolean, ByVal ModuleID As Integer)
+			DataProvider.Instance().VendorUpdate(VendorID, IsEnabled, ModuleID)
+		End Sub
 
-    End Class
+	End Class
+
 End Namespace
