@@ -1,6 +1,8 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Control language="vb" CodeBehind="ACP_EmailSubscribers.ascx.vb" AutoEventWireup="false" Explicit="true" Inherits="DotNetNuke.Modules.Forum.ACP.EmailSubscribers" %>
+<%@ Register Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
 <%@ Register assembly="Telerik.Web.UI" namespace="Telerik.Web.UI" tagprefix="telerik" %>
+
 <div class="ACP-EmailSubscribers">
 	<table cellpadding="0" cellspacing="0" width="100%" border="0">
 		<tr>
@@ -10,43 +12,61 @@
 		</tr>
 		<tr>
 			<td class="Forum_UCP_HeaderInfo">
-				<div>
-					<div align="center">
-						<telerik:RadComboBox ID="rcbForums" runat="server" Width="250" DataTextField="Name" DataValueField="ForumID" AutoPostBack="true" /> <br /><br />
-					</div>
-					<telerik:RadGrid ID="rgForums" runat="server" AutoGenerateColumns="false" AllowSorting="true" AllowPaging="true" PageSize="20" >
-						<MasterTableView DataKeyNames="ForumID">
+             <asp:Label ID="lblInfo" runat="server" CssClass="Forum_Normal" resourcekey="lblInfo" EnableViewState="false" />
+				<div><br />
+                    <asp:HiddenField runat="server" ID="hdnRcbForumsValue" />
+                    <telerik:RadGrid ID="rgForums" runat="server" AllowSorting="false" AllowPaging="false" PageSize="3" ItemStyle-Height="30">
+                        <ClientSettings AllowColumnsReorder="false" EnableRowHoverStyle="true">
+							    <Resizing AllowColumnResize="true" />
+						</ClientSettings>
+                        <MasterTableView DataKeyNames="ForumID" CommandItemDisplay="Top" CommandItemStyle-Height="30">
+                            <CommandItemTemplate>
+                                &nbsp;&nbsp;<asp:Label runat="server" ID="lblForumDescription" EnableViewState="false" resourcekey="lblForumDescription" />
+                                <telerik:RadComboBox ID="rcbForums" runat="server" Width="250" AutoPostBack="true" onselectedindexchanged="rcbForums_SelectedIndexChange" />
+                                <asp:Label runat="server" ID="lblForumTitle" EnableViewState="false" />
+                            </CommandItemTemplate>
 							<NoRecordsTemplate>
 								<asp:Label ID="lblNoRecords" runat="server" resourcekey="lblNoRecords" CssClass="NormalBold" />
 							</NoRecordsTemplate>
 							<Columns>
-								<telerik:GridBoundColumn UniqueName="Email" HeaderText="Email" DataField="Email" />
-								<telerik:GridBoundColumn UniqueName="Username" HeaderText="Username" DataField="Username" />	
-								<telerik:GridBoundColumn UniqueName="DisplayName" HeaderText="DisplayName" DataField="DisplayName" />
-								<telerik:GridBoundColumn UniqueName="Name" HeaderText="Name" DataField="Name" HeaderStyle-Width="100px" ItemStyle-Width="100px" />
-								<telerik:GridBoundColumn UniqueName="CreatedDate" HeaderText="CreatedDate" DataField="CreatedDate" HeaderStyle-Width="100px" ItemStyle-Width="100px" />
+								<telerik:GridBoundColumn UniqueName="Username" DataField="Username" />	
+								<telerik:GridBoundColumn UniqueName="DisplayName" DataField="DisplayName" />
+                                <telerik:GridBoundColumn UniqueName="Email" DataField="Email" />
+								<telerik:GridBoundColumn UniqueName="CreatedDate" DataField="CreatedDate" />
 							</Columns>
 						</MasterTableView>
-					</telerik:RadGrid>
-					<telerik:RadGrid ID="rgThreads" runat="server" AutoGenerateColumns="false" AllowSorting="true" AllowPaging="true" PageSize="20" >
+					</telerik:RadGrid><br /><br />
+                    
+                    <asp:HiddenField runat="server" ID="hdnRcbThreadsValue" />
+					<telerik:RadGrid ID="rgThreads" runat="server" AutoGenerateColumns="false" AllowSorting="false" AllowPaging="false" PageSize="3" ItemStyle-Height="30">
 						<ClientSettings AllowColumnsReorder="false" EnableRowHoverStyle="true">
 							<Resizing AllowColumnResize="true" />
 						</ClientSettings>
-						<MasterTableView DataKeyNames="ThreadID">
+						<MasterTableView DataKeyNames="ThreadID" CommandItemDisplay="Top" CommandItemStyle-Height="30">
+                            <CommandItemTemplate>
+                                &nbsp;&nbsp;<asp:Label runat="server" ID="lblThreadDescription" EnableViewState="false" resourcekey="lblThreadDescription" />
+                                <telerik:RadComboBox runat="server" ID="rcbThreads" Width="250" AutoPostBack="true" onselectedindexchanged="rcbThreads_SelectedIndexChange" />
+                                <asp:Label runat="server" ID="lblThreadTitle" EnableViewState="false" />
+                            </CommandItemTemplate>
 							<NoRecordsTemplate>
 								<asp:Label ID="lblNoRecords" runat="server" resourcekey="lblNoRecords" CssClass="NormalBold" />
 							</NoRecordsTemplate>
 							<Columns>
-								<telerik:GridBoundColumn UniqueName="Email" HeaderText="Email" DataField="Email" />
-								<telerik:GridBoundColumn UniqueName="Username" HeaderText="Username" DataField="Username" />	
-								<telerik:GridBoundColumn UniqueName="DisplayName" HeaderText="DisplayName" DataField="DisplayName" />
-								<telerik:GridBoundColumn UniqueName="Subject" HeaderText="Subject" DataField="Subject" HeaderStyle-Width="100px" ItemStyle-Width="100px" />
-								<telerik:GridBoundColumn UniqueName="CreatedDate" HeaderText="CreatedDate" DataField="CreatedDate" HeaderStyle-Width="100px" ItemStyle-Width="100px" />
+                                <telerik:GridBoundColumn UniqueName="Email" DataField="Email" />
+								<telerik:GridBoundColumn UniqueName="Username" DataField="Username" />	
+								<telerik:GridBoundColumn UniqueName="DisplayName" DataField="DisplayName" />
+								<telerik:GridBoundColumn UniqueName="Subject" DataField="Subject"  />
+								<telerik:GridBoundColumn UniqueName="CreatedDate" DataField="CreatedDate" />
 							</Columns>
 						</MasterTableView>
 					</telerik:RadGrid>
+                   
 				</div>
+                <asp:LinkButton runat="server" ID="lnkShowAll" resourcekey="lnkShowAll" Visible="false" CssClass="CommandButton" />
 			</td>
 		</tr>
+        <tr align="center">
+            <td></td>
+        </tr>
 	</table>
 </div>

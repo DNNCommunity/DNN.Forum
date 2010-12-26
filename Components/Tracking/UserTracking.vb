@@ -65,7 +65,8 @@ Namespace DotNetNuke.Modules.Forum
 		Dim _Subject As String
 		Dim _UserID As Integer
 		Dim _Email As String
-		Dim _Username As String
+        Dim _Username As String
+        Dim _DisplayName As String
 		Dim _CreatedDate As Date
 
 #End Region
@@ -175,7 +176,19 @@ Namespace DotNetNuke.Modules.Forum
 			Set(ByVal value As String)
 				_Username = value
 			End Set
-		End Property
+        End Property
+
+        ''' <summary>
+        ''' The display name of the email subscriber.
+        ''' </summary>
+        Public Property DisplayName() As String
+            Get
+                Return _DisplayName
+            End Get
+            Set(ByVal value As String)
+                _DisplayName = value
+            End Set
+        End Property
 
 		''' <summary>
 		''' CreatedDate of the tracked item (forum/thread).

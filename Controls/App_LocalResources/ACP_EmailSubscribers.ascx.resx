@@ -141,4 +141,16 @@
   <data name="DisplayName.Header" xml:space="preserve">
     <value>Display Name</value>
   </data>
+  <data name="lblForumDescription.Text" xml:space="preserve">
+    <value>List of users subscribe forum</value>
+  </data>
+  <data name="lblInfo.Text" xml:space="preserve">
+    <value>In first table are users subscribe forums. In second table are users subscribe threads</value>
+  </data>
+  <data name="lblThreadDescription.Text" xml:space="preserve">
+    <value>List of users subscribe thread</value>
+  </data>
+  <data name="lnkShowAll.Text" xml:space="preserve">
+    <value>Show all</value>
+  </data>
 </root>

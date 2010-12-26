@@ -782,7 +782,11 @@ Namespace DotNetNuke.Modules.Forum
 
 		Public Overrides Function TrackingThreadGet(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As IDataReader
 			Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Tracking_ThreadGet", UserID, ModuleID, PageSize, PageIndex), IDataReader)
-		End Function
+        End Function
+
+        Public Overrides Function TrackingThreadsGetByForumID(ByVal ForumID As Integer) As System.Data.IDataReader
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Tracking_ThreadsGetByForumID", ForumID), IDataReader)
+        End Function
 
 		Public Overrides Sub TrackingForumDeleteAll(ByVal UserID As Integer, ByVal ModuleID As Integer)
 			SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "Tracking_ForumDeleteAll", UserID, ModuleID)

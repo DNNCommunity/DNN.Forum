@@ -25,7 +25,7 @@ Imports DotNetNuke.Services.Vendors
 Namespace DotNetNuke.Modules.Forum
 
 	''' <summary>
-	''' All prpperties associated with the Advertisement option
+    ''' All properties associated with the Advertisement option
 	''' </summary>
 	''' <remarks></remarks>
 	''' <history> 

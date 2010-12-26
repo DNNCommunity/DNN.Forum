@@ -50,58 +50,64 @@ Namespace DotNetNuke.Modules.Forum
 			Return CBO.FillCollection(Of TrackingInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().TrackingThreadGet(UserID, ModuleID, 10000, 0))
 		End Function
 
-		''' <summary>
-		''' 
-		''' </summary>
-		''' <param name="UserID"></param>
-		''' <param name="ModuleID"></param>
-		''' <param name="PageSize"></param>
-		''' <param name="PageIndex"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Friend Function GetUsersForumsTracked(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As List(Of ForumInfo)
-			Return CBO.FillCollection(Of ForumInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().GetUsersForumsTracked(UserID, ModuleID, PageSize, PageIndex))
-		End Function
+        ''' <summary>
+        ''' Loads up the tracked threads from specified forum
+        ''' </summary>
+        Function TrackingThreadsGetByForumID(ByVal ForumID As Integer) As List(Of TrackingInfo)
+            Return CBO.FillCollection(Of TrackingInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().TrackingThreadsGetByForumID(ForumID))
+        End Function
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="UserID"></param>
+        ''' <param name="ModuleID"></param>
+        ''' <param name="PageSize"></param>
+        ''' <param name="PageIndex"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Friend Function GetUsersForumsTracked(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As List(Of ForumInfo)
+            Return CBO.FillCollection(Of ForumInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().GetUsersForumsTracked(UserID, ModuleID, PageSize, PageIndex))
+        End Function
 
-		''' <summary>
-		''' Returns dataset needed for UCP Tracking
-		''' </summary>
-		''' <param name="ModuleID"></param>
-		''' <param name="PageIndex"></param>
-		''' <param name="PageSize"></param>
-		''' <param name="UserID"></param>
-		''' <returns></returns>
-		''' <remarks>Added by Skeel</remarks>
-		Friend Function TrackingThreadGetAll(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As List(Of TrackingInfo)
-			Return CBO.FillCollection(Of TrackingInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().TrackingThreadGet(UserID, ModuleID, PageSize, PageIndex))
-		End Function
+        ''' <summary>
+        ''' Returns dataset needed for UCP Tracking
+        ''' </summary>
+        ''' <param name="ModuleID"></param>
+        ''' <param name="PageIndex"></param>
+        ''' <param name="PageSize"></param>
+        ''' <param name="UserID"></param>
+        ''' <returns></returns>
+        ''' <remarks>Added by Skeel</remarks>
+        Friend Function TrackingThreadGetAll(ByVal UserID As Integer, ByVal ModuleID As Integer, ByVal PageSize As Integer, ByVal PageIndex As Integer) As List(Of TrackingInfo)
+            Return CBO.FillCollection(Of TrackingInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().TrackingThreadGet(UserID, ModuleID, PageSize, PageIndex))
+        End Function
 
-		''' <summary>
-		''' Removes/Adds forum notification subscription for a user.
-		''' </summary>
-		''' <param name="ForumID"></param>
-		''' <param name="UserID"></param>
-		''' <param name="Add"></param>
-		''' <param name="ModuleID"></param>
-		''' <remarks></remarks>
-		Friend Sub TrackingForumCreateDelete(ByVal ForumID As Integer, ByVal UserID As Integer, ByVal Add As Boolean, ByVal ModuleID As Integer)
-			DotNetNuke.Modules.Forum.DataProvider.Instance().TrackingForumCreateDelete(ForumID, UserID, Add, ModuleID)
-		End Sub
+        ''' <summary>
+        ''' Removes/Adds forum notification subscription for a user.
+        ''' </summary>
+        ''' <param name="ForumID"></param>
+        ''' <param name="UserID"></param>
+        ''' <param name="Add"></param>
+        ''' <param name="ModuleID"></param>
+        ''' <remarks></remarks>
+        Friend Sub TrackingForumCreateDelete(ByVal ForumID As Integer, ByVal UserID As Integer, ByVal Add As Boolean, ByVal ModuleID As Integer)
+            DotNetNuke.Modules.Forum.DataProvider.Instance().TrackingForumCreateDelete(ForumID, UserID, Add, ModuleID)
+        End Sub
 
-		''' <summary>
-		''' This will always delete post notifications. If adding, thread tracking will be added and post notify deleted. If deleting, everything associated with the thread and the user will be deleted.
-		''' </summary>
-		''' <param name="ForumID"></param>
-		''' <param name="ThreadID"></param>
-		''' <param name="UserID"></param>
-		''' <param name="Add"></param>
-		''' <param name="ModuleID"></param>
-		''' <remarks></remarks>
-		Friend Sub TrackingThreadCreateDelete(ByVal ForumID As Integer, ByVal ThreadID As Integer, ByVal UserID As Integer, ByVal Add As Boolean, ByVal ModuleID As Integer)
-			DotNetNuke.Modules.Forum.DataProvider.Instance().TrackingThreadCreateDelete(ForumID, ThreadID, UserID, Add, ModuleID)
-		End Sub
+        ''' <summary>
+        ''' This will always delete post notifications. If adding, thread tracking will be added and post notify deleted. If deleting, everything associated with the thread and the user will be deleted.
+        ''' </summary>
+        ''' <param name="ForumID"></param>
+        ''' <param name="ThreadID"></param>
+        ''' <param name="UserID"></param>
+        ''' <param name="Add"></param>
+        ''' <param name="ModuleID"></param>
+        ''' <remarks></remarks>
+        Friend Sub TrackingThreadCreateDelete(ByVal ForumID As Integer, ByVal ThreadID As Integer, ByVal UserID As Integer, ByVal Add As Boolean, ByVal ModuleID As Integer)
+            DotNetNuke.Modules.Forum.DataProvider.Instance().TrackingThreadCreateDelete(ForumID, ThreadID, UserID, Add, ModuleID)
+        End Sub
 
-	End Class
+    End Class
 
 	''' <summary>
 	''' Tracking info object.

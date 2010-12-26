@@ -12,42 +12,69 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
-	Partial Public Class EmailSubscribers
+    Partial Public Class EmailSubscribers
 
-		'''<summary>
-		'''lblTitle control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblTitle control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''rcbForums control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rcbForums As Global.Telerik.Web.UI.RadComboBox
+        '''<summary>
+        '''lblInfo control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblInfo As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''rgForums control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rgForums As Global.Telerik.Web.UI.RadGrid
+        '''<summary>
+        '''hdnRcbForumsValue control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents hdnRcbForumsValue As Global.System.Web.UI.WebControls.HiddenField
 
-		'''<summary>
-		'''rgThreads control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rgThreads As Global.Telerik.Web.UI.RadGrid
-	End Class
+        '''<summary>
+        '''rgForums control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rgForums As Global.Telerik.Web.UI.RadGrid
+
+        '''<summary>
+        '''hdnRcbThreadsValue control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents hdnRcbThreadsValue As Global.System.Web.UI.WebControls.HiddenField
+
+        '''<summary>
+        '''rgThreads control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rgThreads As Global.Telerik.Web.UI.RadGrid
+
+        '''<summary>
+        '''lnkShowAll control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lnkShowAll As Global.System.Web.UI.WebControls.LinkButton
+    End Class
 End Namespace

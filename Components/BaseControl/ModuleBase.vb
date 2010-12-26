@@ -50,16 +50,16 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns></returns>
 		''' <remarks></remarks>
-		Public ReadOnly Property ProfileUserID() As Integer
-			Get
-				If HttpContext.Current.Request.QueryString("userid") IsNot Nothing Then
-					Dim _ProfileUserID As Integer = Int32.Parse(HttpContext.Current.Request.QueryString("userid"))
-					Return _ProfileUserID
-				Else
-					Return CurrentForumUser.UserID
-				End If
-			End Get
-		End Property
+        Public ReadOnly Property ProfileUserID() As Integer
+            Get
+                If HttpContext.Current.Request.QueryString("userid") IsNot Nothing Then
+                    Dim _ProfileUserID As Integer = Int32.Parse(HttpContext.Current.Request.QueryString("userid"))
+                    Return _ProfileUserID
+                Else
+                    Return CurrentForumUser.UserID
+                End If
+            End Get
+        End Property
 
 		''' <summary>
 		''' The current forum the user is viewing. 
@@ -67,17 +67,17 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns>An integer representing the current forum the usre is viewing. It will return -1 if there is no forumid parameter in the URL.</returns>
 		''' <remarks>The module depends heavily on this always being available in the URL. However, this is typically not used for security reasons.</remarks>
-		Public ReadOnly Property ForumID() As Integer
-			Get
-				If HttpContext.Current.Request.QueryString("forumid") IsNot Nothing Then
-					Dim _ForumID As Integer = Int32.Parse(HttpContext.Current.Request.QueryString("forumid"))
-					Return _ForumID
-				Else
-					' maybe something else is in the url
-					Return -1
-				End If
-			End Get
-		End Property
+        Public Overridable ReadOnly Property ForumID() As Integer
+            Get
+                Dim _forumID As Integer = -1
+                If (HttpContext.Current.Request.QueryString("forumid") IsNot Nothing) AndAlso Integer.TryParse(HttpContext.Current.Request.QueryString("forumid"), _forumID) Then
+                    Return _ForumID
+                Else
+                    ' maybe something else is in the url
+                    Return -1
+                End If
+            End Get
+        End Property
 
 		''' <summary>
 		''' This is the forum's configuration so it can be used by loaded controls.
