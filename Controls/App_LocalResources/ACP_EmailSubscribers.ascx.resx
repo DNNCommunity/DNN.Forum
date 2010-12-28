@@ -132,9 +132,6 @@
   <data name="Name.Header" xml:space="preserve">
     <value>Forum</value>
   </data>
-  <data name="Subject.Header" xml:space="preserve">
-    <value>Subject</value>
-  </data>
   <data name="Username.Header" xml:space="preserve">
     <value>Username</value>
   </data>
@@ -151,6 +148,6 @@
     <value>Thread Subscribers:</value>
   </data>
   <data name="lnkShowAll.Text" xml:space="preserve">
-    <value>Show all</value>
+    <value>Show All</value>
   </data>
 </root>

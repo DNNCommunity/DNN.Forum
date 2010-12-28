@@ -639,7 +639,6 @@ Namespace DotNetNuke.Modules.Forum
                 ' Thread Status Dropdownlist
                 Me.ddlThreadStatus = New DotNetNuke.Web.UI.WebControls.DnnComboBox
                 With ddlThreadStatus
-                    .Skin = "WebBlue"
                     .ID = "lstThreadStatus"
                     .Width = Unit.Parse("150")
                     .AutoPostBack = True
@@ -661,7 +660,6 @@ Namespace DotNetNuke.Modules.Forum
             ' Forum view (newest to oldest/oldest to newest) dropdownlist
             ddlViewDescending = New DotNetNuke.Web.UI.WebControls.DnnComboBox
             With ddlViewDescending
-                .Skin = "WebBlue"
                 .ID = "lstViewDescending"
                 .Width = Unit.Parse("150")
                 .AutoPostBack = True

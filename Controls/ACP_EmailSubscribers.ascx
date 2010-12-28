@@ -28,9 +28,9 @@
 								<asp:Label ID="lblNoRecords" runat="server" resourcekey="lblNoRecords" CssClass="NormalBold" />
 							</NoRecordsTemplate>
 							<Columns>
+                                <telerik:GridBoundColumn UniqueName="Email" DataField="Email" />
 								<telerik:GridBoundColumn UniqueName="Username" DataField="Username" />	
 								<telerik:GridBoundColumn UniqueName="DisplayName" DataField="DisplayName" />
-                                <telerik:GridBoundColumn UniqueName="Email" DataField="Email" />
 								<telerik:GridBoundColumn UniqueName="CreatedDate" DataField="CreatedDate" />
 							</Columns>
 						</MasterTableView>
@@ -53,7 +53,6 @@
                                 <telerik:GridBoundColumn UniqueName="Email" DataField="Email" />
 								<telerik:GridBoundColumn UniqueName="Username" DataField="Username" />	
 								<telerik:GridBoundColumn UniqueName="DisplayName" DataField="DisplayName" />
-								<telerik:GridBoundColumn UniqueName="Subject" DataField="Subject"  />
 								<telerik:GridBoundColumn UniqueName="CreatedDate" DataField="CreatedDate" />
 							</Columns>
 						</MasterTableView>
