@@ -15,7 +15,7 @@
 				<div><br />
                     <asp:HiddenField runat="server" ID="hdnRcbForumsValue" />
                     <dnnweb:DnnGrid ID="rgForums" runat="server" AllowSorting="false" AllowPaging="false" PageSize="3" ItemStyle-Height="30">
-                        <ClientSettings AllowColumnsReorder="false" EnableRowHoverStyle="true">
+                        <ClientSettings AllowColumnsReorder="false" EnableRowHoverStyle="false">
 							    <Resizing AllowColumnResize="true" />
 						</ClientSettings>
                         <MasterTableView DataKeyNames="ForumID" CommandItemDisplay="Top" CommandItemStyle-Height="30">
@@ -37,7 +37,7 @@
 					</dnnweb:DnnGrid><br /><br />
                     <asp:HiddenField runat="server" ID="hdnRcbThreadsValue" />
 					<dnnweb:DnnGrid ID="rgThreads" runat="server" AutoGenerateColumns="false" AllowSorting="false" AllowPaging="false" PageSize="3" ItemStyle-Height="30">
-						<ClientSettings AllowColumnsReorder="false" EnableRowHoverStyle="true">
+						<ClientSettings AllowColumnsReorder="false" EnableRowHoverStyle="false">
 							<Resizing AllowColumnResize="true" />
 						</ClientSettings>
 						<MasterTableView DataKeyNames="ThreadID" CommandItemDisplay="Top" CommandItemStyle-Height="30">
