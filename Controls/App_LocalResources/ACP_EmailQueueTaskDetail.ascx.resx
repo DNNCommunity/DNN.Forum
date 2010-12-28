@@ -135,13 +135,13 @@
   <data name="QueueStartedDate.Header" xml:space="preserve">
     <value>Started</value>
   </data>
-  <data name="SendComplete.Header" xml:space="preserve">
-    <value>Complete</value>
+  <data name="IsComplete.Header" xml:space="preserve">
+    <value>Attempted</value>
   </data>
   <data name="SuccessfullSendCount.Header" xml:space="preserve">
     <value>Sent</value>
   </data>
-  <data name="TaskFailedCount.Header" xml:space="preserve">
+  <data name="Failed.Header" xml:space="preserve">
     <value>Failed</value>
   </data>
   <data name="View.Text" xml:space="preserve">
@@ -152,5 +152,11 @@
   </data>
   <data name="EmailAddress.Header" xml:space="preserve">
     <value>Email</value>
+  </data>
+  <data name="DateAdded.Header" xml:space="preserve">
+    <value>Added</value>
+  </data>
+  <data name="DateComplete.Header" xml:space="preserve">
+    <value>Completed</value>
   </data>
 </root>

@@ -220,11 +220,21 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <remarks></remarks>
 		Private Sub SetLocalization()
 			For Each gc As Telerik.Web.UI.GridColumn In rgTaskDetails.MasterTableView.Columns
-				If gc.HeaderText <> "" Then
-					gc.HeaderText = Localization.GetString(gc.HeaderText + ".Header", Me.LocalResourceFile)
-				End If
-			Next
-		End Sub
+                If gc.UniqueName <> "" Then
+                    gc.HeaderText = Localization.GetString(gc.UniqueName + ".Header", Me.LocalResourceFile)
+                End If
+            Next
+
+            ' Need to access grid table view here
+            For Each detailGrid As Telerik.Web.UI.GridTableView In rgTaskDetails.MasterTableView.DetailTables
+                For Each gc As Telerik.Web.UI.GridColumn In detailGrid.Columns
+                    If gc.UniqueName <> "" Then
+                        gc.HeaderText = Localization.GetString(gc.UniqueName + ".Header", Me.LocalResourceFile)
+                    End If
+                Next
+            Next
+
+        End Sub
 
 #End Region
 
