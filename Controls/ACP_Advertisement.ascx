@@ -55,17 +55,18 @@
 						</td>
 					</tr>
 					<tr>
-						<td colspan="2">			    					    					    					    					    					    					    					    					    					    		<dnnweb:DnnGrid ID="rgVendors" runat="server" AutoGenerateColumns="false" AllowSorting="true" AllowPaging="true" PageSize="20" AllowMultiRowSelection="true" >
+						<td colspan="2">			    					    					    					    					    					    					    					    					    					    		
+                            <dnnweb:DnnGrid ID="rgVendors" runat="server" AutoGenerateColumns="false" AllowSorting="true" AllowPaging="true" PageSize="20" AllowMultiRowSelection="true" >
 								<MasterTableView DataKeyNames="VendorID">
 									<NoRecordsTemplate>
 										<asp:Label runat="server" ID="lblNoAdvertisements" resourcekey="lblNoAdvertisements" CssClass="NormalBold" />
 									</NoRecordsTemplate>
 									<Columns>
 										<telerik:GridClientSelectColumn  UniqueName="IsEnabled"/>
-										<telerik:GridNumericColumn UniqueName="VendorID" HeaderText="VendorID" DataField="VendorID"  Visible="false"/>
-										<telerik:GridBoundColumn UniqueName="VendorName" HeaderText="Vendor" DataField="VendorName" />
-										<telerik:GridImageColumn HeaderText="Logo" DataType="System.String" DataImageUrlFields="LogoFile" AlternateText="No logo"  />
-										<telerik:GridBoundColumn UniqueName="BannerUrl" HeaderText="Banners list" DataField="BannerUrl"  />
+										<telerik:GridNumericColumn UniqueName="VendorID" DataField="VendorID"  Visible="false"/>
+										<telerik:GridBoundColumn UniqueName="VendorName" DataField="VendorName" />
+										<telerik:GridImageColumn UniqueName="Logo" DataType="System.String" DataImageUrlFields="LogoFile" AlternateText="No logo"  />
+										<telerik:GridBoundColumn UniqueName="BannerUrl" DataField="BannerUrl"  />
 									</Columns>
 								</MasterTableView>
 							</dnnweb:DnnGrid>

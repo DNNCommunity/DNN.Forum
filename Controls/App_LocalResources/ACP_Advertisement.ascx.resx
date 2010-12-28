@@ -159,4 +159,13 @@
   <data name="lblNoAdvertisements.Text" xml:space="preserve">
     <value>No advertisements</value>
   </data>
+  <data name="BannerUrl.Header" xml:space="preserve">
+    <value>Banners</value>
+  </data>
+  <data name="Logo.Header" xml:space="preserve">
+    <value>Logo</value>
+  </data>
+  <data name="VendorName.Header" xml:space="preserve">
+    <value>Vendor</value>
+  </data>
 </root>

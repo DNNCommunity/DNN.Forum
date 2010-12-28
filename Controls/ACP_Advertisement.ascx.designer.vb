@@ -12,141 +12,141 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
-	Partial Public Class Advertisement
+    Partial Public Class Advertisement
 
-		'''<summary>
-		'''lblTitle control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblTitle control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''tblPopular control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents tblPopular As Global.System.Web.UI.HtmlControls.HtmlTable
+        '''<summary>
+        '''tblPopular control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents tblPopular As Global.System.Web.UI.HtmlControls.HtmlTable
 
-		'''<summary>
-		'''plAdsAfterFirstPost control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plAdsAfterFirstPost As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plAdsAfterFirstPost control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plAdsAfterFirstPost As Global.System.Web.UI.UserControl
 
-		'''<summary>
-		'''cbAdsAfterFirstPost control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cbAdsAfterFirstPost As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''cbAdsAfterFirstPost control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cbAdsAfterFirstPost As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''plAddAdverAfterPostNo control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plAddAdverAfterPostNo As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plAddAdverAfterPostNo control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plAddAdverAfterPostNo As Global.System.Web.UI.UserControl
 
-		'''<summary>
-		'''tbAddAdverAfterPostNo control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents tbAddAdverAfterPostNo As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''tbAddAdverAfterPostNo control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents tbAddAdverAfterPostNo As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''valreqView control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valreqView As Global.System.Web.UI.WebControls.RequiredFieldValidator
+        '''<summary>
+        '''valreqView control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valreqView As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
-		'''<summary>
-		'''valView control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valView As Global.System.Web.UI.WebControls.RegularExpressionValidator
+        '''<summary>
+        '''valView control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valView As Global.System.Web.UI.WebControls.RegularExpressionValidator
 
-		'''<summary>
-		'''plAdvertisementText control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plAdvertisementText As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plAdvertisementText control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plAdvertisementText As Global.System.Web.UI.UserControl
 
-		'''<summary>
-		'''tbAdvertisementText control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents tbAdvertisementText As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''tbAdvertisementText control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents tbAdvertisementText As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''lblHelp control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblHelp As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblHelp control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblHelp As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''plVendorsList control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plVendorsList As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plVendorsList control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plVendorsList As Global.System.Web.UI.UserControl
 
-		'''<summary>
-		'''rgVendors control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rgVendors As Global.DotNetNuke.Web.UI.WebControls.DnnGrid
+        '''<summary>
+        '''rgVendors control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rgVendors As Global.DotNetNuke.Web.UI.WebControls.DnnGrid
 
-		'''<summary>
-		'''cmdUpdate control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
+        '''<summary>
+        '''cmdUpdate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
 
-		'''<summary>
-		'''lblUpdateDone control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
-	End Class
+        '''<summary>
+        '''lblUpdateDone control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
+    End Class
 End Namespace

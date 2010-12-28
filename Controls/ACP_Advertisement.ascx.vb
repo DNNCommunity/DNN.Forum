@@ -58,6 +58,16 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
 #Region "Event Handlers"
 
+        ''' <summary>
+        ''' Runs when the control is initialized, even before anything in LoadInitialView runs. 
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="e"></param>
+        ''' <remarks>All controls containing grids should localize the grid headers here. </remarks>
+        Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+            SetLocalization()
+        End Sub
+
 		''' <summary>
 		''' Updates the module's configuration (module settings)
 		''' </summary>
@@ -103,6 +113,18 @@ Namespace DotNetNuke.Modules.Forum.ACP
 #End Region
 
 #Region "Private Methods"
+
+        ''' <summary>
+        ''' Used to localized the grid headers (a replacement for core method). 
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Sub SetLocalization()
+            For Each gc As Telerik.Web.UI.GridColumn In rgVendors.MasterTableView.Columns
+                If gc.UniqueName <> "" Then
+                    gc.HeaderText = Localization.GetString(gc.UniqueName + ".Header", Me.LocalResourceFile)
+                End If
+            Next
+        End Sub
 
 		''' <summary>
 		''' Save to DB enabled/disabled vendors
