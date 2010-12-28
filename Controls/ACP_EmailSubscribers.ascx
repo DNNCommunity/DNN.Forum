@@ -25,7 +25,7 @@
                                 <asp:Label runat="server" ID="lblForumTitle" EnableViewState="false" />
                             </CommandItemTemplate>
 							<NoRecordsTemplate>
-								<asp:Label ID="lblNoRecords" runat="server" resourcekey="lblNoRecords" CssClass="NormalBold" />
+								<asp:Label ID="lblNoRecords" runat="server" resourcekey="lblNoRecords" CssClass="Normal" />
 							</NoRecordsTemplate>
 							<Columns>
                                 <telerik:GridBoundColumn UniqueName="Email" DataField="Email" />
@@ -47,7 +47,7 @@
                                 <asp:Label runat="server" ID="lblThreadTitle" EnableViewState="false" />
                             </CommandItemTemplate>
 							<NoRecordsTemplate>
-								<asp:Label ID="lblNoRecords" runat="server" resourcekey="lblNoRecords" CssClass="NormalBold" />
+								<asp:Label ID="lblNoRecords" runat="server" resourcekey="lblNoRecords" CssClass="Normal" />
 							</NoRecordsTemplate>
 							<Columns>
                                 <telerik:GridBoundColumn UniqueName="Email" DataField="Email" />

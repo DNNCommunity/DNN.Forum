@@ -18,10 +18,13 @@
 						</ClientSettings>
 						<MasterTableView DataKeyNames="EmailQueueID">
 							<NoRecordsTemplate>
-								<asp:Label ID="lblNoRecords" runat="server" resourcekey="lblNoRecords" CssClass="NormalBold" />
+								<asp:Label ID="lblNoRecords" runat="server" resourcekey="lblNoRecords" CssClass="Normal" />
 							</NoRecordsTemplate>
 							<DetailTables>
 								<telerik:GridTableView DataKeyNames="EmailQueueID" Name="TaskEmails" Width="99%">
+                                    <NoRecordsTemplate>
+								        <asp:Label ID="lblNoDetailRecords" runat="server" resourcekey="lblNoRecords" CssClass="Normal" />
+							        </NoRecordsTemplate>
 									<Columns>
 										<telerik:GridBoundColumn UniqueName="EmailAddress" DataField="EmailAddress" />	
 										<telerik:GridCheckBoxColumn UniqueName="IsComplete" DataField="IsComplete" HeaderStyle-Width="50px" ItemStyle-Width="50px" />
