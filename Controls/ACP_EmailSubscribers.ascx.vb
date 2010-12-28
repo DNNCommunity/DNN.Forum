@@ -108,6 +108,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
         ''' <param name="e"></param>
         ''' <remarks>All controls containing grids should localize the grid headers here. </remarks>
         Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+            SetLocalization()
+
             'if it runs from Forum or Post list, disable ComboBoxes
             If Request.QueryString("ThreadID") IsNot Nothing Or Request.QueryString("ForumID") IsNot Nothing Then
                 QueryString_IsEnable = True
@@ -125,6 +127,14 @@ Namespace DotNetNuke.Modules.Forum.ACP
             Dim params As String()
             params = New String(1) {"mid=" & ModuleId.ToString(), "view=" & CStr(AdminAjaxControl.EmailSubscribers)}
             Response.Redirect(NavigateURL(TabId, ForumPage.ACP.ToString(), params))
+        End Sub
+
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <remarks></remarks>
+        Protected Overrides Sub Finalize()
+            MyBase.Finalize()
         End Sub
 
 #Region "rgForums"
@@ -155,7 +165,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub rgForums_ItemDataBound(ByVal sender As System.Object, ByVal e As GridItemEventArgs) Handles rgForums.ItemDataBound
+        Protected Sub rgForums_ItemDataBound(ByVal sender As System.Object, ByVal e As GridItemEventArgs) Handles rgForums.ItemDataBound
             If TypeOf e.Item Is GridCommandItem Then
                 Dim commandItem As GridCommandItem = CType(e.Item, GridCommandItem)
                 Dim rcbForums As RadComboBox = CType(commandItem.FindControl("rcbForums"), RadComboBox)
@@ -180,33 +190,12 @@ Namespace DotNetNuke.Modules.Forum.ACP
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub rgForums_PreRender(ByVal sender As System.Object, ByVal e As EventArgs) Handles rgForums.PreRender
+        Protected Sub rgForums_PreRender(ByVal sender As System.Object, ByVal e As EventArgs) Handles rgForums.PreRender
             If Not String.IsNullOrEmpty(hdnRcbForumsValue.Value) Then
                 Dim gridCommandItem As GridCommandItem = CType(rgForums.MasterTableView.GetItems(GridItemType.CommandItem)(0), GridCommandItem)
                 Dim rcbForums As RadComboBox = CType(gridCommandItem.FindControl("rcbForums"), RadComboBox)
                 rcbForums.SelectedValue = hdnRcbForumsValue.Value
             End If
-        End Sub
-
-        ''' <summary>
-        ''' Used to bind data to the forum subscriptions grid. 
-        ''' </summary>
-        ''' <remarks></remarks>
-        Private Sub GridForumBind()
-            Dim userTrackingController As New UserTrackingController
-            rgForums.AutoGenerateColumns = False 'AutoGenerateColumns didn't works in *.ascx
-            If ForumID <> -1 Then
-                rgForums.DataSource = userTrackingController.GetForumSubscribers(ForumID)
-            Else 'get first forum belong to this module
-                Dim forumController As New ForumController
-                Dim forumInfo As List(Of ForumInfo) = forumController.GetModuleForums(ModuleId)
-                If (forumInfo IsNot Nothing) AndAlso forumInfo.Count > 0 Then
-                    hdnRcbForumsValue.Value = forumInfo(0).ForumID.ToString()
-                    rgForums.DataSource = userTrackingController.GetForumSubscribers(ForumID)
-
-                End If
-            End If
-            rgForums.DataBind()
         End Sub
 
         ''' <summary>
@@ -230,26 +219,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
                 Else
                     lnkHeader.Visible = False
                 End If
-
-
-                'localize Forum grid headers
-            ElseIf TypeOf e.Item Is GridHeaderItem Then
-                Dim headerItem As GridHeaderItem = CType(e.Item, GridHeaderItem)
-
-                Dim label As LiteralControl = CType(headerItem("Username").Controls(0), LiteralControl)
-                label.Text = Localization.GetString("Username.Header", Me.LocalResourceFile)
-
-                label = CType(headerItem("DisplayName").Controls(0), LiteralControl)
-                label.Text = Localization.GetString("DisplayName.Header", Me.LocalResourceFile)
-
-                label = CType(headerItem("Email").Controls(0), LiteralControl)
-                label.Text = Localization.GetString("Email.Header", Me.LocalResourceFile)
-
-                label = CType(headerItem("CreatedDate").Controls(0), LiteralControl)
-                label.Text = Localization.GetString("CreatedDate.Header", Me.LocalResourceFile)
             End If
         End Sub
-
 
 #End Region
 
@@ -279,7 +250,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub rgThreads_ItemDataBound(ByVal sender As System.Object, ByVal e As GridItemEventArgs) Handles rgThreads.ItemDataBound
+        Protected Sub rgThreads_ItemDataBound(ByVal sender As System.Object, ByVal e As GridItemEventArgs) Handles rgThreads.ItemDataBound
             If (TypeOf e.Item Is GridCommandItem) Then
                 Dim commandItem As GridCommandItem = CType(e.Item, GridCommandItem)
                 Dim rcbThreads As RadComboBox = CType(commandItem.FindControl("rcbThreads"), RadComboBox)
@@ -302,22 +273,12 @@ Namespace DotNetNuke.Modules.Forum.ACP
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Private Sub rgThreads_PreRender(ByVal sender As System.Object, ByVal e As EventArgs) Handles rgThreads.PreRender
+        Protected Sub rgThreads_PreRender(ByVal sender As System.Object, ByVal e As EventArgs) Handles rgThreads.PreRender
             If Not String.IsNullOrEmpty(hdnRcbThreadsValue.Value) Then
                 Dim gridCommandItem As GridCommandItem = CType(rgThreads.MasterTableView.GetItems(GridItemType.CommandItem)(0), GridCommandItem)
                 Dim rcbThreads As RadComboBox = CType(gridCommandItem.FindControl("rcbThreads"), RadComboBox)
                 rcbThreads.SelectedValue = hdnRcbThreadsValue.Value()
             End If
-        End Sub
-
-        ''' <summary>
-        ''' Used to bind data to the thread subscriptions grid. 
-        ''' </summary>
-        ''' <remarks></remarks>
-        Private Sub GridThreadBind()
-            Dim userTrackingController As New UserTrackingController
-            rgThreads.DataSource = userTrackingController.GetThreadSubscribers(ThreadID)
-            rgThreads.DataBind()
         End Sub
 
         ''' <summary>
@@ -341,38 +302,68 @@ Namespace DotNetNuke.Modules.Forum.ACP
                 Else
                     lnkHeader.Visible = False
                 End If
-
-                'localize Thread grid headers
-            ElseIf TypeOf e.Item Is GridHeaderItem Then
-                Dim headerItem As GridHeaderItem = CType(e.Item, GridHeaderItem)
-
-                Dim label As LiteralControl = CType(headerItem("Email").Controls(0), LiteralControl)
-                label.Text = Localization.GetString("Email.Header", Me.LocalResourceFile)
-
-                label = CType(headerItem("Username").Controls(0), LiteralControl)
-                label.Text = Localization.GetString("Username.Header", Me.LocalResourceFile)
-
-                label = CType(headerItem("DisplayName").Controls(0), LiteralControl)
-                label.Text = Localization.GetString("DisplayName.Header", Me.LocalResourceFile)
-
-                label = CType(headerItem("Subject").Controls(0), LiteralControl)
-                label.Text = Localization.GetString("Subject.Header", Me.LocalResourceFile)
-
-                label = CType(headerItem("CreatedDate").Controls(0), LiteralControl)
-                label.Text = Localization.GetString("CreatedDate.Header", Me.LocalResourceFile)
             End If
         End Sub
+
 #End Region
 
 #End Region
+
+#Region "Private Methods"
 
         ''' <summary>
-        ''' 
+        ''' Used to localized the grid headers (a replacement for core method). 
         ''' </summary>
         ''' <remarks></remarks>
-        Protected Overrides Sub Finalize()
-            MyBase.Finalize()
+        Private Sub SetLocalization()
+            For Each gc As Telerik.Web.UI.GridColumn In rgForums.MasterTableView.Columns
+                If gc.UniqueName <> "" Then
+                    gc.HeaderText = Localization.GetString(gc.UniqueName + ".Header", Me.LocalResourceFile)
+                End If
+            Next
+
+            For Each gc As Telerik.Web.UI.GridColumn In rgThreads.MasterTableView.Columns
+                If gc.UniqueName <> "" Then
+                    gc.HeaderText = Localization.GetString(gc.UniqueName + ".Header", Me.LocalResourceFile)
+                End If
+            Next
         End Sub
+
+        ''' <summary>
+        ''' Used to bind data to the forum subscriptions grid. 
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Sub GridForumBind()
+            Dim userTrackingController As New UserTrackingController
+            rgForums.AutoGenerateColumns = False 'AutoGenerateColumns didn't works in *.ascx
+
+            If ForumID <> -1 Then
+                rgForums.DataSource = userTrackingController.GetForumSubscribers(ForumID)
+            Else
+                'get first forum belong to this module
+                Dim forumController As New ForumController
+                Dim forumInfo As List(Of ForumInfo) = forumController.GetModuleForums(ModuleId)
+
+                If (forumInfo IsNot Nothing) AndAlso forumInfo.Count > 0 Then
+                    hdnRcbForumsValue.Value = forumInfo(0).ForumID.ToString()
+                    rgForums.DataSource = userTrackingController.GetForumSubscribers(ForumID)
+                End If
+            End If
+
+            rgForums.DataBind()
+        End Sub
+
+        ''' <summary>
+        ''' Used to bind data to the thread subscriptions grid. 
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Sub GridThreadBind()
+            Dim userTrackingController As New UserTrackingController
+            rgThreads.DataSource = userTrackingController.GetThreadSubscribers(ThreadID)
+            rgThreads.DataBind()
+        End Sub
+
+#End Region
 
     End Class
 
