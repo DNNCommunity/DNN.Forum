@@ -351,7 +351,9 @@ Namespace DotNetNuke.Modules.Forum
                 Dim textReply As String = txtQuickReply.Text
 
                 'textReply = textReply.Replace(vbCrLf, "<br />")
-                textReply = textReply.Replace(Environment.NewLine, "<br />")
+                'textReply = textReply.Replace(Environment.NewLine, "<br />")
+                ' Hammond
+                textReply = textReply.Replace(ControlChars.Lf, "<br />")
                 'textReply = textReply.Replace("\n", "<br />")
 
                 PostMessage = cntPostConnect.SubmitInternalPost(TabID, ModuleID, PortalID, CurrentForumUser.UserID, strSubject, textReply, ForumID, objThread.ThreadID, -1, objThread.IsPinned, False, False, objThread.ThreadStatus, "", RemoteAddress, objThread.PollID, False, objThread.ThreadID, objThread.Terms)

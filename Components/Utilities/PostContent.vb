@@ -43,6 +43,14 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 		Private Shared mQuote As New Regex("\[quote\](?<text>(.*?))\[/quote\]", mRegOptions)
 		Private Shared mCode As New Regex("\[code\](?<code>(.*?))\[/code\]", mRegOptions)
 
+        ' Hammond
+        Private Shared mImg As New Regex("\[img\](?<img>(.*?))\[/img\]", mRegOptions)
+        Private Shared mUrl As New Regex("\[url\](?<url>(.*?))\[/url\]", mRegOptions)
+        Private Shared mUrlText As New Regex("\[url=""(?<url>[^\]]*)\""](?<text>(.*?))\[/url\]", mRegOptions)
+        Private Shared mBold As New Regex("\[b\](?<text>(.*?))\[/b\]", mRegOptions)
+        Private Shared mItalic As New Regex("\[i\](?<text>(.*?))\[/i\]", mRegOptions)
+        Private Shared mUnderline As New Regex("\[u\](?<text>(.*?))\[/u\]", mRegOptions)
+
 		'Not yet supported:
 		'Private Shared mBold As New Regex("\[b\](?<text>(.*?))\[/b\]", mRegOptions)
 		'Private Shared mItalic As New Regex("\[i\](?<text>(.*?))\[/i\]", mRegOptions)
@@ -436,6 +444,36 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 				mText = mCode.Replace(mText, strTmpCode)
 			End While
 
+            ' Hammond
+            Dim strTmpImg As String = String.Format("<img class=""ForumImage"" src=""{0}"" /><br />", "${img}")
+            While mImg.IsMatch(mText)
+                mText = mImg.Replace(mText, strTmpImg)
+            End While
+
+            Dim strTmpUrl As String = String.Format("<a class=""ForumLink"" rel=""nofollow"" href=""{0}"">{0}</a> ", "${url}")
+            While mUrl.IsMatch(mText)
+                mText = mUrl.Replace(mText, strTmpUrl)
+            End While
+
+            Dim strTmpUrlText As String = String.Format("<a class=""ForumLink"" rel=""nofollow"" href=""{0}"">{1}</a> ", "${url}", "${text}")
+            While mUrlText.IsMatch(mText)
+                mText = mUrlText.Replace(mText, strTmpUrlText)
+            End While
+
+            Dim strTmpBold As String = String.Format("<strong>{0}</strong> ", "${text}")
+            While mBold.IsMatch(mText)
+                mText = mBold.Replace(mText, strTmpBold)
+            End While
+
+            Dim strTmpItalic As String = String.Format("<em>{0}</em> ", "${text}")
+            While mItalic.IsMatch(mText)
+                mText = mItalic.Replace(mText, strTmpItalic)
+            End While
+
+            Dim strTmpUnd As String = String.Format("<u>{0}</u> ", "${text}")
+            While mUnderline.IsMatch(mText)
+                mText = mUnderline.Replace(mText, strTmpUnd)
+            End While
 		End Sub
 
 		''' <summary>

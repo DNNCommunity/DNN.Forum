@@ -1627,7 +1627,15 @@ Namespace DotNetNuke.Modules.Forum
 
 				If strBody IsNot Nothing Then
 					' Here we handle any instances of Quotes and Code tags
-					Dim mRegOptions As RegexOptions = RegexOptions.IgnoreCase Or RegexOptions.Multiline Or RegexOptions.Singleline
+                    Dim mRegOptions As RegexOptions = RegexOptions.IgnoreCase Or RegexOptions.Multiline Or RegexOptions.Singleline
+                    ' Hammond
+                    Dim mImg As New Regex("\[img\](?<img>(.*?))\[/img\]", mRegOptions)
+                    Dim mUrl As New Regex("\[url\](?<url>(.*?))\[/url\]", mRegOptions)
+                    Dim mUrlText As New Regex("\[url=""(?<url>[^\]]*)\""](?<text>(.*?))\[/url\]", mRegOptions)
+                    Dim mBold As New Regex("\[b\](?<text>(.*?))\[/b\]", mRegOptions)
+                    Dim mItalic As New Regex("\[i\](?<text>(.*?))\[/i\]", mRegOptions)
+                    Dim mUnderline As New Regex("\[u\](?<text>(.*?))\[/u\]", mRegOptions)
+
 					Dim mQuoteAuthor As New Regex("\[quote=""(?<author>[^\]]*)\""](?<text>(.*?))\[/quote\]", mRegOptions)
 					Dim mQuote As New Regex("\[quote\](?<text>(.*?))\[/quote\]", mRegOptions)
 					Dim mCode As New Regex("\[code\](?<code>(.*?))\[/code\]", mRegOptions)
@@ -1647,6 +1655,37 @@ Namespace DotNetNuke.Modules.Forum
 					While mCode.IsMatch(str)
 						str = mCode.Replace(str, strTmpCode)
 					End While
+
+                    ' Hammond
+                    Dim strTmpImg As String = String.Format("<img class=""ForumImage"" src=""{0}"" /><br />", "${img}")
+                    While mImg.IsMatch(str)
+                        str = mImg.Replace(str, strTmpImg)
+                    End While
+
+                    Dim strTmpUrl As String = String.Format("<a class=""ForumLink"" rel=""nofollow"" href=""{0}"">{0}</a> ", "${url}")
+                    While mUrl.IsMatch(str)
+                        str = mUrl.Replace(str, strTmpUrl)
+                    End While
+
+                    Dim strTmpBold As String = String.Format("<strong>{0}</strong> ", "${text}")
+                    While mBold.IsMatch(str)
+                        str = mBold.Replace(str, strTmpBold)
+                    End While
+
+                    Dim strTmpItalic As String = String.Format("<em>{0}</em> ", "${text}")
+                    While mItalic.IsMatch(str)
+                        str = mItalic.Replace(str, strTmpItalic)
+                    End While
+
+                    Dim strTmpUnd As String = String.Format("<u>{0}</u> ", "${text}")
+                    While mUnderline.IsMatch(str)
+                        str = mUnderline.Replace(str, strTmpUnd)
+                    End While
+
+                    Dim strTmpUrlText As String = String.Format("<a class=""ForumLink"" rel=""nofollow"" href=""{0}"">{1}</a> ", "${url}", "${text}")
+                    While mUrlText.IsMatch(str)
+                        str = mUrlText.Replace(str, strTmpUrlText)
+                    End While
 
 					' Any inline attachments?
 					If objConfig.EnableAttachment = True And str.ToLower.IndexOf("[attachment") >= 0 Then
