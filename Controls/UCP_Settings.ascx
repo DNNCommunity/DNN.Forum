@@ -1,5 +1,6 @@
 <%@ Control Language="vb" AutoEventWireup="false" Explicit="true" Codebehind="UCP_Settings.ascx.vb" Inherits="DotNetNuke.Modules.Forum.UCP.Settings" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/LabelControl.ascx" %>
+<%@ Register Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
 <div class="UCP-Settings">
 	<table cellpadding="0" cellspacing="0" border="0" width="100%">
 		<tr>
@@ -17,7 +18,7 @@
 							</span>
 						 </td>
 						 <td align="left">
-							<asp:DropDownList ID="ddlEmailFormat" runat="server" Width="200px" CssClass="Forum_NormalTextBox" />
+                            <dnnweb:DnnComboBox id="rcbEmailFormat" runat="server" Width="198px" />
 						 </td>
 					</tr>
 					<tr>

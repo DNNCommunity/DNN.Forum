@@ -183,4 +183,10 @@
   <data name="plEmailFormat.Help" xml:space="preserve">
     <value>The format email notification will be sent, HTML or Text.</value>
   </data>
+  <data name="HTML.Text" xml:space="preserve">
+    <value>HTML</value>
+  </data>
+  <data name="Text.Text" xml:space="preserve">
+    <value>Text</value>
+  </data>
 </root>

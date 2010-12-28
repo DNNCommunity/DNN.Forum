@@ -12,240 +12,240 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.UCP
 
-	Partial Public Class Settings
+    Partial Public Class Settings
 
-		'''<summary>
-		'''lblTitle control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblTitle control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''plEmailFormat control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plEmailFormat As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plEmailFormat control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plEmailFormat As Global.System.Web.UI.UserControl
 
-		'''<summary>
-		'''ddlEmailFormat control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents ddlEmailFormat As Global.System.Web.UI.WebControls.DropDownList
+        '''<summary>
+        '''rcbEmailFormat control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rcbEmailFormat As Global.DotNetNuke.Web.UI.WebControls.DnnComboBox
 
-		'''<summary>
-		'''plThreadsPerPage control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plThreadsPerPage As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plThreadsPerPage control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plThreadsPerPage As Global.System.Web.UI.UserControl
 
-		'''<summary>
-		'''txtThreadsPerPage control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtThreadsPerPage As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''txtThreadsPerPage control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtThreadsPerPage As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''Regularexpressionvalidator1 control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents Regularexpressionvalidator1 As Global.System.Web.UI.WebControls.RegularExpressionValidator
+        '''<summary>
+        '''Regularexpressionvalidator1 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents Regularexpressionvalidator1 As Global.System.Web.UI.WebControls.RegularExpressionValidator
 
-		'''<summary>
-		'''plPostsPerPage control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plPostsPerPage As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plPostsPerPage control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plPostsPerPage As Global.System.Web.UI.UserControl
 
-		'''<summary>
-		'''txtPostsPerPage control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtPostsPerPage As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''txtPostsPerPage control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtPostsPerPage As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''valPostsPerPage control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valPostsPerPage As Global.System.Web.UI.WebControls.RegularExpressionValidator
+        '''<summary>
+        '''valPostsPerPage control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valPostsPerPage As Global.System.Web.UI.WebControls.RegularExpressionValidator
 
-		'''<summary>
-		'''rowOnlineStatus control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowOnlineStatus As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowOnlineStatus control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowOnlineStatus As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plOnlineStatus control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plOnlineStatus As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plOnlineStatus control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plOnlineStatus As Global.System.Web.UI.UserControl
 
-		'''<summary>
-		'''chkOnlineStatus control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkOnlineStatus As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''chkOnlineStatus control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkOnlineStatus As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''rowEnableDefaultPostNotify control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowEnableDefaultPostNotify As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowEnableDefaultPostNotify control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowEnableDefaultPostNotify As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plEnableDefaultPostNotify control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plEnableDefaultPostNotify As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plEnableDefaultPostNotify control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plEnableDefaultPostNotify As Global.System.Web.UI.UserControl
 
-		'''<summary>
-		'''chkEnableDefaultPostNotify control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkEnableDefaultPostNotify As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''chkEnableDefaultPostNotify control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkEnableDefaultPostNotify As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''rowEnableSelfNotifications control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowEnableSelfNotifications As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowEnableSelfNotifications control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowEnableSelfNotifications As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plEnableSelfNotifications control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plEnableSelfNotifications As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plEnableSelfNotifications control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plEnableSelfNotifications As Global.System.Web.UI.UserControl
 
-		'''<summary>
-		'''chkEnableSelfNotifications control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkEnableSelfNotifications As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''chkEnableSelfNotifications control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkEnableSelfNotifications As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''rowForumModNotify control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowForumModNotify As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowForumModNotify control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowForumModNotify As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plEnableForumModNotify control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plEnableForumModNotify As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plEnableForumModNotify control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plEnableForumModNotify As Global.System.Web.UI.UserControl
 
-		'''<summary>
-		'''chkEnableForumModNotify control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkEnableForumModNotify As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''chkEnableForumModNotify control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkEnableForumModNotify As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''rowClearReads control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowClearReads As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowClearReads control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowClearReads As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plClearReads control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plClearReads As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plClearReads control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plClearReads As Global.System.Web.UI.UserControl
 
-		'''<summary>
-		'''cmdClearReads control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdClearReads As Global.System.Web.UI.WebControls.LinkButton
+        '''<summary>
+        '''cmdClearReads control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cmdClearReads As Global.System.Web.UI.WebControls.LinkButton
 
-		'''<summary>
-		'''cmdUpdate control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
+        '''<summary>
+        '''cmdUpdate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
 
-		'''<summary>
-		'''lblUpdateDone control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
-	End Class
+        '''<summary>
+        '''lblUpdateDone control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
+    End Class
 End Namespace

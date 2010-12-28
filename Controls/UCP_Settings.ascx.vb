@@ -43,10 +43,10 @@ Namespace DotNetNuke.Modules.Forum.UCP
 			Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 			Dim objSecurity As New Forum.ModuleSecurity(ModuleId, TabId, -1, UserId)
 
-			ddlEmailFormat.Items.Clear()
+            rcbEmailFormat.Items.Clear()
 
-			ddlEmailFormat.Items.Insert(0, New ListItem(Localization.GetString("Text", objConfig.SharedResourceFile), "0"))
-			ddlEmailFormat.Items.Insert(1, New ListItem(Localization.GetString("HTML", objConfig.SharedResourceFile), "1"))
+            rcbEmailFormat.Items.Add(New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Text", LocalResourceFile), "0"))
+            rcbEmailFormat.Items.Add(New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("HTML", LocalResourceFile), "1"))
 
 			With ProfileUser
 				txtPostsPerPage.Text = .PostsPerPage.ToString
@@ -55,7 +55,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 				chkEnableDefaultPostNotify.Checked = .EnableDefaultPostNotify
 				chkEnableSelfNotifications.Checked = .EnableSelfNotifications
 				chkEnableForumModNotify.Checked = .EnableModNotification
-				ddlEmailFormat.SelectedValue = .EmailFormat.ToString
+                rcbEmailFormat.SelectedValue = .EmailFormat.ToString
 
 				If objConfig.EnableUsersOnline Then
 					rowOnlineStatus.Visible = True
@@ -93,7 +93,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 					.PostsPerPage = Int32.Parse(txtPostsPerPage.Text)
 					.ThreadsPerPage = Int32.Parse(txtThreadsPerPage.Text)
 					.EnableModNotification = chkEnableForumModNotify.Checked
-					.EmailFormat = CType(ddlEmailFormat.SelectedValue, Integer)
+                    .EmailFormat = CType(rcbEmailFormat.SelectedValue, Integer)
 					.PortalID = PortalId
 					.UserID = ProfileUser.UserID
 					.EnableDefaultPostNotify = chkEnableDefaultPostNotify.Checked
