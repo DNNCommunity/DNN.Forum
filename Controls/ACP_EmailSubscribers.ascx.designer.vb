@@ -48,7 +48,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rgForums As Global.Telerik.Web.UI.RadGrid
+        Protected WithEvents rgForums As Global.DotNetNuke.Web.UI.WebControls.DnnGrid
 
         '''<summary>
         '''hdnRcbThreadsValue control.
@@ -66,7 +66,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rgThreads As Global.Telerik.Web.UI.RadGrid
+        Protected WithEvents rgThreads As Global.DotNetNuke.Web.UI.WebControls.DnnGrid
 
         '''<summary>
         '''lnkShowAll control.
