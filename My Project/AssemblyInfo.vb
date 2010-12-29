@@ -1,6 +1,6 @@
 '
 ' DotNetNuke® - http://www.dotnetnuke.com
-' Copyright (c) 2002-2010
+' Copyright (c) 2002-2011
 ' by DotNetNuke Corporation
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -30,7 +30,7 @@ Imports System.Reflection
 <Assembly: AssemblyDescription("Open Source Web Application Framework's Discussion Forum Module")> 
 <Assembly: AssemblyCompany("DotNetNuke Corporation")> 
 <Assembly: AssemblyProduct("http://www.dotnetnuke.com")> 
-<Assembly: AssemblyCopyright("DotNetNuke® is copyright 2002-2010 by DotNetNuke Corporation. All Rights Reserved.")> 
+<Assembly: AssemblyCopyright("DotNetNuke® is copyright 2002-2011 by DotNetNuke Corporation. All Rights Reserved.")> 
 <Assembly: AssemblyTrademark("DotNetNuke")> 
 <Assembly: CLSCompliant(True)> 
 
@@ -44,4 +44,4 @@ Imports System.Reflection
 ' You can specify all the values or you can default the Build and Revision Numbers 
 ' by using the '*' as shown below:
 
-<Assembly: AssemblyVersion("05.00.00.*")> 
+<Assembly: AssemblyVersion("05.00.01.*")> 
