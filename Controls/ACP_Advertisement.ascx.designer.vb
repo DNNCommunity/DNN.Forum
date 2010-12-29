@@ -39,7 +39,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plAdsAfterFirstPost As Global.System.Web.UI.UserControl
+        Protected WithEvents plAdsAfterFirstPost As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''cbAdsAfterFirstPost control.
@@ -57,7 +57,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plAddAdverAfterPostNo As Global.System.Web.UI.UserControl
+        Protected WithEvents plAddAdverAfterPostNo As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''tbAddAdverAfterPostNo control.
@@ -93,7 +93,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plAdvertisementText As Global.System.Web.UI.UserControl
+        Protected WithEvents plAdvertisementText As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''tbAdvertisementText control.
@@ -120,7 +120,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plVendorsList As Global.System.Web.UI.UserControl
+        Protected WithEvents plVendorsList As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''rgVendors control.

@@ -28,7 +28,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
 	''' <summary>
 	''' The control which allows forum administrators to add advertisements between posts.
-	''' Here you can add advertisement text and how densely it will be injected
+    ''' Here you can add advertisement text and set how densely it will be injected
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
@@ -48,10 +48,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			cbAdsAfterFirstPost.Checked = objConfig.AdsAfterFirstPost
 			tbAddAdverAfterPostNo.Text = objConfig.AddAdverAfterPostNo.ToString()
 			tbAdvertisementText.Text = objConfig.AdvertisementText
-
-			rgVendors.ClientSettings.Selecting.AllowRowSelect = True
-
-			VendorsGridBind()
 		End Sub
 
 #End Region
@@ -89,7 +85,38 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			Catch exc As Exception
 				ProcessModuleLoadException(Me, exc)
 			End Try
-		End Sub
+        End Sub
+
+        Protected Sub rgVendors_NeedDataSource(ByVal source As Object, ByVal e As Telerik.Web.UI.GridNeedDataSourceEventArgs) Handles rgVendors.NeedDataSource
+            Dim advertController As New AdvertController
+            Dim adverts As New List(Of AdvertInfo)
+            Try
+                adverts = advertController.VendorsGet(Me.ModuleId)
+                For Each item As AdvertInfo In adverts
+                    'vendor logo
+                    If String.IsNullOrEmpty(item.LogoFile) = False Then
+                        item.LogoFile = DotNetNuke.Common.Globals.LinkClick(item.LogoFile, Me.TabId, Me.ModuleId)
+                    End If
+
+                    'banners
+                    Dim bannersList As List(Of BannerInfo) = advertController.BannersGet(item.VendorId)
+                    If (bannersList IsNot Nothing) AndAlso bannersList.Count > 0 Then
+                        item.BannerUrl = ""
+                        For Each banner As BannerInfo In bannersList
+                            item.BannerUrl += "<img src=""" & DotNetNuke.Common.Globals.LinkClick(banner.ImageFile, Me.TabId, Me.ModuleId) & """ />&nbsp;"
+                        Next
+                    End If
+
+                    If String.IsNullOrEmpty(item.BannerUrl) Then
+                        item.BannerUrl = "No banners"
+                    End If
+
+                Next
+                rgVendors.DataSource = adverts
+            Catch ex As Exception
+                Exceptions.ProcessModuleLoadException(Me, ex)
+            End Try
+        End Sub
 
 		''' <summary>
 		''' 

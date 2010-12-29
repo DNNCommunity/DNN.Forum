@@ -51,15 +51,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents rgForums As Global.DotNetNuke.Web.UI.WebControls.DnnGrid
 
         '''<summary>
-        '''hdnRcbThreadsValue control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents hdnRcbThreadsValue As Global.System.Web.UI.WebControls.HiddenField
-
-        '''<summary>
         '''rgThreads control.
         '''</summary>
         '''<remarks>
@@ -67,14 +58,5 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents rgThreads As Global.DotNetNuke.Web.UI.WebControls.DnnGrid
-
-        '''<summary>
-        '''lnkShowAll control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lnkShowAll As Global.System.Web.UI.WebControls.LinkButton
     End Class
 End Namespace

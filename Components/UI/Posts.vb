@@ -3195,7 +3195,7 @@ Namespace DotNetNuke.Modules.Forum
         End Sub
 
         ''' <summary>
-        ''' Renders structure of ADVERTISEMENT post
+        ''' Renders structure of Advertisement content
         ''' </summary>
         ''' <history>
         ''' 	[b.waluszko]	21/10/2010	Created
@@ -3216,12 +3216,13 @@ Namespace DotNetNuke.Modules.Forum
             If (adverts IsNot Nothing) AndAlso adverts.Count > 0 Then
                 wr.Write("<br/>")
                 For Each advert As AdvertInfo In adverts
-                    Dim banners As ArrayList
+                    Dim banners As List(Of Vendors.BannerInfo)
 
                     'second check banners connected to vendors
-                    banners = bannerController.GetBanners(advert.VendorId)
+                    banners = advertController.BannersGet(advert.VendorId)
                     If (banners IsNot Nothing) AndAlso banners.Count > 0 Then
                         For Each b As Vendors.BannerInfo In banners
+                            advertController.BannerViewIncrement(b.BannerId)
                             Dim fileController As New FileController
                             Dim fileInfo As DotNetNuke.Services.FileSystem.FileInfo = fileController.GetFileById(Integer.Parse(b.ImageFile.Split(Char.Parse("="))(1)), PortalID)
                             wr.Write(bannerController.FormatBanner(advert.VendorId, b.BannerId, b.BannerTypeId, b.BannerName, fileInfo.RelativePath, b.Description, b.URL, b.Width, b.Height, "L", PortalSettings.HomeDirectory) & "&nbsp;")

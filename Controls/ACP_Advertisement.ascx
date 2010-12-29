@@ -56,10 +56,10 @@
 					</tr>
 					<tr>
 						<td colspan="2">			    					    					    					    					    					    					    					    					    					    		
-                            <dnnweb:DnnGrid ID="rgVendors" runat="server" AutoGenerateColumns="false" AllowSorting="true" AllowPaging="true" PageSize="20" AllowMultiRowSelection="true" >
+                            <dnnweb:DnnGrid ID="rgVendors" runat="server" AutoGenerateColumns="false" AllowSorting="true" AllowPaging="true" PageSize="10" AllowMultiRowSelection="true" >
 								<MasterTableView DataKeyNames="VendorID">
 									<NoRecordsTemplate>
-										<asp:Label runat="server" ID="lblNoAdvertisements" resourcekey="lblNoAdvertisements" CssClass="NormalBold" />
+										<asp:Label runat="server" ID="lblNoAdvertisements" resourcekey="lblNoAdvertisements" CssClass="Normal" />
 									</NoRecordsTemplate>
 									<Columns>
 										<telerik:GridClientSelectColumn  UniqueName="IsEnabled"/>
@@ -69,6 +69,9 @@
 										<telerik:GridBoundColumn UniqueName="BannerUrl" DataField="BannerUrl"  />
 									</Columns>
 								</MasterTableView>
+                                <ClientSettings  EnableRowHoverStyle="true">
+                                    <Selecting AllowRowSelect="True" />
+                                </ClientSettings>
 							</dnnweb:DnnGrid>
 						</td>
 					</tr>

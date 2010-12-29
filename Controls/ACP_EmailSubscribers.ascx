@@ -14,7 +14,7 @@
              <asp:Label ID="lblInfo" runat="server" CssClass="Forum_Normal" resourcekey="lblInfo" EnableViewState="false" />
 				<div><br />
                     <asp:HiddenField runat="server" ID="hdnRcbForumsValue" />
-                    <dnnweb:DnnGrid ID="rgForums" runat="server" AllowSorting="false" AllowPaging="false" PageSize="3" ItemStyle-Height="30">
+                    <dnnweb:DnnGrid ID="rgForums" runat="server" AllowSorting="true" AllowPaging="true" PageSize="10" ItemStyle-Height="30" AutoGenerateColumns="false">
                         <ClientSettings AllowColumnsReorder="false" EnableRowHoverStyle="false">
 							    <Resizing AllowColumnResize="true" />
 						</ClientSettings>
@@ -35,15 +35,14 @@
 							</Columns>
 						</MasterTableView>
 					</dnnweb:DnnGrid><br /><br />
-                    <asp:HiddenField runat="server" ID="hdnRcbThreadsValue" />
-					<dnnweb:DnnGrid ID="rgThreads" runat="server" AutoGenerateColumns="false" AllowSorting="false" AllowPaging="false" PageSize="3" ItemStyle-Height="30">
+                    
+					<dnnweb:DnnGrid ID="rgThreads" runat="server" AutoGenerateColumns="false" AllowSorting="true" AllowPaging="true" PageSize="10" ItemStyle-Height="30">
 						<ClientSettings AllowColumnsReorder="false" EnableRowHoverStyle="false">
 							<Resizing AllowColumnResize="true" />
 						</ClientSettings>
 						<MasterTableView DataKeyNames="ThreadID" CommandItemDisplay="Top" CommandItemStyle-Height="30">
                             <CommandItemTemplate>
-                                &nbsp;&nbsp;<asp:Label runat="server" ID="lblThreadDescription" EnableViewState="false" resourcekey="lblThreadDescription" />&nbsp;&nbsp;
-                                <telerik:RadComboBox runat="server" ID="rcbThreads" Width="250" AutoPostBack="true" onselectedindexchanged="rcbThreads_SelectedIndexChange" />
+                                &nbsp;&nbsp;<asp:Label runat="server" ID="lblThreadDescription" EnableViewState="false" resourcekey="lblThreadDescription" />
                                 <asp:Label runat="server" ID="lblThreadTitle" EnableViewState="false" />
                             </CommandItemTemplate>
 							<NoRecordsTemplate>
@@ -58,7 +57,6 @@
 						</MasterTableView>
 					</dnnweb:DnnGrid>
 				</div>
-                <asp:LinkButton runat="server" ID="lnkShowAll" resourcekey="lnkShowAll" Visible="false" CssClass="CommandButton" />
 			</td>
 		</tr>
 	</table>

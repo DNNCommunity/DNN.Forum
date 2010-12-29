@@ -31,7 +31,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
     ''' <history>
     ''' Bart³omiej Waluszko 12/23/2010 Updated
     ''' </history>
-    ''' <remarks>'TODO: Enable Grid sorting, now index out of range is thrown</remarks>
+    ''' <remarks></remarks>
     Partial Public Class EmailSubscribers
         Inherits ForumModuleBase
         Implements Utilities.AjaxLoader.IPageLoad
@@ -64,24 +64,12 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Private ReadOnly Property ThreadID As Integer
             Get
                 Dim _threadID As Integer = -1
-                If (Not String.IsNullOrEmpty(hdnRcbThreadsValue.Value)) AndAlso Integer.TryParse(hdnRcbThreadsValue.Value, _threadID) Then 'take ThreadID from hidden field
-
-                ElseIf Request.QueryString("ThreadID") IsNot Nothing Then 'take ThreadID from QueryString
+                If Request.QueryString("ThreadID") IsNot Nothing Then 'take ThreadID from QueryString
                     Integer.TryParse(Request.QueryString("ThreadID"), _threadID)
-                Else
-                    'take threadID from ForumID 
-                    Dim trackingController As New TrackingController
-                    Dim trackingInfo As List(Of TrackingInfo)
-                    trackingInfo = trackingController.TrackingThreadsGetByForumID(ForumID)
-                    If trackingInfo IsNot Nothing AndAlso trackingInfo.Count > 0 Then
-                        _threadID = trackingInfo(0).ThreadID
-                    End If
                 End If
                 Return _threadID
             End Get
         End Property
-
-        Private QueryString_IsEnable As Boolean = False
 
 #End Region
 
@@ -92,9 +80,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         ''' </summary>
         ''' <remarks></remarks>
         Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
-            'bind grids
-            GridForumBind()
-            GridThreadBind()
+
         End Sub
 
 #End Region
@@ -109,24 +95,20 @@ Namespace DotNetNuke.Modules.Forum.ACP
         ''' <remarks>All controls containing grids should localize the grid headers here. </remarks>
         Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
             SetLocalization()
-
-            'if it runs from Forum or Post list, disable ComboBoxes
-            If Request.QueryString("ThreadID") IsNot Nothing Or Request.QueryString("ForumID") IsNot Nothing Then
-                QueryString_IsEnable = True
-                lnkShowAll.Visible = True
+            Dim _forumID As Integer
+            If (Request.QueryString("ForumID") IsNot Nothing) AndAlso (Integer.TryParse(Request.QueryString("ForumID"), _forumID)) Then 'take ThreadID from QueryString
+                hdnRcbForumsValue.Value = _forumID.ToString()
             End If
-        End Sub
 
-        ''' <summary>
-        ''' Show Grids and relaed ComboBox's
-        ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
-        Protected Sub lnkShowAll_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lnkShowAll.Click
-            Dim params As String()
-            params = New String(1) {"mid=" & ModuleId.ToString(), "view=" & CStr(AdminAjaxControl.EmailSubscribers)}
-            Response.Redirect(NavigateURL(TabId, ForumPage.ACP.ToString(), params))
+            'ForumID & ThreadID is in QueryString
+            If ForumID <> -1 AndAlso ThreadID <> -1 Then
+                rgForums.Visible = True
+                rgThreads.Visible = True
+
+            Else 'show only rgForums
+                rgForums.Visible = True
+                rgThreads.Visible = False
+            End If
         End Sub
 
         ''' <summary>
@@ -152,9 +134,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
                 Dim forumID As Integer
                 If Integer.TryParse(rcbForums.SelectedValue, forumID) Then
                     hdnRcbForumsValue.Value = forumID.ToString()
-                    hdnRcbThreadsValue.Value = ""
-                    GridForumBind()
-                    GridThreadBind()
+                    rgForums.Rebind()
                 End If
             End If
         End Sub
@@ -173,14 +153,10 @@ Namespace DotNetNuke.Modules.Forum.ACP
                 Dim forumList As List(Of ForumInfo)
                 forumList = forumController.GetModuleForums(ModuleId)
 
-                If QueryString_IsEnable Then
-                    rcbForums.Visible = False
-                Else
-                    rcbForums.DataTextField = "Name"
-                    rcbForums.DataValueField = "ForumID"
-                    rcbForums.DataSource = forumList
-                    rcbForums.DataBind()
-                End If
+                rcbForums.DataTextField = "Name"
+                rcbForums.DataValueField = "ForumID"
+                rcbForums.DataSource = forumList
+                rcbForums.DataBind()
             End If
         End Sub
 
@@ -194,30 +170,28 @@ Namespace DotNetNuke.Modules.Forum.ACP
             If Not String.IsNullOrEmpty(hdnRcbForumsValue.Value) Then
                 Dim gridCommandItem As GridCommandItem = CType(rgForums.MasterTableView.GetItems(GridItemType.CommandItem)(0), GridCommandItem)
                 Dim rcbForums As RadComboBox = CType(gridCommandItem.FindControl("rcbForums"), RadComboBox)
-                rcbForums.SelectedValue = hdnRcbForumsValue.Value
+                rcbForums.SelectedValue = ForumID.ToString()
             End If
         End Sub
 
         ''' <summary>
-        ''' If QueryString exist make forum name visible
+        ''' rgForums - Advanced data binding
         ''' </summary>
-        ''' <param name="sender"></param>
+        ''' <param name="source"></param>
         ''' <param name="e"></param>
         ''' <remarks></remarks>
-        Protected Sub rgForums_ItemCreated(ByVal sender As Object, ByVal e As GridItemEventArgs) Handles rgForums.ItemCreated
-            If TypeOf e.Item Is GridCommandItem Then
-                Dim commandItem As GridCommandItem = CType(e.Item, GridCommandItem)
-                Dim lnkHeader As Label = CType(commandItem.FindControl("lblForumTitle"), Label)
+        Protected Sub rgForums_NeedDataSource(ByVal source As Object, ByVal e As Telerik.Web.UI.GridNeedDataSourceEventArgs) Handles rgForums.NeedDataSource
+            Dim userTrackingController As New UserTrackingController
+            If ForumID <> -1 Then
+                rgForums.DataSource = userTrackingController.GetForumSubscribers(ForumID)
+            Else
+                'get first forum belong to this module
+                Dim forumController As New ForumController
+                Dim forumInfo As List(Of ForumInfo) = forumController.GetModuleForums(ModuleId)
 
-                If QueryString_IsEnable Then
-                    Dim forumController As New ForumController
-                    Dim forumInfo As ForumInfo = forumController.GetModuleForums(ModuleId).Where(Function(f) f.ForumID = ForumID).FirstOrDefault()
-                    If forumInfo IsNot Nothing Then
-                        lnkHeader.Text = """" & forumInfo.Name & """"
-                    End If
-                    lnkHeader.Visible = True
-                Else
-                    lnkHeader.Visible = False
+                If (forumInfo IsNot Nothing) AndAlso forumInfo.Count > 0 Then
+                    hdnRcbForumsValue.Value = forumInfo(0).ForumID.ToString()
+                    rgForums.DataSource = userTrackingController.GetForumSubscribers(ForumID)
                 End If
             End If
         End Sub
@@ -227,62 +201,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 #Region "rgThreads"
 
         ''' <summary>
-        ''' Fires when a user changes the rcbThreads RadComboBox
-        ''' Save current threadID in hidden field
-        ''' </summary>
-        ''' <param name="source"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
-        Protected Sub rcbThreads_SelectedIndexChange(ByVal source As Object, ByVal e As Telerik.Web.UI.RadComboBoxSelectedIndexChangedEventArgs)
-            If TypeOf source Is RadComboBox Then
-                Dim rcbThreads As RadComboBox = CType(source, RadComboBox)
-                Dim _threadID As Integer
-                If Integer.TryParse(rcbThreads.SelectedValue, _threadID) Then
-                    hdnRcbThreadsValue.Value = _threadID.ToString()
-                    GridThreadBind()
-                End If
-            End If
-        End Sub
-
-        ''' <summary>
-        ''' Bind rcbThreads ComboBox
-        ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
-        Protected Sub rgThreads_ItemDataBound(ByVal sender As System.Object, ByVal e As GridItemEventArgs) Handles rgThreads.ItemDataBound
-            If (TypeOf e.Item Is GridCommandItem) Then
-                Dim commandItem As GridCommandItem = CType(e.Item, GridCommandItem)
-                Dim rcbThreads As RadComboBox = CType(commandItem.FindControl("rcbThreads"), RadComboBox)
-                If QueryString_IsEnable Then
-                    rcbThreads.Visible = False
-                Else
-                    rcbThreads.DataTextField = "Subject"
-                    rcbThreads.DataValueField = "ThreadID"
-                    Dim trackingController As New TrackingController
-                    rcbThreads.DataSource = trackingController.TrackingThreadsGetByForumID(ForumID)
-                    rcbThreads.DataBind()
-                End If
-
-            End If
-        End Sub
-
-        ''' <summary>
-        ''' Update SelectedValue in rcbThreads ComboBox
-        ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
-        Protected Sub rgThreads_PreRender(ByVal sender As System.Object, ByVal e As EventArgs) Handles rgThreads.PreRender
-            If Not String.IsNullOrEmpty(hdnRcbThreadsValue.Value) Then
-                Dim gridCommandItem As GridCommandItem = CType(rgThreads.MasterTableView.GetItems(GridItemType.CommandItem)(0), GridCommandItem)
-                Dim rcbThreads As RadComboBox = CType(gridCommandItem.FindControl("rcbThreads"), RadComboBox)
-                rcbThreads.SelectedValue = hdnRcbThreadsValue.Value()
-            End If
-        End Sub
-
-        ''' <summary>
-        ''' If QueryString exist make thread subject visible
+        ''' Make thread subject visible
         ''' </summary>
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
@@ -292,19 +211,25 @@ Namespace DotNetNuke.Modules.Forum.ACP
                 Dim commandItem As GridCommandItem = CType(e.Item, GridCommandItem)
                 Dim lnkHeader As Label = CType(commandItem.FindControl("lblThreadTitle"), Label)
 
-                If QueryString_IsEnable Then
-                    Dim threadController As New ThreadController
-                    Dim threadInfo As ThreadInfo = threadController.GetThread(ThreadID)
-                    If (threadInfo IsNot Nothing) Then
-                        lnkHeader.Text = """" & threadInfo.Subject & """"
-                    End If
+                Dim threadController As New ThreadController
+                Dim threadInfo As ThreadInfo = threadController.GetThread(ThreadID)
+                If (threadInfo IsNot Nothing) Then
+                    lnkHeader.Text = """" & threadInfo.Subject & """"
                     lnkHeader.Visible = True
-                Else
-                    lnkHeader.Visible = False
                 End If
             End If
         End Sub
 
+        ''' <summary>
+        ''' rgThreads - Advanced data binding
+        ''' </summary>
+        ''' <param name="source"></param>
+        ''' <param name="e"></param>
+        ''' <remarks></remarks>
+        Protected Sub rgThreads_NeedDataSource(ByVal source As Object, ByVal e As Telerik.Web.UI.GridNeedDataSourceEventArgs) Handles rgThreads.NeedDataSource
+            Dim userTrackingController As New UserTrackingController
+            rgThreads.DataSource = userTrackingController.GetThreadSubscribers(ThreadID)
+        End Sub
 #End Region
 
 #End Region
@@ -327,40 +252,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
                     gc.HeaderText = Localization.GetString(gc.UniqueName + ".Header", Me.LocalResourceFile)
                 End If
             Next
-        End Sub
-
-        ''' <summary>
-        ''' Used to bind data to the forum subscriptions grid. 
-        ''' </summary>
-        ''' <remarks></remarks>
-        Private Sub GridForumBind()
-            Dim userTrackingController As New UserTrackingController
-            rgForums.AutoGenerateColumns = False 'AutoGenerateColumns didn't works in *.ascx
-
-            If ForumID <> -1 Then
-                rgForums.DataSource = userTrackingController.GetForumSubscribers(ForumID)
-            Else
-                'get first forum belong to this module
-                Dim forumController As New ForumController
-                Dim forumInfo As List(Of ForumInfo) = forumController.GetModuleForums(ModuleId)
-
-                If (forumInfo IsNot Nothing) AndAlso forumInfo.Count > 0 Then
-                    hdnRcbForumsValue.Value = forumInfo(0).ForumID.ToString()
-                    rgForums.DataSource = userTrackingController.GetForumSubscribers(ForumID)
-                End If
-            End If
-
-            rgForums.DataBind()
-        End Sub
-
-        ''' <summary>
-        ''' Used to bind data to the thread subscriptions grid. 
-        ''' </summary>
-        ''' <remarks></remarks>
-        Private Sub GridThreadBind()
-            Dim userTrackingController As New UserTrackingController
-            rgThreads.DataSource = userTrackingController.GetThreadSubscribers(ThreadID)
-            rgThreads.DataBind()
         End Sub
 
 #End Region

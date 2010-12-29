@@ -368,6 +368,8 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Advertisements Vendors"
         Public MustOverride Function VendorsGet(ByVal ModuleID As Integer) As IDataReader
         Public MustOverride Sub VendorUpdate(ByVal VendorID As Integer, ByVal IsEnabled As Boolean, ByVal ModuleID As Integer)
+        Public MustOverride Function Vendors_BannersGet(ByVal VendorID As Integer) As IDataReader
+        Public MustOverride Sub Vendors_BannerViewIncrement(ByVal BannerID As Integer)
 #End Region
 
         Public MustOverride Function GetModulesPortalID(ByVal ModuleID As Integer) As Integer

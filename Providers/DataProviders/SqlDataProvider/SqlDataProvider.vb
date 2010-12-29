@@ -896,6 +896,12 @@ Namespace DotNetNuke.Modules.Forum
         Public Overrides Sub VendorUpdate(ByVal VendorID As Integer, ByVal IsEnabled As Boolean, ByVal ModuleID As Integer)
             SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "Ad_Vendors_Update", VendorID, IsEnabled, ModuleID)
         End Sub
+        Public Overrides Function Vendors_BannersGet(ByVal VendorID As Integer) As System.Data.IDataReader
+            Return CType(SqlHelper.ExecuteReader(ConnectionString, _fullModuleQualifier & "Ad_Vendors_BannersGet", VendorID), IDataReader)
+        End Function
+        Public Overrides Sub Vendors_BannerViewIncrement(ByVal BannerID As Integer)
+            SqlHelper.ExecuteNonQuery(ConnectionString, _fullModuleQualifier & "Ad_Vendors_BannerViewIncrement", BannerID)
+        End Sub
 #End Region
 
 
