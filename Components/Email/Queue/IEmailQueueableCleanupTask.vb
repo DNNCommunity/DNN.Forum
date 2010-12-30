@@ -59,34 +59,39 @@ Namespace DotNetNuke.Modules.Forum
 
 				Dim tasksDeleteDate As Date = Date.Now().AddDays(-30)
 				If Not Me.ScheduleHistoryItem.GetSetting("ForumTaskDeleteDays") Is Nothing Then
-					Dim DaysToDelete As Integer
-					DaysToDelete = CInt(Me.ScheduleHistoryItem.GetSetting("ForumTaskDeleteDays"))
-					tasksDeleteDate = Date.Now.AddDays(-DaysToDelete)
-				End If
+                    Dim DaysToDelete As Integer = 30
+                    If (Me.ScheduleHistoryItem.GetSetting("ForumTaskDeleteDays").Trim() <> "") Then
+                        DaysToDelete = CInt(Me.ScheduleHistoryItem.GetSetting("ForumTaskDeleteDays"))
+                    End If
+                    tasksDeleteDate = Date.Now.AddDays(-DaysToDelete)
+                End If
 
-				Dim emailsDeleteDate As Date = Date.Now().AddDays(-30)
-				If Not Me.ScheduleHistoryItem.GetSetting("ForumEmailDeleteDays") Is Nothing Then
-					Dim DaysToDelete As Integer
-					DaysToDelete = CInt(Me.ScheduleHistoryItem.GetSetting("ForumEmailDeleteDays"))
-					emailsDeleteDate = Date.Now.AddDays(-DaysToDelete)
-				End If
+                Dim emailsDeleteDate As Date = Date.Now().AddDays(-30)
+                If Not Me.ScheduleHistoryItem.GetSetting("ForumEmailDeleteDays") Is Nothing Then
+                    Dim DaysToDelete As Integer = 30
+                    If (Me.ScheduleHistoryItem.GetSetting("ForumEmailDeleteDays").Trim() <> "") Then
+                        DaysToDelete = CInt(Me.ScheduleHistoryItem.GetSetting("ForumEmailDeleteDays"))
+                    End If
+                    DaysToDelete = CInt(Me.ScheduleHistoryItem.GetSetting("ForumEmailDeleteDays"))
+                    emailsDeleteDate = Date.Now.AddDays(-DaysToDelete)
+                End If
 
-				' logic to delete tasks and emails (based on schedule item settings - The actual point of the task)
-				objEmailQueueTaskCnt.EmailQueueTaskCleanTasks(tasksDeleteDate)
-				objEmailQueueTaskCnt.EmailQueueTaskCleanEmails(emailsDeleteDate)
+                ' logic to delete tasks and emails (based on schedule item settings - The actual point of the task)
+                objEmailQueueTaskCnt.EmailQueueTaskCleanTasks(tasksDeleteDate)
+                objEmailQueueTaskCnt.EmailQueueTaskCleanEmails(emailsDeleteDate)
 
-				' finish up this task in schedular
-				ScheduleHistoryItem.Succeeded = True	 'REQUIRED
-				ScheduleHistoryItem.AddLogNote("Email Queue Cleanup Completed.")
+                ' finish up this task in schedular
+                ScheduleHistoryItem.Succeeded = True     'REQUIRED
+                ScheduleHistoryItem.AddLogNote("Email Queue Cleanup Completed.")
 
-			Catch exc As Exception	 'REQUIRED
-				ScheduleHistoryItem.Succeeded = False	 'REQUIRED
-				ScheduleHistoryItem.AddLogNote("Email Queue Cleanup Initialization Failed. " + exc.ToString)	 'OPTIONAL
-				'notification that we have errored
-				Errored(exc)	 'REQUIRED
-				'log the exception
-				LogException(exc)	 'OPTIONAL
-			End Try
+            Catch exc As Exception   'REQUIRED
+                ScheduleHistoryItem.Succeeded = False    'REQUIRED
+                ScheduleHistoryItem.AddLogNote("Email Queue Cleanup Initialization Failed. " + exc.ToString)     'OPTIONAL
+                'notification that we have errored
+                Errored(exc)     'REQUIRED
+                'log the exception
+                LogException(exc)    'OPTIONAL
+            End Try
 		End Sub
 
 	End Class

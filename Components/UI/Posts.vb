@@ -3236,6 +3236,7 @@ Namespace DotNetNuke.Modules.Forum
             wr.Write("</td>")
             RenderRowEnd(wr) ' </tr>
         End Sub
+
 #End Region
 
     End Class
