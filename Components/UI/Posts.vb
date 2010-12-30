@@ -22,6 +22,7 @@ Option Explicit On
 
 Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Services.FileSystem
+Imports DotNetNuke.Entities.Portals
 
 Namespace DotNetNuke.Modules.Forum
 
@@ -3225,7 +3226,7 @@ Namespace DotNetNuke.Modules.Forum
                             advertController.BannerViewIncrement(b.BannerId)
                             Dim fileController As New FileController
                             Dim fileInfo As DotNetNuke.Services.FileSystem.FileInfo = fileController.GetFileById(Integer.Parse(b.ImageFile.Split(Char.Parse("="))(1)), PortalID)
-                            wr.Write(bannerController.FormatBanner(advert.VendorId, b.BannerId, b.BannerTypeId, b.BannerName, fileInfo.RelativePath, b.Description, b.URL, b.Width, b.Height, "L", PortalSettings.HomeDirectory) & "&nbsp;")
+                            wr.Write(bannerController.FormatBanner(advert.VendorId, b.BannerId, b.BannerTypeId, b.BannerName, fileInfo.RelativePath, b.Description, b.URL, b.Width, b.Height, "L", objConfig.CurrentPortalSettings.HomeDirectory) & "&nbsp;")
                         Next
 
                     End If

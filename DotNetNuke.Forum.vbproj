@@ -147,12 +147,8 @@
     <Compile Include="Components\Configuration\Configuration.vb" />
     <Compile Include="Components\Configuration\Constants.vb" />
     <Compile Include="Components\BaseControl\DNNForum.vb" />
-    <Compile Include="Components\BaseObject\BaseObject.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Components\BaseObject\ForumObject.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Components\BaseObject\BaseObject.vb" />
+    <Compile Include="Components\BaseObject\ForumObject.vb" />
     <Compile Include="Components\Bookmark\ForumBookmark.vb" />
     <Compile Include="Components\Configuration\Enums.vb" />
     <Compile Include="Components\Configuration\ForumPreConfig.vb" />
@@ -212,30 +208,20 @@
     <Compile Include="Components\Portals\ForumPortalSettings.vb" />
     <Compile Include="Components\Security\MockSecurity.vb" />
     <Compile Include="Components\Tracking\UserTracking.vb" />
-    <Compile Include="Components\UI\Groups.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Components\UI\Posts.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Components\UI\Groups.vb" />
+    <Compile Include="Components\UI\Posts.vb" />
     <Compile Include="Components\Providers\Data\ForumDataProvider.vb" />
     <Compile Include="Components\RSS\ForumRss.vb" />
-    <Compile Include="Components\UI\ModuleSearch.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Components\UI\ModuleSearch.vb" />
     <Compile Include="Components\Security\ForumPermissions\ForumPermissionCollection.vb" />
     <Compile Include="Components\Security\ForumPermissions\ForumPermissionController.vb" />
     <Compile Include="Components\Security\ForumPermissions\ForumPermissionInfo.vb" />
     <Compile Include="Components\Security\ForumPermissions\PermissionInfo.vb" />
     <Compile Include="Components\Security\ModuleSecurity.vb" />
-    <Compile Include="Components\UI\Threads.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Components\UI\Threads.vb" />
     <Compile Include="Components\Tracking\ForumTracking.vb" />
     <Compile Include="Components\Treeview\ForumTreeview.vb" />
-    <Compile Include="Components\UI\Unread.vb">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Components\UI\Unread.vb" />
     <Compile Include="Components\Utilities\AjaxLoader.vb" />
     <Compile Include="Components\Utilities\Caching.vb" />
     <Compile Include="Components\Utilities\PostContent.vb" />
