@@ -911,7 +911,7 @@ Namespace DotNetNuke.Modules.Forum
 							' shows only first 15 letters of the post subject title
 							Dim truncatedTitle As String
 							If lastPostInfo.Subject.Length > 16 Then
-								truncatedTitle = Left(lastPostInfo.Subject, 15) & "..."
+                                truncatedTitle = LeftHtml(lastPostInfo.Subject, 15) & "..."
 							Else
 								truncatedTitle = lastPostInfo.Subject
 							End If
@@ -1157,7 +1157,33 @@ Namespace DotNetNuke.Modules.Forum
 				'odd
 				Return False
 			End If
-		End Function
+        End Function
+
+        ''' <summary>
+        ''' Returns a string containing a specified number of characters from the left side of a string.
+        ''' Leave all HTML codes
+        ''' </summary>
+        ''' <param name="str">String expression from which the leftmost characters are returned.</param>
+        ''' <param name="length">Integer expression. Numeric expression indicating how many characters to return. If less than 7, all string is returned. If greater than or equal to the number of characters in str, the entire string is returned</param>
+        ''' <returns>Returns a string containing a specified number of characters from the left side of a string.</returns>
+        ''' <remarks>Fuction dont' separate HTML codes</remarks>
+        Private Function LeftHtml(ByVal str As String, ByVal length As Integer) As String
+            If str.Length <= length OrElse length < 7 Then
+                Return str
+            End If
+
+            Dim counter As Integer = 0
+            While counter < 7
+                If str(length - counter) = "&" Then
+                    Return Left(str, length - counter)
+                ElseIf str(length - counter - 1) = ";" Then
+                    Return Left(str, length)
+                End If
+                counter += 1
+            End While
+
+            Return Left(str, length)
+        End Function
 
 #End Region
 
