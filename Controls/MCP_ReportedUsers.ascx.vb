@@ -47,7 +47,6 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		''' <remarks>So far this is a static page</remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
             dnngridReportedUsers.PageSize = Convert.ToInt32(CurrentForumUser.ThreadsPerPage)
-
             BindData(dnngridReportedUsers.PageSize, 1)
 		End Sub
 
@@ -61,31 +60,16 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
 		''' <remarks></remarks>
-        Private Sub dgReportedUsers_ItemDataBound(ByVal sender As Object, ByVal e As GridItemEventArgs) Handles dnngridReportedUsers.ItemDataBound
+        Protected Sub dgReportedUsers_ItemDataBound(ByVal sender As Object, ByVal e As GridItemEventArgs) Handles dnngridReportedUsers.ItemDataBound
             If TypeOf e.Item Is Telerik.Web.UI.GridDataItem Then
                 Dim keyID As Integer = CInt(e.Item.OwnerTableView.DataKeyValues(e.Item.ItemIndex)("UserID"))
                 Dim dataItem As Telerik.Web.UI.GridDataItem = CType(e.Item, Telerik.Web.UI.GridDataItem)
                 Dim objUser As ReportedUserInfo = CType(e.Item.DataItem, ReportedUserInfo)
 
                 Dim hl As HyperLink
-                'Dim img As Image
-
-                'Dim objSecurity As New Forum.ModuleSecurity(ModuleId, TabId, -1, CurrentForumUser.UserID)
-
-                'img = CType(e.Item.FindControl("imgEdit"), Image)
-
-                'If objSecurity.IsForumAdmin Then
-                '    hl = CType(e.Item.FindControl("hlEdit"), HyperLink)
-                '    hl.NavigateUrl = Utilities.Links.UCP_AdminLinks(TabId, ModuleId, dataItem.UserID, UserAjaxControl.Profile)
-
-                '    img.ImageUrl = objConfig.GetThemeImageURL("s_edit.") & objConfig.ImageExtension
-                '    img.ToolTip = Services.Localization.Localization.GetString("imgEdit.Text", LocalResourceFile)
-                'Else
-                '    img.Visible = False
-                'End If
-
                 hl = DirectCast((dataItem)("User").Controls(0), HyperLink)
                 hl.Text = objUser.Author(ModuleId, PortalId).SiteAlias
+
                 If Not objConfig.EnableExternalProfile Then
                     hl.NavigateUrl = objUser.Author(ModuleId, PortalId).UserCoreProfileLink
                 Else

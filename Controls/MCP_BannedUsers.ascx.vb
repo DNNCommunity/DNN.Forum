@@ -29,41 +29,37 @@ Namespace DotNetNuke.Modules.Forum.MCP
 	''' </summary>
 	''' <remarks>
 	''' </remarks>
-	''' <history>
-	''' 	[cpaterra]	12/21/2008	Created
-	''' </history>
-	Partial Public Class BannedUsers
-		Inherits ForumModuleBase
-		Implements Utilities.AjaxLoader.IPageLoad
+    Partial Public Class BannedUsers
+        Inherits ForumModuleBase
+        Implements Utilities.AjaxLoader.IPageLoad
 
 #Region "Private Members"
 
-		Private _PageSize As Integer
+        Private _PageSize As Integer
 
 #End Region
 
 #Region "Interfaces"
 
-		''' <summary>
-		''' This is required to replace If Page.IsPostBack = False because controls are dynamically loaded via Ajax. 
-		''' </summary>
-		''' <remarks></remarks>
-		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
+        ''' <summary>
+        ''' This is required to replace If Page.IsPostBack = False because controls are dynamically loaded via Ajax. 
+        ''' </summary>
+        ''' <remarks></remarks>
+        Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
             dnngridBannedUsers.PageSize = Convert.ToInt32(CurrentForumUser.ThreadsPerPage)
-
             BindData(dnngridBannedUsers.PageSize, 1)
-		End Sub
+        End Sub
 
 #End Region
 
 #Region "Event Handlers"
 
-		''' <summary>
-		''' Used to set properties for various sever controls used in the item template.
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
+        ''' <summary>
+        ''' Used to set properties for various sever controls used in the item template.
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="e"></param>
+        ''' <remarks></remarks>
         Protected Sub dnngridBannedUsers_ItemDataBound(ByVal sender As Object, ByVal e As GridItemEventArgs) Handles dnngridBannedUsers.ItemDataBound
             If TypeOf e.Item Is Telerik.Web.UI.GridDataItem Then
                 Dim keyID As Integer = CInt(e.Item.OwnerTableView.DataKeyValues(e.Item.ItemIndex)("UserID"))
@@ -82,10 +78,8 @@ Namespace DotNetNuke.Modules.Forum.MCP
 
             End If
             'Dim lbl As Label
-            
             'lbl = CType(e.Item.FindControl("lblStartBanDate"), Label)
             'lbl.Text = FormatDate(dataItem.StartBanDate)
-
             'lbl = CType(e.Item.FindControl("lblLiftBanDate"), Label)
             'lbl.Text = FormatDate(dataItem.LiftBanDate)
         End Sub
@@ -110,44 +104,44 @@ Namespace DotNetNuke.Modules.Forum.MCP
 
 #Region "Private Methods"
 
-		''' <summary>
-		''' Binds the PM threads for a specific user, if none exist it will hide grid view, show notice to user.
-		''' </summary>
-		''' <param name="PageSize"></param>
-		''' <param name="CurrentPage"></param>
-		''' <remarks>
-		''' </remarks>
-		''' <history>
-		''' </history>
-		Private Sub BindData(ByVal PageSize As Integer, ByVal CurrentPage As Integer)
-			Dim cntUser As New ForumUserController
-			Dim arrUsers As New List(Of ForumUserInfo)
-			Dim TotalRecords As Integer
+        ''' <summary>
+        ''' Binds the PM threads for a specific user, if none exist it will hide grid view, show notice to user.
+        ''' </summary>
+        ''' <param name="PageSize"></param>
+        ''' <param name="CurrentPage"></param>
+        ''' <remarks>
+        ''' </remarks>
+        ''' <history>
+        ''' </history>
+        Private Sub BindData(ByVal PageSize As Integer, ByVal CurrentPage As Integer)
+            Dim cntUser As New ForumUserController
+            Dim arrUsers As New List(Of ForumUserInfo)
+            Dim TotalRecords As Integer
 
-			arrUsers = cntUser.GetBannedUsers(PortalId, CurrentPage - 1, PageSize, ModuleId, TotalRecords)
+            arrUsers = cntUser.GetBannedUsers(PortalId, CurrentPage - 1, PageSize, ModuleId, TotalRecords)
 
             dnngridBannedUsers.DataSource = arrUsers
             dnngridBannedUsers.DataBind()
 
-			If Not arrUsers Is Nothing Then
+            If Not arrUsers Is Nothing Then
                 dnngridBannedUsers.VirtualItemCount = arrUsers.Count
             End If
         End Sub
 
-		''' <summary>
-		''' Formats the start/end dates for banning.
-		''' </summary>
-		''' <param name="objDate"></param>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Private Function FormatDate(ByVal objDate As Date) As String
-			Dim srtDate As String = String.Empty
-			srtDate = Utilities.ForumUtils.GetCreatedDateInfo(objDate, objConfig, "Forum_LastPostText")
-			Return srtDate
-		End Function
+        ''' <summary>
+        ''' Formats the start/end dates for banning.
+        ''' </summary>
+        ''' <param name="objDate"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Private Function FormatDate(ByVal objDate As Date) As String
+            Dim srtDate As String = String.Empty
+            srtDate = Utilities.ForumUtils.GetCreatedDateInfo(objDate, objConfig, "Forum_LastPostText")
+            Return srtDate
+        End Function
 
 #End Region
 
-	End Class
+    End Class
 
 End Namespace
