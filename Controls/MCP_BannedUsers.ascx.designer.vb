@@ -12,60 +12,15 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.MCP
 
-	Partial Public Class BannedUsers
+    Partial Public Class BannedUsers
 
-		'''<summary>
-		'''pnlBannedUsers control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents pnlBannedUsers As Global.System.Web.UI.WebControls.Panel
-
-		'''<summary>
-		'''dgBannedUsers control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents dgBannedUsers As Global.System.Web.UI.WebControls.DataGrid
-
-		'''<summary>
-		'''BottomPager control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents BottomPager As Global.DotNetNuke.Modules.Forum.WebControls.AjaxPager
-
-		'''<summary>
-		'''pnlNoItems control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents pnlNoItems As Global.System.Web.UI.WebControls.Panel
-
-		'''<summary>
-		'''lblTitle control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
-
-		'''<summary>
-		'''lblNoResults control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblNoResults As Global.System.Web.UI.WebControls.Label
-	End Class
+        '''<summary>
+        '''dnngridBannedUsers control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents dnngridBannedUsers As Global.DotNetNuke.Web.UI.WebControls.DnnGrid
+    End Class
 End Namespace

@@ -40,9 +40,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </summary>
 		''' <remarks></remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
-			txtPopularThreadView.Text = Convert.ToString(objConfig.PopularThreadView)
-			txtPopularThreadReply.Text = Convert.ToString(objConfig.PopularThreadReply)
-			txtDays.Text = Convert.ToString(objConfig.PopularThreadDays)
+            rntxtbxPopularThreadView.Text = Convert.ToString(objConfig.PopularThreadView)
+            rntxtbxPopularThreadReply.Text = Convert.ToString(objConfig.PopularThreadReply)
+            rntxtbxDays.Text = Convert.ToString(objConfig.PopularThreadDays)
 		End Sub
 
 #End Region
@@ -60,9 +60,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
 				Dim ctlModule As New Entities.Modules.ModuleController
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.POPULAR_THREAD_VIEWS, txtPopularThreadView.Text)
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.POPULAR_THREAD_REPLIES, txtPopularThreadReply.Text)
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.POPULAR_THREAD_DAYS, txtDays.Text)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.POPULAR_THREAD_VIEWS, rntxtbxPopularThreadView.Text)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.POPULAR_THREAD_REPLIES, rntxtbxPopularThreadReply.Text)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.POPULAR_THREAD_DAYS, rntxtbxDays.Text)
 
 				Configuration.ResetForumConfig(ModuleId)
 

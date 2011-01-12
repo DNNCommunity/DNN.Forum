@@ -12,69 +12,69 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.UCP
 
-	Partial Public Class Tracking
+    Partial Public Class Tracking
 
-		'''<summary>
-		'''lblForumTitle control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblForumTitle As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblForumTitle control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblForumTitle As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''rtsNotifications control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rtsNotifications As Global.Telerik.Web.UI.RadTabStrip
+        '''<summary>
+        '''rtsNotifications control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rtsNotifications As Global.DotNetNuke.Web.UI.WebControls.DnnTabStrip
 
-		'''<summary>
-		'''rmpNotifications control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rmpNotifications As Global.Telerik.Web.UI.RadMultiPage
+        '''<summary>
+        '''rmpNotifications control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rmpNotifications As Global.DotNetNuke.Web.UI.WebControls.DnnMultiPage
 
-		'''<summary>
-		'''rpvForums control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rpvForums As Global.Telerik.Web.UI.RadPageView
+        '''<summary>
+        '''rpvForums control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rpvForums As Global.DotNetNuke.Wrapper.UI.WebControls.DnnPageView
 
-		'''<summary>
-		'''gridForumTracking control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents gridForumTracking As Global.DotNetNuke.Web.UI.WebControls.DnnGrid
+        '''<summary>
+        '''gridForumTracking control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents gridForumTracking As Global.DotNetNuke.Web.UI.WebControls.DnnGrid
 
-		'''<summary>
-		'''rpvThreads control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rpvThreads As Global.Telerik.Web.UI.RadPageView
+        '''<summary>
+        '''rpvThreads control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rpvThreads As Global.DotNetNuke.Wrapper.UI.WebControls.DnnPageView
 
-		'''<summary>
-		'''gridThreadTracking control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents gridThreadTracking As Global.DotNetNuke.Web.UI.WebControls.DnnGrid
-	End Class
+        '''<summary>
+        '''gridThreadTracking control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents gridThreadTracking As Global.DotNetNuke.Web.UI.WebControls.DnnGrid
+    End Class
 End Namespace

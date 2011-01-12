@@ -1,6 +1,7 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Control Inherits="DotNetNuke.Modules.Forum.ACP.FilterWord" CodeBehind="ACP_FilterWord.ascx.vb" language="vb" AutoEventWireup="false" Explicit="true" %>
 <%@ Register TagPrefix="dnnforum" Namespace="DotNetNuke.Modules.Forum.WebControls" Assembly="DotNetNuke.Modules.Forum" %>
+<%@ Register Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
 <div class="ACP-FilterWord">
 	<table cellpadding="0" cellspacing="0" width="100%" border="0">
 		<tr>
@@ -43,7 +44,7 @@
 										<asp:Label runat="server" ID="lblFilter" resourcekey="lblFilter" CssClass="Forum_NormalBold" EnableViewState="false" />
 									</td>
 									<td>
-										<asp:dropdownlist id="ddlSearchType" Runat="server" class="Forum_NormalTextBox" AutoPostBack="True" />
+                                        <dnnweb:DnnComboBox ID="rcbSearchType" runat="server" AutoPostBack="true" Width="55" />
 									</td>
 								</tr>
 							</table>

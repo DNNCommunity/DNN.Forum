@@ -97,58 +97,12 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
 #Region "Event Handlers"
 
-		''' <summary>
-		''' Runs when the control is initialized, even before anything in LoadInitialView runs. 
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks>All controls containing grids should localize the grid headers here. </remarks>
-		Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-			SetLocalization()
-		End Sub
-
-		''' <summary>
-		''' Runs when a Command event is raised in the Grid 
-		''' </summary>
-		''' <remarks></remarks>
-		Protected Sub rgTaskDetails_ItemCommand(ByVal source As Object, ByVal e As Telerik.Web.UI.GridCommandEventArgs) Handles rgTaskDetails.ItemCommand
-			Try
-				If (e.Item.ItemType <> Telerik.Web.UI.GridItemType.Item Or e.Item.ItemType <> Telerik.Web.UI.GridItemType.AlternatingItem) Then
-					'Select Case e.CommandName
-					'	Case "ViewItem"
-					'		'Dim keyID As Integer = CInt(e.Item.OwnerTableView.DataKeyValues(e.Item.ItemIndex)("EmailQueueID"))
-					'		'e.Item.Selected = True
-					'		'BindImpact(keyID)
-					'End Select
-				End If
-			Catch exc As System.Exception
-				'Module failed to load
-				DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(Me, exc)
-			End Try
-		End Sub
-
-		''' <summary>
-		''' Binds the appropriate image items to the datagrid based on the results stored in the db.
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
-		Protected Sub rgTaskDetails_ItemDataBound(ByVal sender As Object, ByVal e As Telerik.Web.UI.GridItemEventArgs) Handles rgTaskDetails.ItemDataBound
-			'If TypeOf e.Item Is Telerik.Web.UI.GridDataItem Then
-			'	Dim dataItem As Telerik.Web.UI.GridDataItem = CType(e.Item, Telerik.Web.UI.GridDataItem)
-			'	Dim imgBtn As ImageButton
-
-			'	imgBtn = CType(dataItem("ViewItem").Controls(0), ImageButton)
-			'	imgBtn.ToolTip = Localization.GetString("View", Me.LocalResourceFile)
-			'End If
-		End Sub
-
-		''' <summary>
-		''' Used to populate the grid with a datasource when one is not found (and is needed).  
-		''' </summary>
-		''' <param name="source"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
+        ''' <summary>
+        ''' Used to populate the grid with a datasource when one is not found (and is needed).  
+        ''' </summary>
+        ''' <param name="source"></param>
+        ''' <param name="e"></param>
+        ''' <remarks></remarks>
 		Protected Sub rgTaskDetails_NeedsDataSource(ByVal source As Object, ByVal e As Telerik.Web.UI.GridNeedDataSourceEventArgs) Handles rgTaskDetails.NeedDataSource
 			If Not e.IsFromDetailTable Then
 				BindGrid(False)
@@ -214,30 +168,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			End If
 		End Sub
 
-		''' <summary>
-		''' Used to localized the grid headers (a replacement for core method). 
-		''' </summary>
-		''' <remarks></remarks>
-		Private Sub SetLocalization()
-			For Each gc As Telerik.Web.UI.GridColumn In rgTaskDetails.MasterTableView.Columns
-                If gc.UniqueName <> "" Then
-                    gc.HeaderText = Localization.GetString(gc.UniqueName + ".Header", Me.LocalResourceFile)
-                End If
-            Next
-
-            ' Need to access grid table view here
-            For Each detailGrid As Telerik.Web.UI.GridTableView In rgTaskDetails.MasterTableView.DetailTables
-                For Each gc As Telerik.Web.UI.GridColumn In detailGrid.Columns
-                    If gc.UniqueName <> "" Then
-                        gc.HeaderText = Localization.GetString(gc.UniqueName + ".Header", Me.LocalResourceFile)
-                    End If
-                Next
-            Next
-
-        End Sub
-
 #End Region
 
-	End Class
+    End Class
 
 End Namespace

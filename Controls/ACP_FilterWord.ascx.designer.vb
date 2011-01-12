@@ -12,114 +12,114 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
-	Partial Public Class FilterWord
+    Partial Public Class FilterWord
 
-		'''<summary>
-		'''lblTitle control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblTitle control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''lblNewWord control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblNewWord As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblNewWord control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblNewWord As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''txtNewBadWord control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtNewBadWord As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''txtNewBadWord control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtNewBadWord As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''lblNewReplaceWord control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblNewReplaceWord As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblNewReplaceWord control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblNewReplaceWord As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''txtNewReplaceWord control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtNewReplaceWord As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''txtNewReplaceWord control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtNewReplaceWord As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''imgAdd control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents imgAdd As Global.System.Web.UI.WebControls.ImageButton
+        '''<summary>
+        '''imgAdd control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents imgAdd As Global.System.Web.UI.WebControls.ImageButton
 
-		'''<summary>
-		'''lblFilter control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblFilter As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblFilter control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblFilter As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''ddlSearchType control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents ddlSearchType As Global.System.Web.UI.WebControls.DropDownList
+        '''<summary>
+        '''rcbSearchType control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rcbSearchType As Global.DotNetNuke.Web.UI.WebControls.DnnComboBox
 
-		'''<summary>
-		'''lblNoResults control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblNoResults As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblNoResults control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblNoResults As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''grdBadWords control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents grdBadWords As Global.System.Web.UI.WebControls.DataGrid
+        '''<summary>
+        '''grdBadWords control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents grdBadWords As Global.System.Web.UI.WebControls.DataGrid
 
-		'''<summary>
-		'''BottomPager control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents BottomPager As Global.DotNetNuke.Modules.Forum.WebControls.AjaxPager
+        '''<summary>
+        '''BottomPager control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents BottomPager As Global.DotNetNuke.Modules.Forum.WebControls.AjaxPager
 
-		'''<summary>
-		'''lblUpdateDone control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
-	End Class
+        '''<summary>
+        '''lblUpdateDone control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
+    End Class
 End Namespace

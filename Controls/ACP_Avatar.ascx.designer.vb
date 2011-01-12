@@ -12,465 +12,465 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
-	Partial Public Class Avatar
+    Partial Public Class Avatar
 
-		'''<summary>
-		'''lblTitle control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblTitle control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''tblGeneral control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents tblGeneral As Global.System.Web.UI.HtmlControls.HtmlTable
+        '''<summary>
+        '''tblGeneral control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents tblGeneral As Global.System.Web.UI.HtmlControls.HtmlTable
 
-		'''<summary>
-		'''plEnableUserAvatar control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plEnableUserAvatar As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plEnableUserAvatar control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plEnableUserAvatar As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''chkEnableUserAvatar control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkEnableUserAvatar As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''chkEnableUserAvatar control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkEnableUserAvatar As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''rowEnableProfileAvatar control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowEnableProfileAvatar As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowEnableProfileAvatar control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowEnableProfileAvatar As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plEnableProfileAvatar control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plEnableProfileAvatar As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plEnableProfileAvatar control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plEnableProfileAvatar As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''chkEnableProfileAvatar control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkEnableProfileAvatar As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''chkEnableProfileAvatar control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkEnableProfileAvatar As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''rowEnableProfileUserFolders control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowEnableProfileUserFolders As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowEnableProfileUserFolders control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowEnableProfileUserFolders As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plEnableProfileUserFolders control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plEnableProfileUserFolders As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plEnableProfileUserFolders control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plEnableProfileUserFolders As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''chkEnableProfileUserFolders control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkEnableProfileUserFolders As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''chkEnableProfileUserFolders control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkEnableProfileUserFolders As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''rowProfileAvatarPropertyName control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowProfileAvatarPropertyName As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowProfileAvatarPropertyName control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowProfileAvatarPropertyName As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plProfileAvatarPropertyName control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plProfileAvatarPropertyName As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plProfileAvatarPropertyName control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plProfileAvatarPropertyName As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''ddlProfileAvatarPropertyName control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents ddlProfileAvatarPropertyName As Global.System.Web.UI.WebControls.DropDownList
+        '''<summary>
+        '''rcbProfileAvatarPropertyName control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rcbProfileAvatarPropertyName As Global.DotNetNuke.Web.UI.WebControls.DnnComboBox
 
-		'''<summary>
-		'''rowUserAvatarPath control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowUserAvatarPath As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowUserAvatarPath control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowUserAvatarPath As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plUserAvatarPath control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plUserAvatarPath As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plUserAvatarPath control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plUserAvatarPath As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''txtUserAvatarPath control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtUserAvatarPath As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''txtUserAvatarPath control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtUserAvatarPath As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''valUsrPath control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valUsrPath As Global.System.Web.UI.WebControls.RequiredFieldValidator
+        '''<summary>
+        '''valUsrPath control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valUsrPath As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
-		'''<summary>
-		'''rowUserAvatarDimentions control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowUserAvatarDimentions As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowUserAvatarDimentions control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowUserAvatarDimentions As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plUserAvatarDimensions control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plUserAvatarDimensions As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plUserAvatarDimensions control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plUserAvatarDimensions As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''txtUserAvatarWidth control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtUserAvatarWidth As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''txtUserAvatarWidth control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtUserAvatarWidth As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''valUsrAvW control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valUsrAvW As Global.System.Web.UI.WebControls.RequiredFieldValidator
+        '''<summary>
+        '''valUsrAvW control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valUsrAvW As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
-		'''<summary>
-		'''txtUserAvatarHeight control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtUserAvatarHeight As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''txtUserAvatarHeight control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtUserAvatarHeight As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''valUsrH control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valUsrH As Global.System.Web.UI.WebControls.RequiredFieldValidator
+        '''<summary>
+        '''valUsrH control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valUsrH As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
-		'''<summary>
-		'''rowUserAvatarSizeLimit control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowUserAvatarSizeLimit As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowUserAvatarSizeLimit control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowUserAvatarSizeLimit As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plUserAvatarSizeLimit control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plUserAvatarSizeLimit As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plUserAvatarSizeLimit control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plUserAvatarSizeLimit As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''txtUserAvatarSizeLimit control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtUserAvatarSizeLimit As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''txtUserAvatarSizeLimit control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtUserAvatarSizeLimit As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''valUsrSize control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valUsrSize As Global.System.Web.UI.WebControls.RequiredFieldValidator
+        '''<summary>
+        '''valUsrSize control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valUsrSize As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
-		'''<summary>
-		'''rowUserAvatarPoolEnable control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowUserAvatarPoolEnable As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowUserAvatarPoolEnable control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowUserAvatarPoolEnable As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plEnableUserAvatarPool control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plEnableUserAvatarPool As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plEnableUserAvatarPool control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plEnableUserAvatarPool As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''chkEnableUserAvatarPool control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkEnableUserAvatarPool As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''chkEnableUserAvatarPool control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkEnableUserAvatarPool As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''rowUserAvatarPoolPath control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowUserAvatarPoolPath As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowUserAvatarPoolPath control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowUserAvatarPoolPath As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plUserAvatarPoolPath control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plUserAvatarPoolPath As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plUserAvatarPoolPath control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plUserAvatarPoolPath As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''txtUserAvatarPoolPath control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtUserAvatarPoolPath As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''txtUserAvatarPoolPath control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtUserAvatarPoolPath As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''valUserAvatarPoolPath control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valUserAvatarPoolPath As Global.System.Web.UI.WebControls.RequiredFieldValidator
+        '''<summary>
+        '''valUserAvatarPoolPath control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valUserAvatarPoolPath As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
-		'''<summary>
-		'''plEnableSystemAvatar control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plEnableSystemAvatar As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plEnableSystemAvatar control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plEnableSystemAvatar As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''chkEnableSystemAvatar control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkEnableSystemAvatar As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''chkEnableSystemAvatar control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkEnableSystemAvatar As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''rowSystemAvatarPath control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowSystemAvatarPath As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowSystemAvatarPath control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowSystemAvatarPath As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plSystemAvatarPath control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plSystemAvatarPath As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plSystemAvatarPath control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plSystemAvatarPath As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''txtSystemAvatarPath control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtSystemAvatarPath As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''txtSystemAvatarPath control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtSystemAvatarPath As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''valSysPath control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valSysPath As Global.System.Web.UI.WebControls.RequiredFieldValidator
+        '''<summary>
+        '''valSysPath control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valSysPath As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
-		'''<summary>
-		'''plEnableRoleAvatar control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plEnableRoleAvatar As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plEnableRoleAvatar control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plEnableRoleAvatar As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''chkEnableRoleAvatar control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkEnableRoleAvatar As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''chkEnableRoleAvatar control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkEnableRoleAvatar As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''rowRoleAvatarPath control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowRoleAvatarPath As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowRoleAvatarPath control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowRoleAvatarPath As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plRoleAvatarPath control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plRoleAvatarPath As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plRoleAvatarPath control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plRoleAvatarPath As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''txtRoleAvatarPath control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtRoleAvatarPath As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''txtRoleAvatarPath control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtRoleAvatarPath As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''valRoleAvatarPath control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valRoleAvatarPath As Global.System.Web.UI.WebControls.RequiredFieldValidator
+        '''<summary>
+        '''valRoleAvatarPath control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valRoleAvatarPath As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
-		'''<summary>
-		'''cmdUpdate control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
+        '''<summary>
+        '''cmdUpdate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
 
-		'''<summary>
-		'''lblUpdateDone control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblUpdateDone control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''validUserDimWidth control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents validUserDimWidth As Global.System.Web.UI.WebControls.CompareValidator
+        '''<summary>
+        '''validUserDimWidth control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents validUserDimWidth As Global.System.Web.UI.WebControls.CompareValidator
 
-		'''<summary>
-		'''validUserDimHeight control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents validUserDimHeight As Global.System.Web.UI.WebControls.CompareValidator
+        '''<summary>
+        '''validUserDimHeight control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents validUserDimHeight As Global.System.Web.UI.WebControls.CompareValidator
 
-		'''<summary>
-		'''validUserSize control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents validUserSize As Global.System.Web.UI.WebControls.CompareValidator
-	End Class
+        '''<summary>
+        '''validUserSize control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents validUserSize As Global.System.Web.UI.WebControls.CompareValidator
+    End Class
 End Namespace

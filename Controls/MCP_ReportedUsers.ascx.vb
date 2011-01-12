@@ -18,7 +18,9 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 Option Strict On
-Option Explicit On 
+Option Explicit On
+
+Imports Telerik.Web.UI
 
 Namespace DotNetNuke.Modules.Forum.MCP
 
@@ -44,10 +46,9 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		''' </summary>
 		''' <remarks>So far this is a static page</remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
-			Localization.LocalizeDataGrid(dgReportedUsers, Me.LocalResourceFile)
-			BottomPager.PageSize = Convert.ToInt32(CurrentForumUser.ThreadsPerPage)
+            dnngridReportedUsers.PageSize = Convert.ToInt32(CurrentForumUser.ThreadsPerPage)
 
-			BindData(BottomPager.PageSize, 1)
+            BindData(dnngridReportedUsers.PageSize, 1)
 		End Sub
 
 #End Region
@@ -60,47 +61,54 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
 		''' <remarks></remarks>
-		Private Sub dgReportedUsers_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles dgReportedUsers.ItemDataBound
-			If e.Item.ItemType <> ListItemType.AlternatingItem AndAlso e.Item.ItemType <> ListItemType.Item Then Exit Sub
+        Private Sub dgReportedUsers_ItemDataBound(ByVal sender As Object, ByVal e As GridItemEventArgs) Handles dnngridReportedUsers.ItemDataBound
+            If TypeOf e.Item Is Telerik.Web.UI.GridDataItem Then
+                Dim keyID As Integer = CInt(e.Item.OwnerTableView.DataKeyValues(e.Item.ItemIndex)("UserID"))
+                Dim dataItem As Telerik.Web.UI.GridDataItem = CType(e.Item, Telerik.Web.UI.GridDataItem)
+                Dim objUser As ReportedUserInfo = CType(e.Item.DataItem, ReportedUserInfo)
 
-			Dim dataItem As ReportedUserInfo = CType(e.Item.DataItem, ReportedUserInfo)
-			Dim hl As HyperLink
-			Dim img As Image
+                Dim hl As HyperLink
+                'Dim img As Image
 
-			Dim objSecurity As New Forum.ModuleSecurity(ModuleId, TabId, -1, CurrentForumUser.UserID)
+                'Dim objSecurity As New Forum.ModuleSecurity(ModuleId, TabId, -1, CurrentForumUser.UserID)
 
-			img = CType(e.Item.FindControl("imgEdit"), Image)
+                'img = CType(e.Item.FindControl("imgEdit"), Image)
 
-			If objSecurity.IsForumAdmin Then
-				hl = CType(e.Item.FindControl("hlEdit"), HyperLink)
-				hl.NavigateUrl = Utilities.Links.UCP_AdminLinks(TabId, ModuleId, dataItem.UserID, UserAjaxControl.Profile)
+                'If objSecurity.IsForumAdmin Then
+                '    hl = CType(e.Item.FindControl("hlEdit"), HyperLink)
+                '    hl.NavigateUrl = Utilities.Links.UCP_AdminLinks(TabId, ModuleId, dataItem.UserID, UserAjaxControl.Profile)
 
-				img.ImageUrl = objConfig.GetThemeImageURL("s_edit.") & objConfig.ImageExtension
-				img.ToolTip = Services.Localization.Localization.GetString("imgEdit.Text", LocalResourceFile)
-			Else
-				img.Visible = False
-			End If
+                '    img.ImageUrl = objConfig.GetThemeImageURL("s_edit.") & objConfig.ImageExtension
+                '    img.ToolTip = Services.Localization.Localization.GetString("imgEdit.Text", LocalResourceFile)
+                'Else
+                '    img.Visible = False
+                'End If
 
-			hl = CType(e.Item.FindControl("hlUser"), HyperLink)
-			hl.Text = dataItem.Author(ModuleId, PortalId).SiteAlias
-			If Not objConfig.EnableExternalProfile Then
-				hl.NavigateUrl = dataItem.Author(ModuleId, PortalId).UserCoreProfileLink
-			Else
-				hl.NavigateUrl = Utilities.Links.UserExternalProfileLink(dataItem.UserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, dataItem.Author(ModuleId, PortalId).Username)
-			End If
-		End Sub
+                hl = DirectCast((dataItem)("User").Controls(0), HyperLink)
+                hl.Text = objUser.Author(ModuleId, PortalId).SiteAlias
+                If Not objConfig.EnableExternalProfile Then
+                    hl.NavigateUrl = objUser.Author(ModuleId, PortalId).UserCoreProfileLink
+                Else
+                    hl.NavigateUrl = Utilities.Links.UserExternalProfileLink(keyID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, objUser.Author(ModuleId, PortalId).Username)
+                End If
+            End If
+        End Sub
 
-		''' <summary>
-		''' Used to change the page bound to the grid (via ajax).
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
-		Private Sub pager_Command(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.CommandEventArgs) Handles BottomPager.Command
-			Dim CurrentPage As Int32 = CType(e.CommandArgument, Int32)
-			BottomPager.CurrentPage = CurrentPage
-			BindData(BottomPager.PageSize, CurrentPage)
-		End Sub
+        ''' <summary>
+        ''' Fires when a command button is clicked in the users grid.
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="e"></param>
+        ''' <remarks></remarks>
+        Protected Sub dnngridReportedUsers_ItemCommand(ByVal sender As Object, ByVal e As GridCommandEventArgs) Handles dnngridReportedUsers.ItemCommand
+            If e.Item.ItemType = GridItemType.AlternatingItem Or e.Item.ItemType = GridItemType.Item Then
+                Select Case e.CommandName
+                    Case "EditUser"
+                        Dim keyID As Integer = CInt(e.Item.OwnerTableView.DataKeyValues(e.Item.ItemIndex)("UserID"))
+                        Response.Redirect(Utilities.Links.UCP_AdminLinks(TabId, ModuleId, keyID, UserAjaxControl.Profile), True)
+                End Select
+            End If
+        End Sub
 
 #End Region
 
@@ -116,37 +124,24 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		Private Sub BindData(ByVal PageSize As Integer, ByVal CurrentPage As Integer)
 			Dim cntReportedUsers As New ReportedUserController
 			Dim arrReportedUsers As New List(Of ReportedUserInfo)
-			arrReportedUsers = cntReportedUsers.GetReportedUsers(PortalId, CurrentPage - 1, PageSize, BottomPager.TotalRecords)
+            arrReportedUsers = cntReportedUsers.GetReportedUsers(PortalId, CurrentPage - 1, PageSize)
 
-			'If Not arrReportedUsers Is Nothing Then
-			If arrReportedUsers.Count > 0 Then
-				Dim objReportedUserInfo As ReportedUserInfo = arrReportedUsers.Item(0)
+            If arrReportedUsers.Count > 0 Then
+                Dim objReportedUserInfo As ReportedUserInfo = arrReportedUsers.Item(0)
 
-				dgReportedUsers.DataSource = arrReportedUsers
-				dgReportedUsers.DataBind()
+                dnngridReportedUsers.DataSource = arrReportedUsers
+                dnngridReportedUsers.DataBind()
 
-				If arrReportedUsers.Count > 0 Then
-					dgReportedUsers.VirtualItemCount = arrReportedUsers(0).TotalRecords
-					BottomPager.TotalRecords = arrReportedUsers(0).TotalRecords
-				Else
-					dgReportedUsers.VirtualItemCount = 0
-					BottomPager.TotalRecords = 0
-				End If
-
-				pnlReportedUsers.Visible = True
-				pnlNoItems.Visible = False
-			Else
-				pnlReportedUsers.Visible = False
-				pnlNoItems.Visible = True
-			End If
-			'Else
-			'	pnlReportedUsers.Visible = False
-			'	pnlNoItems.Visible = True
-			'End If
-		End Sub
+                If arrReportedUsers.Count > 0 Then
+                    dnngridReportedUsers.VirtualItemCount = arrReportedUsers(0).TotalRecords
+                Else
+                    dnngridReportedUsers.VirtualItemCount = 0
+                End If
+            End If
+        End Sub
 
 #End Region
 
-	End Class
+    End Class
 
 End Namespace

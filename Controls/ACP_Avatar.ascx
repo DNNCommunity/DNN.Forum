@@ -1,5 +1,6 @@
 <%@ Control Language="vb" Codebehind="ACP_Avatar.ascx.vb" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Forum.ACP.Avatar" Explicit="true" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
+<%@ Register Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
 <div class="ACP-Avatar">
 	<table cellpadding="0" cellspacing="0" width="100%" border="0">
 		<tr>
@@ -46,7 +47,7 @@
 							</span>
 						</td>
 						<td  align="left" >
-							<asp:DropDownList ID="ddlProfileAvatarPropertyName" runat="server" DataTextField="PropertyName" DataValueField="PropertyName" Width="300px" CssClass="Forum_NormalTextBox" />
+                            <dnnweb:DnnComboBox ID="rcbProfileAvatarPropertyName" runat="server" DataTextField="PropertyName" DataValueField="PropertyName" />
 						</td>
 					</tr>
 					<tr id="rowUserAvatarPath" runat="server">

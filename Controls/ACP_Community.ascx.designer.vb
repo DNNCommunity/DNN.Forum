@@ -12,204 +12,204 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
-	Partial Public Class Community
+    Partial Public Class Community
 
-		'''<summary>
-		'''lblTitle control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblTitle control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''tblCommunity control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents tblCommunity As Global.System.Web.UI.HtmlControls.HtmlTable
+        '''<summary>
+        '''tblCommunity control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents tblCommunity As Global.System.Web.UI.HtmlControls.HtmlTable
 
-		'''<summary>
-		'''rowUserOnline control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowUserOnline As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowUserOnline control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowUserOnline As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plUserOnline control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plUserOnline As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plUserOnline control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plUserOnline As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''chkUserOnline control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkUserOnline As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''chkUserOnline control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkUserOnline As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''rowEnableExtProfile control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowEnableExtProfile As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowEnableExtProfile control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowEnableExtProfile As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plEnableExtProfilePage control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plEnableExtProfilePage As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plEnableExtProfilePage control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plEnableExtProfilePage As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''chkEnableExtProfilePage control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkEnableExtProfilePage As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''chkEnableExtProfilePage control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkEnableExtProfilePage As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''rowExtProfilePageID control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowExtProfilePageID As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowExtProfilePageID control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowExtProfilePageID As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plExtProfilePageID control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plExtProfilePageID As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plExtProfilePageID control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plExtProfilePageID As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''ddlExtProfilePageID control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents ddlExtProfilePageID As Global.System.Web.UI.WebControls.DropDownList
+        '''<summary>
+        '''rcbExtProfilePageID control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rcbExtProfilePageID As Global.DotNetNuke.Web.UI.WebControls.DnnComboBox
 
-		'''<summary>
-		'''rowExtProfileUserParam control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowExtProfileUserParam As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowExtProfileUserParam control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowExtProfileUserParam As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plExtProfileUserParam control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plExtProfileUserParam As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plExtProfileUserParam control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plExtProfileUserParam As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''txtExtProfileUserParam control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtExtProfileUserParam As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''txtExtProfileUserParam control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtExtProfileUserParam As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''rowExtProfileParamName control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowExtProfileParamName As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowExtProfileParamName control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowExtProfileParamName As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plExtProfileParamName control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plExtProfileParamName As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plExtProfileParamName control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plExtProfileParamName As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''txtExtProfileParamName control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtExtProfileParamName As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''txtExtProfileParamName control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtExtProfileParamName As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''rowExtProfileParamValue control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowExtProfileParamValue As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowExtProfileParamValue control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowExtProfileParamValue As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plExtProfileParamValue control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plExtProfileParamValue As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plExtProfileParamValue control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plExtProfileParamValue As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''txtExtProfileParamValue control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtExtProfileParamValue As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''txtExtProfileParamValue control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtExtProfileParamValue As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''cmdUpdate control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
+        '''<summary>
+        '''cmdUpdate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
 
-		'''<summary>
-		'''lblUpdateDone control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
-	End Class
+        '''<summary>
+        '''lblUpdateDone control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
+    End Class
 End Namespace

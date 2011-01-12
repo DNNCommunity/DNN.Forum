@@ -21,6 +21,7 @@ Option Strict On
 Option Explicit On
 
 Imports DotNetNuke.Modules.Forum.Utilities
+Imports DotNetNuke.Wrapper.UI.WebControls
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
@@ -94,7 +95,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				Dim objTemplateInfo As New EmailTemplateInfo
 
 				objTemplateInfo.EmailSubject = txtEmailSubject.Text
-				objTemplateInfo.EmailTemplateID = CType(ddlEmailTemplate.SelectedValue, Integer)
+                objTemplateInfo.EmailTemplateID = CType(rcbEmailTemplate.SelectedValue, Integer)
 				objTemplateInfo.HTMLBody = teContent.Text
 				objTemplateInfo.TextBody = txtEmailTextBody.Text
 				objTemplateInfo.IsActive = True
@@ -122,9 +123,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <param name="e"></param>
 		''' <remarks>
 		''' </remarks>
-		Protected Sub ddlEmailTemplate_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ddlEmailTemplate.SelectedIndexChanged
-			BindSingleTemplate()
-		End Sub
+        Protected Sub ddlEmailTemplate_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rcbEmailTemplate.SelectedIndexChanged
+            BindSingleTemplate()
+        End Sub
 
 		''' <summary>
 		''' Bind the default templates
@@ -201,7 +202,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
 				arrTemplates = objTemplateCnt.GetEmailTemplatesByModuleID(tempModuleID)
 
-				ddlEmailTemplate.Items.Clear()
+                rcbEmailTemplate.Items.Clear()
 
 				' Do a check, if it is nothing returned we need to create new templates based on the defaults
 				If arrTemplates.Count > 0 Then
@@ -248,8 +249,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <remarks></remarks>
 		Private Sub BindTemplateList(ByVal arrTemplates As ArrayList)
 			For Each objEmailTemplate As EmailTemplateInfo In arrTemplates
-				Dim HostTemplates As New ListItem(Localization.GetString(objEmailTemplate.EmailTemplateName, objConfig.SharedResourceFile), objEmailTemplate.EmailTemplateID.ToString)
-				ddlEmailTemplate.Items.Add(HostTemplates)
+                Dim HostTemplates As New DnnComboBoxItem(Localization.GetString(objEmailTemplate.EmailTemplateName, objConfig.SharedResourceFile), objEmailTemplate.EmailTemplateID.ToString)
+                rcbEmailTemplate.Items.Add(HostTemplates)
 			Next
 		End Sub
 
@@ -261,7 +262,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Private Sub BindSingleTemplate()
 			Dim objTemplateCnt As New EmailTemplateController
 			Dim objTemplateInfo As EmailTemplateInfo
-			Dim tempTemplateID As Integer = CType(ddlEmailTemplate.SelectedValue, Integer)
+            Dim tempTemplateID As Integer = CType(rcbEmailTemplate.SelectedValue, Integer)
 
 			objTemplateInfo = objTemplateCnt.GetEmailTemplate(tempTemplateID)
 

@@ -6,7 +6,7 @@
 <%@ Control language="vb" CodeBehind="ACP_ForumEdit.ascx.vb" AutoEventWireup="false" Explicit="true" Inherits="DotNetNuke.Modules.Forum.ACP.ForumEdit" %>
 <%@ Register TagPrefix="DNN" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke.WebControls" %>
 <%@ Register Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
-<%@ Register assembly="Telerik.Web.UI" namespace="Telerik.Web.UI" tagprefix="telerik" %>
+<%@ Register TagPrefix="wrapper" Namespace="DotNetNuke.Wrapper.UI.WebControls" Assembly="DotNetNuke.Wrapper" %>
 <div class="ACP-ForumEdit">
     <table cellpadding="0" cellspacing="0" width="100%" border="0" class="Forum_SearchContainer" >
 		<tr valign="top">
@@ -20,9 +20,9 @@
 					</tr>
 					<tr>
 					    <td class="Forum_UCP_HeaderInfo" align="left">                           
-							<telerik:RadTabStrip ID="rtsForum" runat="server" Skin="Vista" MultiPageID="rmpForumSettings" SelectedIndex="0" CausesValidation="false" />		
-							<telerik:RadMultiPage ID="rmpForumSettings" runat="server" SelectedIndex="0">
-								<telerik:RadPageView ID="rpvGeneral" runat="server">
+							<dnnweb:DnnTabStrip ID="rtsForum" runat="server" Skin="Vista" MultiPageID="rmpForumSettings" SelectedIndex="0" CausesValidation="false" />		
+							<dnnweb:DnnMultiPage ID="rmpForumSettings" runat="server" SelectedIndex="0">
+								<wrapper:DnnPageView ID="rpvGeneral" runat="server">
 									 <table id="tblGeneral" cellspacing="0" cellpadding="0" width="100%" runat="server" class="Forum_Row_AdminBox">
 										<tr id="rowForumID" runat="server" visible="False">
 											<td width="35%">
@@ -51,7 +51,7 @@
 												</span>
 											</td>
 											<td align="left">
-												<asp:dropdownlist id="ddlGroup" Runat="server" CssClass="Forum_NormalTextBox" Width="250px" AutoPostBack="true" />
+                                                <dnnweb:DnnComboBox ID="rcbGroup" runat="server" AutoPostBack="true" />
 											</td>
 										</tr>
 										<tr id="rowParentForum" runat="server">
@@ -61,7 +61,7 @@
 												</span>
 											</td>
 											<td align="left">
-												<asp:dropdownlist id="ddlParentForum" Runat="server" CssClass="Forum_NormalTextBox" Width="250px" AutoPostBack="true" />
+                                                <dnnweb:DnnComboBox ID="rcbParentForum" runat="server" AutoPostBack="true" />
 											</td>
 										</tr>
 										<tr>
@@ -126,8 +126,8 @@
 											</td>
 										</tr>
 									</table>
-								</telerik:RadPageView>
-								<telerik:RadPageView ID="rpvOptions" runat="server">
+								</wrapper:DnnPageView>
+								<wrapper:DnnPageView ID="rpvOptions" runat="server">
 									<table id="tblBehavior" cellspacing="0" cellpadding="0" width="100%" runat="server" class="Forum_Row_AdminBox">
 										<tr>
 											<td width="35%">
@@ -136,7 +136,7 @@
 												</span>
 											</td>
 											<td align="left">
-												<asp:dropdownlist id="ddlForumType" runat="server" CssClass="Forum_NormalTextBox" Width="250px" AutoPostBack="True" />
+                                                <dnnweb:DnnComboBox ID="rcbForumType" runat="server" AutoPostBack="true" />
 											</td>
 										</tr>
 										<tr id="rowForumBehavior" runat="server"> 
@@ -146,7 +146,7 @@
 												</span>
 											</td>
 											<td align="left">
-												<asp:dropdownlist id="ddlForumBehavior" runat="server" CssClass="Forum_NormalTextBox" Width="250px" AutoPostBack="True" />
+                                                <dnnweb:DnnComboBox ID="rcbForumBehavior" runat="server" AutoPostBack="true" Width="270" />
 											</td>
 										</tr>
 										<tr id="rowForumLink" runat="server">
@@ -221,7 +221,7 @@
 												</span>
 											</td>
 											<td align="left">
-												<telerik:RadNumericTextBox ID="textSitemapPriority" runat="server" MinValue="0" MaxValue="1" />
+												<wrapper:DnnNumericTextBox ID="textSitemapPriority" runat="server" MinValue="0" MaxValue="1" NumberFormat-DecimalDigits="2" ShowSpinButtons="true" IncrementSettings-Step=".1" />
 											</td>
 										</tr>
 										<tr id="rowPermissions" runat="server">
@@ -239,12 +239,12 @@
 											</td>
 											<td align="left">
 												<br />
-												<asp:dropdownlist id="ddlForumPermTemplate" runat="server" CssClass="Forum_NormalTextBox" Width="250px" AutoPostBack="True" DataTextField="Name" DataValueField="ForumID" />
+                                                <dnnweb:DnnComboBox ID="rcbForumPermTemplate" runat="server" AutoPostBack="true" DataTextField="Name" DataValueField="ForumID" />
 											</td>
 										</tr>
 									</table>
-								</telerik:RadPageView>
-								<telerik:RadPageView ID="rpvEmail" runat="server">
+								</wrapper:DnnPageView>
+								<wrapper:DnnPageView ID="rpvEmail" runat="server">
 									<table id="tblEmail" cellspacing="0" cellpadding="0" width="100%" runat="server" class="Forum_Row_AdminBox">
 										<tr>
 											<td width="35%">
@@ -350,8 +350,8 @@
 											</td>
 										</tr>
 									</table>
-								</telerik:RadPageView>
-				   			</telerik:RadMultiPage>
+								</wrapper:DnnPageView>
+				   			</dnnweb:DnnMultiPage>
 							<div align="center">
 								<asp:linkbutton class="CommandButton primary-action" id="cmdAdd" runat="server" resourcekey="cmdAdd" />
 								<asp:linkbutton class="CommandButton primary-action" id="cmdUpdate" runat="server" resourcekey="cmdUpdate" />&nbsp;

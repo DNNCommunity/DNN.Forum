@@ -12,312 +12,312 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
-	Partial Public Class UserSettings
+    Partial Public Class UserSettings
 
-		'''<summary>
-		'''lblTitle control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblTitle control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''tblGeneral control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents tblGeneral As Global.System.Web.UI.HtmlControls.HtmlTable
+        '''<summary>
+        '''tblGeneral control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents tblGeneral As Global.System.Web.UI.HtmlControls.HtmlTable
 
-		'''<summary>
-		'''plNameDisplay control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plNameDisplay As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plNameDisplay control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plNameDisplay As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''ddlNameDisplay control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents ddlNameDisplay As Global.System.Web.UI.WebControls.DropDownList
+        '''<summary>
+        '''rcbNameDisplay control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rcbNameDisplay As Global.DotNetNuke.Web.UI.WebControls.DnnComboBox
 
-		'''<summary>
-		'''rowEditWindow control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowEditWindow As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowEditWindow control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowEditWindow As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plPostEditWindow control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plPostEditWindow As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plPostEditWindow control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plPostEditWindow As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''txtPostEditWindow control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtPostEditWindow As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''txtPostEditWindow control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtPostEditWindow As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''valPostEditWindow control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valPostEditWindow As Global.System.Web.UI.WebControls.RangeValidator
+        '''<summary>
+        '''valPostEditWindow control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valPostEditWindow As Global.System.Web.UI.WebControls.RangeValidator
 
-		'''<summary>
-		'''plAutoTrustEnabled control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plAutoTrustEnabled As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plAutoTrustEnabled control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plAutoTrustEnabled As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''chkEnableAutoTrust control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkEnableAutoTrust As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''chkEnableAutoTrust control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkEnableAutoTrust As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''rowAutoTrustTime control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowAutoTrustTime As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowAutoTrustTime control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowAutoTrustTime As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plAutoTrustTime control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plAutoTrustTime As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plAutoTrustTime control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plAutoTrustTime As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''txtAutoTrustTime control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtAutoTrustTime As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''txtAutoTrustTime control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtAutoTrustTime As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''valAutoTrustTime control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valAutoTrustTime As Global.System.Web.UI.WebControls.RangeValidator
+        '''<summary>
+        '''valAutoTrustTime control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valAutoTrustTime As Global.System.Web.UI.WebControls.RangeValidator
 
-		'''<summary>
-		'''plAutoLockTrust control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plAutoLockTrust As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plAutoLockTrust control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plAutoLockTrust As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''chkAutoLockTrust control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkAutoLockTrust As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''chkAutoLockTrust control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkAutoLockTrust As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''plUserReadManagement control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plUserReadManagement As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plUserReadManagement control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plUserReadManagement As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''chkUserReadManagement control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkUserReadManagement As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''chkUserReadManagement control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkUserReadManagement As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''plEnableUserSignatures control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plEnableUserSignatures As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plEnableUserSignatures control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plEnableUserSignatures As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''chkEnableUserSignatures control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkEnableUserSignatures As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''chkEnableUserSignatures control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkEnableUserSignatures As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''rowModSigUpdates control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowModSigUpdates As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowModSigUpdates control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowModSigUpdates As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plEnableModSigUpdates control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plEnableModSigUpdates As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plEnableModSigUpdates control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plEnableModSigUpdates As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''chkEnableModSigUpdates control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkEnableModSigUpdates As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''chkEnableModSigUpdates control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkEnableModSigUpdates As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''rowHTMLSignatures control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowHTMLSignatures As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowHTMLSignatures control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowHTMLSignatures As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plEnableHTMLSignatures control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plEnableHTMLSignatures As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plEnableHTMLSignatures control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plEnableHTMLSignatures As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''chkEnableHTMLSignatures control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkEnableHTMLSignatures As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''chkEnableHTMLSignatures control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkEnableHTMLSignatures As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''rowHideModEdit control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowHideModEdit As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowHideModEdit control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowHideModEdit As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plHideModEdit control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plHideModEdit As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plHideModEdit control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plHideModEdit As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''chkHideModEdit control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkHideModEdit As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''chkHideModEdit control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkHideModEdit As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''rowUserBanning control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowUserBanning As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowUserBanning control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowUserBanning As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plEnableUserBanning control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plEnableUserBanning As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plEnableUserBanning control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plEnableUserBanning As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''chkEnableUserBanning control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkEnableUserBanning As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''chkEnableUserBanning control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkEnableUserBanning As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''cmdUpdate control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
+        '''<summary>
+        '''cmdUpdate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
 
-		'''<summary>
-		'''lblUpdateDone control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
-	End Class
+        '''<summary>
+        '''lblUpdateDone control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
+    End Class
 End Namespace

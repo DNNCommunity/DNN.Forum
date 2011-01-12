@@ -18,7 +18,9 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 Option Strict On
-Option Explicit On 
+Option Explicit On
+
+Imports Telerik.Web.UI
 
 Namespace DotNetNuke.Modules.Forum.MCP
 
@@ -47,10 +49,9 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		''' </summary>
 		''' <remarks></remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
-			Localization.LocalizeDataGrid(dgBannedUsers, Me.LocalResourceFile)
-			BottomPager.PageSize = Convert.ToInt32(CurrentForumUser.ThreadsPerPage)
+            dnngridBannedUsers.PageSize = Convert.ToInt32(CurrentForumUser.ThreadsPerPage)
 
-			BindData(BottomPager.PageSize, 1)
+            BindData(dnngridBannedUsers.PageSize, 1)
 		End Sub
 
 #End Region
@@ -63,53 +64,47 @@ Namespace DotNetNuke.Modules.Forum.MCP
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
 		''' <remarks></remarks>
-		Protected Sub dgBannedUsers_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles dgBannedUsers.ItemDataBound
-			If e.Item.ItemType <> ListItemType.AlternatingItem AndAlso e.Item.ItemType <> ListItemType.Item Then Exit Sub
+        Protected Sub dnngridBannedUsers_ItemDataBound(ByVal sender As Object, ByVal e As GridItemEventArgs) Handles dnngridBannedUsers.ItemDataBound
+            If TypeOf e.Item Is Telerik.Web.UI.GridDataItem Then
+                Dim keyID As Integer = CInt(e.Item.OwnerTableView.DataKeyValues(e.Item.ItemIndex)("UserID"))
+                Dim dataItem As Telerik.Web.UI.GridDataItem = CType(e.Item, Telerik.Web.UI.GridDataItem)
+                Dim objUser As ForumUserInfo = CType(e.Item.DataItem, ForumUserInfo)
 
-			Dim dataItem As ForumUserInfo = CType(e.Item.DataItem, ForumUserInfo)
-			Dim hl As HyperLink
-			Dim lbl As Label
-			Dim img As Image
+                Dim hl As HyperLink
 
-			Dim objSecurity As New Forum.ModuleSecurity(ModuleId, TabId, -1, CurrentForumUser.UserID)
+                hl = DirectCast((dataItem)("User").Controls(0), HyperLink)
+                hl.Text = objUser.SiteAlias
+                If Not objConfig.EnableExternalProfile Then
+                    hl.NavigateUrl = objUser.UserCoreProfileLink
+                Else
+                    hl.NavigateUrl = Utilities.Links.UserExternalProfileLink(keyID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, objUser.Username)
+                End If
 
-			If objSecurity.IsForumAdmin Then
-				hl = CType(e.Item.FindControl("hlEdit"), HyperLink)
-				hl.NavigateUrl = Utilities.Links.UCP_AdminLinks(TabId, ModuleId, dataItem.UserID, UserAjaxControl.Profile)
+            End If
+            'Dim lbl As Label
+            
+            'lbl = CType(e.Item.FindControl("lblStartBanDate"), Label)
+            'lbl.Text = FormatDate(dataItem.StartBanDate)
 
+            'lbl = CType(e.Item.FindControl("lblLiftBanDate"), Label)
+            'lbl.Text = FormatDate(dataItem.LiftBanDate)
+        End Sub
 
-				img = CType(e.Item.FindControl("imgEdit"), Image)
-				img.ImageUrl = objConfig.GetThemeImageURL("s_edit.") & objConfig.ImageExtension
-				img.ToolTip = Services.Localization.Localization.GetString("imgEdit.Text", LocalResourceFile)
-			End If
-
-			hl = CType(e.Item.FindControl("hlUser"), HyperLink)
-			If Not objConfig.EnableExternalProfile Then
-				hl.NavigateUrl = dataItem.UserCoreProfileLink
-			Else
-				hl.NavigateUrl = Utilities.Links.UserExternalProfileLink(dataItem.UserID, objConfig.ExternalProfileParam, objConfig.ExternalProfilePage, objConfig.ExternalProfileUsername, dataItem.Username)
-			End If
-
-			hl.Target = "_blank"
-			hl.Text = dataItem.SiteAlias
-
-			lbl = CType(e.Item.FindControl("lblStartBanDate"), Label)
-			lbl.Text = FormatDate(dataItem.StartBanDate)
-
-			lbl = CType(e.Item.FindControl("lblLiftBanDate"), Label)
-			lbl.Text = FormatDate(dataItem.LiftBanDate)
-		End Sub
-
-		''' <summary>
-		''' Used to change the page bound to the grid (via ajax).</summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
-		Protected Sub pager_Command(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.CommandEventArgs) Handles BottomPager.Command
-			Dim CurrentPage As Int32 = CType(e.CommandArgument, Int32)
-			BottomPager.CurrentPage = CurrentPage
-			BindData(BottomPager.PageSize, CurrentPage)
-		End Sub
+        ''' <summary>
+        ''' Fires when a command button is clicked in the users grid.
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="e"></param>
+        ''' <remarks></remarks>
+        Protected Sub dnngridBannedUsers_ItemCommand(ByVal sender As Object, ByVal e As GridCommandEventArgs) Handles dnngridBannedUsers.ItemCommand
+            If e.Item.ItemType = GridItemType.AlternatingItem Or e.Item.ItemType = GridItemType.Item Then
+                Select Case e.CommandName
+                    Case "EditUser"
+                        Dim keyID As Integer = CInt(e.Item.OwnerTableView.DataKeyValues(e.Item.ItemIndex)("UserID"))
+                        Response.Redirect(Utilities.Links.UCP_AdminLinks(TabId, ModuleId, keyID, UserAjaxControl.Profile), True)
+                End Select
+            End If
+        End Sub
 
 #End Region
 
@@ -131,25 +126,13 @@ Namespace DotNetNuke.Modules.Forum.MCP
 
 			arrUsers = cntUser.GetBannedUsers(PortalId, CurrentPage - 1, PageSize, ModuleId, TotalRecords)
 
+            dnngridBannedUsers.DataSource = arrUsers
+            dnngridBannedUsers.DataBind()
+
 			If Not arrUsers Is Nothing Then
-				If arrUsers.Count > 0 Then
-					dgBannedUsers.DataKeyField = "UserID"
-					dgBannedUsers.DataSource = arrUsers
-					dgBannedUsers.DataBind()
-
-					BottomPager.TotalRecords = arrUsers.Count
-
-					pnlBannedUsers.Visible = True
-					pnlNoItems.Visible = False
-				Else
-					pnlBannedUsers.Visible = False
-					pnlNoItems.Visible = True
-				End If
-			Else
-				pnlBannedUsers.Visible = False
-				pnlNoItems.Visible = True
-			End If
-		End Sub
+                dnngridBannedUsers.VirtualItemCount = arrUsers.Count
+            End If
+        End Sub
 
 		''' <summary>
 		''' Formats the start/end dates for banning.

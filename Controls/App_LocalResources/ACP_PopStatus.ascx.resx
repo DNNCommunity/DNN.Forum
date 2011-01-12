@@ -129,9 +129,6 @@
   <data name="plPopularPostsReply.Help" xml:space="preserve">
     <value>The number of post replies before a thread becomes popular.</value>
   </data>
-  <data name="NumericValidation.ErrorMessage" xml:space="preserve">
-    <value>&lt;br /&gt;Needs to be numeric!</value>
-  </data>
   <data name="lblTitle.Text" xml:space="preserve">
     <value>Popular Status Management</value>
   </data>
@@ -142,6 +139,6 @@
     <value>This is the number of days the thread's last post must have been posted wtihin. If set to 14, threads without activity for two weeks will no longer be popular.</value>
   </data>
   <data name="plDays.Text" xml:space="preserve">
-    <value>Active Within</value>
+    <value>Active Within (Days)</value>
   </data>
 </root>

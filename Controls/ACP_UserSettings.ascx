@@ -1,5 +1,6 @@
 <%@ Control language="vb" CodeBehind="ACP_UserSettings.ascx.vb" AutoEventWireup="false" Explicit="true" Inherits="DotNetNuke.Modules.Forum.ACP.UserSettings" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
+<%@ Register Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
 <div class="ACP-UserSettings">
 	<table cellpadding="0" cellspacing="0" width="100%" border="0">
 		<tr>
@@ -17,7 +18,7 @@
 							</span>
 						</td>
 						<td align="left" >
-							<asp:dropdownlist id="ddlNameDisplay" runat="server" cssclass="Forum_NormalTextBox" width="150px" />
+                            <dnnweb:DnnComboBox ID="rcbNameDisplay" runat="server" />
 						</td>
 					</tr>
 					<tr id="rowEditWindow" runat="server">

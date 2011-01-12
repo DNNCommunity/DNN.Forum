@@ -177,4 +177,7 @@
   <data name="Delete.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="Delete.Header" xml:space="preserve">
+    <value />
+  </data>
 </root>

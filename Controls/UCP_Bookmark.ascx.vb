@@ -47,22 +47,12 @@ Namespace DotNetNuke.Modules.Forum.UCP
 
 #Region "Event Handlers"
 
-		''' <summary>
-		''' Runs when the control is initialized, even before anything in LoadInitialView runs. 
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks>All controls containing grids should localize the grid headers here. </remarks>
-		Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-			SetLocalization()
-		End Sub
-
-		''' <summary>
-		''' Alters data as it is bound to the grid.
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
+        ''' <summary>
+        ''' Alters data as it is bound to the grid.
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="e"></param>
+        ''' <remarks></remarks>
 		Protected Sub gridBookmarks_ItemDataBound(ByVal sender As Object, ByVal e As GridItemEventArgs) Handles gridBookmarks.ItemDataBound
 			If TypeOf e.Item Is GridDataItem Then
 				Dim item As GridDataItem = CType(e.Item, GridDataItem)
@@ -115,18 +105,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 			Else
 				gridBookmarks.VirtualItemCount = 0
 			End If
-		End Sub
-
-		''' <summary>
-		''' Localizes the data grid headers for all grids on the page (that utilize Telerik).
-		''' </summary>
-		''' <remarks></remarks>
-		Private Sub SetLocalization()
-			For Each gc As GridColumn In gridBookmarks.MasterTableView.Columns
-				If gc.HeaderText <> "" Then
-					gc.HeaderText = Localization.GetString(gc.HeaderText + ".Header", LocalResourceFile)
-				End If
-			Next
 		End Sub
 
 #End Region

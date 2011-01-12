@@ -139,7 +139,7 @@
     <value>Attempted</value>
   </data>
   <data name="SuccessfullSendCount.Header" xml:space="preserve">
-    <value>Total</value>
+    <value />
   </data>
   <data name="Failed.Header" xml:space="preserve">
     <value>Failed</value>

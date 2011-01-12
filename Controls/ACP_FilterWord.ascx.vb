@@ -53,7 +53,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			imgAdd.ImageUrl = objConfig.GetThemeImageURL("s_add.") & objConfig.ImageExtension
 			imgAdd.ToolTip = Localization.GetString("imgAdd", LocalResourceFile)
 			CreateLetterSearch()
-			BindData(ddlSearchType.SelectedValue, BottomPager.PageSize)
+            BindData(rcbSearchType.SelectedValue, BottomPager.PageSize)
 		End Sub
 
 #End Region
@@ -108,7 +108,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			grdBadWords.EditItemIndex = e.Item.ItemIndex
 			grdBadWords.SelectedIndex = -1
 			imgAdd.Enabled = False
-			BindData(ddlSearchType.SelectedValue, BottomPager.PageSize)
+            BindData(rcbSearchType.SelectedValue, BottomPager.PageSize)
 		End Sub
 
 		''' <summary>
@@ -122,7 +122,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			cntWordFilter.FilterWordDelete(CInt(grdBadWords.DataKeys(e.Item.ItemIndex)))
 			grdBadWords.EditItemIndex = Null.NullInteger
 
-			BindData(ddlSearchType.SelectedValue, BottomPager.PageSize)
+            BindData(rcbSearchType.SelectedValue, BottomPager.PageSize)
 		End Sub
 
 		''' <summary>
@@ -139,7 +139,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
 			grdBadWords.EditItemIndex = Null.NullInteger
 			imgAdd.Enabled = True
-			BindData(ddlSearchType.SelectedValue, BottomPager.PageSize)
+            BindData(rcbSearchType.SelectedValue, BottomPager.PageSize)
 
 		End Sub
 
@@ -152,7 +152,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected Sub grdBadWords_CancelCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles grdBadWords.CancelCommand
 			grdBadWords.EditItemIndex = Null.NullInteger
 			imgAdd.Enabled = True
-			BindData(ddlSearchType.SelectedValue, BottomPager.PageSize)
+            BindData(rcbSearchType.SelectedValue, BottomPager.PageSize)
 		End Sub
 
 		''' <summary>
@@ -168,7 +168,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			grdBadWords.EditItemIndex = Null.NullInteger
 			txtNewBadWord.Text = String.Empty
 			txtNewReplaceWord.Text = String.Empty
-			BindData(ddlSearchType.SelectedValue, BottomPager.PageSize)
+            BindData(rcbSearchType.SelectedValue, BottomPager.PageSize)
 		End Sub
 
 		''' <summary>
@@ -177,10 +177,10 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' <param name="sender"></param>
 		''' <param name="e"></param>
 		''' <remarks></remarks>
-		Protected Sub ddlSearchType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ddlSearchType.SelectedIndexChanged
-			'CurrentPage = 1
-			BindData(ddlSearchType.SelectedValue, BottomPager.PageSize)
-		End Sub
+        Protected Sub ddlSearchType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rcbSearchType.SelectedIndexChanged
+            'CurrentPage = 1
+            BindData(rcbSearchType.SelectedValue, BottomPager.PageSize)
+        End Sub
 
 #End Region
 
@@ -199,7 +199,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			If SearchText = Localization.GetString("All", Me.LocalResourceFile) Then
 				lstFilterWord = ctlFilterWords.FilterWordGetAll(PortalId, "")
 			Else
-				lstFilterWord = ctlFilterWords.FilterWordGetAll(PortalId, ddlSearchType.SelectedValue)
+                lstFilterWord = ctlFilterWords.FilterWordGetAll(PortalId, rcbSearchType.SelectedValue)
 			End If
 
 			If lstFilterWord.Count > 0 Then
@@ -235,8 +235,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			filters += "," + Localization.GetString("Filter", Me.LocalResourceFile)
 
 			Dim strAlphabet As String() = filters.Split(","c)
-			ddlSearchType.DataSource = strAlphabet
-			ddlSearchType.DataBind()
+            rcbSearchType.DataSource = strAlphabet
+            rcbSearchType.DataBind()
 		End Sub
 
 		''' <summary>

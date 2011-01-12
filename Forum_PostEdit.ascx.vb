@@ -202,7 +202,7 @@ Namespace DotNetNuke.Modules.Forum
 						cmdSubmit.CommandName = objAction.ToString
 					End If
 
-					Dim objParentPost As PostInfo
+                    Dim objParentPost As New PostInfo
 					Dim cntPost As New PostController()
 
 					If PostID > 0 Then

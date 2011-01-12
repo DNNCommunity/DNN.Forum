@@ -94,7 +94,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
         ''' <param name="e"></param>
         ''' <remarks>All controls containing grids should localize the grid headers here. </remarks>
         Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-            SetLocalization()
             Dim _forumID As Integer
             If (Request.QueryString("ForumID") IsNot Nothing) AndAlso (Integer.TryParse(Request.QueryString("ForumID"), _forumID)) Then 'take ThreadID from QueryString
                 hdnRcbForumsValue.Value = _forumID.ToString()
@@ -231,28 +230,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
             rgThreads.DataSource = userTrackingController.GetThreadSubscribers(ThreadID)
         End Sub
 #End Region
-
-#End Region
-
-#Region "Private Methods"
-
-        ''' <summary>
-        ''' Used to localized the grid headers (a replacement for core method). 
-        ''' </summary>
-        ''' <remarks></remarks>
-        Private Sub SetLocalization()
-            For Each gc As Telerik.Web.UI.GridColumn In rgForums.MasterTableView.Columns
-                If gc.UniqueName <> "" Then
-                    gc.HeaderText = Localization.GetString(gc.UniqueName + ".Header", Me.LocalResourceFile)
-                End If
-            Next
-
-            For Each gc As Telerik.Web.UI.GridColumn In rgThreads.MasterTableView.Columns
-                If gc.UniqueName <> "" Then
-                    gc.HeaderText = Localization.GetString(gc.UniqueName + ".Header", Me.LocalResourceFile)
-                End If
-            Next
-        End Sub
 
 #End Region
 

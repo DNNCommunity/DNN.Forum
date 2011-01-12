@@ -1,6 +1,7 @@
 <%@ Register TagPrefix="dnnforum" Namespace="DotNetNuke.Modules.Forum.WebControls" Assembly="DotNetNuke.Modules.Forum" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Control language="vb" CodeBehind="ACP_PopStatus.ascx.vb" AutoEventWireup="false" Explicit="true" Inherits="DotNetNuke.Modules.Forum.ACP.PopStatus" %>
+<%@ Register TagPrefix="wrapper" Namespace="DotNetNuke.Wrapper.UI.WebControls" Assembly="DotNetNuke.Wrapper" %>
 <div class="ACP-PopStatus">
 	<table cellpadding="0" cellspacing="0" width="100%" border="0">
 		<tr>
@@ -18,9 +19,8 @@
 							</span>
 						</td>
 						<td align="left">
-							<asp:TextBox ID="txtPopularThreadView" runat="server" CssClass="Forum_NormalTextBox" Width="180px" MaxLength="4" EnableViewState="false" />
-							<asp:RequiredFieldValidator ID="valreqView" runat="server" ErrorMessage="*" CssClass="NormalRed" Display="Dynamic" ControlToValidate="txtPopularThreadView" EnableViewState="false" />
-							<asp:RegularExpressionValidator ID="valView" runat="server" ControlToValidate="txtPopularThreadView" CssClass="NormalRed" resourcekey="NumericValidation.ErrorMessage" ValidationExpression="[0-9]{1,}" Display="Dynamic" EnableViewState="false" />
+                            <wrapper:DnnNumericTextBox ID="rntxtbxPopularThreadView" runat="server" MaxLength="4" NumberFormat-DecimalDigits="0" ShowSpinButtons="true" MinValue="1" MaxValue="1001"/>
+							<asp:RequiredFieldValidator ID="valreqView" runat="server" ErrorMessage="*" CssClass="NormalRed" Display="Dynamic" ControlToValidate="rntxtbxPopularThreadView" EnableViewState="false" />
 						</td>
 					</tr>
 					<tr>
@@ -30,9 +30,8 @@
 							</span>
 						</td>
 						<td align="left">
-							<asp:TextBox ID="txtPopularThreadReply" runat="server" CssClass="Forum_NormalTextBox" Width="180px" MaxLength="4" EnableViewState="false" />
-							<asp:RequiredFieldValidator ID="valreqReply" runat="server" ErrorMessage="*" CssClass="NormalRed" Display="Dynamic" ControlToValidate="txtPopularThreadReply" EnableViewState="false" />
-							<asp:RegularExpressionValidator ID="valReply" runat="server" ControlToValidate="txtPopularThreadReply" CssClass="NormalRed" resourcekey="NumericValidation.ErrorMessage" ValidationExpression="[0-9]{1,}" Display="Dynamic" EnableViewState="false" />
+                            <wrapper:DnnNumericTextBox ID="rntxtbxPopularThreadReply" runat="server" MaxLength="3" NumberFormat-DecimalDigits="0" ShowSpinButtons="true" MinValue="1" MaxValue="101"/>
+							<asp:RequiredFieldValidator ID="valreqReply" runat="server" ErrorMessage="*" CssClass="NormalRed" Display="Dynamic" ControlToValidate="rntxtbxPopularThreadReply" EnableViewState="false" />
 						</td>
 					</tr>
 					<tr>
@@ -42,9 +41,8 @@
 							</span>
 						</td>
 						<td align="left">
-							<asp:TextBox ID="txtDays" runat="server" CssClass="Forum_NormalTextBox" Width="180px" MaxLength="4" EnableViewState="false" />
-							<asp:RequiredFieldValidator ID="valreqDays" runat="server" ErrorMessage="*" CssClass="NormalRed" Display="Dynamic" ControlToValidate="txtDays" EnableViewState="false" />
-							<asp:RegularExpressionValidator ID="valDays" runat="server" ControlToValidate="txtDays" CssClass="NormalRed" resourcekey="NumericValidation.ErrorMessage" ValidationExpression="[0-9]{1,}" Display="Dynamic" EnableViewState="false" />
+                            <wrapper:DnnNumericTextBox ID="rntxtbxDays" runat="server" MaxLength="3" NumberFormat-DecimalDigits="0" ShowSpinButtons="true" MinValue="1" MaxValue="366"/>
+							<asp:RequiredFieldValidator ID="valreqDays" runat="server" ErrorMessage="*" CssClass="NormalRed" Display="Dynamic" ControlToValidate="rntxtbxDays" EnableViewState="false" />
 						</td>
 					</tr>
 				</table>

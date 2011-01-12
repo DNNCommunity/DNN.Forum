@@ -153,4 +153,7 @@
   <data name="TotalPosts.Header" xml:space="preserve">
     <value>Posts</value>
   </data>
+  <data name="Delete.Header" xml:space="preserve">
+    <value />
+  </data>
 </root>

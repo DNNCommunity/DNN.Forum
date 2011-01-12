@@ -39,8 +39,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </summary>
 		''' <remarks></remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
-			txtTaskDeleteDays.Enabled = False
-			txtEmailDeleteDays.Enabled = False
+            rntxtbxTaskDeleteDays.Enabled = False
+            rntxtbxEmailDeleteDays.Enabled = False
 			cmdUpdate.Visible = False
 
 			If Users.UserController.GetCurrentUserInfo.IsSuperUser Then
@@ -54,23 +54,23 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
 				If Not objScheduleItem Is Nothing Then
 					If objScheduleItem.Enabled Then
-						txtTaskDeleteDays.Enabled = True
-						txtEmailDeleteDays.Enabled = True
+                        rntxtbxTaskDeleteDays.Enabled = True
+                        rntxtbxEmailDeleteDays.Enabled = True
 						cmdUpdate.Visible = True
 					End If
 				End If
 
 				' Need to check for cleanup queue schedule settings
 				If objScheduleItem.GetSetting("ForumTaskDeleteDays") <> String.Empty Then
-					txtTaskDeleteDays.Text = objScheduleItem.GetSetting("ForumTaskDeleteDays")
+                    rntxtbxTaskDeleteDays.Text = objScheduleItem.GetSetting("ForumTaskDeleteDays")
 				Else
-					txtTaskDeleteDays.Text = "30"
+                    rntxtbxTaskDeleteDays.Text = "30"
 				End If
 
 				If objScheduleItem.GetSetting("ForumEmailDeleteDays") <> String.Empty Then
-					txtEmailDeleteDays.Text = objScheduleItem.GetSetting("ForumEmailDeleteDays")
+                    rntxtbxEmailDeleteDays.Text = objScheduleItem.GetSetting("ForumEmailDeleteDays")
 				Else
-					txtEmailDeleteDays.Text = "30"
+                    rntxtbxEmailDeleteDays.Text = "30"
 				End If
 			Else
 				cmdUpdate.Visible = False
@@ -99,12 +99,12 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
 				objScheduleItem = DotNetNuke.Services.Scheduling.SchedulingProvider.Instance.GetSchedule(ScheduleItemID)
 
-				If Not objScheduleItem Is Nothing Then
-					DotNetNuke.Services.Scheduling.SchedulingProvider.Instance.AddScheduleItemSetting(ScheduleItemID, "ForumTaskDeleteDays", txtTaskDeleteDays.Text)
-					DotNetNuke.Services.Scheduling.SchedulingProvider.Instance.AddScheduleItemSetting(ScheduleItemID, "ForumEmailDeleteDays", txtEmailDeleteDays.Text)
+                If objScheduleItem IsNot Nothing Then
+                    DotNetNuke.Services.Scheduling.SchedulingProvider.Instance.AddScheduleItemSetting(ScheduleItemID, "ForumTaskDeleteDays", rntxtbxTaskDeleteDays.Text)
+                    DotNetNuke.Services.Scheduling.SchedulingProvider.Instance.AddScheduleItemSetting(ScheduleItemID, "ForumEmailDeleteDays", rntxtbxEmailDeleteDays.Text)
 
-					lblUpdateDone.Visible = True
-				End If
+                    lblUpdateDone.Visible = True
+                End If
 			Catch exc As Exception
 				ProcessModuleLoadException(Me, exc)
 			End Try

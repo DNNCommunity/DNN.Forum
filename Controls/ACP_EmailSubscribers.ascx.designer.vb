@@ -24,15 +24,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
-        '''lblInfo control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblInfo As Global.System.Web.UI.WebControls.Label
-
-        '''<summary>
         '''hdnRcbForumsValue control.
         '''</summary>
         '''<remarks>

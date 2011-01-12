@@ -120,17 +120,8 @@
   <data name="lblNoResults.Text" xml:space="preserve">
     <value>No Posts to Moderate!</value>
   </data>
-  <data name="imgStatus.Text" xml:space="preserve">
-    <value>Unread</value>
-  </data>
-  <data name="ModQueue.Header" xml:space="preserve">
-    <value>Moderation Queue</value>
-  </data>
-  <data name="Forum.Header" xml:space="preserve">
-    <value>Forum</value>
-  </data>
   <data name="Name.Header" xml:space="preserve">
-    <value>Forum</value>
+    <value>Containing Forum</value>
   </data>
   <data name="PostsToModerate.Header" xml:space="preserve">
     <value>Posts</value>

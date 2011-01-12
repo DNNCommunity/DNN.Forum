@@ -53,7 +53,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
 			chkEnableExtProfilePage.Checked = objConfig.EnableExternalProfile
 			EnableExternalProfile(objConfig.EnableExternalProfile)
-			ddlExtProfilePageID.SelectedValue = objConfig.ExternalProfilePage.ToString()
+            rcbExtProfilePageID.SelectedValue = objConfig.ExternalProfilePage.ToString()
 			txtExtProfileUserParam.Text = objConfig.ExternalProfileParam.ToString()
 			txtExtProfileParamName.Text = objConfig.ExternalProfileParamName
 			txtExtProfileParamValue.Text = objConfig.ExternalProfileParamValue
@@ -75,7 +75,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				Dim ctlModule As New Entities.Modules.ModuleController
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_USERS_ONLINE, chkUserOnline.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_EXTERNAL_PROFILE_PAGE, chkEnableExtProfilePage.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.EXTERNAL_PROFILE_PAGE, ddlExtProfilePageID.SelectedValue)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.EXTERNAL_PROFILE_PAGE, rcbExtProfilePageID.SelectedValue)
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.EXTERNAL_PROFILE_USER_PARAM, txtExtProfileUserParam.Text)
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.EXTERNAL_PROFILE_PARAM_NAME, txtExtProfileParamName.Text)
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.EXTERNAL_PROFILE_PARAM_VALUE, txtExtProfileParamValue.Text)
@@ -112,9 +112,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			Dim colTabs As New List(Of DotNetNuke.Entities.Tabs.TabInfo)
 			colTabs = DotNetNuke.Entities.Tabs.TabController.GetPortalTabs(PortalId, 0, True, True, False, False)
 
-			ddlExtProfilePageID.ClearSelection()
-			ddlExtProfilePageID.DataSource = colTabs
-			ddlExtProfilePageID.DataBind()
+            rcbExtProfilePageID.ClearSelection()
+            rcbExtProfilePageID.DataSource = colTabs
+            rcbExtProfilePageID.DataBind()
 		End Sub
 
 		''' <summary>

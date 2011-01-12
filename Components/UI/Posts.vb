@@ -22,7 +22,6 @@ Option Explicit On
 
 Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Services.FileSystem
-Imports DotNetNuke.Entities.Portals
 
 Namespace DotNetNuke.Modules.Forum
 
@@ -45,7 +44,9 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Controls"
 
-        Private trcRating As Telerik.Web.UI.RadRating
+        'CP: NOTE: Telerik conversion
+        'Private trcRating As Telerik.Web.UI.RadRating
+        Private trcRating As DotNetNuke.Wrapper.UI.WebControls.DnnRating
         Private ddlViewDescending As DotNetNuke.Web.UI.WebControls.DnnComboBox
         Private chkEmail As CheckBox
         Private ddlThreadStatus As DotNetNuke.Web.UI.WebControls.DnnComboBox
@@ -625,7 +626,9 @@ Namespace DotNetNuke.Modules.Forum
         Public Overrides Sub CreateChildControls()
             Controls.Clear()
 
-            Me.trcRating = New Telerik.Web.UI.RadRating
+            'CP: NOTE: Telerik conversion
+            'Me.trcRating = New Telerik.Web.UI.RadRating
+            Me.trcRating = New DotNetNuke.Wrapper.UI.WebControls.DnnRating
             With trcRating
                 .Skin = "Office2007"
                 .SelectionMode = Telerik.Web.UI.RatingSelectionMode.Continuous
@@ -666,8 +669,11 @@ Namespace DotNetNuke.Modules.Forum
                 .ID = "lstViewDescending"
                 .Width = Unit.Parse("150")
                 .AutoPostBack = True
-                .Items.Add(New Telerik.Web.UI.RadComboBoxItem(ForumControl.LocalizedText("OldestToNewest")))
-                .Items.Add(New Telerik.Web.UI.RadComboBoxItem(ForumControl.LocalizedText("NewestToOldest")))
+                'CP: NOTE: Telerik conversion
+                '.Items.Add(New Telerik.Web.UI.RadComboBoxItem(ForumControl.LocalizedText("OldestToNewest")))
+                '.Items.Add(New Telerik.Web.UI.RadComboBoxItem(ForumControl.LocalizedText("NewestToOldest")))
+                .Items.Add(New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(ForumControl.LocalizedText("OldestToNewest")))
+                .Items.Add(New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(ForumControl.LocalizedText("NewestToOldest")))
                 .ClearSelection()
             End With
 
@@ -941,16 +947,23 @@ Namespace DotNetNuke.Modules.Forum
                         ddlThreadStatus.Visible = True
                         ddlThreadStatus.Items.Clear()
 
-                        ddlThreadStatus.Items.Insert(0, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("NoneSpecified", objConfig.SharedResourceFile), "0"))
-                        ddlThreadStatus.Items.Insert(1, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Unanswered", objConfig.SharedResourceFile), "1"))
-                        ddlThreadStatus.Items.Insert(2, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Answered", objConfig.SharedResourceFile), "2"))
-                        ddlThreadStatus.Items.Insert(3, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Informative", objConfig.SharedResourceFile), "3"))
+                        'CP: NOTE: Telerik conversion
+                        'ddlThreadStatus.Items.Insert(0, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("NoneSpecified", objConfig.SharedResourceFile), "0"))
+                        'ddlThreadStatus.Items.Insert(1, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Unanswered", objConfig.SharedResourceFile), "1"))
+                        'ddlThreadStatus.Items.Insert(2, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Answered", objConfig.SharedResourceFile), "2"))
+                        'ddlThreadStatus.Items.Insert(3, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Informative", objConfig.SharedResourceFile), "3"))
+                        ddlThreadStatus.Items.Insert(0, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("NoneSpecified", objConfig.SharedResourceFile), "0"))
+                        ddlThreadStatus.Items.Insert(1, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("Unanswered", objConfig.SharedResourceFile), "1"))
+                        ddlThreadStatus.Items.Insert(2, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("Answered", objConfig.SharedResourceFile), "2"))
+                        ddlThreadStatus.Items.Insert(3, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("Informative", objConfig.SharedResourceFile), "3"))
                     Else
                         ddlThreadStatus.Visible = False
                     End If
                     'polling changes
                     If objThread.ThreadStatus = ThreadStatus.Poll Then
-                        Dim statusEntry As New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Poll", objConfig.SharedResourceFile), ThreadStatus.Poll.ToString())
+                        'CP: NOTE: Telerik conversion
+                        'Dim statusEntry As New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Poll", objConfig.SharedResourceFile), ThreadStatus.Poll.ToString())
+                        Dim statusEntry As New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("Poll", objConfig.SharedResourceFile), ThreadStatus.Poll.ToString())
                         ddlThreadStatus.Items.Add(statusEntry)
                     End If
 
@@ -1993,7 +2006,9 @@ Namespace DotNetNuke.Modules.Forum
                 End If
             Else
                 ' If we are here, file stored as name and not id (in UserProfile table).
-                Dim rbiProfileAvatar As New Telerik.Web.UI.RadBinaryImage
+                'CP: NOTE: Telerik conversion
+                ' Dim rbiProfileAvatar As New Telerik.Web.UI.RadBinaryImage
+                Dim rbiProfileAvatar As New DotNetNuke.Wrapper.UI.WebControls.DnnBinaryImage
                 rbiProfileAvatar.Width = objConfig.UserAvatarWidth
                 rbiProfileAvatar.Height = objConfig.UserAvatarHeight
                 rbiProfileAvatar.ImageUrl = author.AvatarComplete

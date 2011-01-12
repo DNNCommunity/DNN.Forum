@@ -1,5 +1,6 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Control language="vb" CodeBehind="ACP_EmailQueue.ascx.vb" AutoEventWireup="false" Explicit="true" Inherits="DotNetNuke.Modules.Forum.ACP.EmailQueue" %>
+<%@ Register TagPrefix="wrapper" Namespace="DotNetNuke.Wrapper.UI.WebControls" Assembly="DotNetNuke.Wrapper" %>
 <div class="ACP-EmailQueue">
 	<table cellpadding="0" cellspacing="0" width="100%" border="0">
 		<tr>
@@ -27,9 +28,8 @@
 							</span>
 						</td>
 						<td align="left">
-						    <asp:textbox id="txtTaskDeleteDays" runat="server" CssClass="Forum_NormalTextBox" width="50px" MaxLength="4" />
-						    <asp:RequiredFieldValidator ID="valTasks" runat="server" ErrorMessage="*" CssClass="NormalRed" Display="Dynamic" ControlToValidate="txtTaskDeleteDays" EnableViewState="false" />
-						 <asp:RegularExpressionValidator ID="valIntTasks" runat="server" ControlToValidate="txtTaskDeleteDays" CssClass="NormalRed" resourcekey="NumericValidation.ErrorMessage" ValidationExpression="[0-9]{1,}" Display="Dynamic" EnableViewState="false" />	    
+                            <wrapper:DnnNumericTextBox ID="rntxtbxTaskDeleteDays" runat="server" MaxLength="4" NumberFormat-DecimalDigits="0" ShowSpinButtons="true" MinValue="1" MaxValue="1096"/>
+						    <asp:RequiredFieldValidator ID="valTasks" runat="server" ErrorMessage="*" CssClass="NormalRed" Display="Dynamic" ControlToValidate="rntxtbxTaskDeleteDays" EnableViewState="false" />
 						</td>
 					</tr>
 					 <tr>
@@ -39,9 +39,8 @@
 						    </span>
 						</td>
 						<td align="left">
-						    <asp:TextBox ID="txtEmailDeleteDays" runat="server" CssClass="Forum_NormalTextBox" Width="50px" MaxLength="4" />
-						    <asp:RequiredFieldValidator ID="valEmails" runat="server" ErrorMessage="*" CssClass="NormalRed" Display="Dynamic" ControlToValidate="txtEmailDeleteDays" EnableViewState="false" />
-						    <asp:RegularExpressionValidator ID="valIntEmails" runat="server" ControlToValidate="txtEmailDeleteDays" CssClass="NormalRed" resourcekey="NumericValidation.ErrorMessage" ValidationExpression="[0-9]{1,}" Display="Dynamic" EnableViewState="false" />
+                            <wrapper:DnnNumericTextBox ID="rntxtbxEmailDeleteDays" runat="server" MaxLength="4" NumberFormat-DecimalDigits="0" ShowSpinButtons="true" MinValue="1" MaxValue="1096"/>
+						    <asp:RequiredFieldValidator ID="valEmails" runat="server" ErrorMessage="*" CssClass="NormalRed" Display="Dynamic" ControlToValidate="rntxtbxEmailDeleteDays" EnableViewState="false" />
 						</td>
 					 </tr>
 				</table>

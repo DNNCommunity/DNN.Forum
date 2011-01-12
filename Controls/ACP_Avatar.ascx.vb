@@ -44,7 +44,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			chkEnableUserAvatar.Checked = objConfig.EnableUserAvatar
 			chkEnableProfileAvatar.Checked = objConfig.EnableProfileAvatar
 			chkEnableProfileUserFolders.Checked = objConfig.EnableProfileUserFolders
-			ddlProfileAvatarPropertyName.SelectedValue = objConfig.AvatarProfilePropName.ToString()
+            rcbProfileAvatarPropertyName.SelectedValue = objConfig.AvatarProfilePropName.ToString()
 			txtUserAvatarPath.Text = objConfig.UserAvatarPath
 			txtUserAvatarWidth.Text = objConfig.UserAvatarWidth.ToString()
 			txtUserAvatarHeight.Text = objConfig.UserAvatarHeight.ToString()
@@ -114,7 +114,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_USER_AVATARS, chkEnableUserAvatar.Checked.ToString())
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_PROFILE_AVATAR, chkEnableProfileAvatar.Checked.ToString())
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_PROFILE_USER_FOLDERS, chkEnableProfileUserFolders.Checked.ToString())
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.AVATAR_PROFILE_PROP_NAME, ddlProfileAvatarPropertyName.SelectedValue)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.AVATAR_PROFILE_PROP_NAME, rcbProfileAvatarPropertyName.SelectedValue)
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_USER_AVATAR_POOL, chkEnableUserAvatarPool.Checked.ToString())
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.USER_AVATAR_PATH, txtUserAvatarPath.Text)
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.USER_AVATAR_POOL_PATH, txtUserAvatarPoolPath.Text)
@@ -253,9 +253,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			Dim colProfileProps As New ProfilePropertyDefinitionCollection
 			colProfileProps = ProfileController.GetPropertyDefinitionsByPortal(PortalId)
 
-			ddlProfileAvatarPropertyName.ClearSelection()
-			ddlProfileAvatarPropertyName.DataSource = colProfileProps
-			ddlProfileAvatarPropertyName.DataBind()
+            rcbProfileAvatarPropertyName.ClearSelection()
+            rcbProfileAvatarPropertyName.DataSource = colProfileProps
+            rcbProfileAvatarPropertyName.DataBind()
 		End Sub
 
 		''' <summary>

@@ -12,132 +12,114 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
-	Partial Public Class EmailQueue
+    Partial Public Class EmailQueue
 
-		'''<summary>
-		'''lblTitle control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblTitle control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''rowID control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowID As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''rowID control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rowID As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
-		'''<summary>
-		'''plScheduleItemID control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plScheduleItemID As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plScheduleItemID control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plScheduleItemID As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''txtScheduleItemID control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtScheduleItemID As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''txtScheduleItemID control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtScheduleItemID As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''plTaskDeleteDays control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plTaskDeleteDays As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plTaskDeleteDays control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plTaskDeleteDays As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''txtTaskDeleteDays control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtTaskDeleteDays As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''rntxtbxTaskDeleteDays control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rntxtbxTaskDeleteDays As Global.DotNetNuke.Wrapper.UI.WebControls.DnnNumericTextBox
 
-		'''<summary>
-		'''valTasks control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valTasks As Global.System.Web.UI.WebControls.RequiredFieldValidator
+        '''<summary>
+        '''valTasks control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valTasks As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
-		'''<summary>
-		'''valIntTasks control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valIntTasks As Global.System.Web.UI.WebControls.RegularExpressionValidator
+        '''<summary>
+        '''plEmailDeleteDays control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plEmailDeleteDays As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''plEmailDeleteDays control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plEmailDeleteDays As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''rntxtbxEmailDeleteDays control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rntxtbxEmailDeleteDays As Global.DotNetNuke.Wrapper.UI.WebControls.DnnNumericTextBox
 
-		'''<summary>
-		'''txtEmailDeleteDays control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtEmailDeleteDays As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''valEmails control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valEmails As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
-		'''<summary>
-		'''valEmails control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valEmails As Global.System.Web.UI.WebControls.RequiredFieldValidator
+        '''<summary>
+        '''cmdUpdate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
 
-		'''<summary>
-		'''valIntEmails control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valIntEmails As Global.System.Web.UI.WebControls.RegularExpressionValidator
-
-		'''<summary>
-		'''cmdUpdate control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
-
-		'''<summary>
-		'''lblUpdateDone control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
-	End Class
+        '''<summary>
+        '''lblUpdateDone control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
+    End Class
 End Namespace

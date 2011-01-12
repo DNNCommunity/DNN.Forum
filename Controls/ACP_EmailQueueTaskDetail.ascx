@@ -1,6 +1,5 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Control language="vb" CodeBehind="ACP_EmailQueueTaskDetail.ascx.vb" AutoEventWireup="false" Explicit="true" Inherits="DotNetNuke.Modules.Forum.ACP.EmailQueueTaskDetail" %>
-<%@ Register assembly="Telerik.Web.UI" namespace="Telerik.Web.UI" tagprefix="telerik" %>
 <%@ Register Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
 <div class="ACP-EmailQueueTaskDetails">
 	<table cellpadding="0" cellspacing="0" width="100%" border="0">
@@ -21,25 +20,25 @@
 								<asp:Label ID="lblNoRecords" runat="server" resourcekey="lblNoRecords" CssClass="Normal" />
 							</NoRecordsTemplate>
 							<DetailTables>
-								<telerik:GridTableView DataKeyNames="EmailQueueID" Name="TaskEmails" Width="99%">
+								<dnnweb:DnnGridTableView DataKeyNames="EmailQueueID" Name="TaskEmails" Width="99%">
                                     <NoRecordsTemplate>
 								        <asp:Label ID="lblNoDetailRecords" runat="server" resourcekey="lblNoRecords" CssClass="Normal" />
 							        </NoRecordsTemplate>
 									<Columns>
-										<telerik:GridBoundColumn UniqueName="EmailAddress" DataField="EmailAddress" />	
-										<telerik:GridCheckBoxColumn UniqueName="IsComplete" DataField="IsComplete" HeaderStyle-Width="50px" ItemStyle-Width="50px" />
-										<telerik:GridCheckBoxColumn UniqueName="Failed" DataField="Failed" HeaderStyle-Width="50px" ItemStyle-Width="50px" />
-										<telerik:GridBoundColumn UniqueName="DateAdded" DataField="DateAdded" />	
-										<telerik:GridBoundColumn UniqueName="DateComplete" DataField="DateComplete" />	
+										<dnnweb:DnnGridBoundColumn UniqueName="EmailAddress" DataField="EmailAddress" HeaderText="EmailAddress" />	
+										<dnnweb:DnnGridCheckBoxColumn UniqueName="IsComplete" DataField="IsComplete" HeaderStyle-Width="50px" ItemStyle-Width="50px" HeaderText="IsComplete" />
+										<dnnweb:DnnGridCheckBoxColumn UniqueName="Failed" DataField="Failed" HeaderStyle-Width="50px" ItemStyle-Width="50px" HeaderText="Failed" />
+										<dnnweb:DnnGridBoundColumn UniqueName="DateAdded" DataField="DateAdded" HeaderText="DateAdded" />	
+										<dnnweb:DnnGridBoundColumn UniqueName="DateComplete" DataField="DateComplete" HeaderText="DateComplete" />	
 									</Columns>
-								</telerik:GridTableView>
+								</dnnweb:DnnGridTableView>
 							</DetailTables>
 							<Columns>
-								<telerik:GridBoundColumn UniqueName="SuccessfullSendCount" DataField="SuccessfullSendCount" HeaderStyle-Width="50px" ItemStyle-Width="50px" />
-								<telerik:GridBoundColumn UniqueName="EmailSubject" DataField="EmailSubject" />	
-								<telerik:GridBoundColumn UniqueName="QueueAddedDate" DataField="QueueAddedDate" />	
-								<telerik:GridBoundColumn UniqueName="QueueStartedDate" DataField="QueueStartedDate" />	
-								<telerik:GridBoundColumn UniqueName="QueueCompletedDate" DataField="QueueCompletedDate" />	
+								<dnnweb:DnnGridBoundColumn UniqueName="SuccessfullSendCount" DataField="SuccessfullSendCount" HeaderStyle-Width="50px" ItemStyle-Width="50px" HeaderText="SuccessfullSendCount" />
+								<dnnweb:DnnGridBoundColumn UniqueName="EmailSubject" DataField="EmailSubject" HeaderText="EmailSubject" />	
+								<dnnweb:DnnGridBoundColumn UniqueName="QueueAddedDate" DataField="QueueAddedDate" HeaderText="QueueAddedDate" />	
+								<dnnweb:DnnGridBoundColumn UniqueName="QueueStartedDate" DataField="QueueStartedDate" HeaderText="QueueStartedDate" />	
+								<dnnweb:DnnGridBoundColumn UniqueName="QueueCompletedDate" DataField="QueueCompletedDate" HeaderText="QueueCompletedDate" />	
 							</Columns>
 						</MasterTableView>
 					</dnnweb:DnnGrid>

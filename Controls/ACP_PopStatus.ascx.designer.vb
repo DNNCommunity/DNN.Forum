@@ -12,141 +12,114 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
-	Partial Public Class PopStatus
+    Partial Public Class PopStatus
 
-		'''<summary>
-		'''lblTitle control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblTitle control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''plPopularPostsView control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plPopularPostsView As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plPopularPostsView control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plPopularPostsView As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''txtPopularThreadView control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtPopularThreadView As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''rntxtbxPopularThreadView control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rntxtbxPopularThreadView As Global.DotNetNuke.Wrapper.UI.WebControls.DnnNumericTextBox
 
-		'''<summary>
-		'''valreqView control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valreqView As Global.System.Web.UI.WebControls.RequiredFieldValidator
+        '''<summary>
+        '''valreqView control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valreqView As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
-		'''<summary>
-		'''valView control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valView As Global.System.Web.UI.WebControls.RegularExpressionValidator
+        '''<summary>
+        '''plPopularPostsReply control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plPopularPostsReply As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''plPopularPostsReply control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plPopularPostsReply As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''rntxtbxPopularThreadReply control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rntxtbxPopularThreadReply As Global.DotNetNuke.Wrapper.UI.WebControls.DnnNumericTextBox
 
-		'''<summary>
-		'''txtPopularThreadReply control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtPopularThreadReply As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''valreqReply control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valreqReply As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
-		'''<summary>
-		'''valreqReply control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valreqReply As Global.System.Web.UI.WebControls.RequiredFieldValidator
+        '''<summary>
+        '''plDays control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plDays As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''valReply control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valReply As Global.System.Web.UI.WebControls.RegularExpressionValidator
+        '''<summary>
+        '''rntxtbxDays control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rntxtbxDays As Global.DotNetNuke.Wrapper.UI.WebControls.DnnNumericTextBox
 
-		'''<summary>
-		'''plDays control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plDays As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''valreqDays control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valreqDays As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
-		'''<summary>
-		'''txtDays control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtDays As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''cmdUpdate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
 
-		'''<summary>
-		'''valreqDays control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valreqDays As Global.System.Web.UI.WebControls.RequiredFieldValidator
-
-		'''<summary>
-		'''valDays control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valDays As Global.System.Web.UI.WebControls.RegularExpressionValidator
-
-		'''<summary>
-		'''cmdUpdate control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
-
-		'''<summary>
-		'''lblUpdateDone control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
-	End Class
+        '''<summary>
+        '''lblUpdateDone control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
+    End Class
 End Namespace

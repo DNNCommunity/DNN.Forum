@@ -1,5 +1,6 @@
 <%@ Control language="vb" CodeBehind="ACP_UI.ascx.vb" AutoEventWireup="false" Explicit="true" Inherits="DotNetNuke.Modules.Forum.ACP.UI" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
+<%@ Register Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
 <div class="ACP-UI">
 	<table cellpadding="0" cellspacing="0" width="100%" border="0">
 		<tr>
@@ -65,7 +66,7 @@
 							</span>
 						</td>
 						<td align="left">
-							<asp:dropdownlist id="ddlSkins" runat="server" CssClass="Forum_NormalTextBox" width="250px" />
+                            <dnnweb:DnnComboBox ID="rcbSkins" runat="server" />
 						</td>
 					</tr>
 					<tr>
@@ -86,7 +87,7 @@
 							</span>
 						</td>
 						<td align="left">
-							<asp:dropdownlist id="ddlDisplayPosterLocation" tabIndex="32" runat="server" cssclass="Forum_NormalTextBox" width="250px" />
+                            <dnnweb:DnnComboBox ID="rcbDisplayPosterLocation" runat="server" />
 						</td>
 					</tr>
 					<tr>

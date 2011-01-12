@@ -53,22 +53,12 @@ Namespace DotNetNuke.Modules.Forum.MCP
 
 #Region "Event Handlers"
 
-		''' <summary>
-		''' Runs when the control is initialized, even before anything in LoadInitialView runs. 
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks>All controls containing grids should localize the grid headers here. </remarks>
-		Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-			SetLocalization()
-		End Sub
-
-		''' <summary>
-		''' Alters data as it is bound to the grid.
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
+        ''' <summary>
+        ''' Alters data as it is bound to the grid.
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="e"></param>
+        ''' <remarks></remarks>
 		Protected Sub gridPostsToModerate_ItemDataBound(ByVal sender As Object, ByVal e As GridItemEventArgs) Handles gridPostsToModerate.ItemDataBound
 			If TypeOf e.Item Is GridDataItem Then
 				Dim item As GridDataItem = CType(e.Item, GridDataItem)
@@ -101,18 +91,6 @@ Namespace DotNetNuke.Modules.Forum.MCP
 			Else
 				gridPostsToModerate.VirtualItemCount = 0
 			End If
-		End Sub
-
-		''' <summary>
-		''' Localizes the data grid headers for all grids on the page (that utilize Telerik).
-		''' </summary>
-		''' <remarks></remarks>
-		Private Sub SetLocalization()
-			For Each gc As GridColumn In gridPostsToModerate.MasterTableView.Columns
-				If gc.HeaderText <> "" Then
-					gc.HeaderText = Localization.GetString(gc.HeaderText + ".Header", LocalResourceFile)
-				End If
-			Next
 		End Sub
 
 #End Region

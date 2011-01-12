@@ -18,7 +18,9 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 Option Strict On
-Option Explicit On 
+Option Explicit On
+
+Imports DotNetNuke.Wrapper.UI.WebControls
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
@@ -38,55 +40,47 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' This interface is used to replace a If Page.IsPostBack typically used in page load. 
 		''' </summary>
 		''' <remarks></remarks>
-		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
-			txtTheardsPerPage.Text = objConfig.ThreadsPerPage.ToString()
-			txtPostsPerPage.Text = objConfig.PostsPerPage.ToString()
-			txtThreadPageCount.Text = objConfig.PostPagesCount.ToString()
-			txtImageExtension.Text = objConfig.ImageExtension
-			txtMaxPostImageWidth.Text = objConfig.MaxPostImageWidth.ToString
-			chkDisplayPosterRegion.Checked = objConfig.DisplayPosterRegion
-			chkEnableQuickReply.Checked = objConfig.EnableQuickReply
-			ddlDisplayPosterLocation.Items.FindByValue(objConfig.DisplayPosterLocation.ToString).Selected = True
-			chkEnableTagging.Checked = objConfig.EnableTagging
+        Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
+            BindThemes()
+            BindPosterLocation()
 
-			If System.IO.Directory.Exists(System.IO.Path.Combine(Server.MapPath(objConfig.SourceDirectory), "Themes/" + objConfig.ForumTheme)) Then
-				ddlSkins.Items.FindByValue(objConfig.ForumTheme).Selected = True
-			Else
-				ddlSkins.Items(0).Selected = True
-			End If
-		End Sub
+            txtTheardsPerPage.Text = objConfig.ThreadsPerPage.ToString()
+            txtPostsPerPage.Text = objConfig.PostsPerPage.ToString()
+            txtThreadPageCount.Text = objConfig.PostPagesCount.ToString()
+            txtImageExtension.Text = objConfig.ImageExtension
+            txtMaxPostImageWidth.Text = objConfig.MaxPostImageWidth.ToString
+            chkDisplayPosterRegion.Checked = objConfig.DisplayPosterRegion
+            chkEnableQuickReply.Checked = objConfig.EnableQuickReply
+            rcbDisplayPosterLocation.Items.FindItemByValue(objConfig.DisplayPosterLocation.ToString).Selected = True
+            chkEnableTagging.Checked = objConfig.EnableTagging
+
+            If System.IO.Directory.Exists(System.IO.Path.Combine(Server.MapPath(objConfig.SourceDirectory), "Themes/" + objConfig.ForumTheme)) Then
+                rcbSkins.Items.FindItemByValue(objConfig.ForumTheme).Selected = True
+            Else
+                rcbSkins.Items(0).Selected = True
+            End If
+        End Sub
 
 #End Region
 
 #Region "Event Handlers"
 
-		''' <summary>
-		''' Page Load is run in this control, which is loaded via Ajax.
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
-		Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-			BindThemes()
-			BindPosterLocation()
-		End Sub
-
-		''' <summary>
-		''' Updates the module's configuration (module settings)
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks>Saves the module settings shown in this view.
-		''' </remarks>
+        ''' <summary>
+        ''' Updates the module's configuration (module settings)
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="e"></param>
+        ''' <remarks>Saves the module settings shown in this view.
+        ''' </remarks>
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
 				Dim ctlModule As New Entities.Modules.ModuleController
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.THREADS_PER_PAGE, txtTheardsPerPage.Text)
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.POSTS_PER_PAGE, txtPostsPerPage.Text)
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.POST_PAGE_COUNT_LIMIT, txtThreadPageCount.Text)
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.FORUM_THEME, ddlSkins.SelectedItem.Value)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.FORUM_THEME, rcbSkins.SelectedItem.Value)
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.IMAGE_EXTENSIONS, txtImageExtension.Text)
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.DISPLAY_POSTER_LOCATION, ddlDisplayPosterLocation.SelectedItem.Value)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.DISPLAY_POSTER_LOCATION, rcbDisplayPosterLocation.SelectedItem.Value)
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.DISPLAY_POSTER_REGION, chkDisplayPosterRegion.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_QUICK_REPLY, chkEnableQuickReply.Checked.ToString)
 				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_TAGGING, chkEnableTagging.Checked.ToString)
@@ -111,15 +105,18 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			Try
 				Dim themesPath As String = System.IO.Path.Combine(Server.MapPath(objConfig.SourceDirectory), "Themes")
 
-				With ddlSkins
-					.ClearSelection()
+                With rcbSkins
+                    .Items.Clear()
 
-					For Each themeDir As String In System.IO.Directory.GetDirectories(themesPath)
-						Dim currentDir As New System.IO.DirectoryInfo(themeDir)
-						ddlSkins.Items.Add(New ListItem(currentDir.Name, currentDir.Name))
-					Next
-					.DataBind()
-				End With
+                    For Each themeDir As String In System.IO.Directory.GetDirectories(themesPath)
+                        Dim currentDir As New System.IO.DirectoryInfo(themeDir)
+
+                        If Not currentDir.Name.StartsWith(".") Then
+                            rcbSkins.Items.Add(New DnnComboBoxItem(currentDir.Name, currentDir.Name))
+                        End If
+                    Next
+                    .DataBind()
+                End With
 			Catch exc As Exception
 				ProcessModuleLoadException(Me, exc)
 			End Try
@@ -130,11 +127,11 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </summary>
 		''' <remarks>Uses lists localized items to determine options.</remarks>
 		Private Sub BindPosterLocation()
-			ddlDisplayPosterLocation.ClearSelection()
+            rcbDisplayPosterLocation.Items.Clear()
 
-			ddlDisplayPosterLocation.Items.Insert(0, New ListItem(Localization.GetString("None", objConfig.SharedResourceFile), "0"))
-			ddlDisplayPosterLocation.Items.Insert(1, New ListItem(Localization.GetString("ToAdmin", objConfig.SharedResourceFile), "1"))
-			ddlDisplayPosterLocation.Items.Insert(2, New ListItem(Localization.GetString("ToAll", objConfig.SharedResourceFile), "2"))
+            rcbDisplayPosterLocation.Items.Insert(0, New DnnComboBoxItem(Localization.GetString("None", objConfig.SharedResourceFile), "0"))
+            rcbDisplayPosterLocation.Items.Insert(1, New DnnComboBoxItem(Localization.GetString("ToAdmin", objConfig.SharedResourceFile), "1"))
+            rcbDisplayPosterLocation.Items.Insert(2, New DnnComboBoxItem(Localization.GetString("ToAll", objConfig.SharedResourceFile), "2"))
 		End Sub
 
 #End Region

@@ -39,7 +39,7 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Controls"
 
 		Private cmdRead As LinkButton
-		Private trcRating As Telerik.Web.UI.RadRating
+        Private trcRating As DotNetNuke.Wrapper.UI.WebControls.DnnRating
 
 #End Region
 
@@ -175,7 +175,7 @@ Namespace DotNetNuke.Modules.Forum
 			AddControlsToTree()
 
 			For Each thread As ThreadInfo In ThreadCollection
-				Me.trcRating = New Telerik.Web.UI.RadRating
+                Me.trcRating = New DotNetNuke.Wrapper.UI.WebControls.DnnRating
 				With trcRating
 					.Enabled = False
 					.Skin = "Office2007"
@@ -586,7 +586,7 @@ Namespace DotNetNuke.Modules.Forum
 
 							''RenderImage(wr, objConfig.GetThemeImageURL(thread.RatingImage), thread.RatingText, "") ' <img/>
 							If ThreadRatings.ContainsKey(objThread.ThreadID) Then
-								trcRating = CType(ThreadRatings(objThread.ThreadID), Telerik.Web.UI.RadRating)
+                                trcRating = CType(ThreadRatings(objThread.ThreadID), DotNetNuke.Wrapper.UI.WebControls.DnnRating)
 								' CP - we alter statement below if we want to enable 0 rating still showing image.
 								If objThread.Rating > 0 Then
 									trcRating.RenderControl(wr)

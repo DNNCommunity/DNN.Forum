@@ -18,7 +18,9 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 Option Strict On
-Option Explicit On 
+Option Explicit On
+
+Imports DotNetNuke.Wrapper.UI.WebControls
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
@@ -39,8 +41,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </summary>
 		''' <remarks></remarks>
 		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
-			BindMemberNameTypes()
-			ddlNameDisplay.SelectedIndex = objConfig.ForumMemberName
+            BindMemberNameTypes()
+
+            rcbNameDisplay.SelectedIndex = objConfig.ForumMemberName
 			chkEnableAutoTrust.Checked = objConfig.EnableAutoTrust
 			txtAutoTrustTime.Text = objConfig.AutoTrustTime.ToString()
 			chkAutoLockTrust.Checked = objConfig.AutoLockTrust
@@ -50,7 +53,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			txtPostEditWindow.Text = CStr(objConfig.PostEditWindow)
 			chkEnableUserBanning.Checked = objConfig.EnableUserBanning
 			chkUserReadManagement.Checked = objConfig.EnableUserReadManagement
-
+            rcbNameDisplay.Items.FindItemByValue(objConfig.ForumMemberName.ToString).Selected = True
 			'CP - COMEBACK: Handle when we are able to impersonate security of other users.
 			chkHideModEdit.Checked = False 'objConfig.HideModEdits
 			SetVisibleItems()
@@ -70,7 +73,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
 			Try
 				Dim ctlModule As New Entities.Modules.ModuleController
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.MEMBER_NAME_DISPLAY_FORMAT, ddlNameDisplay.SelectedValue)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.MEMBER_NAME_DISPLAY_FORMAT, rcbNameDisplay.SelectedValue)
 
 				If txtPostEditWindow.Text <> String.Empty Then
 					ctlModule.UpdateModuleSetting(ModuleId, Constants.POST_EDIT_WINDOW, txtPostEditWindow.Text)
@@ -145,13 +148,10 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </summary>
 		''' <remarks>Uses lists localized items to determine options.</remarks>
 		Private Sub BindMemberNameTypes()
-			ddlNameDisplay.ClearSelection()
+            rcbNameDisplay.Items.Clear()
 
-			ddlNameDisplay.Items.Insert(0, New ListItem(Localization.GetString("Username", objConfig.SharedResourceFile), "0"))
-			ddlNameDisplay.Items.Insert(1, New ListItem(Localization.GetString("DisplayName", objConfig.SharedResourceFile), "1"))
-
-			' Now Bind the items
-			ddlNameDisplay.Items.FindByValue(objConfig.ForumMemberName.ToString).Selected = True
+            rcbNameDisplay.Items.Insert(0, New DnnComboBoxItem(Localization.GetString("Username", objConfig.SharedResourceFile), "0"))
+            rcbNameDisplay.Items.Insert(1, New DnnComboBoxItem(Localization.GetString("DisplayName", objConfig.SharedResourceFile), "1"))
 		End Sub
 
 #End Region

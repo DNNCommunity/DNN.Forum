@@ -2405,5 +2405,6 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-	End Class
+    End Class
+
 End Namespace
