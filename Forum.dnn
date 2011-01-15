@@ -310,5 +310,42 @@
 				<component type="Cleanup" version="05.00.00" fileName="05.00.00.txt" />	
 			</components>
 		</package>
+        <package name="DotNetNuke Telerik Library" type="Library" version="01.00.00">
+            <friendlyname>DotNetNuke Telerik Library</friendlyname>
+            <description>A set of reusable DotNetNuke wrappers for Telerik controls not included in the core currently.</description>
+            <owner>
+                <name>Chris Paterra</name>
+                <organization>DotNetNuke</organization>
+                <url>dnnteleriklib.codeplex.com</url>
+                <email></email>
+            </owner>
+            <license src="WrapperLicense.txt"></license>
+            <releaseNotes src="WrapperReleaseNotes.txt"></releaseNotes>
+            <dependencies>
+                <dependency type="CoreVersion">05.06.00</dependency>
+            </dependencies>
+            <components>
+                <component type="Assembly">
+                    <assemblies>
+                        <assembly>
+                            <name>DotNetNuke.Wrapper.dll</name>
+                            <sourceFileName>DotNetNuke.Wrapper.dll</sourceFileName>
+                            <version>01.00.00</version>
+                        </assembly>
+                    </assemblies>
+                </component>
+                <component type="File">
+                    <files>
+                        <basePath>DesktopModules\DNNCorp\Telerik.Library\Documentation</basePath>
+                        <file>
+                            <name>WrapperLicense.txt</name>
+                        </file>
+                        <file>
+                            <name>WrapperReleaseNotes.txt</name>
+                        </file>
+                    </files>
+                </component>
+            </components>
+        </package>
 	</packages>
 </dotnetnuke>
