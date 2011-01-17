@@ -283,7 +283,7 @@
 						<assembly>
 							<name>DotNetNuke.Modules.Forum.dll</name>
 							<sourceFileName>DotNetNuke.Modules.Forum.dll</sourceFileName>
-							<version>05.00.00</version>
+							<version>05.00.01</version>
 						</assembly>
 					</assemblies>
 				</component>
