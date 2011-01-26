@@ -43,13 +43,14 @@ Namespace DotNetNuke.Modules.Forum.UCP
 			Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
 
 			If objSecurity.IsForumAdmin Then
-				If objConfig.EnableSystemAvatar Then
-					ctlSystemAvatar.Security = objSecurity
-					ctlSystemAvatar.AvatarType = AvatarControlType.System
-					ctlSystemAvatar.ModuleId = ModuleId
-					ctlSystemAvatar.ProfileUserID = ProfileUserID
-				End If
-			End If
+                If objConfig.EnableSystemAvatar Then
+                    rowSystemAvatar.Visible = True
+                    ctlSystemAvatar.Security = objSecurity
+                    ctlSystemAvatar.AvatarType = AvatarControlType.System
+                    ctlSystemAvatar.ModuleId = ModuleId
+                    ctlSystemAvatar.ProfileUserID = ProfileUserID
+                End If
+            End If
 
 			ctlUserAvatar.Security = objSecurity
 			ctlUserAvatar.AvatarType = AvatarControlType.User

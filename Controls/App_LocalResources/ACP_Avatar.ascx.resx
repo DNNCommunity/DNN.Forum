@@ -196,7 +196,7 @@
     <value>Updated Successfully!</value>
   </data>
   <data name="plUserAvatarPoolPath.Help" xml:space="preserve">
-    <value>The pole avatar path is located in the &lt;strong&gt;portal root directory&lt;/strong&gt;.&lt;br&gt;ie. domain.com/Portals/0/</value>
+    <value>The pool avatar path is located in the &lt;strong&gt;portal root directory&lt;/strong&gt;.&lt;br&gt;ie. domain.com/Portals/0/</value>
   </data>
   <data name="plUserAvatarPoolPath.Text" xml:space="preserve">
     <value>Pool Avatar Path</value>

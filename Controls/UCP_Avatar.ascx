@@ -21,7 +21,7 @@
 							<forum:avatarcontrol id="ctlUserAvatar" runat="server"></forum:avatarcontrol>
 						</td>
 					</tr>
-					<tr id="rowSystemAvatar" runat="server">
+					<tr id="rowSystemAvatar" runat="server" visible="false">
 						<td width="35%">
 							<span class="Forum_Row_AdminText">
 								<dnn:label id="plSystemAvatarsLookup" runat="server" controlname="ctlSystemAvatar" suffix=":"></dnn:label>
