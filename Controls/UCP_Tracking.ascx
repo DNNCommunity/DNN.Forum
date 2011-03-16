@@ -1,6 +1,6 @@
 <%@ Control Language="vb" AutoEventWireup="false" Explicit="true" Codebehind="UCP_Tracking.ascx.vb" Inherits="DotNetNuke.Modules.Forum.UCP.Tracking" %>
 <%@ Register Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
-<%@ Register TagPrefix="wrapper" Namespace="DotNetNuke.Wrapper.UI.WebControls" Assembly="DotNetNuke.Wrapper" %>
+<%@ Register TagPrefix="wrapper" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %>
 <div class="UCP-Tracking">
 	<table cellpadding="0" cellspacing="0" width="100%" class="Forum_SearchContainer">
 		<tr>
@@ -12,7 +12,7 @@
 			<td class="Forum_UCP_HeaderInfo" align="left">
 				<dnnweb:DnnTabStrip ID="rtsNotifications" runat="server" MultiPageID="rmpNotifications" SelectedIndex="0" Skin="Vista" AutoPostBack="true" />		
 				<dnnweb:DnnMultiPage ID="rmpNotifications" runat="server" SelectedIndex="0">
-					<wrapper:DnnPageView ID="rpvForums" runat="server">
+					<wrapper:RadPageView ID="rpvForums" runat="server">
 						<dnnweb:DnnGrid runat="server" ID="gridForumTracking" AllowPaging="true" AllowSorting="false" AutoGenerateColumns="false" AllowCustomPaging="true" GridLines="None">
 							<MasterTableView DataKeyNames="ForumID,MostRecentPostID" >
 								<Columns>
@@ -24,8 +24,8 @@
 								</Columns>
 							</MasterTableView>			
 						</dnnweb:DnnGrid>
-					</wrapper:DnnPageView>
-					<wrapper:DnnPageView ID="rpvThreads" runat="server" >
+					</wrapper:RadPageView>
+					<wrapper:RadPageView ID="rpvThreads" runat="server" >
 						<dnnweb:DnnGrid runat="server" ID="gridThreadTracking" AllowPaging="true" AllowSorting="false" AutoGenerateColumns="false" AllowCustomPaging="true" GridLines="None">
 							<MasterTableView DataKeyNames="ThreadID,ForumID,MostRecentPostID" >
 								<Columns>
@@ -36,7 +36,7 @@
 								</Columns>
 							</MasterTableView>			
 						</dnnweb:DnnGrid>
-					</wrapper:DnnPageView>
+					</wrapper:RadPageView>
 				</dnnweb:DnnMultiPage>
 			</td>
 		</tr>

@@ -45,7 +45,7 @@ Namespace DotNetNuke.Modules.Forum
 		Private chkEmail As CheckBox
 		Private txtForumSearch As TextBox
 		Private cmdForumSearch As ImageButton
-        Private trcRating As DotNetNuke.Wrapper.UI.WebControls.DnnRating
+        Private trcRating As Telerik.Web.UI.RadRating
 		Private cmdForumSubscribers As LinkButton
 
 #End Region
@@ -477,7 +477,7 @@ Namespace DotNetNuke.Modules.Forum
 			AddControlsToTree()
 
 			For Each objThread As ThreadInfo In ThreadCollection
-                Me.trcRating = New DotNetNuke.Wrapper.UI.WebControls.DnnRating
+                Me.trcRating = New Telerik.Web.UI.RadRating
 				With trcRating
 					.Enabled = False
 					.Skin = "Office2007"
@@ -601,17 +601,26 @@ Namespace DotNetNuke.Modules.Forum
 			Try
 				ddlDateFilter.Items.Clear()
 
-                ddlDateFilter.Items.Insert(0, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("Today", objConfig.SharedResourceFile), "0"))
-                ddlDateFilter.Items.Insert(1, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("PastThreeDays", objConfig.SharedResourceFile), "3"))
-                ddlDateFilter.Items.Insert(2, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("PastWeek", objConfig.SharedResourceFile), "7"))
-                ddlDateFilter.Items.Insert(3, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("PastTwoWeek", objConfig.SharedResourceFile), "14"))
-                ddlDateFilter.Items.Insert(4, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("PastMonth", objConfig.SharedResourceFile), "30"))
-                ddlDateFilter.Items.Insert(5, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("PastThreeMonth", objConfig.SharedResourceFile), "92"))
-                ddlDateFilter.Items.Insert(6, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("PastYear", objConfig.SharedResourceFile), "365"))
-                ddlDateFilter.Items.Insert(7, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("AllDays", objConfig.SharedResourceFile), "3650"))
+                ddlDateFilter.Items.Insert(0, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Today", objConfig.SharedResourceFile), "0"))
+                ddlDateFilter.Items.Insert(1, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastThreeDays", objConfig.SharedResourceFile), "3"))
+                ddlDateFilter.Items.Insert(2, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastWeek", objConfig.SharedResourceFile), "7"))
+                ddlDateFilter.Items.Insert(3, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastTwoWeek", objConfig.SharedResourceFile), "14"))
+                ddlDateFilter.Items.Insert(4, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastMonth", objConfig.SharedResourceFile), "30"))
+                ddlDateFilter.Items.Insert(5, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastThreeMonth", objConfig.SharedResourceFile), "92"))
+                ddlDateFilter.Items.Insert(6, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("PastYear", objConfig.SharedResourceFile), "365"))
+                ddlDateFilter.Items.Insert(7, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("AllDays", objConfig.SharedResourceFile), "3650"))
+                'ddlDateFilter.Items.Insert(0, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("Today", objConfig.SharedResourceFile), "0"))
+                'ddlDateFilter.Items.Insert(1, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("PastThreeDays", objConfig.SharedResourceFile), "3"))
+                'ddlDateFilter.Items.Insert(2, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("PastWeek", objConfig.SharedResourceFile), "7"))
+                'ddlDateFilter.Items.Insert(3, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("PastTwoWeek", objConfig.SharedResourceFile), "14"))
+                'ddlDateFilter.Items.Insert(4, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("PastMonth", objConfig.SharedResourceFile), "30"))
+                'ddlDateFilter.Items.Insert(5, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("PastThreeMonth", objConfig.SharedResourceFile), "92"))
+                'ddlDateFilter.Items.Insert(6, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("PastYear", objConfig.SharedResourceFile), "365"))
+                'ddlDateFilter.Items.Insert(7, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("AllDays", objConfig.SharedResourceFile), "3650"))
 
 				If CurrentForumUser.UserID > 0 Then
-                    ddlDateFilter.Items.Insert(0, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("LastVisit", objConfig.SharedResourceFile), "-1"))
+                    ddlDateFilter.Items.Insert(0, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("LastVisit", objConfig.SharedResourceFile), "-1"))
+                    'ddlDateFilter.Items.Insert(0, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("LastVisit", objConfig.SharedResourceFile), "-1"))
 				End If
 
 				Dim dateFilter As Integer = 1000
@@ -1111,7 +1120,7 @@ Namespace DotNetNuke.Modules.Forum
 							RenderCellBegin(wr, "", "", "30%", "right", "", "", "") ' <td>
 
 							If ThreadRatings.ContainsKey(objThread.ThreadID) Then
-                                trcRating = CType(ThreadRatings(objThread.ThreadID), DotNetNuke.Wrapper.UI.WebControls.DnnRating)
+                                trcRating = CType(ThreadRatings(objThread.ThreadID), Telerik.Web.UI.RadRating)
 								' CP - we alter statement below if we want to enable 0 rating still showing image.
 								If objThread.Rating > 0 Then
 									trcRating.RenderControl(wr)

@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="ACP_Advertisement.ascx.vb" Inherits="DotNetNuke.Modules.Forum.ACP.Advertisement" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
-<%@ Register TagPrefix="wrapper" Namespace="DotNetNuke.Wrapper.UI.WebControls" Assembly="DotNetNuke.Wrapper" %>
+<%@ Register TagPrefix="wrapper" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %>
 <div class="ACP-Attachment">
 	<table cellpadding="0" cellspacing="0" width="100%" border="0">
 		<tr>
@@ -63,7 +63,7 @@
 									</NoRecordsTemplate>
 									<Columns>
 										<dnnweb:DnnGridClientSelectColumn  UniqueName="IsEnabled" HeaderText="IsEnabled" />
-										<wrapper:DnnGridNumericColumn UniqueName="VendorID" DataField="VendorID"  Visible="false" HeaderText="VendorID" />
+										<wrapper:GridNumericColumn UniqueName="VendorID" DataField="VendorID"  Visible="false" HeaderText="VendorID" />
 										<dnnweb:DnnGridBoundColumn UniqueName="VendorName" DataField="VendorName" HeaderText="VendorName" />
 										<dnnweb:DnnGridImageColumn UniqueName="Logo" DataType="System.String" DataImageUrlFields="LogoFile" AlternateText="No logo" HeaderText="Logo" />
 										<dnnweb:DnnGridBoundColumn UniqueName="BannerUrl" DataField="BannerUrl" HeaderText="BannerUrl" />

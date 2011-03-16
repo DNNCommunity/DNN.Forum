@@ -66,7 +66,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rntxtbxTaskDeleteDays As Global.DotNetNuke.Wrapper.UI.WebControls.DnnNumericTextBox
+        Protected WithEvents rntxtbxTaskDeleteDays As Global.Telerik.Web.UI.RadNumericTextBox
 
         '''<summary>
         '''valTasks control.
@@ -93,7 +93,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rntxtbxEmailDeleteDays As Global.DotNetNuke.Wrapper.UI.WebControls.DnnNumericTextBox
+        Protected WithEvents rntxtbxEmailDeleteDays As Global.Telerik.Web.UI.RadNumericTextBox
 
         '''<summary>
         '''valEmails control.

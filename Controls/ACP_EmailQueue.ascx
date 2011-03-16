@@ -1,6 +1,6 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Control language="vb" CodeBehind="ACP_EmailQueue.ascx.vb" AutoEventWireup="false" Explicit="true" Inherits="DotNetNuke.Modules.Forum.ACP.EmailQueue" %>
-<%@ Register TagPrefix="wrapper" Namespace="DotNetNuke.Wrapper.UI.WebControls" Assembly="DotNetNuke.Wrapper" %>
+<%@ Register TagPrefix="wrapper" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %>
 <div class="ACP-EmailQueue">
 	<table cellpadding="0" cellspacing="0" width="100%" border="0">
 		<tr>
@@ -28,7 +28,7 @@
 							</span>
 						</td>
 						<td align="left">
-                            <wrapper:DnnNumericTextBox ID="rntxtbxTaskDeleteDays" runat="server" MaxLength="4" NumberFormat-DecimalDigits="0" ShowSpinButtons="true" MinValue="1" MaxValue="1096"/>
+                            <wrapper:RadNumericTextBox ID="rntxtbxTaskDeleteDays" runat="server" MaxLength="4" NumberFormat-DecimalDigits="0" ShowSpinButtons="true" MinValue="1" MaxValue="1096"/>
 						    <asp:RequiredFieldValidator ID="valTasks" runat="server" ErrorMessage="*" CssClass="NormalRed" Display="Dynamic" ControlToValidate="rntxtbxTaskDeleteDays" EnableViewState="false" />
 						</td>
 					</tr>
@@ -39,7 +39,7 @@
 						    </span>
 						</td>
 						<td align="left">
-                            <wrapper:DnnNumericTextBox ID="rntxtbxEmailDeleteDays" runat="server" MaxLength="4" NumberFormat-DecimalDigits="0" ShowSpinButtons="true" MinValue="1" MaxValue="1096"/>
+                            <wrapper:RadNumericTextBox ID="rntxtbxEmailDeleteDays" runat="server" MaxLength="4" NumberFormat-DecimalDigits="0" ShowSpinButtons="true" MinValue="1" MaxValue="1096"/>
 						    <asp:RequiredFieldValidator ID="valEmails" runat="server" ErrorMessage="*" CssClass="NormalRed" Display="Dynamic" ControlToValidate="rntxtbxEmailDeleteDays" EnableViewState="false" />
 						</td>
 					 </tr>

@@ -159,7 +159,7 @@ Namespace DotNetNuke.Modules.Forum
 
 			If Value <> String.Empty Then
 				Dim sec As New DotNetNuke.Security.PortalSecurity
-				Value = sec.InputFilter(Value, PortalSecurity.FilterFlag.NoMarkup Xor PortalSecurity.FilterFlag.NoScripting Xor PortalSecurity.FilterFlag.NoSQL)
+                Value = sec.InputFilter(Value, PortalSecurity.FilterFlag.NoSQL)
 			End If
 
 			Dim term As New SearchTerm

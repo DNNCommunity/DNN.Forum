@@ -57,7 +57,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rpvGeneral As Global.DotNetNuke.Wrapper.UI.WebControls.DnnPageView
+        Protected WithEvents rpvGeneral As Global.Telerik.Web.UI.RadPageView
 
         '''<summary>
         '''tblGeneral control.
@@ -282,7 +282,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rpvOptions As Global.DotNetNuke.Wrapper.UI.WebControls.DnnPageView
+        Protected WithEvents rpvOptions As Global.Telerik.Web.UI.RadPageView
 
         '''<summary>
         '''tblBehavior control.
@@ -543,7 +543,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents textSitemapPriority As Global.DotNetNuke.Wrapper.UI.WebControls.DnnNumericTextBox
+        Protected WithEvents textSitemapPriority As Global.Telerik.Web.UI.RadNumericTextBox
 
         '''<summary>
         '''rowPermissions control.
@@ -561,7 +561,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents dgPermissions As Global.DotNetNuke.Modules.Forum.Controls.ForumPermissionsGrid
+        Protected WithEvents dgPermissions As Global.DotNetNuke.Modules.Forum.Controls.forumpermissionsgrid
 
         '''<summary>
         '''lblPrivateNote control.
@@ -597,7 +597,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rpvEmail As Global.DotNetNuke.Wrapper.UI.WebControls.DnnPageView
+        Protected WithEvents rpvEmail As Global.Telerik.Web.UI.RadPageView
 
         '''<summary>
         '''tblEmail control.

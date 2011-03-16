@@ -22,6 +22,7 @@ Option Explicit On
 
 Imports DotNetNuke.Modules.Forum.Utilities
 Imports DotNetNuke.Wrapper.UI.WebControls
+Imports Telerik.Web.UI
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
@@ -523,7 +524,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
                 rcbForumPermTemplate.DataBind()
 			End If
 
-            rcbForumPermTemplate.Items.Insert(0, New DnnComboBoxItem(DotNetNuke.Services.Localization.Localization.GetString("None", objConfig.SharedResourceFile), "0"))
+            rcbForumPermTemplate.Items.Insert(0, New RadComboBoxItem(DotNetNuke.Services.Localization.Localization.GetString("None", objConfig.SharedResourceFile), "0"))
 		End Sub
 
 		''' <summary>
@@ -759,7 +760,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
             rcbParentForum.Items.Clear()
 
 			'Add None option
-            Dim myItem As New DnnComboBoxItem
+            Dim myItem As New Telerik.Web.UI.RadComboBoxItem
 			myItem.Value = "0"
 			myItem.Text = Localization.GetString("None", Me.LocalResourceFile)
             rcbParentForum.Items.Insert(0, myItem)
@@ -775,7 +776,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					Dim singleForum As ForumInfo = cntForum.GetForumItemCache(fInfo.ForumID)
 
 					If singleForum.ContainsChildForums Or (singleForum.TotalThreads = 0) Then
-                        myItem = New DnnComboBoxItem
+                        myItem = New RadComboBoxItem
 						myItem.Text = singleForum.Name
 						myItem.Value = CStr(singleForum.ForumID)
 
@@ -814,19 +815,19 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		''' </remarks>
 		Private Sub BindLists()
             rcbForumType.Items.Clear()
-            rcbForumType.Items.Insert(0, New DnnComboBoxItem(Localization.GetString("Normal", objConfig.SharedResourceFile), "0"))
-            rcbForumType.Items.Insert(1, New DnnComboBoxItem(Localization.GetString("Notification", objConfig.SharedResourceFile), "1"))
-            rcbForumType.Items.Insert(2, New DnnComboBoxItem(Localization.GetString("Link", objConfig.SharedResourceFile), "2"))
+            rcbForumType.Items.Insert(0, New RadComboBoxItem(Localization.GetString("Normal", objConfig.SharedResourceFile), "0"))
+            rcbForumType.Items.Insert(1, New RadComboBoxItem(Localization.GetString("Notification", objConfig.SharedResourceFile), "1"))
+            rcbForumType.Items.Insert(2, New RadComboBoxItem(Localization.GetString("Link", objConfig.SharedResourceFile), "2"))
 
             rcbForumBehavior.Items.Clear()
-            rcbForumBehavior.Items.Insert(0, New DnnComboBoxItem(Localization.GetString("PublicModerated", objConfig.SharedResourceFile), "0"))
-            rcbForumBehavior.Items.Insert(1, New DnnComboBoxItem(Localization.GetString("PublicModeratedPostRestricted", objConfig.SharedResourceFile), "1"))
-            rcbForumBehavior.Items.Insert(2, New DnnComboBoxItem(Localization.GetString("PublicUnModerated", objConfig.SharedResourceFile), "2"))
-            rcbForumBehavior.Items.Insert(3, New DnnComboBoxItem(Localization.GetString("PublicUnModeratedPostRestricted", objConfig.SharedResourceFile), "3"))
-            rcbForumBehavior.Items.Insert(4, New DnnComboBoxItem(Localization.GetString("PrivateModerated", objConfig.SharedResourceFile), "4"))
-            rcbForumBehavior.Items.Insert(5, New DnnComboBoxItem(Localization.GetString("PrivateModeratedPostRestricted", objConfig.SharedResourceFile), "5"))
-            rcbForumBehavior.Items.Insert(6, New DnnComboBoxItem(Localization.GetString("PrivateUnModerated", objConfig.SharedResourceFile), "6"))
-            rcbForumBehavior.Items.Insert(7, New DnnComboBoxItem(Localization.GetString("PrivateUnModeratedPostRestricted", objConfig.SharedResourceFile), "7"))
+            rcbForumBehavior.Items.Insert(0, New RadComboBoxItem(Localization.GetString("PublicModerated", objConfig.SharedResourceFile), "0"))
+            rcbForumBehavior.Items.Insert(1, New RadComboBoxItem(Localization.GetString("PublicModeratedPostRestricted", objConfig.SharedResourceFile), "1"))
+            rcbForumBehavior.Items.Insert(2, New RadComboBoxItem(Localization.GetString("PublicUnModerated", objConfig.SharedResourceFile), "2"))
+            rcbForumBehavior.Items.Insert(3, New RadComboBoxItem(Localization.GetString("PublicUnModeratedPostRestricted", objConfig.SharedResourceFile), "3"))
+            rcbForumBehavior.Items.Insert(4, New RadComboBoxItem(Localization.GetString("PrivateModerated", objConfig.SharedResourceFile), "4"))
+            rcbForumBehavior.Items.Insert(5, New RadComboBoxItem(Localization.GetString("PrivateModeratedPostRestricted", objConfig.SharedResourceFile), "5"))
+            rcbForumBehavior.Items.Insert(6, New RadComboBoxItem(Localization.GetString("PrivateUnModerated", objConfig.SharedResourceFile), "6"))
+            rcbForumBehavior.Items.Insert(7, New RadComboBoxItem(Localization.GetString("PrivateUnModeratedPostRestricted", objConfig.SharedResourceFile), "7"))
 
 			' CP - Changes
 			' ddlForumBehavior.Items.Insert(8, New ListItem(Localization.GetString("EmailAuth", objConfig.SharedResourceFile), "8"))

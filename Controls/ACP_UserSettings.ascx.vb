@@ -21,6 +21,7 @@ Option Strict On
 Option Explicit On
 
 Imports DotNetNuke.Wrapper.UI.WebControls
+Imports Telerik.Web.UI
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
@@ -150,8 +151,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Private Sub BindMemberNameTypes()
             rcbNameDisplay.Items.Clear()
 
-            rcbNameDisplay.Items.Insert(0, New DnnComboBoxItem(Localization.GetString("Username", objConfig.SharedResourceFile), "0"))
-            rcbNameDisplay.Items.Insert(1, New DnnComboBoxItem(Localization.GetString("DisplayName", objConfig.SharedResourceFile), "1"))
+            rcbNameDisplay.Items.Insert(0, New RadComboBoxItem(Localization.GetString("Username", objConfig.SharedResourceFile), "0"))
+            rcbNameDisplay.Items.Insert(1, New RadComboBoxItem(Localization.GetString("DisplayName", objConfig.SharedResourceFile), "1"))
 		End Sub
 
 #End Region

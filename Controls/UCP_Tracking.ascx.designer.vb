@@ -48,7 +48,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rpvForums As Global.DotNetNuke.Wrapper.UI.WebControls.DnnPageView
+        Protected WithEvents rpvForums As Global.Telerik.Web.UI.RadPageView
 
         '''<summary>
         '''gridForumTracking control.
@@ -66,7 +66,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rpvThreads As Global.DotNetNuke.Wrapper.UI.WebControls.DnnPageView
+        Protected WithEvents rpvThreads As Global.Telerik.Web.UI.RadPageView
 
         '''<summary>
         '''gridThreadTracking control.

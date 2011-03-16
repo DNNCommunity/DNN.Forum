@@ -21,6 +21,7 @@ Option Strict On
 Option Explicit On
 
 Imports DotNetNuke.Wrapper.UI.WebControls
+Imports Telerik.Web.UI
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
@@ -112,7 +113,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
                         Dim currentDir As New System.IO.DirectoryInfo(themeDir)
 
                         If Not currentDir.Name.StartsWith(".") Then
-                            rcbSkins.Items.Add(New DnnComboBoxItem(currentDir.Name, currentDir.Name))
+                            rcbSkins.Items.Add(New RadComboBoxItem(currentDir.Name, currentDir.Name))
                         End If
                     Next
                     .DataBind()
@@ -129,9 +130,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Private Sub BindPosterLocation()
             rcbDisplayPosterLocation.Items.Clear()
 
-            rcbDisplayPosterLocation.Items.Insert(0, New DnnComboBoxItem(Localization.GetString("None", objConfig.SharedResourceFile), "0"))
-            rcbDisplayPosterLocation.Items.Insert(1, New DnnComboBoxItem(Localization.GetString("ToAdmin", objConfig.SharedResourceFile), "1"))
-            rcbDisplayPosterLocation.Items.Insert(2, New DnnComboBoxItem(Localization.GetString("ToAll", objConfig.SharedResourceFile), "2"))
+            rcbDisplayPosterLocation.Items.Insert(0, New RadComboBoxItem(Localization.GetString("None", objConfig.SharedResourceFile), "0"))
+            rcbDisplayPosterLocation.Items.Insert(1, New RadComboBoxItem(Localization.GetString("ToAdmin", objConfig.SharedResourceFile), "1"))
+            rcbDisplayPosterLocation.Items.Insert(2, New RadComboBoxItem(Localization.GetString("ToAll", objConfig.SharedResourceFile), "2"))
 		End Sub
 
 #End Region

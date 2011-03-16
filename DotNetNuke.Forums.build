@@ -189,10 +189,9 @@
 			<fileset>
 				<include name="**${resourcezip.dir}/Resources.zip" />
 				<include name="${module.dll}" />
-                <include name="${bin.dir}/DotNetNuke.Wrapper.dll" />
 				<include name="**/*.sqldataprovider" />
 				<include name="**/*.dnn" />
-				<include name="**/05.00.00.txt" />
+				<include name="**/${fullversion}.txt" />
 				<include name="**/Documentation/License.txt" />
 				<include name="**/Documentation/ReleaseNotes.txt" />
                 <include name="**/Documentation/WrapperLicense.txt" />
@@ -221,10 +220,9 @@
 			<fileset>
 				<include name="**${resourcezip.dir}/Resources.zip" />
 				<include name="${module.dll}" />
-                <include name="${bin.dir}/DotNetNuke.Wrapper.dll" />
 				<include name="**/*.sqldataprovider" />
 				<include name="**/*.dnn" />
-				<include name="**/05.00.00.txt" />
+				<include name="**/${fullversion}.txt" />
 				<include name="**/Documentation/License.txt" />
 				<include name="**/Documentation/ReleaseNotes.txt" />
                 <include name="**/Documentation/WrapperLicense.txt" />

@@ -39,7 +39,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rntxtbxPopularThreadView As Global.DotNetNuke.Wrapper.UI.WebControls.DnnNumericTextBox
+        Protected WithEvents rntxtbxPopularThreadView As Global.Telerik.Web.UI.RadNumericTextBox
 
         '''<summary>
         '''valreqView control.
@@ -66,7 +66,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rntxtbxPopularThreadReply As Global.DotNetNuke.Wrapper.UI.WebControls.DnnNumericTextBox
+        Protected WithEvents rntxtbxPopularThreadReply As Global.Telerik.Web.UI.RadNumericTextBox
 
         '''<summary>
         '''valreqReply control.
@@ -93,7 +93,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rntxtbxDays As Global.DotNetNuke.Wrapper.UI.WebControls.DnnNumericTextBox
+        Protected WithEvents rntxtbxDays As Global.Telerik.Web.UI.RadNumericTextBox
 
         '''<summary>
         '''valreqDays control.

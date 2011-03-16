@@ -277,9 +277,13 @@ Namespace DotNetNuke.Modules.Forum
 		Public Sub New(ByVal forum As DNNForum)
 			MyBase.New(forum)
 
-			If Not HttpContext.Current.Request.QueryString("CurrentPage") Is Nothing Then
-				CurrentPage = Int32.Parse(HttpContext.Current.Request.QueryString("CurrentPage"))
-			End If
+            If Not HttpContext.Current.Request.QueryString("CurrentPage") Is Nothing Then
+                Dim intCurrentPage As Integer = -1
+                intCurrentPage = Int32.Parse(HttpContext.Current.Request.QueryString("CurrentPage"))
+                If intCurrentPage >= 0 Then
+                    CurrentPage = intCurrentPage
+                End If
+            End If
 
 			If CurrentPage > 0 Then
 				CurrentPage = CurrentPage - 1
@@ -314,9 +318,10 @@ Namespace DotNetNuke.Modules.Forum
 				If forums.Length > 0 Then
 					Dim str As String = String.Empty
 					For Each forumid As String In forums.Split(";"c)
-						If Trim(forumid).Length > 0 Then
-							str += forumid.ToString & ","
-						End If
+                        If Trim(forumid).Length > 0 Then
+                            Dim intForumID As Integer = CInt(Trim(forumid))
+                            str += intForumID.ToString & ","
+                        End If
 					Next
 
 					If str.Length > 0 Then
@@ -324,7 +329,6 @@ Namespace DotNetNuke.Modules.Forum
 						str = Left(str, str.Length - 1)
 						Term.AddSearchTerm("ForumID", CompareOperator.HaveValueIn, Trim(str))
 					End If
-
 				End If
 			End If
 
@@ -333,9 +337,10 @@ Namespace DotNetNuke.Modules.Forum
 				If Len(authors) > 0 Then
 					Dim str As String = String.Empty
 					For Each userid As String In authors.Split(";"c)
-						If Trim(userid).Length > 0 Then
-							str += userid.ToString + ","
-						End If
+                        If Trim(userid).Length > 0 Then
+                            Dim intUserID As Integer = CInt(Trim(userid))
+                            str += intUserID.ToString + ","
+                        End If
 					Next
 
 					If str.Length > 0 Then
@@ -371,7 +376,8 @@ Namespace DotNetNuke.Modules.Forum
 					Else
 						Term.AddSearchTerm("(Subject", CompareOperator.Contains, subject)
 					End If
-				End If
+                End If
+
 				body = HttpContext.Current.Request.Params("body")
 				If body.Length > 0 AndAlso body <> " " Then
 					HasBody = True
@@ -458,15 +464,10 @@ Namespace DotNetNuke.Modules.Forum
 			If LatestHours Then
 				subject = HttpContext.Current.Request.Params("latesthours")
 				If subject.Length > 0 AndAlso subject <> " " Then
-
-					Try
-						Dim hours As Integer = CInt(subject)
-						EndDate = Now
-						StartDate = Now.AddHours((hours * -1))
-					Catch ex As Exception
-						'Do nothing
-					End Try
-				End If
+                    Dim hours As Integer = CInt(subject)
+                    EndDate = Now
+                    StartDate = Now.AddHours((hours * -1))
+                End If
 			End If
 
 			SearchTerms = Term.WhereClause

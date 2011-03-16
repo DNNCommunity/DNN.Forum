@@ -248,7 +248,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				ddlRoles.DataBind()
             End If
 
-            ddlRoles.Items.Insert(0, New DotNetNuke.Wrapper.UI.WebControls.DnnComboBoxItem(Localization.GetString("None.Text", Me.LocalResourceFile), "0"))
+            ddlRoles.Items.Insert(0, New RadComboBoxItem(Localization.GetString("None.Text", Me.LocalResourceFile), "0"))
 		End Sub
 
 		''' <summary>

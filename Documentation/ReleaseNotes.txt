@@ -9,7 +9,7 @@
 	<h3>About the Core Forum</h3>
 	<p class="Owner">
 		<b>Version 5.0.1</b><br /><br />
-		This version of the module requires DotNetNuke Core 5.6.0 or greater. 
+		This version of the module requires DotNetNuke Core 5.4.4 or greater. 
 		FYI: Developers should be aware that the module uses Visual Studio 2010 only. 
 	</p>
 	<ul>
@@ -30,5 +30,6 @@
 		<li>Converted more items to use wrapped Telerik controls.</li>
 		<li>Updated copyright year (2011) across module.</li>
 		<li>Code comments/documentation were updated post the 5.0.0 release.</li>
+		<li>Fixed potential SQL injection flaw.</li>
 	</ul>
 </div>

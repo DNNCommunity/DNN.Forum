@@ -6,7 +6,7 @@
 <%@ Control language="vb" CodeBehind="ACP_ForumEdit.ascx.vb" AutoEventWireup="false" Explicit="true" Inherits="DotNetNuke.Modules.Forum.ACP.ForumEdit" %>
 <%@ Register TagPrefix="DNN" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke.WebControls" %>
 <%@ Register Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
-<%@ Register TagPrefix="wrapper" Namespace="DotNetNuke.Wrapper.UI.WebControls" Assembly="DotNetNuke.Wrapper" %>
+<%@ Register TagPrefix="wrapper" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %>
 <div class="ACP-ForumEdit">
     <table cellpadding="0" cellspacing="0" width="100%" border="0" class="Forum_SearchContainer" >
 		<tr valign="top">
@@ -22,7 +22,7 @@
 					    <td class="Forum_UCP_HeaderInfo" align="left">                           
 							<dnnweb:DnnTabStrip ID="rtsForum" runat="server" Skin="Vista" MultiPageID="rmpForumSettings" SelectedIndex="0" CausesValidation="false" />		
 							<dnnweb:DnnMultiPage ID="rmpForumSettings" runat="server" SelectedIndex="0">
-								<wrapper:DnnPageView ID="rpvGeneral" runat="server">
+								<wrapper:RadPageView ID="rpvGeneral" runat="server">
 									 <table id="tblGeneral" cellspacing="0" cellpadding="0" width="100%" runat="server" class="Forum_Row_AdminBox">
 										<tr id="rowForumID" runat="server" visible="False">
 											<td width="35%">
@@ -126,8 +126,8 @@
 											</td>
 										</tr>
 									</table>
-								</wrapper:DnnPageView>
-								<wrapper:DnnPageView ID="rpvOptions" runat="server">
+								</wrapper:RadPageView>
+								<wrapper:RadPageView ID="rpvOptions" runat="server">
 									<table id="tblBehavior" cellspacing="0" cellpadding="0" width="100%" runat="server" class="Forum_Row_AdminBox">
 										<tr>
 											<td width="35%">
@@ -221,7 +221,7 @@
 												</span>
 											</td>
 											<td align="left">
-												<wrapper:DnnNumericTextBox ID="textSitemapPriority" runat="server" MinValue="0" MaxValue="1" NumberFormat-DecimalDigits="2" ShowSpinButtons="true" IncrementSettings-Step=".1" />
+												<wrapper:RadNumericTextBox ID="textSitemapPriority" runat="server" MinValue="0" MaxValue="1" NumberFormat-DecimalDigits="2" ShowSpinButtons="true" IncrementSettings-Step=".1" />
 											</td>
 										</tr>
 										<tr id="rowPermissions" runat="server">
@@ -243,8 +243,8 @@
 											</td>
 										</tr>
 									</table>
-								</wrapper:DnnPageView>
-								<wrapper:DnnPageView ID="rpvEmail" runat="server">
+								</wrapper:RadPageView>
+								<wrapper:RadPageView ID="rpvEmail" runat="server">
 									<table id="tblEmail" cellspacing="0" cellpadding="0" width="100%" runat="server" class="Forum_Row_AdminBox">
 										<tr>
 											<td width="35%">
@@ -350,7 +350,7 @@
 											</td>
 										</tr>
 									</table>
-								</wrapper:DnnPageView>
+								</wrapper:RadPageView>
 				   			</dnnweb:DnnMultiPage>
 							<div align="center">
 								<asp:linkbutton class="CommandButton primary-action" id="cmdAdd" runat="server" resourcekey="cmdAdd" />
