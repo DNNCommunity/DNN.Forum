@@ -65,7 +65,7 @@
 										<dnnweb:DnnGridClientSelectColumn  UniqueName="IsEnabled" HeaderText="IsEnabled" />
 										<wrapper:GridNumericColumn UniqueName="VendorID" DataField="VendorID"  Visible="false" HeaderText="VendorID" />
 										<dnnweb:DnnGridBoundColumn UniqueName="VendorName" DataField="VendorName" HeaderText="VendorName" />
-										<dnnweb:DnnGridImageColumn UniqueName="Logo" DataType="System.String" DataImageUrlFields="LogoFile" AlternateText="No logo" HeaderText="Logo" />
+										<wrapper:GridImageColumn UniqueName="Logo" DataType="System.String" DataImageUrlFields="LogoFile" AlternateText="No logo" HeaderText="Logo" />
 										<dnnweb:DnnGridBoundColumn UniqueName="BannerUrl" DataField="BannerUrl" HeaderText="BannerUrl" />
 									</Columns>
 								</MasterTableView>

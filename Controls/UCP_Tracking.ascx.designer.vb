@@ -30,7 +30,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rtsNotifications As Global.DotNetNuke.Web.UI.WebControls.DnnTabStrip
+        Protected WithEvents rtsNotifications As Global.Telerik.Web.UI.RadTabStrip
 
         '''<summary>
         '''rmpNotifications control.
@@ -39,7 +39,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rmpNotifications As Global.DotNetNuke.Web.UI.WebControls.DnnMultiPage
+        Protected WithEvents rmpNotifications As Global.Telerik.Web.UI.RadMultiPage
 
         '''<summary>
         '''rpvForums control.

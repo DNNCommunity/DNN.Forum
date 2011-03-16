@@ -1,6 +1,7 @@
 <%@ Register TagPrefix="dnnforum" Namespace="DotNetNuke.Modules.Forum.WebControls" Assembly="DotNetNuke.Modules.Forum" %>
 <%@ Control Inherits="DotNetNuke.Modules.Forum.ACP.User" CodeBehind="ACP_User.ascx.vb" language="vb" AutoEventWireup="false" Explicit="true" %>
 <%@ Register Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
+<%@ Register TagPrefix="wrapper" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %>
 <div class="ACP-User">
 	<table cellpadding="0" cellspacing="0" width="100%" border="0">
 		<tr>
@@ -43,7 +44,7 @@
 								    <asp:Label ID="lblNoRecords" runat="server" resourcekey="lblNoRecords" CssClass="Normal" />
 							    </NoRecordsTemplate>
 								    <Columns>
-									    <dnnweb:DnnGridButtonColumn ButtonType="ImageButton" ImageUrl="~/images/edit.gif" UniqueName="imgEdit" CommandName="EditUser" HeaderText="Edit" />
+									    <wrapper:GridButtonColumn ButtonType="ImageButton" ImageUrl="~/images/edit.gif" UniqueName="imgEdit" CommandName="EditUser" HeaderText="Edit" />
 									    <dnnweb:DnnGridBoundColumn UniqueName="Username" DataField="Username" HeaderText="Username" />
 									    <dnnweb:DnnGridBoundColumn UniqueName="DisplayName" DataField="DisplayName" HeaderText="DisplayName" />
 									    <dnnweb:DnnGridHyperlinkColumn UniqueName="hlEmail" HeaderText="Email" DataTextField="Email" DataNavigateUrlFields="Email" DataNavigateUrlFormatString="mailto:{0}" />
