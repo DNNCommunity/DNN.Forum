@@ -24,9 +24,9 @@
 		
 		<!-- ModuleName value should be set specific to the project -->
 		<property name="ModuleName" value="Forum"  overwrite="false"  />
-	   	<property name="subproject.name" value="DotNetNuke.${ModuleName}" />
+		<property name="subproject.name" value="DotNetNuke.${ModuleName}" />
 		<property name="module.dll" value="${bin.dir}/DotNetNuke.Modules.${ModuleName}.dll" />
-		<property name="fullversion" value="05.00.01" />
+		<property name="fullversion" value="05.00.02" />
 
 		<property name="debug" value="false" overwrite="false" />
 		<property name="config" value="debug" if="${debug}" />
@@ -194,8 +194,8 @@
 				<include name="**/${fullversion}.txt" />
 				<include name="**/Documentation/License.txt" />
 				<include name="**/Documentation/ReleaseNotes.txt" />
-                <include name="**/Documentation/WrapperLicense.txt" />
-                <include name="**/Documentation/WrapperReleaseNotes.txt" />
+				<include name="**/Documentation/WrapperLicense.txt" />
+				<include name="**/Documentation/WrapperReleaseNotes.txt" />
 				<exclude name="**/*.ascx" />
 				<exclude name="**/Themes/**/*" />
 				<exclude name="**/Controls/**/*" />
@@ -225,8 +225,8 @@
 				<include name="**/${fullversion}.txt" />
 				<include name="**/Documentation/License.txt" />
 				<include name="**/Documentation/ReleaseNotes.txt" />
-                <include name="**/Documentation/WrapperLicense.txt" />
-                <include name="**/Documentation/WrapperReleaseNotes.txt" />
+				<include name="**/Documentation/WrapperLicense.txt" />
+				<include name="**/Documentation/WrapperReleaseNotes.txt" />
 				<exclude name="**/*.ascx" />
 				<exclude name="**/Themes/**/*" />
 				<exclude name="**/Controls/**/*" />
@@ -269,9 +269,9 @@
 	" /> 
 
 	<target name="BuildAndZip" depends="build CreateSrcZip CreateBinZip CreateDNNReleasePackage" description="This target compiles the application and then creates two-three zip files: 
-	              - one that only contains the compiled code and runtime files 
-		      - one is the resourceszip for installable pa's
-	              - the other with compiled code and source code.
+				  - one that only contains the compiled code and runtime files 
+			  - one is the resourceszip for installable pa's
+				  - the other with compiled code and source code.
 	" />
 
 </project>
