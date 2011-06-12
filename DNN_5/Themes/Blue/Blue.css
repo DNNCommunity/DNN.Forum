@@ -1,0 +1,295 @@
+.Forum_Container {
+	width: 100%;
+}
+
+.Forum_Container, .Forum_Container th, .Forum_Container td, .Forum_Container div, .Forum_Container p, .Forum_Container table, .Forum_Container a{font-family:Helvetica, Arial, San-Serif;line-height:16px;}
+.Forum_MenuItem{width:auto;background: url('images/header_bg.jpg') top left repeat-x;line-height:26px;padding:5px 10px;border-bottom:#50697D 1px solid;cursor:pointer;display:block;position:relative;vertical-align:middle;}
+.Forum_MenuGroup /* submenu */{height:100px;padding:5px 0px 5px 10px;border:1px solid #B8D7F3;}
+.Forum_Menu /* apple menu */{width:160px;}
+.Forum_MenuBreak{color:#fff;}
+.Forum_UCP_Left{width:160px;}
+.Forum_UCP_Right{padding:0 10px 0 15px;}
+	.Forum_UCP_Right td{padding:5px;}
+.Forum_UCP_Header{background: url('images/header_bg.jpg') top left repeat-x;font-weight:bold;font-size:14px;color:#fff;font-family:"Lucida Grande", Helvetica, Arial, San-Serif;line-height:26px;}
+.Forum_UCP_HeaderInfo{padding:5px 10px;border:1px solid #B8D7F3;}
+	.Forum_UCP_HeaderInfo .Forum_Grid_Row_Alt .Forum_HeaderCapLeft img, .Forum_UCP_HeaderInfo .Forum_Grid_Row_Alt .Forum_HeaderCapRight img{display:none;}
+.Forum_UCP_Item{padding: 2px 0px 2px 0px;}
+	.Forum_UCP_Item a.Forum_Link, .Forum_UCP_Item a.Forum_Link:link, .Forum_UCP_Item a.Forum_Link:visited{color:#0088CE;text-transform:capitalize;font-size:12px;}
+	.Forum_UCP_Item a.Forum_Link:hover, .Forum_UCP_Item a.Forum_Link:visited:hover{color:#006396;text-decoration:underline;}
+/*/////////////////////////// - FORUM VIEW - \\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+/*Used for the Forum breadcrumb navigation at the top and bottom of each thread and post view table (txt color is not applying here)*/
+a.Forum_BreadCrumb:link, a.Forum_BreadCrumb:visited, a.Forum_BreadCrumb:active, a.Forum_BreadCrumb:hover{font: bold 11px "Lucida Grande", Helvetica, Arial, San-Serif;color:#0088CE;padding:10px 0px;display:block;}
+A.Forum_BreadCrumb:hover{color:#006396;}
+/*/////////////////////////// - FORUM VIEW - HEADER \\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+/* middle header section Handles title colors (Forums, Threads, Posts)*/
+.Forum_Header{background: url('images/header_bg.jpg') top left repeat-x;}
+/* Text used in Forum_Header areas */
+div.Forum_HeaderText, div a.Forum_HeaderText:Link, div a.Forum_HeaderText:visited, div a.Forum_HeaderText:active, div a.Forum_HeaderText:hover{font: normal bold 10px  Helvetica, Arial, San-Serif;color:#fff;text-transform:uppercase;}											
+/* PseudoClasses used in Forum_Header areas */
+a.Forum_HeaderText:link, a.Forum_HeaderText:visited, a.Forum_HeaderText:active, a.Forum_HeaderText:hover{text-decoration:underline;}
+a.Forum_HeaderText:hover{color:#ff0000;}
+/* These cap classes handle the left and rigt of colums 1px wide (only in forum admin HEADER area)  Remove all BLOG mentions*/
+.Forum_HeaderCapLeft{width:9px;height:46px;background: url('images/header_cap_left.jpg') top left repeat-x;}
+/* These cap classes handle the left and rigt of colums (only in forum admin header area)*/
+.Forum_HeaderCapRight{width:9px;height:46px;background: url('images/header_cap_right.jpg') top left repeat-x;}
+/* Handles initial view, groups, left area next to +/- and stats headers (left) */
+.Forum_AltHeaderCapLeft{width:1px;background: url('images/alt_header_bg.jpg') top left repeat-x;border-top:solid 1px #fff;}
+/* Handles initial view, groups, left area next to +/- and stats headers (right) */
+.Forum_AltHeaderCapRight{width: 1px;background: url('images/alt_header_bg.jpg') top left repeat-x;border-top: solid 1px #fff;}
+/* Handles Group name hearder section, statistics header section  also header in whats new scroller */
+.Forum_AltHeader{background: url('images/alt_header_bg.jpg') top left repeat-x;border-top: solid 1px #fff;padding-left:8px;}
+.Forum_AltHeader a, .Forum_AltHeader a:link, .Forum_AltHeader a:visited, .Forum_AltHeader a:hover, .Forum_AltHeader a:visited:hover{color:#fff;}
+/* Forum Groups.  Overrides most section head controls.  Text for Forum Settings, User Settings */
+.Forum_AltHeaderText, A.Forum_AltHeaderText:Link, A.Forum_AltHeaderText:Visited, A.Forum_AltHeaderText:Active{font:normal bold 12px "Lucida Grande", Helvetica, Arial, San-Serif;color:#fff;}
+/* Handles Group name hearder middle to right, no text here */
+.Forum_AltHeaderRight{border-top: solid 1px #718DA3;}
+/* Class for identified words in search results */
+.Forum_Markup{background-color:Yellow;}
+/*/////////////////////////// = GROUP & FORUM VIEW - FOOTER = \\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+/* where paging, arrows are in posts */
+.Forum_Footer{height:46px;background: url('images/footer_bg.jpg') top left repeat-x;border-top:1px #eee solid;padding: 0 5px;}
+/* These cap classes handle the left and rigt of colums (only in /forum admin header area)*/
+.Forum_FooterCapLeft, .Forum_FooterCapRight{width:9px;height:46px;background: url('images/footer_cap_left.jpg') top left repeat-x;border-top:1px #eee solid;}
+/* These cap classes handle the left and rigt of colums (only in forum admin header area)*/
+.Forum_FooterCapRight{background: url('images/footer_cap_right.jpg') top left repeat-x;}
+/* Text items used in footers,  seen in User Manager */
+.Forum_FooterText, div.Forum_FooterText, div a.Forum_FooterText:link, div a.Forum_FooterText:visited, div a.Forum_FooterText:active{font: normal bold 10px "Lucida Grande",  Helvetica, Arial, San-Serif !important;color:#fff;}
+/* Used specifically for paging links */
+a.Forum_FooterText{color:#fff;text-decoration:underline;}
+/* Used specifically for paging links */
+a.Forum_FooterText:hover{color:#fff;text-decoration:none;}
+/* Used specifically for paging links */
+td.Forum_FooterText a.Forum_FooterText, td.Forum_FooterText .Forum_FooterDisabled, div.Forum_FooterText a[href].Forum_FooterText, div.Forum_FooterText a.Forum_FooterText, div.Forum_FooterText .Forum_FooterDisabled{background:#fff;padding:2px 5px;color:#0088CE;display:inline-block;text-decoration:none;-moz-border-radius:2px;-webkit-border-radius:2px;font-size:9px !important;}
+	div.Forum_FooterText a[href].Forum_FooterText, div.Forum_FooterText a.Forum_FooterText, div.Forum_FooterText .Forum_FooterDisabled{margin-left:2px;}
+	td.Forum_FooterText a.Forum_FooterText:hover, td.Forum_FooterText .Forum_FooterDisabled, div.Forum_FooterText a.Forum_FooterText:hover, div.Forum_FooterText .Forum_FooterDisabled, div.Forum_FooterText a.Forum_FooterText{background:#4D6880;text-decoration:none;color:#fff;}
+/*/////////////////////////// = GROUP & FORUM VIEW - ODD/EVEN ROWS = \\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+.Forum_SubForumContainer{font-size:11px;padding:5px 8px;border:1px #fff solid;-moz-border-radius:3px;-webkit-border-radius:3px;margin-top:5px;background:#fff;}
+	.Forum_Row_Alt .Forum_SubForumContainer{background:#eee;border:1px #eee solid;}
+a.Forum_SubForumLink:link, a.Forum_SubForumLink:visited, a.Forum_SubForumLink:active, a.Forum_SubForumLink:hover{font-size:11px;font-family:Helvetica, Arial, San-Serif;color:#61A7E4;}
+	a.Forum_SubForumLink:hover{color:#4499E4;}
+/* Subject/Name Column in group, threads views */
+.Forum_Row, .Forum_Row_Alt{border-top:solid 1px #B8D7F3;border-left:solid 1px #B8D7F3;background-color:#E8E8E8;padding:10px 5px 10px 10px;}
+/* Subject/Name Column in group, threads views (odd) */
+.Forum_Row_Alt{background-color:#fff;}
+/* /* Subject/Name Column in group, threads views (Link)*/
+.Forum_Row .Forum_NormalBold, .Forum_Row a.Forum_NormalBold:link, .Forum_Row a.Forum_NormalBold:visited, .Forum_Row a.Forum_NormalBold:active,.Forum_Row_Alt .Forum_NormalBold, .Forum_Row_Alt a.Forum_NormalBold:link, .Forum_Row_Alt a.Forum_NormalBold:visited, .Forum_Row_Alt a.Forum_NormalBold:active, .Forum_Row a.Forum_Normal, .Forum_Row a.Forum_Normal:link, .Forum_Row a.Forum_Normal:active, .Forum_Row a.Forum_Normal:visited, .Forum_Row_Alt a.Forum_Normal, .Forum_Row_Alt a.Forum_Normal:link, .Forum_Row_Alt a.Forum_Normal:active, .Forum_Row_Alt a.Forum_Normal:visited{font: bold 12px "Lucida Grande", Helvetica, Arial, San-Serif;color:#0088ce;text-align:left;border:0px;background:none;}
+	.Forum_Row_Alt a.Forum_Normal:visited, .Forum_Row a.Forum_Normal:visited{color:#69ACCE;}
+.Forum_Row A.Forum_NormalBold:hover, .Forum_Row_Alt a.Forum_NormalBold:hover{color:#006396;text-decoration:underline;}
+/* Threads Column in initial group view (even numbered)*/
+.Forum_RowHighlight1{border-left: solid 1px #B8D7F3;border-top: solid 1px #B8D7F3;background-color: #E8E8E8;}							
+/* Threads Column in initial group view (odd numbered)*/
+.Forum_RowHighlight1_Alt{border-top: solid 1px #B8D7F3;border-left: solid 1px #B8D7F3;background-color: #fff;}
+/* Posts Column in initial group view */
+.Forum_RowHighlight2{border-top: solid 1px #B8D7F3;border-left: solid 1px #B8D7F3;background-color: #E8E8E8;}
+/* Posts Column in initial group view (odd)*/
+.Forum_RowHighlight2_Alt{border-top: solid 1px #B8D7F3;border-left: solid 1px #B8D7F3;background-color: #fff;}
+/* Last Post Column */
+.Forum_RowHighlight3, .Forum_RowHighlight3_Alt{border:solid 1px #B8D7F3;border-bottom:none;background-color:#E8E8E8;}
+.Forum_RowHighlight3 table, .Forum_RowHighlight3_Alt table{padding:5px 10px;}
+/* Last Post Column - Alternate (odd)*/
+.Forum_RowHighlight3_Alt{background-color:#fff;}
+div.Forum_AnswerText, a.Forum_AnswerText{font-size:10px;color:#eee;line-height:10px;font-weight:bold;}
+a.Forum_AnswerText{color:#fff;}
+/*/////////////////////////// = THREAD VIEW = \\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+/* avatar area (ODD numbered rows) */
+.Forum_Avatar_Alt{padding:5px;border:#B8D7F3 1px solid;border-bottom:none;background:#eee;}
+/* Area in eqach post where subject is - (top part) (ODD numbered rows) */
+.Forum_PostDetails_Alt{padding:5px;border-top:#B8D7F3 1px solid;background:#eee;}
+/* Area where mod/reply buttons are (below POST VIEW details) - (ODD numbered rows) */
+.Forum_PostButtons_Alt{border-bottom:1px solid #B8D7F3;background:#eee;}
+/* Post content area - (ODD numbered rows) */
+.Forum_PostBody_Alt{padding:15px;}
+/* Post View avatar area (EVEN numbered rows) */
+.Forum_Avatar{padding:5px;border:#B8D7F3 1px solid;border-right:none;border-bottom:none;background:#eee;}
+	.Forum_Avatar br{display:none;}
+	.Forum_Avatar td.Forum_NormalSmall a{display:block;}
+.Forum_Avatar img{margin-bottom:4px;}
+td.Forum_UserAvatar, td.Forum_NormalSmall{text-align:center;}
+td.Forum_UserAvatar img{border:1px #ccc solid;-moz-border-radius:5px;-webkit-border-radius:5px;padding:4px;background:#fff;}
+/* Post content area (this is post details, post buttons, post body, attachments containing cell) */
+.Forum_PostBody_Container{border-left:#B8D7F3 1px solid;border-right:1px solid #B8D7F3}
+.Forum_PostBody_Container_Alt{border-right:#B8D7F3 1px solid;}
+/* Area in each post where subject is (top part) in posts view* (EVEN numbered rows)*/
+.Forum_PostDetails{padding:5px;border-top:#B8D7F3 1px solid;background:#eee;}
+/* Area where mod/reply buttons are (below post details) (EVEN numbered rows) */
+.Forum_PostButtons{border-bottom: 1px solid #B8D7F3;background:#eee;}
+/* Post content area POST VIEW (EVEN numbered rows) */
+.Forum_PostBody{padding:15px;}
+.Forum_PostBody .Forum_Normal, .Forum_PostBody_Alt .Forum_Normal{font-weight:normal;}
+/* Seperator row. Also uses spacer-height.gif to determin sapce in between each post in thread View*/
+.Forum_SpacerRow{border-top: #B8D7F3 1px solid;}
+/*/////////////////////////// = SPLIT-THREAD VIEW = \\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+/* avatar area in thread split, soon posts moderate (all rows) */
+.Forum_AvatarBox{padding: 5px;border-right: #000 1px solid;background-color: #F7F7F7;}
+/* area in each post where subject is (top part) in THREAD split view only - no posting buttons here (post moderate soon) */
+.Forum_PostDetailsBox{padding: 5px;background-color: #F7F7F7;}
+/* Area where mod/reply buttons are/ include in new THREAD in Thread Split */
+.Forum_PostButtonsBox{border-bottom: 1px solid #000;background-color: #F7F7F7;}
+/* Area of post content in thread split */
+.Forum_PostBodyBox{padding: 15px;background-color: #FCFCFC;}
+/* Area in Thread Split used to enclose entire post datalist are in border cContains entire admin section in one cell */
+.Forum_Row_AdminBox{border: #B8D7F3 1px solid;}
+/*/////////////////////////// - ADMIN CLASSES - \\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+/* Used for all data rows like in configuration, profile, almost all ascx's (Admin, editable stuff) */
+.Forum_Row_Admin{padding:5px;background-color:#F7F7F7;border:1px #B8D7F3 solid;}
+	.Forum_Row_Admin td{padding:5px;}
+.Forum_Row_Admin_Foot{border-top: #B8D7F3 1px solid;}
+/* Used for all data rows where there is no section head (+/-'s) Or datalist/datagrid, Gallery & Smiles, Filtered Words, Rankings, User Settings, Search (Admin, editable stuff) */
+.Forum_Row_AdminL{border-top: #B8D7F3 1px solid;border-left: #B8D7F3 1px solid;padding-left: 4px;background-color: #F7F7F7;font-size: 7pt;color: #666;font-family: Helvetica, Arial, San-Serif;}
+.Forum_Row_AdminM{border-top: #B8D7F3 1px solid;padding-left: 4px;background-color: #F7F7F7;font-size: 10px;color: #666;font-family: Helvetica, Arial, San-Serif;}
+/* Used for all data rows where there is no section head (+/-'s) Or datalist/datagrid,, Gallery & Smiles, Filtered Words, Rankings, 
+User Settings, Search  (Admin, editable stuff) */
+.Forum_Row_AdminR{padding-right: 4px;border-top: #B8D7F3 1px solid;border-right: #B8D7F3 1px solid;background-color: #F7F7F7;}
+.Forum_Row_AdminR .Forum_NormalBold{border: 0px;background-image: none;background-color: transparent;}
+/* Used for all ADMIN SECTION HEAD rows only:D */
+.Forum_Admin_SectionHead{font-family: normal bold Helvetica, Arial, sans-serif;font-size:12px;color: #999;font-variant:small-caps;border-left: #B8D7F3 0px solid;border-right: #B8D7F3 0px solid;border-top: #B8D7F3 1px solid;background: url('Images/text-bg.jpg') repeat-x;}
+/* Text for dnn labels, grid values */
+.Forum_Row_AdminText{font: normal 10px Helvetica, Arial, San-Serif;color: black;}
+/*/////////////////////////// - MISC CLASSES - \\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+/* Used in forum search results(my posts icon area), in moderator sections */
+.Forum_RowHeader{background-color: #F7F7F7;}
+/* Attachment area at bottom of post view.  Each attacment is own row */
+.Forum_Attachments, .Forum_Attachments_Alt{border:1px dotted #666;background-color:#eee;padding:3px 5px;}
+/* Attachment area at bottom of post view.  Each attacment is own row - Alternate*/
+.Forum_Attachments_Alt{background-color:#DEDEDE;}
+/* TextBoxes (This is only for the lookup control created by module) NEED FONT HERE*/
+.Forum_ListCell{font: normal normal 10px Helvetica, Arial, San-Serif;border: 1px solid #B8D7F3;background-color: White;}
+/* How the quote reply section looks in post view */
+.Quote{font-family:Helvetica, Arial, San-Serif;font-size:10px;border:#000 1px dotted;background:#F1F1F1;padding:5px 10px;margin-bottom:5px;}
+/* Thread subject in each individual post, next to move, edit, reply buttons, forum description, forum threads, posts count, Views replies count */
+.Forum_Normal, A.Forum_Normal:Link, A.Forum_Normal:Visited, A.Forum_Normal:Active
+{font: normal 12px Helvetica, Arial, San-Serif;color: #000;}
+A.Forum_Normal:Hover{text-decoration: underline;color: #c60001;}
+.Forum_NormalSmall{font: 11px Helvetica, Arial, San-Serif;}
+a.Forum_NormalSmall:link, a.Forum_NormalSmall:visited, a.Forum_NormalSmall:active, a.Forum_NormalSmall:hover{font: 11px Helvetica, Arial, San-Serif;color:#0088ce;}
+a.Forum_NormalSmall:hover{text-decoration:underline;color:#006396;}
+.Forum_TreeNormal{font-size: 12px;font-family: Helvetica, Arial, San-Serif;color: #403F3F;vertical-align: middle;}
+/* All textboxes, dropdownlists and checkbox labels */
+.Forum_NormalTextBox{font-size:12px;font-family:Helvetica, Arial, San-Serif;color:#000;}
+.Forum_GroupDetails{font-size:11px;font-family:Helvetica, Arial, San-Serif;display:block;padding:5px 0;line-height:14px;}
+	.Forum_GroupDetails a, .Forum_GroupDetails a:link, .Forum_GroupDetails a:active, .Forum_GroupDetails a:visited{font-size:11px;font-family:Helvetica, Arial, San-Serif;color:#0088ce;text-decoration:none;}
+	.Forum_GroupDetails a:hover, .Forum_GroupDetails a:visited:hover{text-decoration:underline;color:#006396;}
+.Forum_Posts, .Forum_Threads{color:#000;font-family:"Lucida Grande",  Helvetica, Arial, sans-serif;}
+.Forum_LastPostText{font-family:Helvetica, Arial, San-Serif;color:#403F3F;font-size:11px;}
+/* Links used in style above areas */
+A.Forum_LastPostText, A.Forum_LastPostText:Link, A.Forum_LastPostText:Visited{font-weight:normal;color:#0088ce;text-decoration:none;font-size:11px;}
+A.Forum_LastPostText:Hover{color:#006396;text-decoration:underline;}
+A.Forum_AliasLink, A.Forum_AliasLink:Link, A.Forum_AliasLink:Visited{font-family: Helvetica, Arial, San-Serif;color:#fff;}
+A.Forum_AliasLink:Hover{color:#ffc30d;text-decoration:underline;}
+td.Forum_LastPostText a.Forum_LastPostText{background:#7397B7;padding:2px 6px;color:#fff;display:inline-block;text-decoration:none;-moz-border-radius:3px;-webkit-border-radius:3px;border-bottom:1px solid #5C7992;border-right:1px solid #5C7992;}
+	td.Forum_LastPostText a.Forum_LastPostText:hover{background:#5C7992;text-decoration:none;border-bottom:1px solid #4D657A;border-right:1px solid #4D657A;}
+/* Links used in style above areas */
+.Forum_NormalBold, a.Forum_NormalBold:link, a.Forum_NormalBold:visited, a.Forum_NormalBold:active, a.Forum_NormalBold:hover{font: normal bold 12px Helvetica, Arial, San-Serif;color:#000;text-align:left;text-decoration:none;}
+A.Forum_NormalBold:Hover{color:#c60001;}
+.Forum_TreeNormalBold{font-size: 12px;font-weight: bold;font-family: Helvetica, Arial, San-Serif;color: #403F3F;vertical-align: middle;}
+.NormalGrey{font-size: 11px;font-weight: normal;color: #003366;}
+/*Table cells which reply, move, edit, etc. buttons sit in */
+td.Forum_ReplyCell{padding-bottom:6px;}
+td.Forum_ReplyCell a.Forum_Link{display:block;padding:4px 8px;background:#7397B7;color:#fff;border-bottom:1px solid #5C7992;border-right:1px solid #5C7992;-moz-border-radius:3px;-webkit-border-radius:3px;text-transform:capitalize;}
+	td.Forum_ReplyCell a.Forum_Link:hover{background:#5C7992;color:#fff;border-bottom:1px solid #4D657A;border-right:1px solid #4D657A;-moz-border-radius:3px;-webkit-border-radius:3px;text-transform:capitalize;}
+/* This is for the reply, moderate, new thread, move, delete, quote  LINK buttons (only modify link properties here, use reply cell for containing td)
+This is also the links used in the module actions, new thread, moderate buttons */
+.Forum_Link, A.Forum_Link:Link, A.Forum_Link:Visited, TD.Active, A.Forum_Link:Hover{font: bold 10px Helvetica, Arial, San-Serif;color: #ffc30d;text-align: center;text-transform: uppercase;text-decoration: none;}
+A.Forum_Link:Hover{color: #c60001;text-decoration: none;}
+/* Only seen if option is disabled to show icons for toolbar */
+TD.Active{} 
+.Forum_ToolbarLink, a.Forum_ToolbarLink:link, a.Forum_ToolbarLink:visited, a.Forum_ToolbarLink:hover{font-family: Helvetica, Arial, San-Serif;display:block;float:left;padding:5px 8px;background:#7397B7;color:#fff;border-bottom:1px solid #5C7992;border-right:1px solid #5C7992;-moz-border-radius:3px;-webkit-border-radius:3px;margin:0 2px;font-weight:bold;}
+a.Forum_ToolbarLink:hover{background:#5C7992;color:#fff;border-bottom:1px solid #4D657A;border-right:1px solid #4D657A;-moz-border-radius:3px;-webkit-border-radius:3px;text-decoration:none;}
+/*Profile link, used above posts avatar area (user alias) */
+.Forum_Profile, a.Forum_Profile:link, a.Forum_Profile:visited, a.Forum_Profile:active, a.Forum_Profile:hover{font-family:Helvetica, Arial, San-Serif;font-size:11px;color:#0088CE;font-weight:bold;}
+a.Forum_Profile:hover{color:#006396;}
+.Forum_Tab_Left{color:#0088CE;padding:4px;}
+a.Forum_Link:hover{color:#006396;text-decoration:underline;font-size:12px;}
+.Forum_Link, a.Forum_Link:link, a.Forum_Link:visited{color:#0088CE;font-size:12px;}
+/* used for previous/next in posts view */
+.Forum_NavBarButton, .Forum_NavBarButtonDisabled{padding:4px 4px 4px 0;}
+ /* Previous/Next Box Enabled Links (Sub-classed) - Posts View  */
+.Forum_NavBarButton A.Forum_Link:Link, .Forum_NavBarButton A.Forum_Link:Visited, .Forum_NavBarButton A.Forum_Link:Active{font: normal bold 12px Helvetica, Arial, San-Serif;text-align:center;text-decoration:none;color:#fff;}
+.Forum_NavBarButton A.Forum_Link:Disabled{color:white;}		
+.Forum_NavBarButton A.Forum_Link:Hover{color:#006396;text-decoration:underline;}
+td.Forum_NavBarButton a.Forum_Link{display:block;background:#7397B7;color:#fff;border-bottom:1px solid #5C7992;border-right:1px solid #5C7992;-moz-border-radius:3px;-webkit-border-radius:3px;text-transform:capitalize;padding:5px 8px;}
+	td.Forum_NavBarButton a.Forum_Link:hover{background:#5C7992;color:#fff;border-bottom:1px solid #4D657A;border-right:1px solid #4D657A;-moz-border-radius:3px;-webkit-border-radius:3px;text-decoration:none;text-transform:capitalize;}
+/* Previous/Next Box Disabled Text (Sub-classed) - Posts View  */
+.Forum_NavBarButtonDisabled .Forum_NormalBold{text-transform:uppercase;}
+/*/////////////////////////// - DNNTEXTSUGGEST CLASSES - \\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+/* This is the TextBox field attributes. (txtForumUserSuggest.DefaultNodeCssClass) */
+.Forum_Suggest_DefaultNode{}
+.Forum_Suggest{font-family: Helvetica, Arial, San-Serif;font-size: 11px;font-weight: bold;Letter-Spacing:2px;color: #666666;border-bottom: 1px solid #000;border-top: 1px solid #000;border-left: 1px solid #000;border-right: 1px solid #000;padding-left: 5px;padding-right: 5px;padding-top: 2px;padding-bottom: 2px;background-color: #F7F7F7;Margin-Top:-1px;}
+/* Forum_Suggest_DefaultChildNode  */
+.Forum_Suggest_DefaultChildNode{font-family: Helvetica, Arial, San-Serif;font-size: 11px;font-weight: bold;Letter-Spacing:2px;color: #666666;padding-left: 5px;padding-right: 5px;padding-top: 2px;padding-bottom: 2px;background-color: #fff;}
+/* .txtForumUserSuggest.DefaultNodeCssClassOver  */
+.Forum_Suggest_DefaultNodeOver {font-family: Helvetica, Arial, San-Serif;font-size: 11px;font-weight: bold;Letter-Spacing:2px;color: #CC0000;background-color: #F7F7F7;}
+/* .txtForumUserSuggest.DefaultNodeCssClassSelected  */
+.Forum_Suggest_DefaultNodeUnSelected {padding-left: 5px;padding-right: 5px;padding-top: 2px;padding-bottom: 2px;color: #00ff00;}
+/*/////////////////////////// = FORUM ACTION ICONS - TOOLBAR = \\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+ /* Action icons moderator, admin, inbox, memberlist, my settings, my posts, search, forum home */
+A.Forum_ib_admin:link, A.Forum_ib_admin:visited, A.Forum_ib_admin:active, A.Forum_ib_admin:hover
+{background-image: url(images/ib_admin.png);background-repeat: no-repeat;background-position: center;padding-left: 2px;padding-right: 2px;padding-top: 8px;padding-bottom: 0px;height: 35px;width: 35px;}
+A.Forum_ib_admin:hover{background-image: url(images/ib_admin_hover.png);}
+A.Forum_ib_moderate:link, A.Forum_ib_moderate:visited, A.Forum_ib_moderate:active, A.Forum_ib_moderate:hover{background-image: url(images/ib_moderate.png);background-repeat: no-repeat;background-position: center;padding-left: 2px;padding-right: 2px;padding-top: 8px;padding-bottom: 0px;height: 35px;width: 35px;}
+A.Forum_ib_moderate:hover{background-image: url(images/ib_moderate_hover.png);}
+A.Forum_ib_Inbox:link, A.Forum_ib_Inbox:visited, A.Forum_ib_Inbox:active, A.Forum_ib_Inbox:hover{background-image: url(images/ib_inbox.png);background-repeat: no-repeat;background-position: center;padding-left: 2px;padding-right: 2px;padding-top: 8px;padding-bottom: 0px;height: 35px;width: 35px;}
+A.Forum_ib_Inbox:hover{background-image: url(images/ib_inbox_hover.png);}
+A.Forum_ib_Inbox_New:link, A.Forum_ib_Inbox_New:visited, A.Forum_ib_Inbox_New:active {background-image: url(images/ib_inbox_new.png);background-repeat: no-repeat;background-position: center;padding-left: 2px;padding-right: 2px;padding-top: 8px;padding-bottom: 0px;height: 35px;width: 35px;}
+A.Forum_ib_Inbox_New:hover{background-image: url(images/ib_inbox_hover_new.png);}
+A.Forum_ib_memberlist:link, A.Forum_ib_memberlist:visited, A.Forum_ib_memberlist:active, A.Forum_ib_memberlist:hover{background-image: url(images/ib_memberlist.png);background-repeat: no-repeat;background-position: center;padding-left: 2px;padding-right: 2px;padding-top: 8px;padding-bottom: 0px;height: 35px;width: 35px;}
+A.Forum_ib_memberlist:hover{background-image: url(images/ib_memberlist_hover.png);}
+A.Forum_ib_mysettings:link, A.Forum_ib_mysettings:visited, A.Forum_ib_mysettings:active, A.Forum_ib_mysettings:hover{background-image: url(images/ib_mysettings.png);background-repeat: no-repeat;background-position: center;padding-left: 2px;padding-right: 2px;padding-top: 8px;padding-bottom: 0px;height: 17px;width: 102px;}
+A.Forum_ib_mysettings:hover{background-image: url(images/ib_mysettings_hover.png);}
+A.Forum_ib_myposts:link, A.Forum_ib_myposts:visited, A.Forum_ib_myposts:active, A.Forum_ib_myposts:hover
+{background-image: url(images/ib_myposts.png);background-repeat: no-repeat;background-position: center;padding-left: 2px;padding-right: 2px;padding-top: 8px;padding-bottom: 0px;	height:17px;	width: 79px;}
+A.Forum_ib_myposts:hover{background-image: url(images/ib_myposts_hover.png);}
+A.Forum_ib_mythreads:link, A.Forum_ib_mythreads:visited, A.Forum_ib_mythreads:active, A.Forum_ib_mythreads:hover{background: url(images/ib_mythreads.png) no-repeat;padding:8px 5px 0 5px;height:35px;width:35px;}
+a.Forum_ib_search:link, a.Forum_ib_search:visited, a.Forum_ib_search:active, A.Forum_ib_search:hover{background: url(images/ib_search.png) no-repeat;padding:0 2px;height:17px;width:74px;}
+A.Forum_ib_forumhome:link, A.Forum_ib_forumhome:visited, A.Forum_ib_forumhome:active, A.Forum_ib_forumhome:hover{background: url(images/ib_forumhome.png) no-repeat;padding:0 5px;height:17px;width:56px;}
+A.Forum_ib_aggregate:link, A.Forum_ib_aggregate:visited, A.Forum_ib_aggregate:active, A.Forum_ib_aggregate:hover
+{background: url(images/ib_aggregate.png) no-repeat;padding: 8px 5px 0 5px;height:17px;width:156px;}
+ A.Forum_ib_aggregate:hover{background-image: url(images/ib_aggregate_hover.png);}
+ /*/////////////////////////// - OVER-RIDING SUB-CLASSES - \\\\\\\\\\\\\\\\\\\\\\\\\\\*/
+/* Text used in Forum_Header areas for Admin areas - OVER-RIDE for Search in Admin Pages like MemberList*/
+.Forum_Row_Admin .Forum_HeaderText{color:#000;font-family:Helvetica, Arial, San-Serif;font-size:14px;font-weight:bold;}
+	span.Forum_HeaderText{color:#fff;font-size:14px;font-family:"Lucida Grande",  Helvetica, Arial, sans-serif;font-weight:bold;}
+/* used to OVER-RIDE FCK FTB Editor radiobox backgrounds to be transparent */
+#tblEditContent .NormalTextBox{background-color: transparent;}
+/* To OVER-RIDE for FCK FTB Editor Radio check box transparent - Admin Page, */
+.Forum_Row_AdminR .normaltextbox{ background-color: transparent;}
+/* Attempting to OVER-RIDE  FCK FTB Editor text box backgroun from transparent to WHITE - HTML Body Admin Page, */
+.NormalTextBox .normal{background-color: white;color:red;}
+/* OVER-RIDE  Datagrid BG Color - HTML Body Admin Page, */
+.Forum_Row_Admin .DataGrid_Item, .Forum_Row_Admin .DataGrid_AlternatingItem, .Forum_Row_Admin .DataGrid_Footer{background-color: transparent;}
+/* Sub-class to OVER-RIDE  Footer links */
+.Forum_FooterText A.Forum_Link:Link, .Forum_FooterText A.Forum_Link:Visited, .Forum_FooterText A.Forum_Link:Active, .Forum_FooterText A.Forum_Link:Hover{text-align: center;font-family: Helvetica, Arial, San-Serif;font-size:11px;font-weight: bold;color:#403F3F}
+.Forum_FooterText A.Forum_Link:Hover{color: #CC0000; }
+.Forum_Grid{border-left: 1px solid #B8D7F3;border-right: 1px solid #B8D7F3;border-top: 1px solid #B8D7F3;}
+.Forum_Grid TD{border-top: 1px solid #B8D7F3;}
+.Forum_Grid_Header{background: url('Images/header_bg.jpg') repeat;height: 41px;font-weight: bold;font-size: 11px;font-family: Helvetica, Arial, San-Serif; text-transform: uppercase; color: white;}
+.Forum_Grid_Row{background-color: #E8E8E8; font-size: 11px;font-family: Helvetica, Arial, San-Serif;color: #403F3F;}
+/* Subject/Name Column in group, threads views (odd) */
+.Forum_Grid_Row_Alt{background-color: #eee; font-size: 11px;font-family: Helvetica, Arial, San-Serif;color: #403F3F;}
+/* Used in grid ascx files (UCP_Bookmark/ probably UCP_Tracking) */
+.Forum_Grid_Left{border-right: 1px solid #B8D7F3;}
+/* Used in grid ascx files (reported posts, ) */
+.Forum_Grid_Middle{border-right: 1px solid #B8D7F3;text-align: center;}
+/* Used in grid ascx files */
+.Forum_Grid_Right{border-right: 1px solid #B8D7F3;text-align: center;}
+.PagerContainerTable{border-top: #B8D7F3 1px solid;width: 100%;background: url(images/pb_footer_bg.jpg) top left repeat-x;	height:26px;font-size: 11px;font-family: Helvetica, Arial, San-Serif;}
+.PagerInfoCell{padding-right:6px;padding-left:6px;padding-bottom:3px;padding-top:3px;font-weight:bold;color:#ffc30d;}
+.PagerCurrentPageCell{color:#ffc30d;width:15px;font-weight:normal;}
+.PagerOtherPageCells{width: 15px;padding-right: 4px;}
+.PagerSSCCells{}
+.PagerHyperlinkStyle{font-weight:bold;color:#fff;}
+.PagerHyperlinkStyle:link, A.PagerHyperlinkStyle:Visited, A.PagerHyperlinkStyle:Active{color: #ffc30d;}
+.PagerHyperlinkStyle:hover{color: #c60001;}
+.Forum_IconTd{text-align:center; /* this one is only for IE and a legacy doctype */}
+.Forum_Icons{display:table;margin:auto;padding:5px;}
+.Forum_IconsCol{display:table-row;}
+.Forum_Icons a{display:table-cell;}
+/*Forum Search */
+.Forum_SearchContainer .Forum_Row_AdminText{font-size:12px;font-weight:bold;text-align:right;display:block;padding-right:15px;}
+	.Forum_SearchContainer a.primary-action{display:inline-block;background:#7397B7;color:#fff;border-bottom:1px solid #5C7992;border-right:1px solid #5C7992;-moz-border-radius:3px;-webkit-border-radius:3px;text-transform:capitalize;padding:5px 8px;width:100px;margin:10px 10px 0 0;}
+	.Forum_SearchContainer a.primary-action:hover{background:#5C7992;color:#fff;border-bottom:1px solid #4D657A;border-right:1px solid #4D657A;-moz-border-radius:3px;-webkit-border-radius:3px;text-decoration:none;}
+/* Tagging */
+.Forum_Container .tags li{padding-right:8px;}
+.Forum_Container .tags li a{font-size: 11px;font-family: Helvetica, Arial, San-Serif;color:#0088CE; font-weight: bold;}
+.Forum_Container .tags li a:hover{color:#006396;}
+.AdvertisementPost {border: thin solid #BDBDBD;padding: 10px;}
