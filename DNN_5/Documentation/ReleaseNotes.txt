@@ -1,0 +1,18 @@
+<h3>Forum 5.0.2</h3>
+<p class="Contributor">
+	DotNetNuke&reg; <br />
+	<a href="mailto:support@dotnetnuke.com">support@dotnetnuke.com</a><br />
+	<a href=http://www.dotnetnuke.com>http://www.dotnetnuke.com</a><br />
+</p>
+<hr/>
+<div class="License">
+	<h3>About the Core Forum</h3>
+	<p class="Owner">
+		<b>Version 5.0.2</b><br /><br />
+		This version of the module requires DotNetNuke Core 5.4.4 or greater. 
+		FYI: Developers should be aware that the module uses Visual Studio 2010 only. 
+	</p>
+	<ul>
+		<li>The module was updated for DotNetNuke 5.6.3 and its included Telerik.Web.UI.dll.</li>
+	</ul>
+</div>

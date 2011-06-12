@@ -1,0 +1,35 @@
+<h3>Forum 5.0.1</h3>
+<p class="Contributor">
+	DotNetNuke&reg; <br />
+	<a href="mailto:support@dotnetnuke.com">support@dotnetnuke.com</a><br />
+	<a href=http://www.dotnetnuke.com>http://www.dotnetnuke.com</a><br />
+</p>
+<hr/>
+<div class="License">
+	<h3>About the Core Forum</h3>
+	<p class="Owner">
+		<b>Version 5.0.1</b><br /><br />
+		This version of the module requires DotNetNuke Core 5.4.4 or greater. 
+		FYI: Developers should be aware that the module uses Visual Studio 2010 only. 
+	</p>
+	<ul>
+		<li>19702: Added support for line breaks in quick reply.</li>
+		<li>19701: Fixed bug where reported user's (in MCP) reported post count was taking ID instead of an actual count.</li>
+		<li>19700: New Feature: Post Advertising (in ACP, ads display in posts view). This is a single piece of ad text or integrated with core banners.</li>
+		<li>19452: Fixed bug with HTML encoded characters in the last post text.</li>
+		<li>19235: Fixed bug in Email cleanup scheduled task.</li>
+		<li>19178: Fixed multiple bugs around email subscribers view (ACP).</li>
+		<li>19123: Implemented core Telerik grid in Reported Users (MCP).</li>
+		<li>19121: Implemented core Telerik grid in Users grid (ACP).</li>
+		<li>19118: Added ability to see total post count in moderation queue from MCP overview page.</li>
+		<li>19115: Added ability to see total reported posts count in moderation queue from MCP overview page.</li>
+		<li>19114: Fixed bug where css was not always being applied on post backs.</li>
+		<li>19113: Fixed bug where "Bannded Period Ends" could not be set.</li>
+		<li>19070: Fixed bug where disabling taxonomy had unexpected results (new thread errors).</li>
+		<li>15492: Made UI XHTML compliant.</li>
+		<li>Converted more items to use wrapped Telerik controls.</li>
+		<li>Updated copyright year (2011) across module.</li>
+		<li>Code comments/documentation were updated post the 5.0.0 release.</li>
+		<li>Fixed potential SQL injection flaw.</li>
+	</ul>
+</div>
