@@ -1,0 +1,7 @@
+<div class="License">
+	<p class="Owner">
+		<h3>About the DotNetNuke Forums Module</h3>
+	<b>Verion 6.0.0 </b><br /><br />
+		
+	</p>
+</div>
