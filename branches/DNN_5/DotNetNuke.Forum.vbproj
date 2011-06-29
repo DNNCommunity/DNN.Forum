@@ -51,7 +51,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Library\Controls\CountryListBox\bin\CountryListBox.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke, Version=5.6.3.18, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="DotNetNuke, Version=6.0.0.2568, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="DotNetNuke.Web, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\DotNetNuke.Web\bin\DotNetNuke.Web.dll</HintPath>
