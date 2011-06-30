@@ -44,4 +44,4 @@ Imports System.Reflection
 ' You can specify all the values or you can default the Build and Revision Numbers 
 ' by using the '*' as shown below:
 
-<Assembly: AssemblyVersion("05.00.02.*")> 
+<Assembly: AssemblyVersion("05.00.03.*")> 

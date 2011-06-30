@@ -1,4 +1,5 @@
 DesktopModules\Forum\04.05.03.txt
+DesktopModules\Forum\05.00.00.txt
 DesktopModules\Forum\App_LocalResources\Forum_Memberlist.ascx.resx
 DesktopModules\Forum\App_LocalResources\PM_Edit.ascx.resx
 DesktopModules\Forum\App_LocalResources\PM_Thread.ascx.resx
@@ -75,5 +76,6 @@ Install\Module\Forum_03.20.08_Install.resources
 Install\Module\Forum_03.20.09_Install.resources
 Install\Module\Forum_04.04.03_Install.resources
 Install\Module\Forum_04.05.03_Install.resources
-
-
+Install\Module\Forum_05.00.00_Install.resources
+Install\Module\Forum_05.00.01_Install.resources
+Install\Module\Forum_05.00.02_Install.resources
