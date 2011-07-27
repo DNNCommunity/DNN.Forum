@@ -18,8 +18,6 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using DotNetNuke.Common.Utilities;
-
 namespace DotNetNuke.Modules.Forums.Components.Common
 {
 

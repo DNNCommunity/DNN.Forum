@@ -68,7 +68,7 @@ namespace DotNetNuke.Modules.Forums.Components.Common {
 		#region Enumerators
 
 		/// <summary>
-		/// 
+		/// This enumerator is used to determine which control should be loaded into Dispatch.ascx.
 		/// </summary>
 		public enum PageScope
 		{

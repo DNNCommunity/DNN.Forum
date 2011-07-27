@@ -102,7 +102,7 @@ namespace DotNetNuke.Modules.Forums.Components.Presenters
 		{
 			base.OnInit();
 
-			View.Model.IsEditable = IsEditable;
+			View.Model.IsEditable = ModuleContext.IsEditable;
 
 			switch (ControlView)
 			{

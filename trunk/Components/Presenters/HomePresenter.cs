@@ -85,8 +85,7 @@ namespace DotNetNuke.Modules.Forums.Components.Presenters
 			{
 				base.OnLoad();
 
-
-				View.Model.CurrentUserID = UserId;
+				View.Model.CurrentUserID = ModuleContext.PortalSettings.UserId;
 
 				View.Refresh();
 			}

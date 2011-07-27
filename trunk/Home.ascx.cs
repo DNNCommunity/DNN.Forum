@@ -28,22 +28,18 @@ namespace DotNetNuke.Modules.Forums
 {
 
 	/// <summary>
-	/// This is the initial view seen within the Forge module. It displays the latest releases, a featured project and also multiple ways to reach the search page.
+	/// This is the initial view seen within the Forums module, loaded by Dispatch.ascx. 
 	/// </summary>
 	[PresenterBinding(typeof(HomePresenter))]
 	public partial class Home : ModuleView<HomeModel>, IHomeView
 	{
 
-		#region Public Events
-
-		#endregion
-
-		#region Ctor
+		#region Constructor
 
 		/// <summary>
-		/// 
+		/// The constructor is used here to set base properties. 
 		/// </summary>
-		/// <remarks>We disable AutoDataBind in the ctor so we can utlize Telerik controls, otherwise we will get a PreRender script registration error.</remarks>
+		/// <remarks>We disable AutoDataBind in the ctor so we can utlize Telerik and other 'Ajax' controls, otherwise we will get a PreRender script registration error.</remarks>
 		public Home()
 		{
 			AutoDataBind = false;
@@ -51,7 +47,7 @@ namespace DotNetNuke.Modules.Forums
 
 		#endregion
 
-		#region Event Handlers
+		#region Public Methods
 
 		/// <summary>
 		/// 

@@ -18,10 +18,6 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections.Generic;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
 using DotNetNuke.Modules.Forums.Providers.Data;
 using DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider;
 

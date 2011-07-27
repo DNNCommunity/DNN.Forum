@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- targets to be executed, when omitted from command line default is run -->
-<project name="Forums" default="BuildAndZip">
+<project name="DNNCorp.Forums" default="BuildAndZip">
 	<target name="init">
 		<property name="nant.settings.currentframework" value="net-3.5" />
 
@@ -9,7 +9,7 @@
 
 		<!-- This is where your resource.zip will be built so it can be zipped and distributed with the release install zips -->
 		<property name="resourcezip.dir" value="ResourceZip" />		
-		<property name="bin.dir" value="../../bin" />
+		<property name="bin.dir" value="../../../bin" />
 		<property name="controls.dir" value="controls" />
 		<property name="localresource.dir" value="App_LocalResources" />
 		<property name="globalresource.dir" value="App_GlobalResources" />
@@ -23,7 +23,7 @@
 		<property name="verbose" value="false" overwrite="false" />
 		
 		<!-- ModuleName value should be set specific to the project -->
-		<property name="ModuleName" value="Forums" overwrite="false"  />
+		<property name="ModuleName" value="DNNCorp.Forums" overwrite="false"  />
 		<property name="subproject.name" value="${ModuleName}" />
 		<property name="module.dll" value="${bin.dir}/DotNetNuke.Modules.${ModuleName}.dll" />
 		<property name="fullversion" value="06.00.00" />

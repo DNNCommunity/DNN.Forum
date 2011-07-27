@@ -18,25 +18,26 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using DotNetNuke.Modules.Forums.Components.Common;
 using DotNetNuke.UI.Modules;
 
-namespace DotNetNuke.Modules.ExtensionForge.Components.Common 
+namespace DotNetNuke.Modules.Forums.Components.Common 
 {
 
 	/// <summary>
-	/// This class is used for generating links within the module. Links to outside sources are not handled here.
+	/// This class is used for generating links within the module. 
 	/// </summary>
 	public class Links 
 	{
-		/// <summary>
-		/// Navigates the user to the sample home page.
-		/// </summary>
-		/// <param name="moduleContext"></param>
-		/// <returns></returns>
-		public static string ProjectHome(ModuleInstanceContext moduleContext)
+	    /// <summary>
+	    /// Navigates the user to the sample home page.
+	    /// </summary>
+	    /// <param name="moduleContext"></param>
+	    /// <param name="tabId"></param>
+	    /// <returns></returns>
+	    /// <remarks>We must pass tabid in separate from moduleContext, in case we need to generate a link from a third party module (ie. latest posts).</remarks>
+	    public static string ForumHome(ModuleInstanceContext moduleContext, int tabId)
 		{
-			return moduleContext.NavigateUrl(moduleContext.TabId, "", true, "view=" + Constants.PageScope.Home);
+			return moduleContext.NavigateUrl(tabId, "", true, "view=" + Constants.PageScope.Home);
 		}
 
 	}

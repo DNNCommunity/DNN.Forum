@@ -3,9 +3,10 @@
 		<package name="DNN_Forums" type="Module" version="06.00.00">
 			<friendlyname>Forums</friendlyname>
 			<description>The core forum module for DotNetNuke 6.0 or greater.</description>
+			<iconFile />
 			<owner>
-				<name>Forums</name>
-				<organization>DotNetNuke</organization>
+				<name>DotNetNuke</name>
+				<organization>DotNetNuke Corporation</organization>
 				<url>www.dotnetnuke.com</url>
 				<email></email>
 			</owner>
@@ -28,12 +29,13 @@
 								<moduleControls>
 									<moduleControl>
 										<controlKey />
-										<controlSrc>DesktopModules/Forums/Dispatch.ascx</controlSrc>
+										<controlSrc>DesktopModules/DNNCorp/Forums/Dispatch.ascx</controlSrc>
+										<controlTitle />
+										<controlType>View</controlType>
 										<iconFile />
 										<helpUrl />
 										<supportsPartialRendering>True</supportsPartialRendering>
-										<controlTitle />
-										<controlType>View</controlType>
+										<supportsPartialRendering>False</supportsPartialRendering>
 									</moduleControl>
 								</moduleControls>
 								<permissions />
@@ -52,7 +54,7 @@
 				</component>
 				<component type="File">
 					<files>
-						<basePath>DesktopModules\Forums\Documentation</basePath>
+						<basePath>DesktopModules\DNNCorp\Forums\Documentation</basePath>
 						<file>
 							<name>License.txt</name>
 						</file>
@@ -63,7 +65,7 @@
 				</component>
 				<component type="Script">
 					<scripts>
-						<basePath>DesktopModules\Forums\Providers\Data\SqlDataProvider</basePath>
+						<basePath>DesktopModules\DNNCorp\Forums\Providers\Data\SqlDataProvider</basePath>
 						<script type="Install">
 							<path />
 							<name>06.00.00.SqlDataProvider</name>
@@ -78,7 +80,7 @@
 				</component>
 				<component type="ResourceFile">
 					<resourceFiles>
-						<basePath>DesktopModules\Forums</basePath>
+						<basePath>DesktopModules\DNNCorp\Forums</basePath>
 						<resourceFile>
 							<name>Resources.zip</name>
 							<sourceFileName>Resources.zip</sourceFileName>

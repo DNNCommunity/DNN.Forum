@@ -27,12 +27,19 @@ using DotNetNuke.UI.Modules;
 
 namespace DotNetNuke.Modules.Forums
 {
+
+	/// <summary>
+	/// Dispatch is the initial view control in the Forums module. It reads the URL and determines which control should be displayed to the end user. 
+	/// </summary>
+	/// <remarks>The purpose of this is to avoid usage of 'ctl' in the URL and thus loading of the DotNetNuke edit skin. </remarks>
 	[PresenterBinding(typeof(DispatchPresenter))]
 	public partial class Dispatch : ModuleView<DispatchModel>, IDispatchView
 	{
 
+		#region Constructor
+
 		/// <summary>
-		/// 
+		/// The constructor is used here to set base properties. 
 		/// </summary>
 		/// <remarks>We have to disable autobinding in the ctor here so the loaded controls can also disable it, if necessary.</remarks>
 		public Dispatch()
@@ -40,8 +47,12 @@ namespace DotNetNuke.Modules.Forums
 			AutoDataBind = false;
 		}
 
+		#endregion
+
+		#region Public Methods
+
 		/// <summary>
-		/// 
+		/// Every time a page load occurs (initial load, postback, etc.), this method will load the proper control based on parameters in the URL.
 		/// </summary>
 		public void Refresh()
 		{
@@ -54,10 +65,13 @@ namespace DotNetNuke.Modules.Forums
 			objControl.ID = System.IO.Path.GetFileNameWithoutExtension(ctlDirectory + Model.ControlToLoad);
 			phUserControl.Controls.Add(objControl);
 
-			if ((string)ViewState["CtlToLoad"] != Model.ControlToLoad) {
+			if ((string)ViewState["CtlToLoad"] != Model.ControlToLoad)
+			{
 				ViewState["CtlToLoad"] = Model.ControlToLoad;
 			}
 		}
+
+		#endregion
 
 	}
 }
