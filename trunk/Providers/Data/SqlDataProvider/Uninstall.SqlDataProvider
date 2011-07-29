@@ -1,1 +1,210 @@
-﻿
+﻿IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Poll_Options_Forums_Poll]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Poll_Options]'))
+ALTER TABLE [dbo].[Forums_Poll_Options] DROP CONSTRAINT [FK_Forums_Poll_Options_Forums_Poll]
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Poll_Options_Priority]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[Forums_Poll_Options] DROP CONSTRAINT [DF_Forums_Poll_Options_Priority]
+END
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Poll_Forums_Topics]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Poll]'))
+ALTER TABLE [dbo].[Forums_Poll] DROP CONSTRAINT [FK_Forums_Poll_Forums_Topics]
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Forums_Forums_Permissions]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Forums]'))
+ALTER TABLE [dbo].[Forums_Forums] DROP CONSTRAINT [FK_Forums_Forums_Forums_Permissions]
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Forums_Forums_Settings]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Forums]'))
+ALTER TABLE [dbo].[Forums_Forums] DROP CONSTRAINT [FK_Forums_Forums_Forums_Settings]
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Forums_AllowTopics]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[Forums_Forums] DROP CONSTRAINT [DF_Forums_Forums_AllowTopics]
+END
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Posts_Attachments_Forums_Posts]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Posts_Attachments]'))
+ALTER TABLE [dbo].[Forums_Posts_Attachments] DROP CONSTRAINT [FK_Forums_Posts_Attachments_Forums_Posts]
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Posts_Ratings_Forums_Posts]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Posts_Ratings]'))
+ALTER TABLE [dbo].[Forums_Posts_Ratings] DROP CONSTRAINT [FK_Forums_Posts_Ratings_Forums_Posts]
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Posts_Ratings_UserId]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[Forums_Posts_Ratings] DROP CONSTRAINT [DF_Forums_Posts_Ratings_UserId]
+END
+
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Posts_Ratings_Rating]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[Forums_Posts_Ratings] DROP CONSTRAINT [DF_Forums_Posts_Ratings_Rating]
+END
+
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Subscriptions_ForumId]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[Forums_Subscriptions] DROP CONSTRAINT [DF_Forums_Subscriptions_ForumId]
+END
+
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Subscriptions_TopicId]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[Forums_Subscriptions] DROP CONSTRAINT [DF_Forums_Subscriptions_TopicId]
+END
+
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Subscriptions_Mode]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[Forums_Subscriptions] DROP CONSTRAINT [DF_Forums_Subscriptions_Mode]
+END
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Topics_Tracking_Forums_Topics]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Topics_Tracking]'))
+ALTER TABLE [dbo].[Forums_Topics_Tracking] DROP CONSTRAINT [FK_Forums_Topics_Tracking_Forums_Topics]
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Posts_Forums_Topics]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Posts]'))
+ALTER TABLE [dbo].[Forums_Posts] DROP CONSTRAINT [FK_Forums_Posts_Forums_Topics]
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Posts_ParentPostId]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[Forums_Posts] DROP CONSTRAINT [DF_Forums_Posts_ParentPostId]
+END
+
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Posts_UserId]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[Forums_Posts] DROP CONSTRAINT [DF_Forums_Posts_UserId]
+END
+
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Posts_Rating]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[Forums_Posts] DROP CONSTRAINT [DF_Forums_Posts_Rating]
+END
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Topics_Forums_Forums]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Topics]'))
+ALTER TABLE [dbo].[Forums_Topics] DROP CONSTRAINT [FK_Forums_Topics_Forums_Forums]
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Topics_ViewCount]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[Forums_Topics] DROP CONSTRAINT [DF_Forums_Topics_ViewCount]
+END
+
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Topics_ReplyCount]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[Forums_Topics] DROP CONSTRAINT [DF_Forums_Topics_ReplyCount]
+END
+
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Topics_StatusId]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[Forums_Topics] DROP CONSTRAINT [DF_Forums_Topics_StatusId]
+END
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Tracking_Forums_Forums]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Tracking]'))
+ALTER TABLE [dbo].[Forums_Tracking] DROP CONSTRAINT [FK_Forums_Tracking_Forums_Forums]
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Tracking_MaxTopicRead]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[Forums_Tracking] DROP CONSTRAINT [DF_Forums_Tracking_MaxTopicRead]
+END
+
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Tracking_MaxPostRead]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[Forums_Tracking] DROP CONSTRAINT [DF_Forums_Tracking_MaxPostRead]
+END
+
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Poll_Options]') AND type in (N'U'))
+DROP TABLE [dbo].[Forums_Poll_Options]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Poll]') AND type in (N'U'))
+DROP TABLE [dbo].[Forums_Poll]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Filters]') AND type in (N'U'))
+DROP TABLE [dbo].[Forums_Filters]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Urls]') AND type in (N'U'))
+DROP TABLE [dbo].[Forums_Urls]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Ranks]') AND type in (N'U'))
+DROP TABLE [dbo].[Forums_Ranks]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Poll_Results]') AND type in (N'U'))
+DROP TABLE [dbo].[Forums_Poll_Results]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Forums]') AND type in (N'U'))
+DROP TABLE [dbo].[Forums_Forums]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Settings]') AND type in (N'U'))
+DROP TABLE [dbo].[Forums_Settings]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Posts_Attachments]') AND type in (N'U'))
+DROP TABLE [dbo].[Forums_Posts_Attachments]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Posts_Ratings]') AND type in (N'U'))
+DROP TABLE [dbo].[Forums_Posts_Ratings]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Permissions]') AND type in (N'U'))
+DROP TABLE [dbo].[Forums_Permissions]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Subscriptions]') AND type in (N'U'))
+DROP TABLE [dbo].[Forums_Subscriptions]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Topics_Tracking]') AND type in (N'U'))
+DROP TABLE [dbo].[Forums_Topics_Tracking]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Posts]') AND type in (N'U'))
+DROP TABLE [dbo].[Forums_Posts]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Topics]') AND type in (N'U'))
+DROP TABLE [dbo].[Forums_Topics]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Tracking]') AND type in (N'U'))
+DROP TABLE [dbo].[Forums_Tracking]
+GO
+
+
