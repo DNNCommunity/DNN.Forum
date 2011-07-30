@@ -224,7 +224,6 @@
 		<li><asp:linkbutton cssclass="dnnSecondaryAction" id="cmdCancel" runat="server" resourcekey="cmdCancel" CausesValidation="False" /></li>
 		<li><asp:linkbutton cssclass="dnnSecondaryAction" id="cmdPreview" runat="server" resourcekey="cmdPreview" CausesValidation="false" /></li>
 	</ul>
-	<asp:label id="lblInfo" Runat="server" CssClass="dnnFormMessage dnnFormValidationSummary" Visible="false" />
 	<div id="divOldPost" runat="server">
 		<table id="tblOldPost" runat="server" class="Forum_Border" cellpadding="0" cellspacing="0" width="100%">
 			<tr>

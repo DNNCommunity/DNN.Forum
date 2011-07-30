@@ -21,7 +21,7 @@ Namespace DotNetNuke.Modules.Forum
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plPostDates As Global.System.Web.UI.UserControl
+        Protected WithEvents plPostDates As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''lblStartDate control.
@@ -75,7 +75,7 @@ Namespace DotNetNuke.Modules.Forum
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plSubject As Global.System.Web.UI.UserControl
+        Protected WithEvents plSubject As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''txtSubject control.
@@ -93,7 +93,7 @@ Namespace DotNetNuke.Modules.Forum
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plBody As Global.System.Web.UI.UserControl
+        Protected WithEvents plBody As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''txtSearch control.
@@ -111,7 +111,7 @@ Namespace DotNetNuke.Modules.Forum
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plThreadStatus As Global.System.Web.UI.UserControl
+        Protected WithEvents plThreadStatus As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''rcbThreadStatus control.
@@ -129,7 +129,7 @@ Namespace DotNetNuke.Modules.Forum
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plForums As Global.System.Web.UI.UserControl
+        Protected WithEvents plForums As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''rtvForums control.
@@ -156,6 +156,6 @@ Namespace DotNetNuke.Modules.Forum
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents cmdCancel As Global.System.Web.UI.WebControls.LinkButton
+        Protected WithEvents cmdCancel As Global.System.Web.UI.WebControls.HyperLink
     End Class
 End Namespace

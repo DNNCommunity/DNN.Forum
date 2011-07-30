@@ -12,150 +12,132 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
-	Partial Public Class RSS
+    Partial Public Class RSS
 
-		'''<summary>
-		'''lblTitle control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblTitle control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''tblRSS control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents tblRSS As Global.System.Web.UI.HtmlControls.HtmlTable
+        '''<summary>
+        '''plRSSFeeds control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plRSSFeeds As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''plRSSFeeds control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plRSSFeeds As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''chkRSSFeeds control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkRSSFeeds As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''chkRSSFeeds control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkRSSFeeds As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''divThreadsPerFeed control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents divThreadsPerFeed As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
-		'''<summary>
-		'''rowThreadsPerFeed control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowThreadsPerFeed As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''plRSSThreadsPerFeed control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plRSSThreadsPerFeed As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''plRSSThreadsPerFeed control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plRSSThreadsPerFeed As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''txtRSSThreadsPerFeed control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtRSSThreadsPerFeed As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''txtRSSThreadsPerFeed control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtRSSThreadsPerFeed As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''valreqRSSThreadsFeed control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valreqRSSThreadsFeed As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
-		'''<summary>
-		'''valreqRSSThreadsFeed control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valreqRSSThreadsFeed As Global.System.Web.UI.WebControls.RequiredFieldValidator
+        '''<summary>
+        '''valRSSThreadsPerFeed control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valRSSThreadsPerFeed As Global.System.Web.UI.WebControls.RegularExpressionValidator
 
-		'''<summary>
-		'''valRSSThreadsPerFeed control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valRSSThreadsPerFeed As Global.System.Web.UI.WebControls.RegularExpressionValidator
+        '''<summary>
+        '''divTTL control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents divTTL As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
-		'''<summary>
-		'''rowTTL control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowTTL As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''plTTL control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plTTL As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''plTTL control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plTTL As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''txtTTL control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtTTL As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''txtTTL control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtTTL As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''valreqTTL control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valreqTTL As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
-		'''<summary>
-		'''valreqTTL control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valreqTTL As Global.System.Web.UI.WebControls.RequiredFieldValidator
+        '''<summary>
+        '''valTTLNumeric control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valTTLNumeric As Global.System.Web.UI.WebControls.RegularExpressionValidator
 
-		'''<summary>
-		'''valTTLNumeric control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valTTLNumeric As Global.System.Web.UI.WebControls.RegularExpressionValidator
-
-		'''<summary>
-		'''cmdUpdate control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
-
-		'''<summary>
-		'''lblUpdateDone control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
-	End Class
+        '''<summary>
+        '''cmdUpdate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
+    End Class
 End Namespace

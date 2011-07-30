@@ -243,9 +243,6 @@
   <data name="plAssignedModerators.Help" xml:space="preserve">
     <value>These are individual users currently assigned as moderators of this particular forum.</value>
   </data>
-  <data name="Administration.Text" xml:space="preserve">
-    <value>Forum Admin</value>
-  </data>
   <data name="cmdAdd.Text" xml:space="preserve">
     <value>Add</value>
   </data>
@@ -325,7 +322,7 @@
     <value>Parent Forum</value>
   </data>
   <data name="EditForum.Text" xml:space="preserve">
-    <value>Edit Forum</value>
+    <value>Admin's Control Panel: Edit Forum</value>
   </data>
   <data name="TabEmail.Text" xml:space="preserve">
     <value>Email</value>
@@ -400,7 +397,7 @@
     <value>Email Port</value>
   </data>
   <data name="cmdHome.Text" xml:space="preserve">
-    <value>Home</value>
+    <value>Return</value>
   </data>
   <data name="plEnableSitemap.Help" xml:space="preserve">
     <value>If checked (and the forum is public), the threads created within this forum will be exposed to the SEO sitemap provider.</value>

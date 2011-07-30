@@ -22,116 +22,114 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
-	''' <summary>
-	''' This area controls what community oriented features are exposed to forum users. 
-	''' </summary>
-	''' <remarks>\
-	''' </remarks>
-	Partial Public Class Community
-		Inherits ForumModuleBase
-		Implements Utilities.AjaxLoader.IPageLoad
+    ''' <summary>
+    ''' This area controls what community oriented features are exposed to forum users. 
+    ''' </summary>
+    ''' <remarks>\
+    ''' </remarks>
+    Partial Public Class Community
+        Inherits ForumModuleBase
+        Implements Utilities.AjaxLoader.IPageLoad
 
 #Region "Interfaces"
 
-		''' <summary>
-		''' This is required to replace If Page.IsPostBack = False because controls are dynamically loaded via Ajax. 
-		''' </summary>
-		''' <remarks></remarks>
-		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
-			BindTabs()
+        ''' <summary>
+        ''' This is required to replace If Page.IsPostBack = False because controls are dynamically loaded via Ajax. 
+        ''' </summary>
+        ''' <remarks></remarks>
+        Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
+            BindTabs()
 
-			If Entities.Host.Host.GetHostSettingsDictionary.ContainsKey("DisableUsersOnline") And (Not Entities.Host.Host.GetHostSettingsDictionary("DisableUsersOnline") Is Nothing) Then
-				If Entities.Host.Host.GetHostSettingsDictionary("DisableUsersOnline").ToString = "Y" Then
-					rowUserOnline.Visible = False
-				Else
-					rowUserOnline.Visible = True
-					chkUserOnline.Checked = objConfig.EnableUsersOnline
-				End If
-			Else
-				rowUserOnline.Visible = False
-			End If
+            If Not Entities.Controllers.HostController.Instance.GetSettingsDictionary() Is Nothing Then
+                If Not Entities.Controllers.HostController.Instance.GetString("DisableUsersOnline") Is Nothing Then
+                    If Not Entities.Controllers.HostController.Instance.GetString("DisableUsersOnline").ToString = "Y" Then
+                        divUserOnline.Visible = True
+                        chkUserOnline.Checked = objConfig.EnableUsersOnline
+                    End If
+                End If
+            End If
 
-			chkEnableExtProfilePage.Checked = objConfig.EnableExternalProfile
-			EnableExternalProfile(objConfig.EnableExternalProfile)
+            chkEnableExtProfilePage.Checked = objConfig.EnableExternalProfile
+            EnableExternalProfile(objConfig.EnableExternalProfile)
             rcbExtProfilePageID.SelectedValue = objConfig.ExternalProfilePage.ToString()
-			txtExtProfileUserParam.Text = objConfig.ExternalProfileParam.ToString()
-			txtExtProfileParamName.Text = objConfig.ExternalProfileParamName
-			txtExtProfileParamValue.Text = objConfig.ExternalProfileParamValue
-		End Sub
+            txtExtProfileUserParam.Text = objConfig.ExternalProfileParam.ToString()
+            txtExtProfileParamName.Text = objConfig.ExternalProfileParamName
+            txtExtProfileParamValue.Text = objConfig.ExternalProfileParamValue
+        End Sub
 
 #End Region
 
 #Region "Event Handlers"
 
-		''' <summary>
-		''' Updates the module's configuration (module settings)
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks>Saves the module settings shown in this view.
-		''' </remarks>
-		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
-			Try
-				Dim ctlModule As New Entities.Modules.ModuleController
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_USERS_ONLINE, chkUserOnline.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_EXTERNAL_PROFILE_PAGE, chkEnableExtProfilePage.Checked.ToString)
+        ''' <summary>
+        ''' Updates the module's configuration (module settings)
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="e"></param>
+        ''' <remarks>Saves the module settings shown in this view.
+        ''' </remarks>
+        Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
+            Try
+                Dim ctlModule As New Entities.Modules.ModuleController
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_USERS_ONLINE, chkUserOnline.Checked.ToString)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_EXTERNAL_PROFILE_PAGE, chkEnableExtProfilePage.Checked.ToString)
                 ctlModule.UpdateModuleSetting(ModuleId, Constants.EXTERNAL_PROFILE_PAGE, rcbExtProfilePageID.SelectedValue)
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.EXTERNAL_PROFILE_USER_PARAM, txtExtProfileUserParam.Text)
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.EXTERNAL_PROFILE_PARAM_NAME, txtExtProfileParamName.Text)
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.EXTERNAL_PROFILE_PARAM_VALUE, txtExtProfileParamValue.Text)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.EXTERNAL_PROFILE_USER_PARAM, txtExtProfileUserParam.Text)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.EXTERNAL_PROFILE_PARAM_NAME, txtExtProfileParamName.Text)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.EXTERNAL_PROFILE_PARAM_VALUE, txtExtProfileParamValue.Text)
 
-				Configuration.ResetForumConfig(ModuleId)
+                Configuration.ResetForumConfig(ModuleId)
 
-				lblUpdateDone.Visible = True
-			Catch exc As Exception
-				Dim s As String = exc.ToString
-				s = s & " "
-				ProcessModuleLoadException(Me, exc)
-			End Try
-		End Sub
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, DotNetNuke.Services.Localization.Localization.GetString("lblUpdateDone.Text", Me.LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.GreenSuccess)
+            Catch exc As Exception
+                Dim s As String = exc.ToString
+                s = s & " "
+                ProcessModuleLoadException(Me, exc)
+            End Try
+        End Sub
 
-		''' <summary>
-		''' Enables/Disabled external profile fields in the user interface.
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
-		Protected Sub chkEnableExtProfilePage_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkEnableExtProfilePage.CheckedChanged
-			EnableExternalProfile(chkEnableExtProfilePage.Checked)
-		End Sub
+        ''' <summary>
+        ''' Enables/Disabled external profile fields in the user interface.
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="e"></param>
+        ''' <remarks></remarks>
+        Protected Sub chkEnableExtProfilePage_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkEnableExtProfilePage.CheckedChanged
+            EnableExternalProfile(chkEnableExtProfilePage.Checked)
+        End Sub
 
 #End Region
 
 #Region "Private Methods"
 
-		''' <summary>
-		''' Populates drop down lists with tab collections.
-		''' </summary>
-		''' <remarks></remarks>
-		Private Sub BindTabs()
-			Dim colTabs As New List(Of DotNetNuke.Entities.Tabs.TabInfo)
-			colTabs = DotNetNuke.Entities.Tabs.TabController.GetPortalTabs(PortalId, 0, True, True, False, False)
+        ''' <summary>
+        ''' Populates drop down lists with tab collections.
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Sub BindTabs()
+            Dim colTabs As New List(Of DotNetNuke.Entities.Tabs.TabInfo)
+            colTabs = DotNetNuke.Entities.Tabs.TabController.GetPortalTabs(PortalId, 0, True, True, False, False)
 
             rcbExtProfilePageID.ClearSelection()
             rcbExtProfilePageID.DataSource = colTabs
             rcbExtProfilePageID.DataBind()
-		End Sub
+        End Sub
 
-		''' <summary>
-		''' Sets row visibility for External Profile support.
-		''' </summary>
-		''' <param name="Enabled">True if enabled, false otherwise.</param>
-		''' <remarks></remarks>
-		Private Sub EnableExternalProfile(ByVal Enabled As Boolean)
-			rowExtProfilePageID.Visible = Enabled
-			rowExtProfileUserParam.Visible = Enabled
-			rowExtProfileParamName.Visible = Enabled
-			rowExtProfileParamValue.Visible = Enabled
-			rowEnableExtProfile.Visible = True
-		End Sub
+        ''' <summary>
+        ''' Sets row visibility for External Profile support.
+        ''' </summary>
+        ''' <param name="Enabled">True if enabled, false otherwise.</param>
+        ''' <remarks></remarks>
+        Private Sub EnableExternalProfile(ByVal Enabled As Boolean)
+            divExtProfilePageID.Visible = Enabled
+            divExtProfileUserParam.Visible = Enabled
+            divExtProfileParamName.Visible = Enabled
+            divExtProfileParamValue.Visible = Enabled
+            divEnableExtProfile.Visible = True
+        End Sub
 
 #End Region
 
-	End Class
+    End Class
 
 End Namespace

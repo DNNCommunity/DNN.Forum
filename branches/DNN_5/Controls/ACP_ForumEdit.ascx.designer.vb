@@ -39,7 +39,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rtsForum As Global.DotNetNuke.Web.UI.WebControls.DnnTabStrip
+        Protected WithEvents rtsForum As Global.Telerik.Web.UI.RadTabStrip
 
         '''<summary>
         '''rmpForumSettings control.
@@ -57,25 +57,16 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rpvGeneral As Global.Telerik.Web.UI.RadPageView
+        Protected WithEvents rpvGeneral As Global.DotNetNuke.Web.UI.WebControls.DnnPageView
 
         '''<summary>
-        '''tblGeneral control.
+        '''divForumID control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents tblGeneral As Global.System.Web.UI.HtmlControls.HtmlTable
-
-        '''<summary>
-        '''rowForumID control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents rowForumID As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divForumID As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plForumID control.
@@ -129,16 +120,16 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rcbGroup As Global.DotNetNuke.Web.UI.WebControls.DnnComboBox
+        Protected WithEvents rcbGroup As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
-        '''rowParentForum control.
+        '''divParentForum control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowParentForum As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divParentForum As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plParentForumName control.
@@ -156,7 +147,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rcbParentForum As Global.DotNetNuke.Web.UI.WebControls.DnnComboBox
+        Protected WithEvents rcbParentForum As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
         '''plForumName control.
@@ -285,15 +276,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents rpvOptions As Global.Telerik.Web.UI.RadPageView
 
         '''<summary>
-        '''tblBehavior control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents tblBehavior As Global.System.Web.UI.HtmlControls.HtmlTable
-
-        '''<summary>
         '''plForumType control.
         '''</summary>
         '''<remarks>
@@ -309,16 +291,16 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rcbForumType As Global.DotNetNuke.Web.UI.WebControls.DnnComboBox
+        Protected WithEvents rcbForumType As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
-        '''rowForumBehavior control.
+        '''divForumBehavior control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowForumBehavior As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divForumBehavior As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plForumBehavior control.
@@ -336,16 +318,16 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rcbForumBehavior As Global.DotNetNuke.Web.UI.WebControls.DnnComboBox
+        Protected WithEvents rcbForumBehavior As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
-        '''rowForumLink control.
+        '''divForumLink control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowForumLink As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divForumLink As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plForumLink control.
@@ -366,13 +348,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents ctlURL As Global.DotNetNuke.UI.UserControls.UrlControl
 
         '''<summary>
-        '''rowLinkTracking control.
+        '''divLinkTracking control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowLinkTracking As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divLinkTracking As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''ctlTracking control.
@@ -384,13 +366,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents ctlTracking As Global.DotNetNuke.UI.UserControls.URLTrackingControl
 
         '''<summary>
-        '''rowPolls control.
+        '''divPolls control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowPolls As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divPolls As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plAllowPolls control.
@@ -411,13 +393,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents chkAllowPolls As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowThreadStatus control.
+        '''divThreadStatus control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowThreadStatus As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divThreadStatus As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plEnableForumsThreadStatus control.
@@ -438,13 +420,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents chkEnableForumsThreadStatus As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowRating control.
+        '''divRating control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowRating As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divRating As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plEnableForumsRating control.
@@ -465,13 +447,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents chkEnableForumsRating As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowEnableRSS control.
+        '''divEnableRSS control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowEnableRSS As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divEnableRSS As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plEnableRSS control.
@@ -492,13 +474,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents chkEnableRSS As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowEnableSitemap control.
+        '''divEnableSitemap control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowEnableSitemap As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divEnableSitemap As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plEnableSitemap control.
@@ -519,13 +501,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents chkEnableSitemap As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowSitemapPriority control.
+        '''divSitemapPriority control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowSitemapPriority As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divSitemapPriority As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plSitemapPriority control.
@@ -543,16 +525,16 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents textSitemapPriority As Global.Telerik.Web.UI.RadNumericTextBox
+        Protected WithEvents textSitemapPriority As Global.DotNetNuke.Web.UI.WebControls.DnnNumericTextBox
 
         '''<summary>
-        '''rowPermissions control.
+        '''divPermissions control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowPermissions As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divPermissions As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''dgPermissions control.
@@ -561,7 +543,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents dgPermissions As Global.DotNetNuke.Modules.Forum.Controls.forumpermissionsgrid
+        Protected WithEvents dgPermissions As Global.DotNetNuke.Modules.Forum.Controls.ForumPermissionsGrid
 
         '''<summary>
         '''lblPrivateNote control.
@@ -588,7 +570,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rcbForumPermTemplate As Global.DotNetNuke.Web.UI.WebControls.DnnComboBox
+        Protected WithEvents rcbForumPermTemplate As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
         '''rpvEmail control.
@@ -598,15 +580,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents rpvEmail As Global.Telerik.Web.UI.RadPageView
-
-        '''<summary>
-        '''tblEmail control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents tblEmail As Global.System.Web.UI.HtmlControls.HtmlTable
 
         '''<summary>
         '''plEmailAddress control.
@@ -672,13 +645,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents valDisplay As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
         '''<summary>
-        '''rowSubsribeByDefault control.
+        '''divSubscribeByDefault control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowSubsribeByDefault As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divSubscribeByDefault As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plNotifyByDefault control.
@@ -699,13 +672,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents chkNotifyByDefault As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowEmailStatusChange control.
+        '''divEmailStatusChange control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowEmailStatusChange As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divEmailStatusChange As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plEmailStatusChange control.
@@ -726,13 +699,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents chkEmailStatusChange As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowEmailServer control.
+        '''divEmailServer control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowEmailServer As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divEmailServer As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plEmailServer control.
@@ -753,13 +726,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents txtEmailServer As Global.System.Web.UI.WebControls.TextBox
 
         '''<summary>
-        '''rowEmailUser control.
+        '''divEmailUser control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowEmailUser As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divEmailUser As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plEmailUser control.
@@ -780,13 +753,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents txtEmailUser As Global.System.Web.UI.WebControls.TextBox
 
         '''<summary>
-        '''rowEmailPass control.
+        '''divEmailPass control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowEmailPass As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divEmailPass As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plEmailPass control.
@@ -807,13 +780,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents txtEmailPass As Global.System.Web.UI.WebControls.TextBox
 
         '''<summary>
-        '''rowEmailPort control.
+        '''divEmailPort control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowEmailPort As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divEmailPort As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plEmailPort control.
@@ -834,13 +807,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents txtEmailPort As Global.System.Web.UI.WebControls.TextBox
 
         '''<summary>
-        '''rowEmailSSL control.
+        '''divEmailSSL control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowEmailSSL As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divEmailSSL As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plEmailEnableSSL control.
@@ -861,13 +834,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents chkEmailEnableSSL As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowEmailAuth control.
+        '''divEmailAuth control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowEmailAuth As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divEmailAuth As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plEmailAuth control.
@@ -921,6 +894,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents cmdHome As Global.System.Web.UI.WebControls.LinkButton
+        Protected WithEvents cmdHome As Global.System.Web.UI.WebControls.HyperLink
     End Class
 End Namespace

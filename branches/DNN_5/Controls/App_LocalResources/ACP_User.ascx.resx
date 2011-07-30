@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lblTitle.Text" xml:space="preserve">
-    <value>User Management</value>
+    <value>Admin's Control Panel: User Management</value>
   </data>
   <data name="Email.Header" type="">
     <value>Email</value>

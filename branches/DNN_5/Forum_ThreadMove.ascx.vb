@@ -92,20 +92,6 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Event Handlers"
 
         ''' <summary>
-        ''' Determines if we can use Ajax in this page before anything is rendered. 
-        ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
-        Protected Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
-            'If DotNetNuke.Framework.AJAX.IsInstalled Then
-            '    DotNetNuke.Framework.AJAX.RegisterScriptManager()
-            '    DotNetNuke.Framework.AJAX.RegisterPostBackControl(cmdCancel)
-            '    DotNetNuke.Framework.AJAX.RegisterPostBackControl(cmdMove)
-            'End If
-        End Sub
-
-        ''' <summary>
         ''' Loads page settings.
         ''' </summary>
         ''' <param name="sender"></param>
@@ -129,6 +115,12 @@ Namespace DotNetNuke.Modules.Forum
                 ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
                 If Page.IsPostBack = False Then
+                    If Not Request.UrlReferrer Is Nothing Then
+                        cmdCancel.NavigateUrl = Request.UrlReferrer.ToString()
+                    Else
+                        cmdCancel.NavigateUrl = NavigateURL()
+                    End If
+
                     Dim cntThread As New ThreadController()
                     Dim objThread As New ThreadInfo
                     objThread = cntThread.GetThread(ThreadID)
@@ -136,13 +128,13 @@ Namespace DotNetNuke.Modules.Forum
                     lblSubject.Text = objThread.Subject
                     txtOldForum.Text = objThread.ContainingForum.Name
 
-                    If Not Request.UrlReferrer Is Nothing Then
-                        ViewState("UrlReferrer") = Request.UrlReferrer.ToString()
-                    End If
-
                     ' Treeview forum viewer
                     ForumTreeview.PopulateTelerikTree(objConfig, rtvForums, UserId, TabId)
                     SelectDefaultForumTree(objThread)
+
+                    If Not Request.UrlReferrer Is Nothing Then
+                        ViewState("UrlReferrer") = Request.UrlReferrer.ToString()
+                    End If
                 End If
 
             Catch exc As Exception
@@ -217,25 +209,6 @@ Namespace DotNetNuke.Modules.Forum
                 End If
             Catch ex As Exception
                 LogException(ex)
-            End Try
-        End Sub
-
-        ''' <summary>
-        ''' Returns the user back to where they came from
-        ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks>
-        ''' </remarks>
-        Protected Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
-            Try
-                If Not ViewState("UrlReferrer") Is Nothing Then
-                    Response.Redirect(CType(ViewState("UrlReferrer"), String), False)
-                Else
-                    Response.Redirect(NavigateURL(), False)
-                End If
-            Catch exc As Exception   'Module failed to load
-                ProcessModuleLoadException(Me, exc)
             End Try
         End Sub
 

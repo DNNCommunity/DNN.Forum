@@ -24,15 +24,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
-        '''tblGeneral control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents tblGeneral As Global.System.Web.UI.HtmlControls.HtmlTable
-
-        '''<summary>
         '''plEnableUserAvatar control.
         '''</summary>
         '''<remarks>
@@ -51,13 +42,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents chkEnableUserAvatar As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowEnableProfileAvatar control.
+        '''divEnableProfileAvatar control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowEnableProfileAvatar As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divEnableProfileAvatar As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plEnableProfileAvatar control.
@@ -78,13 +69,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents chkEnableProfileAvatar As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowEnableProfileUserFolders control.
+        '''divEnableProfileUserFolders control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowEnableProfileUserFolders As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divEnableProfileUserFolders As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plEnableProfileUserFolders control.
@@ -105,13 +96,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents chkEnableProfileUserFolders As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowProfileAvatarPropertyName control.
+        '''divProfileAvatarPropertyName control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowProfileAvatarPropertyName As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divProfileAvatarPropertyName As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plProfileAvatarPropertyName control.
@@ -132,13 +123,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents rcbProfileAvatarPropertyName As Global.DotNetNuke.Web.UI.WebControls.DnnComboBox
 
         '''<summary>
-        '''rowUserAvatarPath control.
+        '''divUserAvatarPath control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowUserAvatarPath As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divUserAvatarPath As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plUserAvatarPath control.
@@ -168,13 +159,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents valUsrPath As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
         '''<summary>
-        '''rowUserAvatarDimentions control.
+        '''divUserAvatarDimensions control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowUserAvatarDimentions As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divUserAvatarDimensions As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plUserAvatarDimensions control.
@@ -222,13 +213,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents valUsrH As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
         '''<summary>
-        '''rowUserAvatarSizeLimit control.
+        '''divUserAvatarSizeLimit control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowUserAvatarSizeLimit As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divUserAvatarSizeLimit As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plUserAvatarSizeLimit control.
@@ -258,13 +249,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents valUsrSize As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
         '''<summary>
-        '''rowUserAvatarPoolEnable control.
+        '''divUserAvatarPoolEnable control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowUserAvatarPoolEnable As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divUserAvatarPoolEnable As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plEnableUserAvatarPool control.
@@ -285,13 +276,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents chkEnableUserAvatarPool As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowUserAvatarPoolPath control.
+        '''divUserAvatarPoolPath control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowUserAvatarPoolPath As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divUserAvatarPoolPath As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plUserAvatarPoolPath control.
@@ -339,13 +330,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents chkEnableSystemAvatar As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowSystemAvatarPath control.
+        '''divSystemAvatarPath control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowSystemAvatarPath As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divSystemAvatarPath As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plSystemAvatarPath control.
@@ -393,13 +384,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents chkEnableRoleAvatar As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowRoleAvatarPath control.
+        '''divRoleAvatarPath control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowRoleAvatarPath As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divRoleAvatarPath As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plRoleAvatarPath control.
@@ -429,24 +420,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents valRoleAvatarPath As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
         '''<summary>
-        '''cmdUpdate control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
-
-        '''<summary>
-        '''lblUpdateDone control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
-
-        '''<summary>
         '''validUserDimWidth control.
         '''</summary>
         '''<remarks>
@@ -472,5 +445,14 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents validUserSize As Global.System.Web.UI.WebControls.CompareValidator
+
+        '''<summary>
+        '''cmdUpdate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
     End Class
 End Namespace

@@ -130,7 +130,7 @@
     <value>Value must be between 0 and 60</value>
   </data>
   <data name="lblTitle.Text" xml:space="preserve">
-    <value>Community Management</value>
+    <value>Admin's Control Panel: Community Management</value>
   </data>
   <data name="lblUpdateDone.Text" xml:space="preserve">
     <value>Updated Successfully!</value>

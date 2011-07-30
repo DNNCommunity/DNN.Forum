@@ -127,7 +127,7 @@
     <value>Add Group</value>
   </data>
   <data name="lblNewGroup.Text" xml:space="preserve">
-    <value>New Group:</value>
+    <value>New Group</value>
   </data>
   <data name="lblvalAddGroup.Text" xml:space="preserve">
     <value>Name Required</value>
@@ -142,7 +142,7 @@
     <value>Update</value>
   </data>
   <data name="lblTitle.Text" xml:space="preserve">
-    <value>Forum &amp; Group Management</value>
+    <value>Admin's Control Panel: Forum &amp; Group Management</value>
   </data>
   <data name="imgCloseGroup.Text" xml:space="preserve">
     <value>Collapse</value>
@@ -178,9 +178,12 @@
     <value>Move Up</value>
   </data>
   <data name="cmdHome.Text" xml:space="preserve">
-    <value>Home</value>
+    <value>Return</value>
   </data>
   <data name="lblNoRecords.Text" xml:space="preserve">
     <value>No Records</value>
+  </data>
+  <data name="lblNewGroup.Help" xml:space="preserve">
+    <value>The name of the new forum group you want to create.</value>
   </data>
 </root>

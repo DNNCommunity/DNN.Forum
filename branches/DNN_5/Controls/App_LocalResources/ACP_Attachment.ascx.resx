@@ -139,7 +139,7 @@
     <value>If checked, downloads are available to all users who can view post.&lt;br&gt;&lt;b&gt;Tip&lt;/b&gt;&lt;br&gt;File permissions also control access to files.</value>
   </data>
   <data name="lblTitle.Text" xml:space="preserve">
-    <value>Attachment Management</value>
+    <value>Admin's Control Panel: Attachment Management</value>
   </data>
   <data name="lblUpdateDone.Text" xml:space="preserve">
     <value>Updated Successfully!</value>

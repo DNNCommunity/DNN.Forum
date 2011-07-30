@@ -537,15 +537,6 @@ Namespace DotNetNuke.Modules.Forum
         Protected WithEvents cmdPreview As Global.System.Web.UI.WebControls.LinkButton
 
         '''<summary>
-        '''lblInfo control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblInfo As Global.System.Web.UI.WebControls.Label
-
-        '''<summary>
         '''divOldPost control.
         '''</summary>
         '''<remarks>

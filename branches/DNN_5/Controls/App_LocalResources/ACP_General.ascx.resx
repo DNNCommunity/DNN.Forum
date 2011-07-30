@@ -154,7 +154,7 @@
     <value>Enable Thread Status</value>
   </data>
   <data name="lblTitle.Text" xml:space="preserve">
-    <value>General Configuration</value>
+    <value>Admin's Control Panel: General Configuration</value>
   </data>
   <data name="lblUpdateDone.Text" xml:space="preserve">
     <value>Updated Successfully!</value>

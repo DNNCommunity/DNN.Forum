@@ -24,22 +24,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
-        '''tblCommunity control.
+        '''divUserOnline control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents tblCommunity As Global.System.Web.UI.HtmlControls.HtmlTable
-
-        '''<summary>
-        '''rowUserOnline control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents rowUserOnline As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divUserOnline As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plUserOnline control.
@@ -60,13 +51,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents chkUserOnline As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowEnableExtProfile control.
+        '''divEnableExtProfile control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowEnableExtProfile As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divEnableExtProfile As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plEnableExtProfilePage control.
@@ -87,13 +78,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents chkEnableExtProfilePage As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowExtProfilePageID control.
+        '''divExtProfilePageID control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowExtProfilePageID As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divExtProfilePageID As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plExtProfilePageID control.
@@ -111,16 +102,16 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rcbExtProfilePageID As Global.DotNetNuke.Web.UI.WebControls.DnnComboBox
+        Protected WithEvents rcbExtProfilePageID As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
-        '''rowExtProfileUserParam control.
+        '''divExtProfileUserParam control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowExtProfileUserParam As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divExtProfileUserParam As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plExtProfileUserParam control.
@@ -141,13 +132,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents txtExtProfileUserParam As Global.System.Web.UI.WebControls.TextBox
 
         '''<summary>
-        '''rowExtProfileParamName control.
+        '''divExtProfileParamName control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowExtProfileParamName As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divExtProfileParamName As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plExtProfileParamName control.
@@ -168,13 +159,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents txtExtProfileParamName As Global.System.Web.UI.WebControls.TextBox
 
         '''<summary>
-        '''rowExtProfileParamValue control.
+        '''divExtProfileParamValue control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowExtProfileParamValue As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divExtProfileParamValue As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plExtProfileParamValue control.
@@ -202,14 +193,5 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
-
-        '''<summary>
-        '''lblUpdateDone control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
     End Class
 End Namespace

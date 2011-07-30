@@ -139,7 +139,7 @@
     <value>Time To Live</value>
   </data>
   <data name="lblTitle.Text" xml:space="preserve">
-    <value>RSS Management</value>
+    <value>Admin's Control Panel: RSS Management</value>
   </data>
   <data name="lblUpdateDone.Text" xml:space="preserve">
     <value>Updated Successfully!</value>

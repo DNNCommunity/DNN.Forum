@@ -107,6 +107,6 @@
 		</asp:datalist>
 	</div>
 	<ul class="dnnActions dnnClear">
-		<li><asp:linkbutton id="cmdBack" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdCancel" /></li>
+		<li><asp:HyperLink id="cmdBack" runat="server" CssClass="dnnPrimaryAction" resourcekey="cmdCancel" /></li>
 	</ul>
 </div>

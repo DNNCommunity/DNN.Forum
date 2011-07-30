@@ -450,8 +450,7 @@ Namespace DotNetNuke.Modules.Forum
                     If ViewState("PostContent") IsNot Nothing Then
                         teContent.Text = ViewState("PostContent").ToString()
                     Else
-                        lblInfo.Text = Localization.GetString(Forum.PostMessage.PostInvalidBody.ToString() + ".Text", LocalResourceFile)
-                        lblInfo.Visible = True
+                        DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString(Forum.PostMessage.PostInvalidBody.ToString() + ".Text", LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.RedError)
                         Exit Sub
                     End If
                 End If
@@ -476,18 +475,15 @@ Namespace DotNetNuke.Modules.Forum
 
                 ' Validation (from UI)
                 If Len(teContent.Text) = 0 Then
-                    lblInfo.Text = Localization.GetString(Forum.PostMessage.PostInvalidBody.ToString() + ".Text", LocalResourceFile)
-                    lblInfo.Visible = True
+                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString(Forum.PostMessage.PostInvalidBody.ToString() + ".Text", LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.RedError)
                     Exit Sub
                 End If
                 If Len(txtSubject.Text) = 0 Then
-                    lblInfo.Text = Localization.GetString(Forum.PostMessage.PostInvalidSubject.ToString() + ".Text", LocalResourceFile)
-                    lblInfo.Visible = True
+                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString(Forum.PostMessage.PostInvalidSubject.ToString() + ".Text", LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.RedError)
                     Exit Sub
                 End If
                 If ddlForum.SelectedItem Is Nothing Or ddlForum.SelectedItem.Value = "-1" Then
-                    lblInfo.Text = Localization.GetString(Forum.PostMessage.ForumDoesntExist.ToString() + ".Text", LocalResourceFile)
-                    lblInfo.Visible = True
+                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString(Forum.PostMessage.ForumDoesntExist.ToString() + ".Text", LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.RedError)
                     Exit Sub
                 End If
 
@@ -617,8 +613,7 @@ Namespace DotNetNuke.Modules.Forum
                         divModerate.Visible = True
                         tblPoll.Visible = False
                     Case Else
-                        lblInfo.Visible = True
-                        lblInfo.Text = Localization.GetString(PostMessage.ToString() + ".Text", LocalResourceFile)
+                        DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString(PostMessage.ToString() + ".Text", LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.RedError)
                 End Select
 
             Catch exc As Exception
@@ -769,7 +764,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' <param name="e"></param>
         ''' <remarks></remarks>
         Protected Sub cmdAddAnswer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdAddAnswer.Click
-            lblInfo.Visible = False
             dnncbThreadStatus.Enabled = False
             ApplyAnswerOrder()
             AddPollAnswer()
@@ -1067,7 +1061,6 @@ Namespace DotNetNuke.Modules.Forum
             Dim objSecurity As New PortalSecurity
 
             If dgAnswers.Items.Count > 1 Then
-                lblInfo.Visible = False
                 Dim cntPoll As New PollController
                 Dim objPoll As New PollInfo
                 Dim ctlWordFilter As New WordFilterController
@@ -1097,8 +1090,7 @@ Namespace DotNetNuke.Modules.Forum
                 End If
             ElseIf dgAnswers.Items.Count = 1 Then
                 ' show user they need more than a single answer for the poll
-                lblInfo.Visible = True
-                lblInfo.Text = Localization.GetString("lblMoreAnswers", LocalResourceFile)
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString("lblMoreAnswers.Text", LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.RedError)
 
                 boolContinue = False
             Else

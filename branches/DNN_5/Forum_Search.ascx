@@ -32,6 +32,6 @@
 	</div>
 	<ul class="dnnActions dnnClear">
 		<li><asp:linkbutton class="dnnPrimaryAction" id="cmdSearch" resourcekey="cmdSearch" runat="server" /></li>
-		<li><asp:linkbutton class="dnnSecondaryAction" id="cmdCancel" resourcekey="cmdCancel" runat="server" /></li>
+		<li><asp:HyperLink class="dnnSecondaryAction" id="cmdCancel" resourcekey="cmdCancel" runat="server" /></li>
 	</ul>
 </div>
