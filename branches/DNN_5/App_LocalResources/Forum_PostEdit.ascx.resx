@@ -181,7 +181,7 @@
     <value>Configuration</value>
   </data>
   <data name="valSubject.Text" xml:space="preserve">
-    <value>* Required</value>
+    <value>A subject is required to post</value>
   </data>
   <data name="OriginalPost.Text" xml:space="preserve">
     <value>Original Post</value>
@@ -320,5 +320,11 @@
   </data>
   <data name="plTerms.Text" xml:space="preserve">
     <value>Terms</value>
+  </data>
+  <data name="plBody.Help" xml:space="preserve">
+    <value>The post content.</value>
+  </data>
+  <data name="plBody.Text" xml:space="preserve">
+    <value>Body</value>
   </data>
 </root>
