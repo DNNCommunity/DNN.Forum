@@ -136,7 +136,7 @@
     <value>Last Reported</value>
   </data>
   <data name="ReportedPost.Header" xml:space="preserve">
-    <value>Reported Posts</value>
+    <value>Moderator's Control Panel: Reported Posts</value>
   </data>
   <data name="imgView.Text" xml:space="preserve">
     <value>View Post</value>

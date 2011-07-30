@@ -178,7 +178,7 @@
     <value>Updated Successfully!</value>
   </data>
   <data name="lblTitle.Text" xml:space="preserve">
-    <value>User Forum Settings</value>
+    <value>User's Control Panel: Edit Forum Settings</value>
   </data>
   <data name="plEmailFormat.Help" xml:space="preserve">
     <value>The format email notification will be sent, HTML or Text.</value>

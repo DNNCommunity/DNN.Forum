@@ -170,7 +170,7 @@
     <value>UserID</value>
   </data>
   <data name="Title.Text" xml:space="preserve">
-    <value>Edit Profile</value>
+    <value>Users's Control Panel: Edit Forum Profile</value>
   </data>
   <data name="lblUpdateDone.Text" xml:space="preserve">
     <value>Updated Successfully!</value>

@@ -12,15 +12,24 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.MCP
 
-	Partial Public Class ModQueue
+    Partial Public Class ModQueue
 
-		'''<summary>
-		'''gridPostsToModerate control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents gridPostsToModerate As Global.DotNetNuke.Web.UI.WebControls.DnnGrid
-	End Class
+        '''<summary>
+        '''lblTitle control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''gridPostsToModerate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents gridPostsToModerate As Global.DotNetNuke.Web.UI.WebControls.DnnGrid
+    End Class
 End Namespace

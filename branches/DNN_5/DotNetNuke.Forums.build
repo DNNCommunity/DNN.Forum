@@ -19,7 +19,7 @@
 		<property name="pckZip" value="_Package" />
 
 		<property name="rootWeb" value="http://localhost/" overwrite="false" />
-		<property name="webAlias" value="DotNetNuke_Enterprise" overwrite="false" />
+		<property name="webAlias" value="600" overwrite="false" />
 		<property name="verbose" value="false" overwrite="false" />
 		
 		<!-- ModuleName value should be set specific to the project -->

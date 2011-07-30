@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lblTitle.Header" xml:space="preserve">
-    <value>Banned Users</value>
+    <value>Moderator's Control Panel: Banned Users</value>
   </data>
-  <data name="lblNoResults.Text" xml:space="preserve">
-    <value>No Banned Users!</value>
+  <data name="lblNoRecords.Text" xml:space="preserve">
+    <value>There are currently no users banned.</value>
   </data>
   <data name="imgEdit.Text" xml:space="preserve">
     <value>Edit</value>

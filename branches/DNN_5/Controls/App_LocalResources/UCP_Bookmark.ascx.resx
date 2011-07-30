@@ -145,7 +145,7 @@
     <value>Subject</value>
   </data>
   <data name="Bookmark.Text" xml:space="preserve">
-    <value>Bookmarks</value>
+    <value>User's Control Panel: Bookmarks</value>
   </data>
   <data name="UnreadPost.Text" xml:space="preserve">
     <value>Thread with unread posts</value>

@@ -121,7 +121,7 @@
     <value>No Reported Users!</value>
   </data>
   <data name="lblTitle.Header" xml:space="preserve">
-    <value>Reported Users</value>
+    <value>Moderator's Control Panel: Reported Users</value>
   </data>
   <data name="ReportedPostCount.Header" xml:space="preserve">
     <value>Reported</value>
