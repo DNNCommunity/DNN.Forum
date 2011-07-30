@@ -66,7 +66,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
                 ctlModule.UpdateModuleSetting(ModuleId, Constants.ADVERTISEMENT_TEXT, tbAdvertisementText.Text.Trim())
                 Configuration.ResetForumConfig(ModuleId)
 
-                lblUpdateDone.Visible = True
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, DotNetNuke.Services.Localization.Localization.GetString("lblUpdateDone.Text", Me.LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.GreenSuccess)
 
                 VendorsGridUpdate()
             Catch exc As Exception

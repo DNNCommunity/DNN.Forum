@@ -12,69 +12,69 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
-	Partial Public Class Rating
+    Partial Public Class Rating
 
-		'''<summary>
-		'''lblTitle control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblTitle control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''plRatings control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plRatings As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plRatings control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plRatings As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''chkRatings control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkRatings As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''chkRatings control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkRatings As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''plRatingScale control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plRatingScale As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plRatingScale control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plRatingScale As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''txtRatingScale control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtRatingScale As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''txtRatingScale control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtRatingScale As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''cmdUpdate control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
+        '''<summary>
+        '''valRatingReq control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valRatingReq As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
-		'''<summary>
-		'''lblUpdateDone control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
-	End Class
+        '''<summary>
+        '''cmdUpdate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
+    End Class
 End Namespace

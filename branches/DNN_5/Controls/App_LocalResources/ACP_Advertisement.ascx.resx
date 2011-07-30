@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lblTitle.Text" xml:space="preserve">
-    <value>Advertisement Management</value>
+    <value>Admin's Control Panel: Advertisement Management</value>
   </data>
   <data name="NumericValidation.ErrorMessage" xml:space="preserve">
     <value>&lt;br /&gt;Needs to be numeric!</value>
@@ -143,9 +143,6 @@
   </data>
   <data name="plAdvertisementText.Text" xml:space="preserve">
     <value>Text of Advertisement</value>
-  </data>
-  <data name="lblUpdateDone.Text1" xml:space="preserve">
-    <value>Updated Successfully!</value>
   </data>
   <data name="lblHelp.Text" xml:space="preserve">
     <value>Use css class &lt;i&gt;AdvertisementPost&lt;/i&gt; in &lt;i&gt;Themes/Blue/Blue.css&lt;/i&gt; to precisly set Advertisement layout</value>

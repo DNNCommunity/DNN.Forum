@@ -58,18 +58,6 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Event Handlers"
 
         ''' <summary>
-        ''' Determines if we can use Ajax in this page before anything is rendered. 
-        ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
-        Protected Sub Page_Init(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Init
-            If DotNetNuke.Framework.AJAX.IsInstalled Then
-                DotNetNuke.Framework.AJAX.RegisterScriptManager()
-            End If
-        End Sub
-
-        ''' <summary>
         ''' Page Load of the control.
         ''' </summary>
         ''' <param name="sender"></param>
@@ -88,6 +76,8 @@ Namespace DotNetNuke.Modules.Forum
                 ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
                 If Not Page.IsPostBack Then
+                    ForumUtils.RegisterClientDependencies(DefaultPage)
+
                     If Not Request.UrlReferrer Is Nothing Then
                         cmdHome.NavigateUrl = Request.UrlReferrer.ToString()
                     Else

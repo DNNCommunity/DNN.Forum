@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lblTitle.Text" xml:space="preserve">
-    <value>Rating Management</value>
+    <value>Admin's Control Panel: Rating Management</value>
   </data>
   <data name="lblUpdateDone.Text" xml:space="preserve">
     <value>Updated Successfully!</value>
   </data>
   <data name="NumericValidation.ErrorMessage" xml:space="preserve">
-    <value>&lt;br /&gt;Needs to be numeric!</value>
+    <value>Needs to be numeric!</value>
   </data>
   <data name="plRatings.Help" xml:space="preserve">
     <value>If checked, users will be permitted to rate a thread's content if enabled at the forum level as well. </value>

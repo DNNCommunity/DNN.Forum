@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lblTitle.Text" xml:space="preserve">
-    <value>Filtered Word Management</value>
+    <value>Admin's Control Panel: Filtered Word Management</value>
   </data>
   <data name="cmdAdd.Text" xml:space="preserve">
     <value>Add Word</value>

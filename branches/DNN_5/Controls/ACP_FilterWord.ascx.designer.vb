@@ -30,7 +30,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblNewWord As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblNewWord As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''txtNewBadWord control.
@@ -48,7 +48,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblNewReplaceWord As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblNewReplaceWord As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''txtNewReplaceWord control.
@@ -75,7 +75,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblFilter As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblFilter As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''rcbSearchType control.
@@ -84,16 +84,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rcbSearchType As Global.DotNetNuke.Web.UI.WebControls.DnnComboBox
-
-        '''<summary>
-        '''lblNoResults control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblNoResults As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents rcbSearchType As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
         '''grdBadWords control.
@@ -112,14 +103,5 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents BottomPager As Global.DotNetNuke.Modules.Forum.WebControls.AjaxPager
-
-        '''<summary>
-        '''lblUpdateDone control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
     End Class
 End Namespace

@@ -22,74 +22,70 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
-	''' <summary>
-	''' Management screen which includes a grid list of current words to filter for
-	''' and the ability to enable/disable this throughout the instance of the module.
-	''' </summary>
-	''' <remarks>
-	''' </remarks>
-	Partial Public Class Filter
-		Inherits ForumModuleBase
-		Implements Utilities.AjaxLoader.IPageLoad
+    ''' <summary>
+    ''' Management screen which includes a grid list of current words to filter for
+    ''' and the ability to enable/disable this throughout the instance of the module.
+    ''' </summary>
+    ''' <remarks>
+    ''' </remarks>
+    Partial Public Class Filter
+        Inherits ForumModuleBase
+        Implements Utilities.AjaxLoader.IPageLoad
 
 #Region "Interfaces"
 
-		''' <summary>
-		''' This is required to replace If Page.IsPostBack = False because controls are dynamically loaded via Ajax. 
-		''' </summary>
-		''' <remarks></remarks>
-		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
-			' Handle config settings
-			chkBadWord.Checked = objConfig.EnableBadWordFilter
-			chkFilterSubject.Checked = objConfig.FilterSubject
+        ''' <summary>
+        ''' This is required to replace If Page.IsPostBack = False because controls are dynamically loaded via Ajax. 
+        ''' </summary>
+        ''' <remarks></remarks>
+        Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
+            ' Handle config settings
+            chkBadWord.Checked = objConfig.EnableBadWordFilter
+            chkFilterSubject.Checked = objConfig.FilterSubject
 
-			If chkBadWord.Checked = True Then
-				rowSubjectFilter.Visible = True
-			Else
-				rowSubjectFilter.Visible = False
-			End If
-		End Sub
+            If chkBadWord.Checked = True Then
+                divSubjectFilter.Visible = True
+            Else
+                divSubjectFilter.Visible = False
+            End If
+        End Sub
 
 #End Region
 
 #Region "Event Handlers"
 
-		''' <summary>
-		''' Updates the badword filter settings
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
-		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
-			Try
-				Dim ctlModule As New Entities.Modules.ModuleController
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_WORD_FILTER, chkBadWord.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.FILTER_SUBJECTS, chkFilterSubject.Checked.ToString)
+        ''' <summary>
+        ''' Updates the badword filter settings
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="e"></param>
+        ''' <remarks></remarks>
+        Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
+            Try
+                Dim ctlModule As New Entities.Modules.ModuleController
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_WORD_FILTER, chkBadWord.Checked.ToString)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.FILTER_SUBJECTS, chkFilterSubject.Checked.ToString)
 
-				Configuration.ResetForumConfig(ModuleId)
+                Configuration.ResetForumConfig(ModuleId)
 
-				lblUpdateDone.Visible = True
-			Catch exc As Exception	 'Module failed to load
-				ProcessModuleLoadException(Me, exc)
-			End Try
-		End Sub
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, DotNetNuke.Services.Localization.Localization.GetString("lblUpdateDone.Text", Me.LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.GreenSuccess)
+            Catch exc As Exception   'Module failed to load
+                ProcessModuleLoadException(Me, exc)
+            End Try
+        End Sub
 
-		''' <summary>
-		''' Determines if the filter subject row should be visible or hidden. 
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks></remarks>
-		Protected Sub chkBadWord_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkBadWord.CheckedChanged
-			If chkBadWord.Checked = True Then
-				rowSubjectFilter.Visible = True
-			Else
-				rowSubjectFilter.Visible = False
-			End If
-		End Sub
+        ''' <summary>
+        ''' Determines if the filter subject row should be visible or hidden. 
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="e"></param>
+        ''' <remarks></remarks>
+        Protected Sub chkBadWord_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkBadWord.CheckedChanged
+            divSubjectFilter.Visible = chkBadWord.Checked
+        End Sub
 
 #End Region
 
-	End Class
+    End Class
 
 End Namespace

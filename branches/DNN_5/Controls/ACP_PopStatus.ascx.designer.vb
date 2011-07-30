@@ -39,7 +39,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rntxtbxPopularThreadView As Global.Telerik.Web.UI.RadNumericTextBox
+        Protected WithEvents rntxtbxPopularThreadView As Global.DotNetNuke.Web.UI.WebControls.DnnNumericTextBox
 
         '''<summary>
         '''valreqView control.
@@ -66,7 +66,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rntxtbxPopularThreadReply As Global.Telerik.Web.UI.RadNumericTextBox
+        Protected WithEvents rntxtbxPopularThreadReply As Global.DotNetNuke.Web.UI.WebControls.DnnNumericTextBox
 
         '''<summary>
         '''valreqReply control.
@@ -93,7 +93,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rntxtbxDays As Global.Telerik.Web.UI.RadNumericTextBox
+        Protected WithEvents rntxtbxDays As Global.DotNetNuke.Web.UI.WebControls.DnnNumericTextBox
 
         '''<summary>
         '''valreqDays control.
@@ -112,14 +112,5 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
-
-        '''<summary>
-        '''lblUpdateDone control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
     End Class
 End Namespace
