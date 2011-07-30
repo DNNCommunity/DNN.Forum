@@ -180,4 +180,7 @@
   <data name="Delete.Header" xml:space="preserve">
     <value />
   </data>
+  <data name="lblNoRecords.Text" xml:space="preserve">
+    <value>You are not subscribed to any posts at this level.</value>
+  </data>
 </root>

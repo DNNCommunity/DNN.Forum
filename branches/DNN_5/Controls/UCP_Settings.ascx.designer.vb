@@ -60,13 +60,13 @@ Namespace DotNetNuke.Modules.Forum.UCP
         Protected WithEvents txtThreadsPerPage As Global.System.Web.UI.WebControls.TextBox
 
         '''<summary>
-        '''Regularexpressionvalidator1 control.
+        '''valThreadsPerPage control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents Regularexpressionvalidator1 As Global.System.Web.UI.WebControls.RegularExpressionValidator
+        Protected WithEvents valThreadsPerPage As Global.System.Web.UI.WebControls.RegularExpressionValidator
 
         '''<summary>
         '''plPostsPerPage control.
@@ -96,13 +96,13 @@ Namespace DotNetNuke.Modules.Forum.UCP
         Protected WithEvents valPostsPerPage As Global.System.Web.UI.WebControls.RegularExpressionValidator
 
         '''<summary>
-        '''rowOnlineStatus control.
+        '''divOnlineStatus control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowOnlineStatus As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divOnlineStatus As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plOnlineStatus control.
@@ -123,13 +123,13 @@ Namespace DotNetNuke.Modules.Forum.UCP
         Protected WithEvents chkOnlineStatus As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowEnableDefaultPostNotify control.
+        '''divEnableDefaultPostNotify control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowEnableDefaultPostNotify As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divEnableDefaultPostNotify As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plEnableDefaultPostNotify control.
@@ -150,13 +150,13 @@ Namespace DotNetNuke.Modules.Forum.UCP
         Protected WithEvents chkEnableDefaultPostNotify As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowEnableSelfNotifications control.
+        '''divEnableSelfNotifications control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowEnableSelfNotifications As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divEnableSelfNotifications As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plEnableSelfNotifications control.
@@ -177,13 +177,13 @@ Namespace DotNetNuke.Modules.Forum.UCP
         Protected WithEvents chkEnableSelfNotifications As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowForumModNotify control.
+        '''divForumModNotify control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowForumModNotify As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divForumModNotify As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plEnableForumModNotify control.
@@ -204,13 +204,13 @@ Namespace DotNetNuke.Modules.Forum.UCP
         Protected WithEvents chkEnableForumModNotify As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowClearReads control.
+        '''divClearReads control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowClearReads As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divClearReads As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plClearReads control.
@@ -238,14 +238,5 @@ Namespace DotNetNuke.Modules.Forum.UCP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
-
-        '''<summary>
-        '''lblUpdateDone control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
     End Class
 End Namespace

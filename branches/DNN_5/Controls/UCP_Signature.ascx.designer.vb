@@ -12,78 +12,69 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.UCP
 
-	Partial Public Class Signature
+    Partial Public Class Signature
 
-		'''<summary>
-		'''lblTitle control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblTitle control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''plSignature control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plSignature As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plSignature control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plSignature As Global.System.Web.UI.UserControl
 
-		'''<summary>
-		'''txtSignature control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtSignature As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''txtSignature control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtSignature As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''lblSignature control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblSignature As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblSignature control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblSignature As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''cmdPreview control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdPreview As Global.System.Web.UI.WebControls.LinkButton
+        '''<summary>
+        '''cmdUpdate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
 
-		'''<summary>
-		'''cmdEdit control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdEdit As Global.System.Web.UI.WebControls.LinkButton
+        '''<summary>
+        '''cmdPreview control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cmdPreview As Global.System.Web.UI.WebControls.LinkButton
 
-		'''<summary>
-		'''cmdUpdate control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
-
-		'''<summary>
-		'''lblUpdateDone control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
-	End Class
+        '''<summary>
+        '''cmdEdit control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cmdEdit As Global.System.Web.UI.WebControls.LinkButton
+    End Class
 End Namespace
