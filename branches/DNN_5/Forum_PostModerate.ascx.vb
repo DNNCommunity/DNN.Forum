@@ -94,9 +94,6 @@ Namespace DotNetNuke.Modules.Forum
 					hlForum.Text = mForumInfo.Name
 					hlForum.NavigateUrl = Utilities.Links.ContainerViewForumLink(TabId, mForumID, False)
 
-					imgHeadSpacer2.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
-					imgHeadSpacer.ImageUrl = objConfig.GetThemeImageURL("headfoot_height.gif")
-
 					BindList()
 				End If
 			Catch exc As Exception

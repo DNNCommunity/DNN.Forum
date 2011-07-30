@@ -120,12 +120,6 @@
   <data name="ManageCategory.Text" xml:space="preserve">
     <value>Manage Category</value>
   </data>
-  <data name="plSubject.Text" xml:space="preserve">
-    <value>Subject</value>
-  </data>
-  <data name="plSubject.Help" xml:space="preserve">
-    <value>Subject of the thread you are moving.&lt;br&gt;(Read Only)</value>
-  </data>
   <data name="plOldForum.Text" xml:space="preserve">
     <value>Original Forum</value>
   </data>
@@ -164,5 +158,8 @@
   </data>
   <data name="plEmailUsers.Help" xml:space="preserve">
     <value>If checked, all users participating in this thread will receive an email notiying them the thread has been moved.</value>
+  </data>
+  <data name="lblSubjectTitle.Text" xml:space="preserve">
+    <value>Subject: </value>
   </data>
 </root>
