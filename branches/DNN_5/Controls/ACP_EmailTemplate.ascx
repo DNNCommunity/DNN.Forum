@@ -94,9 +94,6 @@
 						<div align="center">
 							<asp:linkbutton class="CommandButton primary-action" id="cmdUpdate" runat="server" resourcekey="cmdUpdate" />
 						</div>
-						<div align="center">
-							<asp:Label ID="lblUpdateDone" runat="server" CssClass="NormalRed" Visible="false" resourcekey="lblUpdateDone" />
-						</div>
 					</td>
 				</tr>
 			</table>
