@@ -88,50 +88,31 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 
 		#region Filter
 
-		//public int AddProject(string title, string url, string description, int extensionType, string extendedDescription, string demoUrl, bool authorized, int groupId, int portalId, int createdByUserId, DateTime createdOnDate)
-		//{
-		//    return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Project_Add"), title, GetNull(url), description, extensionType, extendedDescription, demoUrl, authorized, groupId, portalId, createdByUserId, createdOnDate));
-		//}
+		public int AddFilter(int portalId, int moduleId, int forumId, string find, string replace, string filterType, bool applyOnSave, bool applyOnRender, DateTime createdOnDate)
+		{
+			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Filter_Add"), portalId, GetNull(moduleId), GetNull(forumId), find, replace, GetNull(filterType), applyOnSave, applyOnRender, createdOnDate));
+		}
 
-		//public IDataReader GetProject(int projectId, int avatarPropDefinitionID)
-		//{
-		//    return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Project_Get"), projectId, GetNull(avatarPropDefinitionID));
-		//}
+		public IDataReader GetFilter(int filterId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Filter_Get"), filterId);
+		}
 
-		//public IDataReader GetProjectByTitle(string title, int avatarPropDefinitionID)
-		//{
-		//    return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Project_GetByTitle"), title, GetNull(avatarPropDefinitionID));
-		//}
+		public IDataReader GetAllFilters(int portalID)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Filter_GetAll"), portalID);
+		}
 
-		//public IDataReader GetProjectByUrl(string codeplexUrl, int avatarPropDefinitionID)
-		//{
-		//    return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Project_GetByUrl"), codeplexUrl, GetNull(avatarPropDefinitionID));
-		//}
+		public void UpdateFilter(int filterId, int portalId, int moduleId, int forumId, string find, string replace, string filterType, bool applyOnSave, bool applyOnRender, DateTime lastModifiedOnDate)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Filter_Update"), filterId, portalId, GetNull(moduleId), GetNull(forumId), find, replace, GetNull(filterType), applyOnSave, applyOnRender, GetNull(lastModifiedOnDate));
+		}
 
-		//public IDataReader GetAuthorizedProjects(int portalID, int avatarPropDefinitionID)
-		//{
-		//    return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Project_GetAuthorized"), portalID, GetNull(avatarPropDefinitionID));
-		//}
 
-		//public IDataReader GetUnauthorizedProjects(int portalID, int avatarPropDefinitionID)
-		//{
-		//    return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Project_GetUnauthorized"), portalID, GetNull(avatarPropDefinitionID));
-		//}
-
-		//public IDataReader ProjectSearchByTypeContentTag(int extensionTypeID, string content, int portalId, string tag, int avatarPropDefinitionID)
-		//{
-		//    return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Project_SearchTypeContentTag"), GetNull(extensionTypeID), GetNull(content), portalId, GetNull(tag), GetNull(avatarPropDefinitionID));
-		//}
-
-		//public void UpdateProject(int projectId, int extensionType, string extendedDescription, string demoUrl, bool authorized, int groupId, int portalId, int primaryMediaId, int contentItemId, string wikiUrl, int lastModifiedUserId, DateTime lastModifiedDate, string projectEmail)
-		//{
-		//    SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Project_Update"), projectId, extensionType, extendedDescription, demoUrl, authorized, groupId, portalId, GetNull(primaryMediaId), contentItemId, wikiUrl, lastModifiedUserId, GetNull(lastModifiedDate), GetNull(projectEmail));
-		//}
-
-		//public void DeleteProject(int projectId, int portalId)
-		//{
-		//    SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Project_Delete"), projectId, portalId);
-		//}
+		public void DeleteFilter(int filterId, int portalId)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Filter_Delete"), filterId, portalId);
+		}
 
 		#endregion
 

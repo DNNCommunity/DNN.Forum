@@ -34,15 +34,15 @@ namespace DotNetNuke.Modules.Forums.Providers.Data
 
 		#region Filter
 
-		//int AddFilter(string title, string url, string description, int extensionType, string extendedDescription, string demoUrl, bool authorized, int groupId, int portalId, int createdByUserId, DateTime createdOnDate);   
-   
-		//IDataReader GetFilter(int projectId, int avatarPropDefinitionID);
+		int AddFilter(int portalId, int moduleId, int forumId, string find, string replace, string filterType, bool applyOnSave, bool applyOnRender, DateTime createdOnDate);
 
-		//IDataReader GetProjectByTitle(string title, int avatarPropDefinitionID);
+		IDataReader GetFilter(int filterId);
 
-		//void UpdateFilter(int projectId, int extensionType, string extendedDescription, string demoUrl, bool authorized, int groupId, int portalId, int primaryMediaId, int contentItemId, string wikiUrl, int lastModifiedUserId, DateTime lastModifiedDate, string projectEmail);	
+		IDataReader GetAllFilters(int portalId);
 
-		//void DeleteFilter(int filterId, int portalId);
+		void UpdateFilter(int filterId, int portalId, int moduleId, int forumId, string find, string replace, string filterType, bool applyOnSave, bool applyOnRender, DateTime lastModifiedOnDate);
+
+		void DeleteFilter(int filterId, int portalId);
 
 		#endregion
 

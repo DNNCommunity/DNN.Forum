@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using DotNetNuke.Modules.Forums.Components.Entities;
 
 namespace DotNetNuke.Modules.Forums.Components.Controllers 
 {
@@ -30,27 +31,67 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 	public interface IForumsController
 	{
 		
-		#region Project
+		#region Filter
 
-		//ProjectInfo AddProject(ProjectInfo objProject, int tabId);
+		int AddFilter(FilterInfo objFilter);
 
-		//ProjectInfo GetProject(int projectID, int avatarPropDefinitionID);
+		//FilterInfo GetFilter(int filterId);
 
-		//ProjectInfo GetProjectByTitle(string title, int avatarPropDefinitionID);
+		//List<FilterInfo> GetAllFilters(int portalId);
 
-		//ProjectInfo GetProjectByUrl(string codePlexUrl, int avatarPropDefinitionID);
+		void UpdateFilter(FilterInfo objFilter);
 
-		//List<ProjectInfo> GetAuthorizedProjects(int portalId, int avatarPropDefinitionID);
-
-		//List<ProjectInfo> GetUnauthorizedProjects(int portalId, int avatarPropDefinitionID);
-
-		//List<ProjectInfo> ProjectSearchByTypeContentTag(int extensionTypeID, string content, int portalId, string tag, int avatarPropDefinitionID);
-
-		//void UpdateProject(ProjectInfo objProject, int tabId);
-
-		//void DeleteProject(int projectId, int portalId, string url);
+		void DeleteFilter(int filterId, int portalId);
 
 		#endregion
 
+		#region Forum
+		#endregion
+
+		#region Permission
+		#endregion
+
+		#region Poll
+		#endregion
+
+		#region Poll_Option
+		#endregion
+
+		#region Poll_Result
+		#endregion
+
+		#region Post
+		#endregion
+
+		#region Post_Attachment
+		#endregion
+
+		#region Post_Rating
+		#endregion
+
+		#region Rank
+		#endregion
+
+		#region Setting
+		#endregion
+
+		#region Subscription
+		#endregion
+
+		#region Topic
+		#endregion
+
+		#region Topic_Tracking
+		#endregion
+
+		#region Tracking
+		#endregion
+
+		#region Url
+		#endregion
+
+		#region User
+		#endregion
+	
 	}
 }
