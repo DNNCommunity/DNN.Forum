@@ -1,216 +1,4 @@
-﻿IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Poll_Options_Forums_Poll]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Poll_Options]'))
-ALTER TABLE [dbo].[Forums_Poll_Options] DROP CONSTRAINT [FK_Forums_Poll_Options_Forums_Poll]
-GO
-
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Poll_Options_Priority]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Forums_Poll_Options] DROP CONSTRAINT [DF_Forums_Poll_Options_Priority]
-END
-
-GO
-
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Poll_Forums_Topics]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Poll]'))
-ALTER TABLE [dbo].[Forums_Poll] DROP CONSTRAINT [FK_Forums_Poll_Forums_Topics]
-GO
-
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Forums_Forums_Permissions]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Forums]'))
-ALTER TABLE [dbo].[Forums_Forums] DROP CONSTRAINT [FK_Forums_Forums_Forums_Permissions]
-GO
-
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Forums_Forums_Settings]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Forums]'))
-ALTER TABLE [dbo].[Forums_Forums] DROP CONSTRAINT [FK_Forums_Forums_Forums_Settings]
-GO
-
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Forums_AllowTopics]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Forums_Forums] DROP CONSTRAINT [DF_Forums_Forums_AllowTopics]
-END
-
-GO
-
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Posts_Attachments_Forums_Posts]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Posts_Attachments]'))
-ALTER TABLE [dbo].[Forums_Posts_Attachments] DROP CONSTRAINT [FK_Forums_Posts_Attachments_Forums_Posts]
-GO
-
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Posts_Ratings_Forums_Posts]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Posts_Ratings]'))
-ALTER TABLE [dbo].[Forums_Posts_Ratings] DROP CONSTRAINT [FK_Forums_Posts_Ratings_Forums_Posts]
-GO
-
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Posts_Ratings_UserId]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Forums_Posts_Ratings] DROP CONSTRAINT [DF_Forums_Posts_Ratings_UserId]
-END
-
-GO
-
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Posts_Ratings_Rating]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Forums_Posts_Ratings] DROP CONSTRAINT [DF_Forums_Posts_Ratings_Rating]
-END
-
-GO
-
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Subscriptions_ForumId]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Forums_Subscriptions] DROP CONSTRAINT [DF_Forums_Subscriptions_ForumId]
-END
-
-GO
-
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Subscriptions_TopicId]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Forums_Subscriptions] DROP CONSTRAINT [DF_Forums_Subscriptions_TopicId]
-END
-
-GO
-
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Subscriptions_Mode]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Forums_Subscriptions] DROP CONSTRAINT [DF_Forums_Subscriptions_Mode]
-END
-
-GO
-
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Topics_Tracking_Forums_Topics]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Topics_Tracking]'))
-ALTER TABLE [dbo].[Forums_Topics_Tracking] DROP CONSTRAINT [FK_Forums_Topics_Tracking_Forums_Topics]
-GO
-
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Posts_Forums_Topics]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Posts]'))
-ALTER TABLE [dbo].[Forums_Posts] DROP CONSTRAINT [FK_Forums_Posts_Forums_Topics]
-GO
-
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Posts_ParentPostId]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Forums_Posts] DROP CONSTRAINT [DF_Forums_Posts_ParentPostId]
-END
-
-GO
-
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Posts_UserId]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Forums_Posts] DROP CONSTRAINT [DF_Forums_Posts_UserId]
-END
-
-GO
-
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Posts_Rating]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Forums_Posts] DROP CONSTRAINT [DF_Forums_Posts_Rating]
-END
-
-GO
-
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Topics_Forums_Forums]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Topics]'))
-ALTER TABLE [dbo].[Forums_Topics] DROP CONSTRAINT [FK_Forums_Topics_Forums_Forums]
-GO
-
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Topics_ViewCount]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Forums_Topics] DROP CONSTRAINT [DF_Forums_Topics_ViewCount]
-END
-
-GO
-
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Topics_ReplyCount]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Forums_Topics] DROP CONSTRAINT [DF_Forums_Topics_ReplyCount]
-END
-
-GO
-
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Topics_StatusId]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Forums_Topics] DROP CONSTRAINT [DF_Forums_Topics_StatusId]
-END
-
-GO
-
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Tracking_Forums_Forums]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Tracking]'))
-ALTER TABLE [dbo].[Forums_Tracking] DROP CONSTRAINT [FK_Forums_Tracking_Forums_Forums]
-GO
-
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Tracking_MaxTopicRead]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Forums_Tracking] DROP CONSTRAINT [DF_Forums_Tracking_MaxTopicRead]
-END
-
-GO
-
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Tracking_MaxPostRead]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Forums_Tracking] DROP CONSTRAINT [DF_Forums_Tracking_MaxPostRead]
-END
-
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Poll_Options]') AND type in (N'U'))
-DROP TABLE [dbo].[Forums_Poll_Options]
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Poll]') AND type in (N'U'))
-DROP TABLE [dbo].[Forums_Poll]
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Filters]') AND type in (N'U'))
-DROP TABLE [dbo].[Forums_Filters]
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Urls]') AND type in (N'U'))
-DROP TABLE [dbo].[Forums_Urls]
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Ranks]') AND type in (N'U'))
-DROP TABLE [dbo].[Forums_Ranks]
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Poll_Results]') AND type in (N'U'))
-DROP TABLE [dbo].[Forums_Poll_Results]
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Forums]') AND type in (N'U'))
-DROP TABLE [dbo].[Forums_Forums]
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Settings]') AND type in (N'U'))
-DROP TABLE [dbo].[Forums_Settings]
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Posts_Attachments]') AND type in (N'U'))
-DROP TABLE [dbo].[Forums_Posts_Attachments]
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Posts_Ratings]') AND type in (N'U'))
-DROP TABLE [dbo].[Forums_Posts_Ratings]
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Permissions]') AND type in (N'U'))
-DROP TABLE [dbo].[Forums_Permissions]
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Subscriptions]') AND type in (N'U'))
-DROP TABLE [dbo].[Forums_Subscriptions]
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Topics_Tracking]') AND type in (N'U'))
-DROP TABLE [dbo].[Forums_Topics_Tracking]
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Posts]') AND type in (N'U'))
-DROP TABLE [dbo].[Forums_Posts]
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Topics]') AND type in (N'U'))
-DROP TABLE [dbo].[Forums_Topics]
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Tracking]') AND type in (N'U'))
-DROP TABLE [dbo].[Forums_Tracking]
-GO
-
-
-
-
-SET ANSI_NULLS ON
+﻿SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
@@ -222,13 +10,60 @@ CREATE TABLE [dbo].[Forums_Filters](
 	[Find] [nvarchar](1000) NOT NULL,
 	[Replace] [nvarchar](1000) NOT NULL,
 	[FilterType] [nvarchar](10) NULL,
-	[DateCreated] [datetime] NULL,
-	[DateUpdated] [datetime] NULL,
+	[CreatedOnDate] [datetime] NULL,
+	[LastModifiedOnDate] [datetime] NULL,
 	[ApplyOnSave] [bit] NOT NULL,
 	[ApplyOnRender] [bit] NOT NULL,
  CONSTRAINT [PK_Forums_Filters] PRIMARY KEY CLUSTERED 
 (
 	[FilterId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Forums_Poll_Results](
+	[PollResultsId] [int] IDENTITY(1,1) NOT NULL,
+	[PollId] [int] NOT NULL,
+	[PollOptionId] [int] NOT NULL,
+	[Response] [nvarchar](100) NULL,
+	[IPAddress] [nvarchar](25) NULL,
+	[UserId] [int] NULL,
+	[CreatedOnDate] [datetime] NULL,
+	[LastModifiedOnDate] [datetime] NULL,
+ CONSTRAINT [PK_Forums_Poll_Results] PRIMARY KEY CLUSTERED 
+(
+	[PollResultsId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Forums_Users](
+	[PortalId] [int] NOT NULL,
+	[UserId] [int] NOT NULL,
+	[TopicCount] [int] NOT NULL,
+	[ReplyCount] [int] NOT NULL,
+	[RewardPoints] [int] NOT NULL,
+	[AnswerCount] [int] NOT NULL,
+	[QuestionCount] [int] NOT NULL,
+	[TrustLevel] [int] NOT NULL,
+	[UserCaption] [nvarchar](255) NOT NULL,
+	[LastPostDate] [datetime] NOT NULL,
+	[LastActivityDate] [datetime] NOT NULL,
+	[CreatedOnDate] [datetime] NOT NULL,
+	[LastModifiedDate] [datetime] NOT NULL,
+	[AdminWatch] [bit] NOT NULL,
+	[DisableAttach] [bit] NOT NULL,
+	[DisableHTML] [bit] NOT NULL,
+ CONSTRAINT [PK_Forums_Users] PRIMARY KEY CLUSTERED 
+(
+	[PortalId] ASC,
+	[UserId] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
@@ -242,8 +77,8 @@ CREATE TABLE [dbo].[Forums_Urls](
 	[ForumId] [int] NOT NULL,
 	[TopicId] [int] NOT NULL,
 	[URL] [nvarchar](1000) NOT NULL,
-	[DateCreated] [datetime] NOT NULL,
-	[DateUpdated] [datetime] NOT NULL,
+	[CreatedOnDate] [datetime] NOT NULL,
+	[LastModifiedOnDate] [datetime] NOT NULL,
  CONSTRAINT [PK_Forums_Urls] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -311,30 +146,11 @@ CREATE TABLE [dbo].[Forums_Ranks](
 	[MinPosts] [int] NOT NULL,
 	[MaxPosts] [int] NOT NULL,
 	[Display] [nvarchar](1000) NULL,
-	[DateCreated] [datetime] NULL,
-	[DateUpdated] [datetime] NULL,
+	[CreatedOnDate] [datetime] NULL,
+	[LastModifiedOnDate] [datetime] NULL,
  CONSTRAINT [PK_Forums_Ranks] PRIMARY KEY CLUSTERED 
 (
 	[RankId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Forums_Poll_Results](
-	[PollResultsId] [int] IDENTITY(1,1) NOT NULL,
-	[PollId] [int] NOT NULL,
-	[PollOptionId] [int] NOT NULL,
-	[Response] [nvarchar](100) NULL,
-	[IPAddress] [nvarchar](25) NULL,
-	[UserId] [int] NULL,
-	[DateCreated] [datetime] NULL,
-	[DateUpdated] [datetime] NULL,
- CONSTRAINT [PK_Forums_Poll_Results] PRIMARY KEY CLUSTERED 
-(
-	[PollResultsId] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
@@ -378,7 +194,7 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Forums_Forums](
+CREATE TABLE [dbo].[Forums_Forum](
 	[ForumId] [int] IDENTITY(1,1) NOT NULL,
 	[PortalId] [int] NOT NULL,
 	[ModuleId] [int] NOT NULL,
@@ -392,16 +208,35 @@ CREATE TABLE [dbo].[Forums_Forums](
 	[TopicCount] [int] NOT NULL,
 	[ReplyCount] [int] NOT NULL,
 	[LastPostId] [int] NOT NULL,
-	[DateCreated] [datetime] NOT NULL,
-	[DateUpdated] [datetime] NOT NULL,
-	[CreatedBy] [int] NOT NULL,
-	[UpdatedBy] [int] NOT NULL,
+	[CreatedOnDate] [datetime] NOT NULL,
+	[LastModifiedOnDate] [datetime] NOT NULL,
+	[CreatedByUserId] [int] NOT NULL,
+	[UpdatedByUserId] [int] NOT NULL,
 	[Slug] [nvarchar](100) NULL,
 	[PermissionId] [int] NOT NULL,
 	[SettingId] [int] NOT NULL,
+	[EmailAddress] [nvarchar](255) NULL,
+	[SiteMapPriority] [float] NULL,
  CONSTRAINT [PK_Forums_Forums] PRIMARY KEY CLUSTERED 
 (
 	[ForumId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Forums_Tracking](
+	[TrackingId] [int] IDENTITY(1,1) NOT NULL,
+	[ForumId] [int] NOT NULL,
+	[UserId] [int] NOT NULL,
+	[LastAccessDate] [datetime] NOT NULL,
+	[MaxTopicRead] [int] NOT NULL,
+	[MaxPostRead] [int] NOT NULL,
+ CONSTRAINT [PK_Forums_Tracking] PRIMARY KEY CLUSTERED 
+(
+	[TrackingId] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
@@ -428,40 +263,6 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Forums_Tracking](
-	[TrackingId] [int] IDENTITY(1,1) NOT NULL,
-	[ForumId] [int] NOT NULL,
-	[UserId] [int] NOT NULL,
-	[LastAccessDate] [datetime] NOT NULL,
-	[MaxTopicRead] [int] NOT NULL,
-	[MaxPostRead] [int] NOT NULL,
- CONSTRAINT [PK_Forums_Tracking] PRIMARY KEY CLUSTERED 
-(
-	[TrackingId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Forums_Topics_Tracking](
-	[TrackingId] [int] IDENTITY(1,1) NOT NULL,
-	[ForumId] [int] NOT NULL,
-	[TopicId] [int] NOT NULL,
-	[LastPostId] [int] NOT NULL,
-	[UserId] [int] NOT NULL,
-	[DateCreated] [datetime] NOT NULL,
- CONSTRAINT [PK_Forums_Topics_Tracking] PRIMARY KEY CLUSTERED 
-(
-	[TrackingId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 CREATE TABLE [dbo].[Forums_Posts](
 	[PostId] [int] IDENTITY(1,1) NOT NULL,
 	[TopicId] [int] NOT NULL,
@@ -472,13 +273,13 @@ CREATE TABLE [dbo].[Forums_Posts](
 	[IsLocked] [bit] NOT NULL,
 	[IsDeleted] [bit] NOT NULL,
 	[IsPinned] [bit] NOT NULL,
-	[DateCreated] [datetime] NOT NULL,
-	[DateUpdated] [datetime] NULL,
+	[CreatedOnDate] [datetime] NOT NULL,
+	[LastModifiedOnDate] [datetime] NULL,
 	[UserId] [int] NOT NULL,
 	[DisplayName] [nvarchar](255) NULL,
 	[EmailAddress] [nvarchar](255) NULL,
 	[IPAddress] [nvarchar](100) NULL,
-	[DateApproved] [datetime] NULL,
+	[ApprovedOnDate] [datetime] NULL,
 	[PostReported] [bit] NOT NULL,
 	[Rating] [float] NOT NULL,
 	[PostIcon] [nvarchar](50) NULL,
@@ -495,17 +296,52 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Forums_Poll](
+CREATE TABLE [dbo].[Forums_Polls](
 	[PollId] [int] IDENTITY(1,1) NOT NULL,
 	[TopicId] [int] NOT NULL,
 	[UserId] [int] NOT NULL,
 	[Question] [nvarchar](1000) NULL,
 	[PollType] [nvarchar](10) NULL,
-	[DateCreated] [datetime] NULL,
-	[DateUpdated] [datetime] NULL,
+	[CreatedOnDate] [datetime] NULL,
+	[LastModifiedOnDate] [datetime] NULL,
  CONSTRAINT [PK_Forums_Poll] PRIMARY KEY CLUSTERED 
 (
 	[PollId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Forums_Topics_Tracking](
+	[TrackingId] [int] IDENTITY(1,1) NOT NULL,
+	[ForumId] [int] NOT NULL,
+	[TopicId] [int] NOT NULL,
+	[LastPostId] [int] NOT NULL,
+	[UserId] [int] NOT NULL,
+	[CreatedOnDate] [datetime] NOT NULL,
+	[LastModifiedOnDate] [datetime] NULL,
+ CONSTRAINT [PK_Forums_Topics_Tracking] PRIMARY KEY CLUSTERED 
+(
+	[TrackingId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Forums_Poll_Options](
+	[PollOptionsId] [int] IDENTITY(1,1) NOT NULL,
+	[PollId] [int] NOT NULL,
+	[OptionName] [nvarchar](1000) NULL,
+	[Priority] [int] NOT NULL,
+	[CreatedOnDate] [datetime] NULL,
+	[LastModifiedOnDate] [datetime] NULL,
+ CONSTRAINT [PK_Forums_Poll_Options] PRIMARY KEY CLUSTERED 
+(
+	[PollOptionsId] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
@@ -521,7 +357,7 @@ CREATE TABLE [dbo].[Forums_Posts_Ratings](
 	[Helpful] [bit] NULL,
 	[Comments] [nvarchar](500) NULL,
 	[IPAddress] [nvarchar](100) NULL,
-	[DateCreated] [datetime] NOT NULL,
+	[CreatedOnDate] [datetime] NOT NULL,
  CONSTRAINT [PK_Forums_Posts_Ratings] PRIMARY KEY CLUSTERED 
 (
 	[RatingId] ASC
@@ -545,24 +381,7 @@ CREATE TABLE [dbo].[Forums_Posts_Attachments](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Forums_Poll_Options](
-	[PollOptionsId] [int] IDENTITY(1,1) NOT NULL,
-	[PollId] [int] NOT NULL,
-	[OptionName] [nvarchar](1000) NULL,
-	[Priority] [int] NOT NULL,
-	[DateCreated] [datetime] NULL,
-	[DateUpdated] [datetime] NULL,
- CONSTRAINT [PK_Forums_Poll_Options] PRIMARY KEY CLUSTERED 
-(
-	[PollOptionsId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-ALTER TABLE [dbo].[Forums_Forums] ADD  CONSTRAINT [DF_Forums_Forums_AllowTopics]  DEFAULT ((1)) FOR [AllowTopics]
+ALTER TABLE [dbo].[Forums_Forum] ADD  CONSTRAINT [DF_Forums_Forums_AllowTopics]  DEFAULT ((1)) FOR [AllowTopics]
 GO
 ALTER TABLE [dbo].[Forums_Poll_Options] ADD  CONSTRAINT [DF_Forums_Poll_Options_Priority]  DEFAULT ((0)) FOR [Priority]
 GO
@@ -592,25 +411,25 @@ ALTER TABLE [dbo].[Forums_Tracking] ADD  CONSTRAINT [DF_Forums_Tracking_MaxTopic
 GO
 ALTER TABLE [dbo].[Forums_Tracking] ADD  CONSTRAINT [DF_Forums_Tracking_MaxPostRead]  DEFAULT ((0)) FOR [MaxPostRead]
 GO
-ALTER TABLE [dbo].[Forums_Forums]  WITH CHECK ADD  CONSTRAINT [FK_Forums_Forums_Forums_Permissions] FOREIGN KEY([PermissionId])
+ALTER TABLE [dbo].[Forums_Forum]  WITH CHECK ADD  CONSTRAINT [FK_Forums_Forums_Forums_Permissions] FOREIGN KEY([PermissionId])
 REFERENCES [dbo].[Forums_Permissions] ([PermissionId])
 GO
-ALTER TABLE [dbo].[Forums_Forums] CHECK CONSTRAINT [FK_Forums_Forums_Forums_Permissions]
+ALTER TABLE [dbo].[Forums_Forum] CHECK CONSTRAINT [FK_Forums_Forums_Forums_Permissions]
 GO
-ALTER TABLE [dbo].[Forums_Forums]  WITH CHECK ADD  CONSTRAINT [FK_Forums_Forums_Forums_Settings] FOREIGN KEY([SettingId])
+ALTER TABLE [dbo].[Forums_Forum]  WITH CHECK ADD  CONSTRAINT [FK_Forums_Forums_Forums_Settings] FOREIGN KEY([SettingId])
 REFERENCES [dbo].[Forums_Settings] ([SettingId])
 GO
-ALTER TABLE [dbo].[Forums_Forums] CHECK CONSTRAINT [FK_Forums_Forums_Forums_Settings]
-GO
-ALTER TABLE [dbo].[Forums_Poll]  WITH CHECK ADD  CONSTRAINT [FK_Forums_Poll_Forums_Topics] FOREIGN KEY([TopicId])
-REFERENCES [dbo].[Forums_Topics] ([TopicId])
-GO
-ALTER TABLE [dbo].[Forums_Poll] CHECK CONSTRAINT [FK_Forums_Poll_Forums_Topics]
+ALTER TABLE [dbo].[Forums_Forum] CHECK CONSTRAINT [FK_Forums_Forums_Forums_Settings]
 GO
 ALTER TABLE [dbo].[Forums_Poll_Options]  WITH CHECK ADD  CONSTRAINT [FK_Forums_Poll_Options_Forums_Poll] FOREIGN KEY([PollId])
-REFERENCES [dbo].[Forums_Poll] ([PollId])
+REFERENCES [dbo].[Forums_Polls] ([PollId])
 GO
 ALTER TABLE [dbo].[Forums_Poll_Options] CHECK CONSTRAINT [FK_Forums_Poll_Options_Forums_Poll]
+GO
+ALTER TABLE [dbo].[Forums_Polls]  WITH CHECK ADD  CONSTRAINT [FK_Forums_Poll_Forums_Topics] FOREIGN KEY([TopicId])
+REFERENCES [dbo].[Forums_Topics] ([TopicId])
+GO
+ALTER TABLE [dbo].[Forums_Polls] CHECK CONSTRAINT [FK_Forums_Poll_Forums_Topics]
 GO
 ALTER TABLE [dbo].[Forums_Posts]  WITH CHECK ADD  CONSTRAINT [FK_Forums_Posts_Forums_Topics] FOREIGN KEY([TopicId])
 REFERENCES [dbo].[Forums_Topics] ([TopicId])
@@ -628,7 +447,7 @@ GO
 ALTER TABLE [dbo].[Forums_Posts_Ratings] CHECK CONSTRAINT [FK_Forums_Posts_Ratings_Forums_Posts]
 GO
 ALTER TABLE [dbo].[Forums_Topics]  WITH CHECK ADD  CONSTRAINT [FK_Forums_Topics_Forums_Forums] FOREIGN KEY([ForumId])
-REFERENCES [dbo].[Forums_Forums] ([ForumId])
+REFERENCES [dbo].[Forums_Forum] ([ForumId])
 GO
 ALTER TABLE [dbo].[Forums_Topics] CHECK CONSTRAINT [FK_Forums_Topics_Forums_Forums]
 GO
@@ -638,7 +457,7 @@ GO
 ALTER TABLE [dbo].[Forums_Topics_Tracking] CHECK CONSTRAINT [FK_Forums_Topics_Tracking_Forums_Topics]
 GO
 ALTER TABLE [dbo].[Forums_Tracking]  WITH CHECK ADD  CONSTRAINT [FK_Forums_Tracking_Forums_Forums] FOREIGN KEY([ForumId])
-REFERENCES [dbo].[Forums_Forums] ([ForumId])
+REFERENCES [dbo].[Forums_Forum] ([ForumId])
 GO
 ALTER TABLE [dbo].[Forums_Tracking] CHECK CONSTRAINT [FK_Forums_Tracking_Forums_Forums]
 GO

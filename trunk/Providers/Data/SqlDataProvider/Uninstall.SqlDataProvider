@@ -9,21 +9,21 @@ END
 
 GO
 
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Poll_Forums_Topics]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Poll]'))
-ALTER TABLE [dbo].[Forums_Poll] DROP CONSTRAINT [FK_Forums_Poll_Forums_Topics]
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Poll_Forums_Topics]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Polls]'))
+ALTER TABLE [dbo].[Forums_Polls] DROP CONSTRAINT [FK_Forums_Poll_Forums_Topics]
 GO
 
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Forums_Forums_Permissions]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Forums]'))
-ALTER TABLE [dbo].[Forums_Forums] DROP CONSTRAINT [FK_Forums_Forums_Forums_Permissions]
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Forums_Forums_Permissions]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Forum]'))
+ALTER TABLE [dbo].[Forums_Forum] DROP CONSTRAINT [FK_Forums_Forums_Forums_Permissions]
 GO
 
-IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Forums_Forums_Settings]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Forums]'))
-ALTER TABLE [dbo].[Forums_Forums] DROP CONSTRAINT [FK_Forums_Forums_Forums_Settings]
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Forums_Forums_Settings]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Forum]'))
+ALTER TABLE [dbo].[Forums_Forum] DROP CONSTRAINT [FK_Forums_Forums_Forums_Settings]
 GO
 
 IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Forums_Forums_AllowTopics]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[Forums_Forums] DROP CONSTRAINT [DF_Forums_Forums_AllowTopics]
+ALTER TABLE [dbo].[Forums_Forum] DROP CONSTRAINT [DF_Forums_Forums_AllowTopics]
 END
 
 GO
@@ -143,12 +143,16 @@ END
 
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Users]') AND type in (N'U'))
+DROP TABLE [dbo].[Forums_Users]
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Poll_Options]') AND type in (N'U'))
 DROP TABLE [dbo].[Forums_Poll_Options]
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Poll]') AND type in (N'U'))
-DROP TABLE [dbo].[Forums_Poll]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Polls]') AND type in (N'U'))
+DROP TABLE [dbo].[Forums_Polls]
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Filters]') AND type in (N'U'))
@@ -167,8 +171,8 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forum
 DROP TABLE [dbo].[Forums_Poll_Results]
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Forums]') AND type in (N'U'))
-DROP TABLE [dbo].[Forums_Forums]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Forum]') AND type in (N'U'))
+DROP TABLE [dbo].[Forums_Forum]
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Forums_Settings]') AND type in (N'U'))
