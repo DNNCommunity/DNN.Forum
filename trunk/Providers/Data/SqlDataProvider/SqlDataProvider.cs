@@ -210,6 +210,32 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 		#endregion
 
 		#region Url
+
+		public int AddUrl(int portalId, int forumId, int topicId, string url, DateTime createdOnDate)
+		{
+			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Url_Add"), portalId, forumId, topicId, url, createdOnDate));
+		}
+
+		public IDataReader GetUrl(int id)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Url_Get"), id);
+		}
+
+		public IDataReader GetAllUrls(int portalId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Url_GetAll"), portalId);
+		}
+
+		public void UpdateUrl(int id, int portalId, int forumId, int topicId, string url, DateTime lastModifiedOnDate)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Url_Update"), id, portalId, forumId, topicId, url, lastModifiedOnDate);
+		}
+
+		public void DeleteUrl(int id, int portalId)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Url_Delete"), id, portalId);
+		}
+
 		#endregion
 
 		#region User

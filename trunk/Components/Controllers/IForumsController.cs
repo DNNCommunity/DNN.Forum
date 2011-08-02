@@ -109,6 +109,17 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Url
+
+		int AddUrl(UrlInfo objPermission);
+
+		UrlInfo GetUrl(int permissionId);
+
+		List<UrlInfo> GetAllUrls(int portalId);
+
+		void UpdateUrl(UrlInfo objPermission);
+
+		void DeleteUrl(int permissionId, int portalId);
+
 		#endregion
 
 		#region User

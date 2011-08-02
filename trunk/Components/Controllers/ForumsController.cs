@@ -206,6 +206,34 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Url
+
+		public int AddUrl(Entities.UrlInfo objUrl)
+		{
+			return _dataProvider.AddUrl(objUrl.PortalId, objUrl.ForumId, objUrl.TopicId, objUrl.Url, objUrl.CreatedOnDate);
+		}
+
+		public Entities.UrlInfo GetUrl(int filterId)
+		{
+			return CBO.FillObject<Entities.UrlInfo>(_dataProvider.GetUrl(filterId));
+		}
+
+		public List<Entities.UrlInfo> GetAllUrls(int portalId)
+		{
+			return CBO.FillCollection<Entities.UrlInfo>(_dataProvider.GetAllUrls(portalId));
+		}
+
+		public void UpdateUrl(Entities.UrlInfo objUrl)
+		{
+			_dataProvider.UpdateUrl(objUrl.Id, objUrl.PortalId, objUrl.ForumId, objUrl.TopicId, objUrl.Url, objUrl.LastModifiedOnDate);
+			//Caching.ClearUrlCache(id, portalId);
+		}
+
+		public void DeleteUrl(int id, int portalId)
+		{
+			_dataProvider.DeleteFilter(id, portalId);
+			//Caching.ClearUrlCache(id, portalId);
+		}
+
 		#endregion
 
 		#region User

@@ -111,6 +111,17 @@ namespace DotNetNuke.Modules.Forums.Providers.Data
 		#endregion
 
 		#region Url
+
+		int AddUrl(int portalId, int forumId, int topicId, string url, DateTime createdOnDate);
+
+		IDataReader GetUrl(int id);
+
+		IDataReader GetAllUrls(int portalId);
+
+		void UpdateUrl(int id, int portalId, int forumId, int topicId, string url, DateTime lastModifiedOnDate);
+
+	    void DeleteUrl(int id, int portalId);
+
 		#endregion
 
 		#region User
