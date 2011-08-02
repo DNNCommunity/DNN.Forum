@@ -114,6 +114,13 @@ namespace DotNetNuke.Modules.Forums.Providers.Data
 		#endregion
 
 		#region User
+
+		int AddUser(int portalId, int userId, int topicCount, int replyCount, int rewardPoints, int answerCount, int questionCount, int trustLevel, string userCaption, DateTime lastPostDate, DateTime lastActivityDate, bool adminWatch, bool disableAttach, bool disableHtml, DateTime createdOnDate);
+
+		IDataReader GetUser(int portalId, int userId);
+
+		void UpdateUser(int portalId, int userId, int topicCount, int replyCount, int rewardPoints, int answerCount, int questionCount, int trustLevel, string userCaption, DateTime lastPostDate, DateTime lastActivityDate, bool adminWatch, bool disableAttach, bool disableHtml, DateTime lastModifiedOnDate);
+
 		#endregion
 
 		#endregion

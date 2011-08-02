@@ -209,6 +209,23 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region User
+
+		public int AddUser(UserInfo objUser)
+		{
+			return _dataProvider.AddUser(objUser.PortalId, objUser.UserId, objUser.TopicCount, objUser.ReplyCount, objUser.RewardPoints, objUser.AnswerCount, objUser.QuestionCount, objUser.TrustLevel, objUser.UserCaption, objUser.LastPostDate, objUser.LastActivityDate, objUser.AdminWatch, objUser.DisableAttach, objUser.DisableHtml, objUser.CreatedOnDate);
+		}
+
+		public UserInfo GetUser(int portalId, int userId)
+		{
+			return CBO.FillObject<UserInfo>(_dataProvider.GetUser(portalId, userId));
+		}
+
+		public void UpdateUser(UserInfo objUser)
+		{
+			_dataProvider.UpdateUser(objUser.PortalId, objUser.UserId, objUser.TopicCount, objUser.ReplyCount, objUser.RewardPoints, objUser.AnswerCount, objUser.QuestionCount, objUser.TrustLevel, objUser.UserCaption, objUser.LastPostDate, objUser.LastActivityDate, objUser.AdminWatch, objUser.DisableAttach, objUser.DisableHtml, objUser.LastModifiedOnDate);
+			//Caching.ClearSettingsCache();
+		}
+
 		#endregion
 		
 		#endregion

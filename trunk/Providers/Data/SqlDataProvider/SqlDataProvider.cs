@@ -213,6 +213,22 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 		#endregion
 
 		#region User
+
+		public int AddUser(int portalId, int userId, int topicCount, int replyCount, int rewardPoints, int answerCount, int questionCount, int trustLevel, string userCaption, DateTime lastPostDate, DateTime lastActivityDate, bool adminWatch, bool disableAttach, bool disableHtml, DateTime createdOnDate)
+		{
+			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("User_Add"), portalId, userId, topicCount, replyCount, rewardPoints, answerCount, questionCount, trustLevel, userCaption, lastPostDate, lastActivityDate, adminWatch, disableAttach, disableHtml, createdOnDate));
+		}
+
+		public IDataReader GetUser(int portalId, int userId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("User_Get"), portalId, userId);
+		}
+
+		public void UpdateUser(int portalId, int userId, int topicCount, int replyCount, int rewardPoints, int answerCount, int questionCount, int trustLevel, string userCaption, DateTime lastPostDate, DateTime lastActivityDate, bool adminWatch, bool disableAttach, bool disableHtml, DateTime lastModifiedOnDate)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("User_Update"), portalId, userId, topicCount, replyCount, rewardPoints, answerCount, questionCount, trustLevel, userCaption, lastPostDate, lastActivityDate, adminWatch, disableAttach, disableHtml, lastModifiedOnDate);
+		}
+
 		#endregion
 		
 		#endregion

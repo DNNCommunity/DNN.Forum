@@ -67,7 +67,7 @@ namespace DotNetNuke.Modules.Forums.Components.Entities
 
 		public bool DisableAttach { get; set; }
 
-		public bool DsiableHtml { get; set; }
+		public bool DisableHtml { get; set; }
 
 		public DateTime CreatedOnDate { get; set; }
 

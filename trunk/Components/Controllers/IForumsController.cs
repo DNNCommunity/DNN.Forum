@@ -112,6 +112,13 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region User
+
+		int AddUser(UserInfo objUser);
+
+		UserInfo GetUser(int portalId, int userId);
+
+		void UpdateUser(UserInfo objUser);
+
 		#endregion
 	
 	}
