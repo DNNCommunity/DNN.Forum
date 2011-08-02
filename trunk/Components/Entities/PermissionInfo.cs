@@ -41,6 +41,8 @@ namespace DotNetNuke.Modules.Forums.Components.Entities
 		/// <rename>50 characters</rename>
 		public string Description { get; set; }
 
+		public int PortalId { get; set; }
+
 		public string CanView { get; set; }
 
 		public string CanRead { get; set; }

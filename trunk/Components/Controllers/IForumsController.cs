@@ -18,7 +18,6 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
 using System.Collections.Generic;
 using DotNetNuke.Modules.Forums.Components.Entities;
 
@@ -35,9 +34,9 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		int AddFilter(FilterInfo objFilter);
 
-		//FilterInfo GetFilter(int filterId);
+		FilterInfo GetFilter(int filterId);
 
-		//List<FilterInfo> GetAllFilters(int portalId);
+		List<FilterInfo> GetAllFilters(int portalId);
 
 		void UpdateFilter(FilterInfo objFilter);
 
@@ -49,6 +48,17 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Permission
+
+		int AddPermission(PermissionInfo objPermission);
+
+		PermissionInfo GetPermission(int permissionId);
+
+		List<PermissionInfo> GetPortalPermissions(int portalId);
+
+		void UpdatePermission(PermissionInfo objPermission);
+
+		void DeletePermission(int permissionId, int portalId);
+
 		#endregion
 
 		#region Poll

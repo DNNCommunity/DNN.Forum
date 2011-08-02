@@ -50,6 +50,17 @@ namespace DotNetNuke.Modules.Forums.Providers.Data
 		#endregion
 
 		#region Permission
+
+		int AddPermission(string description, int portalId, string canView, string canRead, string caCreate, string canEdit, string canDelete, string canLock, string canPin, string canAttach, string canPoll, string canBlock, string canTrust, string canSubscribe, string canAnnounce, string canTag, string canPrioritize, string canModApprove, string canModMove, string canModSplit, string canModDelete, string canModUser, string canModModEdit, string canModLock, string canModPin);
+
+		IDataReader GetPermission(int permissionId);
+
+		IDataReader GetPortalPermissions(int portalId);
+
+		void UpdatePermission(int permissionId, string description, int portalId, string canView, string canRead, string caCreate, string canEdit, string canDelete, string canLock, string canPin, string canAttach, string canPoll, string canBlock, string canTrust, string canSubscribe, string canAnnounce, string canTag, string canPrioritize, string canModApprove, string canModMove, string canModSplit, string canModDelete, string canModUser, string canModModEdit, string canModLock, string canModPin);
+
+		void DeletePermission(int permissionId, int portalId);
+
 		#endregion
 
 		#region Poll

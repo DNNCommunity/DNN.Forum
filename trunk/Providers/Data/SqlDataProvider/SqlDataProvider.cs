@@ -108,7 +108,6 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Filter_Update"), filterId, portalId, GetNull(moduleId), GetNull(forumId), find, replace, GetNull(filterType), applyOnSave, applyOnRender, GetNull(lastModifiedOnDate));
 		}
 
-
 		public void DeleteFilter(int filterId, int portalId)
 		{
 			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Filter_Delete"), filterId, portalId);
@@ -120,6 +119,32 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 		#endregion
 
 		#region Permission
+
+		public int AddPermission(string description, int portalId, string canView, string canRead, string canCreate, string canEdit, string canDelete, string canLock, string canPin, string canAttach, string canPoll, string canBlock, string canTrust, string canSubscribe, string canAnnounce, string canTag, string canPrioritize, string canModApprove, string canModMove, string canModSplit, string canModDelete, string canModUser, string canModEdit, string canModLock, string canModPin)
+		{
+			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Permission_Add"), GetNull(description), portalId, canView, canRead, canCreate, canEdit, canDelete, canLock, canPin, canAttach, canPoll, canBlock, canTrust, canSubscribe, canAnnounce, canTag, canPrioritize, canModApprove, canModMove, canModSplit, canModDelete, canModUser, canModEdit, canModLock, canModPin));
+		}
+
+		public IDataReader GetPermission(int permissionId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Permission_Get"), permissionId);
+		}
+
+		public IDataReader GetPortalPermissions(int portalID)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Permission_GetPortal"), portalID);
+		}
+
+		public void UpdatePermission(int permissionId, string description, int portalId, string canView, string canRead, string canCreate, string canEdit, string canDelete, string canLock, string canPin, string canAttach, string canPoll, string canBlock, string canTrust, string canSubscribe, string canAnnounce, string canTag, string canPrioritize, string canModApprove, string canModMove, string canModSplit, string canModDelete, string canModUser, string canModEdit, string canModLock, string canModPin)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Permission_Update"), GetNull(description), portalId, canView, canRead, canCreate, canEdit, canDelete, canLock, canPin, canAttach, canPoll, canBlock, canTrust, canSubscribe, canAnnounce, canTag, canPrioritize, canModApprove, canModMove, canModSplit, canModDelete, canModUser, canModEdit, canModLock, canModPin);
+		}
+
+		public void DeletePermission(int permissionId, int portalId)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Permission_Delete"), permissionId, portalId);
+		}
+
 		#endregion
 
 		#region Poll

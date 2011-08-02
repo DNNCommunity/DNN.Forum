@@ -18,11 +18,8 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
 using System.Collections.Generic;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Modules.Forums.Components.Common;
 using DotNetNuke.Modules.Forums.Components.Entities;
 using DotNetNuke.Modules.Forums.Providers.Data;
 using DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider;
@@ -83,31 +80,29 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public int AddFilter(FilterInfo objFilter)
 		{
-			//objFilter.FilterId = _dataProvider.AddProject(objProject.Title);
-
-			return objFilter.FilterId;
+			return _dataProvider.AddFilter(objFilter.PortalId, objFilter.ModuleId, objFilter.ForumId, objFilter.Find, objFilter.Replace, objFilter.FilterType, objFilter.ApplyOnSave, objFilter.ApplyOnRender, objFilter.CreatedOnDate);
 		}
 
-		//public FilterInfo GetFilter(int filterId)
-		//{
+		public FilterInfo GetFilter(int filterId)
+		{
+			return CBO.FillObject<FilterInfo>(_dataProvider.GetFilter(filterId));
+		}
 
-		//}
-
-		//public List<FilterInfo> GetAllFilters(int portalId)
-		//{
-
-		//}
+		public List<FilterInfo> GetAllFilters(int portalId)
+		{
+			return CBO.FillCollection<FilterInfo>(_dataProvider.GetAllFilters(portalId));
+		}
 
 		public void UpdateFilter(FilterInfo objFilter)
 		{
-			//_dataProvider.UpdateFilter(objFilter.FilterId);
+			_dataProvider.UpdateFilter(objFilter.FilterId, objFilter.PortalId, objFilter.ModuleId, objFilter.ForumId, objFilter.Find, objFilter.Replace, objFilter.FilterType, objFilter.ApplyOnSave, objFilter.ApplyOnRender, objFilter.CreatedOnDate);
+			//Caching.ClearFilterCache(filterId, portalId);
 		}
 
 		public void DeleteFilter(int filterId, int portalId)
 		{
-			//_dataProvider.DeleteFilter(filterId, portalId);
-
-			//Caching.ClearProjectCache(filterId, portalId);
+			_dataProvider.DeleteFilter(filterId, portalId);
+			//Caching.ClearFilterCache(filterId, portalId);
 		}
 
 		#endregion
@@ -116,6 +111,34 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Permission
+
+		public int AddPermission(PermissionInfo objPermission)
+		{
+			return _dataProvider.AddPermission(objPermission.Description, objPermission.PortalId, objPermission.CanView, objPermission.CanRead, objPermission.CanCreate, objPermission.CanEdit, objPermission.CanDelete, objPermission.CanLock, objPermission.CanPin, objPermission.CanAttach, objPermission.CanPoll, objPermission.CanBlock, objPermission.CanTrust, objPermission.CanSubscribe, objPermission.CanAnnounce, objPermission.CanTag, objPermission.CanPrioritize, objPermission.CanModApprove, objPermission.CanModMove, objPermission.CanModSplit, objPermission.CanModDelete, objPermission.CanModUser, objPermission.CanModEdit, objPermission.CanModLock, objPermission.CanModPin);
+		}
+
+		public PermissionInfo GetPermission(int permissionId)
+		{
+			return CBO.FillObject<PermissionInfo>(_dataProvider.GetPermission(permissionId));
+		}
+
+		public List<PermissionInfo> GetPortalPermissions(int portalId)
+		{
+			return CBO.FillCollection<PermissionInfo>(_dataProvider.GetPortalPermissions(portalId));
+		}
+
+		public void UpdatePermission(PermissionInfo objPermission)
+		{
+			_dataProvider.UpdatePermission(objPermission.PermissionId, objPermission.Description, objPermission.PortalId, objPermission.CanView, objPermission.CanRead, objPermission.CanCreate, objPermission.CanEdit, objPermission.CanDelete, objPermission.CanLock, objPermission.CanPin, objPermission.CanAttach, objPermission.CanPoll, objPermission.CanBlock, objPermission.CanTrust, objPermission.CanSubscribe, objPermission.CanAnnounce, objPermission.CanTag, objPermission.CanPrioritize, objPermission.CanModApprove, objPermission.CanModMove, objPermission.CanModSplit, objPermission.CanModDelete, objPermission.CanModUser, objPermission.CanModEdit, objPermission.CanModLock, objPermission.CanModPin);
+			//Caching.ClearPermissionCache(permissionId, portalId);
+		}
+
+		public void DeletePermission(int permissionId, int portalId)
+		{
+			_dataProvider.DeletePermission(permissionId, portalId);
+			//Caching.ClearPermissionCache(permissionId, portalId);
+		}
+
 		#endregion
 
 		#region Poll
