@@ -18,36 +18,47 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Modules.Forums.Components.Entities;
+using System;
 
-namespace DotNetNuke.Modules.Forums.Components.Taxonomy {
+namespace DotNetNuke.Modules.Forums.Components.Entities
+{
 
-	public class Terms {
+	/// <summary>
+	/// This is our Info class that represents columns in our data store that are associated with the Forums_Url table. 
+	/// </summary>
+	public class UrlInfo
+	{
 
-		/// <summary>
-		/// This should run only after a thread has been added/updated in data store and the ContentItem exists.
-		/// </summary>
-		/// <param name="objTopic">The content item we are associating categories with. In this module, it will always be a thread.</param>
-		/// <param name="objContent"></param>
-		internal void ManageThreadTerms(TopicInfo objTopic, ContentItem objContent)
-		{
-			RemoveThreadTerms(objContent);
-
-			foreach (var term in objTopic.Terms) {
-				Util.GetTermController().AddTermToContent(term, objContent);
-			}
-		}
+		#region Public Properties
 
 		/// <summary>
-		/// Removes terms associated w/ a specific ContentItem.
+		/// Our PK field.
 		/// </summary>
-		/// <param name="objContent"></param>
-		internal void RemoveThreadTerms(ContentItem objContent)
-		{
-			Util.GetTermController().RemoveTermsFromContent(objContent);
-		}
+		public int Id { get; set; }
+
+		public int PortalId { get; set; }
+
+		public int ForumId { get; set; }
+
+		public int TopicId { get; set; }
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <remarks>1000 characters</remarks>
+		public string Url { get; set; }
+
+		public DateTime CreatedOnDate { get; set; }
+
+		public DateTime LastModifiedOnDate { get; set; }
+
+		/// <summary>
+		/// A count used for paging.
+		/// </summary>
+		/// <remarks>Not stored in a table.</remarks>
+		public int TotalRecords { get; set; }
+
+		#endregion
 
 	}
 }

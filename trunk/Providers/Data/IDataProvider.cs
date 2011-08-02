@@ -32,26 +32,66 @@ namespace DotNetNuke.Modules.Forums.Providers.Data
 
 		#region Abstract methods
 
-		#region Project
+		#region Filter
 
-		//int AddProject(string title, string url, string description, int extensionType, string extendedDescription, string demoUrl, bool authorized, int groupId, int portalId, int createdByUserId, DateTime createdOnDate);   
+		//int AddFilter(string title, string url, string description, int extensionType, string extendedDescription, string demoUrl, bool authorized, int groupId, int portalId, int createdByUserId, DateTime createdOnDate);   
    
-		//IDataReader GetProject(int projectId, int avatarPropDefinitionID);
+		//IDataReader GetFilter(int projectId, int avatarPropDefinitionID);
 
 		//IDataReader GetProjectByTitle(string title, int avatarPropDefinitionID);
 
-		//IDataReader GetProjectByUrl(string codeplexUrl, int avatarPropDefinitionID);    
+		//void UpdateFilter(int projectId, int extensionType, string extendedDescription, string demoUrl, bool authorized, int groupId, int portalId, int primaryMediaId, int contentItemId, string wikiUrl, int lastModifiedUserId, DateTime lastModifiedDate, string projectEmail);	
 
-		//IDataReader GetAuthorizedProjects(int portalId, int avatarPropDefinitionID);
+		//void DeleteFilter(int filterId, int portalId);
 
-		//IDataReader GetUnauthorizedProjects(int portalID, int avatarPropDefinitionID);
+		#endregion
 
-		//IDataReader ProjectSearchByTypeContentTag(int extensionTypeID, string content, int portalId, string tag, int avatarPropDefinitionID);
+		#region Forum
+		#endregion
 
-		//void UpdateProject(int projectId, int extensionType, string extendedDescription, string demoUrl, bool authorized, int groupId, int portalId, int primaryMediaId, int contentItemId, string wikiUrl, int lastModifiedUserId, DateTime lastModifiedDate, string projectEmail);	
+		#region Permission
+		#endregion
 
-		//void DeleteProject(int projectID, int portalID);
+		#region Poll
+		#endregion
 
+		#region Poll_Option
+		#endregion
+
+		#region Poll_Result
+		#endregion
+
+		#region Post
+		#endregion
+
+		#region Post_Attachment
+		#endregion
+
+		#region Post_Rating
+		#endregion
+
+		#region Rank
+		#endregion
+
+		#region Setting
+		#endregion
+
+		#region Subscription
+		#endregion
+
+		#region Topic
+		#endregion
+
+		#region Topic_Tracking
+		#endregion
+
+		#region Tracking
+		#endregion
+
+		#region Url
+		#endregion
+
+		#region User
 		#endregion
 
 		#endregion

@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 
 		#region Public Methods
 
-		#region Project
+		#region Filter
 
 		//public int AddProject(string title, string url, string description, int extensionType, string extendedDescription, string demoUrl, bool authorized, int groupId, int portalId, int createdByUserId, DateTime createdOnDate)
 		//{
@@ -135,6 +135,54 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 
 		#endregion
 
+		#region Forum
+		#endregion
+
+		#region Permission
+		#endregion
+
+		#region Poll
+		#endregion
+
+		#region Poll_Option
+		#endregion
+
+		#region Poll_Result
+		#endregion
+
+		#region Post
+		#endregion
+
+		#region Post_Attachment
+		#endregion
+
+		#region Post_Rating
+		#endregion
+
+		#region Rank
+		#endregion
+
+		#region Setting
+		#endregion
+
+		#region Subscription
+		#endregion
+
+		#region Topic
+		#endregion
+
+		#region Topic_Tracking
+		#endregion
+
+		#region Tracking
+		#endregion
+
+		#region Url
+		#endregion
+
+		#region User
+		#endregion
+		
 		#endregion
 
 	}

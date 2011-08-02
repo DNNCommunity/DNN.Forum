@@ -32,26 +32,29 @@ namespace DotNetNuke.Modules.Forums.Components.Taxonomy
 	{
 
 		/// <summary>
-		/// This should only run after the Project exists in the data store. 
+		/// 
 		/// </summary>
+		/// <param name="objTopic"></param>
+		/// <param name="tabId"></param>
 		/// <returns>The newly created ContentItemID from the data store.</returns>
-		internal ContentItem CreateContentItem(SampleInfo objProject, int tabId)
+		/// <remarks>This should only run once a topic is in the data store.</remarks>
+		internal ContentItem CreateContentItem(TopicInfo objTopic, int tabId)
 		{
 			var objContent = new ContentItem
 								{
-									Content = objProject.Description,
+									//Content = objTopic.Description,
 									ContentTypeId = GetContentTypeID(),
 									Indexed = false,
-									//ContentKey = "view=" + Constants.PageScope.ProjectDetail + "&project=" + objProject.Title,
-									ModuleID = objProject.ModuleID,
+									//ContentKey = "view=" + Constants.PageScope.ProjectDetail + "&project=" + objTopic.Title,
+									ModuleID = objTopic.ModuleID,
 									TabID = tabId
 								};
 
 			objContent.ContentItemId = Util.GetContentController().AddContentItem(objContent);
 
-			// Add Terms
-			var cntTerm = new Terms();
-			cntTerm.ManageThreadTerms(objProject, objContent);
+			//// Add Terms
+			//var cntTerm = new Terms();
+			//cntTerm.ManageThreadTerms(objTopic, objContent);
 
 			return objContent;
 		}
@@ -59,35 +62,37 @@ namespace DotNetNuke.Modules.Forums.Components.Taxonomy
 		/// <summary>
 		/// This is used to update the content in the ContentItems table. Should be called when a project is updated.
 		/// </summary>
-		internal void UpdateContentItem(SampleInfo objProject, int tabId)
+		/// <param name="objTopic"></param>
+		/// <param name="tabId"></param>
+		internal void UpdateContentItem(TopicInfo objTopic, int tabId)
 		{
-			var objContent = Util.GetContentController().GetContentItem(objProject.ContentItemId);
+			var objContent = Util.GetContentController().GetContentItem(objTopic.ContentItemId);
 
 			if (objContent == null) return;
-			objContent.Content = objProject.Description;
-			//objContent.ContentKey = "view=" + Constants.PageScope.ProjectDetail + "&project=" + objProject.Title;
-			objContent.ModuleID = objProject.ModuleID;
+			//objContent.Content = objTopic.Description;
+			//objContent.ContentKey = "view=" + Constants.PageScope.ProjectDetail + "&project=" + objTopic.Title;
+			objContent.ModuleID = objTopic.ModuleID;
 			objContent.TabID = tabId;
 			Util.GetContentController().UpdateContentItem(objContent);
 
 			// Update Terms
-			var cntTerm = new Terms();
-			cntTerm.ManageThreadTerms(objProject, objContent);
+			//var cntTerm = new Terms();
+			//cntTerm.ManageThreadTerms(objTopic, objContent);
 		}
 
 		/// <summary>
 		/// This removes a content item associated with a project from the data store. Should run every time a project is deleted.
 		/// </summary>
-		/// <param name="objProject">The Content Item we wish to remove from the data store.</param>
-		internal void DeleteContentItem(SampleInfo objProject)
+		/// <param name="objTopic">The Content Item we wish to remove from the data store.</param>
+		internal void DeleteContentItem(TopicInfo objTopic)
 		{
-			if (objProject.ContentItemId <= Null.NullInteger) return;
-			var objContent = Util.GetContentController().GetContentItem(objProject.ContentItemId);
+			if (objTopic.ContentItemId <= Null.NullInteger) return;
+			var objContent = Util.GetContentController().GetContentItem(objTopic.ContentItemId);
 			if (objContent == null) return;
 
 			// remove any metadata/terms associated first (perhaps we should just rely on ContentItem cascade delete here?)
 			var cntTerms = new Terms();
-			cntTerms.RemoveThreadTerms(objProject);
+			cntTerms.RemoveThreadTerms(objTopic);
 
 			Util.GetContentController().DeleteContentItem(objContent);
 		}
