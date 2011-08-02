@@ -83,6 +83,17 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Setting
+
+		int AddSetting(SettingInfo objSetting);
+
+		SettingInfo GetSetting(int settingId);
+
+		List<SettingInfo> GetAllSettings();
+
+		void UpdateSetting(SettingInfo objSetting);
+
+		void DeleteSetting(int settingId);
+
 		#endregion
 
 		#region Subscription

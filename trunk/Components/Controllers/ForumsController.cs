@@ -163,6 +163,34 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Setting
+
+		public int AddSetting(SettingInfo objSetting)
+		{
+			return _dataProvider.AddSetting(objSetting.Description, objSetting.Attachments, objSetting.Emoticons, objSetting.Html, objSetting.PostIcon, objSetting.Rss, objSetting.Scripts, objSetting.Moderated,objSetting.AutoTrustLevel,objSetting.AttachMaxCount,objSetting.AttachMaxSize,objSetting.AttachAutoResize,objSetting.AttachMaxHeight,objSetting.AttachMaxWidth, objSetting.AttachStore, objSetting.EditorType, objSetting.EditorHeight, objSetting.EditorWidth, objSetting.Filters);
+		}
+
+		public SettingInfo GetSetting(int settingId)
+		{
+			return CBO.FillObject<SettingInfo>(_dataProvider.GetSetting(settingId));
+		}
+
+		public List<SettingInfo> GetAllSettings()
+		{
+			return CBO.FillCollection<SettingInfo>(_dataProvider.GetAllSettings());
+		}
+
+		public void UpdateSetting(SettingInfo objSetting)
+		{
+			_dataProvider.UpdateSetting(objSetting.SettingId, objSetting.Description, objSetting.Attachments, objSetting.Emoticons, objSetting.Html, objSetting.PostIcon, objSetting.Rss, objSetting.Scripts, objSetting.Moderated, objSetting.AutoTrustLevel, objSetting.AttachMaxCount, objSetting.AttachMaxSize, objSetting.AttachAutoResize, objSetting.AttachMaxHeight, objSetting.AttachMaxWidth, objSetting.AttachStore, objSetting.EditorType, objSetting.EditorHeight, objSetting.EditorWidth, objSetting.Filters);
+			//Caching.ClearSettingsCache();
+		}
+
+		public void DeleteSetting(int settingId)
+		{
+			_dataProvider.DeleteSetting(settingId);
+			//Caching.ClearSettingsCache();
+		}
+
 		#endregion
 
 		#region Subscription

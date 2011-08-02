@@ -85,6 +85,17 @@ namespace DotNetNuke.Modules.Forums.Providers.Data
 		#endregion
 
 		#region Setting
+
+		int AddSetting(string description, bool attachments, bool emoticons, bool html, bool postIcon, bool rss, bool scripts, bool moderated, int autoTrustLevel, int attachMaxCount, int attachMaxSize, bool attachAutoResize, int attachMaxHeight, int attachMaxWidth, int attachStore, string editorType, string editorHeight, string editorWidth, bool filters);
+
+		IDataReader GetSetting(int permissionId);
+
+		IDataReader GetAllSettings();
+
+		void UpdateSetting(int settingId, string description, bool attachments, bool emoticons, bool html, bool postIcon, bool rss, bool scripts, bool moderated, int autoTrustLevel, int attachMaxCount, int attachMaxSize, bool attachAutoResize, int attachMaxHeight, int attachMaxWidth, int attachStore, string editorType, string editorHeight, string editorWidth, bool filters);
+
+		void DeleteSetting(int settingId);
+
 		#endregion
 
 		#region Subscription

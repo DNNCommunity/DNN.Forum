@@ -169,6 +169,32 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 		#endregion
 
 		#region Setting
+
+		public int AddSetting(string description, bool attachments, bool emoticons, bool html, bool postIcon, bool rss, bool scripts, bool moderated, int autoTrustLevel, int attachMaxCount, int attachMaxSize, bool attachAutoResize, int attachMaxHeight, int attachMaxWidth, int attachStore, string editorType, string editorHeight, string editorWidth, bool filters)
+		{
+			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Setting_Add"), GetNull(description), attachments, emoticons, html, postIcon, rss, scripts, moderated, autoTrustLevel, attachMaxCount, attachMaxSize, attachAutoResize, attachMaxHeight, attachMaxWidth, attachStore, GetNull(editorType), GetNull(editorHeight), GetNull(editorWidth), GetNull(filters)));
+		}
+
+		public IDataReader GetSetting(int settingId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Setting_Get"), settingId);
+		}
+
+		public IDataReader GetAllSettings()
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Setting_GetAll"));
+		}
+
+		public void UpdateSetting(int settingId, string description, bool attachments, bool emoticons, bool html, bool postIcon, bool rss, bool scripts, bool moderated, int autoTrustLevel, int attachMaxCount, int attachMaxSize, bool attachAutoResize, int attachMaxHeight, int attachMaxWidth, int attachStore, string editorType, string editorHeight, string editorWidth, bool filters)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Setting_Update"), settingId, GetNull(description), attachments, emoticons, html, postIcon, rss, scripts, moderated, autoTrustLevel, attachMaxCount, attachMaxSize, attachAutoResize, attachMaxHeight, attachMaxWidth, attachStore, GetNull(editorType), GetNull(editorHeight), GetNull(editorWidth), GetNull(filters));
+		}
+
+		public void DeleteSetting(int settingId)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Setting_Delete"), settingId);
+		}
+
 		#endregion
 
 		#region Subscription
