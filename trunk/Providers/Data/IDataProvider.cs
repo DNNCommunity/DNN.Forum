@@ -64,12 +64,45 @@ namespace DotNetNuke.Modules.Forums.Providers.Data
 		#endregion
 
 		#region Poll
+
+		int AddPoll(int topicId, int userId, string question, string pollType, DateTime createdOnDate);
+
+		//IDataReader GetPoll(int pollId);
+
+		IDataReader GetPollByTopic(int topicId);
+
+		void UpdatePoll(int pollId, int topicId, int userId, string question, string pollType, DateTime lastModifiedOnDate);
+
+		void DeletePoll(int pollId, int topicId);
+
 		#endregion
 
 		#region Poll Option
+
+		int AddPollOption(int pollId, string optionName, int priority, DateTime createdOnDate);
+
+		//IDataReader GetPollOption(int pollOptionId);
+
+		IDataReader GetPollOptions(int pollId);
+
+		void UpdatePollOption(int pollOptionId, int pollId, string optionName, int priority, DateTime lastModifiedOnDate);
+
+		void DeletePollOption(int pollOptionId, int pollId);
+
 		#endregion
 
 		#region Poll Result
+
+		int AddPollResult(int pollId, int pollOptionId, string response, string ipaddress, int userId, DateTime createdOnDate);
+
+		//IDataReader GetPollResult(int pollResultId);
+
+		IDataReader GetPollResults(int pollId);
+
+		void UpdatePollResult(int pollResultId, int pollId, int pollOptionId, string response, string ipaddress, int userId, DateTime lastModifiedOnDate);
+
+		void DeletePollResult(int pollResultId, int pollId);
+		
 		#endregion
 
 		#region Post
@@ -77,43 +110,43 @@ namespace DotNetNuke.Modules.Forums.Providers.Data
 
 		#region Post Attachment
 
-	    int AddPostAttachment(int postId, int fileId, string fileUrl, string fileName, bool displayInline);
+		int AddPostAttachment(int postId, int fileId, string fileUrl, string fileName, bool displayInline);
 
-	    IDataReader GetPostAttachment(int attachmentId);
+		//IDataReader GetPostAttachment(int attachmentId);
 
-	    IDataReader GetTopicAttachments(int topicId);
+		IDataReader GetTopicAttachments(int topicId);
 
-	    void UpdatePostAttachment(int attachmentId, int postId, int fileId, string fileUrl, string fileName, bool displayInline);
+		void UpdatePostAttachment(int attachmentId, int postId, int fileId, string fileUrl, string fileName, bool displayInline);
 
-	    void DeletePostAttachment(int attachmentId, int postId);
+		void DeletePostAttachment(int attachmentId, int postId);
 
 		#endregion
 
 		#region Post Rating
 
-	    int AddPostRating(int postId, int userId, int rating, bool helpful, string comments, string ipAddress, DateTime createdOnDate);
+		int AddPostRating(int postId, int userId, int rating, bool helpful, string comments, string ipAddress, DateTime createdOnDate);
 
-	    IDataReader GetPostRating(int ratingId);
+		//IDataReader GetPostRating(int ratingId);
 
-	    IDataReader GetTopicRatings(int topicId);
+		IDataReader GetTopicRatings(int topicId);
 
-	    void UpdatePostRating(int ratingId, int postId, int userId, int rating, bool helpful, string comments, string ipAddress);
+		void UpdatePostRating(int ratingId, int postId, int userId, int rating, bool helpful, string comments, string ipAddress);
 
-	    void DeletePostRating(int ratingId, int portalId);
+		void DeletePostRating(int ratingId, int portalId);
 
 		#endregion
 
 		#region Rank
 
-	    int AddRank(int portalId, int moduleId, string rankName, int minPosts, int maxPosts, string display, DateTime createdOnDate);
+		int AddRank(int portalId, int moduleId, string rankName, int minPosts, int maxPosts, string display, DateTime createdOnDate);
 
-	    IDataReader GetRank(int rankId);
+		IDataReader GetRank(int rankId);
 
-	    IDataReader GetModuleRank(int moduleId);
+		IDataReader GetModuleRank(int moduleId);
 
-	    void UpdateRank(int rankId, int portalId, int moduleId, string rankName, int minPosts, int maxPosts, string display, DateTime lastModifiedOnDate);
+		void UpdateRank(int rankId, int portalId, int moduleId, string rankName, int minPosts, int maxPosts, string display, DateTime lastModifiedOnDate);
 
-	    void DeleteRank(int rankId, int portalId);
+		void DeleteRank(int rankId, int portalId);
 
 		#endregion
 

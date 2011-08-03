@@ -142,12 +142,100 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Poll
+
+		public int AddPoll(PollInfo objPoll)
+		{
+			return _dataProvider.AddPoll(objPoll.TopicId, objPoll.UserId, objPoll.Question, objPoll.PollType, objPoll.CreatedOnDate);
+			//Caching.ClearPollCache(objPoll.TopicId);
+		}
+
+		//public PollInfo GetPoll(int pollId)
+		//{
+		//    return CBO.FillObject<PollInfo>(_dataProvider.GetPoll(pollId));
+		//}
+
+		public List<PollInfo> GetPollByTopic(int topicId)
+		{
+			return CBO.FillCollection<PollInfo>(_dataProvider.GetPollByTopic(topicId));
+		}
+
+		public void UpdatePoll(PollInfo objPoll)
+		{
+			_dataProvider.UpdatePoll(objPoll.PollId, objPoll.TopicId, objPoll.UserId, objPoll.Question, objPoll.PollType, objPoll.CreatedOnDate);
+			//Caching.ClearPollCache(ojbPoll.Topic);
+		}
+
+		public void DeletePoll(int pollId, int topicId)
+		{
+			_dataProvider.DeletePoll(pollId, topicId);
+			//Caching.ClearPollCache(topicId);
+		}
+
 		#endregion
 
 		#region Poll Option
+
+		public int AddPollOption(PollOptionInfo objPollOption)
+		{
+			return _dataProvider.AddPollOption(objPollOption.PollId, objPollOption.OptionName, objPollOption.Priority, objPollOption.CreatedOnDate);
+			//Caching.ClearPollOptionCache(objPollOption.PollId);
+		}
+
+		//public PollOptionInfo GetPollOption(int pollOptionId)
+		//{
+		//    return CBO.FillObject<PollOptionInfo>(_dataProvider.GetPollOption(pollOptionId));
+		//}
+
+		public List<PollOptionInfo> GetPollOptions(int pollId)
+		{
+			return CBO.FillCollection<PollOptionInfo>(_dataProvider.GetPollOptions(pollId));
+		}
+
+		public void UpdatePollOption(PollOptionInfo objPollOption, int pollId)
+		{
+			_dataProvider.UpdatePollOption(objPollOption.PollOptionId, objPollOption.PollId, objPollOption.OptionName, objPollOption.Priority, objPollOption.LastModifiedOnDate);
+			//Caching.ClearPollOptionCache(pollId);
+		}
+
+		public void DeletePollOption(int pollOptionId, int pollId)
+		{
+			_dataProvider.DeletePollOption(pollOptionId, pollId);
+			//Caching.ClearPollOptionCache(pollId);
+		}
+
 		#endregion
 
 		#region Poll Result
+
+		public int AddPollResult(PollResultInfo objPollResult)
+		{
+			return _dataProvider.AddPollResult(objPollResult.PollId, objPollResult.PollOptionId, objPollResult.Response, objPollResult.IpAddress, objPollResult.UserId, objPollResult.CreatedOnDate);
+			//Caching.ClearPollResultsCache(objPollResult.PollId);
+		}
+
+		//public PollResultInfo GetPollResult(int pollResultId)
+		//{
+		//    return CBO.FillObject<PollResultInfo>(_dataProvider.GetPollResult(pollResultId));
+		//}
+
+		public List<PollResultInfo> GetPollResults(int pollId)
+		{
+			return CBO.FillCollection<PollResultInfo>(_dataProvider.GetPollResults(pollId));
+		}
+
+		public void UpdatePollResult(PollResultInfo objPollResult, int pollId)
+		{
+			_dataProvider.UpdatePollResult(objPollResult.PollResultId, objPollResult.PollId, objPollResult.PollOptionId, objPollResult.Response, objPollResult.IpAddress, objPollResult.UserId, objPollResult.LastModifiedOnDate);
+			//Caching.ClearPollResultsCache(pollId);
+		}
+
+		public void DeletePollResult(int pollResultId, int pollId)
+		{
+			_dataProvider.DeletePollResult(pollResultId, pollId);
+			//Caching.ClearPollResultsCache(pollId);
+		}
+
+
 		#endregion
 
 		#region Post
@@ -155,15 +243,16 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		#region Post Attachment
 
-		public int AddPostAttachment(PostAttachmentInfo objPostAttach)
+		public int AddPostAttachment(PostAttachmentInfo objPostAttach, int topicId)
 		{
 			return _dataProvider.AddPostAttachment(objPostAttach.PostId, objPostAttach.FileId, objPostAttach.FileUrl, objPostAttach.FileName, objPostAttach.DisplayInline);
+			//Caching.ClearPostAttachmentCache(topicId);
 		}
 
-		public PostAttachmentInfo GetPostAttachment(int attachmentId)
-		{
-			return CBO.FillObject<PostAttachmentInfo>(_dataProvider.GetPostAttachment(attachmentId));
-		}
+		//public PostAttachmentInfo GetPostAttachment(int attachmentId)
+		//{
+		//    return CBO.FillObject<PostAttachmentInfo>(_dataProvider.GetPostAttachment(attachmentId));
+		//}
 
 		public List<PostAttachmentInfo> GetTopicAttachments(int topicId)
 		{
@@ -186,15 +275,16 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		#region Post Rating
 
-		public int AddPostRating(PostRatingInfo objPostRating)
+		public int AddPostRating(PostRatingInfo objPostRating, int topicId)
 		{
 			return _dataProvider.AddPostRating(objPostRating.PostId, objPostRating.UserId, objPostRating.Rating, objPostRating.Helpful, objPostRating.Comments, objPostRating.IpAddress, objPostRating.CreatedOnDate);
+			//Caching.ClearPostRatingCache(topicId);
 		}
 
-		public PostRatingInfo GetPostRating(int ratingId)
-		{
-			return CBO.FillObject<PostRatingInfo>(_dataProvider.GetPostRating(ratingId));
-		}
+		//public PostRatingInfo GetPostRating(int ratingId)
+		//{
+		//    return CBO.FillObject<PostRatingInfo>(_dataProvider.GetPostRating(ratingId));
+		//}
 
 		public List<PostRatingInfo> GetTopicRatings(int topicId)
 		{
@@ -418,12 +508,13 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		public UserInfo GetUser(int portalId, int userId)
 		{
 			return CBO.FillObject<UserInfo>(_dataProvider.GetUser(portalId, userId));
+			//Caching.ClearUserCache(portalId, userId);
 		}
 
 		public void UpdateUser(UserInfo objUser)
 		{
 			_dataProvider.UpdateUser(objUser.PortalId, objUser.UserId, objUser.TopicCount, objUser.ReplyCount, objUser.RewardPoints, objUser.AnswerCount, objUser.QuestionCount, objUser.TrustLevel, objUser.UserCaption, objUser.LastPostDate, objUser.LastActivityDate, objUser.AdminWatch, objUser.DisableAttach, objUser.DisableHtml, objUser.LastModifiedOnDate);
-			//Caching.ClearSettingsCache();
+			//Caching.ClearUserCache(portalId, userId);
 		}
 
 		#endregion

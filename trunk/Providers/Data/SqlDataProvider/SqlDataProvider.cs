@@ -116,6 +116,32 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 		#endregion
 
 		#region Forum
+
+		public int AddForum(int portalId, int moduleId, int parentId, int allowTopics, string name, string description, int sortOrder, bool active, bool hidden, int topicCount, int replyCount, int lastPostId, string slug, int permissionId, int settingId, string emailAddress, float siteMapPriority, DateTime createdOnDate, int createdByUserId)
+		{
+			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Forum_Add"), portalId, moduleId, parentId, allowTopics, name, GetNull(description), sortOrder, active, hidden, topicCount, replyCount, lastPostId, GetNull(slug), permissionId, settingId, GetNull(emailAddress), GetNull(siteMapPriority), createdOnDate, createdByUserId));
+		}
+
+		public IDataReader GetForum(int forumId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Forum_Get"), forumId);
+		}
+
+		public IDataReader GetModuleForums(int moduleId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Forum_GetModule"), moduleId);
+		}
+
+		public void UpdateForum(int forumId, int portalId, int moduleId, int parentId, int allowTopics, string name, string description, int sortOrder, bool active, bool hidden, int topicCount, int replyCount, int lastPostId, string slug, int permissionId, int settingId, string emailAddress, float siteMapPriority, DateTime lastModifiedOnDate, int lastModifiedByUserId)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Forum_Update"), forumId, portalId, moduleId, parentId, allowTopics, name, GetNull(description), sortOrder, active, hidden, topicCount, replyCount, lastPostId, GetNull(slug), permissionId, settingId, GetNull(emailAddress), GetNull(siteMapPriority), lastModifiedOnDate, lastModifiedByUserId);
+		}
+
+		public void DeleteForum(int forumId, int portalId)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Forum_Delete"), forumId, portalId);
+		}
+
 		#endregion
 
 		#region Permission
@@ -148,15 +174,128 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 		#endregion
 
 		#region Poll
+
+		public int AddPoll(int topicId, int userId, string question, string pollType, DateTime createdOnDate)
+		{
+			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Poll_Add"), topicId, userId, GetNull(question), GetNull(pollType), createdOnDate));
+		}
+
+		// I don't think we need this
+		//public IDataReader GetPoll(int pollId)
+		//{
+		//    return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Poll_Get"), pollId);
+		//}
+
+		public IDataReader GetPollByTopic(int topicId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Poll_GetByTopic"), topicId);
+		}
+
+		public void UpdatePoll(int pollId, int topicId, int userId, string question, string pollType, DateTime lastModifiedOnDate)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Poll_Update"), pollId, topicId, userId, GetNull(question), GetNull(pollType), lastModifiedOnDate);
+		}
+
+		public void DeletePoll(int pollId, int topicId)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Poll_Delete"), pollId, topicId);
+		}
+
 		#endregion
 
 		#region Poll Option
+
+		public int AddPollOption(int pollId, string optionName, int priority, DateTime createdOnDate)
+		{
+			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Poll_Option_Add"), pollId, optionName, priority, createdOnDate));
+		}
+
+		// I don't think we need this
+		//public IDataReader GetPollOption(int pollOptionId)
+		//{
+		//    return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Poll_Option_Get"), pollOptionId);
+		//}
+
+		public IDataReader GetPollOptions(int pollId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Poll_Option_GetPoll"), pollId);
+		}
+
+		public void UpdatePollOption(int pollOptionId, int pollId, string optionName, int priority, DateTime lastModifiedOnDate)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Poll_Option_Update"), pollOptionId, pollId, optionName, priority,  lastModifiedOnDate);
+		}
+
+		public void DeletePollOption(int pollOptionId, int pollId)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Poll_Option_Delete"), pollOptionId, pollId);
+		}
+
 		#endregion
 
 		#region Poll Result
+
+		public int AddPollResult(int pollId, int pollOptionId, string response, string ipaddress, int userId, DateTime createdOnDate)
+		{
+			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Poll_Result_Add"), pollId, pollOptionId, GetNull(response), GetNull(ipaddress), GetNull(userId), createdOnDate));
+		}
+
+		// I don't think we need this
+		//public IDataReader GetPollResult(int pollResultId)
+		//{
+		//    return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Poll_Result_Get"), pollResultId);
+		//}
+
+		public IDataReader GetPollResults(int pollId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Poll_Result_GetPoll"), pollId);
+		}
+
+		public void UpdatePollResult(int pollResultId, int pollId, int pollOptionId, string response, string ipaddress, int userId, DateTime lastModifiedOnDate)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Poll_Result_Update"), pollResultId, pollId, pollOptionId, GetNull(response), GetNull(ipaddress), GetNull(userId), lastModifiedOnDate);
+		}
+
+		public void DeletePollResult(int pollResultId, int pollId)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Poll_Result_Delete"), pollResultId, pollId);
+		}
+
 		#endregion
 
 		#region Post
+
+		public int AddPost(int topicId, int parentPostId, string subject, string body, bool isApproved, bool isLocked, bool isPinned, int userId, string displayName, string emailAddress, string ipAddress, bool postReported, float rating, string postIcon, int statusId, string slug, DateTime approvedOnDate, DateTime createdOnDate)
+		{
+			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Post_Add"), topicId, parentPostId, subject, body, isApproved, isLocked, isPinned, userId, GetNull(displayName), GetNull(emailAddress), GetNull(ipAddress), postReported, rating, GetNull(postIcon), GetNull(statusId), GetNull(slug), GetNull(approvedOnDate), createdOnDate));
+		}
+
+		public IDataReader GetPost(int postId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Post_Get"), postId);
+		}
+
+		public IDataReader GetTopicPosts(int topicId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Post_GetTopic"), topicId);
+		}
+
+		public void UpdatePost(int postId, int topicId, int parentPostId, string subject, string body, bool isApproved, bool isLocked, bool isPinned, string displayName, string emailAddress, bool postReported, float rating, string postIcon, int statusId, string slug, DateTime approvedOnDate, DateTime lastModifiedDate)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Post_Update"), postId, topicId, parentPostId, subject, body, isApproved, isLocked, isPinned, GetNull(displayName), GetNull(emailAddress), postReported, rating, GetNull(postIcon), GetNull(statusId), GetNull(slug), GetNull(approvedOnDate), lastModifiedDate);
+
+		}
+
+		public void DeletePost(int postId, int topicId)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Post_Delete"), postId, topicId);
+		}
+
+		public void HardDeletePost(int postId, int topicId)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Post_HardDelete"), postId, topicId);
+		}
+
 		#endregion
 
 		#region Post Attachment
@@ -166,10 +305,11 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Post_Attachment_Add"), postId, fileId, GetNull(fileUrl), GetNull(fileName), displayInline));
 		}
 
-		public IDataReader GetPostAttachment(int attachmentId)
-		{
-			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Post_Attachment_Get"), attachmentId);
-		}
+		// I don't think we need this
+		//public IDataReader GetPostAttachment(int attachmentId)
+		//{
+		//    return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Post_Attachment_Get"), attachmentId);
+		//}
 
 		/// <summary>
 		/// Retrieves a collection of post attachments assigned to a topic from the data store. 
@@ -212,15 +352,11 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Rating_Add"), postId, userId, rating, GetNull(helpful), GetNull(comments), GetNull(ipAddress), createdOnDate));
 		}
 
-		/// <summary>
-		/// Retrieves a single post rating row from the data store.
-		/// </summary>
-		/// <param name="ratingId"></param>
-		/// <returns></returns>
-		public IDataReader GetPostRating(int ratingId)
-		{
-			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Rating_GetPost"), ratingId);
-		}
+		// I don't think we need this
+		//public IDataReader GetPostRating(int ratingId)
+		//{
+		//    return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Rating_GetPost"), ratingId);
+		//}
 
 		/// <summary>
 		/// Retrieves a collection of post ratings assigned to a topic from the data store. 
@@ -353,6 +489,38 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 		#endregion
 
 		#region Topic
+
+		public int AddTopic(int forumId, int viewCount, int replyCount, int topicTypeId, int lastPostId, string slug)
+		{
+			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Topic_Add"), forumId, viewCount, replyCount, topicTypeId, lastPostId, GetNull(slug)));
+		}
+
+		public IDataReader GetTopic(int topicId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Topic_Get"), topicId);
+		}
+
+		public IDataReader GetForumTopics(int forumId, int pageIndex, int pageSize)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Topic_GetForum"), forumId, pageIndex, pageSize);
+		}
+
+		////We need a way to get all topics in a module that a user can see, for the aggregated view. We should only cache this for anonymous users.
+		//public IDataReader GetAllModuleTopics(int moduleId, int pageIndex, int pageSize)
+		//{
+		//    return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Topic_GetAllModule"), moduleId, pageIndex, pageSize);
+		//}
+
+		public void UpdateTopic(int topicId, int forumId, int viewCount, int replyCount, int topicTypeId, int lastPostId, string slug, int contentItemId)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Topic_Update"), topicId, forumId, viewCount, replyCount, topicTypeId, lastPostId, GetNull(slug), contentItemId);
+		}
+
+		public void DeleteTopic(int topicId, int forumId)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Topic_Delete"), topicId, forumId);
+		}
+
 		#endregion
 
 		#region Topic Tracking
@@ -398,6 +566,7 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Tracking_Add"), forumId, userId, maxTopicRead, maxPostRead, lastAccessedOnDate));
 		}
 
+		// I don't think we need this
 		//public IDataReader GetTracking(int trackingId)
 		//{
 		//    return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Tracking_Get"), trackingId);

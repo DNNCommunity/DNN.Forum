@@ -62,12 +62,45 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Poll
+
+		int AddPoll(PollInfo objPoll);
+
+		//PollInfo GetPoll(int pollId);
+
+		List<PollInfo> GetPollByTopic(int topicId);
+
+		void UpdatePoll(PollInfo objPoll);
+
+		void DeletePoll(int pollId, int topicId);
+
 		#endregion
 
 		#region Poll Option
+
+		int AddPollOption(PollOptionInfo objPollOption);
+
+		//PollOptionInfo GetPollOption(int pollOptionId);
+
+		List<PollOptionInfo> GetPollOptions(int pollId);
+
+		void UpdatePollOption(PollOptionInfo objPollOption, int pollId);
+
+		void DeletePollOption(int pollOptionId, int pollId);
+
 		#endregion
 
 		#region Poll Result
+
+		int AddPollResult(PollResultInfo objPollResult);
+
+		//PollResultInfo GetPollResult(int pollResultId);
+
+		List<PollResultInfo> GetPollResults(int pollId);
+
+		void UpdatePollResult(PollResultInfo objPollResult, int pollId);
+
+		void DeletePollResult(int pollResultId, int pollId);
+		
 		#endregion
 
 		#region Post
@@ -75,9 +108,9 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		#region Post Attachment
 
-		int AddPostAttachment(PostAttachmentInfo objPostAttach);
+		int AddPostAttachment(PostAttachmentInfo objPostAttach, int topicId);
 
-		PostAttachmentInfo GetPostAttachment(int attachmentId);
+		//PostAttachmentInfo GetPostAttachment(int attachmentId);
 
 		List<PostAttachmentInfo> GetTopicAttachments(int topicId);
 
@@ -89,9 +122,9 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		#region Post Rating
 
-		int AddPostRating(PostRatingInfo objPostRating);
+		int AddPostRating(PostRatingInfo objPostRating, int topicId);
 
-		PostRatingInfo GetPostRating(int ratingId);
+		//PostRatingInfo GetPostRating(int ratingId);
 
 		List<PostRatingInfo> GetTopicRatings(int topicId);
 
