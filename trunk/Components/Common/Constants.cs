@@ -28,8 +28,6 @@ namespace DotNetNuke.Modules.Forums.Components.Common {
 
 		#region Settings
 
-		internal const string SettingsSampleInteger = "DNN_FORUMS_SAMPLESETTING_INTEGER";
-
 		internal const int DefaultSettingsSampleInteger = 1;
 		
 		#endregion

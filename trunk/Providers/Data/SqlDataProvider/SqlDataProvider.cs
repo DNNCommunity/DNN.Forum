@@ -150,22 +150,48 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 		#region Poll
 		#endregion
 
-		#region Poll_Option
+		#region Poll Option
 		#endregion
 
-		#region Poll_Result
+		#region Poll Result
 		#endregion
 
 		#region Post
 		#endregion
 
-		#region Post_Attachment
+		#region Post Attachment
 		#endregion
 
-		#region Post_Rating
+		#region Post Rating
 		#endregion
 
 		#region Rank
+
+		public int AddRank(int portalId, int moduleId, string rankName, int minPosts, int maxPosts, string display, DateTime createdOnDate)
+		{
+			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Rank_Add"), portalId, moduleId, rankName, minPosts, maxPosts, GetNull(display), createdOnDate));
+		}
+
+		public IDataReader GetRank(int rankId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Rank_Get"), rankId);
+		}
+
+		public IDataReader GetModuleRank(int moduleId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Rank_GetModule"), moduleId);
+		}
+
+		public void UpdateRank(int rankId, int portalId, int moduleId, string rankName, int minPosts, int maxPosts, string display, DateTime lastModifiedOnDate)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Rank_Update"), rankId, portalId, moduleId, rankName, minPosts, maxPosts, GetNull(display), lastModifiedOnDate);
+		}
+
+		public void DeleteRank(int rankId, int portalId)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Rank_Delete"), rankId, portalId);
+		}
+
 		#endregion
 
 		#region Setting

@@ -66,22 +66,33 @@ namespace DotNetNuke.Modules.Forums.Providers.Data
 		#region Poll
 		#endregion
 
-		#region Poll_Option
+		#region Poll Option
 		#endregion
 
-		#region Poll_Result
+		#region Poll Result
 		#endregion
 
 		#region Post
 		#endregion
 
-		#region Post_Attachment
+		#region Post Attachment
 		#endregion
 
-		#region Post_Rating
+		#region Post Rating
 		#endregion
 
 		#region Rank
+
+	    int AddRank(int portalId, int moduleId, string rankName, int minPosts, int maxPosts, string display, DateTime createdOnDate);
+
+	    IDataReader GetRank(int rankId);
+
+	    IDataReader GetModuleRank(int moduleId);
+
+	    void UpdateRank(int rankId, int portalId, int moduleId, string rankName, int minPosts, int maxPosts, string display, DateTime lastModifiedOnDate);
+
+	    void DeleteRank(int rankId, int portalId);
+
 		#endregion
 
 		#region Setting

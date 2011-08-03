@@ -144,22 +144,50 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#region Poll
 		#endregion
 
-		#region Poll_Option
+		#region Poll Option
 		#endregion
 
-		#region Poll_Result
+		#region Poll Result
 		#endregion
 
 		#region Post
 		#endregion
 
-		#region Post_Attachment
+		#region Post Attachment
 		#endregion
 
-		#region Post_Rating
+		#region Post Rating
 		#endregion
 
 		#region Rank
+
+		public int AddRank(RankInfo objRank)
+		{
+			return _dataProvider.AddRank(objRank.PortalId, objRank.ModuleId, objRank.RankName, objRank.MinPosts, objRank.MaxPosts, objRank.Display, objRank.CreatedOnDate);
+		}
+
+		public RankInfo GetRank(int rankId)
+		{
+			return CBO.FillObject<RankInfo>(_dataProvider.GetRank(rankId));
+		}
+
+		public List<RankInfo> GetModuleRank(int moduleId)
+		{
+			return CBO.FillCollection<RankInfo>(_dataProvider.GetModuleRank(moduleId));
+		}
+
+		public void UpdateRank(RankInfo objRank)
+		{
+			_dataProvider.UpdateRank(objRank.RankId, objRank.PortalId, objRank.ModuleId, objRank.RankName, objRank.MinPosts, objRank.MaxPosts, objRank.Display, objRank.LastModifiedOnDate);
+			//Caching.ClearRankingCache(objRank.portalId);
+		}
+
+		public void DeleteRank(int rankId, int portalId)
+		{
+			_dataProvider.DeleteRank(rankId, portalId);
+			//Caching.ClearRankingCache(portalId);
+		}
+
 		#endregion
 
 		#region Setting

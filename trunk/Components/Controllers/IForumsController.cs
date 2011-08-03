@@ -64,22 +64,33 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#region Poll
 		#endregion
 
-		#region Poll_Option
+		#region Poll Option
 		#endregion
 
-		#region Poll_Result
+		#region Poll Result
 		#endregion
 
 		#region Post
 		#endregion
 
-		#region Post_Attachment
+		#region Post Attachment
 		#endregion
 
-		#region Post_Rating
+		#region Post Rating
 		#endregion
 
 		#region Rank
+
+		int AddRank(RankInfo objRank);
+
+		RankInfo GetRank(int rankId);
+
+		List<RankInfo> GetModuleRank(int moduleId);
+
+		void UpdateRank(RankInfo objRank);
+
+		void DeleteRank(int rankId, int portalId);
+
 		#endregion
 
 		#region Setting
@@ -98,17 +109,17 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		#region Subscription
 
-	    int AddSubscription(SubscriptionInfo objSubscription);
+		int AddSubscription(SubscriptionInfo objSubscription);
 
-	    SubscriptionInfo GetSubscription(int subscriptionId);
+		SubscriptionInfo GetSubscription(int subscriptionId);
 
-	    List<SubscriptionInfo> GetTopicsSubscribers(int portalId, int moduleId, int forumId, int topicId);
+		List<SubscriptionInfo> GetTopicsSubscribers(int portalId, int moduleId, int forumId, int topicId);
 
-	    List<SubscriptionInfo> GetUsersSubscriptions(int portalId, int userId);
+		List<SubscriptionInfo> GetUsersSubscriptions(int portalId, int userId);
 
-	    void UpdateSubscription(SubscriptionInfo objSubscription);
+		void UpdateSubscription(SubscriptionInfo objSubscription);
 
-	    void DeleteSubscription(int subscriptionId, int portalId);
+		void DeleteSubscription(int subscriptionId, int portalId);
 
 		#endregion
 
