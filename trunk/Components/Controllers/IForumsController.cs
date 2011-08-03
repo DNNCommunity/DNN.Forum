@@ -103,6 +103,19 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Topic_Tracking
+
+		int AddTopicTracking(TopicTrackingInfo objTopicTracking);
+
+		//TopicTrackingInfo GetTopicTracking(int topicTrackingId);
+
+		List<TopicTrackingInfo> GetTopicTrackingByForum(int forumId);
+
+		List<TopicTrackingInfo> GetTopicTrackingByTopic(int topicId);
+
+		void UpdateTopicTracking(TopicTrackingInfo objTopicTracking);
+
+		void DeleteTopicTracking(int topicTrackingId);
+
 		#endregion
 
 		#region Tracking

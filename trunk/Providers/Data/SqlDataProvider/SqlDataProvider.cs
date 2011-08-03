@@ -204,6 +204,38 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 		#endregion
 
 		#region Topic_Tracking
+
+		public int AddTopicTracking(int forumId, int topicId, int lastPostId, int userId, DateTime createdOnDate)
+		{
+			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Topic_Tracking_Add"), forumId, topicId, lastPostId, userId, createdOnDate));
+		}
+
+		//public IDataReader GetTopicTracking(int topicTrackingId)
+		//{
+		//    return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Topic_Tracking_Get"), topicTrackingId);
+		//}
+
+
+		public IDataReader GetTopicTrackingByForum(int forumId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Topic_Tracking_GetByForum"), forumId);
+		}
+
+		public IDataReader GetTopicTrackingByTopic(int topicId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Topic_Tracking_GetByTopic"), topicId);
+		}
+
+		public void UpdateTopicTracking(int topicTrackingId, int forumId, int topicId, int lastPostId, int userId, DateTime lastModifiedOnDate)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Topic_Tracking_Update"), topicTrackingId, forumId, topicId, lastPostId, userId, lastModifiedOnDate);
+		}
+
+		public void DeleteTopicTracking(int topicTrackingId)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Topic_Tracking_Delete"), topicTrackingId);
+		}
+
 		#endregion
 
 		#region Tracking

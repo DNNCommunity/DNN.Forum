@@ -200,6 +200,37 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Topic_Tracking
+
+		public int AddTopicTracking(TopicTrackingInfo objTopicTracking)
+		{
+			return _dataProvider.AddTracking(objTopicTracking.ForumId, objTopicTracking.TopicId, objTopicTracking.LastPostId, objTopicTracking.UserId, objTopicTracking.CreatedOnDate);
+		}
+
+		//public TopicTrackingInfo GetTopicTracking(int topicTrackingId)
+		//{
+	   //     return CBO.FillObject<TopicTrackingInfo>(_dataProvider.GetTopicTracking(topicTrackingId));
+		//}
+
+		public List<TopicTrackingInfo> GetTopicTrackingByForum(int forumId)
+		{
+			return CBO.FillCollection<TopicTrackingInfo>(_dataProvider.GetTopicTrackingByForum(forumId));
+		}
+
+		public List<TopicTrackingInfo> GetTopicTrackingByTopic(int topicId)
+		{
+			return CBO.FillCollection<TopicTrackingInfo>(_dataProvider.GetTopicTrackingByTopic(topicId));
+		}
+
+		public void UpdateTopicTracking(TopicTrackingInfo objTopicTracking)
+		{
+			_dataProvider.UpdateTopicTracking(objTopicTracking.TopicTrackingId, objTopicTracking.ForumId, objTopicTracking.TopicId, objTopicTracking.LastPostId, objTopicTracking.UserId, objTopicTracking.LastModifiedOnDate);
+		}
+
+		public void DeleteTopicTracking(int topicTrackingId)
+		{
+			_dataProvider.DeleteTopicTracking(topicTrackingId);
+		}
+
 		#endregion
 
 		#region Tracking

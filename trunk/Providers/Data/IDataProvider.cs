@@ -105,6 +105,19 @@ namespace DotNetNuke.Modules.Forums.Providers.Data
 		#endregion
 
 		#region Topic_Tracking
+
+	    int AddTopicTracking(int forumId, int topicId, int lastPostId, int userId, DateTime createdOnDate);
+
+	    //IDataReader GetTopicTracking(int topicTrackingId);
+
+	    IDataReader GetTopicTrackingByForum(int forumId);
+
+	    IDataReader GetTopicTrackingByTopic(int topicId);
+
+	    void UpdateTopicTracking(int topicTrackingId, int forumId, int topicId, int lastPostId, int userId, DateTime lastModifiedOnDate);
+
+	    void DeleteTopicTracking(int topicTrackingId);
+
 		#endregion
 
 		#region Tracking
