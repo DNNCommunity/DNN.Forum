@@ -194,12 +194,43 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Subscription
+
+		public int AddSubscription(SubscriptionInfo objSubscription)
+		{
+			return _dataProvider.AddSubscription(objSubscription.PortalId, objSubscription.ModuleId, objSubscription.ForumId, objSubscription.TopicId, objSubscription.SubscriptionType, objSubscription.UserId);
+		}
+
+		public SubscriptionInfo GetSubscription(int subscriptionId)
+		{
+			return CBO.FillObject<SubscriptionInfo>(_dataProvider.GetSubscription(subscriptionId));
+		}
+
+		public List<SubscriptionInfo> GetTopicsSubscribers(int portalId, int moduleId, int forumId, int topicId)
+		{
+			return CBO.FillCollection<SubscriptionInfo>(_dataProvider.GetTopicsSubscribers(portalId, moduleId, forumId, topicId));
+		}
+
+		public List<SubscriptionInfo> GetUsersSubscriptions(int portalId, int userId)
+		{
+			return CBO.FillCollection<SubscriptionInfo>(_dataProvider.GetUsersSubscriptions(portalId, userId));
+		}
+
+		public void UpdateSubscription(SubscriptionInfo objSubscription)
+		{
+			_dataProvider.UpdateSubscription(objSubscription.SubscriptionId, objSubscription.PortalId, objSubscription.ModuleId, objSubscription.ForumId, objSubscription.TopicId, objSubscription.SubscriptionType, objSubscription.UserId);
+		}
+
+		public void DeleteSubscription(int subscriptionId, int portalId)
+		{
+			_dataProvider.DeleteSubscription(subscriptionId, portalId);
+		}
+
 		#endregion
 
 		#region Topic
 		#endregion
 
-		#region Topic_Tracking
+		#region Topic Tracking
 
 		public int AddTopicTracking(TopicTrackingInfo objTopicTracking)
 		{

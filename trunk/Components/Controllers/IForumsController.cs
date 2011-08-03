@@ -97,12 +97,25 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Subscription
+
+	    int AddSubscription(SubscriptionInfo objSubscription);
+
+	    SubscriptionInfo GetSubscription(int subscriptionId);
+
+	    List<SubscriptionInfo> GetTopicsSubscribers(int portalId, int moduleId, int forumId, int topicId);
+
+	    List<SubscriptionInfo> GetUsersSubscriptions(int portalId, int userId);
+
+	    void UpdateSubscription(SubscriptionInfo objSubscription);
+
+	    void DeleteSubscription(int subscriptionId, int portalId);
+
 		#endregion
 
 		#region Topic
 		#endregion
 
-		#region Topic_Tracking
+		#region Topic Tracking
 
 		int AddTopicTracking(TopicTrackingInfo objTopicTracking);
 

@@ -198,12 +198,43 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 		#endregion
 
 		#region Subscription
+
+		public int AddSubscription(int portalId, int moduleId, int forumId, int topicId, int subscriptionType, int userId)
+		{
+			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Subscription_Add"), portalId, moduleId, forumId, topicId, subscriptionType, userId));
+		}
+
+		public IDataReader GetSubscription(int subscriptionId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Subscription_Get"), subscriptionId);
+		}
+
+		public IDataReader GetTopicsSubscribers(int portalId, int moduleId, int forumId, int topicId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Subscription_GetTopicSubscribers"), portalId, moduleId, forumId, topicId);
+		}
+
+		public IDataReader GetUsersSubscriptions(int portalId, int userId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Subscription_GetUsers"), portalId, userId);
+		}
+
+		public void UpdateSubscription(int subscriptionId, int portalId, int moduleId, int forumId, int topicId, int subscriptionType, int userId)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Subscription_Update"), subscriptionId, portalId, moduleId, forumId, topicId, subscriptionType, userId);
+		}
+
+		public void DeleteSubscription(int subscriptionId, int portalId)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Subscription_Delete"), subscriptionId, portalId);
+		}
+
 		#endregion
 
 		#region Topic
 		#endregion
 
-		#region Topic_Tracking
+		#region Topic Tracking
 
 		public int AddTopicTracking(int forumId, int topicId, int lastPostId, int userId, DateTime createdOnDate)
 		{
@@ -239,6 +270,7 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 		#endregion
 
 		#region Tracking
+		// this is the same as user threads/user forums from the core forum
 
 		public int AddTracking(int forumId, int userId, int maxTopicRead, int maxPostRead, DateTime lastAccessedOnDate)
 		{

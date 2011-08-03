@@ -99,28 +99,42 @@ namespace DotNetNuke.Modules.Forums.Providers.Data
 		#endregion
 
 		#region Subscription
+
+		int AddSubscription(int portalId, int moduleId, int forumId, int topicId, int subscriptionType, int userId);
+
+		IDataReader GetSubscription(int subscriptionId);
+
+		IDataReader GetTopicsSubscribers(int portalId, int moduleId, int forumId, int topicId);
+
+		IDataReader GetUsersSubscriptions(int portalId, int userId);
+
+		void UpdateSubscription(int subscriptionId, int portalId, int moduleId, int forumId, int topicId, int subscriptionType, int userId);
+
+		void DeleteSubscription(int subscriptionId, int portalId);
+
 		#endregion
 
 		#region Topic
 		#endregion
 
-		#region Topic_Tracking
+		#region Topic Tracking
 
-	    int AddTopicTracking(int forumId, int topicId, int lastPostId, int userId, DateTime createdOnDate);
+		int AddTopicTracking(int forumId, int topicId, int lastPostId, int userId, DateTime createdOnDate);
 
-	    //IDataReader GetTopicTracking(int topicTrackingId);
+		//IDataReader GetTopicTracking(int topicTrackingId);
 
-	    IDataReader GetTopicTrackingByForum(int forumId);
+		IDataReader GetTopicTrackingByForum(int forumId);
 
-	    IDataReader GetTopicTrackingByTopic(int topicId);
+		IDataReader GetTopicTrackingByTopic(int topicId);
 
-	    void UpdateTopicTracking(int topicTrackingId, int forumId, int topicId, int lastPostId, int userId, DateTime lastModifiedOnDate);
+		void UpdateTopicTracking(int topicTrackingId, int forumId, int topicId, int lastPostId, int userId, DateTime lastModifiedOnDate);
 
-	    void DeleteTopicTracking(int topicTrackingId);
+		void DeleteTopicTracking(int topicTrackingId);
 
 		#endregion
 
 		#region Tracking
+		// this is the same as user threads/user forums from the core forum
 
 		int AddTracking(int forumId, int userId, int maxTopicRead, int maxPostRead, DateTime lastAccessedOnDate);
 
