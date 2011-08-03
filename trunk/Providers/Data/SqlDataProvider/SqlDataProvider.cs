@@ -117,7 +117,7 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 
 		#region Forum
 
-		public int AddForum(int portalId, int moduleId, int parentId, int allowTopics, string name, string description, int sortOrder, bool active, bool hidden, int topicCount, int replyCount, int lastPostId, string slug, int permissionId, int settingId, string emailAddress, float siteMapPriority, DateTime createdOnDate, int createdByUserId)
+		public int AddForum(int portalId, int moduleId, int parentId, bool allowTopics, string name, string description, int sortOrder, bool active, bool hidden, int topicCount, int replyCount, int lastPostId, string slug, int permissionId, int settingId, string emailAddress, float siteMapPriority, DateTime createdOnDate, int createdByUserId)
 		{
 			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Forum_Add"), portalId, moduleId, parentId, allowTopics, name, GetNull(description), sortOrder, active, hidden, topicCount, replyCount, lastPostId, GetNull(slug), permissionId, settingId, GetNull(emailAddress), GetNull(siteMapPriority), createdOnDate, createdByUserId));
 		}
@@ -132,14 +132,14 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Forum_GetModule"), moduleId);
 		}
 
-		public void UpdateForum(int forumId, int portalId, int moduleId, int parentId, int allowTopics, string name, string description, int sortOrder, bool active, bool hidden, int topicCount, int replyCount, int lastPostId, string slug, int permissionId, int settingId, string emailAddress, float siteMapPriority, DateTime lastModifiedOnDate, int lastModifiedByUserId)
+		public void UpdateForum(int forumId, int portalId, int moduleId, int parentId, bool allowTopics, string name, string description, int sortOrder, bool active, bool hidden, int topicCount, int replyCount, int lastPostId, string slug, int permissionId, int settingId, string emailAddress, float siteMapPriority, DateTime lastModifiedOnDate, int lastModifiedByUserId)
 		{
 			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Forum_Update"), forumId, portalId, moduleId, parentId, allowTopics, name, GetNull(description), sortOrder, active, hidden, topicCount, replyCount, lastPostId, GetNull(slug), permissionId, settingId, GetNull(emailAddress), GetNull(siteMapPriority), lastModifiedOnDate, lastModifiedByUserId);
 		}
 
-		public void DeleteForum(int forumId, int portalId)
+		public void DeleteForum(int forumId, int moduleId)
 		{
-			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Forum_Delete"), forumId, portalId);
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Forum_Delete"), forumId, moduleId);
 		}
 
 		#endregion
@@ -265,9 +265,9 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 
 		#region Post
 
-		public int AddPost(int topicId, int parentPostId, string subject, string body, bool isApproved, bool isLocked, bool isPinned, int userId, string displayName, string emailAddress, string ipAddress, bool postReported, float rating, string postIcon, int statusId, string slug, DateTime approvedOnDate, DateTime createdOnDate)
+		public int AddPost(int topicId, int parentPostId, string subject, string body, bool isApproved, bool isLocked, bool isPinned, int userId, string displayName, string emailAddress, string ipAddress, bool postReported, float rating, string postIcon, int statusId, string slug, string postData, DateTime approvedOnDate, DateTime createdDate)
 		{
-			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Post_Add"), topicId, parentPostId, subject, body, isApproved, isLocked, isPinned, userId, GetNull(displayName), GetNull(emailAddress), GetNull(ipAddress), postReported, rating, GetNull(postIcon), GetNull(statusId), GetNull(slug), GetNull(approvedOnDate), createdOnDate));
+			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Post_Add"), topicId, parentPostId, subject, body, isApproved, isLocked, isPinned, userId, GetNull(displayName), GetNull(emailAddress), GetNull(ipAddress), postReported, rating, GetNull(postIcon), GetNull(statusId), GetNull(slug), GetNull(postData), GetNull(approvedOnDate), createdDate));
 		}
 
 		public IDataReader GetPost(int postId)
@@ -280,9 +280,9 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Post_GetTopic"), topicId);
 		}
 
-		public void UpdatePost(int postId, int topicId, int parentPostId, string subject, string body, bool isApproved, bool isLocked, bool isPinned, string displayName, string emailAddress, bool postReported, float rating, string postIcon, int statusId, string slug, DateTime approvedOnDate, DateTime lastModifiedDate)
+		public void UpdatePost(int postId, int topicId, int parentPostId, string subject, string body, bool isApproved, bool isLocked, bool isPinned, string displayName, string emailAddress, bool postReported, float rating, string postIcon, int statusId, string slug, string postData, DateTime approvedOnDate, DateTime lastModifiedDate)
 		{
-			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Post_Update"), postId, topicId, parentPostId, subject, body, isApproved, isLocked, isPinned, GetNull(displayName), GetNull(emailAddress), postReported, rating, GetNull(postIcon), GetNull(statusId), GetNull(slug), GetNull(approvedOnDate), lastModifiedDate);
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Post_Update"), postId, topicId, parentPostId, subject, body, isApproved, isLocked, isPinned, GetNull(displayName), GetNull(emailAddress), postReported, rating, GetNull(postIcon), GetNull(statusId), GetNull(slug), GetNull(postData), GetNull(approvedOnDate), lastModifiedDate);
 
 		}
 

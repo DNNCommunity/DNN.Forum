@@ -98,7 +98,7 @@ namespace DotNetNuke.Modules.Forums.Components.Entities
 		/// <remarks>100 characters</remarks>
 		public string Slug { get; set; }
 
-		//public string PostData { get; set; }
+		public string PostData { get; set; }
 
 		public DateTime ApprovedOnDate { get; set; }
 

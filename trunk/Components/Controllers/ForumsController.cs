@@ -108,6 +108,35 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Forum
+
+		public int AddForum(ForumInfo objForum)
+		{
+			return _dataProvider.AddForum(objForum.PortalId, objForum.ModuleId, objForum.ParentId, objForum.AllowTopics, objForum.Name, objForum.Description, objForum.SortOrder, objForum.Active, objForum.Hidden, objForum.TopicCount, objForum.ReplyCount, objForum.LastPostId, objForum.Slug, objForum.PermissionId, objForum.SettingId, objForum.EmailAddress, objForum.SiteMapPriority, objForum.CreatedOnDate, objForum.CreatedByUserId);
+			//Caching.ClearForumCache(objForum.ModuleId, objForum.PortalId);
+		}
+
+		public ForumInfo GetForum(int forumId)
+		{
+			return CBO.FillObject<ForumInfo>(_dataProvider.GetForum(forumId));
+		}
+
+		public List<ForumInfo> GetModuleForums(int moduleId)
+		{
+			return CBO.FillCollection<ForumInfo>(_dataProvider.GetModuleForums(moduleId));
+		}
+
+		public void UpdateForum(ForumInfo objForum)
+		{
+			_dataProvider.UpdateForum(objForum.ForumId, objForum.PortalId, objForum.ModuleId, objForum.ParentId, objForum.AllowTopics, objForum.Name, objForum.Description, objForum.SortOrder, objForum.Active, objForum.Hidden, objForum.TopicCount, objForum.ReplyCount, objForum.LastPostId, objForum.Slug, objForum.PermissionId, objForum.SettingId, objForum.EmailAddress, objForum.SiteMapPriority, objForum.LastModifiedOnDate, objForum.LastModifiedByUserId);
+			//Caching.ClearForumCache(objForum.ModuleId, objForum.PortalId);
+		}
+
+		public void DeleteForum(int forumId, int moduleId, int portalId)
+		{
+			_dataProvider.DeleteForum(forumId, moduleId);
+			//Caching.ClearForumCache(moduleId, portalId);
+		}
+
 		#endregion
 
 		#region Permission
@@ -239,6 +268,40 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Post
+
+		public int AddPost(PostInfo objPost)
+		{
+			return _dataProvider.AddPost(objPost.TopicId, objPost.ParentPostId, objPost.Subject, objPost.Body, objPost.IsApproved, objPost.IsLocked, objPost.IsPinned, objPost.UserId, objPost.DisplayName, objPost.EmailAddress, objPost.IpAddress, objPost.PostReported, objPost.Rating, objPost.PostIcon, objPost.StatusId, objPost.Slug, objPost.PostData, objPost.ApprovedOnDate, objPost.CreatedDate);
+			//Caching.ClearPostCache(topicId);
+		}
+
+		public PostInfo GetPost(int postId)
+		{
+			return CBO.FillObject<PostInfo>(_dataProvider.GetPost(postId));
+		}
+
+		public List<PostInfo> GetTopicPosts(int topicId)
+		{
+			return CBO.FillCollection<PostInfo>(_dataProvider.GetTopicPosts(topicId));
+		}
+
+		public void UpdatePost(PostInfo objPost)
+		{
+			_dataProvider.UpdatePost(objPost.PostId, objPost.TopicId, objPost.ParentPostId, objPost.Subject, objPost.Body, objPost.IsApproved, objPost.IsLocked, objPost.IsPinned, objPost.DisplayName, objPost.EmailAddress, objPost.PostReported, objPost.Rating, objPost.PostIcon, objPost.StatusId, objPost.Slug, objPost.PostData, objPost.ApprovedOnDate, objPost.LastModifiedDate);
+		}
+
+		public void DeletePost(int postId, int topicId)
+		{
+			_dataProvider.DeletePost(postId, topicId);
+			//Caching.ClearPostCache(topicId);
+		}
+
+		public void HardDeletePost(int postId, int topicId)
+		{
+			_dataProvider.HardDeletePost(postId, topicId);
+			//Caching.ClearPostCache(topicId);
+		}
+
 		#endregion
 
 		#region Post Attachment
@@ -402,6 +465,40 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Topic
+
+		public int AddTopic(TopicInfo objTopic, int moduleId, int portalId)
+		{
+			return _dataProvider.AddTopic(objTopic.ForumId, objTopic.ViewCount, objTopic.ReplyCount, objTopic.TopicTypeId, objTopic.LastPostId, objTopic.Slug);
+			//Caching.ClearTopicCache(topicId, forumId, moduleId, portalId); 
+		}
+
+		public TopicInfo GetTopic(int topicId)
+		{
+			return CBO.FillObject<TopicInfo>(_dataProvider.GetTopic(topicId));
+		}
+
+		public List<TopicInfo> GetForumTopics(int forumId, int pageIndex, int pageSize)
+		{
+			return CBO.FillCollection<TopicInfo>(_dataProvider.GetForumTopics(forumId, pageIndex, pageSize));
+		}
+
+		//public List<TopicInfo> GetAllModuleTopics(int moduleId, int pageIndex, int pageSize)
+		//{
+		//    return CBO.FillCollection<TopicInfo>(_dataProvider.GetAllModuleTopics(moduleId, pageIndex, pageSize));
+		//}
+
+		public void UpdateTopic(TopicInfo objTopic, int moduleId, int portalId)
+		{
+			_dataProvider.UpdateTopic(objTopic.TopicId, objTopic.ForumId, objTopic.ViewCount, objTopic.ReplyCount, objTopic.TopicTypeId, objTopic.LastPostId, objTopic.Slug, objTopic.ContentItemId);
+			//Caching.ClearTopicCache(topicId, forumId, moduleId, portalId); 
+		}
+
+		public void DeleteTopic(int topicId, int forumId, int moduleId, int portalId)
+		{
+			_dataProvider.DeleteTopic(topicId, forumId);
+			//Caching.ClearTopicCache(topicId, forumId, moduleId, portalId); 
+		}
+
 		#endregion
 
 		#region Topic Tracking

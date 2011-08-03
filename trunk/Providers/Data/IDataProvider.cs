@@ -47,6 +47,17 @@ namespace DotNetNuke.Modules.Forums.Providers.Data
 		#endregion
 
 		#region Forum
+
+		int AddForum(int portalId, int moduleId, int parentId, bool allowTopics, string name, string description, int sortOrder, bool active, bool hidden, int topicCount, int replyCount, int lastPostId, string slug, int permissionId, int settingId, string emailAddress, float siteMapPriority, DateTime createdOnDate, int createdByUserId);
+
+		IDataReader GetForum(int forumId);
+
+		IDataReader GetModuleForums(int moduleId);
+
+		void UpdateForum(int forumId, int portalId, int moduleId, int parentId, bool allowTopics, string name, string description, int sortOrder, bool active, bool hidden, int topicCount, int replyCount, int lastPostId, string slug, int permissionId, int settingId, string emailAddress, float siteMapPriority, DateTime lastModifiedOnDate, int lastModifiedByUserId);
+
+		void DeleteForum(int forumId, int moduleId);
+
 		#endregion
 
 		#region Permission
@@ -106,6 +117,19 @@ namespace DotNetNuke.Modules.Forums.Providers.Data
 		#endregion
 
 		#region Post
+
+		int AddPost(int topicId, int parentPostId, string subject, string body, bool isApproved, bool isLocked, bool isPinned, int userId, string displayName, string emailAddress, string ipAddress, bool postReported, float rating, string postIcon, int statusId, string slug, string postData, DateTime approvedOnDate, DateTime createdDate);
+
+		IDataReader GetPost(int postId);
+		
+		IDataReader GetTopicPosts(int topicId);
+
+		void UpdatePost(int postId, int topicId, int parentPostId, string subject, string body, bool isApproved, bool isLocked, bool isPinned, string displayName, string emailAddress, bool postReported, float rating, string postIcon, int statusId, string slug, string postData, DateTime approvedOnDate, DateTime lastModifiedDate);
+
+		void DeletePost(int postId, int topicId);
+
+		void HardDeletePost(int postId, int topicId);
+
 		#endregion
 
 		#region Post Attachment
@@ -181,6 +205,19 @@ namespace DotNetNuke.Modules.Forums.Providers.Data
 		#endregion
 
 		#region Topic
+
+		int AddTopic(int forumId, int viewCount, int replyCount, int topicTypeId, int lastPostId, string slug);
+
+		IDataReader GetTopic(int topicId);
+
+		IDataReader GetForumTopics(int forumId, int pageIndex, int pageSize);
+
+		//IDataReader GetAllModuleTopics(int moduleId, int pageIndex, int pageSize);
+
+		void UpdateTopic(int topicId, int forumId, int viewCount, int replyCount, int topicTypeId, int lastPostId, string slug, int contentItemId);
+
+		void DeleteTopic(int topicId, int forumId);
+
 		#endregion
 
 		#region Topic Tracking

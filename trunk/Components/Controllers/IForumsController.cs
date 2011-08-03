@@ -45,6 +45,17 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Forum
+
+		int AddForum(ForumInfo objForum);
+
+		ForumInfo GetForum(int forumId);
+
+		List<ForumInfo> GetModuleForums(int moduleId);
+
+		void UpdateForum(ForumInfo objForum);
+
+		void DeleteForum(int forumId, int moduleId, int portalId);
+
 		#endregion
 
 		#region Permission
@@ -104,6 +115,19 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Post
+
+		int AddPost(PostInfo objPost);
+
+		PostInfo GetPost(int postId);
+
+		List<PostInfo> GetTopicPosts(int topicId);
+
+		void UpdatePost(PostInfo objPost);
+
+		void DeletePost(int postId, int topicId);
+
+		void HardDeletePost(int postId, int topicId);
+
 		#endregion
 
 		#region Post Attachment
@@ -179,6 +203,19 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Topic
+
+		int AddTopic(TopicInfo objTopic, int moduleId, int portalId);
+
+		TopicInfo GetTopic(int topicId);
+
+		List<TopicInfo> GetForumTopics(int forumId, int pageIndex, int pageSize);
+
+		//List<TopicInfo> GetAllModuleTopics(int moduleId, int pageIndex, int pageSize);
+
+		void UpdateTopic(TopicInfo objTopic, int moduleId, int portalId);
+
+		void DeleteTopic(int topicId, int forumId, int moduleId, int portalId);
+
 		#endregion
 
 		#region Topic Tracking
