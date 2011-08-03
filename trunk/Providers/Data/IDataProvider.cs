@@ -79,6 +79,17 @@ namespace DotNetNuke.Modules.Forums.Providers.Data
 		#endregion
 
 		#region Post Rating
+
+	    int AddPostRating(int postId, int userId, int rating, bool helpful, string comments, string ipAddress, DateTime createdOnDate);
+
+	    IDataReader GetPostRating(int ratingId);
+
+	    IDataReader GetTopicRatings(int topicId);
+
+	    void UpdatePostRating(int ratingId, int postId, int userId, int rating, bool helpful, string comments, string ipAddress);
+
+	    void DeletePostRating(int ratingId, int portalId);
+
 		#endregion
 
 		#region Rank

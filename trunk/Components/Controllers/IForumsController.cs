@@ -77,6 +77,17 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Post Rating
+
+		int AddPostRating(PostRatingInfo objPostRating);
+
+		PostRatingInfo GetPostRating(int ratingId);
+
+		List<PostRatingInfo> GetTopicRatings(int topicId);
+
+		void UpdatePostRating(PostRatingInfo objPostRating);
+
+		void DeletePostRating(int ratingId, int portalId, int topicId);
+
 		#endregion
 
 		#region Rank

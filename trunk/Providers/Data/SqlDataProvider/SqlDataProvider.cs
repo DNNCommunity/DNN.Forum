@@ -163,6 +163,69 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 		#endregion
 
 		#region Post Rating
+
+		/// <summary>
+		/// Adds a post rating (for a specific user and post) row to the data store.
+		/// </summary>
+		/// <param name="postId"></param>
+		/// <param name="userId"></param>
+		/// <param name="rating"></param>
+		/// <param name="helpful"></param>
+		/// <param name="comments"></param>
+		/// <param name="ipAddress"></param>
+		/// <param name="createdOnDate"></param>
+		/// <returns></returns>
+		public int AddPostRating(int postId, int userId, int rating, bool helpful, string comments, string ipAddress, DateTime createdOnDate)
+		{
+			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Rating_Add"), postId, userId, rating, GetNull(helpful), GetNull(comments), GetNull(ipAddress), createdOnDate));
+		}
+
+		/// <summary>
+		/// Retrieves a single post rating row from the data store.
+		/// </summary>
+		/// <param name="ratingId"></param>
+		/// <returns></returns>
+		public IDataReader GetPostRating(int ratingId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Rating_GetPost"), ratingId);
+		}
+
+		/// <summary>
+		/// Retrieves a collection of post ratings assigned to a topic from the data store. 
+		/// </summary>
+		/// <param name="topicId"></param>
+		/// <returns></returns>
+		/// <remarks>It seems like it would be more efficient to get all post ratings for posts in a single topic. You could then cache this and query via linq (handle in sproc.).</remarks>
+		public IDataReader GetTopicRatings(int topicId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Rating_GetTopic"), topicId);
+		}
+
+		/// <summary>
+		/// Updates a post rating row in the data store. 
+		/// </summary>
+		/// <param name="ratingId"></param>
+		/// <param name="postId"></param>
+		/// <param name="userId"></param>
+		/// <param name="rating"></param>
+		/// <param name="helpful"></param>
+		/// <param name="comments"></param>
+		/// <param name="ipAddress"></param>
+		public void UpdatePostRating(int ratingId, int postId, int userId, int rating, bool helpful, string comments, string ipAddress)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Rating_Update"), ratingId, postId, userId, rating, GetNull(helpful), GetNull(comments), GetNull(ipAddress));
+		}
+
+		/// <summary>
+		/// Removes a post rating row from the data store. 
+		/// </summary>
+		/// <param name="ratingId"></param>
+		/// <param name="portalId"></param>
+		public void DeletePostRating(int ratingId, int portalId)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Rating_Delete"), ratingId, portalId);
+		}
+
 		#endregion
 
 		#region Rank

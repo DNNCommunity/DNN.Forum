@@ -157,6 +157,33 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Post Rating
+
+		public int AddPostRating(PostRatingInfo objPostRating)
+		{
+			return _dataProvider.AddPostRating(objPostRating.PostId, objPostRating.UserId, objPostRating.Rating, objPostRating.Helpful, objPostRating.Comments, objPostRating.IpAddress, objPostRating.CreatedOnDate);
+		}
+
+		public PostRatingInfo GetPostRating(int ratingId)
+		{
+			return CBO.FillObject<PostRatingInfo>(_dataProvider.GetPostRating(ratingId));
+		}
+
+		public List<PostRatingInfo> GetTopicRatings(int topicId)
+		{
+			return CBO.FillCollection<PostRatingInfo>(_dataProvider.GetTopicRatings(topicId));
+		}
+
+		public void UpdatePostRating(PostRatingInfo objPostRating)
+		{
+			_dataProvider.UpdatePostRating(objPostRating.RatingId, objPostRating.PostId, objPostRating.UserId, objPostRating.Rating, objPostRating.Helpful, objPostRating.Comments, objPostRating.IpAddress);
+		}
+
+		public void DeletePostRating(int ratingId, int portalId, int topicId)
+		{
+			_dataProvider.DeletePostRating(ratingId, portalId);
+			//Caching.ClearPostRatingCache(topicId);
+		}
+
 		#endregion
 
 		#region Rank
