@@ -203,6 +203,32 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Tracking
+
+		public int AddTracking(TrackingInfo objTracking)
+		{
+			return _dataProvider.AddTracking(objTracking.ForumId, objTracking.UserId, objTracking.MaxTopicRead, objTracking.MaxPostRead, objTracking.LastAccessedOnDate);
+		}
+
+		//public TrackingInfo GetTracking(int trackingId)
+		//{
+		//    return CBO.FillObject<TrackingInfo>(_dataProvider.GetTracking(trackingId));
+		//}
+
+		public List<TrackingInfo> GetUsersTrackedForums(int userId)
+		{
+			return CBO.FillCollection<TrackingInfo>(_dataProvider.GetUsersTrackedForums(userId));
+		}
+
+		public void UpdateTracking(TrackingInfo objTracking)
+		{
+			_dataProvider.UpdateTracking(objTracking.TrackingId, objTracking.ForumId, objTracking.UserId, objTracking.MaxTopicRead, objTracking.MaxPostRead, objTracking.LastAccessedOnDate);
+		}
+
+		public void DeleteTracking(int trackingId)
+		{
+			_dataProvider.DeleteTracking(trackingId);
+		}
+
 		#endregion
 
 		#region Url
@@ -212,9 +238,9 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 			return _dataProvider.AddUrl(objUrl.PortalId, objUrl.ForumId, objUrl.TopicId, objUrl.Url, objUrl.CreatedOnDate);
 		}
 
-		public Entities.UrlInfo GetUrl(int filterId)
+		public Entities.UrlInfo GetUrl(int id)
 		{
-			return CBO.FillObject<Entities.UrlInfo>(_dataProvider.GetUrl(filterId));
+			return CBO.FillObject<Entities.UrlInfo>(_dataProvider.GetUrl(id));
 		}
 
 		public List<Entities.UrlInfo> GetAllUrls(int portalId)

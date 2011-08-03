@@ -106,19 +106,30 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Tracking
+
+		int AddTracking(TrackingInfo objTracking);
+
+		//TrackingInfo GetTracking(int trackingId);
+
+		List<TrackingInfo> GetUsersTrackedForums(int userId);
+
+		void UpdateTracking(TrackingInfo objTracking);
+
+		void DeleteTracking(int trackingId);
+
 		#endregion
 
 		#region Url
 
-		int AddUrl(UrlInfo objPermission);
+		int AddUrl(UrlInfo objUrl);
 
-		UrlInfo GetUrl(int permissionId);
+		UrlInfo GetUrl(int id);
 
 		List<UrlInfo> GetAllUrls(int portalId);
 
-		void UpdateUrl(UrlInfo objPermission);
+		void UpdateUrl(UrlInfo objUrl);
 
-		void DeleteUrl(int permissionId, int portalId);
+		void DeleteUrl(int id, int portalId);
 
 		#endregion
 

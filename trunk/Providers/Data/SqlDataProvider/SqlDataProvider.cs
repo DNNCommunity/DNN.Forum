@@ -207,6 +207,32 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 		#endregion
 
 		#region Tracking
+
+		public int AddTracking(int forumId, int userId, int maxTopicRead, int maxPostRead, DateTime lastAccessedOnDate)
+		{
+			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Tracking_Add"), forumId, userId, maxTopicRead, maxPostRead, lastAccessedOnDate));
+		}
+
+		//public IDataReader GetTracking(int trackingId)
+		//{
+		//    return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Tracking_Get"), trackingId);
+		//}
+
+		public IDataReader GetUsersTrackedForums(int userId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Tracking_GetUsersForums"), userId);
+		}
+
+		public void UpdateTracking(int trackingId, int forumId, int userId, int maxTopicRead, int maxPostRead, DateTime lastAccessedOnDate)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Tracking_Update"), trackingId, forumId, userId, maxTopicRead, maxPostRead, lastAccessedOnDate);
+		}
+
+		public void DeleteTracking(int trackingId)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Tracking_Delete"), trackingId);
+		}
+
 		#endregion
 
 		#region Url

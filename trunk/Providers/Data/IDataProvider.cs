@@ -108,6 +108,17 @@ namespace DotNetNuke.Modules.Forums.Providers.Data
 		#endregion
 
 		#region Tracking
+
+		int AddTracking(int forumId, int userId, int maxTopicRead, int maxPostRead, DateTime lastAccessedOnDate);
+
+		//IDataReader GetTracking(int trackingId);
+
+		IDataReader GetUsersTrackedForums(int userId);
+
+		void UpdateTracking(int trackingId, int forumId, int userId, int maxTopicRead, int maxPostRead, DateTime lastAccessedOnDate);
+
+		void DeleteTracking(int trackingId);
+
 		#endregion
 
 		#region Url
@@ -120,7 +131,7 @@ namespace DotNetNuke.Modules.Forums.Providers.Data
 
 		void UpdateUrl(int id, int portalId, int forumId, int topicId, string url, DateTime lastModifiedOnDate);
 
-	    void DeleteUrl(int id, int portalId);
+		void DeleteUrl(int id, int portalId);
 
 		#endregion
 
