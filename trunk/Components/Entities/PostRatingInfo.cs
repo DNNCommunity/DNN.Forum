@@ -59,6 +59,12 @@ namespace DotNetNuke.Modules.Forums.Components.Entities
 		public DateTime CreatedOnDate { get; set; }
 
 		/// <summary>
+		/// This was added to allow us to retrieve all post ratings associated with a topic (so it can be cached and queried via linq).
+		/// </summary>
+		/// <remarks>Not stored in a table.</remarks>
+		public int TopicId { get; set; }
+
+		/// <summary>
 		/// A count used for paging.
 		/// </summary>
 		/// <remarks>Not stored in a table.</remarks>

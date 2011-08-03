@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		List<PostRatingInfo> GetTopicRatings(int topicId);
 
-		void UpdatePostRating(PostRatingInfo objPostRating);
+		void UpdatePostRating(PostRatingInfo objPostRating, int topicId);
 
 		void DeletePostRating(int ratingId, int portalId, int topicId);
 

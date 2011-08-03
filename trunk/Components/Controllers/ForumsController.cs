@@ -173,9 +173,10 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 			return CBO.FillCollection<PostRatingInfo>(_dataProvider.GetTopicRatings(topicId));
 		}
 
-		public void UpdatePostRating(PostRatingInfo objPostRating)
+		public void UpdatePostRating(PostRatingInfo objPostRating, int topicId)
 		{
 			_dataProvider.UpdatePostRating(objPostRating.RatingId, objPostRating.PostId, objPostRating.UserId, objPostRating.Rating, objPostRating.Helpful, objPostRating.Comments, objPostRating.IpAddress);
+			//Caching.ClearPostRatingCache(topicId);
 		}
 
 		public void DeletePostRating(int ratingId, int portalId, int topicId)
