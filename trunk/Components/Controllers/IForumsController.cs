@@ -74,6 +74,17 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Post Attachment
+
+		int AddPostAttachment(PostAttachmentInfo objPostAttach);
+
+		PostAttachmentInfo GetPostAttachment(int attachmentId);
+
+		List<PostAttachmentInfo> GetTopicAttachments(int topicId);
+
+		void UpdatePostAttachment(PostAttachmentInfo objPostAttach, int topicId);
+
+		void DeletePostAttachment(int attachmentId, int postId, int topicId);
+
 		#endregion
 
 		#region Post Rating

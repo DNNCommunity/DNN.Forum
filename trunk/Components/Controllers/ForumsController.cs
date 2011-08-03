@@ -154,6 +154,34 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Post Attachment
+
+		public int AddPostAttachment(PostAttachmentInfo objPostAttach)
+		{
+			return _dataProvider.AddPostAttachment(objPostAttach.PostId, objPostAttach.FileId, objPostAttach.FileUrl, objPostAttach.FileName, objPostAttach.DisplayInline);
+		}
+
+		public PostAttachmentInfo GetPostAttachment(int attachmentId)
+		{
+			return CBO.FillObject<PostAttachmentInfo>(_dataProvider.GetPostAttachment(attachmentId));
+		}
+
+		public List<PostAttachmentInfo> GetTopicAttachments(int topicId)
+		{
+			return CBO.FillCollection<PostAttachmentInfo>(_dataProvider.GetTopicAttachments(topicId));
+		}
+
+		public void UpdatePostAttachment(PostAttachmentInfo objPostAttach, int topicId)
+		{
+			_dataProvider.UpdatePostAttachment(objPostAttach.AttachmentId, objPostAttach.PostId, objPostAttach.FileId, objPostAttach.FileUrl, objPostAttach.FileName, objPostAttach.DisplayInline);
+			//Caching.ClearPostAttachmentCache(topicId);
+		}
+
+		public void DeletePostAttachment(int attachmentId, int postId, int topicId)
+		{
+			_dataProvider.DeletePostAttachment(attachmentId, postId);
+			//Caching.ClearPostAttachmentCache(topicId);
+		}
+
 		#endregion
 
 		#region Post Rating

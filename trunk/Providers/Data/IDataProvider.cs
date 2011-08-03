@@ -76,6 +76,17 @@ namespace DotNetNuke.Modules.Forums.Providers.Data
 		#endregion
 
 		#region Post Attachment
+
+	    int AddPostAttachment(int postId, int fileId, string fileUrl, string fileName, bool displayInline);
+
+	    IDataReader GetPostAttachment(int attachmentId);
+
+	    IDataReader GetTopicAttachments(int topicId);
+
+	    void UpdatePostAttachment(int attachmentId, int postId, int fileId, string fileUrl, string fileName, bool displayInline);
+
+	    void DeletePostAttachment(int attachmentId, int postId);
+
 		#endregion
 
 		#region Post Rating

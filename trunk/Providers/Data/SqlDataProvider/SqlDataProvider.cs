@@ -160,6 +160,38 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 		#endregion
 
 		#region Post Attachment
+
+		public int AddPostAttachment(int postId, int fileId, string fileUrl, string fileName, bool displayInline)
+		{
+			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Post_Attachment_Add"), postId, fileId, GetNull(fileUrl), GetNull(fileName), displayInline));
+		}
+
+		public IDataReader GetPostAttachment(int attachmentId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Post_Attachment_Get"), attachmentId);
+		}
+
+		/// <summary>
+		/// Retrieves a collection of post attachments assigned to a topic from the data store. 
+		/// </summary>
+		/// <param name="topicId"></param>
+		/// <returns></returns>
+		/// <remarks>It seems like it would be more efficient to get all post attachments for posts in a single topic. You can then cache this and query via linq (handle in sproc.).</remarks>
+		public IDataReader GetTopicAttachments(int topicId)
+		{
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Post_Attachment_GetTopic"), topicId);
+		}
+
+		public void UpdatePostAttachment(int attachmentId, int postId, int fileId, string fileUrl, string fileName, bool displayInline)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Post_Attachment_Update"), attachmentId, postId, fileId, GetNull(fileUrl), GetNull(fileName), displayInline);
+		}
+
+		public void DeletePostAttachment(int attachmentId, int postId)
+		{
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Post_Attachment_Delete"), attachmentId, postId);
+		}
+
 		#endregion
 
 		#region Post Rating
