@@ -1,4 +1,181 @@
-﻿IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Poll_Options_Forums_Poll]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Poll_Options]'))
+﻿
+
+--------------------------------
+-- REMOVE Constraints 
+--------------------------------
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[FK_{objectQualifier}Forums_Filter_{objectQualifier}Portals]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+	ALTER TABLE {databaseOwner}[{objectQualifier}Forums_Filter] DROP CONSTRAINT [FK_{objectQualifier}Forums_Filter_{objectQualifier}Portals]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[FK_{objectQualifier}Forums_Forum_{objectQualifier}Forums_Permission]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+	ALTER TABLE {databaseOwner}[{objectQualifier}Forums_Forum] DROP CONSTRAINT [FK_{objectQualifier}Forums_Forum_{objectQualifier}Forums_Permission]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[FK_{objectQualifier}Forums_Forum_{objectQualifier}Forums_Setting]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+	ALTER TABLE {databaseOwner}[{objectQualifier}Forums_Forum] DROP CONSTRAINT [FK_{objectQualifier}Forums_Forum_{objectQualifier}Forums_Setting]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[FK_{objectQualifier}Forums_Poll_Option_{objectQualifier}Forums_Poll]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+	ALTER TABLE {databaseOwner}[{objectQualifier}Forums_Poll_Option] DROP CONSTRAINT [FK_{objectQualifier}Forums_Poll_Option_{objectQualifier}Forums_Poll]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[FK_{objectQualifier}Forums_Poll_{objectQualifier}Forums_Topic]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+	ALTER TABLE {databaseOwner}[{objectQualifier}Forums_Poll] DROP CONSTRAINT [FK_{objectQualifier}Forums_Poll_{objectQualifier}Forums_Topic]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[FK_{objectQualifier}Forums_Post_{objectQualifier}Forums_Topic]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+	ALTER TABLE {databaseOwner}[{objectQualifier}Forums_Post] DROP CONSTRAINT [FK_{objectQualifier}Forums_Post_{objectQualifier}Forums_Topic]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[FK_{objectQualifier}Forums_Post_Attachment_{objectQualifier}Forums_Post]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+	ALTER TABLE {databaseOwner}[{objectQualifier}Forums_Post_Attachment] DROP CONSTRAINT [FK_{objectQualifier}Forums_Post_Attachment_{objectQualifier}Forums_Post]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[FK_{objectQualifier}Forums_Post_Rating_{objectQualifier}Forums_Post]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+	ALTER TABLE {databaseOwner}[{objectQualifier}Forums_Post_Rating] DROP CONSTRAINT [FK_{objectQualifier}Forums_Post_Rating_{objectQualifier}Forums_Post]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[FK_{objectQualifier}Forums_Topic_{objectQualifier}Forums_Forum]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+	ALTER TABLE {databaseOwner}[{objectQualifier}Forums_Topic] DROP CONSTRAINT [FK_{objectQualifier}Forums_Topic_{objectQualifier}Forums_Forum]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[FK_{objectQualifier}Forums_Topic_Tracking_{objectQualifier}Forums_Topic]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+	ALTER TABLE {databaseOwner}[{objectQualifier}Forums_Topic_Tracking] DROP CONSTRAINT [FK_{objectQualifier}Forums_Topic_Tracking_{objectQualifier}Forums_Topic]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[FK_{objectQualifier}Forums_Tracking_{objectQualifier}Forums_Forum]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+	ALTER TABLE {databaseOwner}[{objectQualifier}Forums_Tracking] DROP CONSTRAINT [FK_{objectQualifier}Forums_Tracking_{objectQualifier}Forums_Forum]
+GO
+
+
+
+/*
+ALTER TABLE [dbo].[Forums_Forum] ADD  CONSTRAINT [DF_Forums_Forum_AllowTopic]  DEFAULT ((1)) FOR [AllowTopics]
+GO
+
+ALTER TABLE [dbo].[Forums_Poll_Option] ADD  CONSTRAINT [DF_Forums_Poll_Option_Priority]  DEFAULT ((0)) FOR [Priority]
+GO
+
+ALTER TABLE [dbo].[Forums_Post] ADD  CONSTRAINT [DF_Forums_Post_ParentPostId]  DEFAULT ((0)) FOR [ParentPostId]
+GO
+ALTER TABLE [dbo].[Forums_Post] ADD  CONSTRAINT [DF_Forums_Post_UserId]  DEFAULT ((-1)) FOR [UserId]
+GO
+ALTER TABLE [dbo].[Forums_Post] ADD  CONSTRAINT [DF_Forums_Post_Rating]  DEFAULT ((0)) FOR [Rating]
+GO
+ALTER TABLE [dbo].[Forums_Post_Rating] ADD  CONSTRAINT [DF_Forums_Post_Rating_UserId]  DEFAULT ((-1)) FOR [UserId]
+GO
+ALTER TABLE [dbo].[Forums_Post_Rating] ADD  CONSTRAINT [DF_Forums_Post_Rating_Rating]  DEFAULT ((0)) FOR [Rating]
+GO
+ALTER TABLE [dbo].[Forums_Subscription] ADD  CONSTRAINT [DF_Forums_Subscription_ForumId]  DEFAULT ((-1)) FOR [ForumId]
+GO
+ALTER TABLE [dbo].[Forums_Subscription] ADD  CONSTRAINT [DF_Forums_Subscription_TopicId]  DEFAULT ((-1)) FOR [TopicId]
+GO
+ALTER TABLE [dbo].[Forums_Subscription] ADD  CONSTRAINT [DF_Forums_Subscription_Mode]  DEFAULT ((0)) FOR [SubscriptionType]
+GO
+ALTER TABLE [dbo].[Forums_Topic] ADD  CONSTRAINT [DF_Forums_Topic_ViewCount]  DEFAULT ((0)) FOR [ViewCount]
+GO
+ALTER TABLE [dbo].[Forums_Topic] ADD  CONSTRAINT [DF_Forums_Topic_ReplyCount]  DEFAULT ((0)) FOR [ReplyCount]
+GO
+ALTER TABLE [dbo].[Forums_Topic] ADD  CONSTRAINT [DF_Forums_Topic_StatusId]  DEFAULT ((0)) FOR [TopicTypeId]
+GO
+ALTER TABLE [dbo].[Forums_Tracking] ADD  CONSTRAINT [DF_Forums_Tracking_MaxTopicRead]  DEFAULT ((0)) FOR [MaxTopicRead]
+GO
+ALTER TABLE [dbo].[Forums_Tracking] ADD  CONSTRAINT [DF_Forums_Tracking_MaxPostRead]  DEFAULT ((0)) FOR [MaxPostRead]
+GO
+*/
+
+--------------------------------
+-- REMOVE Tables 
+--------------------------------
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}Forums_Filter') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+	DROP TABLE {databaseOwner}{objectQualifier}Forums_Filter
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}Forums_User') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+	DROP TABLE {databaseOwner}{objectQualifier}Forums_User
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}Forums_Permission') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+	DROP TABLE {databaseOwner}{objectQualifier}Forums_Permission
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}Forums_Setting') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+	DROP TABLE {databaseOwner}{objectQualifier}Forums_Setting
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}Forums_Rank') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+	DROP TABLE {databaseOwner}{objectQualifier}Forums_Rank
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}Forums_Forum') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+	DROP TABLE {databaseOwner}{objectQualifier}Forums_Forum
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}Forums_Topic') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+	DROP TABLE {databaseOwner}{objectQualifier}Forums_Topic
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}Forums_Post') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+	DROP TABLE {databaseOwner}{objectQualifier}Forums_Post
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}Forums_Post_Rating') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+	DROP TABLE {databaseOwner}{objectQualifier}Forums_Post_Rating
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}Forums_Post_Attachment') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+	DROP TABLE {databaseOwner}{objectQualifier}Forums_Post_Attachment
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}Forums_Subscription') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+	DROP TABLE {databaseOwner}{objectQualifier}Forums_Subscription
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}Forums_Url') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+	DROP TABLE {databaseOwner}{objectQualifier}Forums_Url
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}Forums_Tracking') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+	DROP TABLE {databaseOwner}{objectQualifier}Forums_Tracking
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}Forums_Topic_Tracking') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+	DROP TABLE {databaseOwner}{objectQualifier}Forums_Topic_Tracking
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}Forums_Poll') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+	DROP TABLE {databaseOwner}{objectQualifier}Forums_Poll
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}Forums_Poll_Option') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+	DROP TABLE {databaseOwner}{objectQualifier}Forums_Poll_Option
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}Forums_Poll_Result') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+	DROP TABLE {databaseOwner}{objectQualifier}Forums_Poll_Result
+GO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Forums_Poll_Options_Forums_Poll]') AND parent_object_id = OBJECT_ID(N'[dbo].[Forums_Poll_Options]'))
 ALTER TABLE [dbo].[Forums_Poll_Options] DROP CONSTRAINT [FK_Forums_Poll_Options_Forums_Poll]
 GO
 
