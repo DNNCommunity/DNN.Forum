@@ -1,12 +1,23 @@
 ﻿
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Forums_Forum_Update]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Forums_Forum_Update]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Forums_Forum_Get]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Forums_Forum_Get]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Forums_Forum_GetModule]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Forums_Forum_GetModule]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Forums_Forum_Add]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}Forums_Forum_Add]
+GO
 
 --------------------------------
 -- REMOVE Constraints 
 --------------------------------
-
-
-
-
 
 
 if exists (select * from dbo.sysobjects where id = object_id(N'[FK_{objectQualifier}Forums_Filter_{objectQualifier}Portals]') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
@@ -607,7 +618,7 @@ ALTER TABLE {databaseOwner}[{objectQualifier}Forums_Forum] WITH CHECK ADD
 	) ON DELETE CASCADE  NOT FOR REPLICATION
 GO
 
-ALTER TABLE {databaseOwner}[{objectQualifier}Forums_Setting] CHECK CONSTRAINT 
+ALTER TABLE {databaseOwner}[{objectQualifier}Forums_Forum] CHECK CONSTRAINT 
 	[FK_{objectQualifier}Forums_Forum_{objectQualifier}Forums_Setting]
 GO
 
@@ -716,23 +727,6 @@ ALTER TABLE {databaseOwner}[{objectQualifier}Forums_Tracking] CHECK CONSTRAINT
 GO
 
 
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Forums_Forum_Update]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}Forums_Forum_Update]
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Forums_Forum_Get]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}Forums_Forum_Get]
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Forums_Forum_GetModule]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}Forums_Forum_GetModule]
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Forums_Forum_Add]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}Forums_Forum_Add]
-GO
-
 CREATE PROCEDURE {databaseOwner}[{objectQualifier}Forums_Forum_Update]
 @ForumId int,
 @PortalId int,
@@ -829,7 +823,6 @@ SELECT SCOPE_IDENTITY()
 GO
 
 
-
 INSERT {databaseOwner}[{objectQualifier}Forums_Setting] 
 	([SettingId], [Description], [Attachments], [Emoticons], [Html], [PostIcon], [RSS], [Scripts], [Moderated], 
 		[AutoTrustLevel], [AttachMaxCount], [AttachMaxSize], [AttachAutoResize], [AttachMaxHeight], [AttachMaxWidth], 
@@ -837,6 +830,7 @@ INSERT {databaseOwner}[{objectQualifier}Forums_Setting]
 	 VALUES
 	(1, N'Default', 1, 1, 1, 1, 1, 1, 1, 20, 5, 5000, 1, 500, 500, 1, N'1', N'500', N'500', 1)
 GO
+
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Forums_Permission] ON
 INSERT {databaseOwner}[{objectQualifier}Forums_Permission]
  ([PermissionId], [Description], [PortalId], [CanView], [CanRead], [CanCreate], [CanEdit], [CanDelete], 
@@ -847,4 +841,5 @@ INSERT {databaseOwner}[{objectQualifier}Forums_Permission]
 	(1, N'Default', -1, N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;')
 SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Forums_Permission] OFF
 GO
+
 
