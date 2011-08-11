@@ -28,7 +28,7 @@ using System;
 using System.Web.UI;
 using DotNetNuke.Framework;
 
-namespace DotNetNuke.Modules.Forums.Views {
+namespace DotNetNuke.Modules.Forums {
 
     /// <summary>
     /// ControlPanel is the initial edit control in the Forums module. It reads the URL and determines which control should be displayed to the end user. 

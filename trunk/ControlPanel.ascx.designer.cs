@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.Forums.Views {
+namespace DotNetNuke.Modules.Forums {
     
     
     public partial class ControlPanel {

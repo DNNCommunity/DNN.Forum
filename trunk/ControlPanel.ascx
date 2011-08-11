@@ -1,5 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ControlPanel.ascx.cs" Inherits="DotNetNuke.Modules.Forums.Views.ControlPanel" %>
-
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ControlPanel.ascx.cs" Inherits="DotNetNuke.Modules.Forums.ControlPanel" %>
 <div class="dnnForumShell dnnClear">
     <div class="dnnForumNav dnnLeft">
         <ul>
