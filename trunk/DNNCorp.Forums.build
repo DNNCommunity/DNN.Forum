@@ -25,7 +25,7 @@
 		<!-- ModuleName value should be set specific to the project -->
 		<property name="ModuleName" value="DNNCorp.Forums" overwrite="false"  />
 		<property name="subproject.name" value="${ModuleName}" />
-		<property name="module.dll" value="${bin.dir}/DotNetNuke.Modules.${ModuleName}.dll" />
+		<property name="module.dll" value="${bin.dir}/DotNetNuke.Modules.Forums.dll" />
 		<property name="fullversion" value="06.00.00" />
 
 		<property name="debug" value="false" overwrite="false" />
@@ -110,7 +110,8 @@
 				<exclude name="**/_sgbak/*" />
 				<exclude name="**/thumbs.db" />
 				<exclude name="**/*.zip" />
-				<exclude name="**/_ReSharper.ExtensionForge/**" />
+				<exclude name="**/_ReSharper.DNNCorp.Forums/**" />
+				<exclude name="**/_ReSharper.DNNCorp.Forums_UnitTests/**" />
 				<exclude name="**/${globalresource.dir}/*.de-DE.resx" />
 				<exclude name="**Documentation/${ModuleName}_${fullversion}_ReleaseNotes.txt" />
 				<exclude name="**Documentation/${ModuleName}_${fullversion}_TestCases.txt" />
@@ -168,7 +169,8 @@
 				<exclude name="**/_sgbak/*" />
 				<exclude name="**/thumbs.db" />
 				<exclude name="**/*.zip" />
-				<exclude name="**/_ReSharper.ExtensionForge/**" />
+				<exclude name="**/_ReSharper.DNNCorp.Forums/**" />
+				<exclude name="**/_ReSharper.DNNCorp.Forums_UnitTests/**" />
 				<exclude name="**Documentation/${ModuleName}_${fullversion}_ReleaseNotes.txt" />
 				<exclude name="**Documentation/${ModuleName}_${fullversion}_TestCases.txt" />
 			</fileset>
@@ -192,8 +194,6 @@
 		<copy todir="temp" flatten="true">
 			<fileset>
 				<include name="**${resourcezip.dir}/Resources.zip" />
-				<include name="${bin.dir}/ColorCode.dll" />
-				<include name="${bin.dir}/WikiPlex.dll" />
 				<include name="${module.dll}" />
 				<include name="**/*.sqldataprovider" />
 				<include name="**/*.dnn" />
@@ -222,8 +222,6 @@
 		<copy todir="temp" flatten="true">
 			<fileset>
 				<include name="**${resourcezip.dir}/Resources.zip" />
-				<include name="${bin.dir}/ColorCode.dll" />
-				<include name="${bin.dir}/WikiPlex.dll" />
 				<include name="${module.dll}" />
 				<include name="**/*.sqldataprovider" />
 				<include name="**/*.dnn" />
