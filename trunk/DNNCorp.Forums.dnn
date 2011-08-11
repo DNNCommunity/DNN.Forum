@@ -8,7 +8,7 @@
 				<name>DotNetNuke</name>
 				<organization>DotNetNuke Corporation</organization>
 				<url>www.dotnetnuke.com</url>
-				<email></email>
+				<email />
 			</owner>
 			<license src="License.txt"></license>
 			<releaseNotes src="ReleaseNotes.txt"></releaseNotes>
@@ -19,7 +19,7 @@
 				<component type="Module">
 					<desktopModule>
 						<moduleName>DNN_Forums</moduleName>
-						<foldername>Forums</foldername>
+						<foldername>DNNCorp/Forums</foldername>
 						<businessControllerClass />
 						<supportedFeatures />
 						<moduleDefinitions>
@@ -35,18 +35,18 @@
 										<iconFile />
 										<helpUrl />
 										<supportsPartialRendering>True</supportsPartialRendering>
-										<supportsPartialRendering>False</supportsPartialRendering>
+										<supportsPopUps>False</supportsPopUps>
 									</moduleControl>
-                                    <moduleControl>
-                                        <controlKey />
-                                        <controlSrc>DesktopModules/DNNCorp/Forums/ControlPanel.ascx</controlSrc>
-                                        <controlTitle />
-                                        <controlType>Edit</controlType>
-                                        <iconFile />
-                                        <helpUrl />
-                                        <supportsPartialRendering>True</supportsPartialRendering>
-                                        <supportsPartialRendering>False</supportsPartialRendering>
-                                    </moduleControl>
+									<moduleControl>
+										<controlKey>Edit</controlKey>
+										<controlSrc>DesktopModules/DNNCorp/Forums/ControlPanel.ascx</controlSrc>
+										<controlTitle />
+										<controlType>Edit</controlType>
+										<iconFile />
+										<helpUrl />
+										<supportsPartialRendering>True</supportsPartialRendering>
+										<supportsPopUps>False</supportsPopUps>
+									</moduleControl>
 								</moduleControls>
 								<permissions />
 							</moduleDefinition>
