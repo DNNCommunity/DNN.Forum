@@ -24,6 +24,10 @@ using DotNetNuke.Modules.Forums.Components.Views;
 using DotNetNuke.Web.Mvp;
 using WebFormsMvp;
 using DotNetNuke.UI.Modules;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.Security;
 
 namespace DotNetNuke.Modules.Forums
 {
@@ -33,7 +37,7 @@ namespace DotNetNuke.Modules.Forums
 	/// </summary>
 	/// <remarks>The purpose of this is to avoid usage of 'ctl' in the URL and thus loading of the DotNetNuke edit skin. </remarks>
 	[PresenterBinding(typeof(DispatchPresenter))]
-	public partial class Dispatch : ModuleView<DispatchModel>, IDispatchView
+	public partial class Dispatch : ModuleView<DispatchModel>, IDispatchView, IActionable
 	{
 
 		#region Constructor
@@ -72,6 +76,25 @@ namespace DotNetNuke.Modules.Forums
 		}
 
 		#endregion
+        #region IActionable Members
 
+        public ModuleActionCollection ModuleActions {
+            get {
+                var Actions = new ModuleActionCollection();
+                Actions.Add(ModuleContext.GetNextActionID(),
+                            Localization.GetString(ModuleActionType.EditContent, LocalResourceFile),
+                            ModuleActionType.AddContent,
+                            "",
+                            "edit.gif",
+                            ModuleContext.EditUrl(),
+                            false,
+                            SecurityAccessLevel.Edit,
+                            true,
+                            false);
+                return Actions;
+            }
+        }
+
+        #endregion
 	}
 }

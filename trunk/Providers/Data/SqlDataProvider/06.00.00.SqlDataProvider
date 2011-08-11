@@ -5,40 +5,7 @@
 --------------------------------
 
 
-/*
-ALTER TABLE [dbo].[Forums_Forum] ADD  CONSTRAINT [DF_Forums_Forum_AllowTopic]  DEFAULT ((1)) FOR [AllowTopics]
-GO
 
-ALTER TABLE [dbo].[Forums_Poll_Option] ADD  CONSTRAINT [DF_Forums_Poll_Option_Priority]  DEFAULT ((0)) FOR [Priority]
-GO
-
-ALTER TABLE [dbo].[Forums_Post] ADD  CONSTRAINT [DF_Forums_Post_ParentPostId]  DEFAULT ((0)) FOR [ParentPostId]
-GO
-ALTER TABLE [dbo].[Forums_Post] ADD  CONSTRAINT [DF_Forums_Post_UserId]  DEFAULT ((-1)) FOR [UserId]
-GO
-ALTER TABLE [dbo].[Forums_Post] ADD  CONSTRAINT [DF_Forums_Post_Rating]  DEFAULT ((0)) FOR [Rating]
-GO
-ALTER TABLE [dbo].[Forums_Post_Rating] ADD  CONSTRAINT [DF_Forums_Post_Rating_UserId]  DEFAULT ((-1)) FOR [UserId]
-GO
-ALTER TABLE [dbo].[Forums_Post_Rating] ADD  CONSTRAINT [DF_Forums_Post_Rating_Rating]  DEFAULT ((0)) FOR [Rating]
-GO
-ALTER TABLE [dbo].[Forums_Subscription] ADD  CONSTRAINT [DF_Forums_Subscription_ForumId]  DEFAULT ((-1)) FOR [ForumId]
-GO
-ALTER TABLE [dbo].[Forums_Subscription] ADD  CONSTRAINT [DF_Forums_Subscription_TopicId]  DEFAULT ((-1)) FOR [TopicId]
-GO
-ALTER TABLE [dbo].[Forums_Subscription] ADD  CONSTRAINT [DF_Forums_Subscription_Mode]  DEFAULT ((0)) FOR [SubscriptionType]
-GO
-ALTER TABLE [dbo].[Forums_Topic] ADD  CONSTRAINT [DF_Forums_Topic_ViewCount]  DEFAULT ((0)) FOR [ViewCount]
-GO
-ALTER TABLE [dbo].[Forums_Topic] ADD  CONSTRAINT [DF_Forums_Topic_ReplyCount]  DEFAULT ((0)) FOR [ReplyCount]
-GO
-ALTER TABLE [dbo].[Forums_Topic] ADD  CONSTRAINT [DF_Forums_Topic_StatusId]  DEFAULT ((0)) FOR [TopicTypeId]
-GO
-ALTER TABLE [dbo].[Forums_Tracking] ADD  CONSTRAINT [DF_Forums_Tracking_MaxTopicRead]  DEFAULT ((0)) FOR [MaxTopicRead]
-GO
-ALTER TABLE [dbo].[Forums_Tracking] ADD  CONSTRAINT [DF_Forums_Tracking_MaxPostRead]  DEFAULT ((0)) FOR [MaxPostRead]
-GO
-*/
 
 
 
@@ -444,7 +411,7 @@ CREATE TABLE {databaseOwner}{objectQualifier}Forums_Url (
 	[TopicId] [int] NOT NULL,
 	[URL] [nvarchar](1000) NOT NULL,
 	[CreatedOnDate] [datetime] NOT NULL,
-	[LastModifiedOnDate] [datetime] NOT NULL,,
+	[LastModifiedOnDate] [datetime] NOT NULL,
 	[UserId] [int] NOT NULL,
 ) ON [PRIMARY]
 GO
@@ -748,4 +715,136 @@ ALTER TABLE {databaseOwner}[{objectQualifier}Forums_Tracking] CHECK CONSTRAINT
 	[FK_{objectQualifier}Forums_Tracking_{objectQualifier}Forums_Forum]
 GO
 
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Forums_Forum_Update]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Forums_Forum_Update]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Forums_Forum_Get]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Forums_Forum_Get]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Forums_Forum_GetModule]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Forums_Forum_GetModule]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Forums_Forum_Add]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Forums_Forum_Add]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Forums_Forum_Update]
+@ForumId int,
+@PortalId int,
+@ModuleId int,
+@ParentId int,
+@AllowTopics bit,
+@Name nvarchar(255),
+@Description nvarchar(max),
+@SortOrder int,
+@Active bit,
+@Hidden bit,
+@TopicCount int,
+@ReplyCount int,
+@LastPostId int,
+@Slug nvarchar(100),
+@PermissionId int,
+@SettingId int,
+@EmailAddress nvarchar(255),
+@SiteMapPriority float,
+@LastModifiedOnDate datetime,
+@LastModifiedByUserId int
+AS
+UPDATE {databaseOwner}{objectQualifier}Forums_Forum
+SET 
+	ParentId = @ParentId,
+	AllowTopics = @AllowTopics,
+	Name = @Name,
+	Description = @Description,
+	SortOrder = @SortOrder,
+	Active = @Active,
+	Hidden = @Hidden,
+	TopicCount = @TopicCount,
+	ReplyCount = @ReplyCount,
+	LastPostId = @LastPostId,
+	Slug = @Slug,
+	PermissionId = @PermissionId,
+	SettingId = @SettingId,
+	EmailAddress = @EmailAddress,
+	SiteMapPriority = @SiteMapPriority,
+	LastModifiedOnDate = GETUTCDATE(),
+	LastModifiedByUserId = @LastModifiedByUserId
+
+WHERE ForumId = @ForumId AND PortalId = @PortalId AND ModuleId = @ModuleId
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Forums_Forum_Get]
+@ForumId int
+AS
+SELECT * FROM {databaseOwner}{objectQualifier}Forums_Forum WHERE ForumId = @ForumId
+
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Forums_Forum_GetModule]
+@ModuleId int
+AS
+SELECT * FROM {databaseOwner}{objectQualifier}Forums_Forum WHERE ModuleId = @ModuleId
+
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}Forums_Forum_Add]
+@PortalId int,
+@ModuleId int,
+@ParentId int,
+@AllowTopics bit,
+@Name nvarchar(255),
+@Description nvarchar(max),
+@SortOrder int,
+@Active bit,
+@Hidden bit,
+@TopicCount int,
+@ReplyCount int,
+@LastPostId int,
+@Slug nvarchar(100),
+@PermissionId int,
+@SettingId int,
+@EmailAddress nvarchar(255),
+@SiteMapPriority float,
+@CreatedOnDate datetime,
+@CreatedByUserId int
+AS
+INSERT INTO {databaseOwner}{objectQualifier}Forums_Forum
+	(PortalId, ModuleId, ParentId, AllowTopics, Name, Description,
+	 Active, Hidden, Slug, EmailAddress, SiteMapPriority, SortOrder, 
+	 CreatedOnDate, CreatedByUserId, LastModifiedOnDate, LastModifiedByUserId, 
+	 TopicCount, ReplyCount, LastPostId, PermissionId, SettingId)
+	VALUES
+	(@PortalId, @ModuleId, @ParentId, @AllowTopics, @Name, @Description,
+	 @Active, @Hidden, @Slug, @EmailAddress, @SiteMapPriority, @SortOrder, 
+	 GETUTCDATE(), @CreatedByUserId, GETUTCDATE(), @CreatedByUserId,
+	 @TopicCount, @ReplyCount, @LastPostId, @PermissionId, @SettingId)
+SELECT SCOPE_IDENTITY()
+
+GO
+
+
+
+INSERT {databaseOwner}[{objectQualifier}Forums_Setting] 
+	([SettingId], [Description], [Attachments], [Emoticons], [Html], [PostIcon], [RSS], [Scripts], [Moderated], 
+		[AutoTrustLevel], [AttachMaxCount], [AttachMaxSize], [AttachAutoResize], [AttachMaxHeight], [AttachMaxWidth], 
+		[AttachStore], [EditorType], [EditorHeight], [EditorWidth], [Filters])
+	 VALUES
+	(1, N'Default', 1, 1, 1, 1, 1, 1, 1, 20, 5, 5000, 1, 500, 500, 1, N'1', N'500', N'500', 1)
+GO
+SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Forums_Permission] ON
+INSERT {databaseOwner}[{objectQualifier}Forums_Permission]
+ ([PermissionId], [Description], [PortalId], [CanView], [CanRead], [CanCreate], [CanEdit], [CanDelete], 
+	[CanLock], [CanPin], [CanAttach], [CanPoll], [CanBlock], [CanTrust], [CanSubscribe], [CanAnnounce], 
+	[CanTag], [CanPrioritize], [CanModApprove], [CanModMove], [CanModSplit], [CanModDelete], [CanModUser], 
+	[CanModEdit], [CanModLock], [CanModPin]) 
+	VALUES
+	(1, N'Default', -1, N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;', N'1;')
+SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Forums_Permission] OFF
+GO
 

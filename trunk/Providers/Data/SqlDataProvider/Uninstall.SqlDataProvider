@@ -48,43 +48,6 @@ if exists (select * from dbo.sysobjects where id = object_id(N'[FK_{objectQualif
 	ALTER TABLE {databaseOwner}[{objectQualifier}Forums_Tracking] DROP CONSTRAINT [FK_{objectQualifier}Forums_Tracking_{objectQualifier}Forums_Forum]
 GO
 
-
-
-/*
-ALTER TABLE [dbo].[Forums_Forum] ADD  CONSTRAINT [DF_Forums_Forum_AllowTopic]  DEFAULT ((1)) FOR [AllowTopics]
-GO
-
-ALTER TABLE [dbo].[Forums_Poll_Option] ADD  CONSTRAINT [DF_Forums_Poll_Option_Priority]  DEFAULT ((0)) FOR [Priority]
-GO
-
-ALTER TABLE [dbo].[Forums_Post] ADD  CONSTRAINT [DF_Forums_Post_ParentPostId]  DEFAULT ((0)) FOR [ParentPostId]
-GO
-ALTER TABLE [dbo].[Forums_Post] ADD  CONSTRAINT [DF_Forums_Post_UserId]  DEFAULT ((-1)) FOR [UserId]
-GO
-ALTER TABLE [dbo].[Forums_Post] ADD  CONSTRAINT [DF_Forums_Post_Rating]  DEFAULT ((0)) FOR [Rating]
-GO
-ALTER TABLE [dbo].[Forums_Post_Rating] ADD  CONSTRAINT [DF_Forums_Post_Rating_UserId]  DEFAULT ((-1)) FOR [UserId]
-GO
-ALTER TABLE [dbo].[Forums_Post_Rating] ADD  CONSTRAINT [DF_Forums_Post_Rating_Rating]  DEFAULT ((0)) FOR [Rating]
-GO
-ALTER TABLE [dbo].[Forums_Subscription] ADD  CONSTRAINT [DF_Forums_Subscription_ForumId]  DEFAULT ((-1)) FOR [ForumId]
-GO
-ALTER TABLE [dbo].[Forums_Subscription] ADD  CONSTRAINT [DF_Forums_Subscription_TopicId]  DEFAULT ((-1)) FOR [TopicId]
-GO
-ALTER TABLE [dbo].[Forums_Subscription] ADD  CONSTRAINT [DF_Forums_Subscription_Mode]  DEFAULT ((0)) FOR [SubscriptionType]
-GO
-ALTER TABLE [dbo].[Forums_Topic] ADD  CONSTRAINT [DF_Forums_Topic_ViewCount]  DEFAULT ((0)) FOR [ViewCount]
-GO
-ALTER TABLE [dbo].[Forums_Topic] ADD  CONSTRAINT [DF_Forums_Topic_ReplyCount]  DEFAULT ((0)) FOR [ReplyCount]
-GO
-ALTER TABLE [dbo].[Forums_Topic] ADD  CONSTRAINT [DF_Forums_Topic_StatusId]  DEFAULT ((0)) FOR [TopicTypeId]
-GO
-ALTER TABLE [dbo].[Forums_Tracking] ADD  CONSTRAINT [DF_Forums_Tracking_MaxTopicRead]  DEFAULT ((0)) FOR [MaxTopicRead]
-GO
-ALTER TABLE [dbo].[Forums_Tracking] ADD  CONSTRAINT [DF_Forums_Tracking_MaxPostRead]  DEFAULT ((0)) FOR [MaxPostRead]
-GO
-*/
-
 --------------------------------
 -- REMOVE Tables 
 --------------------------------
@@ -389,3 +352,19 @@ DROP TABLE [dbo].[Forums_Tracking]
 GO
 
 
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Forums_Forum_Update]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Forums_Forum_Update]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Forums_Forum_Get]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Forums_Forum_Get]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Forums_Forum_GetModule]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Forums_Forum_GetModule]
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Forums_Forum_Add]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}Forums_Forum_Add]
+GO

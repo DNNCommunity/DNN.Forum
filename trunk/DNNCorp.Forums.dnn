@@ -37,6 +37,16 @@
 										<supportsPartialRendering>True</supportsPartialRendering>
 										<supportsPartialRendering>False</supportsPartialRendering>
 									</moduleControl>
+                                    <moduleControl>
+                                        <controlKey />
+                                        <controlSrc>DesktopModules/DNNCorp/Forums/ControlPanel.ascx</controlSrc>
+                                        <controlTitle />
+                                        <controlType>Edit</controlType>
+                                        <iconFile />
+                                        <helpUrl />
+                                        <supportsPartialRendering>True</supportsPartialRendering>
+                                        <supportsPartialRendering>False</supportsPartialRendering>
+                                    </moduleControl>
 								</moduleControls>
 								<permissions />
 							</moduleDefinition>
