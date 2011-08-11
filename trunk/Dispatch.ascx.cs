@@ -76,25 +76,25 @@ namespace DotNetNuke.Modules.Forums
 		}
 
 		#endregion
-        #region IActionable Members
 
-        public ModuleActionCollection ModuleActions {
-            get {
-                var Actions = new ModuleActionCollection();
-                Actions.Add(ModuleContext.GetNextActionID(),
-                            Localization.GetString(ModuleActionType.EditContent, LocalResourceFile),
-                            ModuleActionType.AddContent,
-                            "",
-                            "edit.gif",
-                            ModuleContext.EditUrl(),
-                            false,
-                            SecurityAccessLevel.Edit,
-                            true,
-                            false);
-                return Actions;
-            }
-        }
+		#region IActionable Members
 
-        #endregion
+		public ModuleActionCollection ModuleActions {
+			get {
+				var actions = new ModuleActionCollection
+								  {
+									  {
+										  ModuleContext.GetNextActionID(),
+										  Localization.GetString("ControlPanel.Action", LocalResourceFile),
+										  ModuleActionType.AddContent, "", "edit.gif", ModuleContext.EditUrl(), false,
+										  SecurityAccessLevel.Edit, true, false
+										  }
+								  };
+				return actions;
+			}
+		}
+
+		#endregion
+
 	}
 }
