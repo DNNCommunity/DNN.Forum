@@ -18,7 +18,6 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
 using DotNetNuke.Web.Mvp;
 
 namespace DotNetNuke.Modules.Forums.Components.Views 

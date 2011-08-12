@@ -19,8 +19,8 @@
 //
 
 using DotNetNuke.Modules.Forums.Components.Controllers;
+using DotNetNuke.Modules.Forums.Components.Views;
 using DotNetNuke.Modules.Forums.Views.Models;
-using DotNetNuke.Modules.Forums.Views;
 using DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider;
 using DotNetNuke.Web.Mvp;
 using System;

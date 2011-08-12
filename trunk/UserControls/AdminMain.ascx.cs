@@ -18,8 +18,7 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using DotNetNuke.Modules.Forums.Components.Models;
-using DotNetNuke.Modules.Forums.Components.Presenters;
+using DotNetNuke.Modules.Forums.Components.Models.UserControls;
 using DotNetNuke.Modules.Forums.Components.Presenters.UserControls;
 using DotNetNuke.Modules.Forums.Components.Views;
 using DotNetNuke.Web.Mvp;

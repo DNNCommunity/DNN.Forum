@@ -18,15 +18,15 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
+using DotNetNuke.Modules.Forums.Views.Models;
 using DotNetNuke.Web.Mvp;
-using System;
 
-namespace DotNetNuke.Modules.Forums.Views {
+namespace DotNetNuke.Modules.Forums.Components.Views {
 
     /// <summary>
     /// 
     /// </summary>
-    public interface IControlPanelView : IModuleView<Models.ControlPanelModel> {
+    public interface IControlPanelView : IModuleView<ControlPanelModel> {
 
         void Refresh();
         

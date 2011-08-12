@@ -18,15 +18,15 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
+using DotNetNuke.Modules.Forums.Components.Models.UserControls;
 using DotNetNuke.Web.Mvp;
 
-namespace DotNetNuke.Modules.Forums.Views {
+namespace DotNetNuke.Modules.Forums.Components.Views {
 
     /// <summary>
     /// 
     /// </summary>
-    public interface IAdminSettingsView : IModuleView<Models.AdminSettingsModel> {
+    public interface IAdminSettingsView : IModuleView<AdminSettingsModel> {
 
         void Refresh();
 

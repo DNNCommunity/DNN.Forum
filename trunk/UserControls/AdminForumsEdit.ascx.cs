@@ -19,9 +19,9 @@
 //
 
 using DotNetNuke.Modules.Forums.Components.Common;
+using DotNetNuke.Modules.Forums.Components.Models.UserControls;
 using DotNetNuke.Modules.Forums.Components.Presenters.UserControls;
-using DotNetNuke.Modules.Forums.Views.Models;
-using DotNetNuke.Modules.Forums.Views;
+using DotNetNuke.Modules.Forums.Components.Views;
 using DotNetNuke.Web.Mvp;
 using WebFormsMvp;
 using DotNetNuke.Modules.Forums.Components.Entities;
@@ -53,7 +53,7 @@ namespace DotNetNuke.Modules.Forums.UserControls {
         /// 
         /// </summary>
         public void Refresh() {
-            Forums.Components.Controllers.ForumsController fc = new Forums.Components.Controllers.ForumsController();
+            var fc = new Components.Controllers.ForumsController();
             int ForumId = 0;
             if (int.TryParse(Request.Form["param"].ToString(), out ForumId)) {
                 Model.ForumId = int.Parse(Request.Form["param"]);

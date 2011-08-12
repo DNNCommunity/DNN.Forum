@@ -18,7 +18,7 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
+using DotNetNuke.Modules.Forums.Components.Models.UserControls;
 using DotNetNuke.Web.Mvp;
 
 namespace DotNetNuke.Modules.Forums.Components.Views {
@@ -26,7 +26,7 @@ namespace DotNetNuke.Modules.Forums.Components.Views {
     /// <summary>
     /// 
     /// </summary>
-    public interface IAdminMainView : IModuleView<Models.AdminMainModel> {
+    public interface IAdminMainView : IModuleView<AdminMainModel> {
 
         void Refresh();
 

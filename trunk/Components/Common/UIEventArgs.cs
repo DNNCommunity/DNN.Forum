@@ -24,18 +24,18 @@ namespace DotNetNuke.Modules.Forums.Components.Common
 {
 
 	/// <summary>
-	/// Sample
+	/// This represents a ForumInfo object, used for editing a forum or creating a new one.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class UiEventArgs<T> : EventArgs
+	public class UiEventArgsForum<T> : EventArgs
 	{
 
-		public UiEventArgs(T project)
+		public UiEventArgsForum(T forum)
 		{
-			Project = project;
+			Forum = forum;
 		}
 
-		public T Project {get; set;}
+		public T Forum { get; set; }
 
 	}
 

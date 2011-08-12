@@ -18,9 +18,7 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System.Collections.Generic;
-
-namespace DotNetNuke.Modules.Forums.Components.Models {
+namespace DotNetNuke.Modules.Forums.Components.Models.UserControls {
 
     /// <summary>
     /// 

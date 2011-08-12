@@ -20,7 +20,7 @@
 
 using DotNetNuke.Modules.Forums.Components.Common;
 using DotNetNuke.Modules.Forums.Components.Presenters;
-using DotNetNuke.Modules.Forums.Views;
+using DotNetNuke.Modules.Forums.Components.Views;
 using DotNetNuke.Web.Mvp;
 using WebFormsMvp;
 using DotNetNuke.UI.Modules;
