@@ -1,0 +1,5 @@
+
+_ReSharper*
+*.csproj.user
+*.suo
+obj/*

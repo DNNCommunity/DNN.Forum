@@ -59,8 +59,8 @@
             <input type="hidden" id="forumId" name="forumId" value="<%=Model.forumInfo.ForumId %>" />
             <div id="controlActions" style="display:none;">
                 <ul class="dnnActions dnnClear">
-                    <li><a href="#" onclick="saveForum(); return false;" class="dnnPrimaryAction">[RESX:Button:Save]</a></li>
-                    <li><a href="#" onclick="dnnforums.admin.LoadView('forums',''); return false;" class="dnnSecondaryAction">[RESX:Button:Cancel]</a></li>
+                    <li><a href="#" class="dnnPrimaryAction">[RESX:Button:Save]</a></li>
+                    <li><a href="#" class="dnnSecondaryAction">[RESX:Button:Cancel]</a></li>
                 </ul>   
             </div>
         </form>
@@ -72,16 +72,27 @@
     [RESX:Features]
     </div>
 </div>
+
 <script type="text/javascript" language="javascript">
-    function saveForum() {
-        var result = jQuery('#dnnForumEdit').serializeObject();
-        result.action = 'save';
-        dnnforums.admin.LoadView('forumsedit', document.getElementById('forumId').value, result, saveComplete);
-    }
-    function saveComplete() {
-        dnnforums.admin.ShowMsg('[RESX:SaveComplete]', 'positive');
-        setTimeout(function () {
-            dnnforums.admin.HideMsg();
-        }, 1600);
-    }
+    (function ($) {
+        function saveForum($form) {
+            var result = $form.serializeObject();
+            result.action = 'save';
+            dnnforums.admin.LoadView('forumsedit', document.getElementById('forumId').value, result, saveComplete);
+        }
+        function saveComplete() {
+            dnnforums.admin.ShowMsg('[RESX:SaveComplete]', 'positive');
+            setTimeout(function () {
+                dnnforums.admin.HideMsg();
+            }, 1600);
+        }
+        $('#dnnForumEditor a.dnnPrimaryAction').click(function (e) {
+            e.preventDefault();
+            saveForum($(this));
+        });
+        $('#dnnForumEditor a.dnnSecondaryAction').click(function (e) {
+            e.preventDefault();
+            dnnforums.admin.LoadView('forums','');
+        });
+    })(jQuery);
 </script>

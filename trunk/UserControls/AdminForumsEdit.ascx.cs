@@ -18,15 +18,15 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using DotNetNuke.Modules.Forums.Components.Common;
-using DotNetNuke.Modules.Forums.Components.Models.UserControls;
-using DotNetNuke.Modules.Forums.Components.Presenters.UserControls;
-using DotNetNuke.Modules.Forums.Components.Views;
-using DotNetNuke.Web.Mvp;
-using WebFormsMvp;
-using DotNetNuke.Modules.Forums.Components.Entities;
-
 namespace DotNetNuke.Modules.Forums.UserControls {
+
+    using Components.Common;
+    using Components.Entities;
+    using Components.Models.UserControls;
+    using Components.Presenters.UserControls;
+    using Components.Views;
+    using Web.Mvp;
+    using WebFormsMvp;
 
     /// <summary>
     /// This is the initial view seen within the Forums module, loaded by Dispatch.ascx. 
@@ -34,8 +34,6 @@ namespace DotNetNuke.Modules.Forums.UserControls {
     [PresenterBinding(typeof(AdminForumsEditPresenter))]
     public partial class AdminForumsEdit : ModuleView<AdminForumsEditModel>, IAdminForumsEditView {
         
-        #region Constructor
-
         /// <summary>
         /// The constructor is used here to set base properties. 
         /// </summary>
@@ -45,24 +43,19 @@ namespace DotNetNuke.Modules.Forums.UserControls {
             AutoDataBind = false;
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// 
         /// </summary>
         public void Refresh() {
             var fc = new Components.Controllers.ForumsController();
-            int ForumId = 0;
-            if (int.TryParse(Request.Form["param"].ToString(), out ForumId)) {
+            int forumId;
+            if (int.TryParse(Request.Form["param"], out forumId)) {
                 Model.ForumId = int.Parse(Request.Form["param"]);
             }
             if (Model.ForumId > 0) {
-                Model.forumInfo = fc.GetForum(ForumId);
+                Model.forumInfo = fc.GetForum(forumId);
             }
             if (Request.Form["action"] == "save") {
-              
                 Model.forumInfo = (ForumInfo)Utilities.FillObjectFromRequest(Model.forumInfo, Request.Form);
                 Model.forumInfo.PortalId = ModuleContext.PortalId;
                 Model.forumInfo.ModuleId = ModuleContext.ModuleId;
@@ -79,23 +72,7 @@ namespace DotNetNuke.Modules.Forums.UserControls {
                     Model.ForumId = fc.AddForum(Model.forumInfo);
                     Model.forumInfo = fc.GetForum(Model.ForumId);
                 }
-                
-                
             }
-            //if (Request.Form["action"] == "callback") {
-            //    if (Request.Form["param"] != null) {
-                   
-                    
-            //        if (ForumId > 0) {
-            //            Model.forumInfo = fc.GetForum(ForumId);
-            //        }
-            //    }
-            //}
-
-            
         }
-     
-        #endregion
-
     }
 }
