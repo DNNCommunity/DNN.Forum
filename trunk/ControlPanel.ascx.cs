@@ -18,8 +18,8 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
+using DotNetNuke.Modules.Forums.Components.Common;
 using DotNetNuke.Modules.Forums.Components.Presenters;
-using DotNetNuke.Modules.Forums.Presenters;
 using DotNetNuke.Modules.Forums.Views;
 using DotNetNuke.Web.Mvp;
 using WebFormsMvp;
@@ -50,6 +50,11 @@ namespace DotNetNuke.Modules.Forums {
 
         #region Public Methods
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e"></param>
+        /// <remarks>OnInit can be used here because ctl= is used in URL.</remarks>
         protected override void OnInit(System.EventArgs e)
         {
             base.OnInit(e);
@@ -65,13 +70,6 @@ namespace DotNetNuke.Modules.Forums {
             Page.ClientScript.RegisterClientScriptInclude(Page.GetType(), "dnnforums.scripts", Page.ResolveUrl(ctlDirectory + "/scripts/scripts.ashx") + "?PortalId=" + ModuleContext.PortalId + "&ModuleId=" + ModuleContext.ModuleId + "&isadmin=true&language=" + langKey);
             Page.ClientScript.RegisterStartupScript(Page.GetType(), "dnnforums.history", "window.dhtmlHistory.create({ toJSON: function (o) { return JSON.stringify(o); }, fromJSON: function (s) { return JSON.parse(s); } });", true);
         }
-        //protected override void OnLoad(System.EventArgs e)
-        //{
-        //    base.OnLoad(e);
-
-
-         
-        //}
 
         /// <summary>
         /// Every time a page load occurs (initial load, postback, etc.), this method will load the proper control based on parameters in the URL.
@@ -92,7 +90,7 @@ namespace DotNetNuke.Modules.Forums {
             var htmlWriter = new HtmlTextWriter(stringWriter);
             phUserControl.RenderControl(htmlWriter);
             var html = stringWriter.ToString();
-            html = Common.Utilities.LocalizeControl(html, true);
+            html = Utilities.LocalizeControl(html, true);
             Response.Clear();
             Response.Write(html);
             Response.End();

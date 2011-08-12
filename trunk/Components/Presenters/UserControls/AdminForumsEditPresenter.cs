@@ -24,11 +24,9 @@ using DotNetNuke.Modules.Forums.Views;
 using DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider;
 using DotNetNuke.Web.Mvp;
 using System;
-using System.Text;
-using System.Collections.Generic;
 using DotNetNuke.Modules.Forums.Components.Entities;
 
-namespace DotNetNuke.Modules.Forums.Presenters {
+namespace DotNetNuke.Modules.Forums.Components.Presenters.UserControls {
 
     /// <summary>
     /// 

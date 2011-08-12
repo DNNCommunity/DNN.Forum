@@ -1,19 +1,6 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AdminForumsEdit.ascx.cs" Inherits="DotNetNuke.Modules.Forums.AdminForumsEdit" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AdminForumsEdit.ascx.cs" Inherits="DotNetNuke.Modules.Forums.UserControls.AdminForumsEdit" %>
 <!--dnnforumbegin-->
 Forum Edit
-<script type="text/javascript">
-    function saveForum() {
-        var result = jQuery('#dnnForumEdit').serializeObject();
-        result.action = 'save';
-        dnnforums.admin.LoadView('forumsedit', document.getElementById('forumId').value, result, saveComplete);
-    }
-    function saveComplete() {
-        dnnforums.admin.ShowMsg('[RESX:SaveComplete]', 'positive');
-        setTimeout(function () {
-            dnnforums.admin.HideMsg();
-        }, 1600);
-    }
-</script>
 <div id="dnnForumEditor" class="dnnForm dnnTabs">
     <ul class="dnnAdminTabNav dnnClear">
         <li><a href="#forumTab1"><span>[RESX:Details]</span></a></li>
@@ -87,3 +74,16 @@ Forum Edit
     </div>
 </div>
 <!--dnnforumend-->
+<script type="text/javascript" language="javascript">
+    function saveForum() {
+        var result = jQuery('#dnnForumEdit').serializeObject();
+        result.action = 'save';
+        dnnforums.admin.LoadView('forumsedit', document.getElementById('forumId').value, result, saveComplete);
+    }
+    function saveComplete() {
+        dnnforums.admin.ShowMsg('[RESX:SaveComplete]', 'positive');
+        setTimeout(function () {
+            dnnforums.admin.HideMsg();
+        }, 1600);
+    }
+</script>

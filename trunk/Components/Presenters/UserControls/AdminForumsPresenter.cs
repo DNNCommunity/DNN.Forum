@@ -28,7 +28,7 @@ using System.Text;
 using System.Collections.Generic;
 using DotNetNuke.Modules.Forums.Components.Entities;
 
-namespace DotNetNuke.Modules.Forums.Presenters {
+namespace DotNetNuke.Modules.Forums.Components.Presenters.UserControls {
 
     /// <summary>
     /// 

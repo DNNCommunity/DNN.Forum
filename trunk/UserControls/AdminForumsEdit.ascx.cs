@@ -18,14 +18,15 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
+using DotNetNuke.Modules.Forums.Components.Common;
+using DotNetNuke.Modules.Forums.Components.Presenters.UserControls;
 using DotNetNuke.Modules.Forums.Views.Models;
-using DotNetNuke.Modules.Forums.Presenters;
 using DotNetNuke.Modules.Forums.Views;
 using DotNetNuke.Web.Mvp;
 using WebFormsMvp;
 using DotNetNuke.Modules.Forums.Components.Entities;
 
-namespace DotNetNuke.Modules.Forums {
+namespace DotNetNuke.Modules.Forums.UserControls {
 
     /// <summary>
     /// This is the initial view seen within the Forums module, loaded by Dispatch.ascx. 
@@ -62,7 +63,7 @@ namespace DotNetNuke.Modules.Forums {
             }
             if (Request.Form["action"] == "save") {
               
-                Model.forumInfo = (ForumInfo)Common.Utilities.FillObjectFromRequest(Model.forumInfo, Request.Form);
+                Model.forumInfo = (ForumInfo)Utilities.FillObjectFromRequest(Model.forumInfo, Request.Form);
                 Model.forumInfo.PortalId = ModuleContext.PortalId;
                 Model.forumInfo.ModuleId = ModuleContext.ModuleId;
                 Model.forumInfo.TopicCount = 0;

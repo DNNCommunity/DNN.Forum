@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.Forums {
+namespace DotNetNuke.Modules.Forums.UserControls {
     
     
     public partial class AdminMain {

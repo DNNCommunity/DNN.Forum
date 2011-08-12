@@ -1,24 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿//
+// DotNetNuke® - http://www.dotnetnuke.com
+// Copyright (c) 2002-2011
+// by DotNetNuke Corporation
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
+//
+
+using System;
 using System.Web;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Reflection;
 
-namespace DotNetNuke.Modules.Forums.Common {
+namespace DotNetNuke.Modules.Forums.Components.Common {
+
     public class Utilities {
+
         /// <summary>
         /// Get the template as a string from the specified path
         /// </summary>
-        /// <param name="FilePath">Physical path to file</param>
+        /// <param name="filePath">Physical path to file</param>
         /// <returns>String</returns>
         /// <remarks></remarks>
-        public static string GetFile(string FilePath) {
-            string sContents = string.Empty;
-            if (System.IO.File.Exists(FilePath)) {
+        public static string GetFile(string filePath) {
+            var sContents = string.Empty;
+            if (File.Exists(filePath)) {
                 try {
-                    using (System.IO.StreamReader sr = new StreamReader(FilePath)) {
+                    using (var sr = new StreamReader(filePath)) {
                         sContents = sr.ReadToEnd();
                         sr.Close();
                     }
@@ -29,52 +49,50 @@ namespace DotNetNuke.Modules.Forums.Common {
             }
             return sContents;
         }
+
         public static string GetSharedResource(string key) {
             return GetSharedResource(key, false);
         }
-        public static string GetSharedResource(string key, bool isAdmin) {
-            if (isAdmin) {
-                return DotNetNuke.Services.Localization.Localization.GetString(key, "~/DesktopModules/DNNCorp/forums/App_LocalResources/ControlPanel.ascx.resx");
-            }
-            else {
-                return DotNetNuke.Services.Localization.Localization.GetString(key, "~/DesktopModules/DNNCorp/forums/App_LocalResources/SharedResources.resx");
-            }
 
+        public static string GetSharedResource(string key, bool isAdmin)
+        {
+            if (isAdmin) {
+                return Services.Localization.Localization.GetString(key, "~/DesktopModules/DNNCorp/forums/App_LocalResources/ControlPanel.ascx.resx");
+            }
+            return Services.Localization.Localization.GetString(key, "~/DesktopModules/DNNCorp/forums/App_LocalResources/SharedResources.resx");
         }
+
         public static string LocalizeControl(string controlText) {
             return LocalizeControl(controlText, false);
         }
-        public static string LocalizeControl(string controlText, bool isAdmin) {
 
-            string sReplace = "";
-            string pattern = "(\\[RESX:.+?\\])";
-            Regex regExp = new Regex(pattern);
-            MatchCollection matches = default(MatchCollection);
-            matches = regExp.Matches(controlText);
-            foreach (Match match in matches) {
-                sReplace = GetSharedResource(match.Value, isAdmin);
+        public static string LocalizeControl(string controlText, bool isAdmin) {
+            const string pattern = "(\\[RESX:.+?\\])";
+            var regExp = new Regex(pattern);
+            var matches = regExp.Matches(controlText);
+            foreach (Match match in matches)
+            {
+                var sReplace = GetSharedResource(match.Value, isAdmin);
                 if (!string.IsNullOrEmpty(sReplace)) {
                     controlText = controlText.Replace(match.Value, sReplace);
                 }
                 else {
                    controlText = controlText.Replace(match.Value, match.Value);
                 }
-
             }
             return controlText;
         }
-        public static object FillObjectFromRequest(object InfoObject, System.Collections.Specialized.NameValueCollection Request) {
 
-            if (Request.Keys.Count > 0) {
-                Type myType = InfoObject.GetType();
-                System.Reflection.PropertyInfo[] myProperties = myType.GetProperties(System.Reflection.BindingFlags.Public | BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                string sKey = string.Empty;
-                string sValue = string.Empty;
-                foreach (PropertyInfo pItem in myProperties) {
+        public static object FillObjectFromRequest(object infoObject, System.Collections.Specialized.NameValueCollection request) {
+            if (request.Keys.Count > 0) {
+                var myType = infoObject.GetType();
+                var myProperties = myType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                string sValue;
+                foreach (var pItem in myProperties) {
                     sValue = string.Empty;
-                    sKey = pItem.Name.ToLower();
-                    if ((Request[sKey] != null)) {
-                        sValue = Request[sKey];
+                    var sKey = pItem.Name.ToLower();
+                    if ((request[sKey] != null)) {
+                        sValue = request[sKey];
                     }
                     if (!string.IsNullOrEmpty(sValue)) {
                         sValue = HttpUtility.HtmlDecode(sValue);
@@ -128,7 +146,7 @@ namespace DotNetNuke.Modules.Forums.Common {
 
                             break;
                         case "System.String":
-                            obj = sValue.ToString();
+                            if (sValue != null) obj = sValue;
                             break;
                         case "System.Char":
                             obj = Convert.ToString(sValue);
@@ -145,12 +163,12 @@ namespace DotNetNuke.Modules.Forums.Common {
                             break;
                     }
                     if (obj != null) {
-                        InfoObject.GetType().GetProperty(pItem.Name).SetValue(InfoObject, obj, BindingFlags.Public | BindingFlags.NonPublic, null, null, null);
+                        infoObject.GetType().GetProperty(pItem.Name).SetValue(infoObject, obj, BindingFlags.Public | BindingFlags.NonPublic, null, null, null);
                     }
                }
             }
-            return InfoObject;
-
+            return infoObject;
         }
+
     }
 }

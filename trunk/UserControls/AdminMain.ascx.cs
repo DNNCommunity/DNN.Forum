@@ -20,11 +20,12 @@
 
 using DotNetNuke.Modules.Forums.Components.Models;
 using DotNetNuke.Modules.Forums.Components.Presenters;
+using DotNetNuke.Modules.Forums.Components.Presenters.UserControls;
 using DotNetNuke.Modules.Forums.Components.Views;
 using DotNetNuke.Web.Mvp;
 using WebFormsMvp;
 
-namespace DotNetNuke.Modules.Forums {
+namespace DotNetNuke.Modules.Forums.UserControls {
 
     /// <summary>
     /// This is the initial view seen within the Forums module, loaded by Dispatch.ascx. 

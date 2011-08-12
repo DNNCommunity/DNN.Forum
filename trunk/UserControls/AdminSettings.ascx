@@ -1,2 +1,2 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AdminSettings.ascx.cs" Inherits="DotNetNuke.Modules.Forums.AdminSettings" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AdminSettings.ascx.cs" Inherits="DotNetNuke.Modules.Forums.UserControls.AdminSettings" %>
 Settings

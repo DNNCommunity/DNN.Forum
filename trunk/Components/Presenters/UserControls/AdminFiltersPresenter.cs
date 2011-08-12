@@ -25,7 +25,7 @@ using DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider;
 using DotNetNuke.Web.Mvp;
 using System;
 
-namespace DotNetNuke.Modules.Forums.Presenters {
+namespace DotNetNuke.Modules.Forums.Components.Presenters.UserControls {
 
     /// <summary>
     /// 

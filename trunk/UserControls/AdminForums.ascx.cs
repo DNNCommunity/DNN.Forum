@@ -18,13 +18,13 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
+using DotNetNuke.Modules.Forums.Components.Presenters.UserControls;
 using DotNetNuke.Modules.Forums.Views.Models;
-using DotNetNuke.Modules.Forums.Presenters;
 using DotNetNuke.Modules.Forums.Views;
 using DotNetNuke.Web.Mvp;
 using WebFormsMvp;
 
-namespace DotNetNuke.Modules.Forums {
+namespace DotNetNuke.Modules.Forums.UserControls {
 
     /// <summary>
     /// This is the initial view seen within the Forums module, loaded by Dispatch.ascx. 
