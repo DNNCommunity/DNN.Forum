@@ -1,7 +1,6 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AdminForumsEdit.ascx.cs" Inherits="DotNetNuke.Modules.Forums.UserControls.AdminForumsEdit" %>
-<!--dnnforumbegin-->
-Forum Edit
-<div id="dnnForumEditor" class="dnnForm dnnTabs">
+<div id="dnnForumEditor" class="dnnForm dnnTabs dnnClear">
+    <h2 class="dnnFormSectionHead">Edit Forum</h2>
     <ul class="dnnAdminTabNav dnnClear">
         <li><a href="#forumTab1"><span>[RESX:Details]</span></a></li>
         <li><a href="#forumTab2"><span>[RESX:Permissions]</span></a></li>
@@ -73,7 +72,6 @@ Forum Edit
     [RESX:Features]
     </div>
 </div>
-<!--dnnforumend-->
 <script type="text/javascript" language="javascript">
     function saveForum() {
         var result = jQuery('#dnnForumEdit').serializeObject();
