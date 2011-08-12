@@ -95,13 +95,6 @@
     <Compile Include="Components\Models\CPanelModel.cs" />
     <Compile Include="Components\Models\DispatchModel.cs" />
     <Compile Include="Components\Models\HomeModel.cs" />
-    <Compile Include="Components\Models\UserControls\AdminForumsModel.cs" />
-    <Compile Include="Components\Models\UserControls\AdminMainModel.cs" />
-    <Compile Include="Components\Models\UserControls\AdminRanksModel.cs" />
-    <Compile Include="Components\Models\UserControls\AdminFiltersModel.cs" />
-    <Compile Include="Components\Models\UserControls\AdminTemplatesModel.cs" />
-    <Compile Include="Components\Models\UserControls\AdminSettingsModel.cs" />
-    <Compile Include="Components\Models\UserControls\AdminForumsEditModel.cs" />
     <Compile Include="Components\Presenters\ControlPanelPresenter.cs" />
     <Compile Include="Components\Presenters\CPanelPresenter.cs" />
     <Compile Include="Components\Presenters\DispatchPresenter.cs" />
