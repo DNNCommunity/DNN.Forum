@@ -18,6 +18,8 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
+using System;
+using DotNetNuke.Framework;
 using DotNetNuke.Modules.Forums.Components.Models;
 using DotNetNuke.Modules.Forums.Components.Presenters;
 using DotNetNuke.Modules.Forums.Components.Views;
@@ -36,9 +38,11 @@ namespace DotNetNuke.Modules.Forums
 	/// Dispatch is the initial view control in the Forums module. It reads the URL and determines which control should be displayed to the end user. 
 	/// </summary>
 	/// <remarks>The purpose of this is to avoid usage of 'ctl' in the URL and thus loading of the DotNetNuke edit skin. </remarks>
-	[PresenterBinding(typeof(DispatchPresenter))]
-	public partial class Dispatch : ModuleView<DispatchModel>, IDispatchView, IActionable
+	[PresenterBinding(typeof(CPanelPresenter))]
+	public partial class CPanel : ModuleView<CPanelModel>, ICPanelView
 	{
+
+		public event EventHandler NavigationClick;
 
 		#region Constructor
 
@@ -46,7 +50,7 @@ namespace DotNetNuke.Modules.Forums
 		/// The constructor is used here to set base properties. 
 		/// </summary>
 		/// <remarks>We have to disable autobinding in the ctor here so the loaded controls can also disable it, if necessary.</remarks>
-		public Dispatch()
+		public CPanel()
 		{
 			AutoDataBind = false;
 		}
@@ -56,9 +60,43 @@ namespace DotNetNuke.Modules.Forums
 		#region Public Methods
 
 		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="e"></param>
+		/// <remarks>OnInit can be used here because ctl= is used in URL.</remarks>
+		protected override void OnInit(EventArgs e)
+		{
+			base.OnInit(e);
+
+			var ctlDirectory = TemplateSourceDirectory;
+			jQuery.RequestDnnPluginsRegistration();
+			PageBase.RegisterStyleSheet(Page, ctlDirectory + "/ControlPanel.css");
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		protected void OnNavigationClick(object sender, EventArgs e)
+		{
+			//ViewState["CtlToLoad"] = String.Empty;
+			NavigationClick(sender, e);
+			LoadControl();
+		}
+
+		/// <summary>
 		/// Every time a page load occurs (initial load, postback, etc.), this method will load the proper control based on parameters in the URL.
 		/// </summary>
 		public void Refresh()
+		{
+			if (Page.IsPostBack) return;
+			LoadControl();
+		}
+
+		#endregion
+
+		public void LoadControl()
 		{
 			var ctlDirectory = TemplateSourceDirectory;
 
@@ -74,33 +112,6 @@ namespace DotNetNuke.Modules.Forums
 				ViewState["CtlToLoad"] = Model.ControlToLoad;
 			}
 		}
-
-		#endregion
-
-		#region IActionable Members
-
-		public ModuleActionCollection ModuleActions {
-			get {
-				var actions = new ModuleActionCollection
-								  {
-									  {
-										  ModuleContext.GetNextActionID(),
-										  Localization.GetString("ControlPanel.Action", LocalResourceFile),
-										  ModuleActionType.AddContent, "", "edit.gif", ModuleContext.EditUrl(), false,
-										  SecurityAccessLevel.Edit, true, false
-										}, 
-										{
-										  ModuleContext.GetNextActionID(),
-										  Localization.GetString("ControlPanel2.Action", LocalResourceFile),
-										  ModuleActionType.AddContent, "", "edit.gif", ModuleContext.NavigateUrl(ModuleContext.TabId, "cpanel", false, "mid=" + ModuleContext.ModuleId), false,
-										  SecurityAccessLevel.Edit, true, false
-										}
-								  };
-				return actions;
-			}
-		}
-
-		#endregion
 
 	}
 }

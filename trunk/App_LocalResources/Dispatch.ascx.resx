@@ -120,6 +120,9 @@
   <data name="ControlPanel.Action" xml:space="preserve">
     <value>Control Panel</value>
   </data>
+  <data name="ControlPanel2.Action" xml:space="preserve">
+    <value>Test CP</value>
+  </data>
   <data name="ControlTitle_dispatch.Text" xml:space="preserve">
     <value>Forums</value>
   </data>

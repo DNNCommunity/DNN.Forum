@@ -73,6 +73,13 @@ namespace DotNetNuke.Modules.Forums.Components.Common {
 			Home = 0
 		}
 
+		public enum CPanelScope
+		{
+			Dashboard = 0,
+			Forums = 1,
+			EditForum = 2
+		}
+
 		#endregion
 	
 	}

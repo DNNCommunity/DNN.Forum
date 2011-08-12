@@ -88,6 +88,7 @@
     <Compile Include="Components\Entities\TopicInfo.cs" />
     <Compile Include="Components\Entities\ForumInfo.cs" />
     <Compile Include="Components\Models\ControlPanelModel.cs" />
+    <Compile Include="Components\Models\CPanelModel.cs" />
     <Compile Include="Components\Models\DispatchModel.cs" />
     <Compile Include="Components\Models\HomeModel.cs" />
     <Compile Include="Components\Models\UserControls\AdminForumsModel.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="Components\Models\UserControls\AdminSettingsModel.cs" />
     <Compile Include="Components\Models\UserControls\AdminForumsEditModel.cs" />
     <Compile Include="Components\Presenters\ControlPanelPresenter.cs" />
+    <Compile Include="Components\Presenters\CPanelPresenter.cs" />
     <Compile Include="Components\Presenters\DispatchPresenter.cs" />
     <Compile Include="Components\Presenters\HomePresenter.cs" />
     <Compile Include="Components\Presenters\UserControls\AdminForumsPresenter.cs" />
@@ -109,6 +111,7 @@
     <Compile Include="Components\Presenters\UserControls\AdminForumsEditPresenter.cs" />
     <Compile Include="Components\Taxonomy\Content.cs" />
     <Compile Include="Components\Taxonomy\Terms.cs" />
+    <Compile Include="Components\Views\ICPanelView.cs" />
     <Compile Include="Components\Views\IAdminForumsEditView.cs" />
     <Compile Include="Components\Views\IAdminSettingsView.cs" />
     <Compile Include="Components\Views\IAdminTemplatesView.cs" />
@@ -125,6 +128,13 @@
     </Compile>
     <Compile Include="ControlPanel.ascx.designer.cs">
       <DependentUpon>ControlPanel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CPanel.ascx.cs">
+      <DependentUpon>CPanel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CPanel.ascx.designer.cs">
+      <DependentUpon>CPanel.ascx</DependentUpon>
     </Compile>
     <Compile Include="Dispatch.ascx.cs">
       <DependentUpon>Dispatch.ascx</DependentUpon>
@@ -202,6 +212,7 @@
   <ItemGroup>
     <Content Include="ControlPanel.ascx" />
     <Content Include="ControlPanel.css" />
+    <Content Include="CPanel.ascx" />
     <Content Include="Dispatch.ascx" />
     <Content Include="Documentation\License.txt" />
     <Content Include="Documentation\ReleaseNotes.txt" />
