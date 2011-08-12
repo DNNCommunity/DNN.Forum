@@ -18,13 +18,12 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using DotNetNuke.Modules.Forums.Views.Models;
+using DotNetNuke.Modules.Forums.Components.Presenters;
 using DotNetNuke.Modules.Forums.Presenters;
 using DotNetNuke.Modules.Forums.Views;
 using DotNetNuke.Web.Mvp;
 using WebFormsMvp;
 using DotNetNuke.UI.Modules;
-using System;
 using System.Web.UI;
 using DotNetNuke.Framework;
 
@@ -50,47 +49,55 @@ namespace DotNetNuke.Modules.Forums {
         #endregion
 
         #region Public Methods
-    
+
+        protected override void OnInit(System.EventArgs e)
+        {
+            base.OnInit(e);
+
+            var ctlDirectory = TemplateSourceDirectory;
+            var langKey = "en-US";
+            if (Request.QueryString["language"] != null)
+            {
+                langKey = Request.QueryString["language"];
+            }
+            jQuery.RegisterDnnJQueryPlugins(Page);
+            PageBase.RegisterStyleSheet(Page, ctlDirectory + "/ControlPanel.css");
+            Page.ClientScript.RegisterClientScriptInclude(Page.GetType(), "dnnforums.scripts", Page.ResolveUrl(ctlDirectory + "/scripts/scripts.ashx") + "?PortalId=" + ModuleContext.PortalId + "&ModuleId=" + ModuleContext.ModuleId + "&isadmin=true&language=" + langKey);
+            Page.ClientScript.RegisterStartupScript(Page.GetType(), "dnnforums.history", "window.dhtmlHistory.create({ toJSON: function (o) { return JSON.stringify(o); }, fromJSON: function (s) { return JSON.parse(s); } });", true);
+        }
+        //protected override void OnLoad(System.EventArgs e)
+        //{
+        //    base.OnLoad(e);
+
+
+         
+        //}
+
         /// <summary>
         /// Every time a page load occurs (initial load, postback, etc.), this method will load the proper control based on parameters in the URL.
         /// </summary>
         public void Refresh() {
             var ctlDirectory = TemplateSourceDirectory;
-            string langKey = "en-US";
-            if (Request.QueryString["language"] != null) {
-                langKey = Request.QueryString["language"];
-            }
-            jQuery.RegisterDnnJQueryPlugins(this.Page);
-            Framework.PageBase.RegisterStyleSheet(this.Page, ctlDirectory + "/ControlPanel.css");
-            Page.ClientScript.RegisterClientScriptInclude(Page.GetType(), "dnnforums.scripts", Page.ResolveUrl(ctlDirectory + "/scripts/scripts.ashx") + "?PortalId=" + ModuleContext.PortalId.ToString() + "&ModuleId=" + ModuleContext.ModuleId.ToString() + "&isadmin=true&language=" + langKey);
-            Page.ClientScript.RegisterStartupScript(Page.GetType(), "dnnforums.history", "window.dhtmlHistory.create({ toJSON: function (o) { return JSON.stringify(o); }, fromJSON: function (s) { return JSON.parse(s); } });", true);
-         
-                string controlKey = Model.ControlToLoad;
+            var controlKey = Model.ControlToLoad;
 
-                var objControl = LoadControl(ctlDirectory + controlKey) as ModuleUserControlBase;
-                if (objControl == null) return;
-                phUserControl.Controls.Clear();
-                objControl.ModuleContext.Configuration = ModuleContext.Configuration;
-                objControl.ID = System.IO.Path.GetFileNameWithoutExtension(ctlDirectory + controlKey);
-                phUserControl.Controls.Add(objControl);
-                if (Request.Form["action"] != null) {
-                    System.IO.StringWriter stringWriter = new System.IO.StringWriter();
-                    HtmlTextWriter htmlWriter = new HtmlTextWriter(stringWriter);
-                    phUserControl.RenderControl(htmlWriter);
-                    string html = stringWriter.ToString();
-                    html = Common.Utilities.LocalizeControl(html, true);
-                    Response.Clear();
-                    Response.Write(html);
-                    Response.End();
+            var objControl = LoadControl(ctlDirectory + controlKey) as ModuleUserControlBase;
+            if (objControl == null) return;
+            phUserControl.Controls.Clear();
+            objControl.ModuleContext.Configuration = ModuleContext.Configuration;
+            objControl.ID = System.IO.Path.GetFileNameWithoutExtension(ctlDirectory + controlKey);
+            phUserControl.Controls.Add(objControl);
 
-                }
-       
-            
-            
-            
+            if (Request.Form["action"] == null) return;
+            var stringWriter = new System.IO.StringWriter();
+            var htmlWriter = new HtmlTextWriter(stringWriter);
+            phUserControl.RenderControl(htmlWriter);
+            var html = stringWriter.ToString();
+            html = Common.Utilities.LocalizeControl(html, true);
+            Response.Clear();
+            Response.Write(html);
+            Response.End();
         }
-
-      
+  
         #endregion
 
     }

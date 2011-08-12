@@ -24,16 +24,13 @@ using DotNetNuke.Modules.Forums.Views;
 using DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider;
 using DotNetNuke.Web.Mvp;
 using System;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Framework;
-using System.Web.UI;
 
-namespace DotNetNuke.Modules.Forums.Presenters {
+namespace DotNetNuke.Modules.Forums.Components.Presenters {
 
     /// <summary>
     /// 
     /// </summary>
-    public class ControlPanelPresenter : ModulePresenter<Views.IControlPanelView, Views.Models.ControlPanelModel> {
+    public class ControlPanelPresenter : ModulePresenter<IControlPanelView, ControlPanelModel> {
 
         #region Private Members
 
@@ -93,18 +90,14 @@ namespace DotNetNuke.Modules.Forums.Presenters {
         /// </summary>
         protected override void OnInit() {
             base.OnInit();
+
             View.Model.IsEditable = ModuleContext.IsEditable;
             View.Model.ControlToLoad = "/UserControls/Admin" + ControlView + ".ascx";
-            View.Refresh();       
-            
-            
-           
-            
-            
-           
+            View.Refresh();                     
         }
 
         #endregion
+
         #region Public Methods
         
         #endregion
