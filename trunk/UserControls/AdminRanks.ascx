@@ -1,2 +1,4 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AdminRanks.ascx.cs" Inherits="DotNetNuke.Modules.Forums.UserControls.AdminRanks" %>
-Ranks
+<div class="dnnForm dnnForumAdminRanks dnnClear">
+    <h2 class="dnnFormSectionHead">Ranking</h2>
+</div>

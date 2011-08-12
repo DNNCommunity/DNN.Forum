@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AdminMain.ascx.cs" Inherits="DotNetNuke.Modules.Forums.UserControls.AdminMain" %>
-<div class="dnnControlPanelHome" id="dnnControlPanelHome">
+<div class="dnnControlPanelHome" id="dnnForm dnnControlPanelHome dnnClear">
     <div class="dashOuter dnnRight" style="width:29%;margin-right:4px;">
         <div class="dashOuterHeader">Header</div>
         <div class="dashInner">
