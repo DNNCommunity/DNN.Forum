@@ -225,7 +225,9 @@
     <Content Include="UserControls\AdminForumsEdit.ascx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="DNNCorp.Forums.dnn" />
+    <None Include="DNNCorp.Forums.dnn">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Providers\Data\SqlDataProvider\06.00.00.SqlDataProvider" />
     <None Include="Providers\Data\SqlDataProvider\Uninstall.SqlDataProvider" />
     <Content Include="Scripts\scripts.ashx" />
