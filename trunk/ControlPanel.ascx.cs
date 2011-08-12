@@ -26,6 +26,7 @@ using WebFormsMvp;
 using DotNetNuke.UI.Modules;
 using System.Web.UI;
 using DotNetNuke.Framework;
+using System;
 
 namespace DotNetNuke.Modules.Forums {
 
@@ -35,7 +36,8 @@ namespace DotNetNuke.Modules.Forums {
     /// <remarks>The purpose of this is to avoid usage of 'ctl' in the URL and thus loading of the DotNetNuke edit skin. </remarks>
     [PresenterBinding(typeof(ControlPanelPresenter))]
     public partial class ControlPanel : ModuleView<Views.Models.ControlPanelModel>, IControlPanelView {
-  
+       
+
         #region Constructor
 
         /// <summary>
@@ -49,12 +51,12 @@ namespace DotNetNuke.Modules.Forums {
         #endregion
 
         #region Public Methods
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="e"></param>
-        /// <remarks>OnInit can be used here because ctl= is used in URL.</remarks>
+       
+         //<summary>
+         
+         //</summary>
+         //<param name="e"></param>
+         //<remarks>OnInit can be used here because ctl= is used in URL.</remarks>
         protected override void OnInit(System.EventArgs e)
         {
             base.OnInit(e);
@@ -75,27 +77,16 @@ namespace DotNetNuke.Modules.Forums {
         /// Every time a page load occurs (initial load, postback, etc.), this method will load the proper control based on parameters in the URL.
         /// </summary>
         public void Refresh() {
-            var ctlDirectory = TemplateSourceDirectory;
-            var controlKey = Model.ControlToLoad;
-
-            var objControl = LoadControl(ctlDirectory + controlKey) as ModuleUserControlBase;
-            if (objControl == null) return;
-            phUserControl.Controls.Clear();
-            objControl.ModuleContext.Configuration = ModuleContext.Configuration;
-            objControl.ID = System.IO.Path.GetFileNameWithoutExtension(ctlDirectory + controlKey);
-            phUserControl.Controls.Add(objControl);
-
-            if (Request.Form["action"] == null) return;
-            var stringWriter = new System.IO.StringWriter();
-            var htmlWriter = new HtmlTextWriter(stringWriter);
-            phUserControl.RenderControl(htmlWriter);
-            var html = stringWriter.ToString();
-            html = Utilities.LocalizeControl(html, true);
-            Response.Clear();
-            Response.Write(html);
-            Response.End();
+            
         }
-  
+        protected override void Render(System.Web.UI.HtmlTextWriter writer) {
+            System.IO.StringWriter stringWriter = new System.IO.StringWriter();
+            HtmlTextWriter htmlWriter = new HtmlTextWriter(stringWriter);
+            base.Render(htmlWriter);
+            string html = stringWriter.ToString();
+            html = Utilities.LocalizeControl(html, true);
+            writer.Write(html);
+        }
         #endregion
 
     }

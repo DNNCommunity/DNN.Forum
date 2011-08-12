@@ -24,6 +24,7 @@ using DotNetNuke.Modules.Forums.Views.Models;
 using DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider;
 using DotNetNuke.Web.Mvp;
 using System;
+using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.Forums.Components.Presenters {
 
@@ -34,23 +35,8 @@ namespace DotNetNuke.Modules.Forums.Components.Presenters {
 
         #region Private Members
 
-        protected IForumsController Controller { get; private set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private string ControlView {
-            get {
-                var controlView = "main";
-                if (!String.IsNullOrEmpty(Request.Params["view"])) {
-                    controlView = Request.Params["view"];
-                }
-                return controlView.ToLowerInvariant();
-            }
-        }
-
-        private const string CtlHome = "main";
-
+      
+     
         #endregion
 
         #region Constructor
@@ -78,29 +64,12 @@ namespace DotNetNuke.Modules.Forums.Components.Presenters {
                 throw new ArgumentException(@"Controller is nothing.", "controller");
             }
 
-            Controller = controller;
+         
         }
 
         #endregion
 
-        #region Events
-
-        /// <summary>
-        /// 
-        /// </summary>
-        protected override void OnInit() {
-            base.OnInit();
-
-            View.Model.IsEditable = ModuleContext.IsEditable;
-            View.Model.ControlToLoad = "/UserControls/Admin" + ControlView + ".ascx";
-            View.Refresh();                     
-        }
-
-        #endregion
-
-        #region Public Methods
-        
-        #endregion
+     
 
     }
 }

@@ -30,35 +30,12 @@ dnnforums.admin = {
         if (typeof (param) == 'undefined') {
             param = '';
         };
-        dnnforums.admin.ShowMsg('[RESX:PleaseWait]', 'loading');
-        dnnforums.history.Add('cpview=' + view + '&param=' + param, 'Forums - ' + view);
-        if (typeof (data) == 'undefined' || data == null) {
-            data = {};
-            data.action = 'callback';
-        };
-        data.param = param;
-        data.view = view;
-        jQuery.ajax({
-            type: 'POST',
-            url: window.location.href,
-            data: data,
-            success: function (data) {
 
-                jQuery('#dnnForumControl').html(data);
-                if (jQuery('#controlActions').length > 0) {
-                    jQuery('#controlActions').appendTo('.dnnForumActionArea').css('display', 'block');
-                } else {
-                    jQuery('.dnnForumActionArea').empty();
-                };
-                jQuery('#dnnForumEditor').dnnTabs({ regionToToggleSelector: 'div' });
-                dnnforums.admin.HideMsg(function () {
-                    if (callback != null) {
-                        callback();
-                    };
-                });
-                
-            }
-        });
+        dnnforums.history.Add('cpview=' + view + '&param=' + param, 'Forums - ' + view);
+        jQuery('.dnnForumArea').css('display', 'none');
+        jQuery('#' + view).show('fast');
+        
+
     },
     ShowMsg: function (text, cls) {
         var w = jQuery('#dnnForumMsgArea').parent().css('width');

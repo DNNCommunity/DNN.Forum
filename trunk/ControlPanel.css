@@ -1,7 +1,7 @@
 ﻿.dnnForumShell{margin-top:8px;border:1px solid #375162;background-color:#A1B3C1;width:830px;}
 .dnnForumShell .dnnForumNav{width:180px;margin-top:12px;}
 .dnnForumShell .dnnForumNav ul li{list-style-type:none;}
-.dnnForumShell #dnnForumContent{background-color:#fff;width:650px;height:600px;}
+.dnnForumShell #dnnForumContent{background-color:#fff;width:650px;height:600px;padding-top:10px;}
 
 .dnnForumShell .dnnForumNav ul {margin-left:18px;}
 .dnnForumShell .dnnForumNav li{font-size:10pt; cursor:pointer;}
@@ -51,3 +51,4 @@
         list-style-type:none;margin-bottom:6px;margin-right:10px;border:1px solid #ccc;padding:6px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;
         }
 .dnnForumList ul li:hover{background-color:#FFC;border:1px solid #999;cursor:pointer;}
+.dnnForumArea{display:none;}

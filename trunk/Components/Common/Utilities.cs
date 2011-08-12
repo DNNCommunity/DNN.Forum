@@ -57,9 +57,9 @@ namespace DotNetNuke.Modules.Forums.Components.Common {
         public static string GetSharedResource(string key, bool isAdmin)
         {
             if (isAdmin) {
-                return Services.Localization.Localization.GetString(key, "~/DesktopModules/DNNCorp/forums/App_LocalResources/ControlPanel.ascx.resx");
+                return DotNetNuke.Services.Localization.Localization.GetString(key, "~/DesktopModules/DNNCorp/forums/App_LocalResources/ControlPanel.ascx.resx");
             }
-            return Services.Localization.Localization.GetString(key, "~/DesktopModules/DNNCorp/forums/App_LocalResources/SharedResources.resx");
+            return DotNetNuke.Services.Localization.Localization.GetString(key, "~/DesktopModules/DNNCorp/forums/App_LocalResources/SharedResources.resx");
         }
 
         public static string LocalizeControl(string controlText) {

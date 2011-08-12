@@ -20,6 +20,7 @@
 
 using DotNetNuke.Modules.Forums.Views.Models;
 using DotNetNuke.Web.Mvp;
+using System;
 
 namespace DotNetNuke.Modules.Forums.Components.Views {
 
@@ -29,6 +30,6 @@ namespace DotNetNuke.Modules.Forums.Components.Views {
     public interface IControlPanelView : IModuleView<ControlPanelModel> {
 
         void Refresh();
-        
+
     }
 }

@@ -27,7 +27,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
+    <OutputPath>..\..\..\bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -39,6 +39,7 @@
     <Reference Include="DotNetNuke.Web">
       <HintPath>..\..\..\bin\DotNetNuke.Web.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetNuke.WebControls, Version=2.2.2.428, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.ApplicationBlocks.Data">
       <HintPath>..\..\..\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
@@ -46,6 +47,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
@@ -102,23 +106,9 @@
     <Compile Include="Components\Presenters\CPanelPresenter.cs" />
     <Compile Include="Components\Presenters\DispatchPresenter.cs" />
     <Compile Include="Components\Presenters\HomePresenter.cs" />
-    <Compile Include="Components\Presenters\UserControls\AdminForumsPresenter.cs" />
-    <Compile Include="Components\Presenters\UserControls\AdminMainPresenter.cs" />
-    <Compile Include="Components\Presenters\UserControls\AdminRanksPresenter.cs" />
-    <Compile Include="Components\Presenters\UserControls\AdminFiltersPresenter.cs" />
-    <Compile Include="Components\Presenters\UserControls\AdminTemplatesPresenter.cs" />
-    <Compile Include="Components\Presenters\UserControls\AdminSettingsPresenter.cs" />
-    <Compile Include="Components\Presenters\UserControls\AdminForumsEditPresenter.cs" />
     <Compile Include="Components\Taxonomy\Content.cs" />
     <Compile Include="Components\Taxonomy\Terms.cs" />
     <Compile Include="Components\Views\ICPanelView.cs" />
-    <Compile Include="Components\Views\IAdminForumsEditView.cs" />
-    <Compile Include="Components\Views\IAdminSettingsView.cs" />
-    <Compile Include="Components\Views\IAdminTemplatesView.cs" />
-    <Compile Include="Components\Views\IAdminFiltersView.cs" />
-    <Compile Include="Components\Views\IAdminRanksView.cs" />
-    <Compile Include="Components\Views\IAdminForumsView.cs" />
-    <Compile Include="Components\Views\IAdminMainView.cs" />
     <Compile Include="Components\Views\IControlPanelView.cs" />
     <Compile Include="Components\Views\IDispatchView.cs" />
     <Compile Include="Components\Views\IHomeView.cs" />
@@ -128,13 +118,6 @@
     </Compile>
     <Compile Include="ControlPanel.ascx.designer.cs">
       <DependentUpon>ControlPanel.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="CPanel.ascx.cs">
-      <DependentUpon>CPanel.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="CPanel.ascx.designer.cs">
-      <DependentUpon>CPanel.ascx</DependentUpon>
     </Compile>
     <Compile Include="Dispatch.ascx.cs">
       <DependentUpon>Dispatch.ascx</DependentUpon>
@@ -156,63 +139,18 @@
     <Compile Include="Scripts\scripts.ashx.cs">
       <DependentUpon>scripts.ashx</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\AdminForums.ascx.cs">
-      <DependentUpon>AdminForums.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserControls\AdminForums.ascx.designer.cs">
-      <DependentUpon>AdminForums.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\AdminMain.ascx.cs">
-      <DependentUpon>AdminMain.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserControls\AdminMain.ascx.designer.cs">
-      <DependentUpon>AdminMain.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\AdminRanks.ascx.cs">
-      <DependentUpon>AdminRanks.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserControls\AdminRanks.ascx.designer.cs">
-      <DependentUpon>AdminRanks.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\AdminSettings.ascx.cs">
-      <DependentUpon>AdminSettings.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserControls\AdminSettings.ascx.designer.cs">
-      <DependentUpon>AdminSettings.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\AdminTemplates.ascx.cs">
-      <DependentUpon>AdminTemplates.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserControls\AdminTemplates.ascx.designer.cs">
-      <DependentUpon>AdminTemplates.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\AdminFilters.ascx.cs">
-      <DependentUpon>AdminFilters.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserControls\AdminFilters.ascx.designer.cs">
-      <DependentUpon>AdminFilters.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\AdminForumsEdit.ascx.cs">
-      <DependentUpon>AdminForumsEdit.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UserControls\AdminForumsEdit.ascx.designer.cs">
-      <DependentUpon>AdminForumsEdit.ascx</DependentUpon>
+    <Compile Include="Services\Forums.asmx.cs">
+      <DependentUpon>Forums.asmx</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Providers\Sitemap\" />
+    <Folder Include="UserControls\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ControlPanel.ascx" />
     <Content Include="ControlPanel.css" />
-    <Content Include="CPanel.ascx" />
     <Content Include="Dispatch.ascx" />
     <Content Include="Documentation\License.txt" />
     <Content Include="Documentation\ReleaseNotes.txt" />
@@ -227,13 +165,7 @@
     <Content Include="Scripts\dnnforums.js" />
     <Content Include="Scripts\json2009.min.js" />
     <Content Include="Scripts\rsh.min.js" />
-    <Content Include="UserControls\AdminForums.ascx" />
-    <Content Include="UserControls\AdminMain.ascx" />
-    <Content Include="UserControls\AdminRanks.ascx" />
-    <Content Include="UserControls\AdminSettings.ascx" />
-    <Content Include="UserControls\AdminTemplates.ascx" />
-    <Content Include="UserControls\AdminFilters.ascx" />
-    <Content Include="UserControls\AdminForumsEdit.ascx" />
+    <Content Include="Services\Forums.asmx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DNNCorp.Forums.dnn">

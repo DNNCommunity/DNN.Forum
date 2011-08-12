@@ -23,7 +23,7 @@ namespace DotNetNuke.Modules.Forums.Views.Models {
     public class ControlPanelModel {
         public bool IsEditable { get; set; }
 
-        public string ControlToLoad { get; set; }
+        
         
 
     }

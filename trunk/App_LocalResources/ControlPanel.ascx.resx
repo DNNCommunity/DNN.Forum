@@ -138,6 +138,9 @@
   <data name="[RESX:Button:Save].Text" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="[RESX:Dashboard].Text" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
   <data name="[RESX:Details].Text" xml:space="preserve">
     <value>Details</value>
   </data>

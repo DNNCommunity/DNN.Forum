@@ -23,6 +23,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Modules.Forums.Components.Entities;
 using DotNetNuke.Modules.Forums.Providers.Data;
 using DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider;
+using DotNetNuke.Services.Personalization;
 
 namespace DotNetNuke.Modules.Forums.Components.Controllers
 {
@@ -599,6 +600,7 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public int AddUser(UserInfo objUser)
 		{
+            //Personalization.SetProfile()
 			return _dataProvider.AddUser(objUser.PortalId, objUser.UserId, objUser.TopicCount, objUser.ReplyCount, objUser.RewardPoints, objUser.AnswerCount, objUser.QuestionCount, objUser.TrustLevel, objUser.UserCaption, objUser.LastPostDate, objUser.LastActivityDate, objUser.AdminWatch, objUser.DisableAttach, objUser.DisableHtml, objUser.CreatedOnDate);
 		}
 
