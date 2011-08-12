@@ -29,20 +29,11 @@ using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Modules.Forums.Components.Presenters
 {
-
-	/// <summary>
-	/// 
-	/// </summary>
 	public class CPanelPresenter : ModulePresenter<ICPanelView, CPanelModel>
 	{
 
-		#region Private Members
-
 		protected IForumsController Controller { get; private set; }
 
-		/// <summary>
-		/// 
-		/// </summary>
 		private string ControlView
 		{
 			get
@@ -60,26 +51,11 @@ namespace DotNetNuke.Modules.Forums.Components.Presenters
 		private const string CtlDashboard = "/UserControls/AdminMain.ascx";
 		private const string CtlForums = "/UserControls/AdminForums.ascx";
 
-		#endregion
-
-		#region Constructor
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="view"></param>
-		public CPanelPresenter(ICPanelView view)
-			: this(view, new ForumsController(new SqlDataProvider()))
+		public CPanelPresenter(ICPanelView view) : this(view, new ForumsController(new SqlDataProvider()))
 		{
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="view"></param>
-		/// <param name="controller"></param>
-		public CPanelPresenter(ICPanelView view, IForumsController controller)
-			: base(view)
+		public CPanelPresenter(ICPanelView view, IForumsController controller) : base(view)
 		{
 			if (view == null)
 			{
@@ -91,21 +67,13 @@ namespace DotNetNuke.Modules.Forums.Components.Presenters
 				throw new ArgumentException(@"Controller is nothing.", "controller");
 			}
 
-			Controller = controller;
+			this.Controller = controller;
+		    this.View.Load += ViewLoad;
 		}
 
-		#endregion
-
-		#region Events
-
-		/// <summary>
-		/// 
-		/// </summary>
-		protected override void OnInit()
+		private void ViewLoad(object sender, EventArgs eventArgs)
 		{
-			base.OnInit();
-
-			View.Model.IsEditable = ModuleContext.IsEditable;
+			this.View.Model.IsEditable = ModuleContext.IsEditable;
 
 			if (View.Model.ControlToLoad == null)
 			{
@@ -121,15 +89,12 @@ namespace DotNetNuke.Modules.Forums.Components.Presenters
 			}
 
 		    View.NavigationClick += NavigationClick;
-			View.Refresh();
+			//View.Refresh();
 		}
 
 		protected void NavigationClick(object sender, EventArgs e)
 		{
-
-			var objButton = (LinkButton)sender;
-
-			switch (objButton.CommandArgument)
+			switch (((LinkButton)sender).CommandArgument)
 			{
 				case "1":
 					View.Model.ControlToLoad = CtlForums;
@@ -139,8 +104,5 @@ namespace DotNetNuke.Modules.Forums.Components.Presenters
 					break;
 			}
 		}
-
-		#endregion
-
 	}
 }

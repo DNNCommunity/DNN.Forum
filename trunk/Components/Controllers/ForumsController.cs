@@ -18,33 +18,24 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System.Collections.Generic;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Modules.Forums.Components.Entities;
-using DotNetNuke.Modules.Forums.Providers.Data;
-using DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider;
-using DotNetNuke.Services.Personalization;
-
 namespace DotNetNuke.Modules.Forums.Components.Controllers
 {
+    using System.Collections.Generic;
+    using DotNetNuke.Common.Utilities;
+    using Entities;
+    using Providers.Data;
+    using Providers.Data.SqlDataProvider;
 
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <remarks></remarks>
 	public class ForumsController : IForumsController {
 
-		private readonly IDataProvider _dataProvider;
+		private readonly IDataProvider dataProvider;
 
 		#region Constructors
 
-		/// <summary>
-		/// 
-		/// </summary>
 		public ForumsController()
 		{
-			_dataProvider = ComponentModel.ComponentFactory.GetComponent<IDataProvider>();
-			if (_dataProvider != null) return;
+			dataProvider = ComponentModel.ComponentFactory.GetComponent<IDataProvider>();
+			if (dataProvider != null) return;
 
 			// get the provider configuration based on the type
 			var defaultprovider = Data.DataProvider.Instance().DefaultProviderName;
@@ -52,25 +43,20 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 			if (defaultprovider == "SqlDataProvider") 
 			{
-				_dataProvider = new SqlDataProvider();
+				dataProvider = new SqlDataProvider();
 			}
 			else 
 			{
 				var providerType = dataProviderNamespace + "." + defaultprovider;
-				_dataProvider = (IDataProvider)Framework.Reflection.CreateObject(providerType, providerType, true);
+				dataProvider = (IDataProvider)Framework.Reflection.CreateObject(providerType, providerType, true);
 			}
 
-			ComponentModel.ComponentFactory.RegisterComponentInstance<IDataProvider>(_dataProvider);
+			ComponentModel.ComponentFactory.RegisterComponentInstance<IDataProvider>(dataProvider);
 		}
 		  
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="dataProvider"></param>
 		public ForumsController(IDataProvider dataProvider)
 		{
-			//DotNetNuke.Common.Requires.NotNull("dataProvider", dataProvider);
-			_dataProvider = dataProvider;
+			this.dataProvider = dataProvider;
 		}
 
 		#endregion
@@ -81,28 +67,28 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public int AddFilter(FilterInfo objFilter)
 		{
-			return _dataProvider.AddFilter(objFilter.PortalId, objFilter.ModuleId, objFilter.ForumId, objFilter.Find, objFilter.Replace, objFilter.FilterType, objFilter.ApplyOnSave, objFilter.ApplyOnRender, objFilter.CreatedOnDate);
+			return dataProvider.AddFilter(objFilter.PortalId, objFilter.ModuleId, objFilter.ForumId, objFilter.Find, objFilter.Replace, objFilter.FilterType, objFilter.ApplyOnSave, objFilter.ApplyOnRender, objFilter.CreatedOnDate);
 		}
 
 		public FilterInfo GetFilter(int filterId)
 		{
-			return CBO.FillObject<FilterInfo>(_dataProvider.GetFilter(filterId));
+			return CBO.FillObject<FilterInfo>(dataProvider.GetFilter(filterId));
 		}
 
 		public List<FilterInfo> GetAllFilters(int portalId)
 		{
-			return CBO.FillCollection<FilterInfo>(_dataProvider.GetAllFilters(portalId));
+			return CBO.FillCollection<FilterInfo>(dataProvider.GetAllFilters(portalId));
 		}
 
 		public void UpdateFilter(FilterInfo objFilter)
 		{
-			_dataProvider.UpdateFilter(objFilter.FilterId, objFilter.PortalId, objFilter.ModuleId, objFilter.ForumId, objFilter.Find, objFilter.Replace, objFilter.FilterType, objFilter.ApplyOnSave, objFilter.ApplyOnRender, objFilter.CreatedOnDate);
+			dataProvider.UpdateFilter(objFilter.FilterId, objFilter.PortalId, objFilter.ModuleId, objFilter.ForumId, objFilter.Find, objFilter.Replace, objFilter.FilterType, objFilter.ApplyOnSave, objFilter.ApplyOnRender, objFilter.CreatedOnDate);
 			//Caching.ClearFilterCache(filterId, portalId);
 		}
 
 		public void DeleteFilter(int filterId, int portalId)
 		{
-			_dataProvider.DeleteFilter(filterId, portalId);
+			dataProvider.DeleteFilter(filterId, portalId);
 			//Caching.ClearFilterCache(filterId, portalId);
 		}
 
@@ -112,29 +98,29 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public int AddForum(ForumInfo objForum)
 		{
-			return _dataProvider.AddForum(objForum.PortalId, objForum.ModuleId, objForum.ParentId, objForum.AllowTopics, objForum.Name, objForum.Description, objForum.SortOrder, objForum.Active, objForum.Hidden, objForum.TopicCount, objForum.ReplyCount, objForum.LastPostId, objForum.Slug, objForum.PermissionId, objForum.SettingId, objForum.EmailAddress, objForum.SiteMapPriority, objForum.CreatedOnDate, objForum.CreatedByUserId);
+			return dataProvider.AddForum(objForum.PortalId, objForum.ModuleId, objForum.ParentId, objForum.AllowTopics, objForum.Name, objForum.Description, objForum.SortOrder, objForum.Active, objForum.Hidden, objForum.TopicCount, objForum.ReplyCount, objForum.LastPostId, objForum.Slug, objForum.PermissionId, objForum.SettingId, objForum.EmailAddress, objForum.SiteMapPriority, objForum.CreatedOnDate, objForum.CreatedByUserId);
 			//Caching.ClearForumCache(objForum.ModuleId, objForum.PortalId);
 		}
 
 		public ForumInfo GetForum(int forumId)
 		{
-			return CBO.FillObject<ForumInfo>(_dataProvider.GetForum(forumId));
+			return CBO.FillObject<ForumInfo>(dataProvider.GetForum(forumId));
 		}
 
 		public List<ForumInfo> GetModuleForums(int moduleId)
 		{
-			return CBO.FillCollection<ForumInfo>(_dataProvider.GetModuleForums(moduleId));
+			return CBO.FillCollection<ForumInfo>(dataProvider.GetModuleForums(moduleId));
 		}
 
 		public void UpdateForum(ForumInfo objForum)
 		{
-			_dataProvider.UpdateForum(objForum.ForumId, objForum.PortalId, objForum.ModuleId, objForum.ParentId, objForum.AllowTopics, objForum.Name, objForum.Description, objForum.SortOrder, objForum.Active, objForum.Hidden, objForum.TopicCount, objForum.ReplyCount, objForum.LastPostId, objForum.Slug, objForum.PermissionId, objForum.SettingId, objForum.EmailAddress, objForum.SiteMapPriority, objForum.LastModifiedOnDate, objForum.LastModifiedByUserId);
+			dataProvider.UpdateForum(objForum.ForumId, objForum.PortalId, objForum.ModuleId, objForum.ParentId, objForum.AllowTopics, objForum.Name, objForum.Description, objForum.SortOrder, objForum.Active, objForum.Hidden, objForum.TopicCount, objForum.ReplyCount, objForum.LastPostId, objForum.Slug, objForum.PermissionId, objForum.SettingId, objForum.EmailAddress, objForum.SiteMapPriority, objForum.LastModifiedOnDate, objForum.LastModifiedByUserId);
 			//Caching.ClearForumCache(objForum.ModuleId, objForum.PortalId);
 		}
 
 		public void DeleteForum(int forumId, int moduleId, int portalId)
 		{
-			_dataProvider.DeleteForum(forumId, moduleId);
+			dataProvider.DeleteForum(forumId, moduleId);
 			//Caching.ClearForumCache(moduleId, portalId);
 		}
 
@@ -144,28 +130,28 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public int AddPermission(PermissionInfo objPermission)
 		{
-			return _dataProvider.AddPermission(objPermission.Description, objPermission.PortalId, objPermission.CanView, objPermission.CanRead, objPermission.CanCreate, objPermission.CanEdit, objPermission.CanDelete, objPermission.CanLock, objPermission.CanPin, objPermission.CanAttach, objPermission.CanPoll, objPermission.CanBlock, objPermission.CanTrust, objPermission.CanSubscribe, objPermission.CanAnnounce, objPermission.CanTag, objPermission.CanPrioritize, objPermission.CanModApprove, objPermission.CanModMove, objPermission.CanModSplit, objPermission.CanModDelete, objPermission.CanModUser, objPermission.CanModEdit, objPermission.CanModLock, objPermission.CanModPin);
+			return dataProvider.AddPermission(objPermission.Description, objPermission.PortalId, objPermission.CanView, objPermission.CanRead, objPermission.CanCreate, objPermission.CanEdit, objPermission.CanDelete, objPermission.CanLock, objPermission.CanPin, objPermission.CanAttach, objPermission.CanPoll, objPermission.CanBlock, objPermission.CanTrust, objPermission.CanSubscribe, objPermission.CanAnnounce, objPermission.CanTag, objPermission.CanPrioritize, objPermission.CanModApprove, objPermission.CanModMove, objPermission.CanModSplit, objPermission.CanModDelete, objPermission.CanModUser, objPermission.CanModEdit, objPermission.CanModLock, objPermission.CanModPin);
 		}
 
 		public PermissionInfo GetPermission(int permissionId)
 		{
-			return CBO.FillObject<PermissionInfo>(_dataProvider.GetPermission(permissionId));
+			return CBO.FillObject<PermissionInfo>(dataProvider.GetPermission(permissionId));
 		}
 
 		public List<PermissionInfo> GetPortalPermissions(int portalId)
 		{
-			return CBO.FillCollection<PermissionInfo>(_dataProvider.GetPortalPermissions(portalId));
+			return CBO.FillCollection<PermissionInfo>(dataProvider.GetPortalPermissions(portalId));
 		}
 
 		public void UpdatePermission(PermissionInfo objPermission)
 		{
-			_dataProvider.UpdatePermission(objPermission.PermissionId, objPermission.Description, objPermission.PortalId, objPermission.CanView, objPermission.CanRead, objPermission.CanCreate, objPermission.CanEdit, objPermission.CanDelete, objPermission.CanLock, objPermission.CanPin, objPermission.CanAttach, objPermission.CanPoll, objPermission.CanBlock, objPermission.CanTrust, objPermission.CanSubscribe, objPermission.CanAnnounce, objPermission.CanTag, objPermission.CanPrioritize, objPermission.CanModApprove, objPermission.CanModMove, objPermission.CanModSplit, objPermission.CanModDelete, objPermission.CanModUser, objPermission.CanModEdit, objPermission.CanModLock, objPermission.CanModPin);
+			dataProvider.UpdatePermission(objPermission.PermissionId, objPermission.Description, objPermission.PortalId, objPermission.CanView, objPermission.CanRead, objPermission.CanCreate, objPermission.CanEdit, objPermission.CanDelete, objPermission.CanLock, objPermission.CanPin, objPermission.CanAttach, objPermission.CanPoll, objPermission.CanBlock, objPermission.CanTrust, objPermission.CanSubscribe, objPermission.CanAnnounce, objPermission.CanTag, objPermission.CanPrioritize, objPermission.CanModApprove, objPermission.CanModMove, objPermission.CanModSplit, objPermission.CanModDelete, objPermission.CanModUser, objPermission.CanModEdit, objPermission.CanModLock, objPermission.CanModPin);
 			//Caching.ClearPermissionCache(permissionId, portalId);
 		}
 
 		public void DeletePermission(int permissionId, int portalId)
 		{
-			_dataProvider.DeletePermission(permissionId, portalId);
+			dataProvider.DeletePermission(permissionId, portalId);
 			//Caching.ClearPermissionCache(permissionId, portalId);
 		}
 
@@ -175,7 +161,7 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public int AddPoll(PollInfo objPoll)
 		{
-			return _dataProvider.AddPoll(objPoll.TopicId, objPoll.UserId, objPoll.Question, objPoll.PollType, objPoll.CreatedOnDate);
+			return dataProvider.AddPoll(objPoll.TopicId, objPoll.UserId, objPoll.Question, objPoll.PollType, objPoll.CreatedOnDate);
 			//Caching.ClearPollCache(objPoll.TopicId);
 		}
 
@@ -186,18 +172,18 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public List<PollInfo> GetPollByTopic(int topicId)
 		{
-			return CBO.FillCollection<PollInfo>(_dataProvider.GetPollByTopic(topicId));
+			return CBO.FillCollection<PollInfo>(dataProvider.GetPollByTopic(topicId));
 		}
 
 		public void UpdatePoll(PollInfo objPoll)
 		{
-			_dataProvider.UpdatePoll(objPoll.PollId, objPoll.TopicId, objPoll.UserId, objPoll.Question, objPoll.PollType, objPoll.CreatedOnDate);
+			dataProvider.UpdatePoll(objPoll.PollId, objPoll.TopicId, objPoll.UserId, objPoll.Question, objPoll.PollType, objPoll.CreatedOnDate);
 			//Caching.ClearPollCache(ojbPoll.Topic);
 		}
 
 		public void DeletePoll(int pollId, int topicId)
 		{
-			_dataProvider.DeletePoll(pollId, topicId);
+			dataProvider.DeletePoll(pollId, topicId);
 			//Caching.ClearPollCache(topicId);
 		}
 
@@ -207,7 +193,7 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public int AddPollOption(PollOptionInfo objPollOption)
 		{
-			return _dataProvider.AddPollOption(objPollOption.PollId, objPollOption.OptionName, objPollOption.Priority, objPollOption.CreatedOnDate);
+			return dataProvider.AddPollOption(objPollOption.PollId, objPollOption.OptionName, objPollOption.Priority, objPollOption.CreatedOnDate);
 			//Caching.ClearPollOptionCache(objPollOption.PollId);
 		}
 
@@ -218,18 +204,18 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public List<PollOptionInfo> GetPollOptions(int pollId)
 		{
-			return CBO.FillCollection<PollOptionInfo>(_dataProvider.GetPollOptions(pollId));
+			return CBO.FillCollection<PollOptionInfo>(dataProvider.GetPollOptions(pollId));
 		}
 
 		public void UpdatePollOption(PollOptionInfo objPollOption, int pollId)
 		{
-			_dataProvider.UpdatePollOption(objPollOption.PollOptionId, objPollOption.PollId, objPollOption.OptionName, objPollOption.Priority, objPollOption.LastModifiedOnDate);
+			dataProvider.UpdatePollOption(objPollOption.PollOptionId, objPollOption.PollId, objPollOption.OptionName, objPollOption.Priority, objPollOption.LastModifiedOnDate);
 			//Caching.ClearPollOptionCache(pollId);
 		}
 
 		public void DeletePollOption(int pollOptionId, int pollId)
 		{
-			_dataProvider.DeletePollOption(pollOptionId, pollId);
+			dataProvider.DeletePollOption(pollOptionId, pollId);
 			//Caching.ClearPollOptionCache(pollId);
 		}
 
@@ -239,7 +225,7 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public int AddPollResult(PollResultInfo objPollResult)
 		{
-			return _dataProvider.AddPollResult(objPollResult.PollId, objPollResult.PollOptionId, objPollResult.Response, objPollResult.IpAddress, objPollResult.UserId, objPollResult.CreatedOnDate);
+			return dataProvider.AddPollResult(objPollResult.PollId, objPollResult.PollOptionId, objPollResult.Response, objPollResult.IpAddress, objPollResult.UserId, objPollResult.CreatedOnDate);
 			//Caching.ClearPollResultsCache(objPollResult.PollId);
 		}
 
@@ -250,18 +236,18 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public List<PollResultInfo> GetPollResults(int pollId)
 		{
-			return CBO.FillCollection<PollResultInfo>(_dataProvider.GetPollResults(pollId));
+			return CBO.FillCollection<PollResultInfo>(dataProvider.GetPollResults(pollId));
 		}
 
 		public void UpdatePollResult(PollResultInfo objPollResult, int pollId)
 		{
-			_dataProvider.UpdatePollResult(objPollResult.PollResultId, objPollResult.PollId, objPollResult.PollOptionId, objPollResult.Response, objPollResult.IpAddress, objPollResult.UserId, objPollResult.LastModifiedOnDate);
+			dataProvider.UpdatePollResult(objPollResult.PollResultId, objPollResult.PollId, objPollResult.PollOptionId, objPollResult.Response, objPollResult.IpAddress, objPollResult.UserId, objPollResult.LastModifiedOnDate);
 			//Caching.ClearPollResultsCache(pollId);
 		}
 
 		public void DeletePollResult(int pollResultId, int pollId)
 		{
-			_dataProvider.DeletePollResult(pollResultId, pollId);
+			dataProvider.DeletePollResult(pollResultId, pollId);
 			//Caching.ClearPollResultsCache(pollId);
 		}
 
@@ -272,34 +258,34 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public int AddPost(PostInfo objPost)
 		{
-			return _dataProvider.AddPost(objPost.TopicId, objPost.ParentPostId, objPost.Subject, objPost.Body, objPost.IsApproved, objPost.IsLocked, objPost.IsPinned, objPost.UserId, objPost.DisplayName, objPost.EmailAddress, objPost.IpAddress, objPost.PostReported, objPost.Rating, objPost.PostIcon, objPost.StatusId, objPost.Slug, objPost.PostData, objPost.ApprovedOnDate, objPost.CreatedDate);
+			return dataProvider.AddPost(objPost.TopicId, objPost.ParentPostId, objPost.Subject, objPost.Body, objPost.IsApproved, objPost.IsLocked, objPost.IsPinned, objPost.UserId, objPost.DisplayName, objPost.EmailAddress, objPost.IpAddress, objPost.PostReported, objPost.Rating, objPost.PostIcon, objPost.StatusId, objPost.Slug, objPost.PostData, objPost.ApprovedOnDate, objPost.CreatedDate);
 			//Caching.ClearPostCache(topicId);
 		}
 
 		public PostInfo GetPost(int postId)
 		{
-			return CBO.FillObject<PostInfo>(_dataProvider.GetPost(postId));
+			return CBO.FillObject<PostInfo>(dataProvider.GetPost(postId));
 		}
 
 		public List<PostInfo> GetTopicPosts(int topicId)
 		{
-			return CBO.FillCollection<PostInfo>(_dataProvider.GetTopicPosts(topicId));
+			return CBO.FillCollection<PostInfo>(dataProvider.GetTopicPosts(topicId));
 		}
 
 		public void UpdatePost(PostInfo objPost)
 		{
-			_dataProvider.UpdatePost(objPost.PostId, objPost.TopicId, objPost.ParentPostId, objPost.Subject, objPost.Body, objPost.IsApproved, objPost.IsLocked, objPost.IsPinned, objPost.DisplayName, objPost.EmailAddress, objPost.PostReported, objPost.Rating, objPost.PostIcon, objPost.StatusId, objPost.Slug, objPost.PostData, objPost.ApprovedOnDate, objPost.LastModifiedDate);
+			dataProvider.UpdatePost(objPost.PostId, objPost.TopicId, objPost.ParentPostId, objPost.Subject, objPost.Body, objPost.IsApproved, objPost.IsLocked, objPost.IsPinned, objPost.DisplayName, objPost.EmailAddress, objPost.PostReported, objPost.Rating, objPost.PostIcon, objPost.StatusId, objPost.Slug, objPost.PostData, objPost.ApprovedOnDate, objPost.LastModifiedDate);
 		}
 
 		public void DeletePost(int postId, int topicId)
 		{
-			_dataProvider.DeletePost(postId, topicId);
+			dataProvider.DeletePost(postId, topicId);
 			//Caching.ClearPostCache(topicId);
 		}
 
 		public void HardDeletePost(int postId, int topicId)
 		{
-			_dataProvider.HardDeletePost(postId, topicId);
+			dataProvider.HardDeletePost(postId, topicId);
 			//Caching.ClearPostCache(topicId);
 		}
 
@@ -309,7 +295,7 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public int AddPostAttachment(PostAttachmentInfo objPostAttach, int topicId)
 		{
-			return _dataProvider.AddPostAttachment(objPostAttach.PostId, objPostAttach.FileId, objPostAttach.FileUrl, objPostAttach.FileName, objPostAttach.DisplayInline);
+			return dataProvider.AddPostAttachment(objPostAttach.PostId, objPostAttach.FileId, objPostAttach.FileUrl, objPostAttach.FileName, objPostAttach.DisplayInline);
 			//Caching.ClearPostAttachmentCache(topicId);
 		}
 
@@ -320,18 +306,18 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public List<PostAttachmentInfo> GetTopicAttachments(int topicId)
 		{
-			return CBO.FillCollection<PostAttachmentInfo>(_dataProvider.GetTopicAttachments(topicId));
+			return CBO.FillCollection<PostAttachmentInfo>(dataProvider.GetTopicAttachments(topicId));
 		}
 
 		public void UpdatePostAttachment(PostAttachmentInfo objPostAttach, int topicId)
 		{
-			_dataProvider.UpdatePostAttachment(objPostAttach.AttachmentId, objPostAttach.PostId, objPostAttach.FileId, objPostAttach.FileUrl, objPostAttach.FileName, objPostAttach.DisplayInline);
+			dataProvider.UpdatePostAttachment(objPostAttach.AttachmentId, objPostAttach.PostId, objPostAttach.FileId, objPostAttach.FileUrl, objPostAttach.FileName, objPostAttach.DisplayInline);
 			//Caching.ClearPostAttachmentCache(topicId);
 		}
 
 		public void DeletePostAttachment(int attachmentId, int postId, int topicId)
 		{
-			_dataProvider.DeletePostAttachment(attachmentId, postId);
+			dataProvider.DeletePostAttachment(attachmentId, postId);
 			//Caching.ClearPostAttachmentCache(topicId);
 		}
 
@@ -341,7 +327,7 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public int AddPostRating(PostRatingInfo objPostRating, int topicId)
 		{
-			return _dataProvider.AddPostRating(objPostRating.PostId, objPostRating.UserId, objPostRating.Rating, objPostRating.Helpful, objPostRating.Comments, objPostRating.IpAddress, objPostRating.CreatedOnDate);
+			return dataProvider.AddPostRating(objPostRating.PostId, objPostRating.UserId, objPostRating.Rating, objPostRating.Helpful, objPostRating.Comments, objPostRating.IpAddress, objPostRating.CreatedOnDate);
 			//Caching.ClearPostRatingCache(topicId);
 		}
 
@@ -352,18 +338,18 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public List<PostRatingInfo> GetTopicRatings(int topicId)
 		{
-			return CBO.FillCollection<PostRatingInfo>(_dataProvider.GetTopicRatings(topicId));
+			return CBO.FillCollection<PostRatingInfo>(dataProvider.GetTopicRatings(topicId));
 		}
 
 		public void UpdatePostRating(PostRatingInfo objPostRating, int topicId)
 		{
-			_dataProvider.UpdatePostRating(objPostRating.RatingId, objPostRating.PostId, objPostRating.UserId, objPostRating.Rating, objPostRating.Helpful, objPostRating.Comments, objPostRating.IpAddress);
+			dataProvider.UpdatePostRating(objPostRating.RatingId, objPostRating.PostId, objPostRating.UserId, objPostRating.Rating, objPostRating.Helpful, objPostRating.Comments, objPostRating.IpAddress);
 			//Caching.ClearPostRatingCache(topicId);
 		}
 
 		public void DeletePostRating(int ratingId, int portalId, int topicId)
 		{
-			_dataProvider.DeletePostRating(ratingId, portalId);
+			dataProvider.DeletePostRating(ratingId, portalId);
 			//Caching.ClearPostRatingCache(topicId);
 		}
 
@@ -373,28 +359,28 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public int AddRank(RankInfo objRank)
 		{
-			return _dataProvider.AddRank(objRank.PortalId, objRank.ModuleId, objRank.RankName, objRank.MinPosts, objRank.MaxPosts, objRank.Display, objRank.CreatedOnDate);
+			return dataProvider.AddRank(objRank.PortalId, objRank.ModuleId, objRank.RankName, objRank.MinPosts, objRank.MaxPosts, objRank.Display, objRank.CreatedOnDate);
 		}
 
 		public RankInfo GetRank(int rankId)
 		{
-			return CBO.FillObject<RankInfo>(_dataProvider.GetRank(rankId));
+			return CBO.FillObject<RankInfo>(dataProvider.GetRank(rankId));
 		}
 
 		public List<RankInfo> GetModuleRank(int moduleId)
 		{
-			return CBO.FillCollection<RankInfo>(_dataProvider.GetModuleRank(moduleId));
+			return CBO.FillCollection<RankInfo>(dataProvider.GetModuleRank(moduleId));
 		}
 
 		public void UpdateRank(RankInfo objRank)
 		{
-			_dataProvider.UpdateRank(objRank.RankId, objRank.PortalId, objRank.ModuleId, objRank.RankName, objRank.MinPosts, objRank.MaxPosts, objRank.Display, objRank.LastModifiedOnDate);
+			dataProvider.UpdateRank(objRank.RankId, objRank.PortalId, objRank.ModuleId, objRank.RankName, objRank.MinPosts, objRank.MaxPosts, objRank.Display, objRank.LastModifiedOnDate);
 			//Caching.ClearRankingCache(objRank.portalId);
 		}
 
 		public void DeleteRank(int rankId, int portalId)
 		{
-			_dataProvider.DeleteRank(rankId, portalId);
+			dataProvider.DeleteRank(rankId, portalId);
 			//Caching.ClearRankingCache(portalId);
 		}
 
@@ -404,28 +390,28 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public int AddSetting(SettingInfo objSetting)
 		{
-			return _dataProvider.AddSetting(objSetting.Description, objSetting.Attachments, objSetting.Emoticons, objSetting.Html, objSetting.PostIcon, objSetting.Rss, objSetting.Scripts, objSetting.Moderated,objSetting.AutoTrustLevel,objSetting.AttachMaxCount,objSetting.AttachMaxSize,objSetting.AttachAutoResize,objSetting.AttachMaxHeight,objSetting.AttachMaxWidth, objSetting.AttachStore, objSetting.EditorType, objSetting.EditorHeight, objSetting.EditorWidth, objSetting.Filters);
+			return dataProvider.AddSetting(objSetting.Description, objSetting.Attachments, objSetting.Emoticons, objSetting.Html, objSetting.PostIcon, objSetting.Rss, objSetting.Scripts, objSetting.Moderated,objSetting.AutoTrustLevel,objSetting.AttachMaxCount,objSetting.AttachMaxSize,objSetting.AttachAutoResize,objSetting.AttachMaxHeight,objSetting.AttachMaxWidth, objSetting.AttachStore, objSetting.EditorType, objSetting.EditorHeight, objSetting.EditorWidth, objSetting.Filters);
 		}
 
 		public SettingInfo GetSetting(int settingId)
 		{
-			return CBO.FillObject<SettingInfo>(_dataProvider.GetSetting(settingId));
+			return CBO.FillObject<SettingInfo>(dataProvider.GetSetting(settingId));
 		}
 
 		public List<SettingInfo> GetAllSettings()
 		{
-			return CBO.FillCollection<SettingInfo>(_dataProvider.GetAllSettings());
+			return CBO.FillCollection<SettingInfo>(dataProvider.GetAllSettings());
 		}
 
 		public void UpdateSetting(SettingInfo objSetting)
 		{
-			_dataProvider.UpdateSetting(objSetting.SettingId, objSetting.Description, objSetting.Attachments, objSetting.Emoticons, objSetting.Html, objSetting.PostIcon, objSetting.Rss, objSetting.Scripts, objSetting.Moderated, objSetting.AutoTrustLevel, objSetting.AttachMaxCount, objSetting.AttachMaxSize, objSetting.AttachAutoResize, objSetting.AttachMaxHeight, objSetting.AttachMaxWidth, objSetting.AttachStore, objSetting.EditorType, objSetting.EditorHeight, objSetting.EditorWidth, objSetting.Filters);
+			dataProvider.UpdateSetting(objSetting.SettingId, objSetting.Description, objSetting.Attachments, objSetting.Emoticons, objSetting.Html, objSetting.PostIcon, objSetting.Rss, objSetting.Scripts, objSetting.Moderated, objSetting.AutoTrustLevel, objSetting.AttachMaxCount, objSetting.AttachMaxSize, objSetting.AttachAutoResize, objSetting.AttachMaxHeight, objSetting.AttachMaxWidth, objSetting.AttachStore, objSetting.EditorType, objSetting.EditorHeight, objSetting.EditorWidth, objSetting.Filters);
 			//Caching.ClearSettingsCache();
 		}
 
 		public void DeleteSetting(int settingId)
 		{
-			_dataProvider.DeleteSetting(settingId);
+			dataProvider.DeleteSetting(settingId);
 			//Caching.ClearSettingsCache();
 		}
 
@@ -435,32 +421,32 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public int AddSubscription(SubscriptionInfo objSubscription)
 		{
-			return _dataProvider.AddSubscription(objSubscription.PortalId, objSubscription.ModuleId, objSubscription.ForumId, objSubscription.TopicId, objSubscription.SubscriptionType, objSubscription.UserId);
+			return dataProvider.AddSubscription(objSubscription.PortalId, objSubscription.ModuleId, objSubscription.ForumId, objSubscription.TopicId, objSubscription.SubscriptionType, objSubscription.UserId);
 		}
 
 		public SubscriptionInfo GetSubscription(int subscriptionId)
 		{
-			return CBO.FillObject<SubscriptionInfo>(_dataProvider.GetSubscription(subscriptionId));
+			return CBO.FillObject<SubscriptionInfo>(dataProvider.GetSubscription(subscriptionId));
 		}
 
 		public List<SubscriptionInfo> GetTopicsSubscribers(int portalId, int moduleId, int forumId, int topicId)
 		{
-			return CBO.FillCollection<SubscriptionInfo>(_dataProvider.GetTopicsSubscribers(portalId, moduleId, forumId, topicId));
+			return CBO.FillCollection<SubscriptionInfo>(dataProvider.GetTopicsSubscribers(portalId, moduleId, forumId, topicId));
 		}
 
 		public List<SubscriptionInfo> GetUsersSubscriptions(int portalId, int userId)
 		{
-			return CBO.FillCollection<SubscriptionInfo>(_dataProvider.GetUsersSubscriptions(portalId, userId));
+			return CBO.FillCollection<SubscriptionInfo>(dataProvider.GetUsersSubscriptions(portalId, userId));
 		}
 
 		public void UpdateSubscription(SubscriptionInfo objSubscription)
 		{
-			_dataProvider.UpdateSubscription(objSubscription.SubscriptionId, objSubscription.PortalId, objSubscription.ModuleId, objSubscription.ForumId, objSubscription.TopicId, objSubscription.SubscriptionType, objSubscription.UserId);
+			dataProvider.UpdateSubscription(objSubscription.SubscriptionId, objSubscription.PortalId, objSubscription.ModuleId, objSubscription.ForumId, objSubscription.TopicId, objSubscription.SubscriptionType, objSubscription.UserId);
 		}
 
 		public void DeleteSubscription(int subscriptionId, int portalId)
 		{
-			_dataProvider.DeleteSubscription(subscriptionId, portalId);
+			dataProvider.DeleteSubscription(subscriptionId, portalId);
 		}
 
 		#endregion
@@ -469,18 +455,18 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public int AddTopic(TopicInfo objTopic, int moduleId, int portalId)
 		{
-			return _dataProvider.AddTopic(objTopic.ForumId, objTopic.ViewCount, objTopic.ReplyCount, objTopic.TopicTypeId, objTopic.LastPostId, objTopic.Slug);
+			return dataProvider.AddTopic(objTopic.ForumId, objTopic.ViewCount, objTopic.ReplyCount, objTopic.TopicTypeId, objTopic.LastPostId, objTopic.Slug);
 			//Caching.ClearTopicCache(topicId, forumId, moduleId, portalId); 
 		}
 
 		public TopicInfo GetTopic(int topicId)
 		{
-			return CBO.FillObject<TopicInfo>(_dataProvider.GetTopic(topicId));
+			return CBO.FillObject<TopicInfo>(dataProvider.GetTopic(topicId));
 		}
 
 		public List<TopicInfo> GetForumTopics(int forumId, int pageIndex, int pageSize)
 		{
-			return CBO.FillCollection<TopicInfo>(_dataProvider.GetForumTopics(forumId, pageIndex, pageSize));
+			return CBO.FillCollection<TopicInfo>(dataProvider.GetForumTopics(forumId, pageIndex, pageSize));
 		}
 
 		//public List<TopicInfo> GetAllModuleTopics(int moduleId, int pageIndex, int pageSize)
@@ -490,13 +476,13 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public void UpdateTopic(TopicInfo objTopic, int moduleId, int portalId)
 		{
-			_dataProvider.UpdateTopic(objTopic.TopicId, objTopic.ForumId, objTopic.ViewCount, objTopic.ReplyCount, objTopic.TopicTypeId, objTopic.LastPostId, objTopic.Slug, objTopic.ContentItemId);
+			dataProvider.UpdateTopic(objTopic.TopicId, objTopic.ForumId, objTopic.ViewCount, objTopic.ReplyCount, objTopic.TopicTypeId, objTopic.LastPostId, objTopic.Slug, objTopic.ContentItemId);
 			//Caching.ClearTopicCache(topicId, forumId, moduleId, portalId); 
 		}
 
 		public void DeleteTopic(int topicId, int forumId, int moduleId, int portalId)
 		{
-			_dataProvider.DeleteTopic(topicId, forumId);
+			dataProvider.DeleteTopic(topicId, forumId);
 			//Caching.ClearTopicCache(topicId, forumId, moduleId, portalId); 
 		}
 
@@ -506,7 +492,7 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public int AddTopicTracking(TopicTrackingInfo objTopicTracking)
 		{
-			return _dataProvider.AddTracking(objTopicTracking.ForumId, objTopicTracking.TopicId, objTopicTracking.LastPostId, objTopicTracking.UserId, objTopicTracking.CreatedOnDate);
+			return dataProvider.AddTracking(objTopicTracking.ForumId, objTopicTracking.TopicId, objTopicTracking.LastPostId, objTopicTracking.UserId, objTopicTracking.CreatedOnDate);
 		}
 
 		//public TopicTrackingInfo GetTopicTracking(int topicTrackingId)
@@ -516,22 +502,22 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public List<TopicTrackingInfo> GetTopicTrackingByForum(int forumId)
 		{
-			return CBO.FillCollection<TopicTrackingInfo>(_dataProvider.GetTopicTrackingByForum(forumId));
+			return CBO.FillCollection<TopicTrackingInfo>(dataProvider.GetTopicTrackingByForum(forumId));
 		}
 
 		public List<TopicTrackingInfo> GetTopicTrackingByTopic(int topicId)
 		{
-			return CBO.FillCollection<TopicTrackingInfo>(_dataProvider.GetTopicTrackingByTopic(topicId));
+			return CBO.FillCollection<TopicTrackingInfo>(dataProvider.GetTopicTrackingByTopic(topicId));
 		}
 
 		public void UpdateTopicTracking(TopicTrackingInfo objTopicTracking)
 		{
-			_dataProvider.UpdateTopicTracking(objTopicTracking.TopicTrackingId, objTopicTracking.ForumId, objTopicTracking.TopicId, objTopicTracking.LastPostId, objTopicTracking.UserId, objTopicTracking.LastModifiedOnDate);
+			dataProvider.UpdateTopicTracking(objTopicTracking.TopicTrackingId, objTopicTracking.ForumId, objTopicTracking.TopicId, objTopicTracking.LastPostId, objTopicTracking.UserId, objTopicTracking.LastModifiedOnDate);
 		}
 
 		public void DeleteTopicTracking(int topicTrackingId)
 		{
-			_dataProvider.DeleteTopicTracking(topicTrackingId);
+			dataProvider.DeleteTopicTracking(topicTrackingId);
 		}
 
 		#endregion
@@ -540,7 +526,7 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public int AddTracking(TrackingInfo objTracking)
 		{
-			return _dataProvider.AddTracking(objTracking.ForumId, objTracking.UserId, objTracking.MaxTopicRead, objTracking.MaxPostRead, objTracking.LastAccessedOnDate);
+			return dataProvider.AddTracking(objTracking.ForumId, objTracking.UserId, objTracking.MaxTopicRead, objTracking.MaxPostRead, objTracking.LastAccessedOnDate);
 		}
 
 		//public TrackingInfo GetTracking(int trackingId)
@@ -550,17 +536,17 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public List<TrackingInfo> GetUsersTrackedForums(int userId)
 		{
-			return CBO.FillCollection<TrackingInfo>(_dataProvider.GetUsersTrackedForums(userId));
+			return CBO.FillCollection<TrackingInfo>(dataProvider.GetUsersTrackedForums(userId));
 		}
 
 		public void UpdateTracking(TrackingInfo objTracking)
 		{
-			_dataProvider.UpdateTracking(objTracking.TrackingId, objTracking.ForumId, objTracking.UserId, objTracking.MaxTopicRead, objTracking.MaxPostRead, objTracking.LastAccessedOnDate);
+			dataProvider.UpdateTracking(objTracking.TrackingId, objTracking.ForumId, objTracking.UserId, objTracking.MaxTopicRead, objTracking.MaxPostRead, objTracking.LastAccessedOnDate);
 		}
 
 		public void DeleteTracking(int trackingId)
 		{
-			_dataProvider.DeleteTracking(trackingId);
+			dataProvider.DeleteTracking(trackingId);
 		}
 
 		#endregion
@@ -569,28 +555,28 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		public int AddUrl(Entities.UrlInfo objUrl)
 		{
-			return _dataProvider.AddUrl(objUrl.PortalId, objUrl.ForumId, objUrl.TopicId, objUrl.Url, objUrl.CreatedOnDate);
+			return dataProvider.AddUrl(objUrl.PortalId, objUrl.ForumId, objUrl.TopicId, objUrl.Url, objUrl.CreatedOnDate);
 		}
 
 		public Entities.UrlInfo GetUrl(int id)
 		{
-			return CBO.FillObject<Entities.UrlInfo>(_dataProvider.GetUrl(id));
+			return CBO.FillObject<Entities.UrlInfo>(dataProvider.GetUrl(id));
 		}
 
 		public List<Entities.UrlInfo> GetAllUrls(int portalId)
 		{
-			return CBO.FillCollection<Entities.UrlInfo>(_dataProvider.GetAllUrls(portalId));
+			return CBO.FillCollection<Entities.UrlInfo>(dataProvider.GetAllUrls(portalId));
 		}
 
 		public void UpdateUrl(Entities.UrlInfo objUrl)
 		{
-			_dataProvider.UpdateUrl(objUrl.Id, objUrl.PortalId, objUrl.ForumId, objUrl.TopicId, objUrl.Url, objUrl.LastModifiedOnDate);
+			dataProvider.UpdateUrl(objUrl.Id, objUrl.PortalId, objUrl.ForumId, objUrl.TopicId, objUrl.Url, objUrl.LastModifiedOnDate);
 			//Caching.ClearUrlCache(id, portalId);
 		}
 
 		public void DeleteUrl(int id, int portalId)
 		{
-			_dataProvider.DeleteFilter(id, portalId);
+			dataProvider.DeleteFilter(id, portalId);
 			//Caching.ClearUrlCache(id, portalId);
 		}
 
@@ -601,18 +587,18 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		public int AddUser(UserInfo objUser)
 		{
             //Personalization.SetProfile()
-			return _dataProvider.AddUser(objUser.PortalId, objUser.UserId, objUser.TopicCount, objUser.ReplyCount, objUser.RewardPoints, objUser.AnswerCount, objUser.QuestionCount, objUser.TrustLevel, objUser.UserCaption, objUser.LastPostDate, objUser.LastActivityDate, objUser.AdminWatch, objUser.DisableAttach, objUser.DisableHtml, objUser.CreatedOnDate);
+			return dataProvider.AddUser(objUser.PortalId, objUser.UserId, objUser.TopicCount, objUser.ReplyCount, objUser.RewardPoints, objUser.AnswerCount, objUser.QuestionCount, objUser.TrustLevel, objUser.UserCaption, objUser.LastPostDate, objUser.LastActivityDate, objUser.AdminWatch, objUser.DisableAttach, objUser.DisableHtml, objUser.CreatedOnDate);
 		}
 
 		public UserInfo GetUser(int portalId, int userId)
 		{
-			return CBO.FillObject<UserInfo>(_dataProvider.GetUser(portalId, userId));
+			return CBO.FillObject<UserInfo>(dataProvider.GetUser(portalId, userId));
 			//Caching.ClearUserCache(portalId, userId);
 		}
 
 		public void UpdateUser(UserInfo objUser)
 		{
-			_dataProvider.UpdateUser(objUser.PortalId, objUser.UserId, objUser.TopicCount, objUser.ReplyCount, objUser.RewardPoints, objUser.AnswerCount, objUser.QuestionCount, objUser.TrustLevel, objUser.UserCaption, objUser.LastPostDate, objUser.LastActivityDate, objUser.AdminWatch, objUser.DisableAttach, objUser.DisableHtml, objUser.LastModifiedOnDate);
+			dataProvider.UpdateUser(objUser.PortalId, objUser.UserId, objUser.TopicCount, objUser.ReplyCount, objUser.RewardPoints, objUser.AnswerCount, objUser.QuestionCount, objUser.TrustLevel, objUser.UserCaption, objUser.LastPostDate, objUser.LastActivityDate, objUser.AdminWatch, objUser.DisableAttach, objUser.DisableHtml, objUser.LastModifiedOnDate);
 			//Caching.ClearUserCache(portalId, userId);
 		}
 

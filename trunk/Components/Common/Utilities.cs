@@ -73,12 +73,7 @@ namespace DotNetNuke.Modules.Forums.Components.Common {
             foreach (Match match in matches)
             {
                 var sReplace = GetSharedResource(match.Value, isAdmin);
-                if (!string.IsNullOrEmpty(sReplace)) {
-                    controlText = controlText.Replace(match.Value, sReplace);
-                }
-                else {
-                   controlText = controlText.Replace(match.Value, match.Value);
-                }
+                controlText = controlText.Replace(match.Value, !string.IsNullOrEmpty(sReplace) ? sReplace : match.Value);
             }
             return controlText;
         }
@@ -87,9 +82,8 @@ namespace DotNetNuke.Modules.Forums.Components.Common {
             if (request.Keys.Count > 0) {
                 var myType = infoObject.GetType();
                 var myProperties = myType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                string sValue;
                 foreach (var pItem in myProperties) {
-                    sValue = string.Empty;
+                    string sValue = string.Empty;
                     var sKey = pItem.Name.ToLower();
                     if ((request[sKey] != null)) {
                         sValue = request[sKey];
@@ -137,12 +131,7 @@ namespace DotNetNuke.Modules.Forums.Components.Common {
                             obj = Convert.ToDecimal(sValue, System.Globalization.CultureInfo.InvariantCulture);
                             break;
                         case "System.DateTime":
-                            if (string.IsNullOrEmpty(sValue)) {
-                                obj = new DateTime(1900, 1, 1, 12, 00, 00);
-                            }
-                            else {
-                                obj = DateTime.Parse(sValue);
-                            }
+                            obj = string.IsNullOrEmpty(sValue) ? new DateTime(1900, 1, 1, 12, 00, 00) : DateTime.Parse(sValue);
 
                             break;
                         case "System.String":

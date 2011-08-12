@@ -18,82 +18,82 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System.Web;
-using DotNetNuke.Services.Localization;
-
 namespace DotNetNuke.Modules.Forums {
-    public class HandlerBase : IHttpHandler {
-        #region Private Members
-        private int portalId = -1;
-        private DotNetNuke.Entities.Portals.PortalSettings portalSettings;
-        private DotNetNuke.Entities.Users.UserInfo userInfo;
-        #endregion
 
-        #region Public Properties
+    using System.Web;
+    using DotNetNuke.Services.Localization;
+    using Entities.Portals;
+
+    public class HandlerBase : IHttpHandler {
+        
+        private int portalId = -1;
+        private PortalSettings portalSettings;
+        private Entities.Users.UserInfo userInfo;
+        
         public int PortalId {
-            get {
+            get
+            {
                 if ((HttpContext.Current.Request.QueryString["PortalId"] != null) &&
                         int.Parse(HttpContext.Current.Request.QueryString["PortalId"]) > -1) {
                     return int.Parse(HttpContext.Current.Request.QueryString["PortalId"]);
                 }
-                else {
-                    return portalId;
-                }
+                return portalId;
             }
         }
         public int ModuleId {
-            get {
+            get
+            {
                 if ((HttpContext.Current.Request.QueryString["ModuleId"] != null) && 
                         int.Parse(HttpContext.Current.Request.QueryString["ModuleId"]) > -1) {
                     return int.Parse(HttpContext.Current.Request.QueryString["ModuleId"]);
                 }
-                else {
-                    return -1;
-                }
+                return -1;
             }
         }
         public int TabId {
-            get {
+            get
+            {
                 if ((HttpContext.Current.Request.QueryString["TabId"] != null) && 
                         int.Parse(HttpContext.Current.Request.QueryString["TabId"]) > -1) {
                     return int.Parse(HttpContext.Current.Request.QueryString["TabId"]);
                 }
-                else {
-                    return -1;
-                }
+                return -1;
             }
         }
-        public DotNetNuke.Entities.Portals.PortalSettings PortalSettings {
-            get {
+        public PortalSettings PortalSettings
+        {
+            get
+            {
                 return portalSettings; 
             }
         }
-        public DotNetNuke.Entities.Users.UserInfo CurrentUserInfo {
-            get {
+        public Entities.Users.UserInfo CurrentUserInfo
+        {
+            get
+            {
                 return userInfo;
             }
         }
-        public int UserId {
-            get {
+        public int UserId
+        {
+            get
+            {
                 return userInfo.UserID;
             }
-            
         }
-        #endregion
-        public virtual void ProcessRequest(HttpContext context) {
-            if ((HttpContext.Current.Items["PortalSettings"] != null)) {
-                portalSettings = (Entities.Portals.PortalSettings)HttpContext.Current.Items["PortalSettings"];
+        
+        public virtual void ProcessRequest(HttpContext context)
+        {
+            if ((HttpContext.Current.Items["PortalSettings"] != null))
+            {
+                portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
                 portalId = portalSettings.PortalId;
             }
-            else {
-
-                Entities.Portals.PortalAliasInfo objPortalAliasInfo;
-                //var sUrl = HttpContext.Current.Request.RawUrl.Replace("http://", string.Empty).Replace("https://", string.Empty);
-                objPortalAliasInfo = Entities.Portals.PortalAliasController.GetPortalAliasInfo(HttpContext.Current.Request.Url.Host);
+            else
+            {
+                PortalAliasInfo objPortalAliasInfo = PortalAliasController.GetPortalAliasInfo(HttpContext.Current.Request.Url.Host);
                 portalId = objPortalAliasInfo.PortalID;
-                portalSettings = Entities.Portals.PortalController.GetCurrentPortalSettings();
-
-
+                portalSettings = PortalController.GetCurrentPortalSettings();
             }
             Localization.SetThreadCultures(Localization.GetPageLocale(portalSettings), portalSettings);
             userInfo = HttpContext.Current.Request.IsAuthenticated ? Entities.Users.UserController.GetUserByName(PortalId, HttpContext.Current.User.Identity.Name) : new Entities.Users.UserInfo {UserID = -1};
@@ -102,6 +102,5 @@ namespace DotNetNuke.Modules.Forums {
         public virtual bool IsReusable {
             get { return false; }
         }
-
     }
 }

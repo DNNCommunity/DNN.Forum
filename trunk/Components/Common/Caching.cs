@@ -20,25 +20,11 @@
 
 namespace DotNetNuke.Modules.Forums.Components.Common
 {
-
     /// <summary>
     /// This class is used to help manage the clearing of cached objects. The various clear cache methods will destroy all dependent cached objects as necessary. 
     /// </summary>
     /// <remarks></remarks>
     internal class Caching
     {
-
-        #region Public Methods
-
-
-
-        #endregion
-
-        #region Private Methods
-
-
-
-        #endregion
-
     }
 }

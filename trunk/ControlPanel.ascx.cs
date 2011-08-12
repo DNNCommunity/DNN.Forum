@@ -18,17 +18,15 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using DotNetNuke.Modules.Forums.Components.Common;
-using DotNetNuke.Modules.Forums.Components.Presenters;
-using DotNetNuke.Modules.Forums.Components.Views;
-using DotNetNuke.Web.Mvp;
-using WebFormsMvp;
-using DotNetNuke.UI.Modules;
-using System.Web.UI;
-using DotNetNuke.Framework;
-using System;
-
 namespace DotNetNuke.Modules.Forums {
+
+    using System.Web.UI;
+    using Components.Common;
+    using Components.Presenters;
+    using Components.Views;
+    using Framework;
+    using Web.Mvp;
+    using WebFormsMvp;
 
     /// <summary>
     /// ControlPanel is the initial edit control in the Forums module. It reads the URL and determines which control should be displayed to the end user. 
@@ -36,9 +34,6 @@ namespace DotNetNuke.Modules.Forums {
     /// <remarks>The purpose of this is to avoid usage of 'ctl' in the URL and thus loading of the DotNetNuke edit skin. </remarks>
     [PresenterBinding(typeof(ControlPanelPresenter))]
     public partial class ControlPanel : ModuleView<Views.Models.ControlPanelModel>, IControlPanelView {
-       
-
-        #region Constructor
 
         /// <summary>
         /// The constructor is used here to set base properties. 
@@ -47,13 +42,9 @@ namespace DotNetNuke.Modules.Forums {
         public ControlPanel() {
            AutoDataBind = false;
         }
-
-        #endregion
-
-        #region Public Methods
        
          //<summary>
-         
+         //Contains control initialization logic
          //</summary>
          //<param name="e"></param>
          //<remarks>OnInit can be used here because ctl= is used in URL.</remarks>
@@ -73,21 +64,13 @@ namespace DotNetNuke.Modules.Forums {
             Page.ClientScript.RegisterStartupScript(Page.GetType(), "dnnforums.history", "window.dhtmlHistory.create({ toJSON: function (o) { return JSON.stringify(o); }, fromJSON: function (s) { return JSON.parse(s); } });", true);
         }
 
-        /// <summary>
-        /// Every time a page load occurs (initial load, postback, etc.), this method will load the proper control based on parameters in the URL.
-        /// </summary>
-        public void Refresh() {
-            
-        }
-        protected override void Render(System.Web.UI.HtmlTextWriter writer) {
-            System.IO.StringWriter stringWriter = new System.IO.StringWriter();
-            HtmlTextWriter htmlWriter = new HtmlTextWriter(stringWriter);
+        protected override void Render(HtmlTextWriter writer) {
+            var stringWriter = new System.IO.StringWriter();
+            var htmlWriter = new HtmlTextWriter(stringWriter);
             base.Render(htmlWriter);
             string html = stringWriter.ToString();
             html = Utilities.LocalizeControl(html, true);
             writer.Write(html);
         }
-        #endregion
-
     }
 }

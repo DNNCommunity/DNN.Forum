@@ -22,14 +22,8 @@ using DotNetNuke.Web.Mvp;
 
 namespace DotNetNuke.Modules.Forums.Components.Views 
 {
-
-	/// <summary>
-	/// 
-	/// </summary>
-	 public interface IDispatchView : IModuleView<Models.DispatchModel>
+	public interface IDispatchView : IModuleView<Models.DispatchModel>
 	{
-
-		void Refresh();
-
+	    void Refresh();
 	}
 }

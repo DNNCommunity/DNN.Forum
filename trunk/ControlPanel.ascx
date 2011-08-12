@@ -6,12 +6,11 @@
             $.ajax({
                 type: "POST",
                 url: "/desktopmodules/dnncorp/forums/Services/forums.asmx/ForumList",
-                data: "{'ModuleId' : '421' }",
+                data: "{'moduleId' : '421' }",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (data) {
-                    bindForums(data.d);
-                    
+                    bindForums(data.d);  
                 },
                 error: function (xhr, status, error) {
                     alert(error);
@@ -34,12 +33,11 @@
             $.ajax({
                 type: "POST",
                 url: "/desktopmodules/dnncorp/forums/Services/forums.asmx/ForumGet",
-                data: "{'ForumId' : '" + forumId + "' }",
+                data: "{'forumId' : '" + forumId + "' }",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (data) {
                     bindForum(data.d);
-
                 },
                 error: function (xhr, status, error) {
                     alert(error);

@@ -18,13 +18,9 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-namespace DotNetNuke.Modules.Forums.Views.Models {
-
+namespace DotNetNuke.Modules.Forums.Views.Models
+{
     public class ControlPanelModel {
         public bool IsEditable { get; set; }
-
-        
-        
-
     }
 }

@@ -18,44 +18,22 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using DotNetNuke.Modules.Forums.Components.Controllers;
-using DotNetNuke.Modules.Forums.Components.Views;
-using DotNetNuke.Modules.Forums.Views.Models;
-using DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider;
-using DotNetNuke.Web.Mvp;
-using System;
-using System.Web.UI.WebControls;
+namespace DotNetNuke.Modules.Forums.Components.Presenters
+{
+    using System;
+    using Controllers;
+    using Forums.Views.Models;
+    using Providers.Data.SqlDataProvider;
+    using Views;
+    using Web.Mvp;
 
-namespace DotNetNuke.Modules.Forums.Components.Presenters {
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class ControlPanelPresenter : ModulePresenter<IControlPanelView, ControlPanelModel> {
-
-        #region Private Members
-
-      
-     
-        #endregion
-
-        #region Constructor
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="view"></param>
-        public ControlPanelPresenter(IControlPanelView view)
-            : this(view, new ForumsController(new SqlDataProvider())) {
+    public class ControlPanelPresenter : ModulePresenter<IControlPanelView, ControlPanelModel>
+    {
+        public ControlPanelPresenter(IControlPanelView view) : this(view, new ForumsController(new SqlDataProvider()))
+        {
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="view"></param>
-        /// <param name="controller"></param>
-        public ControlPanelPresenter(IControlPanelView view, IForumsController controller)
-            : base(view) {
+        public ControlPanelPresenter(IControlPanelView view, IForumsController controller) : base(view) {
             if (view == null) {
                 throw new ArgumentException(@"View is nothing.", "view");
             }
@@ -63,13 +41,6 @@ namespace DotNetNuke.Modules.Forums.Components.Presenters {
             if (controller == null) {
                 throw new ArgumentException(@"Controller is nothing.", "controller");
             }
-
-         
         }
-
-        #endregion
-
-     
-
     }
 }

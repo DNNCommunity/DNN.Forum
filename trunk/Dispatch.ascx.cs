@@ -18,30 +18,26 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using DotNetNuke.Modules.Forums.Components.Models;
-using DotNetNuke.Modules.Forums.Components.Presenters;
-using DotNetNuke.Modules.Forums.Components.Views;
-using DotNetNuke.Web.Mvp;
-using WebFormsMvp;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Security;
-
 namespace DotNetNuke.Modules.Forums
 {
+    using Components.Models;
+    using Components.Presenters;
+    using Components.Views;
+    using DotNetNuke.Services.Localization;
+    using Entities.Modules;
+    using Entities.Modules.Actions;
+    using Security;
+    using UI.Modules;
+    using Web.Mvp;
+    using WebFormsMvp;
 
-	/// <summary>
+    /// <summary>
 	/// Dispatch is the initial view control in the Forums module. It reads the URL and determines which control should be displayed to the end user. 
 	/// </summary>
 	/// <remarks>The purpose of this is to avoid usage of 'ctl' in the URL and thus loading of the DotNetNuke edit skin. </remarks>
 	[PresenterBinding(typeof(DispatchPresenter))]
 	public partial class Dispatch : ModuleView<DispatchModel>, IDispatchView, IActionable
 	{
-
-		#region Constructor
-
 		/// <summary>
 		/// The constructor is used here to set base properties. 
 		/// </summary>
@@ -50,10 +46,6 @@ namespace DotNetNuke.Modules.Forums
 		{
 			AutoDataBind = false;
 		}
-
-		#endregion
-
-		#region Public Methods
 
 		/// <summary>
 		/// Every time a page load occurs (initial load, postback, etc.), this method will load the proper control based on parameters in the URL.
@@ -75,10 +67,6 @@ namespace DotNetNuke.Modules.Forums
 			}
 		}
 
-		#endregion
-
-		#region IActionable Members
-
 		public ModuleActionCollection ModuleActions {
 			get {
 				var actions = new ModuleActionCollection
@@ -86,21 +74,18 @@ namespace DotNetNuke.Modules.Forums
 									  {
 										  ModuleContext.GetNextActionID(),
 										  Localization.GetString("ControlPanel.Action", LocalResourceFile),
-										  ModuleActionType.AddContent, "", "edit.gif", ModuleContext.EditUrl(), false,
+										  ModuleActionType.AddContent, string.Empty, "edit.gif", ModuleContext.EditUrl(), false,
 										  SecurityAccessLevel.Edit, true, false
 										}, 
 										{
 										  ModuleContext.GetNextActionID(),
 										  Localization.GetString("ControlPanel2.Action", LocalResourceFile),
-										  ModuleActionType.AddContent, "", "edit.gif", ModuleContext.NavigateUrl(ModuleContext.TabId, "cpanel", false, "mid=" + ModuleContext.ModuleId), false,
+										  ModuleActionType.AddContent, string.Empty, "edit.gif", ModuleContext.NavigateUrl(ModuleContext.TabId, "cpanel", false, "mid=" + ModuleContext.ModuleId), false,
 										  SecurityAccessLevel.Edit, true, false
 										}
 								  };
 				return actions;
 			}
 		}
-
-		#endregion
-
 	}
 }

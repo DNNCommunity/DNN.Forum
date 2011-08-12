@@ -39,6 +39,5 @@ namespace DotNetNuke.Modules.Forums.Components.Common
 		{
 			return moduleContext.NavigateUrl(tabId, "", true, "view=" + Constants.PageScope.Home);
 		}
-
 	}
 }

@@ -18,18 +18,10 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System.Collections.Generic;
-
 namespace DotNetNuke.Modules.Forums.Components.Models
 {
-
-	/// <summary>
-	/// 
-	/// </summary>
-	public class HomeModel 
+    public class HomeModel 
 	{
-
-		public int CurrentUserID { get; set; }
-
+		public int CurrentUserId { get; set; }
 	}
 }

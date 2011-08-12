@@ -18,21 +18,15 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using DotNetNuke.Modules.Forums.Components.Models;
-using DotNetNuke.Web.Mvp;
+namespace DotNetNuke.Modules.Forums.Components.Views
+{
+    using System;
+    using Models;
+    using Web.Mvp;
 
-namespace DotNetNuke.Modules.Forums.Components.Views {
-
-    /// <summary>
-    /// 
-    /// </summary>
     public interface ICPanelView : IModuleView<CPanelModel>
     {
-
-        void Refresh();
-
         event EventHandler NavigationClick;
-
+        void Refresh();
     }
 }

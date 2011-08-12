@@ -18,14 +18,14 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using DotNetNuke.Modules.Forums.Components.Models;
-using DotNetNuke.Modules.Forums.Components.Presenters;
-using DotNetNuke.Modules.Forums.Components.Views;
-using DotNetNuke.Web.Mvp;
-using WebFormsMvp;
-
 namespace DotNetNuke.Modules.Forums
 {
+    using System;
+    using Components.Models;
+    using Components.Presenters;
+    using Components.Views;
+    using Web.Mvp;
+    using WebFormsMvp;
 
 	/// <summary>
 	/// This is the initial view seen within the Forums module, loaded by Dispatch.ascx. 
@@ -33,8 +33,6 @@ namespace DotNetNuke.Modules.Forums
 	[PresenterBinding(typeof(HomePresenter))]
 	public partial class Home : ModuleView<HomeModel>, IHomeView
 	{
-
-		#region Constructor
 
 		/// <summary>
 		/// The constructor is used here to set base properties. 
@@ -44,19 +42,5 @@ namespace DotNetNuke.Modules.Forums
 		{
 			AutoDataBind = false;
 		}
-
-		#endregion
-
-		#region Public Methods
-
-		/// <summary>
-		/// 
-		/// </summary>
-		public void Refresh() {
-
-		}
-
-		#endregion
-
 	}
 }

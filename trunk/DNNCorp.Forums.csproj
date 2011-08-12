@@ -139,7 +139,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Providers\Sitemap\" />
-    <Folder Include="UserControls\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ControlPanel.ascx" />
@@ -167,6 +166,7 @@
     <None Include="Providers\Data\SqlDataProvider\06.00.00.SqlDataProvider" />
     <None Include="Providers\Data\SqlDataProvider\Uninstall.SqlDataProvider" />
     <Content Include="Scripts\scripts.ashx" />
+    <None Include="Settings.StyleCop" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\Dispatch.ascx.resx" />

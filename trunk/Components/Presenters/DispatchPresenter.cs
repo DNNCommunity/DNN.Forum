@@ -18,30 +18,21 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using DotNetNuke.Modules.Forums.Components.Controllers;
-using DotNetNuke.Modules.Forums.Components.Models;
-using DotNetNuke.Modules.Forums.Components.Views;
-using DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider;
-using DotNetNuke.Web.Mvp;
-using System;
-using DotNetNuke.Common.Utilities;
-
 namespace DotNetNuke.Modules.Forums.Components.Presenters
 {
+    using System;
+    using Controllers;
+    using DotNetNuke.Common.Utilities;
+    using Models;
+    using Providers.Data.SqlDataProvider;
+    using Views;
+    using Web.Mvp;
 
-	/// <summary>
-	/// 
-	/// </summary>
 	public class DispatchPresenter : ModulePresenter<IDispatchView, DispatchModel>
 	{
 
-		#region Private Members
-
 		protected IForumsController Controller { get; private set; }
 
-		/// <summary>
-		/// 
-		/// </summary>
 		private string ControlView
 		{
 			get
@@ -57,26 +48,12 @@ namespace DotNetNuke.Modules.Forums.Components.Presenters
 
 		private const string CtlHome = "/Home.ascx";
 
-		#endregion
-
-		#region Constructor
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="view"></param>
-		public DispatchPresenter(IDispatchView view)
-			: this(view, new ForumsController(new SqlDataProvider()))
+		public DispatchPresenter(IDispatchView view) : this(view, new ForumsController(new SqlDataProvider()))
 		{
+
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="view"></param>
-		/// <param name="controller"></param>
-		public DispatchPresenter(IDispatchView view, IForumsController controller)
-			: base(view)
+		public DispatchPresenter(IDispatchView view, IForumsController controller) : base(view)
 		{
 			if (view == null)
 			{
@@ -89,21 +66,12 @@ namespace DotNetNuke.Modules.Forums.Components.Presenters
 			}
 
 			Controller = controller;
+		    this.View.Load += ViewLoad;
 		}
 
-		#endregion
-
-		#region Events
-
-		/// <summary>
-		/// 
-		/// </summary>
-		protected override void OnInit()
+	    private void ViewLoad(object sender, EventArgs eventArgs)
 		{
-			base.OnInit();
-
-			View.Model.IsEditable = ModuleContext.IsEditable;
-
+            View.Model.IsEditable = ModuleContext.IsEditable;
 			switch (ControlView)
 			{
 				case "Home" :
@@ -113,11 +81,7 @@ namespace DotNetNuke.Modules.Forums.Components.Presenters
 					View.Model.ControlToLoad = CtlHome;
 					break;
 			}
-
-			View.Refresh();
+			this.View.Refresh();
 		}
-
-		#endregion
-
 	}
 }

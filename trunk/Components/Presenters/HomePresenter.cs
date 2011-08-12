@@ -18,46 +18,24 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using DotNetNuke.Modules.Forums.Components.Controllers;
-using DotNetNuke.Modules.Forums.Components.Models;
-using DotNetNuke.Modules.Forums.Components.Views;
-using DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider;
-using DotNetNuke.Web.Mvp;
-using System;
-
 namespace DotNetNuke.Modules.Forums.Components.Presenters
 {
+    using System;
+    using Controllers;
+    using Models;
+    using Providers.Data.SqlDataProvider;
+    using Views;
+    using Web.Mvp;
 
-	/// <summary>
-	/// 
-	/// </summary>
-	public class HomePresenter : ModulePresenter<IHomeView, HomeModel>
+    public class HomePresenter : ModulePresenter<IHomeView, HomeModel>
 	{
-
-		#region Private Members
-
 		protected IForumsController Controller { get; private set; }
 
-		#endregion
-
-		#region Constructor
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="view"></param>
-		public HomePresenter(IHomeView view)
-			: this(view, new ForumsController(new SqlDataProvider()))
+		public HomePresenter(IHomeView view) : this(view, new ForumsController(new SqlDataProvider()))
 		{
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="view"></param>
-		/// <param name="controller"></param>
-		public HomePresenter(IHomeView view, IForumsController controller)
-			: base(view)
+		public HomePresenter(IHomeView view, IForumsController controller) : base(view)
 		{
 			if (view == null)
 			{
@@ -70,31 +48,18 @@ namespace DotNetNuke.Modules.Forums.Components.Presenters
 			}
 
 			Controller = controller;
+		    this.View.Load += ViewLoad;
 		}
 
-		#endregion
-
-		#region Events
-
-		/// <summary>
-		/// 
-		/// </summary>
-		protected override void OnLoad()
+		private void ViewLoad(object sender, EventArgs eventArgs)
 		{
 			try
 			{
-				base.OnLoad();
-
-				View.Model.CurrentUserID = ModuleContext.PortalSettings.UserId;
-
-				View.Refresh();
+				View.Model.CurrentUserId = ModuleContext.PortalSettings.UserId;
 			}
 			catch (Exception exc) {
 				ProcessModuleLoadException(exc);
 			}
 		}
-
-		#endregion
-
 	}
 }

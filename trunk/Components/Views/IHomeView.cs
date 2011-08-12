@@ -18,18 +18,11 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using DotNetNuke.Web.Mvp;
-
 namespace DotNetNuke.Modules.Forums.Components.Views 
 {
+    using Web.Mvp;
 
-	/// <summary>
-	/// 
-	/// </summary>
-	 public interface IHomeView : IModuleView<Models.HomeModel>
+	public interface IHomeView : IModuleView<Models.HomeModel>
 	{
-
-		void Refresh();
-
 	}
 }

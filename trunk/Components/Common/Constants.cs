@@ -25,18 +25,9 @@ namespace DotNetNuke.Modules.Forums.Components.Common {
 	/// </summary>
 	public class Constants
 	{
-
-		#region Settings
-
 		internal const int DefaultSettingsSampleInteger = 1;
-		
-		#endregion
-
-		#region Cache Keys
 
 		public const string SampleCacheKey = ModulesCacheKey + "Sample-";
-
-		#endregion
 
 		/// <summary>
 		/// A recommended limit for a meta page title for SEO purposes.
@@ -63,8 +54,6 @@ namespace DotNetNuke.Modules.Forums.Components.Common {
 		/// </summary>
 		public const string ContentTypeName = "DNN_Forums_Thread";
 
-		#region Enumerators
-
 		/// <summary>
 		/// This enumerator is used to determine which control should be loaded into Dispatch.ascx.
 		/// </summary>
@@ -79,8 +68,5 @@ namespace DotNetNuke.Modules.Forums.Components.Common {
 			Forums = 1,
 			EditForum = 2
 		}
-
-		#endregion
-	
 	}
 }

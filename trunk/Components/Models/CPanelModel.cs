@@ -20,12 +20,9 @@
 
 namespace DotNetNuke.Modules.Forums.Components.Models
 {
-
 	public class CPanelModel 
 	{
 		public bool IsEditable { get; set; }
-
 		public string ControlToLoad { get; set; }
-
 	}
 }
