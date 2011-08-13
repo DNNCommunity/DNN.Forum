@@ -25,8 +25,36 @@ using System.Text.RegularExpressions;
 using System.Reflection;
 
 namespace DotNetNuke.Modules.Forums.Components.Common {
+    using ComponentModel;
+    using Controllers;
+    using Providers.Data;
+    using Providers.Data.SqlDataProvider;
 
     public class Utilities {
+
+        public static IDataProvider GetRepository()
+        {
+            var ctl = ComponentFactory.GetComponent<IDataProvider>();
+
+            if (ctl == null)
+            {
+                ctl = new SqlDataProvider();
+                ComponentFactory.RegisterComponentInstance<IDataProvider>(ctl);
+            }
+            return ctl;
+        }
+
+        public static IForumsController GetForumsController(IDataProvider repository)
+        {
+            var ctl = ComponentFactory.GetComponent<IForumsController>();
+
+            if (ctl == null)
+            {
+                ctl = new ForumsController(repository);
+                ComponentFactory.RegisterComponentInstance<IForumsController>(ctl);
+            }
+            return ctl;
+        }
 
         /// <summary>
         /// Get the template as a string from the specified path
