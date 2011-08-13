@@ -5,7 +5,7 @@
             dnnforums.admin.LoadView('dnnForumList', '');
             $.ajax({
                 type: "POST",
-                url: "/desktopmodules/dnncorp/forums/Services/forums.asmx/ForumList",
+                url: "/desktopmodules/dnncorp/forums/Services/forums.asmx/GetForums",
                 data: "{'moduleId' : '421' }",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -32,7 +32,7 @@
             dnnforums.admin.LoadView('dnnForumEditor', '');
             $.ajax({
                 type: "POST",
-                url: "/desktopmodules/dnncorp/forums/Services/forums.asmx/ForumGet",
+                url: "/desktopmodules/dnncorp/forums/Services/forums.asmx/GetForum",
                 data: "{'forumId' : '" + forumId + "' }",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",

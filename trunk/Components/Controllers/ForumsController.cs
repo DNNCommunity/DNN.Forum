@@ -21,38 +21,20 @@
 namespace DotNetNuke.Modules.Forums.Components.Controllers
 {
     using System.Collections.Generic;
+    using Common;
     using DotNetNuke.Common.Utilities;
     using Entities;
     using Providers.Data;
-    using Providers.Data.SqlDataProvider;
 
-	public class ForumsController : IForumsController {
+    public class ForumsController : IForumsController {
 
 		private readonly IDataProvider dataProvider;
 
 		#region Constructors
 
-		public ForumsController()
-		{
-			dataProvider = ComponentModel.ComponentFactory.GetComponent<IDataProvider>();
-			if (dataProvider != null) return;
-
-			// get the provider configuration based on the type
-			var defaultprovider = Data.DataProvider.Instance().DefaultProviderName;
-			const string dataProviderNamespace = "DotNetNuke.Modules.ExtensionForge.Providers.Data";
-
-			if (defaultprovider == "SqlDataProvider") 
-			{
-				dataProvider = new SqlDataProvider();
-			}
-			else 
-			{
-				var providerType = dataProviderNamespace + "." + defaultprovider;
-				dataProvider = (IDataProvider)Framework.Reflection.CreateObject(providerType, providerType, true);
-			}
-
-			ComponentModel.ComponentFactory.RegisterComponentInstance<IDataProvider>(dataProvider);
-		}
+        public ForumsController() : this(Utilities.GetRepository())
+        {
+        }
 		  
 		public ForumsController(IDataProvider dataProvider)
 		{

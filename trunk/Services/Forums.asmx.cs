@@ -1,25 +1,52 @@
 ﻿namespace DotNetNuke.Modules.Forums.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Web.Services;
     using Components.Entities;
+    using Web.Mvp;
+    using WebFormsMvp;
 
     [WebService(Namespace = "http://dnnforums.dotnetnuke.com/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
     [System.Web.Script.Services.ScriptService]
-    public class Forums : WebService {
-
-        [WebMethod]
-        public List<ForumInfo> ForumList(int moduleId)
+    [PresenterBinding(typeof(ForumsServicePresenter), ViewType = typeof(IForumsServiceView))]
+    public class Forums : WebServiceView, IForumsServiceView
+    {
+        public event EventHandler<GetForumsCalledEventArgs> ListForumsCalled;
+        public event EventHandler<GetForumCalledEventArgs> ForumGetCalled;
+        
+        protected void OnGetForumsCalled(GetForumsCalledEventArgs args)
         {
-            return new Components.Controllers.ForumsController().GetModuleForums(moduleId);
+            if (ListForumsCalled != null)
+            {
+                ListForumsCalled(this, args);
+            }
+        }
+
+        protected void OnGetForumCalled(GetForumCalledEventArgs args)
+        {
+            if (ForumGetCalled != null)
+            {
+                ForumGetCalled(this, args);
+            }
         }
 
         [WebMethod]
-        public ForumInfo ForumGet(int forumId)
+        public List<ForumInfo> GetForums(int moduleId)
         {
-            return new Components.Controllers.ForumsController().GetForum(forumId); 
+            var args = new GetForumsCalledEventArgs(moduleId);
+            OnGetForumsCalled(args);
+            return args.Result;
+        }
+
+        [WebMethod]
+        public ForumInfo GetForum(int forumId)
+        {
+            var args = new GetForumCalledEventArgs(forumId);
+            OnGetForumCalled(args);
+            return args.Result;
         }
     }
 }

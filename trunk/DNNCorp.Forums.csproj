@@ -136,6 +136,8 @@
       <DependentUpon>Forums.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Components\Presenters\ForumsServicePresenter.cs" />
+    <Compile Include="Components\Views\IForumsServiceView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Providers\Sitemap\" />
