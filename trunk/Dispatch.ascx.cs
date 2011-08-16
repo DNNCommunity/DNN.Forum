@@ -20,18 +20,18 @@
 
 namespace DotNetNuke.Modules.Forums
 {
-    using Components.Models;
-    using Components.Presenters;
-    using Components.Views;
-    using DotNetNuke.Services.Localization;
-    using Entities.Modules;
-    using Entities.Modules.Actions;
-    using Security;
-    using UI.Modules;
-    using Web.Mvp;
-    using WebFormsMvp;
+	using Components.Models;
+	using Components.Presenters;
+	using Components.Views;
+	using DotNetNuke.Services.Localization;
+	using Entities.Modules;
+	using Entities.Modules.Actions;
+	using Security;
+	using UI.Modules;
+	using Web.Mvp;
+	using WebFormsMvp;
 
-    /// <summary>
+	/// <summary>
 	/// Dispatch is the initial view control in the Forums module. It reads the URL and determines which control should be displayed to the end user. 
 	/// </summary>
 	/// <remarks>The purpose of this is to avoid usage of 'ctl' in the URL and thus loading of the DotNetNuke edit skin. </remarks>
@@ -75,12 +75,6 @@ namespace DotNetNuke.Modules.Forums
 										  ModuleContext.GetNextActionID(),
 										  Localization.GetString("ControlPanel.Action", LocalResourceFile),
 										  ModuleActionType.AddContent, string.Empty, "edit.gif", ModuleContext.EditUrl(), false,
-										  SecurityAccessLevel.Edit, true, false
-										}, 
-										{
-										  ModuleContext.GetNextActionID(),
-										  Localization.GetString("ControlPanel2.Action", LocalResourceFile),
-										  ModuleActionType.AddContent, string.Empty, "edit.gif", ModuleContext.NavigateUrl(ModuleContext.TabId, "cpanel", false, "mid=" + ModuleContext.ModuleId), false,
 										  SecurityAccessLevel.Edit, true, false
 										}
 								  };
