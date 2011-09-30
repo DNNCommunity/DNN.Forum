@@ -33,6 +33,9 @@
 	border-top: #dcdcdc 1px solid;
 	border-left: #dcdcdc 1px solid;background-image:url(images/dashHeaderBg.gif);}
 .dashInner{border: 1px solid #b3b3b3;padding:2px;}
+.dashInner li {margin-left:4px;}
+.dashInner thead td{font-weight:bold;}
+.dashInner .stats li span{float:right;text-align:right;}
 .dashHD{font-size:11px;font-weight:bold;}
 .dashInner ul li{list-style-type:none;font-size:11px;}
 
@@ -52,3 +55,11 @@
         }
 .dnnForumList ul li:hover{background-color:#FFC;border:1px solid #999;cursor:pointer;}
 .dnnForumArea{display:none;}
+
+.dnnForumRadioButtons{display:block;}
+.dnnForumRadioButtons label{width:auto !important;font-weight:normal !important;}
+
+.forumPermGrid{}
+.forumPermObjects{width:150px;}
+.forumPermObjects td{white-space:nowrap; overflow:hidden;}
+.forumPermActions{width:450px;overflow:auto;}

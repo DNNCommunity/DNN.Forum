@@ -88,9 +88,9 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 
 		#region Filter
 
-		public int AddFilter(int portalId, int moduleId, int forumId, string find, string replace, string filterType, bool applyOnSave, bool applyOnRender, DateTime createdOnDate)
+		public int AddFilter(int portalId, int moduleId, int forumId, string find, string replace, string filterType, bool applyOnSave, bool applyOnRender)
 		{
-			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Filter_Add"), portalId, GetNull(moduleId), GetNull(forumId), find, replace, GetNull(filterType), applyOnSave, applyOnRender, createdOnDate));
+			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Filter_Save"),-1, portalId, GetNull(moduleId), GetNull(forumId), find, replace, GetNull(filterType), applyOnSave, applyOnRender));
 		}
 
 		public IDataReader GetFilter(int filterId)
@@ -98,14 +98,14 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Filter_Get"), filterId);
 		}
 
-		public IDataReader GetAllFilters(int portalID)
+		public IDataReader GetAllFilters(int portalID, int moduleId, int forumId)
 		{
-			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Filter_GetAll"), portalID);
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Filter_List"), portalID, moduleId, forumId);
 		}
 
-		public void UpdateFilter(int filterId, int portalId, int moduleId, int forumId, string find, string replace, string filterType, bool applyOnSave, bool applyOnRender, DateTime lastModifiedOnDate)
+		public void UpdateFilter(int filterId, int portalId, int moduleId, int forumId, string find, string replace, string filterType, bool applyOnSave, bool applyOnRender)
 		{
-			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Filter_Update"), filterId, portalId, GetNull(moduleId), GetNull(forumId), find, replace, GetNull(filterType), applyOnSave, applyOnRender, GetNull(lastModifiedOnDate));
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Filter_Save"), filterId, portalId, GetNull(moduleId), GetNull(forumId), find, replace, GetNull(filterType), applyOnSave, applyOnRender);
 		}
 
 		public void DeleteFilter(int filterId, int portalId)
@@ -117,11 +117,11 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 
 		#region Forum
 
-		public int AddForum(int portalId, int moduleId, int parentId, bool allowTopics, string name, string description, int sortOrder, bool active, bool hidden, int topicCount, int replyCount, int lastPostId, string slug, int permissionId, int settingId, string emailAddress, float siteMapPriority, DateTime createdOnDate, int createdByUserId)
-		{
-			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Forum_Add"), portalId, moduleId, parentId, allowTopics, name, GetNull(description), sortOrder, active, hidden, topicCount, replyCount, lastPostId, GetNull(slug), permissionId, settingId, GetNull(emailAddress), GetNull(siteMapPriority), createdOnDate, createdByUserId));
-		}
+        public int SaveForum(int forumId, int portalId, int moduleId, int parentId, bool allowTopics, string name, string description, int sortOrder, bool active, bool hidden, int topicCount, int replyCount, int lastPostId, string slug, int permissionId, int settingId, string emailAddress, float siteMapPriority, int UserId) {
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Forum_Save"), forumId, portalId, moduleId, parentId, allowTopics, name, GetNull(description), sortOrder, active, hidden, topicCount, replyCount, lastPostId, GetNull(slug), permissionId, settingId, GetNull(emailAddress), GetNull(siteMapPriority), UserId));
+        }
 
+		
 		public IDataReader GetForum(int forumId)
 		{
 			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Forum_Get"), forumId);
@@ -132,11 +132,7 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Forum_GetModule"), moduleId);
 		}
 
-		public void UpdateForum(int forumId, int portalId, int moduleId, int parentId, bool allowTopics, string name, string description, int sortOrder, bool active, bool hidden, int topicCount, int replyCount, int lastPostId, string slug, int permissionId, int settingId, string emailAddress, float siteMapPriority, DateTime lastModifiedOnDate, int lastModifiedByUserId)
-		{
-			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Forum_Update"), forumId, portalId, moduleId, parentId, allowTopics, name, GetNull(description), sortOrder, active, hidden, topicCount, replyCount, lastPostId, GetNull(slug), permissionId, settingId, GetNull(emailAddress), GetNull(siteMapPriority), lastModifiedOnDate, lastModifiedByUserId);
-		}
-
+		
 		public void DeleteForum(int forumId, int moduleId)
 		{
 			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Forum_Delete"), forumId, moduleId);
@@ -400,7 +396,7 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 
 		public int AddRank(int portalId, int moduleId, string rankName, int minPosts, int maxPosts, string display, DateTime createdOnDate)
 		{
-			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Rank_Add"), portalId, moduleId, rankName, minPosts, maxPosts, GetNull(display), createdOnDate));
+			return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, GetFullyQualifiedName("Rank_Save"), -1, portalId, moduleId, rankName, minPosts, maxPosts, GetNull(display), createdOnDate));
 		}
 
 		public IDataReader GetRank(int rankId)
@@ -410,12 +406,12 @@ namespace DotNetNuke.Modules.Forums.Providers.Data.SqlDataProvider
 
 		public IDataReader GetModuleRank(int moduleId)
 		{
-			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Rank_GetModule"), moduleId);
+			return SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("Rank_List"), moduleId);
 		}
 
 		public void UpdateRank(int rankId, int portalId, int moduleId, string rankName, int minPosts, int maxPosts, string display, DateTime lastModifiedOnDate)
 		{
-			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Rank_Update"), rankId, portalId, moduleId, rankName, minPosts, maxPosts, GetNull(display), lastModifiedOnDate);
+			SqlHelper.ExecuteNonQuery(ConnectionString, GetFullyQualifiedName("Rank_Save"), rankId, portalId, moduleId, rankName, minPosts, maxPosts, GetNull(display), lastModifiedOnDate);
 		}
 
 		public void DeleteRank(int rankId, int portalId)

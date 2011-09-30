@@ -34,13 +34,13 @@ namespace DotNetNuke.Modules.Forums.Providers.Data
 
 		#region Filter
 
-		int AddFilter(int portalId, int moduleId, int forumId, string find, string replace, string filterType, bool applyOnSave, bool applyOnRender, DateTime createdOnDate);
+		int AddFilter(int portalId, int moduleId, int forumId, string find, string replace, string filterType, bool applyOnSave, bool applyOnRender);
 
 		IDataReader GetFilter(int filterId);
 
-		IDataReader GetAllFilters(int portalId);
+		IDataReader GetAllFilters(int portalId, int moduleId, int forumId);
 
-		void UpdateFilter(int filterId, int portalId, int moduleId, int forumId, string find, string replace, string filterType, bool applyOnSave, bool applyOnRender, DateTime lastModifiedOnDate);
+		void UpdateFilter(int filterId, int portalId, int moduleId, int forumId, string find, string replace, string filterType, bool applyOnSave, bool applyOnRender);
 
 		void DeleteFilter(int filterId, int portalId);
 
@@ -48,13 +48,11 @@ namespace DotNetNuke.Modules.Forums.Providers.Data
 
 		#region Forum
 
-		int AddForum(int portalId, int moduleId, int parentId, bool allowTopics, string name, string description, int sortOrder, bool active, bool hidden, int topicCount, int replyCount, int lastPostId, string slug, int permissionId, int settingId, string emailAddress, float siteMapPriority, DateTime createdOnDate, int createdByUserId);
+		int SaveForum(int forumId, int portalId, int moduleId, int parentId, bool allowTopics, string name, string description, int sortOrder, bool active, bool hidden, int topicCount, int replyCount, int lastPostId, string slug, int permissionId, int settingId, string emailAddress, float siteMapPriority,  int UserId);
 
 		IDataReader GetForum(int forumId);
 
 		IDataReader GetModuleForums(int moduleId);
-
-		void UpdateForum(int forumId, int portalId, int moduleId, int parentId, bool allowTopics, string name, string description, int sortOrder, bool active, bool hidden, int topicCount, int replyCount, int lastPostId, string slug, int permissionId, int settingId, string emailAddress, float siteMapPriority, DateTime lastModifiedOnDate, int lastModifiedByUserId);
 
 		void DeleteForum(int forumId, int moduleId);
 

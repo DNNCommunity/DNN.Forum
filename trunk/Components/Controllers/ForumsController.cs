@@ -47,9 +47,17 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		#region Filter
 
+        public FilterInfo SaveFilter(FilterInfo objFilter) {
+            if (objFilter.FilterId > 0) {
+               UpdateFilter(objFilter);
+            } else {
+               objFilter.FilterId = AddFilter(objFilter);
+            }
+            return GetFilter(objFilter.FilterId);
+        }
 		public int AddFilter(FilterInfo objFilter)
 		{
-			return dataProvider.AddFilter(objFilter.PortalId, objFilter.ModuleId, objFilter.ForumId, objFilter.Find, objFilter.Replace, objFilter.FilterType, objFilter.ApplyOnSave, objFilter.ApplyOnRender, objFilter.CreatedOnDate);
+			return dataProvider.AddFilter(objFilter.PortalId, objFilter.ModuleId, objFilter.ForumId, objFilter.Find, objFilter.Replace, objFilter.FilterType, objFilter.ApplyOnSave, objFilter.ApplyOnRender);
 		}
 
 		public FilterInfo GetFilter(int filterId)
@@ -57,14 +65,14 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 			return CBO.FillObject<FilterInfo>(dataProvider.GetFilter(filterId));
 		}
 
-		public List<FilterInfo> GetAllFilters(int portalId)
+		public List<FilterInfo> GetAllFilters(int portalId, int moduleId, int forumId)
 		{
-			return CBO.FillCollection<FilterInfo>(dataProvider.GetAllFilters(portalId));
+			return CBO.FillCollection<FilterInfo>(dataProvider.GetAllFilters(portalId, moduleId, forumId));
 		}
 
 		public void UpdateFilter(FilterInfo objFilter)
 		{
-			dataProvider.UpdateFilter(objFilter.FilterId, objFilter.PortalId, objFilter.ModuleId, objFilter.ForumId, objFilter.Find, objFilter.Replace, objFilter.FilterType, objFilter.ApplyOnSave, objFilter.ApplyOnRender, objFilter.CreatedOnDate);
+			dataProvider.UpdateFilter(objFilter.FilterId, objFilter.PortalId, objFilter.ModuleId, objFilter.ForumId, objFilter.Find, objFilter.Replace, objFilter.FilterType, objFilter.ApplyOnSave, objFilter.ApplyOnRender);
 			//Caching.ClearFilterCache(filterId, portalId);
 		}
 
@@ -77,14 +85,16 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Forum
-
-		public int AddForum(ForumInfo objForum)
-		{
-			return dataProvider.AddForum(objForum.PortalId, objForum.ModuleId, objForum.ParentId, objForum.AllowTopics, objForum.Name, objForum.Description, objForum.SortOrder, objForum.Active, objForum.Hidden, objForum.TopicCount, objForum.ReplyCount, objForum.LastPostId, objForum.Slug, objForum.PermissionId, objForum.SettingId, objForum.EmailAddress, objForum.SiteMapPriority, objForum.CreatedOnDate, objForum.CreatedByUserId);
-			//Caching.ClearForumCache(objForum.ModuleId, objForum.PortalId);
-		}
-
-		public ForumInfo GetForum(int forumId)
+        public int SaveForum(ForumInfo objForum) {
+            int UserId = -1;
+            if (objForum.ForumId > 0) {
+                UserId = objForum.LastModifiedByUserId;
+            } else {
+                UserId = objForum.CreatedByUserId;
+            }
+            return dataProvider.SaveForum(objForum.ForumId, objForum.PortalId, objForum.ModuleId, objForum.ParentId, objForum.AllowTopics, objForum.Name, objForum.Description, objForum.SortOrder, objForum.Active, objForum.Hidden, objForum.TopicCount, objForum.ReplyCount, objForum.LastPostId, objForum.Slug, objForum.PermissionId, objForum.SettingId, objForum.EmailAddress, objForum.SiteMapPriority, UserId);
+        }
+	    public ForumInfo GetForum(int forumId)
 		{
 			return CBO.FillObject<ForumInfo>(dataProvider.GetForum(forumId));
 		}
@@ -94,11 +104,7 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 			return CBO.FillCollection<ForumInfo>(dataProvider.GetModuleForums(moduleId));
 		}
 
-		public void UpdateForum(ForumInfo objForum)
-		{
-			dataProvider.UpdateForum(objForum.ForumId, objForum.PortalId, objForum.ModuleId, objForum.ParentId, objForum.AllowTopics, objForum.Name, objForum.Description, objForum.SortOrder, objForum.Active, objForum.Hidden, objForum.TopicCount, objForum.ReplyCount, objForum.LastPostId, objForum.Slug, objForum.PermissionId, objForum.SettingId, objForum.EmailAddress, objForum.SiteMapPriority, objForum.LastModifiedOnDate, objForum.LastModifiedByUserId);
-			//Caching.ClearForumCache(objForum.ModuleId, objForum.PortalId);
-		}
+		
 
 		public void DeleteForum(int forumId, int moduleId, int portalId)
 		{
@@ -338,6 +344,15 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		#endregion
 
 		#region Rank
+
+        public RankInfo SaveRank(RankInfo objRank) {
+            if (objRank.RankId > 0) {
+                UpdateRank(objRank);
+            } else {
+                objRank.RankId = AddRank(objRank);
+            }
+            return GetRank(objRank.RankId);
+        }
 
 		public int AddRank(RankInfo objRank)
 		{

@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.Forums {
 
         public override void ProcessRequest(HttpContext context) {
             base.ProcessRequest(context);
-            var isAdmin = false;
+           // var isAdmin = false;
             context.Response.ContentType = "text/javascript";
             var basePath = VirtualPathUtility.ToAbsolute("~/DesktopModules/dnncorp/forums/");
             var scriptPath = VirtualPathUtility.ToAbsolute("~/DesktopModules/dnncorp/forums/scripts/");
@@ -43,18 +43,20 @@ namespace DotNetNuke.Modules.Forums {
             if (context.Request.QueryString["language"] != null) {
                 langKey = context.Request.QueryString["language"];
             }
-            sb.AppendLine(Utilities.GetFile(context.Server.MapPath(scriptPath + "dnnforums.js")));
             if (context.Request.QueryString["isadmin"] != null) {
-                isAdmin = true;
+               // isAdmin = true;
                 sb.AppendLine(Utilities.GetFile(context.Server.MapPath(scriptPath + "rsh.min.js")));
                 sb.AppendLine(Utilities.GetFile(context.Server.MapPath(scriptPath + "dnnforums.admin.js")));
             }
+           //sb.AppendLine(Utilities.GetFile(context.Server.MapPath(scriptPath + "dnnforums.js")));
+           
 
             sb.Replace("[SERVICESPATH]", basePath);
             sb.Replace("[PORTALID]", PortalId.ToString());
             sb.Replace("[MODULEID]", ModuleId.ToString());
             sb.Replace("[LANGUAGE]", langKey);
-            context.Response.Write(Utilities.LocalizeControl(sb.ToString(), isAdmin));
+           // context.Response.Write(Utilities.LocalizeControl(sb.ToString(), isAdmin));
+            context.Response.Write(sb.ToString());
         }
 
         public override bool IsReusable {

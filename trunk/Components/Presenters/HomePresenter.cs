@@ -56,6 +56,7 @@ namespace DotNetNuke.Modules.Forums.Components.Presenters
 			try
 			{
 				View.Model.CurrentUserId = ModuleContext.PortalSettings.UserId;
+                View.Model.TopicListLink = Common.Links.ForumTopicList(this.ModuleContext, TabId, 1);
 			}
 			catch (Exception exc) {
 				ProcessModuleLoadException(exc);

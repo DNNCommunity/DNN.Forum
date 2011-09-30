@@ -67,12 +67,41 @@
   <ItemGroup>
     <Compile Include="Components\Common\Caching.cs" />
     <Compile Include="Components\Common\Constants.cs" />
+    <Compile Include="Components\Common\ForumsSettings.cs" />
     <Compile Include="Components\Common\HandlerBase.cs" />
     <Compile Include="Components\Common\Links.cs" />
     <Compile Include="Components\Common\UIEventArgs.cs" />
     <Compile Include="Components\Common\Utilities.cs" />
+    <Compile Include="Components\Models\TopicEditorModel.cs" />
+    <Compile Include="Components\Models\TopicDisplayModel.cs" />
+    <Compile Include="Components\Models\TopicListModel.cs" />
+    <Compile Include="Components\Presenters\TopicEditorPresenter.cs" />
+    <Compile Include="Components\Presenters\TopicDisplayPresenter.cs" />
+    <Compile Include="Components\Presenters\TopicListPresenter.cs" />
+    <Compile Include="Components\Views\ITopicEditorView.cs" />
+    <Compile Include="Components\Views\ITopicDisplayView.cs" />
+    <Compile Include="Components\Views\ITopicListView.cs" />
+    <Compile Include="Controls\HtmllLoader.cs" />
+    <Compile Include="TopicEditor.ascx.cs">
+      <DependentUpon>TopicEditor.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TopicEditor.ascx.designer.cs">
+      <DependentUpon>TopicEditor.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="TopicDisplay.ascx.cs">
+      <DependentUpon>TopicDisplay.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TopicDisplay.ascx.designer.cs">
+      <DependentUpon>TopicDisplay.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Services\WebServiceBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Components\Controllers\BusinessController.cs" />
     <Compile Include="Components\Controllers\ForumsController.cs" />
+    <Compile Include="Components\Controllers\ForumsSettingsController.cs" />
     <Compile Include="Components\Controllers\IForumsController.cs" />
     <Compile Include="Components\Entities\PostInfo.cs" />
     <Compile Include="Components\Entities\UserInfo.cs" />
@@ -132,19 +161,87 @@
     <Compile Include="Scripts\scripts.ashx.cs">
       <DependentUpon>scripts.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Services\Filters.asmx.cs">
+      <DependentUpon>Filters.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Services\Forums.asmx.cs">
       <DependentUpon>Forums.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Components\Presenters\ForumsServicePresenter.cs" />
     <Compile Include="Components\Views\IForumsServiceView.cs" />
+    <Compile Include="Services\Ranks.asmx.cs">
+      <DependentUpon>Ranks.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Services\Settings.asmx.cs">
+      <DependentUpon>Settings.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Services\Users.asmx.cs">
+      <DependentUpon>Users.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TopicList.ascx.cs">
+      <DependentUpon>TopicList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TopicList.ascx.designer.cs">
+      <DependentUpon>TopicList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\admin_dashboard.ascx.cs">
+      <DependentUpon>admin_dashboard.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\admin_dashboard.ascx.designer.cs">
+      <DependentUpon>admin_dashboard.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\admin_filters.ascx.cs">
+      <DependentUpon>admin_filters.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\admin_filters.ascx.designer.cs">
+      <DependentUpon>admin_filters.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\admin_forumeditor.ascx.cs">
+      <DependentUpon>admin_forumeditor.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\admin_forumeditor.ascx.designer.cs">
+      <DependentUpon>admin_forumeditor.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\admin_forumlist.ascx.cs">
+      <DependentUpon>admin_forumlist.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\admin_forumlist.ascx.designer.cs">
+      <DependentUpon>admin_forumlist.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\admin_ranks.ascx.cs">
+      <DependentUpon>admin_ranks.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\admin_ranks.ascx.designer.cs">
+      <DependentUpon>admin_ranks.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\admin_settings.ascx.cs">
+      <DependentUpon>admin_settings.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\admin_settings.ascx.designer.cs">
+      <DependentUpon>admin_settings.ascx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Config\" />
     <Folder Include="Providers\Sitemap\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ControlPanel.ascx" />
     <Content Include="ControlPanel.css" />
+    <Content Include="TopicEditor.ascx" />
+    <Content Include="TopicDisplay.ascx" />
     <Content Include="Dispatch.ascx" />
     <Content Include="Documentation\License.txt" />
     <Content Include="Documentation\ReleaseNotes.txt" />
@@ -155,11 +252,23 @@
     <Content Include="Images\spinner-lg.gif" />
     <Content Include="Images\warning_32.png" />
     <Content Include="module.css" />
+    <Content Include="Scripts\blank.html" />
     <Content Include="Scripts\dnnforums.admin.js" />
     <Content Include="Scripts\dnnforums.js" />
     <Content Include="Scripts\json2009.min.js" />
     <Content Include="Scripts\rsh.min.js" />
+    <Content Include="Services\Filters.asmx" />
     <Content Include="Services\Forums.asmx" />
+    <Content Include="Services\Ranks.asmx" />
+    <Content Include="Services\Settings.asmx" />
+    <Content Include="Services\Users.asmx" />
+    <Content Include="TopicList.ascx" />
+    <Content Include="UserControls\admin_dashboard.ascx" />
+    <Content Include="UserControls\admin_filters.ascx" />
+    <Content Include="UserControls\admin_forumeditor.ascx" />
+    <Content Include="UserControls\admin_forumlist.ascx" />
+    <Content Include="UserControls\admin_ranks.ascx" />
+    <Content Include="UserControls\admin_settings.ascx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DNNCorp.Forums.dnn">
@@ -178,9 +287,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\ControlPanel.ascx.resx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="App_LocalResources\AdminForumsEdit.ascx.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

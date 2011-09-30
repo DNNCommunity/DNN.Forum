@@ -22,41 +22,20 @@ namespace DotNetNuke.Modules.Forums.Components.Presenters
 {
     using System;
     using Controllers;
-    using DotNetNuke.Common.Utilities;
     using Models;
     using Providers.Data.SqlDataProvider;
     using Views;
     using Web.Mvp;
 
-	public class DispatchPresenter : ModulePresenter<IDispatchView, DispatchModel>
+    public class TopicDisplayPresenter : ModulePresenter<ITopicDisplayView, TopicDisplayModel>
 	{
-
 		protected IForumsController Controller { get; private set; }
 
-		private string ControlView
+		public TopicDisplayPresenter(ITopicDisplayView view) : this(view, new ForumsController(new SqlDataProvider()))
 		{
-			get
-			{
-				var controlView = Null.NullString;
-				if (!String.IsNullOrEmpty(Request.Params["view"]))
-				{
-					controlView = Request.Params["view"];
-				}
-				return controlView;
-			}
 		}
 
-		private const string CtlHome = "/Home.ascx";
-        private const string CtlTopicList = "/TopicList.ascx";
-        private const string CtlTopicDisplay = "/TopicDisplay.ascx";
-        private const string CtlTopicEditor = "/TopicEditor.ascx";
-
-		public DispatchPresenter(IDispatchView view) : this(view, new ForumsController(new SqlDataProvider()))
-		{
-
-		}
-
-		public DispatchPresenter(IDispatchView view, IForumsController controller) : base(view)
+		public TopicDisplayPresenter(ITopicDisplayView view, IForumsController controller) : base(view)
 		{
 			if (view == null)
 			{
@@ -72,28 +51,15 @@ namespace DotNetNuke.Modules.Forums.Components.Presenters
 		    this.View.Load += ViewLoad;
 		}
 
-	    private void ViewLoad(object sender, EventArgs eventArgs)
+		private void ViewLoad(object sender, EventArgs eventArgs)
 		{
-            View.Model.IsEditable = ModuleContext.IsEditable;
-			switch (ControlView.ToLowerInvariant())
+			try
 			{
-				case "home" :
-					View.Model.ControlToLoad = CtlHome;
-					break;
-                case "topics" :
-                    View.Model.ControlToLoad = CtlTopicList;
-                    break;
-                case "topic" :
-                    View.Model.ControlToLoad = CtlTopicDisplay;
-                    break;
-                case "editor" :
-                    View.Model.ControlToLoad = CtlTopicEditor;
-                    break;
-				default:
-					View.Model.ControlToLoad = CtlHome;
-					break;
+				View.Model.CurrentUserId = ModuleContext.PortalSettings.UserId;
 			}
-			this.View.Refresh();
+			catch (Exception exc) {
+				ProcessModuleLoadException(exc);
+			}
 		}
 	}
 }

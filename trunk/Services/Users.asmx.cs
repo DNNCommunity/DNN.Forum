@@ -1,5 +1,5 @@
-//
-// DotNetNuke� - http://www.dotnetnuke.com
+﻿//
+// DotNetNuke® - http://www.dotnetnuke.com
 // Copyright (c) 2002-2011
 // by DotNetNuke Corporation
 //
@@ -17,32 +17,29 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using DotNetNuke.Modules.Forums.Components.Common;
-namespace DotNetNuke.Modules.Forums
-{
-    using System;
-    using Components.Models;
-    using Components.Presenters;
-    using Components.Views;
-    using Web.Mvp;
-    using WebFormsMvp;
-    using Components.Common;
 
-	/// <summary>
-	/// This is the initial view seen within the Forums module, loaded by Dispatch.ascx. 
-	/// </summary>
-	[PresenterBinding(typeof(HomePresenter))]
-	public partial class Home : ModuleView<HomeModel>, IHomeView
-	{
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Services;
+using System.Text;
+using DotNetNuke.Modules.Forums.Components.Entities;
 
-		/// <summary>
-		/// The constructor is used here to set base properties. 
-		/// </summary>
-		/// <remarks>We disable AutoDataBind in the ctor so we can utlize Telerik and other 'Ajax' controls, otherwise we will get a PreRender script registration error.</remarks>
-		public Home()
-		{
-            
-			AutoDataBind = false;
-		}
-	}
+namespace DotNetNuke.Modules.Forums.Services {
+    /// <summary>
+    /// Summary description for Users
+    /// </summary>
+    [WebService(Namespace = "http://dnnforums.users.dotnetnuke.com/")]
+    [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+    [System.ComponentModel.ToolboxItem(false)]
+    // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
+    [System.Web.Script.Services.ScriptService]
+    public class Users : System.Web.Services.WebService {
+
+        [WebMethod]
+        public string HelloWorld() {
+            return "Hello World";
+        }
+    }
 }

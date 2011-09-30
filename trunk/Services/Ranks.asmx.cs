@@ -23,78 +23,59 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
-using System.Text;
 using DotNetNuke.Modules.Forums.Components.Entities;
+
 
 namespace DotNetNuke.Modules.Forums.Services {
     /// <summary>
-    /// Summary description for Forums
+    /// Summary description for Ranks
     /// </summary>
-    [WebService(Namespace = "http://dnnforums.dotnetnuke.com/")]
+    [WebService(Namespace = "http://dnnforums.ranks.dotnetnuke.com/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     [System.Web.Script.Services.ScriptService]
-    public class Forums : System.Web.Services.WebService {
-
+    public class Ranks : System.Web.Services.WebService {
         [WebMethod]
-        public List<ForumInfo> ForumsList(int ModuleId) {
+        public List<RankInfo> RanksList(int portalId, int moduleId) {
             Modules.Forums.Components.Controllers.ForumsController fc = new Modules.Forums.Components.Controllers.ForumsController();
-            List<ForumInfo> fl = fc.GetModuleForums(ModuleId);
-            return fl;
+            List<RankInfo> rl = fc.GetModuleRank(moduleId);
+            return rl;
+        }
+        [WebMethod]
+        public RankInfo RankGet(int portalId, int moduleId, int rankId) {
+            Modules.Forums.Components.Controllers.ForumsController fc = new Modules.Forums.Components.Controllers.ForumsController();
+            RankInfo ri = fc.GetRank(rankId);
+            return ri;
+        }
+        [WebMethod]
+        public RankInfo RankSave(int portalId, int moduleId, int rankId, string rankName, int minPosts, int maxPosts, string display) {
+            Modules.Forums.Components.Controllers.ForumsController fc = new Modules.Forums.Components.Controllers.ForumsController();
+            RankInfo obj = new RankInfo();
+            if (rankId > 0) {
+                obj = fc.GetRank(rankId);
+            }
+            obj.PortalId = portalId;
+            obj.ModuleId = moduleId;
+            obj.RankId = rankId;
+            obj.RankName = rankName;
+            obj.MinPosts = minPosts;
+            obj.MaxPosts = maxPosts;
+            obj.Display = display;
             
-        }
-        [WebMethod]
-        public ForumInfo ForumGet(int ForumId) {
-            Modules.Forums.Components.Controllers.ForumsController fc = new Modules.Forums.Components.Controllers.ForumsController();
-            ForumInfo fi = fc.GetForum(ForumId); 
-            return fi;
+            obj = fc.SaveRank(obj);
+            return obj;
 
         }
         [WebMethod]
-        public ForumInfo ForumSave(int PortalId, int ModuleId, int ForumId, int ParentId, bool AllowTopics, string Name, string Description, int SortOrder, bool Active, 
-            bool Hidden, int TopicCount, int ReplyCount, int LastPostId, string Slug, int PermissionId, int SettingId, string EmailAddress, float SiteMapPriority) {
-            Modules.Forums.Components.Controllers.ForumsController fc = new Modules.Forums.Components.Controllers.ForumsController();
-            ForumInfo fi = new ForumInfo();
-            if (ForumId > 0) {
-                fi = fc.GetForum(ForumId);
-            }
-            if (fi == null) {
-                fi = new ForumInfo();
-                fi.TopicCount = 0;
-                fi.ReplyCount = 0;
-                fi.LastPostId = 0;
-            }
-            fi.ForumId = ForumId;
-            fi.PortalId = PortalId;
-            fi.ModuleId = ModuleId;
-            fi.ParentId = ParentId;
-            fi.AllowTopics = AllowTopics;
-            fi.Name = Name;
-            fi.Description = Description;
-            fi.SortOrder = SortOrder;
-            fi.Active = Active;
-            fi.Hidden = Hidden;
-            fi.Slug = Slug;
-            fi.PermissionId = PermissionId;
-            fi.SettingId = SettingId;
-            fi.EmailAddress = EmailAddress;
-            fi.SiteMapPriority = SiteMapPriority;
-            fi.CreatedByUserId = -1;
-            fi.LastModifiedByUserId = -1;
-            fc.SaveForum(fi);
-            return fi;
-        }
-        [WebMethod]
-        public bool ForumDelete(int portalId, int moduleId, int forumId) {
+        public bool RankDelete(int portalId, int moduleId, int rankId) {
             Modules.Forums.Components.Controllers.ForumsController fc = new Modules.Forums.Components.Controllers.ForumsController();
             try {
-                fc.DeleteForum(forumId, moduleId, portalId);
+                fc.DeleteRank(rankId, portalId);
                 return true;
             } catch {
                 return false;
             }
         }
-
     }
 }

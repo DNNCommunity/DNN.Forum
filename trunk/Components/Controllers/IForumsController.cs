@@ -32,11 +32,13 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 		
 		#region Filter
 
+        FilterInfo SaveFilter(FilterInfo objFilter);
+
 		int AddFilter(FilterInfo objFilter);
 
 		FilterInfo GetFilter(int filterId);
 
-		List<FilterInfo> GetAllFilters(int portalId);
+		List<FilterInfo> GetAllFilters(int portalId, int moduleId, int forumId);
 
 		void UpdateFilter(FilterInfo objFilter);
 
@@ -46,13 +48,11 @@ namespace DotNetNuke.Modules.Forums.Components.Controllers
 
 		#region Forum
 
-		int AddForum(ForumInfo objForum);
+		int SaveForum(ForumInfo objForum);
 
 		ForumInfo GetForum(int forumId);
 
 		List<ForumInfo> GetModuleForums(int moduleId);
-
-		void UpdateForum(ForumInfo objForum);
 
 		void DeleteForum(int forumId, int moduleId, int portalId);
 
