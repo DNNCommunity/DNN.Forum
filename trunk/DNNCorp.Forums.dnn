@@ -56,8 +56,8 @@
 				<component type="Assembly">
 					<assemblies>
 						<assembly>
-							<name>DotNetNuke.Modules.Forums.dll</name>
-							<sourceFileName>DotNetNuke.Modules.Forums.dll</sourceFileName>
+              <basePath>bin</basePath>
+              <name>DotNetNuke.Modules.Forums.dll</name>
 							<version>06.00.00</version>
 						</assembly>
 					</assemblies>
@@ -75,15 +75,15 @@
 				</component>
 				<component type="Script">
 					<scripts>
-						<basePath>DesktopModules\DNNCorp\Forums\Providers\Data\SqlDataProvider</basePath>
+						<basePath>DesktopModules\DNNCorp\Forums\</basePath>
 						<script type="Install">
-							<path />
-							<name>06.00.00.SqlDataProvider</name>
-							<version>06.00.00</version>
-						</script>
-						<script type="UnInstall">
-							<path />
-							<name>Uninstall.SqlDataProvider</name>
+              <path>Providers\Data\SqlDataProvider</path>
+              <name>06.00.00.SqlDataProvider</name>
+              <version>06.00.00</version>
+            </script>
+            <script type="UnInstall">
+              <path>Providers\Data\SqlDataProvider</path>
+              <name>Uninstall.SqlDataProvider</name>
 							<version>06.00.00</version>
 						</script>
 					</scripts>

@@ -5,6 +5,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNNCorp.Forums", "DNNCorp.F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Forums.Tests", "Forums.Tests\Forums.Tests.csproj", "{5462E8DE-64E3-4A20-B2DD-57330B0EF02D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildScripts", "BuildScripts", "{0F2594EC-46BC-4137-9244-5968FCABB06C}"
+	ProjectSection(SolutionItems) = preProject
+		BuildScripts\ModulePackage.targets = BuildScripts\ModulePackage.targets
+		BuildScripts\MSBuild.Community.Tasks.targets = BuildScripts\MSBuild.Community.Tasks.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
