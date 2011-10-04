@@ -354,4 +354,10 @@
   <data name="[RESX:Text].Text" xml:space="preserve">
     <value>Text</value>
   </data>
+  <data name="[RESX:Replies].Text" xml:space="preserve">
+    <value>Replies</value>
+  </data>
+  <data name="[RESX:Topics].Text" xml:space="preserve">
+    <value>Topics</value>
+  </data>
 </root>
