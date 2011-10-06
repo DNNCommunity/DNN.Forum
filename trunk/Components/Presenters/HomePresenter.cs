@@ -21,46 +21,38 @@
 namespace DotNetNuke.Modules.Forums.Components.Presenters
 {
     using System;
+    using System.Collections.Generic;
     using Controllers;
+    using Entities;
     using Models;
+    using Models.ViewModels;
     using Providers.Data.SqlDataProvider;
+    using Templating;
     using Views;
     using Web.Mvp;
 
     public class HomePresenter : ModulePresenter<IHomeView, HomeModel>
 	{
-		protected IForumsController Controller { get; private set; }
+        private ITemplateFileManager templateFileManager;
+        protected IForumsController Controller { get; private set; }
 
-		public HomePresenter(IHomeView view) : this(view, new ForumsController(new SqlDataProvider()))
+		public HomePresenter(IHomeView view) : this(view, new ForumsController(new SqlDataProvider()), new TemplateFileManager())
 		{
 		}
 
-		public HomePresenter(IHomeView view, IForumsController controller) : base(view)
+		public HomePresenter(IHomeView view, IForumsController controller, ITemplateFileManager templateFileManager) : base(view)
 		{
-			if (view == null)
-			{
-				throw new ArgumentException(@"View is nothing.", "view");
-			}
-
-			if (controller == null)
-			{
-				throw new ArgumentException(@"Controller is nothing.", "controller");
-			}
-
-			Controller = controller;
-		    this.View.Load += ViewLoad;
+			this.Controller = controller;
+		    this.templateFileManager = templateFileManager;
+            this.View.Load += ViewLoad;
 		}
 
-		private void ViewLoad(object sender, EventArgs eventArgs)
+        void ViewLoad(Object sender, EventArgs eventArgs)
 		{
-			try
-			{
-				View.Model.CurrentUserId = ModuleContext.PortalSettings.UserId;
-                View.Model.TopicListLink = Common.Links.ForumTopicList(this.ModuleContext, TabId, 1);
-			}
-			catch (Exception exc) {
-				ProcessModuleLoadException(exc);
-			}
+	        View.Model.TopicListLink = Common.Links.ForumTopicList(this.ModuleContext, TabId, 1);
+            
+            List<ForumViewModel> forums = new ForumViewModelBuilder(Controller).Build(this.ModuleId);
+            View.Model.ForumListHtml = new TemplateProcessor(this.templateFileManager).ProcessTemplate("Default", "ListForums.template", new { forums });
 		}
 	}
 }

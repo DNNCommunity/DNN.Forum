@@ -43,7 +43,6 @@
             // Act
             var getForumCalledEventArgs = new GetForumCalledEventArgs(1);
             view.Raise(x => x.ForumGetCalled += null, getForumCalledEventArgs);
-            presenter.ReleaseView();
             
             // Assert
             Assert.AreEqual(getForumCalledEventArgs.Result.ForumId, 1);
@@ -63,8 +62,7 @@
             // Act
             var getForumCalledEventArgs = new GetForumCalledEventArgs(6);
             view.Raise(x => x.ForumGetCalled += null, getForumCalledEventArgs);
-            presenter.ReleaseView();
-
+            
             // Assert
             Assert.IsNull(getForumCalledEventArgs.Result);
         }

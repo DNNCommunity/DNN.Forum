@@ -25,6 +25,7 @@ namespace DotNetNuke.Modules.Forums {
     using Components.Presenters;
     using Components.Views;
     using Framework;
+    using Web.Client.ClientResourceManagement;
     using Web.Mvp;
     using WebFormsMvp;
 
@@ -59,7 +60,7 @@ namespace DotNetNuke.Modules.Forums {
                 langKey = Request.QueryString["language"];
             }
             jQuery.RegisterDnnJQueryPlugins(Page);
-            PageBase.RegisterStyleSheet(Page, ctlDirectory + "/ControlPanel.css");
+            ClientResourceManager.RegisterStyleSheet(this.Page, ctlDirectory + "/ControlPanel.css");
             Page.ClientScript.RegisterClientScriptInclude(Page.GetType(), "dnnforums.scripts", Page.ResolveUrl(ctlDirectory + "/scripts/scripts.ashx") + "?PortalId=" + ModuleContext.PortalId + "&ModuleId=" + ModuleContext.ModuleId + "&isadmin=true&language=" + langKey);
             Page.ClientScript.RegisterStartupScript(Page.GetType(), "dnnforums.history", "window.dhtmlHistory.create({ toJSON: function (o) { return JSON.stringify(o); }, fromJSON: function (s) { return JSON.parse(s); } });", true);
         }

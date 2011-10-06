@@ -22,7 +22,7 @@ namespace DotNetNuke.Modules.Forums.Components.Views
 {
     using Web.Mvp;
 
-	public interface IHomeView : IModuleView<Models.HomeModel>
+    public interface IHomeView : IModuleView<Models.HomeModel>
 	{
 	}
 }

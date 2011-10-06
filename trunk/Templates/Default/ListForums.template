@@ -1,0 +1,24 @@
+{% for f in forums %} 
+  
+  <div class="forum-wrap">
+    
+    <div class="forum-info">
+      <a href="{{ f.url }}">{{ f.name }}</a>
+      <p>{{ f.description }}</p>
+      <span class="forum-topics">{{ f.number_of_topics }}</span>
+      <span class="forum-replies">{{ f.number_of_replies }}</span>
+    </div>
+    
+    <div class="forum-post-info">    
+      <div class="ft-lastpost">
+        <div><a href="{{ f.last_post_url }}">{{ f.last_post_title }}</div>
+        <div><a href="{{ f.last_post_author_url }}">{{ f.last_post_author_name }}</a> {{ f.last_post_date | date: "%m/%d/%y %i:%M %p" }}</div>
+      </div>
+      <div>
+        <img src="{{ f.last_post_author_image_url }}"></img>
+      </div>
+    </div>
+    
+  </div>
+  
+{% endfor %}

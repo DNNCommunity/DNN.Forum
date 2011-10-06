@@ -1,0 +1,13 @@
+{% for thread in threads %} 
+  <div class="forum-thread">
+    <div class="ft-thread">
+      <a href="{{ thread.href }}">{{ thread.name }}</a> by <a href="{{ thread.author.url }}">{{ thread.author.name }}</a>
+    </div>
+    <div class="ft-replies">{{ thread.replies }}</div>
+    <div class="ft-views">{{ thread.viws }}</div>
+    <div class="ft-lastpost">
+      <a href="{{ thread.lastpost.link }}">{{ thread.lastpost.date | date:%m/%d/%y %i:%M %p}} by <a href="{{ thread.lastpost.author_url }}">{{ thread.lastposter.author_name }}</a>
+    </a>
+    </div>
+  </div>
+{% endfor %}
