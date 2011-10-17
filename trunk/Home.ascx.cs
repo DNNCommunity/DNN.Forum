@@ -32,5 +32,14 @@ namespace DotNetNuke.Modules.Forums
 	[PresenterBinding(typeof(HomePresenter))]
 	public partial class Home : ModuleView<HomeModel>, IHomeView
 	{
+        public Home()
+        {
+            AutoDataBind = false;
+        }
+        
+        public void Refresh()
+        {
+            this.ForumsListPlaceholder.Text = Model.ForumListHtml;
+        }
 	}
 }

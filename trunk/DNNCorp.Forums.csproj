@@ -96,9 +96,6 @@
       <DependentUpon>ForumsSettings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ForumsSettings.ascx.designer.cs">
-      <DependentUpon>ForumsSettings.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Components\Common\Caching.cs" />
     <Compile Include="Components\Common\Constants.cs" />
     <Compile Include="Components\Common\ForumsSettings.cs" />
@@ -153,6 +150,9 @@
     </Compile>
     <Compile Include="Dispatch.ascx.designer.cs">
       <DependentUpon>Dispatch.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ForumsSettings.ascx.designer.cs">
+      <DependentUpon>ForumsSettings.ascx</DependentUpon>
     </Compile>
     <Compile Include="Home.ascx.cs">
       <DependentUpon>Home.ascx</DependentUpon>

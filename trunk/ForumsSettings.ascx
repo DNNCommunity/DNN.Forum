@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ForumsSettings.ascx.cs" Inherits="DotNetNuke.Modules.Forums.ForumsSettings" %>
+﻿<%@ Control Language="C#" AutoEventWireup="True" CodeBehind="ForumsSettings.ascx.cs" Inherits="DotNetNuke.Modules.Forums.ForumsSettings" %>
 
 <script src="/DesktopModules/DNNCorp/Forums/Scripts/codemirror/codemirror.js" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="/DesktopModules/DNNCorp/Forums/CSS/linenumbers.css" />

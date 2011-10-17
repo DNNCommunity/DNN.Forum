@@ -47,12 +47,14 @@ namespace DotNetNuke.Modules.Forums.Components.Presenters
             this.View.Load += ViewLoad;
 		}
 
-        void ViewLoad(Object sender, EventArgs eventArgs)
-		{
-	        View.Model.TopicListLink = Common.Links.ForumTopicList(this.ModuleContext, TabId, 1);
-            
-            List<ForumViewModel> forums = new ForumViewModelBuilder(Controller).Build(this.ModuleId);
+        private void ViewLoad(object sender, EventArgs e)
+        {
+            base.OnLoad();
+            View.Model.TopicListLink = Common.Links.ForumTopicList(this.ModuleContext, TabId, 1);
+
+            List<ForumViewModel> forums = new ForumViewModelBuilder(Controller).Build(this.ModuleContext);
             View.Model.ForumListHtml = new TemplateProcessor(this.templateFileManager).ProcessTemplate("Default", "ListForums.template", new { forums });
-		}
+            View.Refresh();
+        }
 	}
 }

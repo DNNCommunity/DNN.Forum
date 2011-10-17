@@ -9,7 +9,7 @@ namespace DotNetNuke.Modules.Forums.Components.Models.ViewModels
         public string LastPostAuthorImageUrl { get; set; }
         public string LastPostAuthorName { get; set; }
         public string LastPostAuthorUrl { get; set; }
-        public DateTime LastPostDate { get; set; }
+        public DateTime? LastPostDate { get; set; }
         public string LastPostUrl { get; set; }
         public string LastPostTitle { get; set; }
         public string Name { get; set; }

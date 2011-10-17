@@ -69,11 +69,12 @@ namespace DotNetNuke.Modules.Forums.Components.Presenters
 			}
 
 			Controller = controller;
-		    this.View.Load += ViewLoad;
 		}
 
-	    private void ViewLoad(object sender, EventArgs eventArgs)
+	    protected override void OnInit()
 		{
+            base.OnInit();
+
             View.Model.IsEditable = ModuleContext.IsEditable;
 			switch (ControlView.ToLowerInvariant())
 			{
