@@ -154,6 +154,7 @@
     <Compile Include="ForumsSettings.ascx.designer.cs">
       <DependentUpon>ForumsSettings.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\DateTimeExtensions.cs" />
     <Compile Include="Home.ascx.cs">
       <DependentUpon>Home.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -190,6 +191,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Templating\DnnTemplatingViewModel.cs" />
+    <Compile Include="Templating\Filters\RelativeTimeSpanFilter.cs" />
     <Compile Include="Templating\ITemplateFileManager.cs" />
     <Compile Include="Templating\TemplateProcessor.cs" />
     <Compile Include="Templating\TemplateFileManager.cs" />
