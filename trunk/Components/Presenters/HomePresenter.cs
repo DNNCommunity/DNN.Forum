@@ -22,8 +22,8 @@ namespace DotNetNuke.Modules.Forums.Components.Presenters
 {
     using System;
     using System.Collections.Generic;
+    using Common;
     using Controllers;
-    using Entities;
     using Models;
     using Models.ViewModels;
     using Providers.Data.SqlDataProvider;
@@ -33,26 +33,29 @@ namespace DotNetNuke.Modules.Forums.Components.Presenters
 
     public class HomePresenter : ModulePresenter<IHomeView, HomeModel>
 	{
-        private ITemplateFileManager templateFileManager;
-        protected IForumsController Controller { get; private set; }
+        private readonly ITemplateFileManager templateFileManager;
+        private readonly IModuleInstanceContext moduleContextWrapper;
+        private readonly IForumsController controller;
+        private readonly IDnnUserController dnnUserController;
 
-		public HomePresenter(IHomeView view) : this(view, new ForumsController(new SqlDataProvider()), new TemplateFileManager())
+        public HomePresenter(IHomeView view) : this(view, new ForumsController(new SqlDataProvider()), new TemplateFileManager(), new ModuleContextWrapper(), new DnnUserController())
 		{
 		}
 
-		public HomePresenter(IHomeView view, IForumsController controller, ITemplateFileManager templateFileManager) : base(view)
+        public HomePresenter(IHomeView view, IForumsController controller, ITemplateFileManager templateFileManager, IModuleInstanceContext moduleContextWrapper, IDnnUserController dnnUserController)
+            : base(view)
 		{
-			this.Controller = controller;
+			this.controller = controller;
 		    this.templateFileManager = templateFileManager;
+            moduleContextWrapper.ModuleContext = this.ModuleContext;
+            this.moduleContextWrapper = moduleContextWrapper;
+            this.dnnUserController = dnnUserController;
             this.View.Load += ViewLoad;
 		}
 
         private void ViewLoad(object sender, EventArgs e)
         {
-            base.OnLoad();
-            View.Model.TopicListLink = Common.Links.ForumTopicList(this.ModuleContext, TabId, 1);
-
-            List<ForumViewModel> forums = new ForumViewModelBuilder(Controller).Build(this.ModuleContext);
+            List<ForumViewModel> forums = new ForumViewModelBuilder(this.controller, this.dnnUserController).Build(this.moduleContextWrapper);
             View.Model.ForumListHtml = new TemplateProcessor(this.templateFileManager).ProcessTemplate("Default", "ListForums.template", new { forums });
             View.Refresh();
         }

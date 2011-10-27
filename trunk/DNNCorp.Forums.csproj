@@ -78,6 +78,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Common\DnnUserController.cs" />
+    <Compile Include="Components\Common\ModuleContextWrapper.cs" />
     <Compile Include="Components\Models\HomeModel.cs" />
     <Compile Include="Components\Models\TopicDisplayModel.cs" />
     <Compile Include="Components\Models\TopicEditorModel.cs" />
@@ -300,7 +302,7 @@
     <Content Include="Scripts\scripts.ashx" />
     <None Include="Settings.StyleCop" />
     <None Include="Templates\Default\ListForums.template" />
-    <None Include="Templates\Default\ListThreads.template" />
+    <None Include="Templates\Default\ListTopics.template" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\Dispatch.ascx.resx" />

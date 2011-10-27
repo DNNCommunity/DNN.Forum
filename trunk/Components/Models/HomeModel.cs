@@ -23,7 +23,6 @@ namespace DotNetNuke.Modules.Forums.Components.Models
     public class HomeModel 
 	{
 		public int CurrentUserId { get; set; }
-		public string TopicListLink { get; set; }
-        public string ForumListHtml { get; set; }
+		public string ForumListHtml { get; set; }
 	}
 }

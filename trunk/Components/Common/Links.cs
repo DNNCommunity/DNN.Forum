@@ -35,17 +35,20 @@ namespace DotNetNuke.Modules.Forums.Components.Common
 	    /// <param name="tabId"></param>
 	    /// <returns></returns>
 	    /// <remarks>We must pass tabid in separate from moduleContext, in case we need to generate a link from a third party module (ie. latest posts).</remarks>
-	    public static string ForumHome(ModuleInstanceContext moduleContext, int tabId)
+	    public static string ForumHome(IModuleInstanceContext moduleContext, int tabId)
 		{
 			return moduleContext.NavigateUrl(tabId, "", true, "view=" + Constants.PageScope.Home);
 		}
-        public static string ForumTopicList(ModuleInstanceContext moduleContext, int tabId, int forumId) {
+        public static string ForumTopicList(IModuleInstanceContext moduleContext, int tabId, int forumId)
+        {
             return moduleContext.NavigateUrl(tabId, "", true, "forumid=" + forumId.ToString());
         }
-        public static string ForumTopicDisplay(ModuleInstanceContext moduleContext, int tabId, int topicId) {
+        public static string ForumTopicDisplay(IModuleInstanceContext moduleContext, int tabId, int topicId)
+        {
             return moduleContext.NavigateUrl(tabId, "", true, "topicid=" + topicId.ToString());
         }
-        public static string ForumTopicEditor(ModuleInstanceContext moduleContext, int tabId, int forumId, int postId) {
+        public static string ForumTopicEditor(IModuleInstanceContext moduleContext, int tabId, int forumId, int postId)
+        {
             //return moduleContext.NavigateUrl(tabId, "", true, new string() ["view=editor", "forumid=" + forumId.ToString(), "postid=" + postId.ToString() ]);
             return string.Empty;
         }

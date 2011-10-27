@@ -39,7 +39,7 @@ namespace DotNetNuke.Modules.Forums
         
         public void Refresh()
         {
-            this.ForumsListPlaceholder.Text = Model.ForumListHtml;
+            this.ForumList.Text = Model.ForumListHtml;
         }
 	}
 }
