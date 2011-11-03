@@ -4,22 +4,25 @@
 
     public static class DateTimeExtensions
     {
-        public static string GetRelativeTimeSpan(this DateTime postDate)
+        public static string ToRelativeString(this DateTime utcDate)
         {
             string stringy = string.Empty;
-            TimeSpan diff = DateTime.Now.Subtract(postDate);
+            TimeSpan diff = DateTime.UtcNow.Subtract(utcDate);
             double days = diff.Days;
             double hours = diff.Hours + days * 24;
             double minutes = diff.Minutes + hours * 60;
+
             if (minutes <= 1)
             {
                 return "Just Now";
             }
+
             double years = Math.Floor(diff.TotalDays / 365);
             if (years >= 1)
             {
                 return string.Format("{0} year{1} ago", years, years >= 2 ? "s" : null);
             }
+
             double weeks = Math.Floor(diff.TotalDays / 7);
             if (weeks >= 1)
             {
@@ -30,6 +33,7 @@
                 }
                 return string.Format("{0} week{1}{2} ago", weeks, weeks >= 2 ? "s" : null, stringy);
             }
+
             if (days >= 1)
             {
                 double partOfDay = hours - days * 24;
@@ -39,6 +43,7 @@
                 }
                 return string.Format("{0} day{1}{2} ago", days, days >= 2 ? "s" : null, stringy);
             }
+
             if (hours >= 1)
             {
                 double partOfHour = minutes - hours * 60;
@@ -50,7 +55,7 @@
             }
 
             // Only condition left is minutes > 1
-            return minutes.ToString("{0} minutes ago");
+            return string.Format("{0} minutes ago", minutes);
         }
     }
 }

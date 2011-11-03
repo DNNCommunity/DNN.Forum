@@ -7,7 +7,7 @@
     {
         public static string RelativeDate(DateTime input)
         {
-            return input.GetRelativeTimeSpan();
+            return input.ToRelativeString();
         }
     }
 }
