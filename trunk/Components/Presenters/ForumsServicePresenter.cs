@@ -1,8 +1,8 @@
-﻿namespace DotNetNuke.Modules.Forums.Services
+﻿namespace DotNetNuke.Modules.Forums.Components.Presenters
 {
-    using System;
-    using Components.Common;
-    using Components.Controllers;
+    using Common;
+    using Controllers;
+    using Services;
     using Web.Mvp;
 
     public class ForumsServicePresenter : WebServicePresenter<IForumsServiceView>

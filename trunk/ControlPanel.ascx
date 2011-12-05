@@ -1,12 +1,12 @@
-﻿<%@ Control Language="C#" AutoEventWireup="false" CodeBehind="ControlPanel.ascx.cs"
-    Inherits="DotNetNuke.Modules.Forums.ControlPanel" %>
+﻿<%@ Control Language="C#" AutoEventWireup="false" CodeBehind="ControlPanel.ascx.cs" Inherits="DotNetNuke.Modules.Forums.ControlPanel" %>
 <%@ Register TagPrefix="dnnforum" TagName="filters" Src="~/DesktopModules/DNNCorp/Forums/UserControls/admin_filters.ascx" %>
 <%@ Register TagPrefix="dnnforum" TagName="ranks" Src="~/DesktopModules/DNNCorp/Forums/UserControls/admin_ranks.ascx" %>
 <%@ Register TagPrefix="dnnforum" TagName="forumeditor" Src="~/DesktopModules/DNNCorp/Forums/UserControls/admin_forumeditor.ascx" %>
 <%@ Register TagPrefix="dnnforum" TagName="forumlist" Src="~/DesktopModules/DNNCorp/Forums/UserControls/admin_forumlist.ascx" %>
 <%@ Register TagPrefix="dnnforum" TagName="dashboard" Src="~/DesktopModules/DNNCorp/Forums/UserControls/admin_dashboard.ascx" %>
 <%@ Register TagPrefix="dnnforum" TagName="settings" Src="~/DesktopModules/DNNCorp/Forums/UserControls/admin_settings.ascx" %>
-<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
+<%@ Register TagPrefix="dnnforum" TagName="templates" Src="~/DesktopModules/DNNCorp/Forums/UserControls/admin_templates.ascx" %>
+
 <script type="text/javascript">
     var forums = [];
 
@@ -225,8 +225,7 @@
                     <dnnforum:settings runat="server" />
                 </div>
                 <div class="dnnForumArea" id="dnnForumTemplates">
-                    <h2 class="dnnFormSectionHead">
-                        Templates</h2>
+                    <dnnforum:templates runat="server" />
                 </div>
             </div>
             <div class="dnnForumActionArea">

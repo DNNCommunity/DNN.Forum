@@ -90,12 +90,23 @@
     <Compile Include="Components\Presenters\TopicDisplayPresenter.cs" />
     <Compile Include="Components\Presenters\TopicEditorPresenter.cs" />
     <Compile Include="Components\Presenters\TopicListPresenter.cs" />
+    <Compile Include="Components\Views\FileEventArgs.cs" />
+    <Compile Include="Components\Views\FileSaveEventArgs.cs" />
+    <Compile Include="Components\Views\GroupFilesEventArgs.cs" />
     <Compile Include="Components\Views\ITopicDisplayView.cs" />
     <Compile Include="Components\Views\ITopicEditorView.cs" />
     <Compile Include="Components\Views\ITopicListView.cs" />
     <Compile Include="Controls\HtmllLoader.cs" />
-    <Compile Include="ForumsSettings.ascx.cs">
-      <DependentUpon>ForumsSettings.ascx</DependentUpon>
+    <Compile Include="Components\Views\GetTemplateGroupsEventArgs.cs" />
+    <Compile Include="Components\Views\HelloWorldEventArgs.cs" />
+    <Compile Include="Components\Views\ITemplatesServiceView.cs" />
+    <Compile Include="Services\Templates.asmx.cs">
+      <DependentUpon>Templates.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Components\Presenters\TemplatesServicePresenter.cs" />
+    <Compile Include="UserControls\admin_templates.ascx.cs">
+      <DependentUpon>admin_templates.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Components\Common\Caching.cs" />
@@ -152,9 +163,6 @@
     </Compile>
     <Compile Include="Dispatch.ascx.designer.cs">
       <DependentUpon>Dispatch.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="ForumsSettings.ascx.designer.cs">
-      <DependentUpon>ForumsSettings.ascx</DependentUpon>
     </Compile>
     <Compile Include="Helpers\DateTimeExtensions.cs" />
     <Compile Include="Home.ascx.cs">
@@ -246,6 +254,9 @@
     <Compile Include="UserControls\admin_settings.ascx.designer.cs">
       <DependentUpon>admin_settings.ascx</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\admin_templates.ascx.designer.cs">
+      <DependentUpon>admin_templates.ascx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Config\" />
@@ -254,7 +265,9 @@
   <ItemGroup>
     <Content Include="CSS\linenumbers.css" />
     <Content Include="CSS\xmlcolors.css" />
-    <Content Include="ForumsSettings.ascx" />
+    <Content Include="Scripts\serviceProxy.js" />
+    <Content Include="Services\Templates.asmx" />
+    <Content Include="UserControls\admin_templates.ascx" />
     <Content Include="ControlPanel.ascx" />
     <Content Include="ControlPanel.css" />
     <Content Include="Dispatch.ascx" />
@@ -312,9 +325,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\ControlPanel.ascx.resx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="App_LocalResources\AdminForumsEdit.ascx.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
