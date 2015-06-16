@@ -499,11 +499,11 @@ Namespace DotNetNuke.Modules.Forum
 						bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(objPost.Body), objConfig, objPost.ParseInfo)
 					Else
 						'At lease Inline to Parse
-						If Users.UserController.GetCurrentUserInfo.UserID > 0 Then
-							bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(objPost.Body), objConfig, objPost.ParseInfo, objPost.AttachmentCollection(objConfig.EnableAttachment), True)
-						Else
-							bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(objPost.Body), objConfig, objPost.ParseInfo, objPost.AttachmentCollection(objConfig.EnableAttachment), False)
-						End If
+                        If Users.UserController.Instance.GetCurrentUserInfo.UserID > 0 Then
+                            bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(objPost.Body), objConfig, objPost.ParseInfo, objPost.AttachmentCollection(objConfig.EnableAttachment), True)
+                        Else
+                            bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(objPost.Body), objConfig, objPost.ParseInfo, objPost.AttachmentCollection(objConfig.EnableAttachment), False)
+                        End If
 					End If
 				End If
 

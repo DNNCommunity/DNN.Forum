@@ -97,7 +97,7 @@ Namespace DotNetNuke.Modules.Forum
 			Get
 				Dim objProfile As New Entities.Users.UserProfile
 
-				Return objProfile.TimeZone
+                Return objProfile.TimeZone
 			End Get
 		End Property
 
@@ -297,23 +297,26 @@ Namespace DotNetNuke.Modules.Forum
 		''' <value></value>
 		''' <returns>A file stored in the DotNetNuke File system (ie. Files/Folders tables).</returns>
 		''' <remarks>This is utilized for GenerateThumbnail method, stored here since we cache it and avoid the call multiple times.</remarks>
-		Public ReadOnly Property AvatarCoreFile() As FileInfo
-			Get
-				If ProfileAvatar IsNot Nothing Then
-					Try
-						Dim FileID As Integer = CInt(ProfileAvatar.Trim())
-						Dim objController As New FileController()
+        Public ReadOnly Property AvatarCoreFile() As FileInfo
+            Get
+                If ProfileAvatar IsNot Nothing Then
+                    Try
+                        If ProfileAvatar.Trim() IsNot "" Then
 
-						Return objController.GetFileById(FileID, PortalID)
-					Catch ex As Exception
-						LogException(ex)
-						Return Nothing
-					End Try
-				Else
-					Return Nothing
-				End If
-			End Get
-		End Property
+                            Dim FileID As Integer = CInt(ProfileAvatar.Trim())
+                            Return CType(FileManager.Instance.GetFile(FileID), FileInfo)
+                        Else
+                            Return Nothing
+                        End If
+                    Catch ex As Exception
+                        LogException(ex)
+                        Return Nothing
+                    End Try
+                Else
+                    Return Nothing
+                End If
+            End Get
+        End Property
 
 		''' <summary>
 		''' The full path to the user's admin assigned avatars for display. 

@@ -22,6 +22,7 @@ Option Explicit On
 
 Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Services.FileSystem
+Imports DotNetNuke.Forum.Library
 
 Namespace DotNetNuke.Modules.Forum
 
@@ -691,6 +692,11 @@ Namespace DotNetNuke.Modules.Forum
                 .ImageUrl = objConfig.GetThemeImageURL("s_lookup.") & objConfig.ImageExtension
             End With
 
+            If objConfig.HideSearchButton = True Then
+                txtForumSearch.Visible = False
+                cmdForumSearch.Visible = False
+            End If
+
             'Polls
             Me.rblstPoll = New RadioButtonList
             With rblstPoll
@@ -737,7 +743,7 @@ Namespace DotNetNuke.Modules.Forum
                 .ID = "tagsControl"
                 ' if we come up w/ our own tagging window, this needs to be changed to false.
                 .AllowTagging = HttpContext.Current.Request.IsAuthenticated
-                .NavigateUrlFormatString = DotNetNuke.Common.Globals.NavigateURL(objConfig.SearchTabID, "", "Tag={0}")
+                .NavigateUrlFormatString = DotNetNuke.Common.Globals.NavigateURL(PortalUtilityClass.SearchTagSearchTabID(PortalID), "", "Tag={0}")
                 .RepeatDirection = "Horizontal"
                 .Separator = ","
                 ' TODO: We may want to show this in future, for now we are leaving categories out of the mix.
@@ -880,7 +886,9 @@ Namespace DotNetNuke.Modules.Forum
                 End If
 
                 AddHandler ddlViewDescending.SelectedIndexChanged, AddressOf ddlViewDescending_SelectedIndexChanged
-                AddHandler cmdForumSearch.Click, AddressOf cmdForumSearch_Click
+                If objConfig.HideSearchButton = False Then
+                    AddHandler cmdForumSearch.Click, AddressOf cmdForumSearch_Click
+                End If
             Catch exc As Exception
                 LogException(exc)
             End Try
@@ -919,8 +927,10 @@ Namespace DotNetNuke.Modules.Forum
 
                 Controls.Add(tagsControl)
                 Controls.Add(ddlViewDescending)
-                Controls.Add(txtForumSearch)
-                Controls.Add(cmdForumSearch)
+                If objConfig.HideSearchButton = False Then
+                    Controls.Add(txtForumSearch)
+                    Controls.Add(cmdForumSearch)
+                End If
             Catch exc As Exception
                 LogException(exc)
             End Try
@@ -1092,21 +1102,24 @@ Namespace DotNetNuke.Modules.Forum
             RenderRowEnd(wr) ' </tr>
             RenderTableEnd(wr) ' </table>
             RenderCellEnd(wr) ' </td>
+            If objConfig.HideSearchButton = False Then
+                RenderCellBegin(wr, "", "", "100%", "right", "middle", "", "")
+                RenderTableBegin(wr, 0, 0, "InnerTable") '<table>
+                RenderRowBegin(wr) ' <tr>
+                RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td>
 
-            RenderCellBegin(wr, "", "", "100%", "right", "middle", "", "")
-            RenderTableBegin(wr, 0, 0, "InnerTable") '<table>
-            RenderRowBegin(wr) ' <tr>
-            RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td>
-            txtForumSearch.RenderControl(wr)
-            RenderCellEnd(wr) ' </td>
+                txtForumSearch.RenderControl(wr)
+                RenderCellEnd(wr) ' </td>
 
-            RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td>
-            cmdForumSearch.RenderControl(wr)
-            RenderCellEnd(wr) ' </td>
-            RenderRowEnd(wr) ' </tr>
-            RenderTableEnd(wr) ' </table>
+                RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td>
+                cmdForumSearch.RenderControl(wr)
+                RenderCellEnd(wr) ' </td>
+                RenderRowEnd(wr) ' </tr>
+                RenderTableEnd(wr) ' </table>
 
-            RenderCellEnd(wr) ' </td>
+                RenderCellEnd(wr) ' </td>
+
+            End If
             RenderRowEnd(wr) ' </tr>
             RenderTableEnd(wr) ' </table>
             RenderCellEnd(wr) ' </td>
@@ -1866,7 +1879,7 @@ Namespace DotNetNuke.Modules.Forum
                     If objConfig.EnableProfileAvatar And author.UserID > 0 Then
                         If Not author.IsSuperUser Then
                             Dim WebVisibility As UserVisibilityMode
-                            WebVisibility = author.Profile.ProfileProperties(objConfig.AvatarProfilePropName).Visibility
+                            WebVisibility = author.Profile.ProfileProperties(objConfig.AvatarProfilePropName).ProfileVisibility.VisibilityMode
 
                             Select Case WebVisibility
                                 Case UserVisibilityMode.AdminOnly
@@ -1931,7 +1944,7 @@ Namespace DotNetNuke.Modules.Forum
                 'Homepage
                 If author.UserID > 0 Then
                     Dim WebSiteVisibility As UserVisibilityMode
-                    WebSiteVisibility = author.Profile.ProfileProperties("Website").Visibility
+                    WebSiteVisibility = author.Profile.ProfileProperties("Website").ProfileVisibility.VisibilityMode
 
                     Select Case WebSiteVisibility
                         Case UserVisibilityMode.AdminOnly
@@ -1948,7 +1961,7 @@ Namespace DotNetNuke.Modules.Forum
 
                     'Region
                     Dim CountryVisibility As UserVisibilityMode
-                    CountryVisibility = author.Profile.ProfileProperties("Country").Visibility
+                    CountryVisibility = author.Profile.ProfileProperties("Country").ProfileVisibility.VisibilityMode
 
                     Select Case CountryVisibility
                         Case UserVisibilityMode.AdminOnly
@@ -3237,8 +3250,7 @@ Namespace DotNetNuke.Modules.Forum
                     If (banners IsNot Nothing) AndAlso banners.Count > 0 Then
                         For Each b As Vendors.BannerInfo In banners
                             advertController.BannerViewIncrement(b.BannerId)
-                            Dim fileController As New FileController
-                            Dim fileInfo As DotNetNuke.Services.FileSystem.FileInfo = fileController.GetFileById(Integer.Parse(b.ImageFile.Split(Char.Parse("="))(1)), PortalID)
+                            Dim fileInfo As DotNetNuke.Services.FileSystem.FileInfo = CType(FileManager.Instance.GetFile(Integer.Parse(b.ImageFile.Split(Char.Parse("="))(1))), Services.FileSystem.FileInfo)
                             wr.Write(bannerController.FormatBanner(advert.VendorId, b.BannerId, b.BannerTypeId, b.BannerName, fileInfo.RelativePath, b.Description, b.URL, b.Width, b.Height, "L", objConfig.CurrentPortalSettings.HomeDirectory) & "&nbsp;")
                         Next
 

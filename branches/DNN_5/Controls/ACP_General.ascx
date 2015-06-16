@@ -63,6 +63,26 @@
 					<tr>
 						<td width="35%">
 							<span class="Forum_Row_AdminText">
+								<dnn:Label ID="plHideSearchButton" runat="server" ControlName="plHideSearchButton" Suffix=":"></dnn:Label>
+							</span>
+						</td>
+						<td align="left" >
+							  <asp:CheckBox ID="chkHideSearchButton" runat="server" CssClass="Forum_NormalTextBox" EnableViewState="false" />
+						</td>
+					</tr>
+					<tr>
+						<td width="35%">
+							<span class="Forum_Row_AdminText">
+								<dnn:Label ID="plHideHomeButton" runat="server" ControlName="plHideHomeButton" Suffix=":"></dnn:Label>
+							</span>
+						</td>
+						<td align="left" >
+							  <asp:CheckBox ID="chkHideHomeButton" runat="server" CssClass="Forum_NormalTextBox" EnableViewState="false" />
+						</td>
+					</tr>
+					<tr>
+						<td width="35%">
+							<span class="Forum_Row_AdminText">
 								<dnn:label id="plSearchIndexDate" runat="server" Suffix=":" controlname="chkShowNavigator"></dnn:label>
 							</span>
 						</td>

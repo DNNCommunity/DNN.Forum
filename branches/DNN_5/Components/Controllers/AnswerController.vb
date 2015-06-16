@@ -35,7 +35,7 @@ Namespace DotNetNuke.Modules.Forum
         ''' <returns>A row of data representing a specific Answer.</returns>
         ''' <remarks></remarks>
         Public Function GetAnswer(ByVal AnswerID As Integer) As AnswerInfo
-            Return CType(CBO.FillObject(DataProvider.Instance().GetAnswer(AnswerID), GetType(AnswerInfo)), AnswerInfo)
+            Return CBO.FillObject(Of AnswerInfo)(DataProvider.Instance().GetAnswer(AnswerID))
         End Function
 
         ''' <summary>

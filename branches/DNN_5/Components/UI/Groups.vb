@@ -738,7 +738,7 @@ Namespace DotNetNuke.Modules.Forum
 					' subject/# currently viewing column
 					wr.AddAttribute(HtmlTextWriterAttribute.Valign, "top")
 					wr.AddAttribute(HtmlTextWriterAttribute.Align, "left")
-					wr.AddAttribute(HtmlTextWriterAttribute.Width, "100%")
+                    wr.AddAttribute(HtmlTextWriterAttribute.Width, "90%")
 					wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td>
 
 					' table to hold theard subject & reserved area for number of users currently viewing            

@@ -1024,7 +1024,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
                 If objConfig.EnableEmailQueueTask Then
                     'Email Queue
-                    If Users.UserController.GetCurrentUserInfo.IsSuperUser Then
+                    If Users.UserController.Instance.GetCurrentUserInfo.IsSuperUser Then
                         wr.RenderBeginTag(HtmlTextWriterTag.Tr) ' <tr>
                         wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
                         wr.RenderBeginTag(HtmlTextWriterTag.Td) '<td> 

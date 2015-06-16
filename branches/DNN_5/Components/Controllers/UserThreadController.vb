@@ -165,7 +165,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>
 		''' </remarks>
 		Private Function GetUserThreadRead(ByVal UserID As Integer, ByVal ThreadID As Integer) As UserThreadsInfo
-			Return CType(CBO.FillObject(DataProvider.Instance().GetUserThreads(UserID, ThreadID), GetType(UserThreadsInfo)), UserThreadsInfo)
+            Return CBO.FillObject(Of UserThreadsInfo)(DataProvider.Instance().GetUserThreads(UserID, ThreadID))
 		End Function
 
 #End Region

@@ -40,7 +40,19 @@ Namespace DotNetNuke.Modules.Forum
 		''' A String used to identify a module setting.
 		''' </summary>
 		''' <remarks></remarks>
-		Public Const ENABLE_THREAD_STATUS As String = "EnableThreadStatus"
+        Public Const ENABLE_THREAD_STATUS As String = "EnableThreadStatus"
+
+        ''' <summary>
+        ''' A String used to identify a module setting.
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public Const HIDE_SEARCH_BUTTON As String = "HideSearchButton"
+
+        ''' <summary>
+        ''' A String used to identify a module setting.
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public Const HIDE_HOME_BUTTON As String = "HideHomeButton"
 
 		''' <summary>
 		''' A String used to identify a module setting.

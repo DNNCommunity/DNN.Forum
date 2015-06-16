@@ -301,7 +301,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>
 		''' </remarks>
 		Public Function GroupGet(ByVal GroupId As Integer) As GroupInfo
-			Return CType(CBO.FillObject(DotNetNuke.Modules.Forum.DataProvider.Instance().GroupGet(GroupId), GetType(GroupInfo)), GroupInfo)
+            Return CBO.FillObject(Of GroupInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().GroupGet(GroupId))
 		End Function
 
 		''' <summary>

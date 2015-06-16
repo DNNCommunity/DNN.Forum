@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -9,29 +10,34 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <OptionExplicit>On</OptionExplicit>
-    <OptionStrict>On</OptionStrict>
+    <OptionStrict>Off</OptionStrict>
     <RootNamespace>
     </RootNamespace>
     <AssemblyName>DotNetNuke.Modules.Forum</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
+    <OldToolsVersion>4.0</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\bin\</OutputPath>
+    <OutputPath>..\Bin\</OutputPath>
     <DocumentationFile>DotNetNuke.Modules.Forum.xml</DocumentationFile>
-    <NoWarn>
-    </NoWarn>
+    <NoWarn>42353,42354,42355</NoWarn>
     <CodeAnalysisRules>
     </CodeAnalysisRules>
-    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -39,61 +45,67 @@
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\</OutputPath>
+    <OutputPath>..\Bin\</OutputPath>
     <DocumentationFile>DotNetNuke.Modules.Forum.xml</DocumentationFile>
-    <NoWarn>
-    </NoWarn>
-    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <NoWarn>42353,42354,42355</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CountryListBox, Version=1.0.2182.32461, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Library\Controls\CountryListBox\bin\CountryListBox.dll</HintPath>
+    <Reference Include="CountryListBox">
+      <HintPath>..\..\www.juvander.fi.SRC\bin\CountryListBox.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke, Version=6.0.0.2568, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="DotNetNuke.Web, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke, Version=6.1.5.142, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\DotNetNuke.Web\bin\DotNetNuke.Web.dll</HintPath>
+      <HintPath>..\..\www.juvander.fi.SRC\bin\DotNetNuke.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.WebControls, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Instrumentation, Version=7.3.4.45, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Library\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll</HintPath>
+      <HintPath>..\..\www.juvander.fi.SRC\bin\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.WebUtility, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Log4Net, Version=3.0.0.0, Culture=neutral, PublicKeyToken=53eb1fac7b60111f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Library\Controls\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
+      <HintPath>..\..\www.juvander.fi.SRC\bin\DotNetNuke.Log4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web">
+      <HintPath>..\..\www.juvander.fi.SRC\bin\DotNetNuke.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Client, Version=7.3.4.45, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\www.juvander.fi.SRC\bin\DotNetNuke.Web.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.WebControls">
+      <HintPath>..\..\www.juvander.fi.SRC\bin\DotNetNuke.WebControls.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.WebUtility">
+      <HintPath>..\..\www.juvander.fi.SRC\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Library\Components\DataAccessBlock\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\www.juvander.fi.SRC\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Web.Extensions.Design, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Extensions.Design" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
-    <Reference Include="System.Xml.Linq, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Telerik.Web.UI, Version=2011.3.1115.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\www.juvander.fi.SRC\bin\Telerik.Web.UI.dll</HintPath>
     </Reference>
-    <Reference Include="Telerik.Web.UI, Version=2011.1.519.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Import Include="DotNetNuke" />
@@ -101,14 +113,26 @@
     <Import Include="DotNetNuke.Common.Utilities" />
     <Import Include="DotNetNuke.Data" />
     <Import Include="DotNetNuke.Entities" />
+    <Import Include="DotNetNuke.Entities.Modules" />
+    <Import Include="DotNetNuke.Entities.Modules.Actions" />
+    <Import Include="DotNetNuke.Entities.Modules.Communications" />
+    <Import Include="DotNetNuke.Entities.Modules.Definitions" />
+    <Import Include="DotNetNuke.Entities.Modules.Internal" />
     <Import Include="DotNetNuke.Entities.Tabs" />
     <Import Include="DotNetNuke.Framework" />
     <Import Include="DotNetNuke.Modules" />
+    <Import Include="DotNetNuke.Modules.Forum" />
+    <Import Include="DotNetNuke.Modules.Forum.Utilities" />
     <Import Include="DotNetNuke.Security" />
     <Import Include="DotNetNuke.Services" />
     <Import Include="DotNetNuke.Services.Exceptions" />
     <Import Include="DotNetNuke.Services.Localization" />
     <Import Include="DotNetNuke.UI" />
+    <Import Include="DotNetNuke.Web" />
+    <Import Include="DotNetNuke.Web.UI" />
+    <Import Include="DotNetNuke.Web.UI.WebControls" />
+    <Import Include="Microsoft.ApplicationBlocks" />
+    <Import Include="Microsoft.ApplicationBlocks.Data" />
     <Import Include="Microsoft.VisualBasic" />
     <Import Include="System" />
     <Import Include="System.Collections" />
@@ -645,6 +669,7 @@
     <None Include="Providers\DataProviders\SqlDataProvider\04.09.01.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.00.01.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
+    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\ACP.ascx.resx">
@@ -995,10 +1020,21 @@
     <Content Include="Controls\App_LocalResources\ACP_Advertisement.ascx.resx" />
     <EmbeddedResource Include="js\forum.js" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\DotNetNuke.Forum.Library\DotNetNuke.Forum.Library.csproj">
+      <Project>{fe6fca5d-5339-4732-91b3-74d906427e24}</Project>
+      <Name>DotNetNuke.Forum.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="'$(Solutions.VSVersion)' == '8.0'" />
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="'$(Solutions.VSVersion)' == '9.0'" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">

@@ -141,7 +141,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Public Function FilterWordGet(ByVal ItemId As Integer) As FilterWordInfo
-			Return CType(CBO.FillObject(DotNetNuke.Modules.Forum.DataProvider.Instance().FilterWordGet(ItemId), GetType(FilterWordInfo)), FilterWordInfo)
+            Return CBO.FillObject(Of FilterWordInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().FilterWordGet(ItemId))
 		End Function
 
 		''' <summary>

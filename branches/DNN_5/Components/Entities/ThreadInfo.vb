@@ -142,7 +142,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property PortalID() As Integer
 			Get
-				Dim _portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings
+                Dim _portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings()
 				Return _portalSettings.PortalId
 			End Get
 		End Property

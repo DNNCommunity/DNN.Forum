@@ -20,7 +20,6 @@
 Option Strict On
 Option Explicit On
 
-Imports DotNetNuke.Wrapper.UI.WebControls
 Imports Telerik.Web.UI
 
 Namespace DotNetNuke.Modules.Forum.ACP

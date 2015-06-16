@@ -210,7 +210,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns>A single post.</returns>
 		''' <remarks></remarks>
 		Private Function PostGet(ByVal PostID As Integer, ByVal PortalID As Integer) As PostInfo
-			Return CType(CBO.FillObject(DotNetNuke.Modules.Forum.DataProvider.Instance().PostGet(PostID, PortalID), GetType(PostInfo)), PostInfo)
+            Return CBO.FillObject(Of PostInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().PostGet(PostID, PortalID))
 		End Function
 
 #End Region
