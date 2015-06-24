@@ -86,8 +86,10 @@ a.Forum_SubForumLink:link, a.Forum_SubForumLink:visited, a.Forum_SubForumLink:ac
 /* Last Post Column */
 .Forum_RowHighlight3, .Forum_RowHighlight3_Alt{border:solid 1px #B8D7F3;border-bottom:none;background-color:#E8E8E8;}
 .Forum_RowHighlight3 table, .Forum_RowHighlight3_Alt table{padding:5px 10px;}
+.Forum_RowHighlight3 td{text-align:right}
 /* Last Post Column - Alternate (odd)*/
 .Forum_RowHighlight3_Alt{background-color:#fff;}
+.Forum_RowHighlight3_Alt td{text-align:right}
 div.Forum_AnswerText, a.Forum_AnswerText{font-size:10px;color:#eee;line-height:10px;font-weight:bold;}
 a.Forum_AnswerText{color:#fff;}
 /*/////////////////////////// = THREAD VIEW = \\\\\\\\\\\\\\\\\\\\\\\\\\\*/
@@ -170,7 +172,7 @@ a.Forum_NormalSmall:hover{text-decoration:underline;color:#006396;}
 	.Forum_GroupDetails a, .Forum_GroupDetails a:link, .Forum_GroupDetails a:active, .Forum_GroupDetails a:visited{font-size:11px;font-family:Helvetica, Arial, San-Serif;color:#0088ce;text-decoration:none;}
 	.Forum_GroupDetails a:hover, .Forum_GroupDetails a:visited:hover{text-decoration:underline;color:#006396;}
 .Forum_Posts, .Forum_Threads{color:#000;font-family:"Lucida Grande",  Helvetica, Arial, sans-serif;}
-.Forum_LastPostText{font-family:Helvetica, Arial, San-Serif;color:#403F3F;font-size:11px;}
+.Forum_LastPostText, .Forum_LastPostTextBy{font-family:Helvetica, Arial, San-Serif;color:#403F3F;font-size:11px;}
 /* Links used in style above areas */
 A.Forum_LastPostText, A.Forum_LastPostText:Link, A.Forum_LastPostText:Visited{font-weight:normal;color:#0088ce;text-decoration:none;font-size:11px;}
 A.Forum_LastPostText:Hover{color:#006396;text-decoration:underline;}

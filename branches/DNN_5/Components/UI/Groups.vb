@@ -885,13 +885,12 @@ Namespace DotNetNuke.Modules.Forum
 
 					wr.RenderEndTag() '  </td>
 
-					If even Then
-						wr.AddAttribute(HtmlTextWriterAttribute.Class, "")
-					Else
-						wr.AddAttribute(HtmlTextWriterAttribute.Class, "")
-					End If
+                    If even Then
+                        wr.AddAttribute(HtmlTextWriterAttribute.Class, "")
+                    Else
+                        wr.AddAttribute(HtmlTextWriterAttribute.Class, "")
+                    End If
 
-					wr.AddAttribute(HtmlTextWriterAttribute.Align, "right")
 					wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
 
 					If objForum.ForumType = 2 Then
@@ -936,10 +935,9 @@ Namespace DotNetNuke.Modules.Forum
 
 							wr.RenderEndTag() ' </div>
 
-							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText")
-							wr.RenderBeginTag(HtmlTextWriterTag.Span) ' <span>
+                            wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostTextBy")
+                            wr.RenderBeginTag(HtmlTextWriterTag.Div) ' <div>
 							wr.Write(Me.BaseControl.LocalizedText("by") & " ")
-							wr.RenderEndTag() ' </span>
 
 							url = String.Empty
 
@@ -956,7 +954,7 @@ Namespace DotNetNuke.Modules.Forum
 							End If
 
 							wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
-							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText") 'Forum_AliasLink
+                            wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostTextBy") 'Forum_AliasLink
 							wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
 							If objForum.MostRecentPost IsNot Nothing Then
 								If objForum.MostRecentPost.Author IsNot Nothing Then
@@ -964,7 +962,8 @@ Namespace DotNetNuke.Modules.Forum
 								End If
 							End If
 
-							wr.RenderEndTag() '  </A>
+                            wr.RenderEndTag() '  </A>
+                            wr.RenderEndTag() ' </div>
 						Else
 							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText")
 							wr.RenderBeginTag(HtmlTextWriterTag.Span) '<span>
