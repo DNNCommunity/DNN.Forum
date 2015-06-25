@@ -117,13 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="lblNoResults.Text" xml:space="preserve">
-    <value>No Posts to Moderate!</value>
+  <data name="lblNoRecords.Text" xml:space="preserve">
+    <value>There are no posts to moderate</value>
   </data>
   <data name="Name.Header" xml:space="preserve">
     <value>Containing Forum</value>
   </data>
   <data name="PostsToModerate.Header" xml:space="preserve">
-    <value>Posts</value>
+    <value>Posts in Queue</value>
+  </data>
+  <data name="lblTitle.Text" xml:space="preserve">
+    <value>Moderator's Control Panel: Forum Post Queue</value>
   </data>
 </root>

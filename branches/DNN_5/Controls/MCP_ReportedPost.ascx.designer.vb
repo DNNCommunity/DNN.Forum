@@ -12,87 +12,87 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.MCP
 
-	Partial Public Class ReportedPost
+    Partial Public Class ReportedPost
 
-		'''<summary>
-		'''pnlReportedPost control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents pnlReportedPost As Global.System.Web.UI.WebControls.Panel
+        '''<summary>
+        '''lblTitle control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''dgReportedPost control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents dgReportedPost As Global.System.Web.UI.WebControls.DataGrid
+        '''<summary>
+        '''pnlReportedPost control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents pnlReportedPost As Global.System.Web.UI.WebControls.Panel
 
-		'''<summary>
-		'''BottomPager control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents BottomPager As Global.DotNetNuke.Modules.Forum.WebControls.AjaxPager
+        '''<summary>
+        '''dgReportedPost control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents dgReportedPost As Global.System.Web.UI.WebControls.DataGrid
 
-		'''<summary>
-		'''pnlPostDetails control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents pnlPostDetails As Global.System.Web.UI.WebControls.Panel
+        '''<summary>
+        '''BottomPager control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents BottomPager As Global.DotNetNuke.Modules.Forum.WebControls.AjaxPager
 
-		'''<summary>
-		'''dgPostReportDetails control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents dgPostReportDetails As Global.System.Web.UI.WebControls.DataGrid
+        '''<summary>
+        '''pnlPostDetails control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents pnlPostDetails As Global.System.Web.UI.WebControls.Panel
 
-		'''<summary>
-		'''DetailPager control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents DetailPager As Global.DotNetNuke.Modules.Forum.WebControls.AjaxPager
+        '''<summary>
+        '''dgPostReportDetails control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents dgPostReportDetails As Global.System.Web.UI.WebControls.DataGrid
 
-		'''<summary>
-		'''pnlNoItems control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents pnlNoItems As Global.System.Web.UI.WebControls.Panel
+        '''<summary>
+        '''DetailPager control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents DetailPager As Global.DotNetNuke.Modules.Forum.WebControls.AjaxPager
 
-		'''<summary>
-		'''lblTitle control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''pnlNoItems control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents pnlNoItems As Global.System.Web.UI.WebControls.Panel
 
-		'''<summary>
-		'''lblNoResults control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblNoResults As Global.System.Web.UI.WebControls.Label
-	End Class
+        '''<summary>
+        '''lblNoResults control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblNoResults As Global.System.Web.UI.WebControls.Label
+    End Class
 End Namespace
