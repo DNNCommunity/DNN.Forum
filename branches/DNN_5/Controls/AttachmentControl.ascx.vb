@@ -56,7 +56,7 @@ Namespace DotNetNuke.Modules.Forum.WebControls
                 Dim fileRoot As String
 
                 If _localResourceFile = String.Empty Then
-                    fileRoot = Me.TemplateSourceDirectory & "/" & Localization.LocalResourceDirectory & "/AttachmentControl.ascx"
+                    fileRoot = objConfig.SourceDirectory & "/Controls/" & Localization.LocalResourceDirectory & "/AttachmentControl.ascx"
                 Else
                     fileRoot = _localResourceFile
                 End If
