@@ -26,5 +26,6 @@
 		<li>Fixing urls on search</li>
 		<li>Fixed logged in user dattime issue: http://www.dotnetnuke.com/Resources/Forums/forumid/199/threadid/463290/scope/posts.aspx</li>
 		<li>Performance optimizations</li>
+		<li>Allowing hiding 'by author': https://dnnforum.codeplex.com/workitem/25916</li>
 	</ul>
 </div>
