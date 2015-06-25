@@ -156,4 +156,7 @@
   <data name="Delete.Header" xml:space="preserve">
     <value />
   </data>
+  <data name="lblNoRecords.Text" xml:space="preserve">
+    <value>You do not have any threads bookmarked.</value>
+  </data>
 </root>

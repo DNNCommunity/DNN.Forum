@@ -189,4 +189,7 @@
   <data name="Text.Text" xml:space="preserve">
     <value>Text</value>
   </data>
+  <data name="ClearedReads.Text" xml:space="preserve">
+    <value>All forum and thread 'reads' have been cleared.</value>
+  </data>
 </root>
