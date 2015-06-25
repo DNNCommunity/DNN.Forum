@@ -12,168 +12,150 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
-	Partial Public Class Attachment
+    Partial Public Class Attachment
 
-		'''<summary>
-		'''lblTitle control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblTitle control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''tblAttachments control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents tblAttachments As Global.System.Web.UI.HtmlControls.HtmlTable
+        '''<summary>
+        '''divAttachment control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents divAttachment As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
-		'''<summary>
-		'''rowAttachment control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowAttachment As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''plAttachment control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plAttachment As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''plAttachment control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plAttachment As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''chkAttachment control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkAttachment As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''chkAttachment control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkAttachment As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''divAnonDownloads control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents divAnonDownloads As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
-		'''<summary>
-		'''rowAnonDownloads control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowAnonDownloads As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''plAnonDownloads control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plAnonDownloads As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''plAnonDownloads control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plAnonDownloads As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''chkAnonDownloads control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkAnonDownloads As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''chkAnonDownloads control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkAnonDownloads As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''divAttachmentPath control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents divAttachmentPath As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
-		'''<summary>
-		'''rowAttachmentPath control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowAttachmentPath As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''plAttachmentPath control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plAttachmentPath As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''plAttachmentPath control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plAttachmentPath As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''txtAttachmentPath control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtAttachmentPath As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''txtAttachmentPath control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtAttachmentPath As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''valAttachmentPath control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valAttachmentPath As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
-		'''<summary>
-		'''valAttachmentPath control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valAttachmentPath As Global.System.Web.UI.WebControls.RequiredFieldValidator
+        '''<summary>
+        '''divMaxAttachmentSize control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents divMaxAttachmentSize As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
-		'''<summary>
-		'''rowMaxAttachmentSize control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowMaxAttachmentSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''plMaxAttachmentSize control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plMaxAttachmentSize As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''plMaxAttachmentSize control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plMaxAttachmentSize As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''txtMaxAttachmentSize control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtMaxAttachmentSize As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''txtMaxAttachmentSize control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtMaxAttachmentSize As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''valMaxAttachSize control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valMaxAttachSize As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
-		'''<summary>
-		'''valMaxAttachSize control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valMaxAttachSize As Global.System.Web.UI.WebControls.RequiredFieldValidator
-
-		'''<summary>
-		'''cmdUpdate control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
-
-		'''<summary>
-		'''lblUpdateDone control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
-	End Class
+        '''<summary>
+        '''cmdUpdate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
+    End Class
 End Namespace

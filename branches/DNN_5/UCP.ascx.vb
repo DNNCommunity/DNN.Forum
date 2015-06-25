@@ -58,17 +58,6 @@ Namespace DotNetNuke.Modules.Forum
 #Region "Event Handlers"
 
         ''' <summary>
-        ''' Determines if we can use Ajax in this page before anything is rendered. 
-        ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
-        Protected Sub Page_Init(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Init
-            'jQuery.RequestDnnPluginsRegistration()
-
-        End Sub
-
-        ''' <summary>
         ''' Page Load of the control.
         ''' </summary>
         ''' <param name="sender"></param>
@@ -95,6 +84,12 @@ Namespace DotNetNuke.Modules.Forum
                 ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
                 If Not Page.IsPostBack Then
+                    If Not Request.UrlReferrer Is Nothing Then
+                        cmdHome.NavigateUrl = Request.UrlReferrer.ToString()
+                    Else
+                        cmdHome.NavigateUrl = NavigateURL()
+                    End If
+
                     ' CP - Check the URL here to see if we should load a specific control (ie. view = x)
                     If Not Request.QueryString("view") Is Nothing Then
                         Dim strTempControl As String
@@ -172,16 +167,6 @@ Namespace DotNetNuke.Modules.Forum
             End If
             Return objControl
         End Function
-
-        ''' <summary>
-        ''' Return users back to the Forum Home page.
-        ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
-        Protected Sub cmdHome_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdHome.Click
-            Response.Redirect(NavigateURL(), True)
-        End Sub
 
 #End Region
 

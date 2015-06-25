@@ -100,7 +100,7 @@ Namespace DotNetNuke.Modules.Forum
 
                 If Request.IsAuthenticated Then
                     Dim LoggedOnUserID As Integer
-                    LoggedOnUserID = Users.UserController.Instance.GetCurrentUserInfo.UserID
+                    LoggedOnUserID = Users.UserController.GetCurrentUserInfo.UserID
 
                     ' Do a check here to make sure the person trying to report this hasn't reported it before
                     Dim cntPostReport As New PostReportedController
@@ -118,6 +118,12 @@ Namespace DotNetNuke.Modules.Forum
                 ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
                 If Page.IsPostBack = False Then
+                    If Not Request.UrlReferrer Is Nothing Then
+                        cmdCancel.NavigateUrl = Request.UrlReferrer.ToString()
+                    Else
+                        cmdCancel.NavigateUrl = NavigateURL()
+                    End If
+
                     PopulatePost(_PostInfo)
                     PopulateTemplateDDL()
 
@@ -176,22 +182,6 @@ Namespace DotNetNuke.Modules.Forum
                     If Not ViewState("UrlReferrer") Is Nothing Then
                         Response.Redirect(ViewState("UrlReferrer").ToString, False)
                     End If
-                End If
-            Catch exc As Exception
-                ProcessModuleLoadException(Me, exc)
-            End Try
-        End Sub
-
-        ''' <summary>
-        ''' Returns the user to where they came from
-        ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
-        Protected Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
-            Try
-                If Not ViewState("UrlReferrer") Is Nothing Then
-                    Response.Redirect(ViewState("UrlReferrer").ToString, False)
                 End If
             Catch exc As Exception
                 ProcessModuleLoadException(Me, exc)

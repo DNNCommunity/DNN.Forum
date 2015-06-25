@@ -44,13 +44,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
             If HostController.Instance.GetSettingsDictionary.ContainsKey("DisableUsersOnline") And (Not HostController.Instance.GetSettingsDictionary("DisableUsersOnline") Is Nothing) Then
                 If HostController.Instance.GetSettingsDictionary("DisableUsersOnline").ToString = "Y" Then
-                    rowUserOnline.Visible = False
+                    divUserOnline.Visible = False
                 Else
-                    rowUserOnline.Visible = True
+                    divUserOnline.Visible = True
                     chkUserOnline.Checked = objConfig.EnableUsersOnline
                 End If
             Else
-                rowUserOnline.Visible = False
+                divUserOnline.Visible = False
             End If
 
             chkEnableExtProfilePage.Checked = objConfig.EnableExternalProfile
@@ -84,7 +84,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
                 Configuration.ResetForumConfig(ModuleId)
 
-                lblUpdateDone.Visible = True
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, DotNetNuke.Services.Localization.Localization.GetString("lblUpdateDone.Text", Me.LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.GreenSuccess)
             Catch exc As Exception
                 Dim s As String = exc.ToString
                 s = s & " "
@@ -125,11 +125,11 @@ Namespace DotNetNuke.Modules.Forum.ACP
         ''' <param name="Enabled">True if enabled, false otherwise.</param>
         ''' <remarks></remarks>
         Private Sub EnableExternalProfile(ByVal Enabled As Boolean)
-            rowExtProfilePageID.Visible = Enabled
-            rowExtProfileUserParam.Visible = Enabled
-            rowExtProfileParamName.Visible = Enabled
-            rowExtProfileParamValue.Visible = Enabled
-            rowEnableExtProfile.Visible = True
+            divExtProfilePageID.Visible = Enabled
+            divExtProfileUserParam.Visible = Enabled
+            divExtProfileParamName.Visible = Enabled
+            divExtProfileParamValue.Visible = Enabled
+            divEnableExtProfile.Visible = True
         End Sub
 
 #End Region

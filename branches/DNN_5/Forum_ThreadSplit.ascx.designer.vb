@@ -12,123 +12,114 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-	Partial Public Class ThreadSplit
+    Partial Public Class ThreadSplit
 
-		'''<summary>
-		'''plSubject control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plSubject As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''lblTitleSubject control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblTitleSubject As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''txtSubject control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtSubject As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''plSubject control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plSubject As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''plPost control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plPost As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''txtSubject control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtSubject As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''lblPost control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblPost As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''plPost control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plPost As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''rowForum control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowForum As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''lblPost control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblPost As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''plNewForum control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plNewForum As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plNewForum control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plNewForum As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''rtvForums control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rtvForums As Global.Telerik.Web.UI.RadTreeView
+        '''<summary>
+        '''rtvForums control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents rtvForums As Global.DotNetNuke.Web.UI.WebControls.DnnTreeView
 
-		'''<summary>
-		'''lblErrorMsg control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblErrorMsg As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''plEmailUsers control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plEmailUsers As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''plEmailUsers control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plEmailUsers As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''chkEmailUsers control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkEmailUsers As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''chkEmailUsers control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkEmailUsers As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''dlPostsForThread control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents dlPostsForThread As Global.System.Web.UI.WebControls.DataList
 
-		'''<summary>
-		'''dlPostsForThread control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents dlPostsForThread As Global.System.Web.UI.WebControls.DataList
+        '''<summary>
+        '''cmdMove control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cmdMove As Global.System.Web.UI.WebControls.LinkButton
 
-		'''<summary>
-		'''cmdMove control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdMove As Global.System.Web.UI.WebControls.LinkButton
-
-		'''<summary>
-		'''cmdCancel control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdCancel As Global.System.Web.UI.WebControls.LinkButton
-	End Class
+        '''<summary>
+        '''cmdCancel control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cmdCancel As Global.System.Web.UI.WebControls.HyperLink
+    End Class
 End Namespace

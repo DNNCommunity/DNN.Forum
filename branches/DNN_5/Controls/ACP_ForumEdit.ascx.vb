@@ -21,6 +21,7 @@ Option Strict On
 Option Explicit On
 
 Imports DotNetNuke.Modules.Forum.Utilities
+Imports DotNetNuke.Wrapper.UI.WebControls
 Imports Telerik.Web.UI
 Imports DotNetNuke.Security.Roles
 
@@ -151,6 +152,12 @@ Namespace DotNetNuke.Modules.Forum.ACP
                 ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
                 If Not Page.IsPostBack Then
+                    If Not Request.UrlReferrer Is Nothing Then
+                        cmdHome.NavigateUrl = Request.UrlReferrer.ToString()
+                    Else
+                        cmdHome.NavigateUrl = NavigateURL()
+                    End If
+
                     BuildTabs()
                     SetURLController()
                     BindGroup()
@@ -162,21 +169,21 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
                     ' Make sure module allows option before allowing user to select
                     If objConfig.EnableThreadStatus Then
-                        rowThreadStatus.Visible = True
+                        divThreadStatus.Visible = True
                     Else
-                        rowThreadStatus.Visible = False
+                        divThreadStatus.Visible = False
                     End If
                     ' Make sure module allows option before allowing user to select
                     If objConfig.EnableRatings Then
-                        rowRating.Visible = True
+                        divRating.Visible = True
                     Else
-                        rowRating.Visible = False
+                        divRating.Visible = False
                     End If
                     ' Make sure module allows option before allowing user to select
                     If objConfig.EnableRSS Then
-                        rowEnableRSS.Visible = True
+                        divEnableRSS.Visible = True
                     Else
-                        rowEnableRSS.Visible = False
+                        divEnableRSS.Visible = False
                     End If
 
                     If Not ForumID = -1 Then
@@ -188,7 +195,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
                         If Not (Request.QueryString("groupid") Is Nothing) Then
                             Dim GroupID As Integer
                             GroupID = Int32.Parse(Request.QueryString("groupid"))
-                            rcbGroup.Items.FindItemByValue(GroupID.ToString).Selected = True
+
+                            rcbGroup.SelectedValue = GroupID.ToString()
                             'Typical new forum settings (default)
                             chkActive.Checked = True
                             rcbForumBehavior.SelectedValue = CStr(ForumBehavior.PublicUnModerated)
@@ -259,7 +267,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
                 .ForumLink = ctlURL.Url.Trim()
                 .ForumBehavior = CType((rcbForumBehavior.SelectedValue), ForumBehavior)
                 '[skeel] set parent forum
-                If rowParentForum.Visible = True Then
+                If divParentForum.Visible = True Then
                     .ParentID = Convert.ToInt32(rcbParentForum.SelectedValue)
                 End If
                 .ForumPermissions = dgPermissions.Permissions
@@ -405,7 +413,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         ''' <remarks>
         ''' </remarks>
         Protected Sub rcbGroup_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rcbGroup.SelectedIndexChanged
-            If rowParentForum.Visible = True Then
+            If divParentForum.Visible = True Then
                 BindParentForums()
             End If
         End Sub
@@ -444,16 +452,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
             SetupForumPermsGrid(False)
         End Sub
 
-        ''' <summary>
-        ''' Return users back to the Forum Home page.
-        ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
-        Protected Sub cmdHome_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdHome.Click
-            Response.Redirect(NavigateURL(), True)
-        End Sub
-
 #End Region
 
 #Region "Private Methods"
@@ -485,28 +483,28 @@ Namespace DotNetNuke.Modules.Forum.ACP
                 ' May need to think about how to handle moderator rows in future after removing this and updating perms grid.
                 ' Right now we only have special rules for linktype forum.
                 Case ForumType.Link
-                    rowThreadStatus.Visible = False
-                    rowRating.Visible = False
-                    rowForumLink.Visible = True
+                    divThreadStatus.Visible = False
+                    divRating.Visible = False
+                    divForumLink.Visible = True
                     ' CP - COMEBACK - Turn off for 4.4 release
-                    rowLinkTracking.Visible = False
-                    rowPolls.Visible = False
+                    divLinkTracking.Visible = False
+                    divPolls.Visible = False
                     ' As of 4.4, permissions are used on all 3 forum types
-                    rowPermissions.Visible = True
+                    divPermissions.Visible = True
                     '[skeel] disable ParentForum if Link type
-                    rowParentForum.Visible = False
+                    divParentForum.Visible = False
                     'ddlParentForum.Items.FindByValue("0").Selected = True
-                    rowEnableSitemap.Visible = False
-                    rowSitemapPriority.Visible = False
+                    divEnableSitemap.Visible = False
+                    divSitemapPriority.Visible = False
                 Case Else
-                    rowThreadStatus.Visible = True
-                    rowRating.Visible = True
-                    rowForumLink.Visible = False
-                    rowLinkTracking.Visible = False
-                    rowPolls.Visible = True
+                    divThreadStatus.Visible = True
+                    divRating.Visible = True
+                    divForumLink.Visible = False
+                    divLinkTracking.Visible = False
+                    divPolls.Visible = True
 
                     ' As of now, permissions are used on all 3 forum types
-                    rowPermissions.Visible = True
+                    divPermissions.Visible = True
             End Select
         End Sub
 
@@ -524,7 +522,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
                 rcbForumPermTemplate.DataBind()
             End If
 
-            rcbForumPermTemplate.Items.Insert(0, New RadComboBoxItem(DotNetNuke.Services.Localization.Localization.GetString("None", objConfig.SharedResourceFile), "0"))
+            rcbForumPermTemplate.Items.Insert(0, New ListItem(DotNetNuke.Services.Localization.Localization.GetString("None", objConfig.SharedResourceFile), "0"))
         End Sub
 
         ''' <summary>
@@ -565,8 +563,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
                 chkActive.Checked = .IsActive
                 chkEnableForumsThreadStatus.Checked = .EnableForumsThreadStatus
                 chkEnableForumsRating.Checked = .EnableForumsRating
-                rcbForumType.Items.FindItemByValue(CStr(.ForumType)).Selected = True
-                rcbGroup.Items.FindItemByValue(.GroupID.ToString).Selected = True
+                rcbForumType.SelectedValue = .ForumType.ToString()
+                rcbGroup.SelectedValue = .GroupID.ToString()
                 chkEnableRSS.Checked = .EnableRSS
                 ' email
                 If .EmailAddress.Trim = String.Empty Then
@@ -599,16 +597,16 @@ Namespace DotNetNuke.Modules.Forum.ACP
                 If .SubForums = 0 AndAlso .ForumType <> ForumType.Link Then
                     BindParentForums()
                     If .ContainsChildForums Or (.TotalThreads = 0) Then
-                        rowParentForum.Visible = True
+                        divParentForum.Visible = True
                     Else
                         If .ContainsChildForums = False Then
-                            rowParentForum.Visible = True
+                            divParentForum.Visible = True
                         Else
-                            rowParentForum.Visible = False
+                            divParentForum.Visible = False
                         End If
                     End If
                 Else
-                    rowParentForum.Visible = False
+                    divParentForum.Visible = False
                 End If
 
                 rcbForumBehavior.SelectedValue = CStr(.ForumBehavior)
@@ -624,7 +622,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
                 SetupForumPermsGrid(False)
             End With
         End Sub
-
 
         ''' <summary>
         ''' This sets up the grid for usage. It is possible this is called on a postback
@@ -723,7 +720,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
                     ' populate view roles
                     Dim arrAssignedAuthViewRoles As New ArrayList
-
                     Dim arrAuthViewRoles As Array = Split(objModule.AuthorizedViewRoles, ";")
 
                     For Each strRole In arrAuthViewRoles
@@ -767,7 +763,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
             rcbParentForum.Items.Clear()
 
             'Add None option
-            Dim myItem As New Telerik.Web.UI.RadComboBoxItem
+            Dim myItem As New ListItem
             myItem.Value = "0"
             myItem.Text = Localization.GetString("None", Me.LocalResourceFile)
             rcbParentForum.Items.Insert(0, myItem)
@@ -783,7 +779,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
                     Dim singleForum As ForumInfo = cntForum.GetForumItemCache(fInfo.ForumID)
 
                     If singleForum.ContainsChildForums Or (singleForum.TotalThreads = 0) Then
-                        myItem = New RadComboBoxItem
+                        myItem = New ListItem
                         myItem.Text = singleForum.Name
                         myItem.Value = CStr(singleForum.ForumID)
 
@@ -822,19 +818,19 @@ Namespace DotNetNuke.Modules.Forum.ACP
         ''' </remarks>
         Private Sub BindLists()
             rcbForumType.Items.Clear()
-            rcbForumType.Items.Insert(0, New RadComboBoxItem(Localization.GetString("Normal", objConfig.SharedResourceFile), "0"))
-            rcbForumType.Items.Insert(1, New RadComboBoxItem(Localization.GetString("Notification", objConfig.SharedResourceFile), "1"))
-            rcbForumType.Items.Insert(2, New RadComboBoxItem(Localization.GetString("Link", objConfig.SharedResourceFile), "2"))
+            rcbForumType.Items.Insert(0, New ListItem(Localization.GetString("Normal", objConfig.SharedResourceFile), "0"))
+            rcbForumType.Items.Insert(1, New ListItem(Localization.GetString("Notification", objConfig.SharedResourceFile), "1"))
+            rcbForumType.Items.Insert(2, New ListItem(Localization.GetString("Link", objConfig.SharedResourceFile), "2"))
 
             rcbForumBehavior.Items.Clear()
-            rcbForumBehavior.Items.Insert(0, New RadComboBoxItem(Localization.GetString("PublicModerated", objConfig.SharedResourceFile), "0"))
-            rcbForumBehavior.Items.Insert(1, New RadComboBoxItem(Localization.GetString("PublicModeratedPostRestricted", objConfig.SharedResourceFile), "1"))
-            rcbForumBehavior.Items.Insert(2, New RadComboBoxItem(Localization.GetString("PublicUnModerated", objConfig.SharedResourceFile), "2"))
-            rcbForumBehavior.Items.Insert(3, New RadComboBoxItem(Localization.GetString("PublicUnModeratedPostRestricted", objConfig.SharedResourceFile), "3"))
-            rcbForumBehavior.Items.Insert(4, New RadComboBoxItem(Localization.GetString("PrivateModerated", objConfig.SharedResourceFile), "4"))
-            rcbForumBehavior.Items.Insert(5, New RadComboBoxItem(Localization.GetString("PrivateModeratedPostRestricted", objConfig.SharedResourceFile), "5"))
-            rcbForumBehavior.Items.Insert(6, New RadComboBoxItem(Localization.GetString("PrivateUnModerated", objConfig.SharedResourceFile), "6"))
-            rcbForumBehavior.Items.Insert(7, New RadComboBoxItem(Localization.GetString("PrivateUnModeratedPostRestricted", objConfig.SharedResourceFile), "7"))
+            rcbForumBehavior.Items.Insert(0, New ListItem(Localization.GetString("PublicModerated", objConfig.SharedResourceFile), "0"))
+            rcbForumBehavior.Items.Insert(1, New ListItem(Localization.GetString("PublicModeratedPostRestricted", objConfig.SharedResourceFile), "1"))
+            rcbForumBehavior.Items.Insert(2, New ListItem(Localization.GetString("PublicUnModerated", objConfig.SharedResourceFile), "2"))
+            rcbForumBehavior.Items.Insert(3, New ListItem(Localization.GetString("PublicUnModeratedPostRestricted", objConfig.SharedResourceFile), "3"))
+            rcbForumBehavior.Items.Insert(4, New ListItem(Localization.GetString("PrivateModerated", objConfig.SharedResourceFile), "4"))
+            rcbForumBehavior.Items.Insert(5, New ListItem(Localization.GetString("PrivateModeratedPostRestricted", objConfig.SharedResourceFile), "5"))
+            rcbForumBehavior.Items.Insert(6, New ListItem(Localization.GetString("PrivateUnModerated", objConfig.SharedResourceFile), "6"))
+            rcbForumBehavior.Items.Insert(7, New ListItem(Localization.GetString("PrivateUnModeratedPostRestricted", objConfig.SharedResourceFile), "7"))
 
             ' CP - Changes
             ' ddlForumBehavior.Items.Insert(8, New ListItem(Localization.GetString("EmailAuth", objConfig.SharedResourceFile), "8"))

@@ -91,6 +91,8 @@ Namespace DotNetNuke.Modules.Forum
                 ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
                 If Not Page.IsPostBack Then
+                    cmdBack.NavigateUrl = Utilities.Links.MCPControlLink(TabId, ModuleId, ModeratorAjaxControl.ModQueue)
+
                     hlForum.Text = mForumInfo.Name
                     hlForum.NavigateUrl = Utilities.Links.ContainerViewForumLink(TabId, mForumID, False)
 
@@ -201,8 +203,8 @@ Namespace DotNetNuke.Modules.Forum
             Dim item As System.Web.UI.WebControls.DataListItem = e.Item
 
             If item.ItemType = System.Web.UI.WebControls.ListItemType.Item Or _
-                item.ItemType = System.Web.UI.WebControls.ListItemType.AlternatingItem Or _
-                item.ItemType = System.Web.UI.WebControls.ListItemType.SelectedItem Then
+             item.ItemType = System.Web.UI.WebControls.ListItemType.AlternatingItem Or _
+             item.ItemType = System.Web.UI.WebControls.ListItemType.SelectedItem Then
                 Dim dataItem As PostInfo = CType(e.Item.DataItem, PostInfo)
                 Dim lbl As System.Web.UI.WebControls.Label
                 Dim rblst As System.Web.UI.WebControls.RadioButtonList
@@ -233,19 +235,6 @@ Namespace DotNetNuke.Modules.Forum
                     End If
                 End If
             End If
-        End Sub
-
-        ''' <summary>
-        ''' Take the user back to where they came from
-        ''' </summary>
-        ''' <param name="sender">System.Object</param>
-        ''' <param name="e">System.EventArgs</param>
-        ''' <remarks>
-        ''' </remarks>
-        Protected Sub cmdBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBack.Click
-            Dim url As String
-            url = Utilities.Links.MCPControlLink(TabId, ModuleId, ModeratorAjaxControl.ModQueue)
-            Response.Redirect(url, False)
         End Sub
 
 #End Region

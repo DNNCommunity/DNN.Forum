@@ -237,10 +237,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub BindRoles()
-
             Dim arrRolesAs As IList(Of RoleInfo) = RoleController.Instance.GetRoles(
-                    PortalId,
-                    Function(role As RoleInfo) ((role.SecurityMode <> SecurityMode.SocialGroup) AndAlso (role.Status = RoleStatus.Approved)))
+                   PortalId,
+                   Function(role As RoleInfo) ((role.SecurityMode <> SecurityMode.SocialGroup) AndAlso (role.Status = RoleStatus.Approved)))
             ddlRoles.Items.Clear()
 
             If arrRolesAs.Count > 0 Then
@@ -250,7 +249,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
                 ddlRoles.DataBind()
             End If
 
-            ddlRoles.Items.Insert(0, New RadComboBoxItem(Localization.GetString("None.Text", Me.LocalResourceFile), "0"))
+            ddlRoles.Items.Insert(0, New ListItem(Localization.GetString("None.Text", Me.LocalResourceFile), "0"))
         End Sub
 
         ''' <summary>

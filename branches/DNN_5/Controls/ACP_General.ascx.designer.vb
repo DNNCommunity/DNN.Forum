@@ -24,22 +24,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
-        '''tblGeneral control.
+        '''divPrimaryAlias control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents tblGeneral As Global.System.Web.UI.HtmlControls.HtmlTable
-
-        '''<summary>
-        '''rowPrimaryAlias control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents rowPrimaryAlias As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divPrimaryAlias As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plPrimaryAlias control.
@@ -202,14 +193,5 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
-
-        '''<summary>
-        '''lblUpdateDone control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
     End Class
 End Namespace

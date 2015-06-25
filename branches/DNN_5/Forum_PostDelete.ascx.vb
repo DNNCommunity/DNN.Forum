@@ -83,6 +83,12 @@ Namespace DotNetNuke.Modules.Forum
             Try
                 If Page.IsPostBack = False Then
                     If Not Request.UrlReferrer Is Nothing Then
+                        cmdCancel.NavigateUrl = Request.UrlReferrer.ToString()
+                    Else
+                        cmdCancel.NavigateUrl = NavigateURL()
+                    End If
+
+                    If Not Request.UrlReferrer Is Nothing Then
                         ViewState("UrlReferrer") = Request.UrlReferrer.ToString()
                     End If
                 End If
@@ -256,24 +262,6 @@ Namespace DotNetNuke.Modules.Forum
                         Forum.Components.Utilities.Caching.UpdatePostCache(objPost.PostID, ThreadID, ForumID, objThread.ContainingForum.GroupID, ModuleId, objThread.ContainingForum.ParentID)
                         Response.Redirect(GetReturnURL(NewThreadID, ForumID), True)
                     End If
-                End If
-            Catch exc As Exception
-                ProcessModuleLoadException(Me, exc)
-            End Try
-        End Sub
-
-        ''' <summary>
-        ''' Returns the user to where they came from
-        ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
-        Protected Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
-            Try
-                If Not ViewState("UrlReferrer") Is Nothing Then
-                    Response.Redirect(ViewState("UrlReferrer").ToString, True)
-                Else
-                    Response.Redirect(NavigateURL(), True)
                 End If
             Catch exc As Exception
                 ProcessModuleLoadException(Me, exc)

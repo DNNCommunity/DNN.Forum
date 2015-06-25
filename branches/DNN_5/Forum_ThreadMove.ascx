@@ -43,6 +43,6 @@
 	</fieldset>
 	<ul class="dnnActions dnnClear">
 		<li><asp:linkbutton cssclass="dnnPrimaryAction" id="cmdMove" runat="server" resourcekey="cmdMove" /></li>
-		<li><asp:linkbutton cssclass="dnnSecondaryAction" id="cmdCancel" runat="server" resourcekey="cmdCancel" CausesValidation="false" /></li>
+		<li><asp:HyperLink cssclass="dnnSecondaryAction" id="cmdCancel" runat="server" resourcekey="cmdCancel" /></li>
 	</ul>
 </div>

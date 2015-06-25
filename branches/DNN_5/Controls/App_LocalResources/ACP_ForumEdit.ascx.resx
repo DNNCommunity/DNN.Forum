@@ -243,9 +243,6 @@
   <data name="plAssignedModerators.Help" xml:space="preserve">
     <value>These are individual users currently assigned as moderators of this particular forum.</value>
   </data>
-  <data name="Administration.Text" xml:space="preserve">
-    <value>Forum Admin</value>
-  </data>
   <data name="cmdAdd.Text" xml:space="preserve">
     <value>Add</value>
   </data>

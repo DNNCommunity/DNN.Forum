@@ -30,7 +30,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblSearch As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblSearch As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''txtSearch control.
@@ -48,7 +48,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents ddlRoles As Global.DotNetNuke.Web.UI.WebControls.DnnComboBox
+        Protected WithEvents ddlRoles As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
         '''ddlSearchType control.
@@ -57,7 +57,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents ddlSearchType As Global.DotNetNuke.Web.UI.WebControls.DnnComboBox
+        Protected WithEvents ddlSearchType As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
         '''dnngridUsers control.

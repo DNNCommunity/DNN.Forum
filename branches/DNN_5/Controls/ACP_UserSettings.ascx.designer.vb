@@ -24,15 +24,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
-        '''tblGeneral control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents tblGeneral As Global.System.Web.UI.HtmlControls.HtmlTable
-
-        '''<summary>
         '''plNameDisplay control.
         '''</summary>
         '''<remarks>
@@ -48,16 +39,16 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rcbNameDisplay As Global.DotNetNuke.Web.UI.WebControls.DnnComboBox
+        Protected WithEvents rcbNameDisplay As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
-        '''rowEditWindow control.
+        '''divEditWindow control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowEditWindow As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divEditWindow As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plPostEditWindow control.
@@ -105,13 +96,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents chkEnableAutoTrust As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowAutoTrustTime control.
+        '''divAutoTrustTime control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowAutoTrustTime As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divAutoTrustTime As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plAutoTrustTime control.
@@ -195,13 +186,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents chkEnableUserSignatures As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowModSigUpdates control.
+        '''divModSigUpdates control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowModSigUpdates As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divModSigUpdates As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plEnableModSigUpdates control.
@@ -222,13 +213,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents chkEnableModSigUpdates As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowHTMLSignatures control.
+        '''divHTMLSignatures control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowHTMLSignatures As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divHTMLSignatures As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plEnableHTMLSignatures control.
@@ -249,13 +240,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents chkEnableHTMLSignatures As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowHideModEdit control.
+        '''divHideModEdit control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowHideModEdit As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divHideModEdit As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plHideModEdit control.
@@ -276,13 +267,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents chkHideModEdit As Global.System.Web.UI.WebControls.CheckBox
 
         '''<summary>
-        '''rowUserBanning control.
+        '''divUserBanning control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowUserBanning As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divUserBanning As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plEnableUserBanning control.
@@ -310,14 +301,5 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
-
-        '''<summary>
-        '''lblUpdateDone control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
     End Class
 End Namespace

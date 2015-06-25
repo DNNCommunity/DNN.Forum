@@ -12,78 +12,78 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
-	Partial Public Class ForumManage
+    Partial Public Class ForumManage
 
-		'''<summary>
-		'''ACPmenu control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents ACPmenu As Global.DotNetNuke.Modules.Forum.ACP.Menu
+        '''<summary>
+        '''ACPmenu control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents ACPmenu As Global.DotNetNuke.Modules.Forum.ACP.Menu
 
-		'''<summary>
-		'''lblTitle control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblTitle control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''lblNewGroup control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblNewGroup As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblNewGroup control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblNewGroup As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''txtAddGroup control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtAddGroup As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''txtAddGroup control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtAddGroup As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''imgAddGroup control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents imgAddGroup As Global.System.Web.UI.WebControls.ImageButton
+        '''<summary>
+        '''imgAddGroup control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents imgAddGroup As Global.System.Web.UI.WebControls.ImageButton
 
-		'''<summary>
-		'''lblvalAddGroup control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblvalAddGroup As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblvalAddGroup control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblvalAddGroup As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''lstGroup control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lstGroup As Global.System.Web.UI.WebControls.DataList
+        '''<summary>
+        '''lstGroup control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lstGroup As Global.System.Web.UI.WebControls.DataList
 
-		'''<summary>
-		'''cmdHome control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdHome As Global.System.Web.UI.WebControls.LinkButton
-	End Class
+        '''<summary>
+        '''cmdHome control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cmdHome As Global.System.Web.UI.WebControls.HyperLink
+    End Class
 End Namespace

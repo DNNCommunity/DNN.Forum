@@ -18,99 +18,99 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 Option Strict On
-Option Explicit On 
+Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
-	''' <summary>
-	''' This is the General Settings area from Forum Administration.
-	''' Set basic configuration items for this forum module. (mod settings)
-	''' </summary>
-	''' <remarks>The majority of how the module operates is set here.
-	''' </remarks>
-	Partial Public Class Attachment
-		Inherits ForumModuleBase
-		Implements Utilities.AjaxLoader.IPageLoad
+    ''' <summary>
+    ''' This is the General Settings area from Forum Administration.
+    ''' Set basic configuration items for this forum module. (mod settings)
+    ''' </summary>
+    ''' <remarks>The majority of how the module operates is set here.
+    ''' </remarks>
+    Partial Public Class Attachment
+        Inherits ForumModuleBase
+        Implements Utilities.AjaxLoader.IPageLoad
 
 #Region "Interfaces"
 
-		''' <summary>
-		''' 
-		''' </summary>
-		''' <remarks></remarks>
-		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
-			chkAttachment.Checked = objConfig.EnableAttachment
-			chkAnonDownloads.Checked = objConfig.AnonDownloads
-			txtAttachmentPath.Text = objConfig.AttachmentPath
-			txtMaxAttachmentSize.Text = objConfig.MaxAttachmentSize.ToString()
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <remarks></remarks>
+        Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
+            chkAttachment.Checked = objConfig.EnableAttachment
+            chkAnonDownloads.Checked = objConfig.AnonDownloads
+            txtAttachmentPath.Text = objConfig.AttachmentPath
+            txtMaxAttachmentSize.Text = objConfig.MaxAttachmentSize.ToString()
 
-			' If attachments are enabled, see if anon users can download
-			If objConfig.EnableAttachment Then
-				chkAnonDownloads.Checked = objConfig.AnonDownloads
-				rowAnonDownloads.Visible = True
-				rowAttachmentPath.Visible = True
-				rowMaxAttachmentSize.Visible = True
-			Else
-				rowAnonDownloads.Visible = False
-				rowAttachmentPath.Visible = False
-				rowMaxAttachmentSize.Visible = False
-			End If
-		End Sub
+            ' If attachments are enabled, see if anon users can download
+            If objConfig.EnableAttachment Then
+                chkAnonDownloads.Checked = objConfig.AnonDownloads
+                divAnonDownloads.Visible = True
+                divAttachmentPath.Visible = True
+                divMaxAttachmentSize.Visible = True
+            Else
+                divAnonDownloads.Visible = False
+                divAttachmentPath.Visible = False
+                divMaxAttachmentSize.Visible = False
+            End If
+        End Sub
 
 #End Region
 
 #Region "Event Handlers"
 
-		''' <summary>
-		''' Updates the module's configuration (module settings)
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks>Saves the module settings shown in this view.
-		''' </remarks>
-		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
-			Try
-				Dim ctlModule As New Entities.Modules.ModuleController
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_ATTACHMENT, chkAttachment.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_ANONYMOUS_DOWNLOADS, chkAnonDownloads.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.ATTACHMENT_PATH, txtAttachmentPath.Text.Trim())
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.MAX_ATTACHMENT_SIZE, txtMaxAttachmentSize.Text.Trim())
+        ''' <summary>
+        ''' Updates the module's configuration (module settings)
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="e"></param>
+        ''' <remarks>Saves the module settings shown in this view.
+        ''' </remarks>
+        Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
+            Try
+                Dim ctlModule As New Entities.Modules.ModuleController
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_ATTACHMENT, chkAttachment.Checked.ToString)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_ANONYMOUS_DOWNLOADS, chkAnonDownloads.Checked.ToString)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.ATTACHMENT_PATH, txtAttachmentPath.Text.Trim())
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.MAX_ATTACHMENT_SIZE, txtMaxAttachmentSize.Text.Trim())
 
-				Utilities.ForumUtils.CheckFolder(txtAttachmentPath.Text.Trim())
+                Utilities.ForumUtils.CheckFolder(txtAttachmentPath.Text.Trim())
 
-				Configuration.ResetForumConfig(ModuleId)
+                Configuration.ResetForumConfig(ModuleId)
 
-				lblUpdateDone.Visible = True
-			Catch exc As Exception
-				Dim s As String = exc.ToString
-				s = s & " "
-				ProcessModuleLoadException(Me, exc)
-			End Try
-		End Sub
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, DotNetNuke.Services.Localization.Localization.GetString("lblUpdateDone.Text", Me.LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.GreenSuccess)
+            Catch exc As Exception
+                Dim s As String = exc.ToString
+                s = s & " "
+                ProcessModuleLoadException(Me, exc)
+            End Try
+        End Sub
 
-		''' <summary>
-		''' Enables/Disables anon download checkbox depending on if
-		''' attachments are permitted or not.
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks>Changes viewable/editable items when checked/unchecked.
-		''' </remarks>
-		Protected Sub chkAttachment_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAttachment.CheckedChanged
-			If chkAttachment.Checked Then
-				rowAnonDownloads.Visible = True
-				rowAttachmentPath.Visible = True
-				rowMaxAttachmentSize.Visible = True
-			Else
-				rowAnonDownloads.Visible = False
-				chkAnonDownloads.Checked = False
-				rowAttachmentPath.Visible = False
-				rowMaxAttachmentSize.Visible = False
-			End If
-		End Sub
+        ''' <summary>
+        ''' Enables/Disables anon download checkbox depending on if
+        ''' attachments are permitted or not.
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="e"></param>
+        ''' <remarks>Changes viewable/editable items when checked/unchecked.
+        ''' </remarks>
+        Protected Sub chkAttachment_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAttachment.CheckedChanged
+            If chkAttachment.Checked Then
+                divAnonDownloads.Visible = True
+                divAttachmentPath.Visible = True
+                divMaxAttachmentSize.Visible = True
+            Else
+                divAnonDownloads.Visible = False
+                chkAnonDownloads.Checked = False
+                divAttachmentPath.Visible = False
+                divMaxAttachmentSize.Visible = False
+            End If
+        End Sub
 
 #End Region
 
-	End Class
+    End Class
 
 End Namespace

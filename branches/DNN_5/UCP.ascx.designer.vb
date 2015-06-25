@@ -12,33 +12,33 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-	Partial Public Class UCPLoader
+    Partial Public Class UCPLoader
 
-		'''<summary>
-		'''UCPmenu control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents UCPmenu As Global.DotNetNuke.Modules.Forum.UCP.Menu
+        '''<summary>
+        '''UCPmenu control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents UCPmenu As Global.DotNetNuke.Modules.Forum.UCP.Menu
 
-		'''<summary>
-		'''phUserControl control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents phUserControl As Global.System.Web.UI.WebControls.PlaceHolder
+        '''<summary>
+        '''phUserControl control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents phUserControl As Global.System.Web.UI.WebControls.PlaceHolder
 
-		'''<summary>
-		'''cmdHome control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdHome As Global.System.Web.UI.WebControls.LinkButton
-	End Class
+        '''<summary>
+        '''cmdHome control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cmdHome As Global.System.Web.UI.WebControls.HyperLink
+    End Class
 End Namespace
