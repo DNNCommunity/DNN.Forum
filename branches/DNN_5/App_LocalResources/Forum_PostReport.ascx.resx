@@ -148,13 +148,13 @@
     <value>Your Post Has Been Cleared of Content.</value>
   </data>
   <data name="PostedBy.Text" xml:space="preserve">
-    <value>Posted by: {0} on {1}</value>
+    <value>{0} on {1}</value>
   </data>
   <data name="DuplicatePost.Text" xml:space="preserve">
     <value>Duplicate Post</value>
   </data>
   <data name="plDeleteTemplate.Text" xml:space="preserve">
-    <value>Email Template</value>
+    <value>Reason for Report</value>
   </data>
   <data name="SpamPost.Text" xml:space="preserve">
     <value>Spam Post</value>

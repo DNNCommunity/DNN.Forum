@@ -30,7 +30,7 @@ Namespace DotNetNuke.Modules.Forum
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plForum As Global.System.Web.UI.UserControl
+        Protected WithEvents plForum As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''ddlForum control.
@@ -48,7 +48,7 @@ Namespace DotNetNuke.Modules.Forum
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plSubject As Global.System.Web.UI.UserControl
+        Protected WithEvents plSubject As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''txtSubject control.
@@ -75,7 +75,7 @@ Namespace DotNetNuke.Modules.Forum
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plBody As Global.System.Web.UI.UserControl
+        Protected WithEvents plBody As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''divAttachments control.
@@ -93,7 +93,7 @@ Namespace DotNetNuke.Modules.Forum
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plAttachments As Global.System.Web.UI.UserControl
+        Protected WithEvents plAttachments As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''divPinned control.
@@ -111,7 +111,7 @@ Namespace DotNetNuke.Modules.Forum
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plPinned As Global.System.Web.UI.UserControl
+        Protected WithEvents plPinned As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''chkIsPinned control.
@@ -138,7 +138,7 @@ Namespace DotNetNuke.Modules.Forum
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plNotify As Global.System.Web.UI.UserControl
+        Protected WithEvents plNotify As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''chkNotify control.
@@ -165,7 +165,7 @@ Namespace DotNetNuke.Modules.Forum
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plClose As Global.System.Web.UI.UserControl
+        Protected WithEvents plClose As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''chkIsClosed control.
@@ -192,7 +192,7 @@ Namespace DotNetNuke.Modules.Forum
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plThreadStatus As Global.System.Web.UI.UserControl
+        Protected WithEvents plThreadStatus As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''dnncbThreadStatus control.
@@ -219,7 +219,7 @@ Namespace DotNetNuke.Modules.Forum
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plTerms As Global.System.Web.UI.UserControl
+        Protected WithEvents plTerms As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''tsTerms control.
@@ -273,7 +273,7 @@ Namespace DotNetNuke.Modules.Forum
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plQuestion As Global.System.Web.UI.UserControl
+        Protected WithEvents plQuestion As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''txtQuestion control.
@@ -300,7 +300,7 @@ Namespace DotNetNuke.Modules.Forum
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plAnswers As Global.System.Web.UI.UserControl
+        Protected WithEvents plAnswers As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''dgAnswers control.
@@ -318,7 +318,7 @@ Namespace DotNetNuke.Modules.Forum
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plNewAnswer As Global.System.Web.UI.UserControl
+        Protected WithEvents plNewAnswer As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''txtAddAnswer control.
@@ -354,7 +354,7 @@ Namespace DotNetNuke.Modules.Forum
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plTakenMessage As Global.System.Web.UI.UserControl
+        Protected WithEvents plTakenMessage As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''txtTakenMessage control.
@@ -372,7 +372,7 @@ Namespace DotNetNuke.Modules.Forum
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plShowResults As Global.System.Web.UI.UserControl
+        Protected WithEvents plShowResults As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''chkShowResults control.
@@ -390,7 +390,7 @@ Namespace DotNetNuke.Modules.Forum
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plEndDate As Global.System.Web.UI.UserControl
+        Protected WithEvents plEndDate As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''txtEndDate control.

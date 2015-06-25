@@ -12,123 +12,123 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-	Partial Public Class PostReport
+    Partial Public Class PostReport
 
-		'''<summary>
-		'''imgHeadSpacerL control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents imgHeadSpacerL As Global.System.Web.UI.WebControls.Image
+        '''<summary>
+        '''lblTitleSubject control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblTitleSubject As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''lblSubject control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblSubject As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblSubject control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblSubject As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''imgHeadSpacerR control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents imgHeadSpacerR As Global.System.Web.UI.WebControls.Image
+        '''<summary>
+        '''plDeleteTemplate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plDeleteTemplate As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''lblAuthor control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblAuthor As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''ddlReportTemplate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents ddlReportTemplate As Global.System.Web.UI.WebControls.DropDownList
 
-		'''<summary>
-		'''lblMessage control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblMessage As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''plReason control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plReason As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''plDeleteTemplate control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plDeleteTemplate As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''txtReason control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtReason As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''ddlReportTemplate control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents ddlReportTemplate As Global.System.Web.UI.WebControls.DropDownList
+        '''<summary>
+        '''valEmailedResponse control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valEmailedResponse As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
-		'''<summary>
-		'''plReason control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plReason As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plAuthor control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plAuthor As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''txtReason control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtReason As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''lblAuthor control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblAuthor As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''valEmailedResponse control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valEmailedResponse As Global.System.Web.UI.WebControls.RequiredFieldValidator
+        '''<summary>
+        '''plMessage control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plMessage As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''cmdCancel control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdCancel As Global.System.Web.UI.WebControls.LinkButton
+        '''<summary>
+        '''lblMessage control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblMessage As Global.System.Web.UI.WebControls.Literal
 
-		'''<summary>
-		'''cmdReport control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdReport As Global.System.Web.UI.WebControls.LinkButton
+        '''<summary>
+        '''cmdReport control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cmdReport As Global.System.Web.UI.WebControls.LinkButton
 
-		'''<summary>
-		'''lblAlreadyReported control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblAlreadyReported As Global.System.Web.UI.WebControls.Label
-	End Class
+        '''<summary>
+        '''cmdCancel control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cmdCancel As Global.System.Web.UI.WebControls.LinkButton
+    End Class
 End Namespace

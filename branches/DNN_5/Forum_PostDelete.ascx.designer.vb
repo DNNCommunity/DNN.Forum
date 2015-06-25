@@ -12,141 +12,150 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum
 
-	Partial Public Class PostDelete
+    Partial Public Class PostDelete
 
-		'''<summary>
-		'''plDeleteTemplate control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plDeleteTemplate As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''lblTitleSubject control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblTitleSubject As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''ddlDeleteTemplate control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents ddlDeleteTemplate As Global.System.Web.UI.WebControls.DropDownList
+        '''<summary>
+        '''lblSubject control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblSubject As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''plReason control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plReason As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''plDeleteTemplate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plDeleteTemplate As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''txtReason control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents txtReason As Global.System.Web.UI.WebControls.TextBox
+        '''<summary>
+        '''ddlDeleteTemplate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents ddlDeleteTemplate As Global.System.Web.UI.WebControls.DropDownList
 
-		'''<summary>
-		'''valEmailedResponse control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents valEmailedResponse As Global.System.Web.UI.WebControls.RequiredFieldValidator
+        '''<summary>
+        '''plReason control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plReason As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''rowEmailUsers control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents rowEmailUsers As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        '''<summary>
+        '''txtReason control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtReason As Global.System.Web.UI.WebControls.TextBox
 
-		'''<summary>
-		'''plEmailUser control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents plEmailUser As Global.DotNetNuke.UI.UserControls.LabelControl
+        '''<summary>
+        '''valEmailedResponse control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents valEmailedResponse As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
-		'''<summary>
-		'''chkEmailUsers control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents chkEmailUsers As Global.System.Web.UI.WebControls.CheckBox
+        '''<summary>
+        '''divEmailUsers control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents divEmailUsers As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
-		'''<summary>
-		'''imgSpacerL control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents imgSpacerL As Global.System.Web.UI.WebControls.Image
+        '''<summary>
+        '''plEmailUser control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plEmailUser As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''lblSubject control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblSubject As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''chkEmailUsers control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents chkEmailUsers As Global.System.Web.UI.WebControls.CheckBox
 
-		'''<summary>
-		'''imgSpacerR control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents imgSpacerR As Global.System.Web.UI.WebControls.Image
+        '''<summary>
+        '''plAuthor control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plAuthor As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''lblAuthor control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblAuthor As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''lblAuthor control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblAuthor As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''lblMessage control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents lblMessage As Global.System.Web.UI.WebControls.Label
+        '''<summary>
+        '''plBody control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents plBody As Global.DotNetNuke.UI.UserControls.LabelControl
 
-		'''<summary>
-		'''cmdDelete control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdDelete As Global.System.Web.UI.WebControls.LinkButton
+        '''<summary>
+        '''lblBody control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblBody As Global.System.Web.UI.WebControls.Label
 
-		'''<summary>
-		'''cmdCancel control.
-		'''</summary>
-		'''<remarks>
-		'''Auto-generated field.
-		'''To modify move field declaration from designer file to code-behind file.
-		'''</remarks>
-		Protected WithEvents cmdCancel As Global.System.Web.UI.WebControls.LinkButton
-	End Class
+        '''<summary>
+        '''cmdDelete control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cmdDelete As Global.System.Web.UI.WebControls.LinkButton
+
+        '''<summary>
+        '''cmdCancel control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cmdCancel As Global.System.Web.UI.WebControls.LinkButton
+    End Class
 End Namespace

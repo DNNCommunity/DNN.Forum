@@ -120,12 +120,6 @@
   <data name="ManageCategory.Text" xml:space="preserve">
     <value>Manage Category</value>
   </data>
-  <data name="plSubject.Text" xml:space="preserve">
-    <value>Subject</value>
-  </data>
-  <data name="plSubject.Help" xml:space="preserve">
-    <value>Subject of the thread you are moving.&lt;br&gt;(Read Only)</value>
-  </data>
   <data name="plOldForum.Text" xml:space="preserve">
     <value>Original Forum</value>
   </data>
