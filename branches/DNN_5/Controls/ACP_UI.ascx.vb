@@ -24,22 +24,22 @@ Imports Telerik.Web.UI
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
-	''' <summary>
-	''' This is the General Settings area from Forum Administration.
-	''' Set basic configuration items for this forum module. (mod settings)
-	''' </summary>
-	''' <remarks>The majority of how the module operates is set here.
-	''' </remarks>
-	Partial Public Class UI
-		Inherits ForumModuleBase
-		Implements Utilities.AjaxLoader.IPageLoad
+    ''' <summary>
+    ''' This is the General Settings area from Forum Administration.
+    ''' Set basic configuration items for this forum module. (mod settings)
+    ''' </summary>
+    ''' <remarks>The majority of how the module operates is set here.
+    ''' </remarks>
+    Partial Public Class UI
+        Inherits ForumModuleBase
+        Implements Utilities.AjaxLoader.IPageLoad
 
 #Region "Interfaces"
 
-		''' <summary>
-		''' This interface is used to replace a If Page.IsPostBack typically used in page load. 
-		''' </summary>
-		''' <remarks></remarks>
+        ''' <summary>
+        ''' This interface is used to replace a If Page.IsPostBack typically used in page load. 
+        ''' </summary>
+        ''' <remarks></remarks>
         Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
             BindThemes()
             BindPosterLocation()
@@ -51,11 +51,11 @@ Namespace DotNetNuke.Modules.Forum.ACP
             txtMaxPostImageWidth.Text = objConfig.MaxPostImageWidth.ToString
             chkDisplayPosterRegion.Checked = objConfig.DisplayPosterRegion
             chkEnableQuickReply.Checked = objConfig.EnableQuickReply
-            rcbDisplayPosterLocation.Items.FindItemByValue(objConfig.DisplayPosterLocation.ToString).Selected = True
+            rcbDisplayPosterLocation.SelectedValue = objConfig.DisplayPosterLocation.ToString()
             chkEnableTagging.Checked = objConfig.EnableTagging
 
             If System.IO.Directory.Exists(System.IO.Path.Combine(Server.MapPath(objConfig.SourceDirectory), "Themes/" + objConfig.ForumTheme)) Then
-                rcbSkins.Items.FindItemByValue(objConfig.ForumTheme).Selected = True
+                rcbSkins.SelectedValue = objConfig.ForumTheme
             Else
                 rcbSkins.Items(0).Selected = True
             End If
@@ -72,38 +72,38 @@ Namespace DotNetNuke.Modules.Forum.ACP
         ''' <param name="e"></param>
         ''' <remarks>Saves the module settings shown in this view.
         ''' </remarks>
-		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
-			Try
-				Dim ctlModule As New Entities.Modules.ModuleController
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.THREADS_PER_PAGE, txtTheardsPerPage.Text)
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.POSTS_PER_PAGE, txtPostsPerPage.Text)
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.POST_PAGE_COUNT_LIMIT, txtThreadPageCount.Text)
+        Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
+            Try
+                Dim ctlModule As New Entities.Modules.ModuleController
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.THREADS_PER_PAGE, txtTheardsPerPage.Text)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.POSTS_PER_PAGE, txtPostsPerPage.Text)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.POST_PAGE_COUNT_LIMIT, txtThreadPageCount.Text)
                 ctlModule.UpdateModuleSetting(ModuleId, Constants.FORUM_THEME, rcbSkins.SelectedItem.Value)
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.IMAGE_EXTENSIONS, txtImageExtension.Text)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.IMAGE_EXTENSIONS, txtImageExtension.Text)
                 ctlModule.UpdateModuleSetting(ModuleId, Constants.DISPLAY_POSTER_LOCATION, rcbDisplayPosterLocation.SelectedItem.Value)
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.DISPLAY_POSTER_REGION, chkDisplayPosterRegion.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_QUICK_REPLY, chkEnableQuickReply.Checked.ToString)
-				ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_TAGGING, chkEnableTagging.Checked.ToString)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.DISPLAY_POSTER_REGION, chkDisplayPosterRegion.Checked.ToString)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_QUICK_REPLY, chkEnableQuickReply.Checked.ToString)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_TAGGING, chkEnableTagging.Checked.ToString)
 
-				Configuration.ResetForumConfig(ModuleId)
+                Configuration.ResetForumConfig(ModuleId)
 
-				lblUpdateDone.Visible = True
-			Catch exc As Exception
-				ProcessModuleLoadException(Me, exc)
-			End Try
-		End Sub
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, DotNetNuke.Services.Localization.Localization.GetString("lblUpdateDone.Text", Me.LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.GreenSuccess)
+            Catch exc As Exception
+                ProcessModuleLoadException(Me, exc)
+            End Try
+        End Sub
 
 #End Region
 
 #Region "Private Methods"
 
-		''' <summary>
-		''' Binds the available themes (skins) for the module
-		''' </summary>
-		''' <remarks>Binds a list of themes in the module's directory.</remarks>
-		Private Sub BindThemes()
-			Try
-				Dim themesPath As String = System.IO.Path.Combine(Server.MapPath(objConfig.SourceDirectory), "Themes")
+        ''' <summary>
+        ''' Binds the available themes (skins) for the module
+        ''' </summary>
+        ''' <remarks>Binds a list of themes in the module's directory.</remarks>
+        Private Sub BindThemes()
+            Try
+                Dim themesPath As String = System.IO.Path.Combine(Server.MapPath(objConfig.SourceDirectory), "Themes")
 
                 With rcbSkins
                     .Items.Clear()
@@ -112,30 +112,30 @@ Namespace DotNetNuke.Modules.Forum.ACP
                         Dim currentDir As New System.IO.DirectoryInfo(themeDir)
 
                         If Not currentDir.Name.StartsWith(".") Then
-                            rcbSkins.Items.Add(New RadComboBoxItem(currentDir.Name, currentDir.Name))
+                            rcbSkins.Items.Add(New ListItem(currentDir.Name, currentDir.Name))
                         End If
                     Next
                     .DataBind()
                 End With
-			Catch exc As Exception
-				ProcessModuleLoadException(Me, exc)
-			End Try
-		End Sub
+            Catch exc As Exception
+                ProcessModuleLoadException(Me, exc)
+            End Try
+        End Sub
 
-		''' <summary>
-		''' Binds the available poster location display options, pulled from core Lists table.
-		''' </summary>
-		''' <remarks>Uses lists localized items to determine options.</remarks>
-		Private Sub BindPosterLocation()
+        ''' <summary>
+        ''' Binds the available poster location display options, pulled from core Lists table.
+        ''' </summary>
+        ''' <remarks>Uses lists localized items to determine options.</remarks>
+        Private Sub BindPosterLocation()
             rcbDisplayPosterLocation.Items.Clear()
 
-            rcbDisplayPosterLocation.Items.Insert(0, New RadComboBoxItem(Localization.GetString("None", objConfig.SharedResourceFile), "0"))
-            rcbDisplayPosterLocation.Items.Insert(1, New RadComboBoxItem(Localization.GetString("ToAdmin", objConfig.SharedResourceFile), "1"))
-            rcbDisplayPosterLocation.Items.Insert(2, New RadComboBoxItem(Localization.GetString("ToAll", objConfig.SharedResourceFile), "2"))
-		End Sub
+            rcbDisplayPosterLocation.Items.Insert(0, New ListItem(Localization.GetString("None", objConfig.SharedResourceFile), "0"))
+            rcbDisplayPosterLocation.Items.Insert(1, New ListItem(Localization.GetString("ToAdmin", objConfig.SharedResourceFile), "1"))
+            rcbDisplayPosterLocation.Items.Insert(2, New ListItem(Localization.GetString("ToAll", objConfig.SharedResourceFile), "2"))
+        End Sub
 
 #End Region
 
-	End Class
+    End Class
 
 End Namespace

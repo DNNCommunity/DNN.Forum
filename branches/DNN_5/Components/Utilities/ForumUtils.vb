@@ -20,6 +20,8 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.UI.Utilities
+Imports DotNetNuke.UI.UserControls
 Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Services.FileSystem
 Imports DotNetNuke.Forum.Library
@@ -33,6 +35,18 @@ Namespace DotNetNuke.Modules.Forum.Utilities
     Public Class ForumUtils
 
 #Region "General Methods"
+
+        ''' <summary>
+        ''' This method is necessary to use the dnn label control on other controls which are loaded dynamically via Ajax.
+        ''' </summary>
+        ''' <param name="Page"></param>
+        ''' <remarks>If a control is initially loaded with the dnn label control on it, this is not necessary but usage should be done just in case.</remarks>
+        Public Shared Sub RegisterClientDependencies(ByVal Page As CDefault)
+            ClientAPI.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn)
+            Page.ClientScript.RegisterClientScriptInclude("hoverintent", ResolveUrl("~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js"))
+            jQuery.RequestDnnPluginsRegistration()
+            Page.ClientScript.RegisterClientScriptBlock(GetType(LabelControl), "dnnTooltip", "jQuery(document).ready(function($){ $('.dnnTooltip').dnnTooltip();Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function(){$('.dnnTooltip').dnnTooltip();}); });", True)
+        End Sub
 
         ''' <summary>
         ''' Used to add the host domain info for relative URL's.
@@ -229,7 +243,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
             Dim objCSSCache As Hashtable = Nothing
 
             If DotNetNuke.Entities.Host.Host.PerformanceSetting <> Common.Globals.PerformanceSettings.NoCaching Then
-                objCSSCache = CType(DataCache.GetCache("CSS"), Hashtable)
+                objCSSCache = CType(DotNetNuke.Common.Utilities.DataCache.GetCache("CSS"), Hashtable)
             End If
             If objCSSCache Is Nothing Then
                 objCSSCache = New Hashtable
@@ -247,7 +261,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 
             If DotNetNuke.Entities.Host.Host.PerformanceSetting <> Common.Globals.PerformanceSettings.NoCaching Then
                 If blnUpdateCache Then
-                    DataCache.SetCache("CSS", objCSSCache)
+                    DotNetNuke.Common.Utilities.DataCache.SetCache("CSS", objCSSCache)
                 End If
             End If
         End Sub

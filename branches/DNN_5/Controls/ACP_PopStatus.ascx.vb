@@ -22,58 +22,58 @@ Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
-	''' <summary>
-	''' The control which allows forum administrators to configure the module 
-	''' settings which control forum ratings, rankings, and statistics and how they
-	''' behave in this module.
-	''' </summary>
-	''' <remarks>
-	''' </remarks>
-	Partial Public Class PopStatus
-		Inherits ForumModuleBase
-		Implements Utilities.AjaxLoader.IPageLoad
+    ''' <summary>
+    ''' The control which allows forum administrators to configure the module 
+    ''' settings which control forum ratings, rankings, and statistics and how they
+    ''' behave in this module.
+    ''' </summary>
+    ''' <remarks>
+    ''' </remarks>
+    Partial Public Class PopStatus
+        Inherits ForumModuleBase
+        Implements Utilities.AjaxLoader.IPageLoad
 
 #Region "Interfaces"
 
-		''' <summary>
-		''' This is required to replace If Page.IsPostBack = False because controls are dynamically loaded via Ajax. 
-		''' </summary>
-		''' <remarks></remarks>
-		Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
+        ''' <summary>
+        ''' This is required to replace If Page.IsPostBack = False because controls are dynamically loaded via Ajax. 
+        ''' </summary>
+        ''' <remarks></remarks>
+        Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
             rntxtbxPopularThreadView.Text = Convert.ToString(objConfig.PopularThreadView)
             rntxtbxPopularThreadReply.Text = Convert.ToString(objConfig.PopularThreadReply)
             rntxtbxDays.Text = Convert.ToString(objConfig.PopularThreadDays)
-		End Sub
+        End Sub
 
 #End Region
 
 #Region "Event Handlers"
 
-		''' <summary>
-		''' Updates the module settings configurable on this page.  Then redirects
-		''' the user to the Forum Administration Screen.
-		''' </summary>
-		''' <param name="sender"></param>
-		''' <param name="e"></param>
-		''' <remarks>
-		''' </remarks>
-		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
-			Try
-				Dim ctlModule As New Entities.Modules.ModuleController
+        ''' <summary>
+        ''' Updates the module settings configurable on this page.  Then redirects
+        ''' the user to the Forum Administration Screen.
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="e"></param>
+        ''' <remarks>
+        ''' </remarks>
+        Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
+            Try
+                Dim ctlModule As New Entities.Modules.ModuleController
                 ctlModule.UpdateModuleSetting(ModuleId, Constants.POPULAR_THREAD_VIEWS, rntxtbxPopularThreadView.Text)
                 ctlModule.UpdateModuleSetting(ModuleId, Constants.POPULAR_THREAD_REPLIES, rntxtbxPopularThreadReply.Text)
                 ctlModule.UpdateModuleSetting(ModuleId, Constants.POPULAR_THREAD_DAYS, rntxtbxDays.Text)
 
-				Configuration.ResetForumConfig(ModuleId)
+                Configuration.ResetForumConfig(ModuleId)
 
-				lblUpdateDone.Visible = True
-			Catch exc As Exception
-				ProcessModuleLoadException(Me, exc)
-			End Try
-		End Sub
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, DotNetNuke.Services.Localization.Localization.GetString("lblUpdateDone.Text", Me.LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.GreenSuccess)
+            Catch exc As Exception
+                ProcessModuleLoadException(Me, exc)
+            End Try
+        End Sub
 
 #End Region
 
-	End Class
+    End Class
 
 End Namespace

@@ -24,22 +24,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
-        '''tblPopular control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents tblPopular As Global.System.Web.UI.HtmlControls.HtmlTable
-
-        '''<summary>
         '''plAdsAfterFirstPost control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plAdsAfterFirstPost As Global.System.Web.UI.UserControl
+        Protected WithEvents plAdsAfterFirstPost As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''cbAdsAfterFirstPost control.
@@ -57,7 +48,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plAddAdverAfterPostNo As Global.System.Web.UI.UserControl
+        Protected WithEvents plAddAdverAfterPostNo As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''tbAddAdverAfterPostNo control.
@@ -93,7 +84,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plAdvertisementText As Global.System.Web.UI.UserControl
+        Protected WithEvents plAdvertisementText As Global.DotNetNuke.UI.UserControls.LabelControl
 
         '''<summary>
         '''tbAdvertisementText control.
@@ -105,22 +96,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents tbAdvertisementText As Global.System.Web.UI.WebControls.TextBox
 
         '''<summary>
-        '''lblHelp control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblHelp As Global.System.Web.UI.WebControls.Label
-
-        '''<summary>
         '''plVendorsList control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents plVendorsList As Global.System.Web.UI.UserControl
+        Protected WithEvents plVendorsList As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
         '''rgVendors control.
@@ -139,14 +121,5 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
-
-        '''<summary>
-        '''lblUpdateDone control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
     End Class
 End Namespace

@@ -77,6 +77,8 @@ Namespace DotNetNuke.Modules.Forum
                 ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
                 If Not Page.IsPostBack Then
+                    ForumUtils.RegisterClientDependencies(DefaultPage)
+
                     If Not Request.UrlReferrer Is Nothing Then
                         cmdHome.NavigateUrl = Request.UrlReferrer.ToString()
                     Else

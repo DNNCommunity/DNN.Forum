@@ -121,7 +121,7 @@
     <value>Forum Home</value>
   </data>
   <data name="lblTitle.Text" xml:space="preserve">
-    <value>Email Template Management</value>
+    <value>Admin's Control Panel: Email Template Management</value>
   </data>
   <data name="lblEmailTemplates.Text" xml:space="preserve">
     <value>Email Template Administration</value>

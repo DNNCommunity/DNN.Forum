@@ -24,15 +24,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
-        '''tblGeneral control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents tblGeneral As Global.System.Web.UI.HtmlControls.HtmlTable
-
-        '''<summary>
         '''plThreadsPerPage control.
         '''</summary>
         '''<remarks>
@@ -141,13 +132,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected WithEvents valThreadPageCount As Global.System.Web.UI.WebControls.RegularExpressionValidator
 
         '''<summary>
-        '''rowPostImageWidth control.
+        '''divPostImageWidth control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rowPostImageWidth As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents divPostImageWidth As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
         '''plMaxPostImageWidth control.
@@ -201,7 +192,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rcbSkins As Global.DotNetNuke.Web.UI.WebControls.DnnComboBox
+        Protected WithEvents rcbSkins As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
         '''plImageExtension control.
@@ -246,7 +237,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rcbDisplayPosterLocation As Global.DotNetNuke.Web.UI.WebControls.DnnComboBox
+        Protected WithEvents rcbDisplayPosterLocation As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
         '''plDisplayPosterRegion control.
@@ -310,14 +301,5 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents cmdUpdate As Global.System.Web.UI.WebControls.LinkButton
-
-        '''<summary>
-        '''lblUpdateDone control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblUpdateDone As Global.System.Web.UI.WebControls.Label
     End Class
 End Namespace
