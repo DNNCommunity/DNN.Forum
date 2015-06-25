@@ -36,7 +36,7 @@
 									</span>
 								</td>
 								<td align="left">
-                                    <dnnweb:DnnComboBox ID="rcbEmailTemplate" runat="server" AutoPostBack="true" DataTextField="EmailTemplateName" DataValueField="EmailTemplateID" Width="250" />
+									<dnnweb:DnnComboBox ID="rcbEmailTemplate" runat="server" AutoPostBack="true" DataTextField="EmailTemplateName" DataValueField="EmailTemplateID" Width="250" />
 								</td>
 							</tr>
 							<tr>
@@ -93,9 +93,6 @@
 						</table>
 						<div align="center">
 							<asp:linkbutton class="CommandButton primary-action" id="cmdUpdate" runat="server" resourcekey="cmdUpdate" />
-						</div>
-						<div align="center">
-							<asp:Label ID="lblUpdateDone" runat="server" CssClass="NormalRed" Visible="false" resourcekey="lblUpdateDone" />
 						</div>
 					</td>
 				</tr>
