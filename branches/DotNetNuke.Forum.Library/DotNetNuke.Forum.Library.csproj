@@ -34,15 +34,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke">
-      <HintPath>..\www.juvander.fi.SRC\bin\DotNetNuke.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Instrumentation">
-      <HintPath>..\www.juvander.fi.SRC\bin\DotNetNuke.Instrumentation.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetNuke.Log4Net, Version=3.0.0.0, Culture=neutral, PublicKeyToken=53eb1fac7b60111f, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke, Version=7.3.4.45, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\www.juvander.fi.SRC\bin\DotNetNuke.Log4Net.dll</HintPath>
+      <HintPath>..\..\bin\DotNetNuke.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Instrumentation, Version=7.3.4.45, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\DotNetNuke.Instrumentation.dll</HintPath>
+    </Reference>
+    <Reference Include="dotnetnuke.log4net, Version=3.0.0.0, Culture=neutral, PublicKeyToken=53eb1fac7b60111f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\dotnetnuke.log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
