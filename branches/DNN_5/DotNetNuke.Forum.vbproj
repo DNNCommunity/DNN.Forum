@@ -651,6 +651,7 @@
     <Compile Include="Providers\DataProviders\SqlDataProvider\SqlDataProvider.vb" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="05.00.05.txt" />
     <Content Include="BuildScripts\ModulePackage.targets">
       <SubType>Designer</SubType>
     </Content>

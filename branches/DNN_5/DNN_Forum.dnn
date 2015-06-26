@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DNN_Forum" type="Module" version="05.00.04">
+		<package name="DNN_Forum" type="Module" version="05.00.05">
 			<friendlyName>Forum</friendlyName>
 			<description>The core forum module for DotNetNuke.</description>
 			<owner>
@@ -297,12 +297,10 @@
 						<assembly>
 							<name>DotNetNuke.Modules.Forum.dll</name>
 							<sourceFileName>bin\DotNetNuke.Modules.Forum.dll</sourceFileName>
-							<version>05.00.04</version>
 						</assembly>
             <assembly>
               <name>DotNetNuke.Forum.Library.dll</name>
               <sourceFileName>bin\DotNetNuke.Forum.Library.dll</sourceFileName>
-              <version>05.00.04</version>
             </assembly>
 					</assemblies>
 				</component>
@@ -326,7 +324,7 @@
 						</file>
 					</files>
 				</component>
-				<component type="Cleanup" version="05.00.04" fileName="05.00.04.txt" />	
+				<component type="Cleanup" version="05.00.05" fileName="05.00.05.txt" />	
 			</components>
 		</package>
 	</packages>
