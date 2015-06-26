@@ -60,13 +60,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="UnitTest.snk" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\DNN_5\DotNetNuke.Forum.vbproj">
       <Project>{86d23405-06b4-4018-867a-cdb3162f12d5}</Project>
       <Name>DotNetNuke.Forum</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="UnitTest.snk" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

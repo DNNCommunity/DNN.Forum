@@ -25,13 +25,15 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">.\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\Bin\</OutputPath>
+    <OutputPath>..\..\bin\</OutputPath>
     <DocumentationFile>DotNetNuke.Modules.Forum.xml</DocumentationFile>
     <NoWarn>42353,42354,42355</NoWarn>
     <CodeAnalysisRules>
@@ -45,7 +47,7 @@
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
-    <OutputPath>..\Bin\</OutputPath>
+    <OutputPath>..\..\bin\</OutputPath>
     <DocumentationFile>DotNetNuke.Modules.Forum.xml</DocumentationFile>
     <NoWarn>42353,42354,42355</NoWarn>
     <WarningsAsErrors>
@@ -649,12 +651,17 @@
     <Compile Include="Providers\DataProviders\SqlDataProvider\SqlDataProvider.vb" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Forum.dnn">
+    <Content Include="BuildScripts\ModulePackage.targets">
       <SubType>Designer</SubType>
-    </None>
+    </Content>
+    <Content Include="BuildScripts\MSBuild.Community.Tasks.Targets" />
+    <Content Include="DNN_Forum.dnn">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="My Project\ForumClassDiagram.cd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="packages.config" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.00.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.10.05.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\04.03.00.SqlDataProvider" />
@@ -730,7 +737,7 @@
     </Content>
     <Content Include="Forum_PostReport.ascx" />
     <Content Include="Forum_ThreadSplit.ascx" />
-    <Content Include="Documentation\License.txt" />
+    <Content Include="License.txt" />
     <Content Include="ACP.ascx" />
     <Content Include="Controls\ACP_Filter.ascx" />
     <Content Include="Forum_Container.ascx" />
@@ -802,7 +809,7 @@
     <Content Include="Controls\UCP_Bookmark.ascx" />
     <Content Include="Controls\UCP_Signature.ascx" />
     <Content Include="Controls\UCP_Tracking.ascx" />
-    <Content Include="Documentation\ReleaseNotes.txt" />
+    <Content Include="ReleaseNotes.txt" />
     <Content Include="MCP.ascx" />
     <Content Include="PublicProfile.ascx" />
     <Content Include="Themes\Blue\Blue.css" />
@@ -1027,6 +1034,9 @@
       <Name>DotNetNuke.Forum.Library</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Documentation\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -1049,4 +1059,20 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <PropertyGroup>
+    <Extension>zip</Extension>
+    <DNNFileName>DNN_Forum</DNNFileName>
+    <PackageName>DNN_Forum</PackageName>
+    <MSBuildCommunityTasksPath>$(SolutionDir)\packages\MSBuildTasks.1.4.0.88\tools</MSBuildCommunityTasksPath>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <Import Project="BuildScripts\ModulePackage.targets" />
+  <Target Name="AfterBuild" DependsOnTargets="PackageModule">
+  </Target>
 </Project>

@@ -1,0 +1,32 @@
+<h3>Forum 5.0.4</h3>
+<p class="Contributor">
+	Ilpo Juvander<br />
+	<a href="mailto:ilpo.juvander@hotmail.com">ilpo.juvander@hotmail.com</a><br />
+	<a href=http://www.juvander.fi>http://www.juvander.fi</a><br />
+</p>
+<hr/>
+<div class="License">
+	<h3>About the Core Forum</h3>
+	<p class="Owner">
+		<b>Version 5.0.4</b><br /><br />
+		This version of the module requires DotNetNuke Core 7.0.0 or greater. 
+		FYI: Developers should be aware that the module uses Visual Studio 2013 only. 
+	</p>
+	<ul>
+		<li>Upgrade to VS2013
+		<li>DNN7 required</li>
+		<li>Setting to hide forum home and search buttons</li>
+		<li>New search from DNN7 implemented</li>
+		<li>Tag cloud working</li>
+		<li>Fixed forum icons: http://dnnforum.codeplex.com/workitem/25728</li>
+		<li>Display threads button removed as it does not render properly</li>
+		<li>Fixed rendering issue on search bar</li>
+		<li>Changed email link to go directlly to the post instead of thread when new post in forum</li>
+		<li>Changing how urls in forum posts are shortened</li>
+		<li>Fixing urls on search</li>
+		<li>Fixed logged in user dattime issue: http://www.dotnetnuke.com/Resources/Forums/forumid/199/threadid/463290/scope/posts.aspx</li>
+		<li>Performance optimizations</li>
+		<li>Allowing hiding 'by author': https://dnnforum.codeplex.com/workitem/25916</li>
+		<li>Fixed issue https://github.com/juvander/DotNetNuke-Forum/issues/1</li>
+	</ul>
+</div>
