@@ -168,4 +168,16 @@
   <data name="plPrimaryAlias.Text" xml:space="preserve">
     <value>Primary Alias</value>
   </data>
+  <data name="plHideHomeButton.Text" xml:space="preserve">
+    <value>Hide Home Button</value>
+  </data>
+  <data name="plHideHomeButton.Help" xml:space="preserve">
+    <value>Hides Home -button.</value>
+  </data>
+  <data name="plHideSearchButton.Text" xml:space="preserve">
+    <value>Hide Search Button</value>
+  </data>
+  <data name="plHideSearchButton.Help" xml:space="preserve">
+    <value>Hides Search -button.</value>
+  </data>
 </root>
