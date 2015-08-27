@@ -659,38 +659,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
                 Dim objForumPermissionsCollection As ForumPermissionCollection = cntForumPermission.GetForumPermissionsCollection(intForumID)
 
-                ' declare roles
-                Dim arrAvailableAuthViewRoles As New ArrayList
-                Dim arrAvailableAuthEditRoles As New ArrayList
-
-                '' add an entry of All Users for the View roles
-                'arrAvailableAuthViewRoles.Add(New ListItem("All Users", glbRoleAllUsers))
-                '' add an entry of Unauthenticated Users for the View roles
-                'arrAvailableAuthViewRoles.Add(New ListItem("Unauthenticated Users", glbRoleUnauthUser))
-                '' add an entry of All Users for the Edit roles
-                'arrAvailableAuthEditRoles.Add(New ListItem("All Users", glbRoleAllUsers))
-
-                ' process portal roles
-                Dim objRoles As New Security.Roles.RoleController
-                Dim objRole As Security.Roles.RoleInfo
-
-                Dim arrRoleInfo As IList(Of RoleInfo) = RoleController.Instance.GetRoles(
-                    PortalId,
-                    Function(role As RoleInfo) ((role.SecurityMode <> SecurityMode.SocialGroup) AndAlso (role.Status = RoleStatus.Approved)))
-
-
-                For Each objRole In arrRoleInfo
-                    If objRole.RoleID > -1 Then
-                        arrAvailableAuthViewRoles.Add(New ListItem(objRole.RoleName, objRole.RoleID.ToString))
-                    End If
-                Next
-
-                For Each objRole In arrRoleInfo
-                    If objRole.RoleID > -1 Then
-                        arrAvailableAuthEditRoles.Add(New ListItem(objRole.RoleName, objRole.RoleID.ToString))
-                    End If
-                Next
-
                 ' get module
                 Dim objModules As New Entities.Modules.ModuleController
                 Dim objModule As Entities.Modules.ModuleInfo = objModules.GetModule(ModuleId, TabId, True)
@@ -713,40 +681,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
                     Else
                         dgPermissions.NotificationForum = False
                     End If
-
-                    Dim strRole As String
-                    Dim objListItem As ListItem
-
-                    ' populate view roles
-                    Dim arrAssignedAuthViewRoles As New ArrayList
-                    Dim arrAuthViewRoles As Array = Split(objModule.AuthorizedViewRoles, ";")
-
-                    For Each strRole In arrAuthViewRoles
-                        If strRole <> String.Empty Then
-                            For Each objListItem In arrAvailableAuthViewRoles
-                                If objListItem.Value = strRole Then
-                                    arrAssignedAuthViewRoles.Add(objListItem)
-                                    arrAvailableAuthViewRoles.Remove(objListItem)
-                                    Exit For
-                                End If
-                            Next
-                        End If
-                    Next
-
-                    ' populate edit roles
-                    Dim arrAssignedAuthEditRoles As New ArrayList
-                    Dim arrAuthEditRoles As Array = Split(objModule.AuthorizedEditRoles, ";")
-                    For Each strRole In arrAuthEditRoles
-                        If strRole <> String.Empty Then
-                            For Each objListItem In arrAvailableAuthEditRoles
-                                If objListItem.Value = strRole Then
-                                    arrAssignedAuthEditRoles.Add(objListItem)
-                                    arrAvailableAuthEditRoles.Remove(objListItem)
-                                    Exit For
-                                End If
-                            Next
-                        End If
-                    Next
                 End If
             End If
         End Sub
