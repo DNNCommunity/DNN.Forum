@@ -87,26 +87,12 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Core Profile"
 
-		''' <summary>
-		''' User profile item of selected timezone. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public ReadOnly Property UserTimeZone() As Integer
-			Get
-				Dim objProfile As New Entities.Users.UserProfile
-
-                Return objProfile.TimeZone
-			End Get
-		End Property
-
-		''' <summary>
-		''' userJoinedDate is based on registration date
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
+        ''' <summary>
+        ''' userJoinedDate is based on registration date
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
 		Public ReadOnly Property UserJoinedDate() As Date
 			Get
 				Return Membership.CreatedDate

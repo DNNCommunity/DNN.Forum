@@ -87,7 +87,6 @@ Namespace DotNetNuke.Modules.Forum
                 ps.LoginTabId = portal.LoginTabId
                 ps.UserTabId = portal.UserTabId
                 ps.DefaultLanguage = portal.DefaultLanguage
-                ps.TimeZoneOffset = portal.TimeZoneOffset
                 ps.HomeDirectory = portal.HomeDirectory
                 ps.Pages = portal.Pages
                 ps.Users = portal.Users
@@ -98,9 +97,6 @@ Namespace DotNetNuke.Modules.Forum
                 End If
                 If Null.IsNull(ps.DefaultLanguage) Then
                     ps.DefaultLanguage = Localization.SystemLocale
-                End If
-                If Null.IsNull(ps.TimeZoneOffset) Then
-                    ps.TimeZoneOffset = Localization.SystemTimeZoneOffset
                 End If
                 ps.HomeDirectory = ApplicationPath + "/" + portal.HomeDirectory + "/"
             End If

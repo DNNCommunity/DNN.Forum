@@ -100,7 +100,7 @@ Namespace DotNetNuke.Modules.Forum
 
                 If Request.IsAuthenticated Then
                     Dim LoggedOnUserID As Integer
-                    LoggedOnUserID = Users.UserController.GetCurrentUserInfo.UserID
+                    LoggedOnUserID = Users.UserController.Instance.GetCurrentUserInfo.UserID()
 
                     ' Do a check here to make sure the person trying to report this hasn't reported it before
                     Dim cntPostReport As New PostReportedController

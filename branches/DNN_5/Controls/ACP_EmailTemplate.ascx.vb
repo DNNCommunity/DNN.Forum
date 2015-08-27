@@ -21,7 +21,6 @@ Option Strict On
 Option Explicit On
 
 Imports DotNetNuke.Modules.Forum.Utilities
-Imports DotNetNuke.Wrapper.UI.WebControls
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
