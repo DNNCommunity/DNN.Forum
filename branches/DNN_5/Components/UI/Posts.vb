@@ -1687,7 +1687,7 @@ Namespace DotNetNuke.Modules.Forum
 
 
             ' start post status image
-            RenderCellBegin(wr, "Forum_Header", "", "1%", "left", "", "", "") '<td>
+            RenderCellBegin(wr, "Forum_Header_PostStatus", "", "", "left", "", "", "") '<td>
             ' display "new" image if this post is new since last time user visited the thread
             If HttpContext.Current.Request IsNot Nothing Then
                 If HttpContext.Current.Request.IsAuthenticated Then
@@ -1704,13 +1704,13 @@ Namespace DotNetNuke.Modules.Forum
             End If
             RenderCellEnd(wr) ' </td> 
 
-            RenderCellBegin(wr, "Forum_Header", "", "89%", "left", "", "", "")      '<td>
+            RenderCellBegin(wr, "Forum_Header", "", "", "left", "", "", "")      '<td>
             RenderDivBegin(wr, "", "Forum_HeaderText") ' <span>
             wr.Write(strPostedDate)
             RenderDivEnd(wr) ' </span>
             RenderCellEnd(wr) ' </td> 
 
-            RenderCellBegin(wr, "Forum_Header", "", "", "right", "", "", "")       '<td>
+            RenderCellBegin(wr, "Forum_Header_ThreadStatus", "", "", "right", "", "", "")       '<td>
 
             ' if the user is the original author or a moderator AND this is the original post
             If ((CurrentForumUser.UserID = Post.ParentThread.StartedByUserID) Or (objSecurity.IsForumModerator)) And Post.ParentPostID = 0 Then

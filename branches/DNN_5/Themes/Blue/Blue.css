@@ -32,6 +32,9 @@ a.Forum_HeaderText:hover{color:#ff0000;}
 .Forum_HeaderCapLeft{width:9px;height:46px;background: url('images/header_cap_left.jpg') top left repeat-x;}
 /* These cap classes handle the left and rigt of colums (only in forum admin header area)*/
 .Forum_HeaderCapRight{width:9px;height:46px;background: url('images/header_cap_right.jpg') top left repeat-x;}
+.Forum_Header_PostStatus{background: url('images/header_bg.jpg') top left repeat-x; width: 24px;}
+.Forum_Header_PostStatus img {width:24px;height:24px;}
+.Forum_Header_ThreadStatus{background: url('images/header_bg.jpg') top left repeat-x; width: 100px;}
 /* Handles initial view, groups, left area next to +/- and stats headers (left) */
 .Forum_AltHeaderCapLeft{width:1px;background: url('images/alt_header_bg.jpg') top left repeat-x;border-top:solid 1px #fff;}
 /* Handles initial view, groups, left area next to +/- and stats headers (right) */
