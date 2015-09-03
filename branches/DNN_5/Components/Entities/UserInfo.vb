@@ -190,6 +190,9 @@ Namespace DotNetNuke.Modules.Forum
                         If objConfig.EnableUserAvatar Then
                             If ProfileAvatar <> String.Empty Then
                                 _AvatarComplete = String.Format(DotNetNuke.Common.Globals.UserProfilePicRelativeUrl(), UserID, 128, 128)
+                                If (_AvatarComplete.Contains("&cdv=")) Then
+                                    _AvatarComplete = _AvatarComplete.Substring(0, _AvatarComplete.IndexOf("&cdv="))
+                                End If
                             Else
                                 _AvatarComplete = String.Empty
                             End If
