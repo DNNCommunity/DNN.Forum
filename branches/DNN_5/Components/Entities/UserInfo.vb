@@ -186,38 +186,23 @@ Namespace DotNetNuke.Modules.Forum
 			Get
 				Try
 					If Not objConfig.CurrentPortalSettings Is Nothing Then
-						Dim homeDirectory As String = objConfig.CurrentPortalSettings.HomeDirectory
 
-						If objConfig.EnableProfileAvatar Then
+                        If objConfig.EnableUserAvatar Then
                             If ProfileAvatar <> String.Empty Then
-                                If objConfig.EnableProfileUserFolders Then
-                                    _AvatarComplete = String.Format(DotNetNuke.Common.Globals.UserProfilePicRelativeUrl(), UserID, 128, 128)
-                                Else
-                                    _AvatarComplete = homeDirectory + objConfig.UserAvatarPath + ProfileAvatar
-                                End If
+                                _AvatarComplete = String.Format(DotNetNuke.Common.Globals.UserProfilePicRelativeUrl(), UserID, 128, 128)
                             Else
                                 _AvatarComplete = String.Empty
                             End If
-						Else
-							If _Avatar.Trim(";"c) <> String.Empty Then
-								'[skeel] RETURN!! need to add none here as well, as UserAvatar has not been used before, 
-								'even if it was there - eventually it has to go..
-								If _UserAvatar = UserAvatarType.UserAvatar Or _UserAvatar = UserAvatarType.None Then
-									_AvatarComplete = homeDirectory + objConfig.UserAvatarPath + _Avatar.Trim(";"c)
-								ElseIf _UserAvatar = UserAvatarType.PoolAvatar Then
-									_AvatarComplete = homeDirectory + objConfig.UserAvatarPoolPath + _Avatar.Trim(";"c)
-								End If
-							End If
-						End If
-						Return _AvatarComplete
-					Else
-						' We don't have context
-						Return Nothing
-					End If
-				Catch ex As Exception
-					LogException(ex)
-					Return Nothing
-				End Try
+                        End If
+                        Return _AvatarComplete
+                    Else
+                        ' We don't have context
+                        Return String.Empty
+                    End If
+                Catch ex As Exception
+                    LogException(ex)
+                    Return String.Empty
+                End Try
 			End Get
 		End Property
 

@@ -1,4 +1,4 @@
-<h3>Forum 5.0.4</h3>
+<h3>Forum 5.0.5</h3>
 <p class="Contributor">
 	Ilpo Juvander<br />
 	<a href="mailto:ilpo.juvander@hotmail.com">ilpo.juvander@hotmail.com</a><br />
@@ -15,6 +15,7 @@
 	<ul>		
 		<li>Merged changes from CodePlex which were not included as part of 5.0.3 release</li>
 		<li>Fixed forum thread header</li>
+		<li>Cleaning forum avatars to support only avatar specified in user settings</li>
 	</ul>
 
 	<p class="Owner">
