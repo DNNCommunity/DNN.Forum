@@ -11,16 +11,7 @@
 		<tr>
 			<td class="Forum_UCP_HeaderInfo">
 				<table border="0" cellpadding="0" cellspacing="0" width="100%">
-					<tr id="rowUserAvatar" runat="server">
-						<td width="35%">
-							<span class="Forum_Row_AdminText">
-								<dnn:label id="plAvatar" runat="server" suffix=":" controlname="ctlUserAvatar"></dnn:label>
-							</span>
-						</td>
-						<td align="left">
-							<forum:avatarcontrol id="ctlUserAvatar" runat="server"></forum:avatarcontrol>
-						</td>
-					</tr>
+					
 					<tr id="rowSystemAvatar" runat="server" visible="false">
 						<td width="35%">
 							<span class="Forum_Row_AdminText">

@@ -52,19 +52,10 @@ Namespace DotNetNuke.Modules.Forum.UCP
                 End If
             End If
 
-			ctlUserAvatar.Security = objSecurity
-            ctlUserAvatar.AvatarType = AvatarControlType.System
-
-			ctlUserAvatar.ModuleId = ModuleId
-            ctlUserAvatar.ProfileUserID = ProfileUserID
-
-            ctlUserAvatar.Images = ProfileUser.Avatar
-
-            If (rowUserAvatar.Visible = False) And (rowSystemAvatar.Visible = False) Then
+            If rowSystemAvatar.Visible = False Then
                 cmdUpdate.Visible = False
             End If
 
-            ctlUserAvatar.LoadInitialView()
             ctlSystemAvatar.LoadInitialView()
 		End Sub
 
@@ -86,13 +77,8 @@ Namespace DotNetNuke.Modules.Forum.UCP
 
                 With ProfileUser
                     'Was the avatar removed?
-                    If ctlUserAvatar.Images.Replace(";", "") = String.Empty Then
-                        .UserAvatar = UserAvatarType.None
-                        .Avatar = String.Empty
-                    Else
-                        .UserAvatar = UserAvatarType.UserAvatar
-                    End If
-                    .Avatar = ctlUserAvatar.Images
+                    .UserAvatar = UserAvatarType.None
+                    .Avatar = String.Empty
                     .SystemAvatars = ctlSystemAvatar.Images
                 End With
 
