@@ -56,12 +56,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
             ctlUserAvatar.AvatarType = AvatarControlType.System
 
 			ctlUserAvatar.ModuleId = ModuleId
-			ctlUserAvatar.ProfileUserID = ProfileUserID
-
-			' Hide the avatar if we are using profile avatars. 
-
-            rowUserAvatar.Visible = False
-
+            ctlUserAvatar.ProfileUserID = ProfileUserID
 
             ctlUserAvatar.Images = ProfileUser.Avatar
 
@@ -85,8 +80,31 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' <remarks>
 		''' </remarks>
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
-			
-		End Sub
+            Try
+                Dim cntForumUser As New ForumUserController
+                Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
+
+                With ProfileUser
+                    'Was the avatar removed?
+                    If ctlUserAvatar.Images.Replace(";", "") = String.Empty Then
+                        .UserAvatar = UserAvatarType.None
+                        .Avatar = String.Empty
+                    Else
+                        .UserAvatar = UserAvatarType.UserAvatar
+                    End If
+                    .Avatar = ctlUserAvatar.Images
+                    .SystemAvatars = ctlSystemAvatar.Images
+                End With
+
+                cntForumUser.Update(ProfileUser)
+
+                DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(ProfileUser.UserID, PortalId)
+                lblUpdateDone.Visible = True
+            Catch Exc As System.Exception
+                LogException(Exc)
+                Return
+            End Try
+        End Sub
 
 #End Region
 
