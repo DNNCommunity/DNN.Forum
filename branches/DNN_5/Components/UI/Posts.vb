@@ -2006,25 +2006,27 @@ Namespace DotNetNuke.Modules.Forum
             If objConfig.EnableProfileUserFolders Then
                 ' The link click below (duplicated from core profile page) presents some serious issues under volume. 
                 'imgUserProfileAvatar.ImageUrl = DotNetNuke.Common.Globals.LinkClick("fileid=" & author.AvatarFile.FileId.ToString(), PortalSettings.ActiveTab.TabID, Null.NullInteger)
-                If author.AvatarCoreFile IsNot Nothing Then
+                If author.ProfileAvatar <> String.Empty Then
                     Dim imgUserProfileAvatar As New Image
 
                     imgUserProfileAvatar.ImageUrl = author.AvatarComplete
-                    DotNetNuke.Web.UI.Utilities.CreateThumbnail(author.AvatarCoreFile, imgUserProfileAvatar, objConfig.UserAvatarWidth, objConfig.UserAvatarHeight)
+                    'DotNetNuke.Web.UI.Utilities.CreateThumbnail(author.AvatarCoreFile, imgUserProfileAvatar, objConfig.UserAvatarWidth, objConfig.UserAvatarHeight)
 
                     imgUserProfileAvatar.RenderControl(wr)
                     imgUserProfileAvatar.Visible = True
                 End If
             Else
-                ' If we are here, file stored as name and not id (in UserProfile table).
-                'CP: NOTE: Telerik conversion
-                Dim rbiProfileAvatar As New Telerik.Web.UI.RadBinaryImage
-                'Dim rbiProfileAvatar As New DotNetNuke.Wrapper.UI.WebControls.DnnBinaryImage
-                rbiProfileAvatar.Width = objConfig.UserAvatarWidth
-                rbiProfileAvatar.Height = objConfig.UserAvatarHeight
-                rbiProfileAvatar.ImageUrl = author.AvatarComplete
+                If author.AvatarComplete <> String.Empty Then
+                    ' If we are here, file stored as name and not id (in UserProfile table).
+                    'CP: NOTE: Telerik conversion
+                    Dim rbiProfileAvatar As New Telerik.Web.UI.RadBinaryImage
+                    'Dim rbiProfileAvatar As New DotNetNuke.Wrapper.UI.WebControls.DnnBinaryImage
+                    rbiProfileAvatar.Width = objConfig.UserAvatarWidth
+                    rbiProfileAvatar.Height = objConfig.UserAvatarHeight
+                    rbiProfileAvatar.ImageUrl = author.AvatarComplete
 
-                rbiProfileAvatar.RenderControl(wr)
+                    rbiProfileAvatar.RenderControl(wr)
+                End If
             End If
 
             ' Below is for use when no Telerik integration is going on. (Uncomment line below, comment out lines above)

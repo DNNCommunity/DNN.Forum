@@ -189,17 +189,15 @@ Namespace DotNetNuke.Modules.Forum
 						Dim homeDirectory As String = objConfig.CurrentPortalSettings.HomeDirectory
 
 						If objConfig.EnableProfileAvatar Then
-							If ProfileAvatar IsNot Nothing Then
-								If objConfig.EnableProfileUserFolders And (AvatarCoreFile IsNot Nothing) Then
-									Dim userFolder As String = GetUserFolderPath(UserID)
-
-									_AvatarComplete = homeDirectory + "Users/" + userFolder + "/" + AvatarCoreFile.FileName
-								Else
-									_AvatarComplete = homeDirectory + objConfig.UserAvatarPath + ProfileAvatar
-								End If
-							Else
-								_AvatarComplete = String.Empty
-							End If
+                            If ProfileAvatar <> String.Empty Then
+                                If objConfig.EnableProfileUserFolders Then
+                                    _AvatarComplete = String.Format(DotNetNuke.Common.Globals.UserProfilePicRelativeUrl(), UserID, 128, 128)
+                                Else
+                                    _AvatarComplete = homeDirectory + objConfig.UserAvatarPath + ProfileAvatar
+                                End If
+                            Else
+                                _AvatarComplete = String.Empty
+                            End If
 						Else
 							If _Avatar.Trim(";"c) <> String.Empty Then
 								'[skeel] RETURN!! need to add none here as well, as UserAvatar has not been used before, 
@@ -277,39 +275,12 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-		''' <summary>
-		''' This results in a core FileInfo object associated with a fileID provided via ProfileAvatar. 
-		''' </summary>
-		''' <value></value>
-		''' <returns>A file stored in the DotNetNuke File system (ie. Files/Folders tables).</returns>
-		''' <remarks>This is utilized for GenerateThumbnail method, stored here since we cache it and avoid the call multiple times.</remarks>
-        Public ReadOnly Property AvatarCoreFile() As FileInfo
-            Get
-                If ProfileAvatar IsNot Nothing Then
-                    Try
-                        If ProfileAvatar.Trim() IsNot "" Then
-
-                            Dim FileID As Integer = CInt(ProfileAvatar.Trim())
-                            Return CType(FileManager.Instance.GetFile(FileID), FileInfo)
-                        Else
-                            Return Nothing
-                        End If
-                    Catch ex As Exception
-                        LogException(ex)
-                        Return Nothing
-                    End Try
-                Else
-                    Return Nothing
-                End If
-            End Get
-        End Property
-
-		''' <summary>
-		''' The full path to the user's admin assigned avatars for display. 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
+        ''' <summary>
+        ''' The full path to the user's admin assigned avatars for display. 
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
 		Public ReadOnly Property SystemAvatarsComplete() As String
 			Get
 				Dim avatars() As String = _SystemAvatars.Trim(";"c).Split(";"c)
@@ -377,7 +348,7 @@ Namespace DotNetNuke.Modules.Forum
 					' we are using profile avatars, lets check for the property value
 					Return Me.Profile.GetPropertyValue(objConfig.AvatarProfilePropName)
 				Else
-					Return Nothing
+                    Return String.Empty
 				End If
 			End Get
 		End Property

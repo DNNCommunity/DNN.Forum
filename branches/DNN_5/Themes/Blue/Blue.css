@@ -110,7 +110,7 @@ a.Forum_AnswerText{color:#fff;}
 	.Forum_Avatar td.Forum_NormalSmall a{display:block;}
 .Forum_Avatar img{margin-bottom:4px;}
 td.Forum_UserAvatar, td.Forum_NormalSmall{text-align:center;}
-td.Forum_UserAvatar img{border:1px #ccc solid;-moz-border-radius:5px;-webkit-border-radius:5px;padding:4px;background:#fff;}
+td.Forum_UserAvatar img{border:1px #ccc solid;-moz-border-radius:5px;-webkit-border-radius:5px;padding:4px;background:#fff;height:auto;width:60%}
 /* Post content area (this is post details, post buttons, post body, attachments containing cell) */
 .Forum_PostBody_Container{border-left:#B8D7F3 1px solid;border-right:1px solid #B8D7F3}
 .Forum_PostBody_Container_Alt{border-right:#B8D7F3 1px solid;}
