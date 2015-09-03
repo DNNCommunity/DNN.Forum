@@ -627,11 +627,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		System = 0
 		''' <summary>
-		''' Users assign their own avatars.
-		''' </summary>
-		''' <remarks></remarks>
-		User = 1
-		''' <summary>
 		''' Avatars assigned by role, only accessible to module admin.
 		''' </summary>
 		''' <remarks></remarks>

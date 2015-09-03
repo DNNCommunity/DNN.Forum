@@ -130,15 +130,7 @@ Namespace DotNetNuke.Modules.Forum
         Dim _MaxAttachmentSize As Integer = 256
         ' User Avatar
         Dim _EnableUserAvatar As Boolean = True
-        Dim _EnableProfileAvatar As Boolean = True
-        Dim _EnableProfileUserFolders As Boolean = True
         Dim _AvatarProfilePropName As String = "Photo"
-        Dim _EnableUserAvatarPool As Boolean = False
-        Dim _UserAvatarPoolPath As String = "Forums/PoolAvatar/"
-        Dim _UserAvatarPath As String = "Forums/UserAvatar/"
-        Dim _UserAvatarWidth As Integer = 128
-        Dim _UserAvatarHeight As Integer = 128
-        Dim _UserAvatarMaxSize As Integer = 64
         ' System Avatar
         Dim _EnableSystemAvatar As Boolean = False
         Dim _SystemAvatarPath As String = "Forums/SystemAvatar/"
@@ -1549,30 +1541,6 @@ Namespace DotNetNuke.Modules.Forum
         End Property
 
         ''' <summary>
-        ''' Determines if the module should be using profile property avatars.
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public ReadOnly Property EnableProfileAvatar() As Boolean
-            Get
-                Return _EnableProfileAvatar
-            End Get
-        End Property
-
-        ''' <summary>
-        ''' Determines if user folders (part of 5.3 and greater) should be used for profile avatar paths. 
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public ReadOnly Property EnableProfileUserFolders() As Boolean
-            Get
-                Return _EnableProfileUserFolders
-            End Get
-        End Property
-
-        ''' <summary>
         ''' Gets the profile property name for avatars.
         ''' </summary>
         ''' <value></value>
@@ -1581,78 +1549,6 @@ Namespace DotNetNuke.Modules.Forum
         Public ReadOnly Property AvatarProfilePropName() As String
             Get
                 Return _AvatarProfilePropName
-            End Get
-        End Property
-
-        ''' <summary>
-        ''' Gets if the user avatar is to only allow selectable items from a 'pool'. 
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns>True if users can only choose from predefined folder of avatars, false otherwise.</returns>
-        ''' <remarks>Used to allow avatars, but avoid users uploading.</remarks>
-        Public ReadOnly Property EnableUserAvatarPool() As Boolean
-            Get
-                Return _EnableUserAvatarPool
-            End Get
-        End Property
-
-        ''' <summary>
-        ''' Gets the User Avatar file path. 
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns>The path to the user avatars folder.</returns>
-        ''' <remarks>Relative to Portals/PortalID/ folder.</remarks>
-        Public ReadOnly Property UserAvatarPath() As String
-            Get
-                Return _UserAvatarPath
-            End Get
-        End Property
-
-        ''' <summary>
-        ''' Gets the User Avatar Pool file path. 
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns>The path to the user avatars pool folder.</returns>
-        ''' <remarks>Relative to Portals/PortalID/ folder.</remarks>
-        Public ReadOnly Property UserAvatarPoolPath() As String
-            Get
-                Return _UserAvatarPoolPath
-            End Get
-        End Property
-
-        ''' <summary>
-        ''' Gets the User Avatar width in pixels. 
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns>The maximum pixel width used for user avatars.</returns>
-        ''' <remarks>Size in Piexels</remarks>
-        Public ReadOnly Property UserAvatarWidth() As Integer
-            Get
-                Return _UserAvatarWidth
-            End Get
-        End Property
-
-        ''' <summary>
-        ''' Gets the User Avatar height in pixels. 
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns>The maximum Pixel height used for User avatars.</returns>
-        ''' <remarks>Size in Piexels</remarks>
-        Public ReadOnly Property UserAvatarHeight() As Integer
-            Get
-                Return _UserAvatarHeight
-            End Get
-        End Property
-
-        ''' <summary>
-        ''' Gets the User Avatar maximum file size in KB. 
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns>The maximum file size for User Avatars.</returns>
-        ''' <remarks>Size is in KB.</remarks>
-        Public ReadOnly Property UserAvatarMaxSize() As Integer
-            Get
-                Return _UserAvatarMaxSize
             End Get
         End Property
 
@@ -2142,57 +2038,9 @@ Namespace DotNetNuke.Modules.Forum
                 End If
             End If
 
-            If Not settings(Constants.ENABLE_PROFILE_USER_FOLDERS) Is Nothing Then
-                If Not settings(Constants.ENABLE_PROFILE_USER_FOLDERS).ToString = String.Empty Then
-                    _EnableProfileUserFolders = CBool(GetValue(settings(Constants.ENABLE_PROFILE_USER_FOLDERS), CStr(_EnableProfileUserFolders)))
-                End If
-            End If
-
-            If Not settings(Constants.ENABLE_PROFILE_AVATAR) Is Nothing Then
-                If Not settings(Constants.ENABLE_PROFILE_AVATAR).ToString = String.Empty Then
-                    _EnableProfileAvatar = CBool(GetValue(settings(Constants.ENABLE_PROFILE_AVATAR), CStr(_EnableProfileAvatar)))
-                End If
-            End If
-
             If Not settings(Constants.AVATAR_PROFILE_PROP_NAME) Is Nothing Then
                 If Not settings(Constants.AVATAR_PROFILE_PROP_NAME).ToString = String.Empty Then
                     _AvatarProfilePropName = CStr(GetValue(settings(Constants.AVATAR_PROFILE_PROP_NAME), CStr(_AvatarProfilePropName)))
-                End If
-            End If
-
-            If Not settings(Constants.ENABLE_USER_AVATAR_POOL) Is Nothing Then
-                If Not settings(Constants.ENABLE_USER_AVATAR_POOL).ToString = String.Empty Then
-                    _EnableUserAvatarPool = CBool(GetValue(settings(Constants.ENABLE_USER_AVATAR_POOL), CStr(_EnableUserAvatarPool)))
-                End If
-            End If
-
-            If Not settings(Constants.USER_AVATAR_PATH) Is Nothing Then
-                If Not settings(Constants.USER_AVATAR_PATH).ToString = String.Empty Then
-                    _UserAvatarPath = CStr(GetValue(settings(Constants.USER_AVATAR_PATH), _UserAvatarPath))
-                End If
-            End If
-
-            If Not settings(Constants.USER_AVATAR_POOL_PATH) Is Nothing Then
-                If Not settings(Constants.USER_AVATAR_POOL_PATH).ToString = String.Empty Then
-                    _UserAvatarPoolPath = CStr(GetValue(settings(Constants.USER_AVATAR_POOL_PATH), _UserAvatarPoolPath))
-                End If
-            End If
-
-            If Not settings(Constants.USER_AVATAR_WIDTH) Is Nothing Then
-                If Not settings(Constants.USER_AVATAR_WIDTH).ToString = String.Empty Then
-                    _UserAvatarWidth = CInt(GetValue(settings(Constants.USER_AVATAR_WIDTH), CStr(_UserAvatarWidth)))
-                End If
-            End If
-
-            If Not settings(Constants.USER_AVATAR_HEIGHT) Is Nothing Then
-                If Not settings(Constants.USER_AVATAR_HEIGHT).ToString = String.Empty Then
-                    _UserAvatarHeight = CInt(GetValue(settings(Constants.USER_AVATAR_HEIGHT), CStr(_UserAvatarHeight)))
-                End If
-            End If
-
-            If Not settings(Constants.USER_AVATAR_MAX_SIZE) Is Nothing Then
-                If Not settings(Constants.USER_AVATAR_MAX_SIZE).ToString = String.Empty Then
-                    _UserAvatarMaxSize = CInt(GetValue(settings(Constants.USER_AVATAR_MAX_SIZE), CStr(_UserAvatarMaxSize)))
                 End If
             End If
 

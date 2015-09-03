@@ -39,12 +39,8 @@ Namespace DotNetNuke.Modules.Forum
         Private Const FileFilter As String = "jpg,gif,png"
         Private imageList() As String
         Private _BaseFolder As String = String.Empty
-        Private _PoolFolder As String = String.Empty
-        Private _MaxUploadSize As Integer = 0
-        Private _ImageWidth As Integer = Null.NullInteger
-        Private _ImageHeight As Integer = Null.NullInteger
         Private _localResourceFile As String = String.Empty
-        Private _AvatarType As AvatarControlType = AvatarControlType.User
+        Private _AvatarType As AvatarControlType = AvatarControlType.System
         Private _Security As Forum.ModuleSecurity
 
 #End Region
@@ -127,23 +123,6 @@ Namespace DotNetNuke.Modules.Forum
         End Property
 
         ''' <summary>
-        ''' Determines if selected Image is from the Avatar Pool. Viewstate is used here because of Ajax and dynamically binding. 
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Property IsPoolAvatar() As Boolean
-            Get
-                If ViewState("IsPoolAvatar") Is Nothing Then Return False
-
-                Return CBool(ViewState("IsPoolAvatar").ToString())
-            End Get
-            Set(ByVal value As Boolean)
-                ViewState("IsPoolAvatar") = value
-            End Set
-        End Property
-
-        ''' <summary>
         ''' The security object is used to determine what avatar types the user can see. 
         ''' </summary>
         ''' <value></value>
@@ -175,24 +154,6 @@ Namespace DotNetNuke.Modules.Forum
             Set(ByVal value As Integer)
                 ViewState("ProfileUserID") = CInt(value)
             End Set
-        End Property
-
-        ''' <summary>
-        ''' Post portal root folder path setting.
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks>Added by skeel</remarks>
-        Private ReadOnly Property PoolFolder() As String
-            Get
-                If _PoolFolder = String.Empty Then
-                    _PoolFolder = objConfig.UserAvatarPoolPath
-                End If
-
-                If _PoolFolder.EndsWith("/") = False Then _PoolFolder += "/"
-
-                Return _PoolFolder
-            End Get
         End Property
 
 #End Region
@@ -238,14 +199,6 @@ Namespace DotNetNuke.Modules.Forum
                             _BaseFolder = objConfig.RoleAvatarPath
                         Case AvatarControlType.System
                             _BaseFolder = objConfig.SystemAvatarPath
-                        Case AvatarControlType.User
-                            ' may need to handle pool folder here
-                            If IsPoolAvatar And objConfig.EnableUserAvatarPool Then
-                                ' We set to avatar pool folder here
-                                _BaseFolder = objConfig.UserAvatarPoolPath
-                            Else
-                                _BaseFolder = objConfig.UserAvatarPath
-                            End If
                     End Select
                     If _BaseFolder.EndsWith("/") = False Then _BaseFolder += "/"
                 End If
@@ -254,127 +207,11 @@ Namespace DotNetNuke.Modules.Forum
             End Get
         End Property
 
-        ''' <summary>
-        ''' Maximum size for an image to be uploaded. 
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns>Integer representing file size in Kb.</returns>
-        ''' <remarks>Only used for user avatars.</remarks>
-        Private ReadOnly Property MaxUploadSize() As Integer
-            Get
-                If AvatarType = AvatarControlType.User Then
-                    _MaxUploadSize = objConfig.UserAvatarMaxSize
-                End If
-
-                Return _MaxUploadSize
-            End Get
-        End Property
-
-        ''' <summary>
-        ''' Avatar width setting.
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks>Only used for user avatars.</remarks>
-        Private ReadOnly Property ImageWidth() As Integer
-            Get
-                If AvatarType = AvatarControlType.User Then
-                    _ImageWidth = objConfig.UserAvatarWidth
-                End If
-
-                Return _ImageWidth
-            End Get
-        End Property
-
-        ''' <summary>
-        ''' Avatar height setting.
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks>Only used for user avatars.</remarks>
-        Private ReadOnly Property ImageHeight() As Integer
-            Get
-                If AvatarType = AvatarControlType.User Then
-                    _ImageHeight = objConfig.UserAvatarHeight
-                End If
-
-                Return _ImageHeight
-            End Get
-        End Property
-
 #End Region
 
 #Region "Private Methods"
 
-        ''' <summary>
-        ''' This generates the thumbnail from the uploaded image based on parameters set in configuration. 
-        ''' </summary>
-        ''' <param name="SourceFileName"></param>
-        ''' <param name="DestFileName"></param>
-        ''' <remarks></remarks>
-        Private Sub CreateThumbnail(ByVal SourceFileName As String, ByVal DestFileName As String)
-            Try
-                Dim srcImage As New System.Drawing.Bitmap(SourceFileName)
-
-                If srcImage.Width > ImageWidth Or srcImage.Height > ImageHeight Then
-                    Dim newSize As New System.Drawing.Size(ImageWidth, ImageHeight)
-                    Dim aspectRatio As Double = srcImage.Width / srcImage.Height
-
-                    If aspectRatio < 1 Then
-                        newSize.Width = CInt(newSize.Width * aspectRatio)
-                    Else
-                        newSize.Height = CInt(newSize.Height / aspectRatio)
-                    End If
-
-                    Dim myPixelFormat As Drawing.Imaging.PixelFormat
-                    myPixelFormat = srcImage.PixelFormat
-
-                    Dim myImageFormat As Drawing.Imaging.ImageFormat
-                    myImageFormat = srcImage.RawFormat
-
-                    Dim newImg As New System.Drawing.Bitmap(newSize.Width, newSize.Height)
-                    Dim recDest As New Drawing.Rectangle(0, 0, newSize.Width, newSize.Height)
-                    Dim mGraphics As System.Drawing.Graphics = System.Drawing.Graphics.FromImage(newImg)
-
-                    mGraphics.SmoothingMode = Drawing.Drawing2D.SmoothingMode.HighQuality
-                    mGraphics.CompositingQuality = Drawing.Drawing2D.CompositingQuality.HighQuality
-                    mGraphics.InterpolationMode = Drawing.Drawing2D.InterpolationMode.HighQualityBicubic
-                    mGraphics.PixelOffsetMode = Drawing.Drawing2D.PixelOffsetMode.HighQuality
-
-                    mGraphics.DrawImage(srcImage, recDest)
-                    'Releasing file
-                    srcImage.Dispose()
-                    mGraphics.Dispose()
-
-                    Try
-                        newImg.Save(DestFileName, myImageFormat)
-                    Catch ex As Exception
-                        Exceptions.LogException(ex)
-                    End Try
-                    'End If
-
-                    'Releasing resource
-                    newImg.Dispose()
-                Else
-                    If Not SourceFileName = DestFileName Then
-                        ' Just need to rename the image here, it is smaller than the size limitations
-                        FileManager.Instance.RenameFile(FileManager.Instance.GetFile(PortalId, SourceFileName),
-                                                        System.IO.Path.GetFileName(DestFileName))
-                    End If
-                    srcImage.Dispose()
-                End If
-
-                Try
-                    If Not SourceFileName = DestFileName Then
-                        FileManager.Instance.DeleteFile(FileManager.Instance.GetFile(PortalId, SourceFileName))
-                    End If
-                Catch ex As Exception
-                    DotNetNuke.Services.Exceptions.LogException(ex)
-                End Try
-            Catch ex As Exception
-                DotNetNuke.Services.Exceptions.LogException(ex)
-            End Try
-        End Sub
+        
 
         ''' <summary>
         ''' Binds a list of available images to a datalist. 
@@ -396,37 +233,7 @@ Namespace DotNetNuke.Modules.Forum
         ''' </summary>
         ''' <remarks>Added by Skeel</remarks>
         Private Sub DeleteUploadedAvatarAndSaveProfile()
-            Dim cntForumUser As New ForumUserController
-            Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, objConfig.CurrentPortalSettings.PortalId)
-
-            'Get the parent folder
-            Dim ParentFolderName As String = objConfig.CurrentPortalSettings.HomeDirectoryMapPath
-            ParentFolderName += objConfig.UserAvatarPath
-            ParentFolderName = ParentFolderName.Replace("/", "\")
-            If ParentFolderName.EndsWith("\") = False Then ParentFolderName += "\"
-
-            'Get the file to delete
-            Dim FileName As String = ProfileUser.Avatar
-            FileName = FileName.Replace(";", "")
-
-            Try
-                FileManager.Instance.DeleteFile(FileManager.Instance.GetFile(
-                                                PortalId,
-                                                System.IO.Path.Combine(ParentFolderName, FileName)))
-            Catch ex As Exception
-                DotNetNuke.Services.Exceptions.LogException(ex)
-            End Try
-
-            '[skeel] Let's update the profile now, 
-            With ProfileUser
-                .UserAvatar = UserAvatarType.PoolAvatar
-                .Avatar = Images
-            End With
-
-            Dim ctlForumUser As New ForumUserController
-            ctlForumUser.Update(ProfileUser)
-
-            DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(ProfileUserID, objConfig.CurrentPortalSettings.PortalId)
+           
         End Sub
 
 #End Region
@@ -456,9 +263,7 @@ Namespace DotNetNuke.Modules.Forum
             ViewState("ImageList") = Images.Replace(lbl.Text + ";", "")
             BindImages()
 
-            If AvatarType = AvatarControlType.User AndAlso IsPoolAvatar = False Then
-                DeleteUploadedAvatarAndSaveProfile()
-            End If
+           
 
         End Sub
 
@@ -478,11 +283,8 @@ Namespace DotNetNuke.Modules.Forum
             imgb.ToolTip = Localization.GetString("imgDelete", Me.LocalResourceFile)
 
             lbl.Text = imageList(e.Item.ItemIndex)
-            If IsPoolAvatar Then
-                img.ImageUrl = objConfig.CurrentPortalSettings.HomeDirectory + PoolFolder + lbl.Text
-            Else
-                img.ImageUrl = objConfig.CurrentPortalSettings.HomeDirectory + BaseFolder + lbl.Text
-            End If
+           
+            img.ImageUrl = objConfig.CurrentPortalSettings.HomeDirectory + BaseFolder + lbl.Text
         End Sub
 
         ''' <summary>
@@ -492,96 +294,7 @@ Namespace DotNetNuke.Modules.Forum
         ''' <param name="e"></param>
         ''' <remarks></remarks>
         Protected Sub cmdUpload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpload.Click
-            Try
-                ' if no file is selected exit
-                If fuFile.PostedFile.FileName = String.Empty Then
-                    Exit Sub
-                End If
-
-                lblMessage.Text = String.Empty
-
-                Dim ParentFolderName As String = objConfig.CurrentPortalSettings.HomeDirectoryMapPath
-                Dim FileName As String = System.IO.Path.GetFileName(fuFile.PostedFile.FileName)
-                Dim destFileName As String
-
-                ParentFolderName += BaseFolder
-                ParentFolderName = ParentFolderName.Replace("/", "\")
-                If ParentFolderName.EndsWith("\") = False Then ParentFolderName += "\"
-
-                Dim strExtension As String = Replace(IO.Path.GetExtension(fuFile.PostedFile.FileName), ".", "")
-                If FileFilter <> String.Empty And InStr("," & FileFilter.ToLower, "," & strExtension.ToLower) = 0 Then
-                    ' trying to upload a file not allowed for current filter
-                    lblMessage.Text = String.Format(Localization.GetString("UploadError", Me.LocalResourceFile), FileFilter, strExtension)
-                End If
-
-                If (fuFile.PostedFile.ContentLength / 1024) > MaxUploadSize AndAlso MaxUploadSize <> 0 Then
-                    lblMessage.Text += String.Format(Localization.GetString("MaxUploadSizeError", Me.LocalResourceFile), (fuFile.PostedFile.ContentLength / 1024), MaxUploadSize)
-                End If
-                'DotNetNuke.Instrumentation.DnnLogger.GetLogger(Me.GetType.Name.ToString).Debug("ParentFolderName: " + ParentFolderName)
-                If lblMessage.Text = String.Empty Then
-                    FileManager.Instance.AddFile(
-                        FileUtilityClass.GetFolder(ParentFolderName, PortalId),
-                        fuFile.PostedFile.FileName,
-                        fuFile.PostedFile.InputStream)
-                End If
-
-                If lblMessage.Text <> String.Empty Then Exit Sub
-
-                Dim msgs(1)() As String
-                If AvatarType = AvatarControlType.User Then
-                    destFileName = Guid.NewGuid().ToString().Replace("-", "") + "." + strExtension
-                Else
-                    destFileName = FileName
-                End If
-
-                If ImageWidth > Null.NullInteger AndAlso ImageHeight > Null.NullInteger Then
-                    CreateThumbnail(ParentFolderName + FileName, ParentFolderName + destFileName)
-                End If
-
-                If AvatarType = AvatarControlType.User And IsPoolAvatar = False Then
-
-                    Dim oldFileName As String = Images.Trim(";"c)
-                    If oldFileName <> String.Empty Then
-                        Try
-                            FileUtilityClass.DeleteFile(ParentFolderName, oldFileName, PortalId)
-                        Catch ex As Exception
-                            DotNetNuke.Services.Exceptions.LogException(ex)
-                        End Try
-                    End If
-                End If
-
-                'Make sure this is set for uploads, as u can't upload to the pool
-                IsPoolAvatar = False
-
-                If AvatarType = AvatarControlType.System Then
-                    '[skeel] Only SystemAvatars will allow multiple Avatars
-                    Images = Images + destFileName + ";"
-                Else
-                    '[skeel] User or Role Avatar - Just one...
-                    Images = ";" + destFileName + ";"
-                End If
-
-                BindImages()
-
-                '[skeel] In case of a User upload, we want to update the profile now, 
-                'to ensure uploaded avatars are always deleted when not in use
-                If AvatarType = AvatarControlType.User Then
-                    Dim cntForumUser As New ForumUserController
-                    Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, objConfig.CurrentPortalSettings.PortalId)
-
-                    With ProfileUser
-                        .UserAvatar = UserAvatarType.UserAvatar
-                        .Avatar = Images
-                    End With
-
-                    Dim ctlForumUser As New ForumUserController
-                    ctlForumUser.Update(ProfileUser)
-
-                    DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(ProfileUserID, objConfig.CurrentPortalSettings.PortalId)
-                End If
-            Catch exc As Exception
-                ProcessModuleLoadException(Me, exc)
-            End Try
+            
         End Sub
 
         '''' <summary>
@@ -610,25 +323,7 @@ Namespace DotNetNuke.Modules.Forum
         ''' <param name="e"></param>
         ''' <remarks>Added by skeel</remarks>
         Protected Sub cmdBrowsePool_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdBrowsePool.Click
-            tblMain.Visible = False
-            tblAvatarPool.Visible = True
-
-            'Figure out the size of the datalist
-            dlAvatarPool.Width = (3 * ImageWidth) + 2 + 6 + 10 ' cellspacing + cellpadding for 3 columns
-            dlAvatarPool.Height = (2 * ImageHeight) + 1 + 4 + 10 ' cellspacing + cellpadding for 2 columns
-            dlAvatarPool.ItemStyle.Width = New Unit(ImageWidth)
-            dlAvatarPool.ItemStyle.Height = New Unit(ImageHeight)
-
-            'Add strings
-            lblPoolHeader.Text = Localization.GetString("AvatarPoolHeader", Me.LocalResourceFile)
-            cmdCancel.Text = Localization.GetString("cmdCancel", Me.LocalResourceFile)
-
-            BottomPager.PageSize = 6
-            If AvatarType = AvatarControlType.System Then
-                BindData(BottomPager.PageSize, 1, BaseFolder)
-            Else
-                BindData(BottomPager.PageSize, 1, PoolFolder)
-            End If
+           
         End Sub
 
 #End Region
@@ -650,23 +345,6 @@ Namespace DotNetNuke.Modules.Forum
                 Case AvatarControlType.System
                     trAvatarPool.Visible = False
                     trFileUpload.Visible = True
-                Case AvatarControlType.User
-                    ' Allow user avatar upload?
-                    trFileUpload.Visible = objConfig.EnableUserAvatar
-
-                    'Display Pool for Users?
-                    If objConfig.EnableUserAvatarPool Then
-                        'Check if any avatars are available from the pool 
-                        Dim tmpArray As ArrayList = Common.Globals.GetFileList(objConfig.CurrentPortalSettings.PortalId, FileFilter, False, PoolFolder, False)
-                        If tmpArray.Count > 0 Then
-                            trAvatarPool.Visible = True
-                        Else
-                            trAvatarPool.Visible = False
-                        End If
-                    Else
-                        ' we know it is a user avatar AND pool is disabled
-                        trAvatarPool.Visible = False
-                    End If
             End Select
 
             'Localization
@@ -718,10 +396,10 @@ Namespace DotNetNuke.Modules.Forum
             Dim lbl As Label = CType(e.Item.FindControl("lblImageName"), Label)
 
             If AvatarType = UserAvatarType.UserAvatar Then
-                IsPoolAvatar = True
+
                 Images = ";" + lbl.Text + ";"
             Else
-                IsPoolAvatar = False
+
                 Images += lbl.Text + ";"
             End If
             BindImages()
@@ -729,25 +407,7 @@ Namespace DotNetNuke.Modules.Forum
             tblMain.Visible = True
             tblAvatarPool.Visible = False
 
-            If AvatarType = AvatarControlType.User Then
-                '[skeel] At this point, we need to check if the current avatar needs to be deleted
-                Dim cntForumUser As New ForumUserController
-                Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, objConfig.CurrentPortalSettings.PortalId)
-
-                If ProfileUser.UserAvatar = UserAvatarType.UserAvatar Then
-                    DeleteUploadedAvatarAndSaveProfile()
-                Else
-                    '[skeel] Let's update the profile now, 
-                    With ProfileUser
-                        .UserAvatar = UserAvatarType.PoolAvatar
-                        .Avatar = Images
-                    End With
-
-                    Dim ctlUser As New ForumUserController
-                    ctlUser.Update(ProfileUser)
-                    DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(ProfileUserID, objConfig.CurrentPortalSettings.PortalId)
-                End If
-            End If
+            
         End Sub
 
         ''' <summary>

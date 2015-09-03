@@ -53,26 +53,24 @@ Namespace DotNetNuke.Modules.Forum.UCP
             End If
 
 			ctlUserAvatar.Security = objSecurity
-			ctlUserAvatar.AvatarType = AvatarControlType.User
+            ctlUserAvatar.AvatarType = AvatarControlType.System
+
 			ctlUserAvatar.ModuleId = ModuleId
 			ctlUserAvatar.ProfileUserID = ProfileUserID
 
 			' Hide the avatar if we are using profile avatars. 
-			If objConfig.EnableProfileAvatar Then
-				rowUserAvatar.Visible = False
-			End If
 
-			ctlUserAvatar.Images = ProfileUser.Avatar
-			If ProfileUser.UserAvatar = UserAvatarType.PoolAvatar Then
-				ctlUserAvatar.IsPoolAvatar = True
-			End If
+            rowUserAvatar.Visible = False
 
-			If (rowUserAvatar.Visible = False) And (rowSystemAvatar.Visible = False) Then
-				cmdUpdate.Visible = False
-			End If
 
-			ctlUserAvatar.LoadInitialView()
-			ctlSystemAvatar.LoadInitialView()
+            ctlUserAvatar.Images = ProfileUser.Avatar
+
+            If (rowUserAvatar.Visible = False) And (rowSystemAvatar.Visible = False) Then
+                cmdUpdate.Visible = False
+            End If
+
+            ctlUserAvatar.LoadInitialView()
+            ctlSystemAvatar.LoadInitialView()
 		End Sub
 
 #End Region
@@ -87,35 +85,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 		''' <remarks>
 		''' </remarks>
 		Protected Sub cmdUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpdate.Click
-			Try
-				Dim cntForumUser As New ForumUserController
-				Dim ProfileUser As ForumUserInfo = cntForumUser.GetForumUser(ProfileUserID, False, ModuleId, PortalId)
-
-				With ProfileUser
-					'Was the avatar removed?
-					If ctlUserAvatar.Images.Replace(";", "") = String.Empty Then
-						.UserAvatar = UserAvatarType.None
-						.Avatar = String.Empty
-					Else
-						'Was it a useravatar or a poolavatar?
-						If ctlUserAvatar.IsPoolAvatar = True Then
-							.UserAvatar = UserAvatarType.PoolAvatar
-						Else
-							.UserAvatar = UserAvatarType.UserAvatar
-						End If
-					End If
-					.Avatar = ctlUserAvatar.Images
-					.SystemAvatars = ctlSystemAvatar.Images
-				End With
-
-				cntForumUser.Update(ProfileUser)
-
-				DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(ProfileUser.UserID, PortalId)
-				lblUpdateDone.Visible = True
-			Catch Exc As System.Exception
-				LogException(Exc)
-				Return
-			End Try
+			
 		End Sub
 
 #End Region

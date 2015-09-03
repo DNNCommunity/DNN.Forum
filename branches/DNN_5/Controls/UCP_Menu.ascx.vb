@@ -503,29 +503,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
 				wr.RenderEndTag() ' </tr>
 
 				'Avatar
-				If objConfig.EnableUserAvatar And (objConfig.EnableProfileAvatar = False) Then
-					' If user avatars are enabled AND profile avatar = false, show the avatar section.
-					wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>
-					wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
-					wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
-
-					If ControlToLoad = Constants.ctlUsersAvatar Then
-						wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
-						wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
-						wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
-						wr.AddAttribute(HtmlTextWriterAttribute.Title, imgSelectedToolTip)
-						wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <img> 
-						wr.RenderEndTag() ' </img>
-					End If
-					wr.RenderEndTag() ' </td>
-
-					wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
-					wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
-					cmdAvatar.RenderControl(wr)
-					wr.RenderEndTag() ' </td>
-					wr.RenderEndTag() ' </tr>
-				Else
-					If objConfig.EnableSystemAvatar And objSecurity.IsForumAdmin Then
+				If objConfig.EnableUserAvatar And  objConfig.EnableSystemAvatar And objSecurity.IsForumAdmin Then
 						wr.RenderBeginTag(HtmlTextWriterTag.Tr)	' <tr>
 						wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
 						wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td> 
@@ -546,7 +524,6 @@ Namespace DotNetNuke.Modules.Forum.UCP
 						wr.RenderEndTag() ' </td>
 						wr.RenderEndTag() ' </tr>
 					End If
-				End If
 
 				'Signature
 				If objConfig.EnableUserSignatures = True Then

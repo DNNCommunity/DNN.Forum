@@ -400,55 +400,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' A String used to identify a module setting.
 		''' </summary>
 		''' <remarks></remarks>
-		Public Const ENABLE_PROFILE_USER_FOLDERS As String = "EnableProfileUserFolders"
-
-		''' <summary>
-		''' A String used to identify a module setting.
-		''' </summary>
-		''' <remarks></remarks>
-		Public Const ENABLE_PROFILE_AVATAR As String = "EnableProfileAvatar"
-
-		''' <summary>
-		''' A String used to identify a module setting.
-		''' </summary>
-		''' <remarks></remarks>
 		Public Const AVATAR_PROFILE_PROP_NAME As String = "AvatarProfilePropName"
-
-		''' <summary>
-		''' A String used to identify a module setting.
-		''' </summary>
-		''' <remarks></remarks>
-		Public Const ENABLE_USER_AVATAR_POOL As String = "EnableUserAvatarPool"
-
-		''' <summary>
-		''' A String used to identify a module setting.
-		''' </summary>
-		''' <remarks></remarks>
-		Public Const USER_AVATAR_PATH As String = "UserAvatarPath"
-
-		''' <summary>
-		''' A String used to identify a module setting.
-		''' </summary>
-		''' <remarks></remarks>
-		Public Const USER_AVATAR_POOL_PATH As String = "UserAvatarPoolPath"
-
-		''' <summary>
-		''' A String used to identify a module setting.
-		''' </summary>
-		''' <remarks></remarks>
-		Public Const USER_AVATAR_WIDTH As String = "UserAvatarWidth"
-
-		''' <summary>
-		''' A String used to identify a module setting.
-		''' </summary>
-		''' <remarks></remarks>
-		Public Const USER_AVATAR_HEIGHT As String = "UserAvatarHeight"
-
-		''' <summary>
-		''' A String used to identify a module setting.
-		''' </summary>
-		''' <remarks></remarks>
-		Public Const USER_AVATAR_MAX_SIZE As String = "UserAvatarMaxSize"
 
 		''' <summary>
 		''' A String used to identify a module setting.
