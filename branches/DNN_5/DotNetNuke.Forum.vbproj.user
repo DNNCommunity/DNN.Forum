@@ -7,6 +7,9 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
+  <PropertyGroup>
+    <ReferencePath>C:\Users\Ilpo\Source\Repos\DotNetNuke-Forum\bin\</ReferencePath>
+  </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">

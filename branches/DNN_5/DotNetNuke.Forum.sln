@@ -10,6 +10,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Forum.Library", "..\DotNetNuke.Forum.Library\DotNetNuke.Forum.Library.csproj", "{FE6FCA5D-5339-4732-91B3-74D906427E24}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject", "..\UnitTestProject\UnitTestProject.csproj", "{C4CB3679-9F8D-408B-A01D-569340847FFD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FE6FCA5D-5339-4732-91B3-74D906427E24} = {FE6FCA5D-5339-4732-91B3-74D906427E24}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{C1B553BA-0B67-4280-90EF-F6843ED53B22}"
 	ProjectSection(SolutionItems) = preProject
@@ -42,7 +45,6 @@ Global
 		{C4CB3679-9F8D-408B-A01D-569340847FFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C4CB3679-9F8D-408B-A01D-569340847FFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4CB3679-9F8D-408B-A01D-569340847FFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C4CB3679-9F8D-408B-A01D-569340847FFD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
