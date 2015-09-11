@@ -798,7 +798,7 @@ Namespace DotNetNuke.Modules.Forum
         ''' </summary>
         ''' <param name="mMatch"></param>
         ''' <remarks>Added by Skeel</remarks>
-        Private Function ReplaceUrls(ByVal mMatch As Match) As String
+        Public Shared Function ReplaceUrls(ByVal mMatch As Match) As String
             Dim strUrl As String = String.Empty
 
             'Get the URL
@@ -808,30 +808,12 @@ Namespace DotNetNuke.Modules.Forum
             urlMatch = regExp.Match(mMatch.Value)
 
             If urlMatch.Success = True Then
-
-                ' Where are we linking?
-                Dim Link As String = urlMatch.Groups(1).Value
-                Dim LocalURL As String = objConfig.CurrentPortalSettings.PortalAlias.HTTPAlias
-
-                If Link.IndexOf(LocalURL) >= 0 Then
-                    'Portal Link - keep "as is"
-                    strUrl = "<a href=""" & Link & """>"
-                Else
-                    'External Link, add target=blank and nofollow
-                    If (Link.ToLower.StartsWith("http") = False) And (Link.ToLower.StartsWith("mailto:") = False) And (Link.ToLower.StartsWith("news:") = False) And (Link.ToLower.StartsWith("ftp:") = False) Then
-                        Link = "http://" & Link
-                    End If
-                    If Link.ToLower.StartsWith("mailto:") = False Then
-                        strUrl = "<a href=""" & Link & """ target=""_blank"" rel=""nofollow"">"
-                    Else
-                        strUrl = "<a href=""" & Link & """>"
-                    End If
-                End If
-
                 'Now for the length of the link name
                 Dim strtmp As String = UrlUtilityClass.UrlShortener(mMatch.Value)
                 If strtmp <> mMatch.Value Then
-                    strUrl += strtmp & "</a>"
+                    strUrl = strtmp
+                Else
+                    strUrl = mMatch.Value
                 End If
             Else
                 'Something's wrong ...return original html string

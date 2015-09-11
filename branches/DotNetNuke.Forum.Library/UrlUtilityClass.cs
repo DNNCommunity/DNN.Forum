@@ -9,7 +9,7 @@ namespace DotNetNuke.Forum.Library
     public class UrlUtilityClass
     {        
         /// <summary>
-        /// Return shorter url
+        /// Return shorter url for linkName, if found
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
@@ -19,14 +19,11 @@ namespace DotNetNuke.Forum.Library
             Match ret = Regex .Match (url, @">([^\s]*)<");
             if (ret.Success  ==  true)
             {
-                string linkName = ret.Groups [1].Value;
+                string linkName = ret.Groups [1].Value;                
                 if (string.IsNullOrEmpty(linkName) == false && linkName.Length > 60)
                 {
-                    retval = string.Format("{0}...{1}", linkName.Substring(0, 37), linkName.Substring(linkName.Length - 15, 15));
-                }
-                else
-                {
-                    retval = linkName;
+                    string newLinkName = string.Format("{0}...{1}", linkName.Substring(0, 37), linkName.Substring(linkName.Length - 15, 15));
+                    retval = url.Replace(linkName, newLinkName);
                 }
             }
             return retval;
