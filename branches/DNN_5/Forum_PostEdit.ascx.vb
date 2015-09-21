@@ -1146,10 +1146,10 @@ Namespace DotNetNuke.Modules.Forum
                 End If
 
                 'AJAX
-                DotNetNuke.Instrumentation.DnnLogger.GetLogger(Me.GetType.Name.ToString).Error("ModuleID: " + ModuleId.ToString())
                 ctlAttachment.ModuleId = ModuleId
                 ctlAttachment.LoadInitialView()
             Else
+                ctlAttachment.ModuleId = ModuleId
                 ctlAttachment.Visible = False
                 divAttachments.Visible = False
             End If
