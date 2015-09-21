@@ -152,7 +152,7 @@ Namespace DotNetNuke.Modules.Forum.WebControls
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overloads Property ModuleID() As Integer
+        Public Overloads Property ModuleId() As Integer
             Get
                 If ViewState("ModuleID") IsNot Nothing Then
                     Return CType(ViewState("ModuleID").ToString(), Integer)
@@ -212,7 +212,7 @@ Namespace DotNetNuke.Modules.Forum.WebControls
         Private ReadOnly Property CurrentForumUser() As ForumUserInfo
             Get
                 Dim cntForumUser As New ForumUserController
-                Return cntForumUser.GetForumUser(Users.UserController.Instance.GetCurrentUserInfo.UserID, False, ModuleID, objConfig.CurrentPortalSettings.PortalId)
+                Return cntForumUser.GetForumUser(Users.UserController.Instance.GetCurrentUserInfo.UserID, False, ModuleId, objConfig.CurrentPortalSettings.PortalId)
             End Get
         End Property
 
@@ -241,7 +241,7 @@ Namespace DotNetNuke.Modules.Forum.WebControls
         ''' <remarks></remarks>
         Public ReadOnly Property objConfig() As Forum.Configuration
             Get
-                Return Configuration.GetForumConfig(ModuleID)
+                Return Configuration.GetForumConfig(ModuleId)
             End Get
         End Property
 

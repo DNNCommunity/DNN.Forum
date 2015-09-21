@@ -1146,7 +1146,8 @@ Namespace DotNetNuke.Modules.Forum
                 End If
 
                 'AJAX
-                ctlAttachment.ModuleID = ModuleId
+                DotNetNuke.Instrumentation.DnnLogger.GetLogger(Me.GetType.Name.ToString).Error("ModuleID: " + ModuleId.ToString())
+                ctlAttachment.ModuleId = ModuleId
                 ctlAttachment.LoadInitialView()
             Else
                 ctlAttachment.Visible = False
