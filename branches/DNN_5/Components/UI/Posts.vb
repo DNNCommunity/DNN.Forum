@@ -771,6 +771,7 @@ Namespace DotNetNuke.Modules.Forum
                 .CssClass = "Forum_Link"
                 .ID = "cmdSubmit"
                 .Text = ForumControl.LocalizedText("cmdSubmit")
+                .OnClientClick = "if (!Page_ClientValidate()){ return false; } this.disabled = true; this.value = '';"
             End With
 
             Me.cmdThreadSubscribers = New LinkButton
