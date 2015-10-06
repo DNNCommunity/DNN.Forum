@@ -16,6 +16,7 @@
 		<li>Merged changes from CodePlex which were not included as part of 5.0.3 release</li>
 		<li>Fixed forum thread header</li>
 		<li>Cleaning forum avatars to support only avatar specified in user settings</li>
+		<li>Fixing Quick Reply causing duplicates when user pressing submit more than once</li>
 	</ul>
 
 	<p class="Owner">
