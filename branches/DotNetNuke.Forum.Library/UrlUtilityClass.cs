@@ -22,8 +22,8 @@ namespace DotNetNuke.Forum.Library
                 string linkName = ret.Groups [1].Value;                
                 if (string.IsNullOrEmpty(linkName) == false && linkName.Length > 60)
                 {
-                    string newLinkName = string.Format("{0}...{1}", linkName.Substring(0, 37), linkName.Substring(linkName.Length - 15, 15));
-                    retval = url.Replace(linkName, newLinkName);
+                    string newLinkName = string.Format(">{0}...{1}<", linkName.Substring(0, 37), linkName.Substring(linkName.Length - 15, 15));
+                    retval = url.Replace(ret.Groups[0].Value, newLinkName);
                 }
             }
             return retval;
