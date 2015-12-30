@@ -78,14 +78,14 @@
      <Output TaskParameter="Include" ItemName="ResourcesContent" />
    </CreateItem>
    
-   <Zip Files="@(ResourcesContent)" WorkingDirectory="$(MSBuildProjectDirectory)\ResourcesZip" ZipFileName="Resources.$(Extension)" />
+   <Zip Files="@(ResourcesContent)" WorkingDirectory="$(MSBuildProjectDirectory)\ResourcesZip" ZipFileName="Resources.$(Extension)"  ParallelCompression="false" />
    <Copy SourceFiles="$(MSBuildProjectDirectory)\Resources.$(Extension)" DestinationFolder="package/" />
 
    <CreateItem Include="$(MSBuildProjectDirectory)\Package\**\*.*">
      <Output TaskParameter="Include" ItemName="OutputContent" />
    </CreateItem>
    <!-- Create the Install package -->    
-   <Zip Files="@(OutputContent)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Install.$(Extension)" />
+   <Zip Files="@(OutputContent)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Install.$(Extension)" ParallelCompression="false" />
    <!-- Copy the Install package to the Install folder -->
    <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" DestinationFolder="install/" />
    
@@ -105,7 +105,7 @@
      <Output TaskParameter="Include" ItemName="SourceContent" />
    </CreateItem>
 
-   <Zip Files="@(SourceContent)" WorkingDirectory="$(MSBuildProjectDirectory)\ResourcesZip" ZipFileName="Resources.$(Extension)" />
+   <Zip Files="@(SourceContent)" WorkingDirectory="$(MSBuildProjectDirectory)\ResourcesZip" ZipFileName="Resources.$(Extension)" ParallelCompression="false" />
    <Copy SourceFiles="$(MSBuildProjectDirectory)\Resources.$(Extension)" DestinationFolder="package/" />
 
    <CreateItem Include="$(MSBuildProjectDirectory)\Package\**\*.*">
