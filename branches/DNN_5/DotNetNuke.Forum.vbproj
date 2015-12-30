@@ -678,7 +678,6 @@
     <None Include="Providers\DataProviders\SqlDataProvider\05.00.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\05.00.04.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
-    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\ACP.ascx.resx">

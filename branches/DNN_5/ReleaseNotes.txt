@@ -17,6 +17,7 @@
 		<li>Fixed forum thread header</li>
 		<li>Cleaning forum avatars to support only avatar specified in user settings</li>
 		<li>Fixing Quick Reply causing duplicates when user pressing submit more than once</li>
+		<li>Added Forum last post to include Title attribute, not just the shortened post title</li>
 	</ul>
 
 	<p class="Owner">
