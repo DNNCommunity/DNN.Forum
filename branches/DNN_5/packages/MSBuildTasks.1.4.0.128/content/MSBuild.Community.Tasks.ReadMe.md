@@ -1,5 +1,7 @@
 # MSBuild Community Tasks
 
+[![Join the chat at https://gitter.im/loresoft/msbuildtasks](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/loresoft/msbuildtasks?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 The MSBuild Community Tasks Project is an open source project for MSBuild tasks.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/16y9eh9swsqn5g8l?svg=true)](https://ci.appveyor.com/project/LoreSoft/msbuildtasks)
@@ -109,6 +111,10 @@ https://groups.google.com/d/forum/msbuildtasks
 		<td>Delete a directory tree. This task supports wild card directory selection.</td>
 	</tr>
 	<tr>
+		<td>DependencyGraph</td>
+		<td>Build a GraphViz-style graph based on the dependencies specified in project files (.csproj, .vbproj)</td>
+	</tr>
+	<tr>
 		<td>Divide</td>
 		<td>Divide numbers</td>
 	</tr>
@@ -211,6 +217,10 @@ https://groups.google.com/d/forum/msbuildtasks
 		<td>Compresses JavaScript source by removing comments and unnecessary whitespace. 
 		It typically reduces the size of the script by half, resulting in faster 
 		downloads and code that is harder to read.</td>
+	</tr>
+	<tr>
+		<td>CssCompress</td>
+		<td>Compresses CSS source by removing comments and unnecessary whitespace.</td>
 	</tr>
 	<tr>
 		<td>MRefBuilder</td>

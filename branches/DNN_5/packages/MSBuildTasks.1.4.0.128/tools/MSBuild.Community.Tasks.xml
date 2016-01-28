@@ -578,6 +578,87 @@
             </summary>
             <value>The deleted directories.</value>
         </member>
+        <member name="T:MSBuild.Community.Tasks.DependencyGraph.DependencyGraph">
+            <summary>
+            Reads a set of project files (.csproj, .vbproj) in InputFiles and generate a GraphViz style syntax.
+            You can paste the result of the graphs in places like http://graphviz-dev.appspot.com/ to see your chart or
+            run the file using the GraphViz tool http://www.graphviz.org/
+            </summary>
+        </member>
+        <member name="M:MSBuild.Community.Tasks.DependencyGraph.DependencyGraph.Execute">
+            <summary>
+            Runs the task.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.DependencyGraph.DependencyGraph.InputFiles">
+            <summary>
+            Project files to parse
+            </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.DependencyGraph.DependencyGraph.Filters">
+            <summary>
+            A set of regular expression to filter the input files.
+            </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.DependencyGraph.DependencyGraph.OutputFile">
+            <summary>
+            FileName to output results
+            </summary>        
+        </member>
+        <member name="T:MSBuild.Community.Tasks.DependencyGraph.ProjectFileParser">
+            <summary>
+            Very simple parser that gets reference and assembly name information from project files
+            </summary>
+        </member>
+        <member name="M:MSBuild.Community.Tasks.DependencyGraph.ProjectFileParser.#ctor(System.IO.Stream)">
+            <summary>
+            Creates new parser, based on project file specified by stream
+            </summary>
+            <param name="stream">A stream pointing to the project file content</param>
+        </member>
+        <member name="M:MSBuild.Community.Tasks.DependencyGraph.ProjectFileParser.GetAssemblyName">
+            <summary>
+            Returns the Assembly Name for the project file
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MSBuild.Community.Tasks.DependencyGraph.ProjectFileParser.GetAssemblyNameFromFullName(System.String)">
+            <summary>
+            Given an assembly name in the form "Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL"
+            returns only the Ionic.Zip.Reduced part.
+            </summary>
+            <param name="fullAssemblyName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MSBuild.Community.Tasks.DependencyGraph.ProjectReference">
+            <summary>
+            Represents a project reference inside a project file
+            </summary>
+        </member>
+        <member name="M:MSBuild.Community.Tasks.DependencyGraph.ProjectReference.#ctor(System.String,System.String)">
+            <summary>
+            Creates new instance
+            </summary>
+            <param name="include">The name of the assembly reference</param>
+            <param name="HintPath">The hint path, if aplicable</param>
+        </member>
+        <member name="M:MSBuild.Community.Tasks.DependencyGraph.ProjectReference.#ctor(System.String)">
+            <summary>
+            Creates new instance specifying only the referenced assembly
+            </summary>
+            <param name="include"></param>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.DependencyGraph.ProjectReference.Include">
+            <summary>
+            Name of the assembly of a project reference
+            </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.DependencyGraph.ProjectReference.HintPath">
+            <summary>
+            HintPath, or relative path to file in a project reference
+            </summary>
+        </member>
         <member name="T:MSBuild.Community.Tasks.EmbedNativeResource">
             <summary>
             A task for embedded native resource.
@@ -1393,9 +1474,9 @@
             <param name="assemblyName">Name of the assembly.</param>
             <returns>An <see cref="T:System.Reflection.AssemblyName"/> instance.</returns>
         </member>
-        <member name="T:MSBuild.Community.Tasks.Git.GitDescribe">
+        <member name="T:MSBuild.Community.Tasks.Git.GitCommitDate">
             <summary>
-            A task for git to get the most current tag, commit count since tag, and commit hash.
+            A task for git to get the current commit datetime.
             </summary>
         </member>
         <member name="T:MSBuild.Community.Tasks.Git.GitClient">
@@ -1507,6 +1588,27 @@
             The name of the executable file to run.
             </returns>
         </member>
+        <member name="M:MSBuild.Community.Tasks.Git.GitCommitDate.GenerateArguments(Microsoft.Build.Utilities.CommandLineBuilder)">
+            <summary>
+            Generates the arguments.
+            </summary>
+            <param name="builder">The builder.</param>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.Git.GitCommitDate.Revision">
+            <summary>
+            Gets or sets the revision to get the version from. Default is HEAD.
+            </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.Git.GitCommitDate.CommitDate">
+            <summary>
+            Gets or sets the commit datetime.
+            </summary>
+        </member>
+        <member name="T:MSBuild.Community.Tasks.Git.GitDescribe">
+            <summary>
+            A task for git to get the most current tag, commit count since tag, and commit hash.
+            </summary>
+        </member>
         <member name="M:MSBuild.Community.Tasks.Git.GitDescribe.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:MSBuild.Community.Tasks.Git.GitDescribe"/> class.
@@ -1548,6 +1650,16 @@
         <member name="P:MSBuild.Community.Tasks.Git.GitDescribe.SoftErrorMode">
             <summary>
             When true, any processing errors will push error status out into <see cref="P:MSBuild.Community.Tasks.Git.GitDescribe.Tag"/>
+            </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.Git.GitDescribe.LightWeight">
+            <summary>
+            When true, will use unannotated tags
+            </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.Git.GitDescribe.Match">
+            <summary>
+            Matches the specified pattern
             </summary>
         </member>
         <member name="T:MSBuild.Community.Tasks.Git.GitBranch">
@@ -1692,6 +1804,14 @@
             </summary>
             <value>
               <c>true</c> if short; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.Git.GitVersion.ShortLength">
+            <summary>
+            Gets or sets a value indicating short hash length.
+            </summary>
+            <value>
+              Length for short hash.
             </value>
         </member>
         <member name="T:MSBuild.Community.Tasks.HtmlHelp.ChmCompiler">
@@ -1938,6 +2058,57 @@
             <value></value>
             <returns>The <see cref="T:Microsoft.Build.Framework.MessageImportance"></see> with which to log errors.</returns>
         </member>
+        <member name="T:MSBuild.Community.Tasks.JavaScript.CssCompress">
+            <summary>
+            MSBuild task to minimize the size of a css file.
+            </summary>
+        </member>
+        <member name="M:MSBuild.Community.Tasks.JavaScript.CssCompress.Execute">
+            <summary>
+            When overridden in a derived class, executes the task.
+            </summary>
+            <returns>
+            true if the task successfully executed; otherwise, false.
+            </returns>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.JavaScript.CssCompress.CompressedFiles">
+            <summary>
+            Gets the items that were successfully compressed.
+            </summary>
+            <value>The compressed files.</value>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.JavaScript.CssCompress.DestinationFiles">
+            <summary>
+            Gets or sets the list of files to compressed the source files to. 
+            </summary>
+            <remarks>
+            This list is expected to be a one-to-one mapping with the 
+            list specified in the SourceFiles parameter. That is, the 
+            first file specified in SourceFiles will be compressed to the 
+            first location specified in DestinationFiles, and so forth.
+            </remarks>
+            <value>The destination files.</value>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.JavaScript.CssCompress.DestinationFolder">
+            <summary>
+            Gets or sets the directory to which you want to compress the files.
+            </summary>
+            <value>The destination folder.</value>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.JavaScript.CssCompress.SourceFiles">
+            <summary>
+            Gets or sets the source files to compress.
+            </summary>
+            <value>The source files to compress.</value>
+        </member>
+        <member name="T:MSBuild.Community.Tasks.JavaScript.CssCompressor">
+            <summary>
+            Work in progress ...
+            </summary>
+            <remarks>
+            Based on http://iceyboard.no-ip.org/projects/css_compressor
+            </remarks>
+        </member>
         <member name="T:MSBuild.Community.Tasks.MergeModes">
             <summary>
             Defines the modes for merging files.
@@ -2120,6 +2291,50 @@
             <value></value>
             <returns>The <see cref="T:Microsoft.Build.Framework.MessageImportance"></see> with which to log errors.</returns>
         </member>
+        <member name="T:MSBuild.Community.Tasks.NuGet.NuGetDelete">
+            <summary>
+            Deletes a package with a specific version. It can be useful if the server has disallow 
+            to overwrite existing packages.
+            </summary>
+        </member>
+        <member name="M:MSBuild.Community.Tasks.NuGet.NuGetDelete.GenerateCommandLineCommands">
+            <summary>
+            Returns a string value containing the command line arguments to pass directly to the executable file.
+            </summary>
+            <returns>
+            A string value containing the command line arguments to pass directly to the executable file.
+            </returns>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetDelete.Package">
+            <summary>
+            Specify the id of the package to delete.
+            </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetDelete.Version">
+            <summary>
+            The version of the package to delete.
+            </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetDelete.Source">
+            <summary>
+            A list of packages sources to use for the delete.
+            </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetDelete.ApiKey">
+            <summary>
+            The API key for the server.
+            </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetDelete.ConfigFile">
+            <summary>
+            (v2.5) The NuGet configuation file. If not specified, file %AppData%\NuGet\NuGet.config is used as configuration file.
+            </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetDelete.Verbosity">
+            <summary>
+            Display this amount of details in the output: normal, quiet, detailed.
+            </summary>
+        </member>
         <member name="T:MSBuild.Community.Tasks.NuGet.NuGetInstall">
             <summary>
             Installs a package using the specified sources.
@@ -2228,13 +2443,26 @@
             The base path of the files defined in the nuspec file.
             </summary>
         </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetPack.Exclude">
+            <summary>
+            Specifies one or more wildcard patterns to exclude when creating a package.
+            </summary>
+            <remarks>
+            Only available starting in version 1.3.
+            </remarks>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetPack.ExcludeEmptyDirectories">
+            <summary>
+            Prevent inclusion of empty directories when building the package
+            </summary>
+        </member>
         <member name="P:MSBuild.Community.Tasks.NuGet.NuGetPack.Verbose">
             <summary>
             Shows verbose output for package building.
             </summary>
             <value><c>true</c> if verbose; otherwise, <c>false</c>.</value>
             <remarks>
-            Depricated in NuGet 2.0.  Use <see cref="P:MSBuild.Community.Tasks.NuGet.NuGetPack.Verbosity"/> instead.
+            Deprecated in NuGet 2.0.  Use <see cref="P:MSBuild.Community.Tasks.NuGet.NuGetPack.Verbosity"/> instead.
             </remarks>
         </member>
         <member name="P:MSBuild.Community.Tasks.NuGet.NuGetPack.Verbosity">
@@ -2243,19 +2471,67 @@
             </summary>
             <value><c>normal</c>; <c>quiet</c>; ; <c>detailed</c></value>
         </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetPack.Build">
+            <summary>
+            Determines if the project should be built before building the package.
+            </summary>
+            <value><c>true</c> if project should build first; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetPack.Tool">
+            <summary>
+            Determines if the output files of the project should be in the tool folder.
+            </summary>
+            <value><c>true</c> if output files should be in the tool folder; otherwise, <c>false</c>.</value>
+        </member>
         <member name="P:MSBuild.Community.Tasks.NuGet.NuGetPack.Symbols">
             <summary>
             Determines if a package containing sources and symbols should be created. When specified with a nuspec, 
             creates a regular NuGet package file and the corresponding symbols package.
             </summary>
-            <value>
-              <c>true</c> if symbols; otherwise, <c>false</c>.
-            </value>
+            <value><c>true</c> if symbols; otherwise, <c>false</c>.</value>
+            <remarks>
+            Only available starting in version 1.4.
+            </remarks>
         </member>
         <member name="P:MSBuild.Community.Tasks.NuGet.NuGetPack.Properties">
             <summary>
             Provides the ability to specify a semicolon ";" delimited list of properties when creating a package.
             </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetPack.NoDefaultExcludes">
+            <summary>
+            Prevent default exclusion of NuGet package files and files and folders starting with a dot e.g. .svn.
+            </summary>
+            <value><c>true</c> to prevent default exclusion; otherwise, <c>false</c>.</value>
+            <remarks>
+            Only available starting in version 1.3.
+            </remarks>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetPack.NoPackageAnalysis">
+            <summary>
+            Specify if the command should not run package analysis after building the package.
+            </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetPack.IncludeReferencedProjects">
+            <summary>
+            Include referenced projects either as dependencies or as part of the package. If a referenced project
+            has a corresponding nuspec file that has the same name as the project, then that referenced project is
+            added as a dependency. Otherwise, the referenced project is added as part of the package.
+            </summary>
+            <value><c>true</c> to include referenced projects; otherwise, <c>false</c>.</value>
+            <remarks>
+            Only available starting in version 2.5.
+            </remarks>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetPack.MinClientVersion">
+            <summary>
+            Set the minClientVersion attribute for the created package. This value will override the value of the
+            existing minClientVersion attribute (if any) in the .nuspec file.
+            </summary>
+            <value>A version number; e.g. "2.5.0" or "2.8.0".</value>
+            <remarks>
+            Only available starting in version 2.5.
+            </remarks>
         </member>
         <member name="P:MSBuild.Community.Tasks.NuGet.NuGetPack.OutputFilePath">
             <summary>
@@ -2349,6 +2625,74 @@
             </summary>
         </member>
         <member name="P:MSBuild.Community.Tasks.NuGet.NuGetRestore.Verbosity">
+            <summary>
+            Display this amount of details in the output: normal, quiet, detailed.
+            </summary>
+        </member>
+        <member name="T:MSBuild.Community.Tasks.NuGet.NuGetUpdate">
+            <summary>
+            Updates packages
+            </summary>
+        </member>
+        <member name="M:MSBuild.Community.Tasks.NuGet.NuGetUpdate.GenerateCommandLineCommands">
+            <summary>
+            Returns a string value containing the command line arguments to pass directly to the executable file.
+            </summary>
+            <returns>
+            A string value containing the command line arguments to pass directly to the executable file.
+            </returns>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetUpdate.Package">
+            <summary>
+            Specify the id of the package to update. If a path to a packages.config file is used instead of an id, all the packages it contains are updated.
+            </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetUpdate.Version">
+            <summary>
+            The version of the package to update.
+            </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetUpdate.Source">
+            <summary>
+            A list of packages sources to use for the update.
+            </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetUpdate.OutputDirectory">
+            <summary>
+            The directory in which packages will be updated. If none specified, uses the current directory.
+            </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetUpdate.RepositoryPath">
+            <summary>
+            Path to the local packages folder (location where packages are installed).
+            </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetUpdate.Safe">
+            <summary>
+            Looks for updates with the highest version available within the same major and minor version as the installed package.
+            </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetUpdate.Self">
+            <summary>
+            (v1.4) Update the running NuGet.exe to the newest version available from the server.
+            </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetUpdate.Prerelease">
+            <summary>
+            Allows updating to prerelease versions. This flag is not required when updating prerelease packages that are already installed.
+            </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetUpdate.ConfigFile">
+            <summary>
+            (v2.5) The NuGet configuation file. If not specified, file %AppData%\NuGet\NuGet.config is used as configuration file.
+            </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetUpdate.FileConflictAction">
+            <summary>
+            (v2.5) The action to take, when asked to overwrite or ignore existing files referenced by the project: Overwrite, Ignore, None.
+            </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.NuGet.NuGetUpdate.Verbosity">
             <summary>
             Display this amount of details in the output: normal, quiet, detailed.
             </summary>
@@ -6071,6 +6415,26 @@
             IIS version 6.x
             </summary>
         </member>
+        <member name="F:MSBuild.Community.Tasks.IIS.WebBase.IISVersion.Seven">
+            <summary>
+            IIS version 7.0
+            </summary>
+        </member>
+        <member name="F:MSBuild.Community.Tasks.IIS.WebBase.IISVersion.SevenFive">
+            <summary>
+            IIS version 7.5
+            </summary>
+        </member>
+        <member name="F:MSBuild.Community.Tasks.IIS.WebBase.IISVersion.Eight">
+            <summary>
+            IIS version 8.0
+            </summary>
+        </member>
+        <member name="F:MSBuild.Community.Tasks.IIS.WebBase.IISVersion.EightFive">
+            <summary>
+            IIS version 8.5
+            </summary>
+        </member>
         <member name="T:MSBuild.Community.Tasks.IIS.WebBase.ApplicationPoolAction">
             <summary>
             Defines the possible application pool actions to be performed.
@@ -6096,29 +6460,34 @@
             Stops the application pool.
             </summary>
         </member>
-        <member name="T:MSBuild.Community.Tasks.IIS.WebBase.ApplicationPoolState">
+        <member name="T:MSBuild.Community.Tasks.IIS.WebBase.IIS7ApplicationPoolState">
             <summary>
             Defines the current application pool state.
             </summary>
         </member>
-        <member name="F:MSBuild.Community.Tasks.IIS.WebBase.ApplicationPoolState.Starting">
+        <member name="F:MSBuild.Community.Tasks.IIS.WebBase.IIS7ApplicationPoolState.Starting">
             <summary>
             The application pool is starting.
             </summary>
         </member>
-        <member name="F:MSBuild.Community.Tasks.IIS.WebBase.ApplicationPoolState.Started">
+        <member name="F:MSBuild.Community.Tasks.IIS.WebBase.IIS7ApplicationPoolState.Started">
             <summary>
             The application pool has started.
             </summary>
         </member>
-        <member name="F:MSBuild.Community.Tasks.IIS.WebBase.ApplicationPoolState.Stopping">
+        <member name="F:MSBuild.Community.Tasks.IIS.WebBase.IIS7ApplicationPoolState.Stopping">
             <summary>
             The application pool is stopping.
             </summary>
         </member>
-        <member name="F:MSBuild.Community.Tasks.IIS.WebBase.ApplicationPoolState.Stopped">
+        <member name="F:MSBuild.Community.Tasks.IIS.WebBase.IIS7ApplicationPoolState.Stopped">
             <summary>
             The application pool has stopped.
+            </summary>
+        </member>
+        <member name="F:MSBuild.Community.Tasks.IIS.WebBase.IIS7ApplicationPoolState.Unknown">
+            <summary>
+            The application pool is in unknown state.
             </summary>
         </member>
         <member name="M:MSBuild.Community.Tasks.IIS.WebDirectoryScriptMap.Execute">
@@ -7962,6 +8331,16 @@
             </summary>
             <remarks>N/A</remarks>
         </member>
+        <member name="P:MSBuild.Community.Tasks.FileUpdate.ItemsNotUpdated">
+            <summary>
+            Returns list of items that were not updated
+            </summary>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.FileUpdate.AllItemsUpdated">
+            <summary>
+            Returns true if all items were updated, else false
+            </summary>
+        </member>
         <member name="T:MSBuild.Community.Tasks.FxCop">
             <summary>
             Uses FxCop to analyse managed code assemblies and reports on
@@ -8091,6 +8470,14 @@
             <remarks>Rule names should be provided using the format Library#RuleNumber. For example <c>Microsoft.Design#CA1012</c>
             <para>Place a single hyphen (-) in front of the rule name to exclude it. For example <c>-Microsoft.Performance#CA1805</c></para>
             </remarks>
+        </member>
+        <member name="P:MSBuild.Community.Tasks.FxCop.RuleSet">
+            <summary>
+            Gets or sets the rule set.
+            </summary>
+            <value>
+            The rule set.
+            </value>
         </member>
         <member name="P:MSBuild.Community.Tasks.FxCop.AnalysisReportFileName">
             <summary>
