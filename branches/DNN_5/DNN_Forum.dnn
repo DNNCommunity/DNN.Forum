@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DNN_Forum" type="Module" version="05.00.05">
+		<package name="DNN_Forum" type="Module" version="05.00.06">
 			<friendlyName>Forum</friendlyName>
 			<description>The core forum module for DotNetNuke.</description>
 			<owner>
@@ -12,7 +12,7 @@
 			<license src="License.txt"></license>
 			<releaseNotes src="ReleaseNotes.txt"></releaseNotes>
 			<dependencies>
-				<dependency type="CoreVersion">07.00.00</dependency>
+				<dependency type="CoreVersion">08.00.00</dependency>
 			</dependencies>
 			<components>
 				<component type="Script">	  
