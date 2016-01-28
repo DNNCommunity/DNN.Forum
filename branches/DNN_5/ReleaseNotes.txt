@@ -1,4 +1,4 @@
-<h3>Forum 5.0.5</h3>
+<h3>Forum 5.0.6</h3>
 <p class="Contributor">
 	Ilpo Juvander<br />
 	<a href="mailto:ilpo.juvander@hotmail.com">ilpo.juvander@hotmail.com</a><br />
