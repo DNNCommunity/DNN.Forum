@@ -8,10 +8,15 @@
 <div class="License">
 	<h3>About the Core Forum</h3>
 	<p class="Owner">
-		<b>Version 5.0.5</b><br /><br />
-		This version of the module requires DotNetNuke Core 7.0.0 or greater. 
+		<b>Version 5.0.6</b><br /><br />
+		This version of the module requires DotNetNuke Core 8.0.0 or greater. 
 		FYI: Developers should be aware that the module uses Visual Studio 2013 only. 
 	</p>
+	
+	<ul>		
+		<li>Upgrade to DNN8</li>
+		<li>Requires separate DNN.Vendors module https://github.com/DNNCommunity/DNN.Vendors to be installed before this module</li>
+	</ul>
 	<ul>		
 		<li>Merged changes from CodePlex which were not included as part of 5.0.3 release</li>
 		<li>Fixed forum thread header</li>

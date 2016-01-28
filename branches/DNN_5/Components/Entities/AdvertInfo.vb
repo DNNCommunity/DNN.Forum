@@ -20,77 +20,77 @@
 Option Strict On
 Option Explicit On
 
-Imports DotNetNuke.Services.Vendors
+Imports Dnn.Modules.Vendors.Components
 
 Namespace DotNetNuke.Modules.Forum
 
-	''' <summary>
+    ''' <summary>
     ''' All properties associated with the Advertisement option
-	''' </summary>
-	''' <remarks></remarks>
-	''' <history> 
-	''' 	[b.waluszko]	21/10/2010	Created
-	''' </history>
-	Public Class AdvertInfo
-		Inherits VendorInfo
+    ''' </summary>
+    ''' <remarks></remarks>
+    ''' <history> 
+    ''' 	[b.waluszko]	21/10/2010	Created
+    ''' </history>
+    Public Class AdvertInfo
+        Inherits VendorInfo
 
 #Region "Private Members"
 
-		Private _IsEnabled As Boolean
-		Private _ModuleID As Integer
-		Private _BannersUrl As String
+        Private _IsEnabled As Boolean
+        Private _ModuleID As Integer
+        Private _BannersUrl As String
 
 #End Region
 
 #Region "Public Properties"
 
-		''' <summary>
-		''' 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property IsEnabled As Boolean
-			Get
-				Return _IsEnabled
-			End Get
-			Set(ByVal value As Boolean)
-				_IsEnabled = value
-			End Set
-		End Property
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Property IsEnabled As Boolean
+            Get
+                Return _IsEnabled
+            End Get
+            Set(ByVal value As Boolean)
+                _IsEnabled = value
+            End Set
+        End Property
 
-		''' <summary>
-		''' 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property ModuleId As Integer
-			Get
-				Return _ModuleID
-			End Get
-			Set(ByVal value As Integer)
-				_ModuleID = value
-			End Set
-		End Property
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Property ModuleId As Integer
+            Get
+                Return _ModuleID
+            End Get
+            Set(ByVal value As Integer)
+                _ModuleID = value
+            End Set
+        End Property
 
-		''' <summary>
-		''' 
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public Property BannerUrl As String
-			Get
-				Return _BannersUrl
-			End Get
-			Set(ByVal value As String)
-				_BannersUrl = value
-			End Set
-		End Property
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Property BannerUrl As String
+            Get
+                Return _BannersUrl
+            End Get
+            Set(ByVal value As String)
+                _BannersUrl = value
+            End Set
+        End Property
 
 #End Region
 
-	End Class
+    End Class
 
 End Namespace

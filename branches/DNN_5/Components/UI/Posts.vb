@@ -23,6 +23,7 @@ Option Explicit On
 Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Services.FileSystem
 Imports DotNetNuke.Forum.Library
+Imports Dnn.Modules.Vendors.Components
 
 Namespace DotNetNuke.Modules.Forum
 
@@ -3217,7 +3218,7 @@ Namespace DotNetNuke.Modules.Forum
 
             'check if there are some banners to render
             Dim advertController As New AdvertController
-            Dim bannerController As New Vendors.BannerController
+            Dim bannerController As New BannerController
 
             Dim adverts As IEnumerable(Of AdvertInfo)
             adverts = advertController.VendorsGet(Me.ModuleID).Where(Function(ad) ad.IsEnabled = True)
@@ -3226,12 +3227,12 @@ Namespace DotNetNuke.Modules.Forum
             If (adverts IsNot Nothing) AndAlso adverts.Count > 0 Then
                 wr.Write("<br/>")
                 For Each advert As AdvertInfo In adverts
-                    Dim banners As List(Of Vendors.BannerInfo)
+                    Dim banners As List(Of BannerInfo)
 
                     'second check banners connected to vendors
                     banners = advertController.BannersGet(advert.VendorId)
                     If (banners IsNot Nothing) AndAlso banners.Count > 0 Then
-                        For Each b As Vendors.BannerInfo In banners
+                        For Each b As BannerInfo In banners
                             advertController.BannerViewIncrement(b.BannerId)
                             Dim fileInfo As DotNetNuke.Services.FileSystem.FileInfo = CType(FileManager.Instance.GetFile(Integer.Parse(b.ImageFile.Split(Char.Parse("="))(1))), Services.FileSystem.FileInfo)
                             wr.Write(bannerController.FormatBanner(advert.VendorId, b.BannerId, b.BannerTypeId, b.BannerName, fileInfo.RelativePath, b.Description, b.URL, b.Width, b.Height, "L", objConfig.CurrentPortalSettings.HomeDirectory) & "&nbsp;")

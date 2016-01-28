@@ -20,7 +20,7 @@
 Option Strict On
 Option Explicit On
 
-Imports DotNetNuke.Services.Vendors
+Imports Dnn.Modules.Vendors.Components
 
 Namespace DotNetNuke.Modules.Forum.ACP
 

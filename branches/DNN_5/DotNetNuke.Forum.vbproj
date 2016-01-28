@@ -19,7 +19,7 @@
     <OldToolsVersion>4.0</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
@@ -41,6 +41,7 @@
     <WarningsAsErrors>
     </WarningsAsErrors>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -53,10 +54,15 @@
     <WarningsAsErrors>
     </WarningsAsErrors>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CountryListBox">
       <HintPath>..\..\www.juvander.fi.SRC\bin\CountryListBox.dll</HintPath>
+    </Reference>
+    <Reference Include="Dnn.Modules.Vendors, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\Dnn.Modules.Vendors.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke, Version=6.1.5.142, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -76,6 +82,10 @@
     <Reference Include="DotNetNuke.Web.Client, Version=7.3.4.45, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\www.juvander.fi.SRC\bin\DotNetNuke.Web.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Deprecated, Version=8.0.0.809, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\DotNetNuke.Web.Deprecated.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.WebControls">
       <HintPath>..\..\www.juvander.fi.SRC\bin\DotNetNuke.WebControls.dll</HintPath>
@@ -678,6 +688,13 @@
     <None Include="Providers\DataProviders\SqlDataProvider\05.00.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\05.00.04.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
+    <Content Include="web.config" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\ACP.ascx.resx">
