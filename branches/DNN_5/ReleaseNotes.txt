@@ -16,6 +16,7 @@
 	<ul>		
 		<li>Upgrade to DNN8</li>
 		<li>Requires separate DNN.Vendors module https://github.com/DNNCommunity/DNN.Vendors to be installed before this module</li>
+		<li>Requires DnnRadTagCloud version 1.1.2</li>
 	</ul>
 	<ul>		
 		<li>Merged changes from CodePlex which were not included as part of 5.0.3 release</li>
