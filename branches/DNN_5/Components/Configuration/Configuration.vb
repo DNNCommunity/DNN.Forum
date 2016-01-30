@@ -369,30 +369,17 @@ Namespace DotNetNuke.Modules.Forum
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public ReadOnly Property SearchTagSearchTabID() As Integer
+        Public ReadOnly Property SearchTabID() As Integer
             Get
-                Dim retval As Integer = -1
                 Dim objModules As New DotNetNuke.Entities.Modules.ModuleController()
+                Dim SearchModule As DotNetNuke.Entities.Modules.ModuleInfo
+                SearchModule = objModules.GetModuleByDefinition(CurrentPortalSettings.PortalId, "Search Results")
 
-                For Each modu As DotNetNuke.Entities.Modules.ModuleInfo In objModules.GetModulesByDefinition(CurrentPortalSettings.PortalId, "Content List")
-
-                    Dim ctrl As TabController = New TabController()
-                    Dim tab As DotNetNuke.Entities.Tabs.TabInfo = ctrl.GetTab(modu.TabID, CurrentPortalSettings.PortalId)
-
-                    If tab IsNot Nothing Then
-                        If tab.TabName = "Tag Search Results" Then
-                            retval = tab.TabID
-                            Continue For
-                        Else
-                            log.Debug("Tab: " + tab.TabName)
-                        End If
-                    End If
-                Next
-
-                If retval = -1 Then
-                    log.Error("Tag Search Results -page not found: " + objModules.GetModulesByDefinition(CurrentPortalSettings.PortalId, "Content List").Count.ToString)
+                If SearchModule IsNot Nothing Then
+                    Return SearchModule.TabID
+                Else
+                    Return -1
                 End If
-                Return retval
             End Get
         End Property
 

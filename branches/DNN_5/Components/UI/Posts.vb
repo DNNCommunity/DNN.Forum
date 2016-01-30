@@ -738,23 +738,24 @@ Namespace DotNetNuke.Modules.Forum
                 ddlViewDescending.Visible = False
             End If
 
-            ' Tags
-            Me.tagsControl = New DotNetNuke.Web.UI.WebControls.Tags
-            With tagsControl
-                .ID = "tagsControl"
-                ' if we come up w/ our own tagging window, this needs to be changed to false.
-                .AllowTagging = HttpContext.Current.Request.IsAuthenticated
-                .NavigateUrlFormatString = DotNetNuke.Common.Globals.NavigateURL(PortalUtilityClass.SearchTagSearchTabID(PortalID), "", "Tag={0}")
-                .RepeatDirection = "Horizontal"
-                .Separator = ","
-                ' TODO: We may want to show this in future, for now we are leaving categories out of the mix.
-                .ShowCategories = False
-                .ShowTags = True
-                .AddImageUrl = "~/images/add.gif"
-                .CancelImageUrl = "~/images/lt.gif"
-                .SaveImageUrl = "~/images/save.gif"
-                .CssClass = "SkinObject"
-            End With
+            If objConfig.EnableTagging Then
+                Me.tagsControl = New DotNetNuke.Web.UI.WebControls.Tags
+                With tagsControl
+                    .ID = "tagsControl"
+                    ' if we come up w/ our own tagging window, this needs to be changed to false.
+                    .AllowTagging = HttpContext.Current.Request.IsAuthenticated
+                    .NavigateUrlFormatString = DotNetNuke.Common.Globals.NavigateURL(objConfig.SearchTabID, "", "Tag={0}")
+                    .RepeatDirection = "Horizontal"
+                    .Separator = ","
+                    ' TODO: We may want to show this in future, for now we are leaving categories out of the mix.
+                    .ShowCategories = False
+                    .ShowTags = True
+                    .AddImageUrl = "~/images/add.gif"
+                    .CancelImageUrl = "~/images/lt.gif"
+                    .SaveImageUrl = "~/images/save.gif"
+                    .CssClass = "SkinObject"
+                End With
+            End If
 
             ' Quick Reply
             Me.txtQuickReply = New TextBox
@@ -926,8 +927,10 @@ Namespace DotNetNuke.Modules.Forum
                     Controls.Add(cmdSubmit)
                     Controls.Add(cmdVote)
                 End If
+                If objConfig.EnableTagging Then
+                    Controls.Add(tagsControl)
+                End If
 
-                Controls.Add(tagsControl)
                 Controls.Add(ddlViewDescending)
                 If objConfig.HideSearchButton = False Then
                     Controls.Add(txtForumSearch)
@@ -1033,7 +1036,9 @@ Namespace DotNetNuke.Modules.Forum
                     trcRating.Enabled = False
                 End If
 
-                tagsControl.ContentItem = DotNetNuke.Entities.Content.Common.Util.GetContentController().GetContentItem(objThread.ContentItemId)
+                If objConfig.EnableTagging Then
+                    tagsControl.ContentItem = DotNetNuke.Entities.Content.Common.Util.GetContentController().GetContentItem(objThread.ContentItemId)
+                End If
 
                 PostCollection = ctlPost.PostGetAll(ThreadID, PostPage, CurrentForumUser.PostsPerPage, ForumControl.Descending, PortalID)
             Catch exc As Exception

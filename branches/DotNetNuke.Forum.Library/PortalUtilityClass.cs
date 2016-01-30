@@ -31,38 +31,38 @@ namespace DotNetNuke.Forum.Library
             return retval;
         }
 
-        public static int SearchTagSearchTabID(int portalId)
-        {
-            int retval = -1;
-            ModuleController controller = new ModuleController();
-            try
-            {
-                TabController tabC = new TabController();
-                foreach (ModuleInfo mod in controller.GetModulesByDefinition(portalId, "Content List"))
-                {
-                    TabInfo tabi = tabC.GetTab(mod.TabID, portalId);
-                    if (tabi != null)
-                    {
-                        if (tabi.TabName == "Tag Search Results")
-                        {
-                            retval = tabi.TabID;
-                        }
-                        else
-                        {
-                            log.Debug("Tab: " + tabi.TabName);
-                        }
-                    }
-                }
-            }
-            finally
-            {
-            }
-            if (retval == -1)
-            {
-                log.Error("Tag Search Results -page not found: " + controller.GetModulesByDefinition(portalId, "Content List").Count.ToString());
-            }
-            return retval;
-        }
+        //public static int SearchTagSearchTabID(int portalId)
+        //{
+        //    int retval = -1;
+        //    ModuleController controller = new ModuleController();
+        //    try
+        //    {
+        //        TabController tabC = new TabController();
+        //        foreach (ModuleInfo mod in controller.GetModulesByDefinition(portalId, "Content List"))
+        //        {
+        //            TabInfo tabi = tabC.GetTab(mod.TabID, portalId);
+        //            if (tabi != null)
+        //            {
+        //                if (tabi.TabName == "Tag Search Results")
+        //                {
+        //                    retval = tabi.TabID;
+        //                }
+        //                else
+        //                {
+        //                    log.Debug("Tab: " + tabi.TabName);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    finally
+        //    {
+        //    }
+        //    if (retval == -1)
+        //    {
+        //        log.Error("Tag Search Results -page not found: " + controller.GetModulesByDefinition(portalId, "Content List").Count.ToString());
+        //    }
+        //    return retval;
+        //}
  
 
  
