@@ -1625,11 +1625,6 @@ Namespace DotNetNuke.Modules.Forum
                 End If
                 intPostCount += 1
 
-                ' inject Advertisment into forum post list
-                If (objConfig.AdsAfterFirstPost AndAlso intPostCount = 2) OrElse ((objConfig.AddAdverAfterPostNo <> 0) AndAlso ((intPostCount - 1) Mod objConfig.AddAdverAfterPostNo = 0)) Then
-                    Me.RenderAdvertisementPost(wr)
-                    RenderSpacerRow(wr)
-                End If
             Next
             RenderTableEnd(wr) ' </table>
             RenderCellEnd(wr) ' </td> 
@@ -3203,48 +3198,6 @@ Namespace DotNetNuke.Modules.Forum
             RenderTableEnd(wr) ' </table>
             RenderCellEnd(wr) ' </td> 
             RenderRowEnd(wr) ' </tr>  
-        End Sub
-
-        ''' <summary>
-        ''' Renders structure of Advertisement content
-        ''' </summary>
-        ''' <history>
-        ''' 	[b.waluszko]	21/10/2010	Created
-        ''' </history>
-        Private Sub RenderAdvertisementPost(ByVal wr As HtmlTextWriter)
-            RenderRowBegin(wr) ' <tr>
-            wr.Write("<td class=""AdvertisementPost"" colspan=""2"">")
-            wr.Write(objConfig.AdvertisementText)
-
-            'check if there are some banners to render
-            Dim advertController As New AdvertController
-            Dim bannerController As New BannerController
-
-            Dim adverts As IEnumerable(Of AdvertInfo)
-            adverts = advertController.VendorsGet(Me.ModuleID).Where(Function(ad) ad.IsEnabled = True)
-
-            'first check vendors
-            If (adverts IsNot Nothing) AndAlso adverts.Count > 0 Then
-                wr.Write("<br/>")
-                For Each advert As AdvertInfo In adverts
-                    Dim banners As List(Of BannerInfo)
-
-                    'second check banners connected to vendors
-                    banners = advertController.BannersGet(advert.VendorId)
-                    If (banners IsNot Nothing) AndAlso banners.Count > 0 Then
-                        For Each b As BannerInfo In banners
-                            advertController.BannerViewIncrement(b.BannerId)
-                            Dim fileInfo As DotNetNuke.Services.FileSystem.FileInfo = CType(FileManager.Instance.GetFile(Integer.Parse(b.ImageFile.Split(Char.Parse("="))(1))), Services.FileSystem.FileInfo)
-                            wr.Write(bannerController.FormatBanner(advert.VendorId, b.BannerId, b.BannerTypeId, b.BannerName, fileInfo.RelativePath, b.Description, b.URL, b.Width, b.Height, "L", objConfig.CurrentPortalSettings.HomeDirectory) & "&nbsp;")
-                        Next
-
-                    End If
-
-                Next
-            End If
-
-            wr.Write("</td>")
-            RenderRowEnd(wr) ' </tr>
         End Sub
 
 #End Region

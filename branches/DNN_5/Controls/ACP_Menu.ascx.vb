@@ -55,7 +55,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 		Dim cmdRanking As LinkButton
 		Dim cmdRating As LinkButton
         Dim cmdPopStatus As LinkButton
-        Dim cmdAdvertisement As LinkButton
+        'Dim cmdAdvertisement As LinkButton
 		Dim cmdEmailSettings As LinkButton
 		Dim cmdEmailQueue As LinkButton
 		Dim cmdEmailQueueTaskDetail As LinkButton
@@ -236,8 +236,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					ControlToLoad = Constants.ctlRating
 				Case AdminAjaxControl.PopStatus
                     ControlToLoad = Constants.ctlPopStatus
-                Case AdminAjaxControl.Advertisement
-                    ControlToLoad = Constants.ctlAdvertisement
+                    'Case AdminAjaxControl.Advertisement
+                    '    ControlToLoad = Constants.ctlAdvertisement
                 Case AdminAjaxControl.EmailSettings
                     ControlToLoad = Constants.ctlEmailSettings
 				Case AdminAjaxControl.EmailTemplate
@@ -380,8 +380,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
 					Case Constants.ctlRating
 						ExpandSection = ExpandMenuSection.Content
 					Case Constants.ctlPopStatus
-                        ExpandSection = ExpandMenuSection.Content
-                    Case Constants.ctlAdvertisement
                         ExpandSection = ExpandMenuSection.Content
                     Case Constants.ctlEmailSettings
                         ExpandSection = ExpandMenuSection.Email
@@ -936,30 +934,30 @@ Namespace DotNetNuke.Modules.Forum.ACP
 				wr.RenderEndTag() ' </tr>
 
                 'Advertisement tab
-                wr.RenderBeginTag(HtmlTextWriterTag.Tr) ' <tr>
-                wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
-                wr.RenderBeginTag(HtmlTextWriterTag.Td) '<td> 
+                'wr.RenderBeginTag(HtmlTextWriterTag.Tr) ' <tr>
+                'wr.AddAttribute(HtmlTextWriterAttribute.Width, "15")
+                'wr.RenderBeginTag(HtmlTextWriterTag.Td) '<td> 
 
-                If ControlToLoad = Constants.ctlAdvertisement Then
-                    wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
-                    wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
-                    wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
-                    wr.AddAttribute(HtmlTextWriterAttribute.Title, imgSelectedToolTip)
-                    wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <img> 
-                    wr.RenderEndTag() ' </img>
-                End If
-                wr.RenderEndTag() ' </td>
+                'If ControlToLoad = Constants.ctlAdvertisement Then
+                '    wr.AddAttribute(HtmlTextWriterAttribute.Border, "0")
+                '    wr.AddAttribute(HtmlTextWriterAttribute.Src, imgSelectedURL)
+                '    wr.AddAttribute(HtmlTextWriterAttribute.Alt, imgSelectedToolTip)
+                '    wr.AddAttribute(HtmlTextWriterAttribute.Title, imgSelectedToolTip)
+                '    wr.RenderBeginTag(HtmlTextWriterTag.Img) ' <img> 
+                '    wr.RenderEndTag() ' </img>
+                'End If
+                'wr.RenderEndTag() ' </td>
 
-                wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
-                wr.RenderBeginTag(HtmlTextWriterTag.Td) '<td> 
-                If EnableAjax Then
-                    cmdAdvertisement.RenderControl(wr)
-                Else
-                    url = Utilities.Links.ACPControlLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID, AdminAjaxControl.Advertisement)
-                    RenderLinkButton(wr, url, Localization.GetString("cmdAdvertisement", Me.LocalResourceFile), "Forum_Link")
-                End If
-                wr.RenderEndTag() ' </td>
-                wr.RenderEndTag() ' </tr>
+                'wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_UCP_Item")
+                'wr.RenderBeginTag(HtmlTextWriterTag.Td) '<td> 
+                'If EnableAjax Then
+                '    cmdAdvertisement.RenderControl(wr)
+                'Else
+                '    url = Utilities.Links.ACPControlLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, ModuleID, AdminAjaxControl.Advertisement)
+                '    RenderLinkButton(wr, url, Localization.GetString("cmdAdvertisement", Me.LocalResourceFile), "Forum_Link")
+                'End If
+                'wr.RenderEndTag() ' </td>
+                'wr.RenderEndTag() ' </tr>
 
                 'Close Section
                 wr.RenderEndTag() ' </table>
@@ -1319,16 +1317,16 @@ Namespace DotNetNuke.Modules.Forum.ACP
 			End With
 			Controls.Add(cmdPopStatus)
 
-            Me.cmdAdvertisement = New LinkButton
-            With cmdAdvertisement
-                .CssClass = "Forum_Link"
-                .ID = "cmdAdvertisement"
-                .Text = Localization.GetString("cmdAdvertisement", Me.LocalResourceFile)
-                .CommandArgument = (CInt(AdminAjaxControl.Advertisement)).ToString()
-                .CausesValidation = False
-                AddHandler cmdAdvertisement.Click, AddressOf PageButton_Click
-            End With
-            Controls.Add(cmdAdvertisement)
+            'Me.cmdAdvertisement = New LinkButton
+            'With cmdAdvertisement
+            '    .CssClass = "Forum_Link"
+            '    .ID = "cmdAdvertisement"
+            '    .Text = Localization.GetString("cmdAdvertisement", Me.LocalResourceFile)
+            '    .CommandArgument = (CInt(AdminAjaxControl.Advertisement)).ToString()
+            '    .CausesValidation = False
+            '    AddHandler cmdAdvertisement.Click, AddressOf PageButton_Click
+            'End With
+            'Controls.Add(cmdAdvertisement)
 
             Me.cmdEmailSettings = New LinkButton
             With cmdEmailSettings

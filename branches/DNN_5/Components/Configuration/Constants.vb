@@ -582,17 +582,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' <remarks></remarks>
         Public Const ADS_AFTER_FIRST_POST As String = "AdsAfterFirstPost"
 
-        ''' <summary>
-        ''' A String used to identify a module setting.
-        ''' </summary>
-        ''' <remarks></remarks>
-        Public Const ADD_ADVER_AFTER_POST_NO As String = "AdsAfterPostNo"
-
-        ''' <summary>
-        ''' A String used to identify a module setting.
-        ''' </summary>
-        ''' <remarks></remarks>
-        Public Const ADVERTISEMENT_TEXT As String = "AdvertisementText"
 
 #End Region
 
@@ -616,7 +605,6 @@ Namespace DotNetNuke.Modules.Forum
 		Public Const ctlRanking As String = "ACP_Ranking.ascx"
 		Public Const ctlRating As String = "ACP_Rating.ascx"
         Public Const ctlPopStatus As String = "ACP_PopStatus.ascx"
-        Public Const ctlAdvertisement As String = "ACP_Advertisement.ascx"
 		Public Const ctlEmailSettings As String = "ACP_Email.ascx"
 		Public Const ctlEmailTemplate As String = "ACP_EmailTemplate.ascx"
 		Public Const ctlEmailQueue As String = "ACP_EmailQueue.ascx"

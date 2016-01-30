@@ -16,6 +16,7 @@
 	<ul>		
 		<li>Upgrade to DNN8</li>
 		<li>Requires separate DNN.Vendors module https://github.com/DNNCommunity/DNN.Vendors to be installed before this module</li>
+		<li>Removed advertisement</li>
 		<li></li>
 	</ul>
 	<p class="Owner">

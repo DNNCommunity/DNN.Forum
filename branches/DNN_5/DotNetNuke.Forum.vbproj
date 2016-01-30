@@ -184,7 +184,6 @@
     <Compile Include="Components\Configuration\ForumPreConfig.vb" />
     <Compile Include="Components\Content\PostConnector.vb" />
     <Compile Include="Components\Content\Terms.vb" />
-    <Compile Include="Components\Controllers\AdvertController.vb" />
     <Compile Include="Components\Controllers\AnswerController.vb" />
     <Compile Include="Components\Controllers\AttachmentController.vb" />
     <Compile Include="Components\Controllers\EmailTemplateController.vb" />
@@ -214,7 +213,6 @@
     <Compile Include="Components\Email\Queue\EmailQueueTask.vb" />
     <Compile Include="Components\Email\Queue\IEmailQueueable.vb" />
     <Compile Include="Components\Email\Queue\IEmailQueueableCleanupTask.vb" />
-    <Compile Include="Components\Entities\AdvertInfo.vb" />
     <Compile Include="Components\Entities\AnswerInfo.vb" />
     <Compile Include="Components\Entities\AttachmentInfo.vb" />
     <Compile Include="Components\Entities\EmailTemplateInfo.vb" />
@@ -259,13 +257,6 @@
     <Compile Include="Components\Utilities\Links.vb" />
     <Compile Include="Components\Utilities\SearchHelper.vb" />
     <Compile Include="Components\WordFilter\ForumFilterWordCollection.vb" />
-    <Compile Include="Controls\ACP_Advertisement.ascx.designer.vb">
-      <DependentUpon>ACP_Advertisement.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ACP_Advertisement.ascx.vb">
-      <DependentUpon>ACP_Advertisement.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Controls\ACP_ForumEdit.ascx.designer.vb">
       <DependentUpon>ACP_ForumEdit.ascx</DependentUpon>
     </Compile>
@@ -661,7 +652,7 @@
     <Compile Include="Providers\DataProviders\SqlDataProvider\SqlDataProvider.vb" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="05.00.05.txt" />
+    <Content Include="05.00.06.txt" />
     <Content Include="BuildScripts\ModulePackage.targets">
       <SubType>Designer</SubType>
     </Content>
@@ -702,7 +693,6 @@
     <Content Include="App_LocalResources\ACP.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Controls\ACP_Advertisement.ascx" />
     <Content Include="Controls\App_LocalResources\ACP_Filter.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
