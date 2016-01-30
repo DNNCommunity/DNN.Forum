@@ -23,7 +23,6 @@ Option Explicit On
 Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Services.FileSystem
 Imports DotNetNuke.Forum.Library
-Imports Dnn.Modules.Vendors.Components
 
 Namespace DotNetNuke.Modules.Forum
 
