@@ -1,6 +1,6 @@
 <%@ Control Language="vb" AutoEventWireup="false" Explicit="true" Codebehind="MCP_ReportedUsers.ascx.vb" Inherits="DotNetNuke.Modules.Forum.MCP.ReportedUsers" %>
 <%@ Register TagPrefix="dnnforum" Namespace="DotNetNuke.Modules.Forum.WebControls" Assembly="DotNetNuke.Modules.Forum" %>
-<%@ Register Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
+<%@ Register Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
 <div class="dnnForm mcpReportedUsers dnnClear">
 	<h2 class="dnnFormSectionHead">Moderator's Control Panel: Reported Users</h2>
 	<dnnweb:DnnGrid runat="server" ID="dnngridReportedUsers" AllowPaging="true" AllowSorting="false" AutoGenerateColumns="false" AllowCustomPaging="true" PageSize="25" Skin="Sitefinity">

@@ -1,5 +1,5 @@
 <%@ Control Language="vb" AutoEventWireup="false" Explicit="true" Codebehind="UCP_Bookmark.ascx.vb" Inherits="DotNetNuke.Modules.Forum.UCP.Bookmark" %>
-<%@ Register Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
+<%@ Register Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
 <div class="dnnForm ucpBookmark dnnClear">
 	<h2 class="dnnFormSectionHead"><asp:Label id="lblTitle" runat="server" resourcekey="Bookmark" EnableViewState="false" /></h2>
 	<dnnweb:DnnGrid runat="server" ID="gridBookmarks" AllowPaging="true" AllowSorting="false" AutoGenerateColumns="false" AllowCustomPaging="true" Skin="Sitefinity">

@@ -1,6 +1,6 @@
 <%@ Control Language="vb" AutoEventWireup="false" Explicit="true" Codebehind="MCP_ReportedPost.ascx.vb" Inherits="DotNetNuke.Modules.Forum.MCP.ReportedPost" %>
 <%@ Register TagPrefix="dnnforum" Namespace="DotNetNuke.Modules.Forum.WebControls" Assembly="DotNetNuke.Modules.Forum" %>
-<%@ Register Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
+<%@ Register Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
 <%@ Register assembly="Telerik.Web.UI" namespace="Telerik.Web.UI" tagprefix="telerik" %>
 <div class="dnnForm mcpReportedPost dnnClear">
     <h2 class="dnnFormSectionHead"><asp:Label id="lblTitle" runat="server" resourcekey="ReportedPost.Header" EnableViewState="false" /></h2>

@@ -1,5 +1,5 @@
 <%@ Control Language="vb" AutoEventWireup="false" Explicit="true" Codebehind="MCP_BannedUsers.ascx.vb" Inherits="DotNetNuke.Modules.Forum.MCP.BannedUsers" %>
-<%@ Register Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
+<%@ Register Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
 <%@ Register TagPrefix="wrapper" Namespace="Telerik.Web.UI" Assembly="Telerik.Web.UI" %>
 <div class="dnnForm mcpBannedUsers dnnClear">
 	<h2 class="dnnFormSectionHead">Moderator's Control Panel: Banned Users</h2>
