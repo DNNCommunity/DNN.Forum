@@ -150,6 +150,9 @@ Namespace DotNetNuke.Modules.Forum
 
 #End Region
 
-	End Class
+        Private Sub Page_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
+            DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Forum/js/Posts.js")
+        End Sub
+    End Class
 
 End Namespace

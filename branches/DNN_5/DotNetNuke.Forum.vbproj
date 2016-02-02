@@ -661,6 +661,7 @@
     <None Include="My Project\ForumClassDiagram.cd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="js\Posts.js" />
     <Content Include="packages.config" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.00.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.10.05.SqlDataProvider" />

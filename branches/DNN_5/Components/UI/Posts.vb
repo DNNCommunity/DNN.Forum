@@ -1706,7 +1706,7 @@ Namespace DotNetNuke.Modules.Forum
             RenderCellEnd(wr) ' </td> 
 
             RenderCellBegin(wr, "Forum_Header", "", "", "left", "", "", "")      '<td>
-            RenderDivBegin(wr, "", "Forum_HeaderText") ' <span>
+            RenderDivBegin(wr, "", "Forum_HeaderText", "data-date", Post.CreatedDate.ToUniversalTime().Subtract(New DateTime(1970, 1, 1)).TotalMilliseconds.ToString()) ' <span>
             wr.Write(strPostedDate)
             RenderDivEnd(wr) ' </span>
             RenderCellEnd(wr) ' </td> 

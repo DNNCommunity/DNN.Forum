@@ -211,6 +211,27 @@ Namespace DotNetNuke.Modules.Forum
         End Sub
 
         ''' <summary>
+        ''' Starts a div tag built w/ an HtmlTextWriter
+        ''' </summary>
+        ''' <param name="wr">The HtmlTextWriter being used.</param>
+        ''' <param name="Id">The ID of the div.</param>
+        ''' <param name="CssClass">The css class to apply to the div.</param>
+        ''' <remarks>Just a div begin tag. (Similar to a stringbuilder)</remarks>
+        Protected Sub RenderDivBegin(ByVal wr As HtmlTextWriter, ByVal Id As String, ByVal CssClass As String, ByVal attr As String, ByVal attrVal As String)
+            If Id.Length > 0 Then
+                wr.AddAttribute(HtmlTextWriterAttribute.Id, Id)
+            End If
+            If CssClass.Length > 0 Then
+                wr.AddAttribute(HtmlTextWriterAttribute.Class, CssClass)
+            End If
+            If attr.Length > 0 Then
+                wr.AddAttribute(attr, attrVal)
+            End If
+            wr.RenderBeginTag(HtmlTextWriterTag.Div) ' <div>
+
+        End Sub
+
+        ''' <summary>
         ''' Ends a div tag built w/ an HtmlTextWriter
         ''' </summary>
         ''' <param name="wr">The HtmlTextWriter being used.</param>
