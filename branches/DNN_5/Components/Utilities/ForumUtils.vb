@@ -33,6 +33,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
     ''' </summary>
     ''' <remarks></remarks>
     Public Class ForumUtils
+        Shared log As Instrumentation.DnnLogger = Instrumentation.DnnLogger.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString())
 
 #Region "General Methods"
 
@@ -962,8 +963,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
                     Dim objUser As Users.UserInfo = Users.UserController.Instance.GetCurrentUserInfo
                     displayCreatedDate = objUser.LocalTime(GMTTime)
                 Else
-                    displayCreatedDate = TimeZoneInfo.ConvertTime(displayCreatedDate.ToUniversalTime(), TimeZoneInfo.Utc, TimeZoneInfo.FindSystemTimeZoneById(Portals.PortalController.GetPortalSetting("TimeZone", GetPortalSettings().PortalId, GetPortalSettings().TimeZone.Id)))
-
+                    displayCreatedDate = TimeZoneInfo.ConvertTime(displayCreatedDate.ToUniversalTime(), TimeZoneInfo.Utc, GetPortalSettings().TimeZone)
                 End If
             Catch
                 ' The added or subtracted value results in an un-representable DateTime. Possibly a problem with TimeZone values.
