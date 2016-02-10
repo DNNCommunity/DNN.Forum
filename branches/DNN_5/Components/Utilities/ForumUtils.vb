@@ -957,45 +957,13 @@ Namespace DotNetNuke.Modules.Forum.Utilities
             Dim displayCreatedDate As DateTime = value
 
             Try
-                'Dim _portalSettings As Portals.PortalSettings = Portals.PortalController.GetCurrentPortalSettings
-
-                ''Post Time is entered into the database using getdate so if your SQL Server
-                'Dim Posttime As DateTime = value
-                ''We need to know the servers timezone, we will use this information to convert the post time to a GMT time & date
-                'Dim tz As System.TimeZone = System.TimeZone.CurrentTimeZone
-                'Dim LocalTimeZone As Double = tz.GetUtcOffset(DateTime.Parse("00:00")).TotalMinutes
-
-                'we also want to take into account Daylight savings time, since this will affect the calculation as well. we will calculate daylight savings time based on when the post was made and
-                'not based on what the current date and time is. i.e was the post made when  daylight savings time was in affect or not.
-                'If tz.IsDaylightSavingTime(Posttime) Then
-                '	LocalTimeZone -= tz.GetDaylightChanges(Posttime.Year).Delta.TotalMinutes
-                'End If
-
-                'we need to invert the timezone, when the timezone is GMT-8 for example we need to add 8 hours
-                'to get GMT and if the timezone is GMT+2 for Example we need to deduct 2 hours to get GMT
-                'Dim InvertedTimeZone As Double = 0 - LocalTimeZone
-                'Calculate the GMT time that the post was made, all calculations will be based on this
-                'Dim GMTTime As DateTime = Posttime.AddMinutes(InvertedTimeZone)
-                'the portal time zone will be a our fallback timezone, this will allow you to use the portals configured timezone if all else fails
-                'Dim PortalTimeZone As Double = _portalSettings.TimeZoneOffset
-                'calculate the portal time that the post was made at
-                'Dim PortalTime As DateTime = GMTTime.AddMinutes(PortalTimeZone)
-                ''we need to get the forums configured timezone, if the forum is not configured to allow us to use the users timezone this is what we will use
-                'Dim ForumTimeZone As Double = objConfig.TimeZone
-                'calculate the forum time that the post was made, using the forums timezone.
-                'Dim ForumTime As DateTime = GMTTime.AddMinutes(ForumTimeZone)
-                ' Set the time and reset later if per user is enabled
-                'displayCreatedDate = PortalTime
-
-                Dim postTime As DateTime = displayCreatedDate
-                Dim GMTTime As DateTime = System.TimeZoneInfo.ConvertTimeToUtc(displayCreatedDate, GetPortalSettings().TimeZone)
-
                 If HttpContext.Current.Request.IsAuthenticated Then
+                    Dim GMTTime As DateTime = displayCreatedDate.ToUniversalTime()
                     Dim objUser As Users.UserInfo = Users.UserController.Instance.GetCurrentUserInfo
-                    'Dim UserTimeZone As Double = objUser.Profile.TimeZone
-                    '               Dim UserTime As DateTime = GMTTime.AddMinutes(UserTimeZone)
-                    '               displayCreatedDate = UserTime
                     displayCreatedDate = objUser.LocalTime(GMTTime)
+                Else
+                    displayCreatedDate = TimeZoneInfo.ConvertTime(displayCreatedDate.ToUniversalTime(), TimeZoneInfo.Utc, TimeZoneInfo.FindSystemTimeZoneById(Portals.PortalController.GetPortalSetting("TimeZone", GetPortalSettings().PortalId, GetPortalSettings().TimeZone.Id)))
+
                 End If
             Catch
                 ' The added or subtracted value results in an un-representable DateTime. Possibly a problem with TimeZone values.
