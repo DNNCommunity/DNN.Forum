@@ -7,7 +7,7 @@ DesktopModules\Forum\App_LocalResources\PublicProfile.ascx.resx
 DesktopModules\Forum\Components\Emoticons\EmoticonCollection.vb
 DesktopModules\Forum\Components\Emoticons\EmoticonController.vb
 DesktopModules\Forum\Components\Emoticons\EmoticonInfo.vb
-DesktopModules\Forum\Components\Emoticons\
+DesktopModules\Forum\Components\Emoticons\ 
 DesktopModules\Forum\Components\PrivateMessaging\ForumPMController.vb
 DesktopModules\Forum\Components\PrivateMessaging\ForumPMCountInfo.vb
 DesktopModules\Forum\Components\PrivateMessaging\ForumPMInfo.vb
