@@ -19,7 +19,7 @@
 		<div class="dnnFormItem">
 			<dnn:label id="plBody" runat="server" Suffix=":" controlname="teContent" />
 			<div class="dnnLeft">
-				<dnn:texteditor id="teContent" runat="server" width="450" height="350px" />
+				<dnn:texteditor id="teContent" runat="server" />
 			</div>
 		</div>
 		<div class="dnnFormItem" id="divAttachments" runat="server">
