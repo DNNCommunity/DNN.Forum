@@ -298,3 +298,19 @@ A.Forum_ib_aggregate:link, A.Forum_ib_aggregate:visited, A.Forum_ib_aggregate:ac
 .Forum_Container .tags li a{font-size: 11px;font-family: Helvetica, Arial, San-Serif;color:#0088CE; font-weight: bold;}
 .Forum_Container .tags li a:hover{color:#006396;}
 .AdvertisementPost {border: thin solid #BDBDBD;padding: 10px;}
+
+
+
+.dnnForm .dnnLeft {    
+    float: left;
+    width: 100%;
+}
+
+.dnnFormItem textarea {
+    width: 100%;
+    max-width: 100%;
+}
+
+.dnnLabel {	
+    width: 12%;
+}
