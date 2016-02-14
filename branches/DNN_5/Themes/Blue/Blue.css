@@ -302,7 +302,13 @@ A.Forum_ib_aggregate:link, A.Forum_ib_aggregate:visited, A.Forum_ib_aggregate:ac
 
 
 .dnnForm .dnnLeft {    
-    float: left;width: 99%;
+    float: left;
+    width: 100%;
+}
+
+.dnnFormItem textarea {
+    width: 100%;
+    max-width: 100%;
 }
 
 .dnnLabel {	
