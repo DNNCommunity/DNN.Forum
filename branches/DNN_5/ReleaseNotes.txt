@@ -16,7 +16,7 @@
 	<ul>		
 		<li>Upgrade to DNN8</li>
 		<li>Removed advertisement</li>
-		<li></li>
+		<li>Cleaning deprecated methods</li>
 	</ul>
 	<p class="Owner">
 		<b>Version 5.0.5</b><br /><br />

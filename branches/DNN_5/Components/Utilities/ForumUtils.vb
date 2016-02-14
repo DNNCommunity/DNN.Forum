@@ -25,6 +25,7 @@ Imports DotNetNuke.UI.UserControls
 Imports DotNetNuke.Web.Client.ClientResourceManagement
 Imports DotNetNuke.Services.FileSystem
 Imports DotNetNuke.Forum.Library
+Imports DotNetNuke.Framework.JavaScriptLibraries
 
 Namespace DotNetNuke.Modules.Forum.Utilities
 
@@ -45,7 +46,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
         Public Shared Sub RegisterClientDependencies(ByVal Page As CDefault)
             ClientAPI.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn)
             Page.ClientScript.RegisterClientScriptInclude("hoverintent", ResolveUrl("~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js"))
-            jQuery.RequestDnnPluginsRegistration()
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins)
             Page.ClientScript.RegisterClientScriptBlock(GetType(LabelControl), "dnnTooltip", "jQuery(document).ready(function($){ $('.dnnTooltip').dnnTooltip();Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function(){$('.dnnTooltip').dnnTooltip();}); });", True)
         End Sub
 

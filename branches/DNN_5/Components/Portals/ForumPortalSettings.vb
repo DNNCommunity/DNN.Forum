@@ -79,7 +79,6 @@ Namespace DotNetNuke.Modules.Forum
                 ps.KeyWords = portal.KeyWords
                 ps.BackgroundFile = portal.BackgroundFile
                 ps.GUID = portal.GUID
-                ps.SiteLogHistory = portal.SiteLogHistory
                 ps.AdminTabId = portal.AdminTabId
                 ps.SuperTabId = portal.SuperTabId
                 ps.SplashTabId = portal.SplashTabId

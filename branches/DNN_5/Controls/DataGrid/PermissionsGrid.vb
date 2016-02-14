@@ -390,7 +390,7 @@ Namespace DotNetNuke.Modules.Forum.Controls
 			If RoleGroupId > -2 Then
                 _roles = objRoleController.GetRolesByGroup(Portals.PortalController.Instance.GetCurrentPortalSettings.PortalId, RoleGroupId)
 			Else
-                _roles = objRoleController.GetPortalRoles(Portals.PortalController.Instance.GetCurrentPortalSettings.PortalId)
+                _roles = New ArrayList(Enumerable.ToArray(Of Security.Roles.RoleInfo)(objRoleController.GetRoles(Portals.PortalController.Instance.GetCurrentPortalSettings.PortalId)))
 			End If
 
 			'CP - This is commented out to avoid showing all users and unauthenticated user rows in permissions grid
