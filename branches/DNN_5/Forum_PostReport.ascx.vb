@@ -118,12 +118,6 @@ Namespace DotNetNuke.Modules.Forum
                 ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
                 If Page.IsPostBack = False Then
-                    If Not Request.UrlReferrer Is Nothing Then
-                        cmdCancel.NavigateUrl = Request.UrlReferrer.ToString()
-                    Else
-                        cmdCancel.NavigateUrl = NavigateURL()
-                    End If
-
                     PopulatePost(_PostInfo)
                     PopulateTemplateDDL()
 
@@ -137,6 +131,14 @@ Namespace DotNetNuke.Modules.Forum
             Catch exc As Exception
                 ProcessModuleLoadException(Me, exc)
             End Try
+        End Sub
+
+        Protected Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
+            If Not ViewState("UrlReferrer") Is Nothing Then
+                Response.Redirect(CType(ViewState("UrlReferrer"), String), False)
+            Else
+                Response.Redirect(NavigateURL())
+            End If
         End Sub
 
         ''' <summary>
