@@ -311,6 +311,6 @@ A.Forum_ib_aggregate:link, A.Forum_ib_aggregate:visited, A.Forum_ib_aggregate:ac
     max-width: 100%;
 }
 
-.dnnLabel {	
+.dnnFormItem > .dnnLabel {	
     width: 12%;
 }
