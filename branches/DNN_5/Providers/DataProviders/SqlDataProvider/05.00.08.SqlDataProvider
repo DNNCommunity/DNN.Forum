@@ -92,7 +92,7 @@ ALTER TABLE {databaseOwner}{objectQualifier}Forum_ThreadsRead ADD
 	)
 GO
 
-if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_ThreadsRead_{objectQualifier}Forum_Forums'))
+if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_TrackedForums_{objectQualifier}Forum_Forums'))
 ALTER TABLE {databaseOwner}{objectQualifier}Forum_TrackedForums ADD 
 	CONSTRAINT FK_{objectQualifier}Forum_TrackedForums_{objectQualifier}Forum_Forums FOREIGN KEY 
 	(
