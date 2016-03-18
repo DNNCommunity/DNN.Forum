@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DNN_Forum" type="Module" version="05.00.08">
+		<package name="DNN_Forum" type="Module" version="05.00.06">
 			<friendlyName>Forum</friendlyName>
 			<description>The core forum module for DotNetNuke.</description>
 			<owner>
@@ -330,7 +330,7 @@
 						</file>
 					</files>
 				</component>
-				<component type="Cleanup" version="05.00.05" fileName="05.00.06.txt" />	
+				<component type="Cleanup" version="05.00.05" fileName="DesktopModules\Forum\05.00.06.txt" />	
 			</components>
 		</package>
 	</packages>
