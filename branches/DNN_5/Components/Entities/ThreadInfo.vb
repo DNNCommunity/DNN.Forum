@@ -266,8 +266,8 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property LastPostShortBody() As String
 			Get
 				Dim strBody As String = LastApprovedPost.Body
-				Dim strTrimedBody As String = String.Empty
-				strTrimedBody = Utilities.ForumUtils.FormatToolTip(Utilities.ForumUtils.TrimString(strBody, 100))
+                Dim strTrimedBody As String = String.Empty
+                strTrimedBody = Utilities.ForumUtils.FormatToolTip(Utilities.ForumUtils.TrimString(HtmlUtils.Clean(strBody, True), 100))
 				If objConfig.EnableBadWordFilter Then
 					strTrimedBody = Utilities.ForumUtils.FormatProhibitedWord(strTrimedBody, LastApprovedPost.CreatedDate, PortalID)
 				End If
