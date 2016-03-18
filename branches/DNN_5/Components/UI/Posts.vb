@@ -443,10 +443,13 @@ Namespace DotNetNuke.Modules.Forum
             MyBase.New(forum)
 
             Dim user As ForumUserInfo = CurrentForumUser
-
+            Dim objPost As PostInfo = Nothing
             If PostID > 0 Then
                 Dim objPostCnt As New PostController
-                Dim objPost As PostInfo = objPostCnt.GetPostInfo(PostID, PortalID)
+                objPost = objPostCnt.GetPostInfo(PostID, PortalID)
+            End If
+
+            If Not objPost Is Nothing Then
                 ThreadID = objPost.ThreadID
 
                 ' we need to determine which page to return based on number of posts in this thread, the users posts per page count, and their asc/desc view, where this post is
@@ -480,141 +483,142 @@ Namespace DotNetNuke.Modules.Forum
                 If ThreadID > 0 Then
                     Dim cntThread As New ThreadController()
                     objThread = cntThread.GetThread(ThreadID)
+                    If Not objThread Is Nothing Then
+                        ' we need to see if there is a content item for the thread, if not create one.
+                        If objThread.ContentItemId < 1 Then
+                            Dim cntContent As New Content
+                            objThread.ModuleID = ModuleID
+                            objThread.TabID = TabID
+                            objThread.SitemapInclude = objThread.ContainingForum.EnableSitemap
 
-                    ' we need to see if there is a content item for the thread, if not create one.
-                    If objThread.ContentItemId < 1 Then
-                        Dim cntContent As New Content
-                        objThread.ModuleID = ModuleID
-                        objThread.TabID = TabID
-                        objThread.SitemapInclude = objThread.ContainingForum.EnableSitemap
+                            cntContent.CreateContentItem(objThread, TabID)
 
-                        cntContent.CreateContentItem(objThread, TabID)
-
-                        DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateThreadCache(objThread.ThreadID)
-                        objThread = cntThread.GetThread(ThreadID)
-                    End If
-
-                    ' We need to make sure the user's thread pagesize can handle this 
-                    '(problem is, a link can be posted by one user w/ page size of 5 pointing to page 2, if logged in user has pagesize set to 15, there is no page 2)
-                    If Not HttpContext.Current.Request.QueryString("threadpage") Is Nothing Then
-                        Dim urlThreadPage As Integer = Int32.Parse(HttpContext.Current.Request.QueryString("threadpage"))
-                        Dim TotalPosts As Integer = objThread.Replies + 1
-
-                        Dim TotalPages As Integer = CInt(Math.Ceiling(TotalPosts / CurrentForumUser.PostsPerPage))
-                        Dim ThreadPageToShow As Integer
-
-                        ' We need to check if it is possible for a pagesize in the URL for the user browsing (happens when coming from posted link by other user)
-                        If TotalPages >= urlThreadPage Then
-                            ThreadPageToShow = urlThreadPage
-                        Else
-                            ' We know for this user, total pages > user posts per page. Because of this, we know its not user using page change so show thread as normal
-                            ThreadPageToShow = 0
+                            DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateThreadCache(objThread.ThreadID)
+                            objThread = cntThread.GetThread(ThreadID)
                         End If
-                        PostPage = ThreadPageToShow
+
+                        ' We need to make sure the user's thread pagesize can handle this 
+                        '(problem is, a link can be posted by one user w/ page size of 5 pointing to page 2, if logged in user has pagesize set to 15, there is no page 2)
+                        If Not HttpContext.Current.Request.QueryString("threadpage") Is Nothing Then
+                            Dim urlThreadPage As Integer = Int32.Parse(HttpContext.Current.Request.QueryString("threadpage"))
+                            Dim TotalPosts As Integer = objThread.Replies + 1
+
+                            Dim TotalPages As Integer = CInt(Math.Ceiling(TotalPosts / CurrentForumUser.PostsPerPage))
+                            Dim ThreadPageToShow As Integer
+
+                            ' We need to check if it is possible for a pagesize in the URL for the user browsing (happens when coming from posted link by other user)
+                            If TotalPages >= urlThreadPage Then
+                                ThreadPageToShow = urlThreadPage
+                            Else
+                                ' We know for this user, total pages > user posts per page. Because of this, we know its not user using page change so show thread as normal
+                                ThreadPageToShow = 0
+                            End If
+                            PostPage = ThreadPageToShow
+                        End If
                     End If
                 End If
             End If
 
-            ' If the thread info is nothing, it is probably a deleted thread
-            If objThread Is Nothing Then
-                ' we should consider setting type of redirect here?
-
-                MyBase.BasePage.Response.Redirect(Utilities.Links.NoContentLink(TabID, ModuleID), True)
-            End If
-
-            ' Make sure the forum is active 
-            If Not objThread.ContainingForum.IsActive Then
-                ' we should consider setting type of redirect here?
-
-                MyBase.BasePage.Response.Redirect(Utilities.Links.NoContentLink(TabID, ModuleID), True)
-            End If
-
-            ' User might access this page by typing url so better check permission on parent forum
-            If Not (objThread.ContainingForum.PublicView) Then
-                If Not objSecurity.IsAllowedToViewPrivateForum Then
+                ' If the thread info is nothing, it is probably a deleted thread
+                If objThread Is Nothing Then
                     ' we should consider setting type of redirect here?
 
-                    MyBase.BasePage.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
-                End If
-            End If
-
-            If objConfig.OverrideTitle Then
-                Dim Title As String
-                Dim Subject As String
-
-                If objThread.Subject.Length > Constants.SEO_TITLE_LIMIT Then
-                    Subject = objThread.Subject.Substring(0, Constants.SEO_TITLE_LIMIT)
-                Else
-                    Subject = objThread.Subject
+                    MyBase.BasePage.Response.Redirect(Utilities.Links.NoContentLink(TabID, ModuleID), True)
                 End If
 
-                If Not Subject.Length > Constants.SEO_TITLE_LIMIT Then
-                    Title = Subject
+                ' Make sure the forum is active 
+                If Not objThread.ContainingForum.IsActive Then
+                    ' we should consider setting type of redirect here?
 
-                    Subject += " - " & objThread.ContainingForum.Name
+                    MyBase.BasePage.Response.Redirect(Utilities.Links.NoContentLink(TabID, ModuleID), True)
+                End If
+
+                ' User might access this page by typing url so better check permission on parent forum
+                If Not (objThread.ContainingForum.PublicView) Then
+                    If Not objSecurity.IsAllowedToViewPrivateForum Then
+                        ' we should consider setting type of redirect here?
+
+                        MyBase.BasePage.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
+                    End If
+                End If
+
+                If objConfig.OverrideTitle Then
+                    Dim Title As String
+                    Dim Subject As String
+
+                    If objThread.Subject.Length > Constants.SEO_TITLE_LIMIT Then
+                        Subject = objThread.Subject.Substring(0, Constants.SEO_TITLE_LIMIT)
+                    Else
+                        Subject = objThread.Subject
+                    End If
+
                     If Not Subject.Length > Constants.SEO_TITLE_LIMIT Then
                         Title = Subject
 
-                        Subject += " - " & Me.BaseControl.PortalName
+                        Subject += " - " & objThread.ContainingForum.Name
                         If Not Subject.Length > Constants.SEO_TITLE_LIMIT Then
                             Title = Subject
+
+                            Subject += " - " & Me.BaseControl.PortalName
+                            If Not Subject.Length > Constants.SEO_TITLE_LIMIT Then
+                                Title = Subject
+                            End If
                         End If
+                    Else
+                        Title = Subject
                     End If
-                Else
-                    Title = Subject
+
+                    MyBase.BasePage.Title = Title
                 End If
 
-                MyBase.BasePage.Title = Title
-            End If
+                If objConfig.OverrideDescription Then
+                    Dim Description As String
 
-            If objConfig.OverrideDescription Then
-                Dim Description As String
+                    If objThread.Subject.Length < Constants.SEO_DESCRIPTION_LIMIT Then
+                        Description = objThread.Subject
+                    Else
+                        Description = objThread.Subject.Substring(0, Constants.SEO_DESCRIPTION_LIMIT)
+                    End If
 
-                If objThread.Subject.Length < Constants.SEO_DESCRIPTION_LIMIT Then
-                    Description = objThread.Subject
-                Else
-                    Description = objThread.Subject.Substring(0, Constants.SEO_DESCRIPTION_LIMIT)
+                    MyBase.BasePage.Description = Description
                 End If
 
-                MyBase.BasePage.Description = Description
-            End If
+                If objConfig.OverrideKeyWords Then
+                    Dim KeyWords As String = ""
+                    Dim keyCount As Integer = 0
 
-            If objConfig.OverrideKeyWords Then
-                Dim KeyWords As String = ""
-                Dim keyCount As Integer = 0
+                    If objThread.ContainingForum.ParentID = 0 Then
+                        KeyWords = objThread.ContainingForum.Name
+                        keyCount = 1
+                    Else
+                        KeyWords = objThread.ContainingForum.ParentForum.Name + "," + objThread.ContainingForum.Name
+                        keyCount = 2
+                    End If
 
-                If objThread.ContainingForum.ParentID = 0 Then
-                    KeyWords = objThread.ContainingForum.Name
-                    keyCount = 1
-                Else
-                    KeyWords = objThread.ContainingForum.ParentForum.Name + "," + objThread.ContainingForum.Name
-                    keyCount = 2
-                End If
+                    If objConfig.EnableTagging Then
+                        For Each Term As Entities.Content.Taxonomy.Term In objThread.Terms
+                            If keyCount < Constants.SEO_KEYWORDS_LIMIT Then
+                                KeyWords += "," + Term.Name
+                                keyCount += 1
+                            Else
+                                Exit For
+                            End If
+                        Next
 
-                If objConfig.EnableTagging Then
-                    For Each Term As Entities.Content.Taxonomy.Term In objThread.Terms
+                        ' If we haven't hit the keyword limit, let's add portal name to the list.
                         If keyCount < Constants.SEO_KEYWORDS_LIMIT Then
-                            KeyWords += "," + Term.Name
-                            keyCount += 1
-                        Else
-                            Exit For
+                            KeyWords += "," + Me.BaseControl.PortalName
                         End If
-                    Next
-
-                    ' If we haven't hit the keyword limit, let's add portal name to the list.
-                    If keyCount < Constants.SEO_KEYWORDS_LIMIT Then
-                        KeyWords += "," + Me.BaseControl.PortalName
                     End If
+
+                    MyBase.BasePage.KeyWords = KeyWords
                 End If
 
-                MyBase.BasePage.KeyWords = KeyWords
-            End If
-
-            If PostPage > 0 Then
-                PostPage = PostPage - 1
-            Else
-                PostPage = 0
-            End If
+                If PostPage > 0 Then
+                    PostPage = PostPage - 1
+                Else
+                    PostPage = 0
+                End If
         End Sub
 
         ''' <summary>
