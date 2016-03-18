@@ -218,3 +218,7 @@ GO
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_vw_ForumUsers') and OBJECTPROPERTY(id, N'IsView') = 1)
 	drop view {databaseOwner}{objectQualifier}Forum_vw_ForumUsers
 GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_Members_GetByUsername') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}Forum_Members_GetByUsername
+GO
