@@ -87,7 +87,7 @@
 						<script type="Install">
               <path>Providers\DataProviders\SqlDataProvider</path>
 							<name>05.00.08.SqlDataProvider</name>
-							<version>05.00.08</version>
+							<version>05.00.06</version>
 						</script>
 						<script type="UnInstall">
               <path>Providers\DataProviders\SqlDataProvider</path>
