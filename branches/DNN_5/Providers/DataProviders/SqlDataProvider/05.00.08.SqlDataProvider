@@ -9,27 +9,6 @@ ALTER TABLE {databaseOwner}{objectQualifier}Forum_Attachments ADD
 	) ON DELETE CASCADE  
 GO
 
-
-
-
-if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_EditForums_{objectQualifier}Forum_Forums'))
-ALTER TABLE {databaseOwner}{objectQualifier}Forum_EditForums ADD 
-	CONSTRAINT FK_{objectQualifier}Forum_EditForums_{objectQualifier}Roles FOREIGN KEY 
-	(
-		[RoleID]
-	) REFERENCES {databaseOwner}{objectQualifier}Roles (
-		[RoleID]
-	) ON DELETE CASCADE ,
-	CONSTRAINT FK_{objectQualifier}Forum_EditForums_{objectQualifier}Forum_Forums FOREIGN KEY 
-	(
-		[ForumID]
-	) REFERENCES {databaseOwner}{objectQualifier}Forum_Forums (
-		[ForumID]
-	) ON DELETE CASCADE  
-GO
-
-
-
 if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_FilterWords_{objectQualifier}Portals'))
 ALTER TABLE {databaseOwner}{objectQualifier}Forum_FilterWords ADD 
 	CONSTRAINT FK_{objectQualifier}Forum_FilterWords_{objectQualifier}Portals FOREIGN KEY 
@@ -50,19 +29,6 @@ ALTER TABLE {databaseOwner}{objectQualifier}Forum_Forums ADD
 		[GroupID]
 	) ON DELETE CASCADE  
 GO
-
-
-
-if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_Notification_{objectQualifier}Forum_Forums'))
-ALTER TABLE {databaseOwner}{objectQualifier}Forum_Notification ADD 
-	CONSTRAINT FK_{objectQualifier}Forum_Notification_{objectQualifier}Forum_Forums FOREIGN KEY 
-	(
-		[ForumID]
-	) REFERENCES {databaseOwner}{objectQualifier}Forum_Forums (
-		[ForumID]
-	) ON DELETE CASCADE  
-GO
-
 
 if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_Posts_{objectQualifier}Forum_Threads'))
 ALTER TABLE {databaseOwner}{objectQualifier}Forum_Posts ADD 
@@ -158,24 +124,6 @@ ALTER TABLE {databaseOwner}{objectQualifier}Forum_TrackedThreads ADD
 		[UserID]
 	) 
 GO
-
-
-if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_TrackedWhatsNew_{objectQualifier}Forum_Forums'))
-ALTER TABLE {databaseOwner}{objectQualifier}Forum_TrackedWhatsNew ADD 
-	CONSTRAINT FK_{objectQualifier}Forum_TrackedWhatsNew_{objectQualifier}Forum_Forums FOREIGN KEY 
-	(
-		[ForumID]
-	) REFERENCES {databaseOwner}{objectQualifier}Forum_Forums (
-		[ForumID]
-	) ON DELETE CASCADE  ,
-	CONSTRAINT FK_{objectQualifier}Forum_TrackedWhatsNew_{objectQualifier}Forum_Users FOREIGN KEY 
-	(
-		[UserID]
-	) REFERENCES {databaseOwner}{objectQualifier}Forum_Users (
-		[UserID]
-	) ON DELETE CASCADE  
-GO
-
 
 if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_Moderate_History_{objectQualifier}Portals'))
 ALTER TABLE {databaseOwner}[{objectQualifier}Forum_Moderate_History] ADD 

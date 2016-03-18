@@ -676,7 +676,7 @@
     <None Include="Providers\DataProviders\SqlDataProvider\04.09.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\04.09.01.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.00.01.SqlDataProvider" />
-    <Content Include="Providers\DataProviders\SqlDataProvider\05.00.06.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\05.00.08.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
     <Content Include="web.config" />
     <None Include="web.Debug.config">
