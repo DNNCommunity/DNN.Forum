@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
 	<packages>
-		<package name="DNN_Forum" type="Module" version="05.00.06">
+		<package name="DNN_Forum" type="Module" version="05.00.07">
 			<friendlyName>Forum</friendlyName>
 			<description>The core forum module for DotNetNuke.</description>
 			<owner>
@@ -11,6 +11,7 @@
 			</owner>
 			<license src="License.txt"></license>
 			<releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+      <azureCompatible>true</azureCompatible>
 			<dependencies>
 				<dependency type="CoreVersion">08.00.00</dependency>
 			</dependencies>
@@ -83,10 +84,15 @@
 							<name>05.00.01.SqlDataProvider</name>
 							<version>05.00.01</version>
 						</script>
+						<script type="Install">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+							<name>05.00.06.SqlDataProvider</name>
+							<version>05.00.06</version>
+						</script>
 						<script type="UnInstall">
               <path>Providers\DataProviders\SqlDataProvider</path>
 							<name>Uninstall.SqlDataProvider</name>
-							<version>05.00.03</version>
+							<version>05.00.07</version>
 						</script>
 					</scripts>
 				</component>			
