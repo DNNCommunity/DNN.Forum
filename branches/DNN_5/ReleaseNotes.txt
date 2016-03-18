@@ -17,6 +17,7 @@
 		<li>Upgrade to DNN8</li>
 		<li>Removed advertisement</li>
 		<li>Cleaning deprecated methods</li>
+		<li>Fixed thread last post popup text from html to text<li>
 	</ul>
 	<p class="Owner">
 		<b>Version 5.0.5</b><br /><br />
