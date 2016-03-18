@@ -8,11 +8,18 @@
 <div class="License">
 	<h3>About the Core Forum</h3>
 	<p class="Owner">
-		<b>Version 5.0.6</b><br /><br />
+		<b>Version 5.0.7</b><br /><br />
 		This version of the module requires DotNetNuke Core 8.0.0 or greater. 
 		FYI: Developers should be aware that the module uses Visual Studio 2013 and above. 
-	</p>
+	</p>	
+	<ul>		
+		<li>Azure Compatibility</li>		
+		<li>Sql cleanup</li>		
+	</ul
 	
+	<p class="Owner">
+		<b>Version 5.0.6</b><br /><br />
+	</p>
 	<ul>		
 		<li>Upgrade to DNN8</li>
 		<li>Removed advertisement</li>
