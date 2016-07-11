@@ -332,12 +332,8 @@ Namespace DotNetNuke.Modules.Forum
         ''' <remarks>This can be stored as a fileid (as a string) or as an actual file name.</remarks>
         Public ReadOnly Property ProfileAvatar() As String
             Get
-                If Not Me.IsSuperUser Then
-                    ' we are using profile avatars, lets check for the property value
-                    Return Me.Profile.GetPropertyValue(objConfig.AvatarProfilePropName)
-                Else
-                    Return String.Empty
-                End If
+                ' we are using profile avatars, lets check for the property value
+                Return Me.Profile.GetPropertyValue(objConfig.AvatarProfilePropName)
             End Get
         End Property
 

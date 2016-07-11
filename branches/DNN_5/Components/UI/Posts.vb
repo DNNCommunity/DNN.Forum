@@ -1884,23 +1884,21 @@ Namespace DotNetNuke.Modules.Forum
                     RenderCellBegin(wr, "Forum_UserAvatar", "", "", "", "top", "", "") ' <td>
                     wr.Write("<br />")
                     If objConfig.EnableUserAvatar And author.UserID > 0 Then
-                        If Not author.IsSuperUser Then
-                            Dim WebVisibility As UserVisibilityMode
-                            WebVisibility = author.Profile.ProfileProperties(objConfig.AvatarProfilePropName).ProfileVisibility.VisibilityMode
+                        Dim WebVisibility As UserVisibilityMode
+                        WebVisibility = author.Profile.ProfileProperties(objConfig.AvatarProfilePropName).ProfileVisibility.VisibilityMode
 
-                            Select Case WebVisibility
-                                Case UserVisibilityMode.AdminOnly
-                                    If objSecurity.IsForumAdmin Then
-                                        RenderProfileAvatar(author, wr)
-                                    End If
-                                Case UserVisibilityMode.AllUsers
+                        Select Case WebVisibility
+                            Case UserVisibilityMode.AdminOnly
+                                If objSecurity.IsForumAdmin Then
                                     RenderProfileAvatar(author, wr)
-                                Case UserVisibilityMode.MembersOnly
-                                    If CurrentForumUser.UserID > 0 Then
-                                        RenderProfileAvatar(author, wr)
-                                    End If
-                            End Select
-                        End If
+                                End If
+                            Case UserVisibilityMode.AllUsers
+                                RenderProfileAvatar(author, wr)
+                            Case UserVisibilityMode.MembersOnly
+                                If CurrentForumUser.UserID > 0 Then
+                                    RenderProfileAvatar(author, wr)
+                                End If
+                        End Select
                     Else
                         If author.UserID > 0 Then
                             RenderImage(wr, author.AvatarComplete, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "")
