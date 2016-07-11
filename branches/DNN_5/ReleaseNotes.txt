@@ -14,7 +14,8 @@
 	</p>	
 	<ul>		
 		<li>Azure Compatibility</li>		
-		<li>Sql cleanup</li>		
+		<li>Sql cleanup</li>				
+		<li>SuperUser avatar issue #5 fixed</li>		
 	</ul
 	
 	<p class="Owner">
