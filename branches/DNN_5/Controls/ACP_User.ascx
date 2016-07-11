@@ -13,7 +13,7 @@
 		<div>
 			<dnnweb:DnnGrid runat="server" ID="dnngridUsers" AllowPaging="true" AllowSorting="false" AutoGenerateColumns="false" AllowCustomPaging="true" Skin="Sitefinity" PageSize="25" >
 				<ClientSettings AllowColumnsReorder="false" EnableRowHoverStyle="true" />
-				<MasterTableView>
+				<MasterTableView DataKeyNames="UserID" >
 					<NoRecordsTemplate>
 						<div class="dnnFormMessage dnnFormWarning">
 							<asp:Label ID="lblNoRecords" runat="server" resourcekey="lblNoRecords" />

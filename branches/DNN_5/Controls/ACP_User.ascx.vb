@@ -38,6 +38,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
         Private _Users As ArrayList = New ArrayList
         Protected TotalRecords As Integer
+        Shared log As Instrumentation.DnnLogger = Instrumentation.DnnLogger.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString())
 
 #End Region
 
