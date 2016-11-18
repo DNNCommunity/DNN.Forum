@@ -16,6 +16,7 @@
 			<dnn:label id="plAttachmentPath" runat="server" Suffix=":" controlname="txtAttachmentPath" />
 			<asp:TextBox id="txtAttachmentPath" runat="server" CssClass="dnnFormRequired" />
 			<asp:RequiredFieldValidator ID="valAttachmentPath" runat="server" ErrorMessage="*" ControlToValidate="txtAttachmentPath" CssClass="dnnFormMessage dnnFormError" Display="Dynamic" SetFocusOnError="true" />
+            </div>
 		<div class="dnnFormItem" id="divMaxAttachmentSize" runat="server">
 			<dnn:label id="plMaxAttachmentSize" runat="server" Suffix=":" controlname="txtMaxAttachmentSize" />
 			<asp:TextBox id="txtMaxAttachmentSize" runat="server" MaxLength="5" CssClass="dnnFormRequired" />
