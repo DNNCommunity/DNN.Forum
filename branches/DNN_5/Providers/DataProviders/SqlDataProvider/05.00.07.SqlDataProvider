@@ -179,17 +179,6 @@ ALTER TABLE {databaseOwner}[{objectQualifier}Forum_Post_Reported] ADD
 	) ON DELETE CASCADE  
 GO
 
-
-if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_Ad_Vendors_{objectQualifier}Vendors'))
-ALTER TABLE {databaseOwner}{objectQualifier}Forum_Ad_Vendors ADD 
-	CONSTRAINT FK_{objectQualifier}Forum_Ad_Vendors_{objectQualifier}Vendors FOREIGN KEY 
-	(
-		[VendorID]
-	) REFERENCES {databaseOwner}{objectQualifier}Vendors (
-		[VendorID]
-	) ON DELETE CASCADE  
-GO
-
 if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_Members_GetByDisplayName') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
 drop procedure {databaseOwner}{objectQualifier}Forum_Members_GetByDisplayName
 GO
