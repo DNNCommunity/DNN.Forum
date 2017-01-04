@@ -120,7 +120,7 @@ td.Forum_UserAvatar img{border:1px #ccc solid;-moz-border-radius:5px;-webkit-bor
 .Forum_PostButtons{border-bottom: 1px solid #B8D7F3;background:#eee;}
 /* Post content area POST VIEW (EVEN numbered rows) */
 .Forum_PostBody{padding:15px;}
-.Forum_PostBody .Forum_Normal, .Forum_PostBody_Alt .Forum_Normal{font-weight:normal; word-break:break-all;}
+.Forum_PostBody .Forum_Normal, .Forum_PostBody_Alt .Forum_Normal{font-weight:normal; word-break:normal !important;}
 /* Seperator row. Also uses spacer-height.gif to determin sapce in between each post in thread View*/
 .Forum_SpacerRow{border-top: #B8D7F3 1px solid;}
 /*/////////////////////////// = SPLIT-THREAD VIEW = \\\\\\\\\\\\\\\\\\\\\\\\\\\*/
