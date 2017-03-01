@@ -1,6 +1,6 @@
 ﻿
 if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_Attachment_{objectQualifier}Forum_Posts'))
-ALTER TABLE {databaseOwner}{objectQualifier}Forum_Attachments ADD 
+ALTER TABLE {databaseOwner}{objectQualifier}Forum_Attachments WITH NOCHECK ADD 
 	CONSTRAINT FK_{objectQualifier}Forum_Attachment_{objectQualifier}Forum_Posts FOREIGN KEY 
 	(
 		[PostID]
