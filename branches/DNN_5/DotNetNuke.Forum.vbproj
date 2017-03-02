@@ -648,7 +648,7 @@
     <Compile Include="Providers\DataProviders\SqlDataProvider\SqlDataProvider.vb" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="05.00.06.txt" />
+    <Content Include="05.01.00.txt" />
     <Content Include="BuildScripts\ModulePackage.targets">
       <SubType>Designer</SubType>
     </Content>
@@ -677,6 +677,7 @@
     <None Include="Providers\DataProviders\SqlDataProvider\04.09.01.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.00.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\05.00.07.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\05.01.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
     <Content Include="web.config" />
     <None Include="web.Debug.config">

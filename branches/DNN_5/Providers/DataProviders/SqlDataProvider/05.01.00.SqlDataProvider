@@ -1,0 +1,13 @@
+﻿if exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_Attachment_{objectQualifier}Forum_Posts') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+	ALTER TABLE {databaseOwner}{objectQualifier}Forum_Posts DROP CONSTRAINT FK_{objectQualifier}Forum_Attachment_{objectQualifier}Forum_Posts
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_Attachment_{objectQualifier}Forum_Posts'))
+ALTER TABLE {databaseOwner}{objectQualifier}Forum_Attachments WITH NOCHECK ADD 
+	CONSTRAINT FK_{objectQualifier}Forum_Attachment_{objectQualifier}Forum_Posts FOREIGN KEY 
+	(
+		[PostID]
+	) REFERENCES {databaseOwner}{objectQualifier}Forum_Posts (
+		[PostID]
+	) ON DELETE CASCADE  
+GO
