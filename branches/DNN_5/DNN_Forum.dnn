@@ -97,7 +97,7 @@
 						<script type="UnInstall">
               <path>Providers\DataProviders\SqlDataProvider</path>
 							<name>Uninstall.SqlDataProvider</name>
-							<version>05.00.06</version>
+							<version>05.01.00</version>
 						</script>
 					</scripts>
 				</component>			

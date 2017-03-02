@@ -1,13 +1,42 @@
-﻿if exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_Attachment_{objectQualifier}Forum_Posts') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
-	ALTER TABLE {databaseOwner}{objectQualifier}Forum_Posts DROP CONSTRAINT FK_{objectQualifier}Forum_Attachment_{objectQualifier}Forum_Posts
+﻿if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_Ad_Vendors_Get') AND type in (N'P', N'PC'))
+	drop procedure {databaseOwner}{objectQualifier}Forum_Ad_Vendors_Get
 GO
 
-if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_Attachment_{objectQualifier}Forum_Posts'))
-ALTER TABLE {databaseOwner}{objectQualifier}Forum_Attachments WITH NOCHECK ADD 
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_Ad_Vendors_Update') AND type in (N'P', N'PC'))
+	drop procedure {databaseOwner}{objectQualifier}Forum_Ad_Vendors_Update
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_Ad_Vendors_BannersGet') AND type in (N'P', N'PC'))
+	drop procedure {databaseOwner}{objectQualifier}Forum_Ad_Vendors_BannersGet
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_Ad_Vendors_BannerViewIncrement') AND type in (N'P', N'PC'))
+	drop procedure {databaseOwner}{objectQualifier}Forum_Ad_Vendors_BannerViewIncrement
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_Ad_Vendors_{objectQualifier}Vendors') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+	ALTER TABLE {databaseOwner}{objectQualifier}Forum_Ad_Vendors DROP CONSTRAINT FK_{objectQualifier}Forum_Ad_Vendors_{objectQualifier}Vendors
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}Forum_Ad_Vendors') AND type in (N'U'))
+	drop table {databaseOwner}{objectQualifier}Forum_Ad_Vendors
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_Attachment_{objectQualifier}Forum_Posts')) 
+BEGIN
+	ALTER TABLE {databaseOwner}{objectQualifier}Forum_Attachments DROP CONSTRAINT FK_{objectQualifier}Forum_Attachment_{objectQualifier}Forum_Posts 
+END
+GO  
+
+ALTER TABLE {databaseOwner}{objectQualifier}Forum_Attachments WITH NOCHECK ADD  
 	CONSTRAINT FK_{objectQualifier}Forum_Attachment_{objectQualifier}Forum_Posts FOREIGN KEY 
 	(
-		[PostID]
+		[PostID] 
 	) REFERENCES {databaseOwner}{objectQualifier}Forum_Posts (
 		[PostID]
-	) ON DELETE CASCADE  
-GO
+	) ON DELETE CASCADE   
+GO 
+
+
+
+

@@ -15,7 +15,7 @@
 	<ul>				
 		<li>Issue #8 fixed</li>		
 	</ul>
-
+	<br />
 	<p class="Owner">
 		<b>Version 5.0.7</b><br /><br />
 		This version of the module requires DotNetNuke Core 8.0.0 or greater. 
@@ -28,7 +28,7 @@
 		<li>Issue #6 fixed</li>		
 		<li>Issue #8 fixed</li>		
 	</ul>
-	
+	<br />
 	<p class="Owner">
 		<b>Version 5.0.6</b><br /><br />
 	</p>
@@ -36,8 +36,9 @@
 		<li>Upgrade to DNN8</li>
 		<li>Removed advertisement</li>
 		<li>Cleaning deprecated methods</li>
-		<li>Fixed thread last post popup text from html to text<li>
+		<li>Fixed thread last post popup text from html to text</li>
 	</ul>
+	<br />
 	<p class="Owner">
 		<b>Version 5.0.5</b><br /><br />
 	</p>
@@ -48,7 +49,7 @@
 		<li>Fixing Quick Reply causing duplicates when user pressing submit more than once</li>
 		<li>Added Forum last post to include Title attribute, not just the shortened post title</li>
 	</ul>
-
+	<br />
 	<p class="Owner">
 		<b>Version 5.0.4</b><br /><br />
 	</p>
