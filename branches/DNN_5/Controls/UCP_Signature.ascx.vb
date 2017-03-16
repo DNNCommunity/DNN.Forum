@@ -1,3 +1,5 @@
+Option Strict On
+Option Explicit On
 '
 ' DotNetNuke® - http://www.dotnetnuke.com
 ' Copyright (c) 2002-2011
@@ -17,8 +19,7 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
-Option Strict On
-Option Explicit On
+Imports DotNetNuke.Forum.Library
 
 Namespace DotNetNuke.Modules.Forum.UCP
 
@@ -78,7 +79,7 @@ Namespace DotNetNuke.Modules.Forum.UCP
                         Signature = objSecurity.InputFilter(Signature, PortalSecurity.FilterFlag.NoScripting)
                         ' check to see if HTML sigs are supported
                         If Not objConfig.EnableHTMLSignatures Then
-                            Signature = Utilities.ForumUtils.StripHTML(Signature)
+                            Signature = TextUtilityClass.StripHTML(Signature)
                         End If
                     Else
                         Signature = String.Empty

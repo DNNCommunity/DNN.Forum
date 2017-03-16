@@ -12,7 +12,8 @@
 		This version of the module requires DotNetNuke Core 8.0.0 or greater. 
 		FYI: Developers should be aware that the module uses Visual Studio 2015 and above. 
 	</p>	
-	<ul>				
+	<ul>					
+		<li>Support for Journal</li>		
 		<li>Issue #8 fixed</li>		
 	</ul>
 	<br />

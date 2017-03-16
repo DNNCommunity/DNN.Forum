@@ -125,7 +125,7 @@ Namespace DotNetNuke.Modules.Forum
 
             If objConfig.DisableHTMLPosting Then
                 ProcessedBody = fText.ProcessPlainText(objConfig)
-                ProcessedBody = Utilities.ForumUtils.StripHTML(ProcessedBody)
+                ProcessedBody = TextUtilityClass.StripHTML(ProcessedBody)
             Else
                 ProcessedBody = fText.ProcessHtml()
 
@@ -398,6 +398,7 @@ Namespace DotNetNuke.Modules.Forum
 
             Dim ctlPost As New PostController
             Dim _emailType As ForumEmailType
+            Dim journal As New JournalUtilityClass
 
             ' Add/Edit post
             Select Case objAction
@@ -432,6 +433,9 @@ Namespace DotNetNuke.Modules.Forum
                         cntContent.CreateContentItem(objThread, TabID)
 
                         ThreadID = objThread.ThreadID
+                        journal.AddThreadToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
+                    Else
+                        journal.AddReplyToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
                     End If
 
                     Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID, objForum.ForumID, objForum.GroupID, objConfig.ModuleID, objForum.ParentID)
@@ -466,12 +470,19 @@ Namespace DotNetNuke.Modules.Forum
 
                         Dim cntContent As New Content
                         cntContent.UpdateContentItem(objThread, TabID)
+
+                        journal.AddThreadToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
+                    Else
+                        journal.AddReplyToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
                     End If
 
                     _emailType = ForumEmailType.UserPostEdited
                 Case Else     ' Reply/Quote
                     ' we are clearing out attachments (empty string) as this method is now legacy
                     newPostID = ctlPost.PostAdd(ParentPostID, objForum.ForumID, objForumUser.UserID, RemoteAddress, PostSubject, PostBody, IsPinned, _PinnedDate, IsClosed, PortalID, PollID, IsModerated, objForum.GroupID, ParentPostID, ParsingType)
+
+                    journal.AddReplyToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
+
                     ' since it is a new post, we only need to update thread & forum
                     Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID, objForum.ForumID, objForum.GroupID, objConfig.ModuleID, objForum.ParentID)
                     _emailType = ForumEmailType.UserPostAdded

@@ -64,8 +64,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileUtilityClass.cs" />
+    <Compile Include="JournalUtilityClass.cs" />
     <Compile Include="PortalUtilityClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextUtilityClass.cs" />
     <Compile Include="UrlUtilityClass.cs" />
   </ItemGroup>
   <ItemGroup>

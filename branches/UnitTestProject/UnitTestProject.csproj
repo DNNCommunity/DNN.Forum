@@ -63,6 +63,7 @@
     <Compile Include="Components\Content\PostConnectorTest.cs" />
     <Compile Include="Components\Email\ForumEmailTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextUtilityClassTests.cs" />
     <Compile Include="UrlUtilityClassTests.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -706,19 +706,6 @@ Namespace DotNetNuke.Modules.Forum.Utilities
         End Function
 
         ''' <summary>
-        ''' Strips HTML from text passed into function using regex. 
-        ''' </summary>
-        ''' <param name="strHTMLToStrip">The text to remove HTML from.</param>
-        ''' <returns>A string of HTML w/ the majority of HTML removed.</returns>
-        ''' <remarks>All HTML Should be filtered prior to being passed here.</remarks>
-        Shared Function StripHTML(ByVal strHTMLToStrip As String) As String
-            Dim cleanText As String = strHTMLToStrip
-            Dim cleanPattern As String = "<(.|\n)*?>" ' "(\<link[^\>]+\>)"  
-            cleanText = Regex.Replace(cleanText, cleanPattern, String.Empty)
-            Return cleanText
-        End Function
-
-        ''' <summary>
         ''' Replaces inline attachments with the filename.
         ''' Used when quoting a post that contains inline attachments 
         ''' </summary>
