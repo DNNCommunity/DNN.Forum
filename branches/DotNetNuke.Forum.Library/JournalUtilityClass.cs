@@ -48,6 +48,15 @@ namespace DotNetNuke.Forum.Library
 
             return journalTypeId;
         }
+
+        public void DeletePostJournal(int PortalId, int ModuleId, int ForumId, int TopicId, int PostId)
+        {
+            if (JournalController.Instance.GetJournalItemByKey(PortalId, GetJournalKey(ModuleId, ForumId, TopicId, PostId)) != null)
+            {
+                JournalController.Instance.DeleteJournalItemByKey(PortalId, GetJournalKey(ModuleId, ForumId, TopicId, PostId));
+            }
+        }
+
         public void AddThreadToJournal(int PortalId, int ModuleId, int TabId, int ForumId, int TopicId, int PostId, int UserId, string URL, string Subject, string Body)
         {
             ModuleInfo module = ModuleController.Instance.GetModule(ModuleId, TabId, false);

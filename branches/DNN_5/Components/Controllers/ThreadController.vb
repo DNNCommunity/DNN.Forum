@@ -185,7 +185,7 @@ Namespace DotNetNuke.Modules.Forum
             For Each objPost As PostInfo In arrPost
                 ' we need to make sure we delete the threadid last (because of split and possibly move). 
                 If Not objPost.PostID = objThread.ThreadID Then
-                    cntPost.PostDelete(objPost.PostID, objPost.ModuleId, Notes, PortalID, objPost.Author.UserID)
+                    cntPost.PostDelete(objPost.PostID, objPost.ModuleId, Notes, PortalID, objThread.ForumID, objThread.ModuleID, objThread.ThreadID, objPost.Author.UserID)
                 Else
                     objThreadPost = objPost
                 End If
@@ -193,7 +193,7 @@ Namespace DotNetNuke.Modules.Forum
 
             ' we deleted all posts in the thread but the threadid one
             If Not objThreadPost Is Nothing Then
-                cntPost.PostDelete(objThreadPost.PostID, objThreadPost.ModuleId, Notes, PortalID, objThreadPost.Author.UserID)
+                cntPost.PostDelete(objThreadPost.PostID, objThreadPost.ModuleId, Notes, PortalID, objThread.ForumID, objThread.ModuleID, objThread.ThreadID, objThreadPost.Author.UserID)
             End If
 
             ' We need to delete the Content Item here

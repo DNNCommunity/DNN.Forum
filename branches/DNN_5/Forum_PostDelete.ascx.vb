@@ -248,7 +248,7 @@ Namespace DotNetNuke.Modules.Forum
                         If objPost.PostID = objPost.ThreadID Then
                             If objThread IsNot Nothing Then
                                 ' Delete post (SEND MAIL BEFORE DELETE, we need the post still in the db)
-                                NewThreadID = cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objPost.Author.UserID)
+                                NewThreadID = cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objThread.ForumID, objThread.ModuleID, objThread.ThreadID, objPost.Author.UserID)
                                 Dim objContent As ContentItem
                                 objContent = DotNetNuke.Entities.Content.Common.Util.GetContentController().GetContentItem(objThread.ContentItemId)
                                 objContent.ContentKey = "forumid=" + objThread.ForumID.ToString() + "&threadid=" + NewThreadID.ToString() + "&scope=posts"
@@ -256,7 +256,7 @@ Namespace DotNetNuke.Modules.Forum
                             End If
                         Else
                             ' Delete post (SEND MAIL BEFORE DELETE, we need the post still in the db)
-                            cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objPost.Author.UserID)
+                            cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objThread.ForumID, objThread.ModuleID, objThread.ThreadID, objPost.Author.UserID)
                         End If
 
                         Forum.Components.Utilities.Caching.UpdatePostCache(objPost.PostID, ThreadID, ForumID, objThread.ContainingForum.GroupID, ModuleId, objThread.ContainingForum.ParentID)
