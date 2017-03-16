@@ -13,7 +13,7 @@
 		FYI: Developers should be aware that the module uses Visual Studio 2015 and above. 
 	</p>	
 	<ul>					
-		<li>Support for Journal</li>		
+		<li>Support for Journal with general setting to enable/disable journal entries from being created</li>		
 		<li>Issue #8 fixed</li>		
 	</ul>
 	<br />
