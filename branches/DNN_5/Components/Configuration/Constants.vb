@@ -222,17 +222,22 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Const RANKING_0_TITLE As String = "Rank_0_Title"
 
-		''' <summary>
-		''' A String used to identify a module setting.
-		''' </summary>
-		''' <remarks></remarks>
-		Public Const ENABLE_RSS_FEEDS As String = "EnableRSS"
+        ''' <summary>
+        ''' A String used to identify a module setting.
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public Const ENABLE_RSS_FEEDS As String = "EnableRSS"
 
-		''' <summary>
-		''' A String used to identify a module setting.
-		''' </summary>
-		''' <remarks></remarks>
-		Public Const RSS_FEEDS_PER_PAGE As String = "RSSThreadsPerFeed"
+        ''' <summary>
+        ''' A string used to identify a module setting.
+        ''' </summary>
+        Public Const ENABLE_JOURNAL As String = "EnableJournal"
+
+        ''' <summary>
+        ''' A String used to identify a module setting.
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public Const RSS_FEEDS_PER_PAGE As String = "RSSThreadsPerFeed"
 
 		''' <summary>
 		''' A String used to identify a module setting.

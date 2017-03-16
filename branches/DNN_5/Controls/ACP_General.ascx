@@ -27,6 +27,10 @@
 		<asp:CheckBox ID="chkHideSearchButton" runat="server" />
 	</div>
 	<div class="dnnFormItem">
+		<dnn:Label ID="plEnableJournal" runat="server" ControlName="chkEnableJournal" Suffix=":" />
+		<asp:CheckBox ID="chkEnableJournal" runat="server" />
+	</div>
+	<div class="dnnFormItem">
 		<dnn:Label ID="plHideHomeButton" runat="server" ControlName="chkHideHomeButton" Suffix=":" />
 		<asp:CheckBox ID="chkHideHomeButton" runat="server" />
 	</div>

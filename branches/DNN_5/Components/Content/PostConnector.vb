@@ -433,12 +433,16 @@ Namespace DotNetNuke.Modules.Forum
                         cntContent.CreateContentItem(objThread, TabID)
 
                         ThreadID = objThread.ThreadID
-                        journal.AddThreadToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
+                        If (objConfig.EnableJournal = True) Then
+                            journal.AddThreadToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
+                        End If
                     Else
-                        journal.AddReplyToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
+                        If (objConfig.EnableJournal = True) Then
+                            journal.AddReplyToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
+                        End If
                     End If
 
-                    Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID, objForum.ForumID, objForum.GroupID, objConfig.ModuleID, objForum.ParentID)
+                        Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID, objForum.ForumID, objForum.GroupID, objConfig.ModuleID, objForum.ParentID)
 
                     _emailType = ForumEmailType.UserNewThread
                 Case PostAction.Edit
@@ -471,9 +475,13 @@ Namespace DotNetNuke.Modules.Forum
                         Dim cntContent As New Content
                         cntContent.UpdateContentItem(objThread, TabID)
 
-                        journal.AddThreadToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
+                        If (objConfig.EnableJournal = True) Then
+                            journal.AddThreadToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
+                        End If
                     Else
-                        journal.AddReplyToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
+                        If (objConfig.EnableJournal = True) Then
+                            journal.AddReplyToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
+                        End If
                     End If
 
                     _emailType = ForumEmailType.UserPostEdited
@@ -481,8 +489,9 @@ Namespace DotNetNuke.Modules.Forum
                     ' we are clearing out attachments (empty string) as this method is now legacy
                     newPostID = ctlPost.PostAdd(ParentPostID, objForum.ForumID, objForumUser.UserID, RemoteAddress, PostSubject, PostBody, IsPinned, _PinnedDate, IsClosed, PortalID, PollID, IsModerated, objForum.GroupID, ParentPostID, ParsingType)
 
-                    journal.AddReplyToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
-
+                    If (objConfig.EnableJournal = True) Then
+                        journal.AddReplyToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
+                    End If
                     ' since it is a new post, we only need to update thread & forum
                     Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID, objForum.ForumID, objForum.GroupID, objConfig.ModuleID, objForum.ParentID)
                     _emailType = ForumEmailType.UserPostAdded

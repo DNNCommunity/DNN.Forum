@@ -101,6 +101,7 @@ Namespace DotNetNuke.Modules.Forum
         'Thread Ratings
         Dim _EnableRatings As Boolean = True
         Dim _RatingScale As Integer = 5
+        Dim _EnableJournal As Boolean = False
         ' Syndication
         Dim _EnableRSS As Boolean = True
         Dim _RSSThreadsPerFeed As Integer = 20
@@ -860,6 +861,18 @@ Namespace DotNetNuke.Modules.Forum
         End Property
 
 #End Region
+
+        ''' <summary>
+        ''' Gets is Journal entries are recorded or not
+        ''' </summary>
+        ''' <returns></returns>
+        Public ReadOnly Property EnableJournal() As Boolean
+            Get
+                Return _EnableJournal
+            End Get
+        End Property
+
+
 
 #Region "RSS"
 
@@ -1810,7 +1823,11 @@ Namespace DotNetNuke.Modules.Forum
                     _Rank_0_Title = CStr(GetValue(settings(Constants.RANKING_0_TITLE), _Rank_0_Title))
                 End If
             End If
-
+            If Not settings(Constants.ENABLE_JOURNAL) Is Nothing Then
+                If Not settings(Constants.ENABLE_JOURNAL).ToString = String.Empty Then
+                    _EnableJournal = CBool(GetValue(settings(Constants.ENABLE_JOURNAL), CStr(_EnableJournal)))
+                End If
+            End If
             ' RSS
             If Not settings(Constants.ENABLE_RSS_FEEDS) Is Nothing Then
                 If Not settings(Constants.ENABLE_RSS_FEEDS).ToString = String.Empty Then

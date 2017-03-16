@@ -49,6 +49,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
             ddlPrimaryAlias.SelectedValue = objConfig.PrimaryAlias
             chkHideHomeButton.Checked = objConfig.HideHomeButton
             chkHideSearchButton.Checked = objConfig.HideSearchButton
+            chkEnableJournal.Checked = objConfig.EnableJournal
         End Sub
 
 #End Region
@@ -90,6 +91,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
                 ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_POST_ABUSE, chkEnablePostAbuse.Checked.ToString)
                 ctlModule.UpdateModuleSetting(ModuleId, Constants.DISABLE_HTML_POSTING, chkDisableHTMLPosting.Checked.ToString)
                 ctlModule.UpdateModuleSetting(ModuleId, Constants.HIDE_HOME_BUTTON, chkHideHomeButton.Checked.ToString)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_JOURNAL, chkEnableJournal.Checked.ToString)
                 ctlModule.UpdateModuleSetting(ModuleId, Constants.HIDE_SEARCH_BUTTON, chkHideSearchButton.Checked.ToString)
                 ctlModule.UpdateModuleSetting(ModuleId, Constants.PRIMARY_SITE_ALIAS, ddlPrimaryAlias.SelectedValue.ToString())
 
