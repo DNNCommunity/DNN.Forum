@@ -472,16 +472,18 @@ Namespace DotNetNuke.Modules.Forum
                         objThread.TabID = TabID
                         objThread.SitemapInclude = objForum.EnableSitemap
                         objThread.Terms.Clear()
-                        objThread.Terms.AddRange(Terms)
+                        If Terms IsNot Nothing Then
+                            objThread.Terms.AddRange(Terms)
+                        End If
 
                         Dim cntContent As New Content
-                        cntContent.UpdateContentItem(objThread, TabID)
+                            cntContent.UpdateContentItem(objThread, TabID)
 
-                        If (objConfig.EnableJournal = True) Then
-                            journal.AddThreadToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
-                        End If
-                    Else
-                        If (objConfig.EnableJournal = True) Then
+                            If (objConfig.EnableJournal = True) Then
+                                journal.AddThreadToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
+                            End If
+                        Else
+                            If (objConfig.EnableJournal = True) Then
                             journal.AddReplyToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
                         End If
                     End If
