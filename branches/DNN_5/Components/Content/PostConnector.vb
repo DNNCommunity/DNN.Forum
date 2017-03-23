@@ -66,6 +66,7 @@ Namespace DotNetNuke.Modules.Forum
         ''' <param name="Provider">A unique string used to identify how the post was submitted (this should be your own unique value for your module/task).</param>
         ''' <returns>An enumerator PostMessage that tells what happend (post moderated, post approved, reason rejected, etc.).</returns>
         ''' <remarks>This is available for all outside modules/applications to post to the forum module.</remarks>
+        <Obsolete("Use the other SubmitExternalPost method instead")>
         Public Function SubmitExternalPost(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer, ByVal UserID As Integer, ByVal PostSubject As String, ByVal PostBody As String, ByVal ForumID As Integer, ByVal ParentPostID As Integer, ByVal Attachments As String, ByVal Provider As String) As PostMessage
             Return PostingValidation(TabID, ModuleID, PortalID, UserID, PostSubject, PostBody, ForumID, ParentPostID, -1, False, False, False, Forum.ThreadStatus.NotSet, Attachments, "0.0.0.0", -1, False, Provider, -1, Nothing)
         End Function
