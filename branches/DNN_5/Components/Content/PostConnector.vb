@@ -92,6 +92,39 @@ Namespace DotNetNuke.Modules.Forum
         End Function
 
         ''' <summary>
+        ''' All posting from external sources are designed to go through this method. The API will take care of all security, moderation, notifications, filtering, etc,
+        ''' </summary>
+        ''' <param name="TabID">The TabID (page) your forum that you wish to post to resides on.</param>
+        ''' <param name="ModuleID">The module you wish to post to.</param>
+        ''' <param name="PortalID">The portal associated with the tab/modue and user posting.</param>
+        ''' <param name="UserID">The user posting the message.</param>
+        ''' <param name="PostSubject">The 'uncleansed' post subject.</param>
+        ''' <param name="PostBody">The 'uncleansed' post body.</param>
+        ''' <param name="ForumID">The forum you wish to post to.</param>
+        ''' <param name="ParentPostID">The post you are replying to, if you are starting a new thread this should be equal to 0.</param>
+        ''' <param name="Attachments">A string of attachments, separated by a semicolon (Not fully implemented).</param>
+        ''' <param name="Provider">A unique string used to identify how the post was submitted (this should be your own unique value for your module/task).</param>
+        ''' <param name="ParentThreadID">Thread id if replying to existing thread. For new messages this should equal to -1</param>
+        ''' <param name="IsPinned">IsPinned to control posts IsPinned property when posting new post</param>
+        ''' <returns>An enumerator PostMessage that tells what happend (post moderated, post approved, reason rejected, etc.).</returns>
+        ''' <remarks>This is available for all outside modules/applications to post to the forum module.</remarks>
+        Public Function SubmitExternalPost(ByVal TabID As Integer,
+                                           ByVal ModuleID As Integer,
+                                           ByVal PortalID As Integer,
+                                           ByVal UserID As Integer,
+                                           ByVal PostSubject As String,
+                                           ByVal PostBody As String,
+                                           ByVal ForumID As Integer,
+                                           ByVal ParentPostID As Integer,
+                                           ByVal Attachments As String,
+                                           ByVal Provider As String,
+                                           ByVal ParentThreadID As Integer,
+                                           ByVal Terms As List(Of DotNetNuke.Entities.Content.Taxonomy.Term),
+                                           ByVal IsPinned As Boolean) As PostMessage
+            Return PostingValidation(TabID, ModuleID, PortalID, UserID, PostSubject, PostBody, ForumID, ParentPostID, -1, IsPinned, False, False, Forum.ThreadStatus.NotSet, Attachments, "0.0.0.0", -1, False, Provider, ParentThreadID, Terms)
+        End Function
+
+        ''' <summary>
         ''' This is meant for preview only and is not required prior to any post submissions (although, all posts will run through this when submitted).
         ''' </summary>
         ''' <param name="PostBody"></param>
