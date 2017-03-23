@@ -84,6 +84,7 @@ Namespace DotNetNuke.Modules.Forum
         ''' <param name="ParentPostID">The post you are replying to, if you are starting a new thread this should be equal to 0.</param>
         ''' <param name="Attachments">A string of attachments, separated by a semicolon (Not fully implemented).</param>
         ''' <param name="Provider">A unique string used to identify how the post was submitted (this should be your own unique value for your module/task).</param>
+        ''' <param name="ParentThreadID">Thread id if replying to existing thread. For new messages this should equal to -1</param>
         ''' <returns>An enumerator PostMessage that tells what happend (post moderated, post approved, reason rejected, etc.).</returns>
         ''' <remarks>This is available for all outside modules/applications to post to the forum module.</remarks>
         Public Function SubmitExternalPost(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer, ByVal UserID As Integer, ByVal PostSubject As String, ByVal PostBody As String, ByVal ForumID As Integer, ByVal ParentPostID As Integer, ByVal Attachments As String, ByVal Provider As String, ByVal ParentThreadID As Integer, ByVal Terms As List(Of DotNetNuke.Entities.Content.Taxonomy.Term)) As PostMessage
@@ -361,6 +362,7 @@ Namespace DotNetNuke.Modules.Forum
         ''' necessary actions if needed. It also filters the post from here
         ''' for security reasons as well as bad words (if enabled), and calls all parsing (for image replacement, etc.).
         ''' </summary>
+        ''' <param name="ThreadID">Should have value -1 when creating new thread.</param>
         ''' <remarks>All permissions and validation checks should be done prior to this method.</remarks>
         Private Function PostToDatabase(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal objConfig As Forum.Configuration, ByVal PortalID As Integer, ByVal objForumUser As ForumUserInfo, ByVal PostSubject As String, ByVal PostBody As String, ByVal objForum As ForumInfo, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal IsPinned As Boolean, ByVal IsClosed As Boolean, ByVal ReplyNotify As Boolean, ByVal Status As Forum.ThreadStatus, ByVal lstAttachmentFileIDs As String, ByVal RemoteAddress As String, ByVal PollID As Integer, ByVal ThreadID As Integer, ByVal objAction As PostAction, ByVal IsModerated As Boolean, ByVal Terms As List(Of DotNetNuke.Entities.Content.Taxonomy.Term)) As Integer
             Dim objSecurity As New PortalSecurity
