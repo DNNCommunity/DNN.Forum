@@ -23,6 +23,7 @@ Option Explicit On
 Imports DotNetNuke.Services.FileSystem
 Imports System.IO
 Imports DotNetNuke.Forum.Library
+Imports DotNetNuke.Forum.Library.Data
 
 Namespace DotNetNuke.Modules.Forum
 
@@ -67,7 +68,17 @@ Namespace DotNetNuke.Modules.Forum
         ''' <returns>An enumerator PostMessage that tells what happend (post moderated, post approved, reason rejected, etc.).</returns>
         ''' <remarks>This is available for all outside modules/applications to post to the forum module.</remarks>
         <Obsolete("Use the other SubmitExternalPost method instead")>
-        Public Function SubmitExternalPost(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer, ByVal UserID As Integer, ByVal PostSubject As String, ByVal PostBody As String, ByVal ForumID As Integer, ByVal ParentPostID As Integer, ByVal Attachments As String, ByVal Provider As String) As PostMessage
+        Public Function SubmitExternalPost(
+                                          ByVal TabID As Integer,
+                                          ByVal ModuleID As Integer,
+                                          ByVal PortalID As Integer,
+                                          ByVal UserID As Integer,
+                                          ByVal PostSubject As String,
+                                          ByVal PostBody As String,
+                                          ByVal ForumID As Integer,
+                                          ByVal ParentPostID As Integer,
+                                          ByVal Attachments As String,
+                                          ByVal Provider As String) As SubmitPostResult
             Return PostingValidation(TabID, ModuleID, PortalID, UserID, PostSubject, PostBody, ForumID, ParentPostID, -1, False, False, False, Forum.ThreadStatus.NotSet, Attachments, "0.0.0.0", -1, False, Provider, -1, Nothing)
         End Function
 
@@ -87,7 +98,19 @@ Namespace DotNetNuke.Modules.Forum
         ''' <param name="ParentThreadID">Thread id if replying to existing thread. For new messages this should equal to -1</param>
         ''' <returns>An enumerator PostMessage that tells what happend (post moderated, post approved, reason rejected, etc.).</returns>
         ''' <remarks>This is available for all outside modules/applications to post to the forum module.</remarks>
-        Public Function SubmitExternalPost(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer, ByVal UserID As Integer, ByVal PostSubject As String, ByVal PostBody As String, ByVal ForumID As Integer, ByVal ParentPostID As Integer, ByVal Attachments As String, ByVal Provider As String, ByVal ParentThreadID As Integer, ByVal Terms As List(Of DotNetNuke.Entities.Content.Taxonomy.Term)) As PostMessage
+        Public Function SubmitExternalPost(
+                                          ByVal TabID As Integer,
+                                          ByVal ModuleID As Integer,
+                                          ByVal PortalID As Integer,
+                                          ByVal UserID As Integer,
+                                          ByVal PostSubject As String,
+                                          ByVal PostBody As String,
+                                          ByVal ForumID As Integer,
+                                          ByVal ParentPostID As Integer,
+                                          ByVal Attachments As String,
+                                          ByVal Provider As String,
+                                          ByVal ParentThreadID As Integer,
+                                          ByVal Terms As List(Of DotNetNuke.Entities.Content.Taxonomy.Term)) As SubmitPostResult
             Return PostingValidation(TabID, ModuleID, PortalID, UserID, PostSubject, PostBody, ForumID, ParentPostID, -1, False, False, False, Forum.ThreadStatus.NotSet, Attachments, "0.0.0.0", -1, False, Provider, ParentThreadID, Terms)
         End Function
 
@@ -120,7 +143,7 @@ Namespace DotNetNuke.Modules.Forum
                                            ByVal Provider As String,
                                            ByVal ParentThreadID As Integer,
                                            ByVal Terms As List(Of DotNetNuke.Entities.Content.Taxonomy.Term),
-                                           ByVal IsPinned As Boolean) As PostMessage
+                                           ByVal IsPinned As Boolean) As SubmitPostResult
             Return PostingValidation(TabID, ModuleID, PortalID, UserID, PostSubject, PostBody, ForumID, ParentPostID, -1, IsPinned, False, False, Forum.ThreadStatus.NotSet, Attachments, "0.0.0.0", -1, False, Provider, ParentThreadID, Terms)
         End Function
 
@@ -231,7 +254,26 @@ Namespace DotNetNuke.Modules.Forum
         ''' <param name="ThreadID"></param>
         ''' <returns></returns>
         ''' <remarks>This is set as friend so only PostEdit uses this method. We want to avoid threadstatus, polls, thread icon changes from external sources (for now). Also avoiding post edits externally,.</remarks>
-        Friend Function SubmitInternalPost(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer, ByVal UserID As Integer, ByVal PostSubject As String, ByVal PostBody As String, ByVal ForumID As Integer, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal IsPinned As Boolean, ByVal IsClosed As Boolean, ByVal ReplyNotify As Boolean, ByVal Status As Forum.ThreadStatus, ByVal AttachmentFileIDs As String, ByVal RemoteAddress As String, ByVal PollID As Integer, ByVal IsQuote As Boolean, ByVal ThreadID As Integer, ByVal Terms As List(Of DotNetNuke.Entities.Content.Taxonomy.Term)) As PostMessage
+        Friend Function SubmitInternalPost(
+                                          ByVal TabID As Integer,
+                                          ByVal ModuleID As Integer,
+                                          ByVal PortalID As Integer,
+                                          ByVal UserID As Integer,
+                                          ByVal PostSubject As String,
+                                          ByVal PostBody As String,
+                                          ByVal ForumID As Integer,
+                                          ByVal ParentPostID As Integer,
+                                          ByVal PostID As Integer,
+                                          ByVal IsPinned As Boolean,
+                                          ByVal IsClosed As Boolean,
+                                          ByVal ReplyNotify As Boolean,
+                                          ByVal Status As Forum.ThreadStatus,
+                                          ByVal AttachmentFileIDs As String,
+                                          ByVal RemoteAddress As String,
+                                          ByVal PollID As Integer,
+                                          ByVal IsQuote As Boolean,
+                                          ByVal ThreadID As Integer,
+                                          ByVal Terms As List(Of DotNetNuke.Entities.Content.Taxonomy.Term)) As SubmitPostResult
             Return PostingValidation(TabID, ModuleID, PortalID, UserID, PostSubject, PostBody, ForumID, ParentPostID, PostID, IsPinned, IsClosed, ReplyNotify, Status, AttachmentFileIDs, RemoteAddress, PollID, IsQuote, "InterModule", ThreadID, Terms)
         End Function
 
@@ -262,7 +304,27 @@ Namespace DotNetNuke.Modules.Forum
         ''' <param name="ThreadID"></param>
         ''' <returns>A message indicating what happend, ie. if the post was successfull or why it failed.</returns>
         ''' <remarks>Internal and external methods for posting call this.</remarks>
-        Private Function PostingValidation(ByVal TabID As Integer, ByVal ModuleID As Integer, ByVal PortalID As Integer, ByVal UserID As Integer, ByVal PostSubject As String, ByVal PostBody As String, ByVal ForumID As Integer, ByVal ParentPostID As Integer, ByVal PostID As Integer, ByVal IsPinned As Boolean, ByVal IsClosed As Boolean, ByVal ReplyNotify As Boolean, ByVal Status As Forum.ThreadStatus, ByVal lstAttachmentFileIDs As String, ByVal RemoteAddress As String, ByVal PollID As Integer, ByVal IsQuote As Boolean, ByVal Provider As String, ByVal ThreadID As Integer, ByVal Terms As List(Of DotNetNuke.Entities.Content.Taxonomy.Term)) As PostMessage
+        Private Function PostingValidation(
+                                          ByVal TabID As Integer,
+                                          ByVal ModuleID As Integer,
+                                          ByVal PortalID As Integer,
+                                          ByVal UserID As Integer,
+                                          ByVal PostSubject As String,
+                                          ByVal PostBody As String,
+                                          ByVal ForumID As Integer,
+                                          ByVal ParentPostID As Integer,
+                                          ByVal PostID As Integer,
+                                          ByVal IsPinned As Boolean,
+                                          ByVal IsClosed As Boolean,
+                                          ByVal ReplyNotify As Boolean,
+                                          ByVal Status As Forum.ThreadStatus,
+                                          ByVal lstAttachmentFileIDs As String,
+                                          ByVal RemoteAddress As String,
+                                          ByVal PollID As Integer,
+                                          ByVal IsQuote As Boolean,
+                                          ByVal Provider As String,
+                                          ByVal ThreadID As Integer,
+                                          ByVal Terms As List(Of DotNetNuke.Entities.Content.Taxonomy.Term)) As SubmitPostResult
             Dim cntForum As New ForumController
             Dim objForum As New ForumInfo
             Dim cntForumUser As New ForumUserController
@@ -280,39 +342,39 @@ Namespace DotNetNuke.Modules.Forum
             End If
 
             If PostSubject.Trim() = String.Empty Then
-                Return PostMessage.PostInvalidSubject
+                Return New SubmitPostResult With {.PostId = PostID, .Result = DotNetNuke.Forum.Library.Data.PostMessage.PostInvalidSubject}
             End If
 
             If PostBody.Trim() = String.Empty Then
-                Return PostMessage.PostInvalidBody
+                Return New SubmitPostResult With {.PostId = PostID, .Result = DotNetNuke.Forum.Library.Data.PostMessage.PostInvalidBody}
             End If
 
             If objForumUser.IsBanned Then
-                Return PostMessage.UserBanned
+                Return New SubmitPostResult With {.PostId = PostID, .Result = DotNetNuke.Forum.Library.Data.PostMessage.UserBanned}
             End If
 
             If objForum Is Nothing Then
-                Return PostMessage.ForumDoesntExist
+                Return New SubmitPostResult With {.PostId = PostID, .Result = DotNetNuke.Forum.Library.Data.PostMessage.ForumDoesntExist}
             Else
                 If objForum.ContainsChildForums Then
-                    Return PostMessage.ForumIsParent
+                    Return New SubmitPostResult With {.PostId = PostID, .Result = DotNetNuke.Forum.Library.Data.PostMessage.ForumIsParent}
                 End If
 
                 If Not objForum.IsActive Then
-                    Return PostMessage.ForumClosed
+                    Return New SubmitPostResult With {.PostId = PostID, .Result = DotNetNuke.Forum.Library.Data.PostMessage.ForumClosed}
                 End If
 
                 If Not objForum.PublicView Then
                     If Not objModSecurity.IsAllowedToViewPrivateForum Then
-                        Return PostMessage.UserCannotViewForum
+                        Return New SubmitPostResult With {.PostId = PostID, .Result = DotNetNuke.Forum.Library.Data.PostMessage.UserCannotViewForum}
                     End If
                 End If
 
                 If lstAttachmentFileIDs <> String.Empty And Not objConfig.EnableAttachment Then
-                    Return PostMessage.ForumNoAttachments
+                    Return New SubmitPostResult With {.PostId = PostID, .Result = DotNetNuke.Forum.Library.Data.PostMessage.ForumNoAttachments}
                 Else
                     If lstAttachmentFileIDs <> String.Empty And Not objModSecurity.CanAddAttachments Then
-                        Return PostMessage.UserAttachmentPerms
+                        Return New SubmitPostResult With {.PostId = PostID, .Result = DotNetNuke.Forum.Library.Data.PostMessage.UserAttachmentPerms}
                     End If
                 End If
 
@@ -336,11 +398,11 @@ Namespace DotNetNuke.Modules.Forum
                     Select Case objAction
                         Case PostAction.New
                             If Not (objModSecurity.IsAllowedToStartRestrictedThread) Then
-                                Return PostMessage.UserCannotStartThread
+                                Return New SubmitPostResult With {.PostId = PostID, .Result = DotNetNuke.Forum.Library.Data.PostMessage.UserCannotStartThread}
                             End If
                         Case Else
                             If Not (objModSecurity.IsAllowedToPostRestrictedReply) Then
-                                Return PostMessage.UserCannotPostReply
+                                Return New SubmitPostResult With {.PostId = PostID, .Result = DotNetNuke.Forum.Library.Data.PostMessage.UserCannotPostReply}
                             End If
                     End Select
                 End If
@@ -362,11 +424,11 @@ Namespace DotNetNuke.Modules.Forum
                         If objPost.UserID = UserID Then
                             If objConfig.PostEditWindow > 0 Then
                                 If objPost.CreatedDate.AddMinutes(CDbl(objConfig.PostEditWindow)) < DateTime.Now Then
-                                    Return PostMessage.PostEditExpired
+                                    Return New SubmitPostResult With {.PostId = PostID, .Result = DotNetNuke.Forum.Library.Data.PostMessage.PostEditExpired}
                                 End If
                             End If
                         Else
-                            Return PostMessage.UserCannotEditPost
+                            Return New SubmitPostResult With {.PostId = PostID, .Result = DotNetNuke.Forum.Library.Data.PostMessage.UserCannotEditPost}
                         End If
                     End If
                 End If
@@ -379,9 +441,9 @@ Namespace DotNetNuke.Modules.Forum
 
                 If NewPostID > 0 Then
                     If IsModerated Then
-                        Return PostMessage.PostModerated
+                        Return New SubmitPostResult With {.PostId = NewPostID, .Result = DotNetNuke.Forum.Library.Data.PostMessage.PostModerated}
                     Else
-                        Return PostMessage.PostApproved
+                        Return New SubmitPostResult With {.PostId = NewPostID, .Result = DotNetNuke.Forum.Library.Data.PostMessage.PostApproved}
                     End If
                 End If
 
@@ -468,19 +530,19 @@ Namespace DotNetNuke.Modules.Forum
                         End If
 
                         Dim cntContent As New Content
-                            cntContent.CreateContentItem(objThread, TabID)
+                        cntContent.CreateContentItem(objThread, TabID)
 
-                            ThreadID = objThread.ThreadID
-                            If (objConfig.EnableJournal = True) Then
-                                journal.AddThreadToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
-                            End If
-                        Else
-                            If (objConfig.EnableJournal = True) Then
+                        ThreadID = objThread.ThreadID
+                        If (objConfig.EnableJournal = True) Then
+                            journal.AddThreadToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
+                        End If
+                    Else
+                        If (objConfig.EnableJournal = True) Then
                             journal.AddReplyToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
                         End If
                     End If
 
-                        Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID, objForum.ForumID, objForum.GroupID, objConfig.ModuleID, objForum.ParentID)
+                    Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID, objForum.ForumID, objForum.GroupID, objConfig.ModuleID, objForum.ParentID)
 
                     _emailType = ForumEmailType.UserNewThread
                 Case PostAction.Edit
@@ -513,13 +575,13 @@ Namespace DotNetNuke.Modules.Forum
                         End If
 
                         Dim cntContent As New Content
-                            cntContent.UpdateContentItem(objThread, TabID)
+                        cntContent.UpdateContentItem(objThread, TabID)
 
-                            If (objConfig.EnableJournal = True) Then
-                                journal.AddThreadToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
-                            End If
-                        Else
-                            If (objConfig.EnableJournal = True) Then
+                        If (objConfig.EnableJournal = True) Then
+                            journal.AddThreadToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
+                        End If
+                    Else
+                        If (objConfig.EnableJournal = True) Then
                             journal.AddReplyToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
                         End If
                     End If

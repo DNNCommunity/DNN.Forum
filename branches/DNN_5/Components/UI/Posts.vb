@@ -23,6 +23,7 @@ Option Explicit On
 Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Services.FileSystem
 Imports DotNetNuke.Forum.Library
+Imports DotNetNuke.Forum.Library.Data
 
 Namespace DotNetNuke.Modules.Forum
 
@@ -347,7 +348,7 @@ Namespace DotNetNuke.Modules.Forum
                 End If
 
                 Dim cntPostConnect As New PostConnector
-                Dim PostMessage As PostMessage
+                Dim PostMessage As SubmitPostResult
 
                 Dim textReply As String = txtQuickReply.Text
 
@@ -359,8 +360,8 @@ Namespace DotNetNuke.Modules.Forum
 
                 PostMessage = cntPostConnect.SubmitInternalPost(TabID, ModuleID, PortalID, CurrentForumUser.UserID, strSubject, textReply, ForumID, objThread.ThreadID, -1, objThread.IsPinned, False, False, objThread.ThreadStatus, "", RemoteAddress, objThread.PollID, False, objThread.ThreadID, objThread.Terms)
 
-                Select Case PostMessage
-                    Case PostMessage.PostApproved
+                Select Case PostMessage.Result
+                    Case DotNetNuke.Forum.Library.Data.PostMessage.PostApproved
                         '	Dim ReturnURL As String = NavigateURL()
 
                         '	If objModSecurity.IsModerator Then
@@ -374,7 +375,7 @@ Namespace DotNetNuke.Modules.Forum
                         '	End If
 
                         '	Response.Redirect(ReturnURL, False)
-                    Case PostMessage.PostModerated
+                    Case DotNetNuke.Forum.Library.Data.PostMessage.PostModerated
                         'tblNewPost.Visible = False
                         'tblOldPost.Visible = False
                         'tblPreview.Visible = False
@@ -519,106 +520,106 @@ Namespace DotNetNuke.Modules.Forum
                 End If
             End If
 
-                ' If the thread info is nothing, it is probably a deleted thread
-                If objThread Is Nothing Then
+            ' If the thread info is nothing, it is probably a deleted thread
+            If objThread Is Nothing Then
+                ' we should consider setting type of redirect here?
+
+                MyBase.BasePage.Response.Redirect(Utilities.Links.NoContentLink(TabID, ModuleID), True)
+            End If
+
+            ' Make sure the forum is active 
+            If Not objThread.ContainingForum.IsActive Then
+                ' we should consider setting type of redirect here?
+
+                MyBase.BasePage.Response.Redirect(Utilities.Links.NoContentLink(TabID, ModuleID), True)
+            End If
+
+            ' User might access this page by typing url so better check permission on parent forum
+            If Not (objThread.ContainingForum.PublicView) Then
+                If Not objSecurity.IsAllowedToViewPrivateForum Then
                     ' we should consider setting type of redirect here?
 
-                    MyBase.BasePage.Response.Redirect(Utilities.Links.NoContentLink(TabID, ModuleID), True)
+                    MyBase.BasePage.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
+                End If
+            End If
+
+            If objConfig.OverrideTitle Then
+                Dim Title As String
+                Dim Subject As String
+
+                If objThread.Subject.Length > Constants.SEO_TITLE_LIMIT Then
+                    Subject = objThread.Subject.Substring(0, Constants.SEO_TITLE_LIMIT)
+                Else
+                    Subject = objThread.Subject
                 End If
 
-                ' Make sure the forum is active 
-                If Not objThread.ContainingForum.IsActive Then
-                    ' we should consider setting type of redirect here?
+                If Not Subject.Length > Constants.SEO_TITLE_LIMIT Then
+                    Title = Subject
 
-                    MyBase.BasePage.Response.Redirect(Utilities.Links.NoContentLink(TabID, ModuleID), True)
-                End If
-
-                ' User might access this page by typing url so better check permission on parent forum
-                If Not (objThread.ContainingForum.PublicView) Then
-                    If Not objSecurity.IsAllowedToViewPrivateForum Then
-                        ' we should consider setting type of redirect here?
-
-                        MyBase.BasePage.Response.Redirect(Utilities.Links.UnAuthorizedLink(), True)
-                    End If
-                End If
-
-                If objConfig.OverrideTitle Then
-                    Dim Title As String
-                    Dim Subject As String
-
-                    If objThread.Subject.Length > Constants.SEO_TITLE_LIMIT Then
-                        Subject = objThread.Subject.Substring(0, Constants.SEO_TITLE_LIMIT)
-                    Else
-                        Subject = objThread.Subject
-                    End If
-
+                    Subject += " - " & objThread.ContainingForum.Name
                     If Not Subject.Length > Constants.SEO_TITLE_LIMIT Then
                         Title = Subject
 
-                        Subject += " - " & objThread.ContainingForum.Name
+                        Subject += " - " & Me.BaseControl.PortalName
                         If Not Subject.Length > Constants.SEO_TITLE_LIMIT Then
                             Title = Subject
-
-                            Subject += " - " & Me.BaseControl.PortalName
-                            If Not Subject.Length > Constants.SEO_TITLE_LIMIT Then
-                                Title = Subject
-                            End If
-                        End If
-                    Else
-                        Title = Subject
-                    End If
-
-                    MyBase.BasePage.Title = Title
-                End If
-
-                If objConfig.OverrideDescription Then
-                    Dim Description As String
-
-                    If objThread.Subject.Length < Constants.SEO_DESCRIPTION_LIMIT Then
-                        Description = objThread.Subject
-                    Else
-                        Description = objThread.Subject.Substring(0, Constants.SEO_DESCRIPTION_LIMIT)
-                    End If
-
-                    MyBase.BasePage.Description = Description
-                End If
-
-                If objConfig.OverrideKeyWords Then
-                    Dim KeyWords As String = ""
-                    Dim keyCount As Integer = 0
-
-                    If objThread.ContainingForum.ParentID = 0 Then
-                        KeyWords = objThread.ContainingForum.Name
-                        keyCount = 1
-                    Else
-                        KeyWords = objThread.ContainingForum.ParentForum.Name + "," + objThread.ContainingForum.Name
-                        keyCount = 2
-                    End If
-
-                    If objConfig.EnableTagging Then
-                        For Each Term As Entities.Content.Taxonomy.Term In objThread.Terms
-                            If keyCount < Constants.SEO_KEYWORDS_LIMIT Then
-                                KeyWords += "," + Term.Name
-                                keyCount += 1
-                            Else
-                                Exit For
-                            End If
-                        Next
-
-                        ' If we haven't hit the keyword limit, let's add portal name to the list.
-                        If keyCount < Constants.SEO_KEYWORDS_LIMIT Then
-                            KeyWords += "," + Me.BaseControl.PortalName
                         End If
                     End If
-
-                    MyBase.BasePage.KeyWords = KeyWords
-                End If
-
-                If PostPage > 0 Then
-                    PostPage = PostPage - 1
                 Else
-                    PostPage = 0
+                    Title = Subject
                 End If
+
+                MyBase.BasePage.Title = Title
+            End If
+
+            If objConfig.OverrideDescription Then
+                Dim Description As String
+
+                If objThread.Subject.Length < Constants.SEO_DESCRIPTION_LIMIT Then
+                    Description = objThread.Subject
+                Else
+                    Description = objThread.Subject.Substring(0, Constants.SEO_DESCRIPTION_LIMIT)
+                End If
+
+                MyBase.BasePage.Description = Description
+            End If
+
+            If objConfig.OverrideKeyWords Then
+                Dim KeyWords As String = ""
+                Dim keyCount As Integer = 0
+
+                If objThread.ContainingForum.ParentID = 0 Then
+                    KeyWords = objThread.ContainingForum.Name
+                    keyCount = 1
+                Else
+                    KeyWords = objThread.ContainingForum.ParentForum.Name + "," + objThread.ContainingForum.Name
+                    keyCount = 2
+                End If
+
+                If objConfig.EnableTagging Then
+                    For Each Term As Entities.Content.Taxonomy.Term In objThread.Terms
+                        If keyCount < Constants.SEO_KEYWORDS_LIMIT Then
+                            KeyWords += "," + Term.Name
+                            keyCount += 1
+                        Else
+                            Exit For
+                        End If
+                    Next
+
+                    ' If we haven't hit the keyword limit, let's add portal name to the list.
+                    If keyCount < Constants.SEO_KEYWORDS_LIMIT Then
+                        KeyWords += "," + Me.BaseControl.PortalName
+                    End If
+                End If
+
+                MyBase.BasePage.KeyWords = KeyWords
+            End If
+
+            If PostPage > 0 Then
+                PostPage = PostPage - 1
+            Else
+                PostPage = 0
+            End If
         End Sub
 
         ''' <summary>

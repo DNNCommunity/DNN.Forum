@@ -775,27 +775,4 @@ Namespace DotNetNuke.Modules.Forum
 		Inline = 8
 	End Enum
 
-	''' <summary>
-	''' Provides the status of an attempted post.
-	''' </summary>
-	''' <remarks></remarks>
-	Public Enum PostMessage
-		ForumClosed = 0
-		ForumDoesntExist = 1
-		ForumIsParent = 2
-		ForumNoAttachments = 3
-		PostApproved = 4
-		PostEditExpired = 5
-		PostInvalidBody = 6
-		PostInvalidSubject = 7
-		PostModerated = 8
-		ThreadLocked = 9
-		UserAttachmentPerms = 10
-		UserBanned = 11
-		UserCannotEditPost = 12
-		UserCannotPostReply = 13
-		UserCannotStartThread = 14
-		UserCannotViewForum = 15
-	End Enum
-
 End Namespace

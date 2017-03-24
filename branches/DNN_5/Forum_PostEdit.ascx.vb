@@ -1,3 +1,5 @@
+Option Strict On
+Option Explicit On
 '
 ' DotNetNuke® - http://www.dotnetnuke.com
 ' Copyright (c) 2002-2011
@@ -17,9 +19,7 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
-Option Strict On
-Option Explicit On
-
+Imports DotNetNuke.Forum.Library.Data
 Imports DotNetNuke.Modules.Forum.Utilities
 
 Namespace DotNetNuke.Modules.Forum
@@ -450,7 +450,7 @@ Namespace DotNetNuke.Modules.Forum
                     If ViewState("PostContent") IsNot Nothing Then
                         teContent.Text = ViewState("PostContent").ToString()
                     Else
-                        DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString(Forum.PostMessage.PostInvalidBody.ToString() + ".Text", LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.RedError)
+                        DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString(DotNetNuke.Forum.Library.Data.PostMessage.PostInvalidBody.ToString() + ".Text", LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.RedError)
                         Exit Sub
                     End If
                 End If
@@ -475,15 +475,15 @@ Namespace DotNetNuke.Modules.Forum
 
                 ' Validation (from UI)
                 If Len(teContent.Text) = 0 Then
-                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString(Forum.PostMessage.PostInvalidBody.ToString() + ".Text", LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.RedError)
+                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString(DotNetNuke.Forum.Library.Data.PostMessage.PostInvalidBody.ToString() + ".Text", LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.RedError)
                     Exit Sub
                 End If
                 If Len(txtSubject.Text) = 0 Then
-                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString(Forum.PostMessage.PostInvalidSubject.ToString() + ".Text", LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.RedError)
+                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString(DotNetNuke.Forum.Library.Data.PostMessage.PostInvalidSubject.ToString() + ".Text", LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.RedError)
                     Exit Sub
                 End If
                 If ddlForum.SelectedItem Is Nothing Or ddlForum.SelectedItem.Value = "-1" Then
-                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString(Forum.PostMessage.ForumDoesntExist.ToString() + ".Text", LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.RedError)
+                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString(DotNetNuke.Forum.Library.Data.PostMessage.ForumDoesntExist.ToString() + ".Text", LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.RedError)
                     Exit Sub
                 End If
 
@@ -578,12 +578,12 @@ Namespace DotNetNuke.Modules.Forum
                 End If
 
                 Dim cntPostConnect As New PostConnector
-                Dim PostMessage As PostMessage
+                Dim PostMessage As SubmitPostResult
 
                 PostMessage = cntPostConnect.SubmitInternalPost(TabId, ModuleId, PortalId, CurrentForumUser.UserID, txtSubject.Text, teContent.Text, objForum.ForumID, ParentPostID, PostID, chkIsPinned.Checked, chkIsClosed.Checked, chkNotify.Checked, ThreadStatus, ctlAttachment.lstAttachmentIDs, RemoteAddress, PollID, IsQuote, ThreadID, Terms)
 
-                Select Case PostMessage
-                    Case PostMessage.PostApproved
+                Select Case PostMessage.Result
+                    Case DotNetNuke.Forum.Library.Data.PostMessage.PostApproved
                         Dim ReturnURL As String = NavigateURL()
 
                         If objModSecurity.IsModerator Then
@@ -601,7 +601,7 @@ Namespace DotNetNuke.Modules.Forum
                         End If
 
                         Response.Redirect(ReturnURL, False)
-                    Case PostMessage.PostModerated
+                    Case DotNetNuke.Forum.Library.Data.PostMessage.PostModerated
                         divNewPost.Visible = False
                         tblOldPost.Visible = False
                         tblPreview.Visible = False

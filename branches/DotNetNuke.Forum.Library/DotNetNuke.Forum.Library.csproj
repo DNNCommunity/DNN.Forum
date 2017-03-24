@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\SubmitPostResult.cs" />
     <Compile Include="FileUtilityClass.cs" />
     <Compile Include="JournalUtilityClass.cs" />
     <Compile Include="PortalUtilityClass.cs" />
