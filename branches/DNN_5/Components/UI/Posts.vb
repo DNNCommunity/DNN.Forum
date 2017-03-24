@@ -37,6 +37,7 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Members"
 
+        Shared log As Instrumentation.DnnLogger = Instrumentation.DnnLogger.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString())
         Private _ThreadID As Integer
         Private _PostCollection As List(Of PostInfo)
         Private _objThread As ThreadInfo
@@ -360,6 +361,9 @@ Namespace DotNetNuke.Modules.Forum
 
                 PostMessage = cntPostConnect.SubmitInternalPost(TabID, ModuleID, PortalID, CurrentForumUser.UserID, strSubject, textReply, ForumID, objThread.ThreadID, -1, objThread.IsPinned, False, False, objThread.ThreadStatus, "", RemoteAddress, objThread.PollID, False, objThread.ThreadID, objThread.Terms)
 
+                Dim ctlPost As New PostController
+                PostCollection = ctlPost.PostGetAll(ThreadID, PostPage, CurrentForumUser.PostsPerPage, ForumControl.Descending, PortalID)
+                txtQuickReply.Text = ""
                 Select Case PostMessage.Result
                     Case DotNetNuke.Forum.Library.Data.PostMessage.PostApproved
                         '	Dim ReturnURL As String = NavigateURL()
@@ -375,6 +379,7 @@ Namespace DotNetNuke.Modules.Forum
                         '	End If
 
                         '	Response.Redirect(ReturnURL, False)
+                        MyBase.BasePage.Response.Redirect(Utilities.Links.ContainerViewPostLink(TabID, ForumID, PostMessage.PostId), False)
                     Case DotNetNuke.Forum.Library.Data.PostMessage.PostModerated
                         'tblNewPost.Visible = False
                         'tblOldPost.Visible = False
@@ -390,12 +395,7 @@ Namespace DotNetNuke.Modules.Forum
                         'lblInfo.Visible = True
                         'lblInfo.Text = Localization.GetString(PostMessage.ToString() + ".Text", LocalResourceFile)
                 End Select
-                txtQuickReply.Text = ""
                 'Forum.ThreadInfo.ResetThreadInfo(ThreadId)
-
-                Dim ctlPost As New PostController
-                PostCollection = ctlPost.PostGetAll(ThreadID, PostPage, CurrentForumUser.PostsPerPage, ForumControl.Descending, PortalID)
-                ' we need to redirect the user here to make sure the page is redrawn.
             Else
                 ' there is no quick reply message entered, yet they clicked submit. Show end user. 
             End If

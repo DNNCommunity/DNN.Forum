@@ -586,19 +586,7 @@ Namespace DotNetNuke.Modules.Forum
                     Case DotNetNuke.Forum.Library.Data.PostMessage.PostApproved
                         Dim ReturnURL As String = NavigateURL()
 
-                        If objModSecurity.IsModerator Then
-                            If Not ViewState("UrlReferrer") Is Nothing Then
-                                ReturnURL = (CType(ViewState("UrlReferrer"), String))
-                            Else
-                                ReturnURL = Utilities.Links.ContainerViewForumLink(TabId, objForum.ForumID, False)
-                            End If
-                        Else
-                            If Not objAction = PostAction.New Then
-                                ReturnURL = Utilities.Links.ContainerViewPostLink(TabId, objForum.ForumID, URLPostID)
-                            Else
-                                ReturnURL = Utilities.Links.ContainerViewForumLink(TabId, objForum.ForumID, False)
-                            End If
-                        End If
+                        ReturnURL = Utilities.Links.ContainerViewPostLink(TabId, objForum.ForumID, PostMessage.PostId)
 
                         Response.Redirect(ReturnURL, False)
                     Case DotNetNuke.Forum.Library.Data.PostMessage.PostModerated
