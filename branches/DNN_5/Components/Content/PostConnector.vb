@@ -534,11 +534,11 @@ Namespace DotNetNuke.Modules.Forum
 
                         ThreadID = objThread.ThreadID
                         If (objConfig.EnableJournal = True) Then
-                            journal.AddThreadToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
+                            journal.AddThreadToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(PortalID, TabID, objForum.ForumID, newPostID, PostSubject), PostSubject, PostBody)
                         End If
                     Else
                         If (objConfig.EnableJournal = True) Then
-                            journal.AddReplyToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
+                            journal.AddReplyToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(PortalID, TabID, objForum.ForumID, newPostID, PostSubject), PostSubject, PostBody)
                         End If
                     End If
 
@@ -578,11 +578,11 @@ Namespace DotNetNuke.Modules.Forum
                         cntContent.UpdateContentItem(objThread, TabID)
 
                         If (objConfig.EnableJournal = True) Then
-                            journal.AddThreadToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
+                            journal.AddThreadToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(PortalID, TabID, objForum.ForumID, newPostID, PostSubject), PostSubject, PostBody)
                         End If
                     Else
                         If (objConfig.EnableJournal = True) Then
-                            journal.AddReplyToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
+                            journal.AddReplyToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(PortalID, TabID, objForum.ForumID, newPostID, PostSubject), PostSubject, PostBody)
                         End If
                     End If
 
@@ -592,7 +592,7 @@ Namespace DotNetNuke.Modules.Forum
                     newPostID = ctlPost.PostAdd(ParentPostID, objForum.ForumID, objForumUser.UserID, RemoteAddress, PostSubject, PostBody, IsPinned, _PinnedDate, IsClosed, PortalID, PollID, IsModerated, objForum.GroupID, ParentPostID, ParsingType)
 
                     If (objConfig.EnableJournal = True) Then
-                        journal.AddReplyToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(TabID, objForum.ForumID, newPostID), PostSubject, PostBody)
+                        journal.AddReplyToJournal(PortalID, ModuleID, TabID, objForum.ForumID, ThreadID, newPostID, objForumUser.UserID, Links.ContainerViewPostLink(PortalID, TabID, objForum.ForumID, newPostID, PostSubject), PostSubject, PostBody)
                     End If
                     ' since it is a new post, we only need to update thread & forum
                     Forum.Components.Utilities.Caching.UpdateThreadCache(ThreadID, objForum.ForumID, objForum.GroupID, objConfig.ModuleID, objForum.ParentID)
@@ -758,7 +758,7 @@ Namespace DotNetNuke.Modules.Forum
             Else
                 ' This is for a non moderated post (posted by trusted user, or the forum is not moderated)
                 ' We have to determine which tab we want to view becuase of group feature formerly used on dnn.com (for now leaving as tab posted from because of possible perms issues)
-                _mailURL = Utilities.Links.ContainerViewPostLink(TabID, newPostInfo.ForumID, newPostInfo.PostID)
+                _mailURL = Utilities.Links.ContainerViewPostLink(PortalID, TabID, newPostInfo.ForumID, newPostInfo.PostID, newPostInfo.Subject)
 
                 If objConfig.MailNotification Then
                     If emailType = ForumEmailType.UserPostEdited Then

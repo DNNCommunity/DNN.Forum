@@ -379,7 +379,7 @@ Namespace DotNetNuke.Modules.Forum
                         '	End If
 
                         '	Response.Redirect(ReturnURL, False)
-                        MyBase.BasePage.Response.Redirect(Utilities.Links.ContainerViewPostLink(TabID, ForumID, PostMessage.PostId), False)
+                        MyBase.BasePage.Response.Redirect(Utilities.Links.ContainerViewPostLink(PortalID, TabID, ForumID, PostMessage.PostId, strSubject), False)
                     Case DotNetNuke.Forum.Library.Data.PostMessage.PostModerated
                         'tblNewPost.Visible = False
                         'tblOldPost.Visible = False
@@ -2108,7 +2108,7 @@ Namespace DotNetNuke.Modules.Forum
 
             '[skeel] Subject now works as a direct link to a specific post!
             RenderDivBegin(wr, "spCreatedDate", "Forum_Normal") ' <span>
-            Me.RenderLinkButton(wr, Utilities.Links.ContainerViewPostLink(TabID, Post.ForumID, Post.PostID), strSubject, "Forum_NormalBold")
+            Me.RenderLinkButton(wr, Utilities.Links.ContainerViewPostLink(PortalID, TabID, Post.ForumID, Post.PostID, strSubject), strSubject, "Forum_NormalBold")
             wr.Write("&nbsp;")
             wr.Write(strAuthorLocation)
 

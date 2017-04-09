@@ -1220,11 +1220,11 @@ Namespace DotNetNuke.Modules.Forum
 								RenderImage(wr, objConfig.GetThemeImageURL("thread_newest.") & objConfig.ImageExtension, ForumControl.LocalizedText("imgThreadNewest"), "")
 								wr.RenderEndTag() ' </a>
 							Else
-								url = Utilities.Links.ContainerViewPostLink(TabID, ForumID, objThread.LastApprovedPost.PostID)
-							End If
+                                url = Utilities.Links.ContainerViewPostLink(PortalID, TabID, ForumID, objThread.LastApprovedPost.PostID, objThread.LastApprovedPost.Subject)
+                            End If
 						Else
-							url = Utilities.Links.ContainerViewPostLink(TabID, ForumID, objThread.LastApprovedPost.PostID)
-						End If
+                            url = Utilities.Links.ContainerViewPostLink(PortalID, TabID, ForumID, objThread.LastApprovedPost.PostID, objThread.LastApprovedPost.Subject)
+                        End If
 						' End Skeel
 
 						RenderTitleLinkButton(wr, url, Utilities.ForumUtils.GetCreatedDateInfo(objThread.LastApprovedPost.CreatedDate, objConfig, ""), "Forum_LastPostText", objThread.LastPostShortBody) ' <a/>

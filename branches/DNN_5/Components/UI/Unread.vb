@@ -652,10 +652,10 @@ Namespace DotNetNuke.Modules.Forum
 						RenderCellEnd(wr) ' </td>
 
 						RenderCellBegin(wr, "", "", "", "right", "", "", "") ' <td>
-						url = Utilities.Links.ContainerViewPostLink(TabID, objThread.ForumID, objThread.LastApprovedPost.PostID)
+                        url = Utilities.Links.ContainerViewPostLink(PortalID, TabID, objThread.ForumID, objThread.LastApprovedPost.PostID, objThread.LastApprovedPost.Subject)
 
-						' Skeel - This is for showing link to first unread post for logged in users. 
-						If CurrentForumUser.PostsPerPage < objThread.TotalPosts Then
+                        ' Skeel - This is for showing link to first unread post for logged in users. 
+                        If CurrentForumUser.PostsPerPage < objThread.TotalPosts Then
 							'Find the page on which the first unread post is located
 							wr.AddAttribute(HtmlTextWriterAttribute.Href, FirstUnreadLink(objThread))
 						Else

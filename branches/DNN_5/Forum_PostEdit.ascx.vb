@@ -586,7 +586,7 @@ Namespace DotNetNuke.Modules.Forum
                     Case DotNetNuke.Forum.Library.Data.PostMessage.PostApproved
                         Dim ReturnURL As String = NavigateURL()
 
-                        ReturnURL = Utilities.Links.ContainerViewPostLink(TabId, objForum.ForumID, PostMessage.PostId)
+                        ReturnURL = Utilities.Links.ContainerViewPostLink(PortalId, TabId, objForum.ForumID, PostMessage.PostId, txtSubject.Text)
 
                         Response.Redirect(ReturnURL, False)
                     Case DotNetNuke.Forum.Library.Data.PostMessage.PostModerated

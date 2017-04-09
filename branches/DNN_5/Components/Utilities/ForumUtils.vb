@@ -771,7 +771,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
                                 objForumInfo = CType(InfoObject, ForumInfo)
                                 If Not objForumInfo Is Nothing Then
                                     ' Render Group Name
-                                    sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objConfig.CurrentPortalSettings.PortalId, objForumInfo.GroupID, objForumInfo.Name), objForumInfo.ParentGroup.Name, imageURL))
+                                    sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objConfig.CurrentPortalSettings.PortalId, objForumInfo.GroupID, objForumInfo.ParentGroup.Name), objForumInfo.ParentGroup.Name, imageURL))
                                     ' Render ParentForum Name
                                     sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerParentForumLink(TabID, objForumInfo.GroupID, objForumInfo.ForumID), objForumInfo.Name, imageURL))
                                     Utilities.Links.ContainerParentForumLink(TabID, objForumInfo.GroupID, objForumInfo.ForumID)
@@ -790,7 +790,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
                             sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(objConfig.CurrentPortalSettings.PortalId, TabID, -1, False, Localization.GetString("Aggregate", objConfig.SharedResourceFile)), Localization.GetString("Aggregate", objConfig.SharedResourceFile), imageURL))
                         Else
                             ' Render Group Name
-                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objConfig.CurrentPortalSettings.PortalId, objForumInfo.GroupID, objForumInfo.Name), TrimString(objForumInfo.ParentGroup.Name, 15), imageURL))
+                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objConfig.CurrentPortalSettings.PortalId, objForumInfo.GroupID, objForumInfo.ParentGroup.Name), TrimString(objForumInfo.ParentGroup.Name, 15), imageURL))
                             '[skeel] check for subforum
                             If objForumInfo.ParentID > 0 Then
                                 'Render Parent Forum Name

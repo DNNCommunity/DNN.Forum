@@ -916,8 +916,8 @@ Namespace DotNetNuke.Modules.Forum
 							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText")
 							wr.RenderBeginTag(HtmlTextWriterTag.Div) ' <div>
 
-							url = Utilities.Links.ContainerViewPostLink(TabID, objForum.ForumID, objForum.MostRecentPostID)
-							wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
+                            url = Utilities.Links.ContainerViewPostLink(PortalID, TabID, objForum.ForumID, objForum.MostRecentPostID, objForum.MostRecentPost.Subject)
+                            wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
                             wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText")
                             wr.AddAttribute(HtmlTextWriterAttribute.Title, System.Web.HttpUtility.HtmlDecode(lastPostInfo.Subject))
 							wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>

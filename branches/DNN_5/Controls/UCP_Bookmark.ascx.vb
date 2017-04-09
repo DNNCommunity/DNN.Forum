@@ -77,8 +77,8 @@ Namespace DotNetNuke.Modules.Forum.UCP
 				If keyMostRecentPostID > 0 Then
 					Dim objPost As PostInfo = cntPost.GetPostInfo(keyMostRecentPostID, PortalId)
 					hlLastPost.Text = Utilities.ForumUtils.GetCreatedDateInfo(objPost.CreatedDate, objConfig, "")
-					hlLastPost.NavigateUrl = Utilities.Links.ContainerViewPostLink(TabId, keyForumID, objPost.PostID)
-				Else
+                    hlLastPost.NavigateUrl = Utilities.Links.ContainerViewPostLink(PortalId, TabId, keyForumID, objPost.PostID, objPost.Subject)
+                Else
 					hlLastPost.Text = "-"
 				End If
 			End If

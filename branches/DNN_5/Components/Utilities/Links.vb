@@ -427,37 +427,34 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 			Return url
 		End Function
 
-		''' <summary>
-		''' Navigates user directly to a post regardless of their posts/page, ascending/descending view options.
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="ForumId"></param>
-		''' <param name="PostId"></param>
-		''' <returns></returns>
-		''' <remarks>Uses ForumContainer dispatch control.</remarks>
-		Public Shared Function ContainerViewPostLink(ByVal TabId As Integer, ByVal ForumId As Integer, _
-				ByVal PostId As Integer) As String
-			Dim url As String
-			Dim params As String()
+        ''' <summary>
+        ''' Navigates user directly to a post regardless of their posts/page, ascending/descending view options.
+        ''' </summary>
+        ''' <param name="TabId"></param>
+        ''' <param name="ForumId"></param>
+        ''' <param name="PostId"></param>
+        ''' <returns></returns>
+        ''' <remarks>Uses ForumContainer dispatch control.</remarks>
+        Public Shared Function ContainerViewPostLink(ByVal PortalId As Integer, ByVal TabId As Integer, ByVal ForumId As Integer, ByVal PostId As Integer, ByVal PostTitle As String) As String
+            Dim Path As String
+            Dim TabInfo As DotNetNuke.Entities.Tabs.TabInfo = TabController.Instance.GetTab(TabId, PortalId, False)
+            Path = "~/default.aspx?tabid=" & TabId & "&forumid=" & ForumId & "&postid=" & PostId & "&scope=posts"
 
-			params = New String(2) {"forumid=" & ForumId, "postid=" & PostId, "scope=posts"}
-			url = NavigateURL(TabId, "", params)
-			url = url + "#" + PostId.ToString()
+            Return DotNetNuke.Common.Globals.FriendlyUrl(TabInfo, Path, CreateFriendlySlug(PostTitle))
 
-			Return url
-		End Function
+        End Function
 
-		''' <summary>
-		''' Navigates user to specific page of results for a thread view.
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="ForumId"></param>
-		''' <param name="ThreadId"></param>
-		''' <param name="PostId"></param>
-		''' <param name="Page"></param>
-		''' <returns></returns>
-		''' <remarks>Uses ForumContainer dispatch control.</remarks>
-		Public Shared Function ContainerViewPostPagedLink(ByVal TabId As Integer, ByVal ForumId As Integer, _
+        ''' <summary>
+        ''' Navigates user to specific page of results for a thread view.
+        ''' </summary>
+        ''' <param name="TabId"></param>
+        ''' <param name="ForumId"></param>
+        ''' <param name="ThreadId"></param>
+        ''' <param name="PostId"></param>
+        ''' <param name="Page"></param>
+        ''' <returns></returns>
+        ''' <remarks>Uses ForumContainer dispatch control.</remarks>
+        Public Shared Function ContainerViewPostPagedLink(ByVal TabId As Integer, ByVal ForumId As Integer, _
 				 ByVal ThreadId As Integer, ByVal PostId As Integer, _
 				 ByVal Page As Integer) As String
 			Dim url As String

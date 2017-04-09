@@ -125,7 +125,7 @@ Namespace DotNetNuke.Modules.Forum
                 Select Case cmdButton.CommandName.ToLower
                     Case "approve"
                         Dim _notes As String = "Approved"
-                        Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(TabId, objPost.ForumID, objPost.PostID)
+                        Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(PortalId, TabId, objPost.ForumID, objPost.PostID, objPost.Subject)
 
                         ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, objPost.ForumID, objPost.ThreadID)
 
@@ -166,7 +166,7 @@ Namespace DotNetNuke.Modules.Forum
                         Response.Redirect(_nextURL, False)
                     Case "edit"
                         Dim _notes As String = "Approved with edit"
-                        Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(TabId, objPost.ForumID, objPost.PostID)
+                        Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(PortalId, TabId, objPost.ForumID, objPost.PostID, objPost.Subject)
 
                         ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, objPost.ForumID, objPost.ThreadID)
                         DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(objPost.Author.UserID, PortalId)
@@ -178,7 +178,7 @@ Namespace DotNetNuke.Modules.Forum
                         Response.Redirect(url, False)
                     Case "approverespond"
                         Dim _notes As String = "Approved and respond"
-                        Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(TabId, objPost.ForumID, objPost.PostID)
+                        Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(PortalId, TabId, objPost.ForumID, objPost.PostID, objPost.Subject)
 
                         ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, objPost.ForumID, objPost.ThreadID)
                         DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(objPost.Author.UserID, PortalId)

@@ -86,8 +86,8 @@ Namespace DotNetNuke.Modules.Forum.MCP
 			hl.Text = dataItem.Author.SiteAlias
 
 			hl = CType(e.Item.FindControl("lblReportedDate"), HyperLink)
-			hl.NavigateUrl = Utilities.Links.ContainerViewPostLink(TabId, dataItem.ForumID, dataItem.PostID)
-			hl.Text = FormatDate(dataItem.CreatedDate)
+            hl.NavigateUrl = Utilities.Links.ContainerViewPostLink(PortalId, TabId, dataItem.ForumID, dataItem.PostID, dataItem.Subject)
+            hl.Text = FormatDate(dataItem.CreatedDate)
 		End Sub
 
 		''' <summary>
@@ -160,10 +160,13 @@ Namespace DotNetNuke.Modules.Forum.MCP
 			End If
 
 			hl.Text = dataItem.Author(ModuleId, PortalId).SiteAlias
+            Dim pCont As New PostController
+            Dim pInfo As PostInfo
+            pInfo = pCont.GetPostInfo(dataItem.PostID, PortalId)
 
-			hl = CType(e.Item.FindControl("lblReportedDate"), HyperLink)
-			hl.NavigateUrl = Utilities.Links.ContainerViewPostLink(TabId, dataItem.Post(PortalId).ForumID, dataItem.PostID)
-			hl.Text = FormatDate(dataItem.CreatedDate)
+            hl = CType(e.Item.FindControl("lblReportedDate"), HyperLink)
+            hl.NavigateUrl = Utilities.Links.ContainerViewPostLink(PortalId, TabId, dataItem.Post(PortalId).ForumID, dataItem.PostID, pInfo.Subject)
+            hl.Text = FormatDate(dataItem.CreatedDate)
 		End Sub
 
 		''' <summary>

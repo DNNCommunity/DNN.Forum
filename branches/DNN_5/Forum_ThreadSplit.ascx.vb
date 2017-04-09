@@ -335,11 +335,11 @@ Namespace DotNetNuke.Modules.Forum
                     url = (CType(ViewState("UrlReferrer"), String))
                 Else
                     ' behave as before (normal usage)
-                    url = Utilities.Links.ContainerViewPostLink(TabId, Post.ForumID, Post.PostID)
+                    url = Utilities.Links.ContainerViewPostLink(PortalId, TabId, Post.ForumID, Post.PostID, Post.Subject)
                 End If
             Else
                 ' behave as before (normal usage)
-                url = Utilities.Links.ContainerViewPostLink(TabId, Post.ForumID, Post.PostID)
+                url = Utilities.Links.ContainerViewPostLink(PortalId, TabId, Post.ForumID, Post.PostID, Post.Subject)
             End If
 
             Return url

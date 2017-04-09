@@ -170,7 +170,7 @@ Namespace DotNetNuke.Modules.Forum
                     cntPostReport.AddPostReport(_PostInfo.PostID, Users.UserController.Instance.GetCurrentUserInfo.UserID, Notes)
 
                     Dim url As String
-                    url = Utilities.Links.ContainerViewPostLink(TabId, _ForumID, _PostID)
+                    url = Utilities.Links.ContainerViewPostLink(PortalId, TabId, _ForumID, _PostID, _PostInfo.Subject)
 
                     'Notes
                     If objConfig.MailNotification Then

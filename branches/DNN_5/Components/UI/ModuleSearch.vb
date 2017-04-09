@@ -762,7 +762,7 @@ Namespace DotNetNuke.Modules.Forum
 
                 'Subject
                 RenderDivBegin(wr, "", "Forum_Profile") ' <span>
-                url = Utilities.Links.ContainerViewPostLink(TabID, objPost.ForumID, objPost.PostID)
+                url = Utilities.Links.ContainerViewPostLink(PortalID, TabID, objPost.ForumID, objPost.PostID, objPost.Subject)
                 RenderLinkButton(wr, url, objPost.Subject, "Forum_Profile", "")
                 RenderDivEnd(wr) ' </span>
                 RenderCellEnd(wr) ' </td>
@@ -1163,7 +1163,7 @@ Namespace DotNetNuke.Modules.Forum
                 RenderCellEnd(wr) ' </td>
 
                 RenderCellBegin(wr, "", "", "", "right", "", "", "") ' <td>
-                url = Utilities.Links.ContainerViewPostLink(TabID, objThread.ForumID, objThread.LastApprovedPost.PostID)
+                url = Utilities.Links.ContainerViewPostLink(PortalID, TabID, objThread.ForumID, objThread.LastApprovedPost.PostID, objThread.LastApprovedPost.Subject)
                 '' Skeel - This is for showing link to first unread post for logged in users. 
                 'If LoggedOnUserID > 0 Then
                 '	If HasNewPosts(LoggedOnUserID, SearchItem.LastApprovedP) Then

@@ -240,7 +240,7 @@ Namespace DotNetNuke.Modules.Forum
                         .Description = cleanBody
                         ' Date format r is RFC 1123, same as RFC 822 necessary for RSS
                         .PostedDate = System.Xml.XmlConvert.ToString(objThread.CreatedDate.ToUniversalTime, "r")
-                        .Link = Utilities.Links.ContainerViewPostLink(TabId, ForumID, objThread.LastApprovedPostID)
+                        .Link = Utilities.Links.ContainerViewPostLink(mForumConfig.CurrentPortalSettings.PortalId, TabId, ForumID, objThread.LastApprovedPostID, objThread.LastApprovedPost.Subject)
                         .CommentCount = objThread.Replies
                     End With
                     AddItem(threadItem)
@@ -271,7 +271,7 @@ Namespace DotNetNuke.Modules.Forum
                         .Description = cleanBody
                         ' Date format r is RFC 1123, same as RFC 822 necessary for RSS
                         .PostedDate = System.Xml.XmlConvert.ToString(objSearch.CreatedDate.ToUniversalTime, "r")
-                        .Link = Utilities.Links.ContainerViewPostLink(TabId, objSearch.ForumID, objSearch.LastApprovedPostID)
+                        .Link = Utilities.Links.ContainerViewPostLink(mForumConfig.CurrentPortalSettings.PortalId, TabId, objSearch.ForumID, objSearch.LastApprovedPostID, objSearch.LastApprovedPost.Subject)
                         .CommentCount = objSearch.Replies
                     End With
                     AddItem(threadItem)
