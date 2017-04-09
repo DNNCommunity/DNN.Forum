@@ -291,64 +291,64 @@ Namespace DotNetNuke.Modules.Forum
 			RenderCellBegin(wr, "Forum_AltHeader", "", "100%", "left", "middle", "", "") '<td>
 			Dim GroupLinkURL As String
 			wr.Write("&nbsp;")
-			GroupLinkURL = Utilities.Links.ContainerSingleGroupLink(TabID, Group.GroupID)
+            GroupLinkURL = Utilities.Links.ContainerSingleGroupLink(TabID, PortalID, Group.GroupID, Group.Name)
 
-			RenderLinkButton(wr, GroupLinkURL, Group.Name, "Forum_AltHeaderText")
+            RenderLinkButton(wr, GroupLinkURL, Group.Name, "Forum_AltHeaderText")
 
-			'wr.Write(Group.Name)
-			RenderCellEnd(wr) ' </td>
+            'wr.Write(Group.Name)
+            RenderCellEnd(wr) ' </td>
 
-			wr.AddAttribute(HtmlTextWriterAttribute.Width, "1px")
-			wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_AltHeaderCapRight")
-			wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
-			RenderImage(wr, objConfig.GetThemeImageURL("alt_headfoot_height.gif"), "", "")
+            wr.AddAttribute(HtmlTextWriterAttribute.Width, "1px")
+            wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_AltHeaderCapRight")
+            wr.RenderBeginTag(HtmlTextWriterTag.Td) ' <td>
+            RenderImage(wr, objConfig.GetThemeImageURL("alt_headfoot_height.gif"), "", "")
 
-			RenderCellEnd(wr) ' </td>
+            RenderCellEnd(wr) ' </td>
 
-			' Finish middle table
-			RenderRowEnd(wr) ' </Tr>
-			RenderTableEnd(wr) ' </table>
+            ' Finish middle table
+            RenderRowEnd(wr) ' </Tr>
+            RenderTableEnd(wr) ' </table>
 
-			'end middle column
-			RenderCellEnd(wr) ' </td>
+            'end middle column
+            RenderCellEnd(wr) ' </td>
 
-			' End row
-			RenderRowEnd(wr) ' </Tr>
-		End Sub
+            ' End row
+            RenderRowEnd(wr) ' </Tr>
+        End Sub
 
-		''' <summary>
-		''' Area which has the +/- similar to section head.  This displays group name + Parent Forum name
-		''' </summary>
-		''' <param name="wr"></param>
-		''' <param name="Group"></param>
-		''' <remarks>
-		''' </remarks>
-		Private Sub RenderGroupForumInfo(ByVal wr As HtmlTextWriter, ByVal Group As GroupInfo)
-			' Start row
-			RenderRowBegin(wr) '<tr>
+        ''' <summary>
+        ''' Area which has the +/- similar to section head.  This displays group name + Parent Forum name
+        ''' </summary>
+        ''' <param name="wr"></param>
+        ''' <param name="Group"></param>
+        ''' <remarks>
+        ''' </remarks>
+        Private Sub RenderGroupForumInfo(ByVal wr As HtmlTextWriter, ByVal Group As GroupInfo)
+            ' Start row
+            RenderRowBegin(wr) '<tr>
 
-			' This is middle column start - set padding for 4, had Forum_AltHeader as class
-			RenderCellBegin(wr, "", "", "", "left", "middle", "4", "")	'<td>
+            ' This is middle column start - set padding for 4, had Forum_AltHeader as class
+            RenderCellBegin(wr, "", "", "", "left", "middle", "4", "")  '<td>
 
-			' Start table
-			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "left", "", "0") '<Table>            
-			RenderRowBegin(wr) '<tr>
+            ' Start table
+            RenderTableBegin(wr, "", "", "", "100%", "0", "0", "left", "", "0") '<Table>            
+            RenderRowBegin(wr) '<tr>
 
-			' space to keep subject from being too close and still allow it to be evenly spaced if it wraps to a new row because it is long
-			wr.AddAttribute(HtmlTextWriterAttribute.Width, "1px")
-			wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_AltHeaderCapLeft")
-			wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
-			RenderImage(wr, objConfig.GetThemeImageURL("alt_headfoot_height.gif"), "", "")
-			RenderCellEnd(wr) ' </td>
+            ' space to keep subject from being too close and still allow it to be evenly spaced if it wraps to a new row because it is long
+            wr.AddAttribute(HtmlTextWriterAttribute.Width, "1px")
+            wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_AltHeaderCapLeft")
+            wr.RenderBeginTag(HtmlTextWriterTag.Td) ' <td>
+            RenderImage(wr, objConfig.GetThemeImageURL("alt_headfoot_height.gif"), "", "")
+            RenderCellEnd(wr) ' </td>
 
-			' group name with link
-			RenderCellBegin(wr, "Forum_AltHeader", "", "100%", "left", "middle", "", "") '<td>
-			Dim GroupLinkURL As String
-			wr.Write("&nbsp;")
-			GroupLinkURL = Utilities.Links.ContainerSingleGroupLink(TabID, Group.GroupID)
+            ' group name with link
+            RenderCellBegin(wr, "Forum_AltHeader", "", "100%", "left", "middle", "", "") '<td>
+            Dim GroupLinkURL As String
+            wr.Write("&nbsp;")
+            GroupLinkURL = Utilities.Links.ContainerSingleGroupLink(TabID, PortalID, Group.GroupID, Group.Name)
 
-			Dim forum As ForumInfo
-			Dim cntForum As New ForumController
+            Dim forum As ForumInfo
+            Dim cntForum As New ForumController
 			forum = cntForum.GetForumItemCache(SelectedForumID)
 
 

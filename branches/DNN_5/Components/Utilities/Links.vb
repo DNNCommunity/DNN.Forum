@@ -208,50 +208,107 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 
 			Return url
 		End Function
+        Public Shared Function CreateFriendlySlug(ByVal pagename As String) As String
 
-		''' <summary>
-		''' Navigates user to a single group view.  
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="GroupID"></param>
-		''' <returns></returns>
-		''' <remarks>Uses ForumContainer Dispatch control.</remarks>
-		Shared Function ContainerSingleGroupLink(ByVal TabId As Integer, ByVal GroupID As Integer) As String
-			Dim url As String
-			Dim params As String()
+            'Set the PageName
+            Dim options As RegexOptions = RegexOptions.IgnoreCase
+            pagename = pagename.Replace("'", String.Empty)
+            'Handle international characters
+            pagename = Regex.Replace(pagename, "Ă|Ā|À|Á|Â|Ã|Ä|Å", "A")
+            pagename = Regex.Replace(pagename, "ă|ā|à|á|â|ã|ä|å|ą", "a")
+            pagename = Regex.Replace(pagename, "Æ", "AE")
+            pagename = Regex.Replace(pagename, "æ", "ae")
+            pagename = Regex.Replace(pagename, "ß", "ss")
+            pagename = Regex.Replace(pagename, "Ç|Ć|Ĉ|Ċ|Č", "C")
+            pagename = Regex.Replace(pagename, "ć|ĉ|ċ|č|ç", "c")
+            pagename = Regex.Replace(pagename, "Ď|Đ", "D")
+            pagename = Regex.Replace(pagename, "ď|đ", "d")
+            pagename = Regex.Replace(pagename, "Ē|Ĕ|Ė|Ę|Ě|É|Ę|È|É|Ê|Ë", "E")
+            pagename = Regex.Replace(pagename, "ē|ĕ|ė|ę|ě|ê|ë|è|é", "e")
+            pagename = Regex.Replace(pagename, "Ĝ|Ğ|Ġ|Ģ|Ģ", "G")
+            pagename = Regex.Replace(pagename, "ĝ|ğ|ġ|ģ|ģ", "g")
+            pagename = Regex.Replace(pagename, "Ĥ|Ħ", "H")
+            pagename = Regex.Replace(pagename, "ĥ|ħ", "h")
+            pagename = Regex.Replace(pagename, "Ì|Í|Î|Ï|Ĩ|Ī|Ĭ|Į|İ|İ", "I")
+            pagename = Regex.Replace(pagename, "ì|í|î|ï|ĩ|ī|ĭ|į", "i")
+            pagename = Regex.Replace(pagename, "Ĳ", "IJ")
+            pagename = Regex.Replace(pagename, "Ĵ", "J")
+            pagename = Regex.Replace(pagename, "ĵ", "j")
+            pagename = Regex.Replace(pagename, "Ķ", "K")
+            pagename = Regex.Replace(pagename, "ķ", "k")
+            pagename = Regex.Replace(pagename, "Ñ|Ñ", "N")
+            pagename = Regex.Replace(pagename, "ñ", "n")
+            pagename = Regex.Replace(pagename, "Ò|Ó|Ô|Õ|Ö|Ø|Ő", "O")
+            pagename = Regex.Replace(pagename, "ò|ó|ô|õ|ö|ø|ő", "o")
+            pagename = Regex.Replace(pagename, "Œ", "OE")
+            pagename = Regex.Replace(pagename, "œ", "oe")
+            pagename = Regex.Replace(pagename, "Ŕ|Ř|Ŗ|Ŕ", "R")
+            pagename = Regex.Replace(pagename, "ř|ŗ|ŕ", "r")
+            pagename = Regex.Replace(pagename, "Š|Ş|Ŝ|Ś", "S")
+            pagename = Regex.Replace(pagename, "š|ş|ŝ|ś", "s")
+            pagename = Regex.Replace(pagename, "Ť|Ţ", "T")
+            pagename = Regex.Replace(pagename, "ť|ţ", "t")
+            pagename = Regex.Replace(pagename, "Ų|Ű|Ů|Ŭ|Ū|Ũ|Ù|Ú|Û|Ü", "U")
+            pagename = Regex.Replace(pagename, "ų|ű|ů|ŭ|ū|ũ|ú|û|ü|ù", "u")
+            pagename = Regex.Replace(pagename, "Ŵ", "W")
+            pagename = Regex.Replace(pagename, "ŵ", "w")
+            pagename = Regex.Replace(pagename, "Ÿ|Ŷ|Ý", "Y")
+            pagename = Regex.Replace(pagename, "ŷ|ÿ|ý", "y")
+            pagename = Regex.Replace(pagename, "Ž|Ż|Ź", "Z")
+            pagename = Regex.Replace(pagename, "ž|ż|ź", "z")
 
-			params = New String(0) {"GroupID=" & GroupID}
-			url = NavigateURL(TabId, "", params)
+            pagename = Regex.Replace(pagename, "[^a-z0-9_-ĂăĀāÀÁÂÃÄÅàáâãäåąæÆßÇĆćĈĉĊċČčçĎďĐđĒēĔĕĖėĘęĚěÉêëĘÈÉÊËèéĜĝĞğĠġĢģĢģĤĥĦħÌÍÎÏĨĩĪīĬĭĮįİÌíîïìĲĴĵĶķÑÑÒÓÔÕÖŐØòóôõőöøñŒœŔřŘŗŖŕŔšŠşŞŝŜśŚťŤţŢųŲűŰůŮŭŬūŪũŨÙÚÛÜÙúûüùŵŴŸŷŶÝÿýžŽżŻźŹ]+", "-", options) & ".aspx"
+            'For titles with ' - ', we replace --- with -
+            pagename = pagename.Replace("---", "-")
 
-			Return url
-		End Function
+            'Remove trailing dash if one exists.
+            If (pagename.EndsWith("-.aspx")) Then
+                pagename = pagename.Replace("-.aspx", ".aspx")
+            End If
 
-		''' <summary>
-		''' Navigates user to a single group view.  
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="GroupID"></param>
-		''' <returns></returns>
-		''' <remarks>Uses ForumContainer Dispatch control.</remarks>
-		Shared Function ContainerParentForumLink(ByVal TabId As Integer, ByVal GroupID As Integer, ByVal ForumID As Integer) _
-		 As String
-			Dim url As String
-			Dim params As String()
+            Return pagename
 
-			params = New String(1) {"GroupID=" & GroupID, "ForumID=" & ForumID}
-			url = NavigateURL(TabId, "", params)
+        End Function
+        ''' <summary>
+        ''' Navigates user to a single group view.  
+        ''' </summary>
+        ''' <param name="TabId"></param>
+        ''' <param name="GroupID"></param>
+        ''' <returns></returns>
+        ''' <remarks>Uses ForumContainer Dispatch control.</remarks>
+        Shared Function ContainerSingleGroupLink(ByVal TabId As Integer, ByVal PortalId As Integer, ByVal GroupID As Integer, ByVal GroupName As String) As String
+            Dim Path As String
+            Dim TabInfo As DotNetNuke.Entities.Tabs.TabInfo = TabController.Instance.GetTab(TabId, PortalId, False)
+            Path = "~/default.aspx?tabid=" & TabId & "&GroupID=" & GroupID
+            Return DotNetNuke.Common.Globals.FriendlyUrl(TabInfo, Path, CreateFriendlySlug(GroupName))
+        End Function
 
-			Return url
-		End Function
+        ''' <summary>
+        ''' Navigates user to a single group view.  
+        ''' </summary>
+        ''' <param name="TabId"></param>
+        ''' <param name="GroupID"></param>
+        ''' <returns></returns>
+        ''' <remarks>Uses ForumContainer Dispatch control.</remarks>
+        Shared Function ContainerParentForumLink(ByVal TabId As Integer, ByVal GroupID As Integer, ByVal ForumID As Integer) _
+         As String
+            Dim url As String
+            Dim params As String()
 
-		''' <summary>
-		''' Navigates user to a single group view filtered by date.
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="dFilter"></param>
-		''' <returns></returns>
-		''' <remarks>Users ForumContainer dispatch control.</remarks>
-		Shared Function ContainerGroupDateFilterLink(ByVal TabId As Integer, ByVal dFilter As String) As String
+            params = New String(1) {"GroupID=" & GroupID, "ForumID=" & ForumID}
+            url = NavigateURL(TabId, "", params)
+
+            Return url
+        End Function
+
+        ''' <summary>
+        ''' Navigates user to a single group view filtered by date.
+        ''' </summary>
+        ''' <param name="TabId"></param>
+        ''' <param name="dFilter"></param>
+        ''' <returns></returns>
+        ''' <remarks>Users ForumContainer dispatch control.</remarks>
+        Shared Function ContainerGroupDateFilterLink(ByVal TabId As Integer, ByVal dFilter As String) As String
 			Dim url As String
 			Dim params As String()
 

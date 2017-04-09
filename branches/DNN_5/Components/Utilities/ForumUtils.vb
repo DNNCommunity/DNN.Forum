@@ -758,7 +758,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
                             objGroupInfo = CType(InfoObject, GroupInfo)
                             If Not objGroupInfo Is Nothing Then
                                 ' Render Group Name
-                                sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objGroupInfo.GroupID), objGroupInfo.Name, imageURL))
+                                sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objConfig.CurrentPortalSettings.PortalId, objGroupInfo.GroupID, objGroupInfo.Name), objGroupInfo.Name, imageURL))
                             End If
                             Completed = True
                         Catch ex As Exception
@@ -771,7 +771,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
                                 objForumInfo = CType(InfoObject, ForumInfo)
                                 If Not objForumInfo Is Nothing Then
                                     ' Render Group Name
-                                    sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objForumInfo.GroupID), objForumInfo.ParentGroup.Name, imageURL))
+                                    sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objConfig.CurrentPortalSettings.PortalId, objForumInfo.GroupID, objForumInfo.Name), objForumInfo.ParentGroup.Name, imageURL))
                                     ' Render ParentForum Name
                                     sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerParentForumLink(TabID, objForumInfo.GroupID, objForumInfo.ForumID), objForumInfo.Name, imageURL))
                                     Utilities.Links.ContainerParentForumLink(TabID, objForumInfo.GroupID, objForumInfo.ForumID)
@@ -790,7 +790,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
                             sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(TabID, -1, False), Localization.GetString("Aggregate", objConfig.SharedResourceFile), imageURL))
                         Else
                             ' Render Group Name
-                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objForumInfo.GroupID), TrimString(objForumInfo.ParentGroup.Name, 15), imageURL))
+                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objConfig.CurrentPortalSettings.PortalId, objForumInfo.GroupID, objForumInfo.Name), TrimString(objForumInfo.ParentGroup.Name, 15), imageURL))
                             '[skeel] check for subforum
                             If objForumInfo.ParentID > 0 Then
                                 'Render Parent Forum Name
@@ -812,7 +812,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
                         'Forum Home
                         sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), Localization.GetString("Home", objConfig.SharedResourceFile), imageURL))
                         ' Render Group Name
-                        sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objThreadInfo.ContainingForum.GroupID), TrimString(objThreadInfo.ContainingForum.ParentGroup.Name, 15), imageURL))
+                        sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objConfig.CurrentPortalSettings.PortalId, objThreadInfo.ContainingForum.GroupID, objThreadInfo.ContainingForum.Name), TrimString(objThreadInfo.ContainingForum.ParentGroup.Name, 15), imageURL))
 
                         'Check if this is a sub forum
                         If objThreadInfo.ContainingForum.ParentID > 0 Then
