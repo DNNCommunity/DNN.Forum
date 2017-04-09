@@ -933,7 +933,7 @@ Namespace DotNetNuke.Modules.Forum
                 RenderCellBegin(wr, "", "100%", "", "left", "", "", "") ' <td>
 
                 ' Determine url here so we can use it for thread name and icon
-                url = Utilities.Links.ContainerViewThreadLink(TabID, objThread.ForumID, objThread.ThreadID)
+                url = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, objThread.ForumID, objThread.ThreadID, objThread.Subject)
 
                 ' see if post is pinned, priority over other icons
                 If objThread.LastApprovedPost.ParentThread.IsPinned Then

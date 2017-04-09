@@ -367,23 +367,21 @@ Namespace DotNetNuke.Modules.Forum.Utilities
         ''' <param name="ThreadId"></param>
         ''' <returns></returns>
         ''' <remarks>Usere ForumContainer dispatch control.</remarks>
-        Public Shared Function ContainerViewThreadLink(ByVal TabId As Integer, ByVal ForumId As Integer, ByVal ThreadId As Integer) As String
-			Dim url As String
-			Dim params As String()
+        Public Shared Function ContainerViewThreadLink(ByVal PortalId As Integer, ByVal TabId As Integer, ByVal ForumId As Integer, ByVal ThreadId As Integer, ByVal ThreadTitle As String) As String
+            Dim Path As String
+            Dim TabInfo As DotNetNuke.Entities.Tabs.TabInfo = TabController.Instance.GetTab(TabId, PortalId, False)
+            Path = "~/default.aspx?tabid=" & TabId & "&forumid=" & ForumId & "&threadid=" & ThreadId & "&scope=posts"
 
-			params = New String(2) {"forumid=" & ForumId, "threadid=" & ThreadId, "scope=posts"}
-			url = NavigateURL(TabId, "", params)
+            Return DotNetNuke.Common.Globals.FriendlyUrl(TabInfo, Path, CreateFriendlySlug(ThreadTitle))
+        End Function
 
-			Return url
-		End Function
-
-		''' <summary>
-		''' Navigates user to list of unread posts.
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <returns></returns>
-		''' <remarks>Added by Skeel</remarks>
-		Public Shared Function ContainerViewUnreadThreadsLink(ByVal TabId As Integer) As String
+        ''' <summary>
+        ''' Navigates user to list of unread posts.
+        ''' </summary>
+        ''' <param name="TabId"></param>
+        ''' <returns></returns>
+        ''' <remarks>Added by Skeel</remarks>
+        Public Shared Function ContainerViewUnreadThreadsLink(ByVal TabId As Integer) As String
 			Dim url As String
 			Dim params As String()
 

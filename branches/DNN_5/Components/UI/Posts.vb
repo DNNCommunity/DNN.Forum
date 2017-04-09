@@ -1366,10 +1366,13 @@ Namespace DotNetNuke.Modules.Forum
             RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0") '<Table>            
             RenderRowBegin(wr) '<tr>
 
-            url = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, objThread.PreviousThreadID)
-
+            Dim threadCont As ThreadController
+            threadCont = New ThreadController()
             RenderCellBegin(wr, "", "", "", "", "", "", "")  ' <td> ' 
             If PreviousEnabled Then
+                Dim prevThread As ThreadInfo
+                prevThread = threadCont.GetThread(objThread.PreviousThreadID)
+                url = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, ForumID, objThread.PreviousThreadID, prevThread.Subject)
                 RenderLinkButton(wr, url, ForumControl.LocalizedText("Previous"), "Forum_Link")
             Else
                 RenderDivBegin(wr, "", "Forum_NormalBold")
@@ -1405,7 +1408,9 @@ Namespace DotNetNuke.Modules.Forum
             RenderCellBegin(wr, "", "", "", "", "", "", "")  ' <td> ' 
 
             If NextEnabled Then
-                url = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, objThread.NextThreadID)
+                Dim nextThread As ThreadInfo
+                nextThread = threadCont.GetThread(objThread.NextThreadID)
+                url = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, ForumID, objThread.NextThreadID, nextThread.Subject)
                 RenderLinkButton(wr, url, ForumControl.LocalizedText("Next"), "Forum_Link")
             Else
                 RenderDivBegin(wr, "", "Forum_NormalBold")
@@ -2645,11 +2650,13 @@ Namespace DotNetNuke.Modules.Forum
             RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0") '<Table>            
             RenderRowBegin(wr) '<tr>
 
-            url = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, objThread.PreviousThreadID)
-
             RenderCellBegin(wr, "", "", "", "", "", "", "")  ' <td> ' 
-
+            Dim threadCont As ThreadController
+            threadCont = New ThreadController()
+            Dim tinfo As ThreadInfo
             If PreviousEnabled Then
+                tinfo = threadCont.GetThread(objThread.PreviousThreadID)
+                url = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, ForumID, objThread.PreviousThreadID, tinfo.Subject)
                 RenderLinkButton(wr, url, ForumControl.LocalizedText("Previous"), "Forum_Link")
             Else
                 RenderDivBegin(wr, "", "Forum_NormalBold")
@@ -2687,7 +2694,8 @@ Namespace DotNetNuke.Modules.Forum
             RenderCellBegin(wr, "", "", "", "", "", "", "")  ' <td> 
 
             If NextEnabled Then
-                url = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, objThread.NextThreadID)
+                tinfo = threadCont.GetThread(objThread.NextThreadID)
+                url = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, ForumID, objThread.NextThreadID, tinfo.Subject)
                 RenderLinkButton(wr, url, ForumControl.LocalizedText("Next"), "Forum_Link")
             Else
                 RenderDivBegin(wr, "", "Forum_NormalBold")

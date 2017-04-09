@@ -953,10 +953,10 @@ Namespace DotNetNuke.Modules.Forum
 
 						' cell within table for thread status icon
                         RenderCellBegin(wr, "", "100%", "10%", "", "top", "", "")   ' <td>
-						url = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, objThread.ThreadID)
+                        url = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, ForumID, objThread.ThreadID, objThread.Subject)
 
-						'link so icon is clickable (also used below for subject)
-						wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
+                        'link so icon is clickable (also used below for subject)
+                        wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 						wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
 
 						' see if post is pinned, priority over other icons
@@ -1659,7 +1659,7 @@ Namespace DotNetNuke.Modules.Forum
             Dim usrThread As New UserThreadsInfo
             Dim ReadLink As String
 
-            ReadLink = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, Thread.ThreadID) & "#unread"
+            ReadLink = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, ForumID, Thread.ThreadID, Thread.Subject) & "#unread"
             usrThread = cltUserThread.GetThreadReadsByUser(CurrentForumUser.UserID, Thread.ThreadID)
 
             If usrThread Is Nothing Then
@@ -1669,7 +1669,7 @@ Namespace DotNetNuke.Modules.Forum
                     PageCount = Math.Ceiling(PageCount)
                     ReadLink = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumID, Thread.ThreadID, CInt(PageCount)) & "#unread"
                 Else
-                    ReadLink = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, Thread.ThreadID) & "#unread"
+                    ReadLink = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, ForumID, Thread.ThreadID, Thread.Subject) & "#unread"
                 End If
             Else
                 'Get the Index
@@ -1680,7 +1680,7 @@ Namespace DotNetNuke.Modules.Forum
                 Do While PageNumber <= PageCount
                     If (CurrentForumUser.PostsPerPage * PageNumber) >= PostIndex Then
                         If PageNumber = 1 Then
-                            ReadLink = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, Thread.ThreadID) & "#unread"
+                            ReadLink = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, ForumID, Thread.ThreadID, Thread.Subject) & "#unread"
                         Else
                             ReadLink = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumID, Thread.ThreadID, PageNumber) & "#unread"
                         End If

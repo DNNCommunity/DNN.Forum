@@ -395,6 +395,9 @@ Namespace DotNetNuke.Modules.Forum
                     End If
                 End If
             End If
+            Dim cntThread As ThreadController
+            cntThread = New ThreadController()
+            Dim tInfo As ThreadInfo
 
             Dim cntForum As ForumController
             cntForum = New ForumController()
@@ -406,16 +409,18 @@ Namespace DotNetNuke.Modules.Forum
                     If _IsThreadDelete Then
                         url = Utilities.Links.ContainerViewForumLink(PortalId, TabId, ForumID, False, objForum.Name)
                     Else
+                        tInfo = cntThread.GetThread(ThreadID)
                         ' behave as before (normal usage)
-                        url = Utilities.Links.ContainerViewThreadLink(TabId, ForumID, ThreadID)
+                        url = Utilities.Links.ContainerViewThreadLink(PortalId, TabId, ForumID, ThreadID, tInfo.Subject)
                     End If
                 End If
             Else
                 If _IsThreadDelete Or ThreadID = -1 Then
                     url = Utilities.Links.ContainerViewForumLink(PortalId, TabId, ForumID, False, objForum.Name)
                 Else
+                    tInfo = cntThread.GetThread(ThreadID)
                     ' behave as before (normal usage)
-                    url = Utilities.Links.ContainerViewThreadLink(TabId, ForumID, ThreadID)
+                    url = Utilities.Links.ContainerViewThreadLink(PortalId, TabId, ForumID, ThreadID, tInfo.Subject)
                 End If
             End If
 

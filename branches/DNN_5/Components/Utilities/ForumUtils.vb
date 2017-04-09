@@ -825,9 +825,9 @@ Namespace DotNetNuke.Modules.Forum.Utilities
                         If objConfig.FilterSubject Then
                             Dim strFilteredSubject As String = objThreadInfo.Subject
                             strFilteredSubject = FormatProhibitedWord(strFilteredSubject, objConfig.CurrentPortalSettings.PortalId)
-                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewThreadLink(TabID, objThreadInfo.ForumID, objThreadInfo.ThreadID), strFilteredSubject, imageURL))
+                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewThreadLink(objThreadInfo.PortalID, TabID, objThreadInfo.ForumID, objThreadInfo.ThreadID, objThreadInfo.Subject), strFilteredSubject, imageURL))
                         Else
-                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewThreadLink(TabID, objThreadInfo.ForumID, objThreadInfo.ThreadID), objThreadInfo.Subject, imageURL))
+                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewThreadLink(objThreadInfo.PortalID, TabID, objThreadInfo.ForumID, objThreadInfo.ThreadID, objThreadInfo.Subject), objThreadInfo.Subject, imageURL))
                         End If
                     Case ForumScope.ThreadSearch
                         If (Not InfoObject Is Nothing) And objConfig.AggregatedForums Then

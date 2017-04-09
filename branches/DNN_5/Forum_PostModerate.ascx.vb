@@ -487,7 +487,11 @@ Namespace DotNetNuke.Modules.Forum
         ''' </remarks>
         Protected Function ThreadLink(ByVal ThreadId As Integer, ByVal ForumID As Integer, ByVal ParentPostId As Integer) As String
             If ParentPostId > 0 Then
-                Return Utilities.Links.ContainerViewThreadLink(TabId, ForumID, ThreadId)
+                Dim tCont As ThreadController
+                tCont = New ThreadController()
+                Dim tInfo As ThreadInfo
+                tInfo = tCont.GetThread(ThreadId)
+                Return Utilities.Links.ContainerViewThreadLink(PortalId, TabId, ForumID, ThreadId, tInfo.Subject)
             Else : Return String.Empty
             End If
         End Function

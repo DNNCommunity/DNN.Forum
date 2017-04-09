@@ -131,8 +131,12 @@ Namespace DotNetNuke.Modules.Forum.UCP
                 imgDelete.Attributes.Add("onClick", "javascript:return confirm('" + Localization.GetString("DeleteItem") + "');")
                 imgDelete.CommandArgument = keyThreadID.ToString()
 
+                Dim tCont As ThreadController
+                tCont = New ThreadController()
+                Dim tInfo As ThreadInfo
+                tInfo = tCont.GetThread(keyThreadID)
                 Dim hlForum As HyperLink = CType((item)("hlSubject").Controls(0), HyperLink)
-                hlForum.NavigateUrl = Utilities.Links.ContainerViewThreadLink(TabId, keyForumID, keyThreadID)
+                hlForum.NavigateUrl = Utilities.Links.ContainerViewThreadLink(PortalId, TabId, keyForumID, keyThreadID, tInfo.Subject)
 
                 Dim hlLastPost As HyperLink = CType((item)("hlLastPost").Controls(0), HyperLink)
                 Dim cntPost As New PostController
