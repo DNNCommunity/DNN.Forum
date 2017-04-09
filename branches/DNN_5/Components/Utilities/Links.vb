@@ -342,37 +342,32 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 			Return url
 		End Function
 
-		''' <summary>
-		''' Navigates user to thread view for a single forum.
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="ForumId"></param>
-		''' <returns></returns>
-		''' <remarks>Users ForumContainer dispatch control.</remarks>
-		Public Shared Function ContainerViewForumLink(ByVal TabId As Integer, ByVal ForumId As Integer, ByVal NoReply As Boolean) As String
-			Dim url As String
-			Dim params As String()
+        ''' <summary>
+        ''' Navigates user to thread view for a single forum.
+        ''' </summary>
+        ''' <param name="TabId"></param>
+        ''' <param name="ForumId"></param>
+        ''' <returns></returns>
+        ''' <remarks>Users ForumContainer dispatch control.</remarks>
+        Public Shared Function ContainerViewForumLink(ByVal PortalId As Integer, ByVal TabId As Integer, ByVal ForumId As Integer, ByVal NoReply As Boolean, ByVal ForumName As String) As String
+            Dim Path As String
+            Dim TabInfo As DotNetNuke.Entities.Tabs.TabInfo = TabController.Instance.GetTab(TabId, PortalId, False)
+            Path = "~/default.aspx?tabid=" & TabId & "&forumid=" & ForumId & "&scope=threads"
+            If NoReply Then
+                Path = Path & "&noreply=1"
+            End If
+            Return DotNetNuke.Common.Globals.FriendlyUrl(TabInfo, Path, CreateFriendlySlug(ForumName))
+        End Function
 
-			If NoReply Then
-				params = New String(2) {"forumid=" & ForumId, "scope=threads", "noreply=1"}
-				url = NavigateURL(TabId, "", params)
-			Else
-				params = New String(1) {"forumid=" & ForumId, "scope=threads"}
-				url = NavigateURL(TabId, "", params)
-			End If
-
-			Return url
-		End Function
-
-		''' <summary>
-		''' Navigates user to posts view for a specific threadID.
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="ForumId"></param>
-		''' <param name="ThreadId"></param>
-		''' <returns></returns>
-		''' <remarks>Usere ForumContainer dispatch control.</remarks>
-		Public Shared Function ContainerViewThreadLink(ByVal TabId As Integer, ByVal ForumId As Integer, ByVal ThreadId As Integer) As String
+        ''' <summary>
+        ''' Navigates user to posts view for a specific threadID.
+        ''' </summary>
+        ''' <param name="TabId"></param>
+        ''' <param name="ForumId"></param>
+        ''' <param name="ThreadId"></param>
+        ''' <returns></returns>
+        ''' <remarks>Usere ForumContainer dispatch control.</remarks>
+        Public Shared Function ContainerViewThreadLink(ByVal TabId As Integer, ByVal ForumId As Integer, ByVal ThreadId As Integer) As String
 			Dim url As String
 			Dim params As String()
 

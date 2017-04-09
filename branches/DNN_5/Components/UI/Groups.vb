@@ -619,12 +619,12 @@ Namespace DotNetNuke.Modules.Forum
 						Else
 							'[Skeel] Check if this is a parent forum
 							If objForum.ContainsChildForums = True Then
-								'Parent forum, link to group view
-								url = Utilities.Links.ContainerParentForumLink(TabID, objForum.GroupID, objForum.ForumID)
-							Else
-								'Normal Forum, link goes to Thread view
-								url = Utilities.Links.ContainerViewForumLink(TabID, objForum.ForumID, False)
-							End If
+                                'Parent forum, link to group view
+                                url = Utilities.Links.ContainerParentForumLink(TabID, objForum.GroupID, objForum.ForumID)
+                            Else
+                                'Normal Forum, link goes to Thread view
+                                url = Utilities.Links.ContainerViewForumLink(PortalID, TabID, objForum.ForumID, False, objForum.Name)
+                            End If
 						End If
 					End If
 
@@ -1035,8 +1035,8 @@ Namespace DotNetNuke.Modules.Forum
 							' aggregated
 							Url = Utilities.Links.ContainerAggregatedLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, False)
 						Else
-							Url = Utilities.Links.ContainerViewForumLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, SubForum.ForumID, False)
-						End If
+                            Url = Utilities.Links.ContainerViewForumLink(PortalID, objConfig.CurrentPortalSettings.ActiveTab.TabID, SubForum.ForumID, False, SubForum.Name)
+                        End If
 					End If
 
 					wr.AddAttribute(HtmlTextWriterAttribute.Href, Url.Replace("~/", ""))

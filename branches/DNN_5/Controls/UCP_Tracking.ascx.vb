@@ -66,8 +66,12 @@ Namespace DotNetNuke.Modules.Forum.UCP
                 imgDelete.Attributes.Add("onClick", "javascript:return confirm('" + Localization.GetString("DeleteItem") + "');")
                 imgDelete.CommandArgument = keyForumID.ToString()
 
+                Dim cntForum As ForumController
+                cntForum = New ForumController()
+                Dim objForum As ForumInfo = cntForum.GetForumItemCache(keyForumID)
+
                 Dim hlForum As HyperLink = CType((item)("hlName").Controls(0), HyperLink)
-                hlForum.NavigateUrl = Utilities.Links.ContainerViewForumLink(TabId, keyForumID, False)
+                hlForum.NavigateUrl = Utilities.Links.ContainerViewForumLink(PortalId, TabId, keyForumID, False, objForum.Name)
 
                 Dim hlLastPost As HyperLink = CType((item)("hlLastPost").Controls(0), HyperLink)
                 Dim cntPost As New PostController

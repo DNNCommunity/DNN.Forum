@@ -757,13 +757,13 @@ Namespace DotNetNuke.Modules.Forum
 			RenderCellEnd(wr) ' </td>
 			RenderCellBegin(wr, "", "", "20%", "right", "", "", "") ' <td>
 
-			If NoReply Then
-				' show link to show all threads
-				RenderLinkButton(wr, Utilities.Links.ContainerViewForumLink(TabID, ForumID, False), Localization.GetString("ShowAll", objConfig.SharedResourceFile), "Forum_BreadCrumb")
-			Else
-				' show link to show no reply threads
-				RenderLinkButton(wr, Utilities.Links.ContainerViewForumLink(TabID, ForumID, True), Localization.GetString("ShowNoReplies", objConfig.SharedResourceFile), "Forum_BreadCrumb")
-			End If
+            If NoReply Then
+                ' show link to show all threads
+                RenderLinkButton(wr, Utilities.Links.ContainerViewForumLink(PortalID, TabID, ForumID, False, objForum.Name), Localization.GetString("ShowAll", objConfig.SharedResourceFile), "Forum_BreadCrumb")
+            Else
+                ' show link to show no reply threads
+                RenderLinkButton(wr, Utilities.Links.ContainerViewForumLink(PortalID, TabID, ForumID, True, objForum.Name), Localization.GetString("ShowNoReplies", objConfig.SharedResourceFile), "Forum_BreadCrumb")
+            End If
 
 			RenderCellEnd(wr) ' </td>
 			RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>

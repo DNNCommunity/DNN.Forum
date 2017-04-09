@@ -130,10 +130,14 @@ Namespace DotNetNuke.Modules.Forum
 				Dim objModules As Entities.Modules.ModuleController = New Entities.Modules.ModuleController
 
 				If (Not CType(Settings("defaultforumid"), String) Is Nothing) AndAlso (DNNForum.ViewType = ForumScope.Groups) AndAlso (Request.UrlReferrer Is Nothing) Then
-					If Not CType(Settings("defaultforumid"), Integer) = 0 Then
-						Response.Redirect(Utilities.Links.ContainerViewForumLink(TabId, CType(Settings("defaultforumid"), Integer), False), False)
-					End If
-				End If
+                    If Not CType(Settings("defaultforumid"), Integer) = 0 Then
+
+                        Dim cntForum As ForumController
+                        cntForum = New ForumController()
+                        Dim objForum As ForumInfo = cntForum.GetForumItemCache(CType(Settings("defaultforumid"), Integer))
+                        Response.Redirect(Utilities.Links.ContainerViewForumLink(PortalId, TabId, CType(Settings("defaultforumid"), Integer), False, objForum.Name), False)
+                    End If
+                End If
 
 				'Set the Navigator Actions Collection
                 For Each action As Entities.Modules.Actions.ModuleAction In ModuleActions

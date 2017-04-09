@@ -512,10 +512,13 @@ Namespace DotNetNuke.Modules.Forum
 
 						RenderLinkButton(wr, url, objThread.StartedByUser.SiteAlias, "Forum_NormalSmall") ' <a/>
 
-						'Add in forum (where thread belongs)
-						wr.Write(String.Format("&nbsp;{0}&nbsp;", ForumControl.LocalizedText("in")))
-						url = Utilities.Links.ContainerViewForumLink(TabID, objThread.ForumID, False)
-						RenderLinkButton(wr, url, objThread.ContainingForum.Name, "Forum_NormalSmall")
+                        Dim cntForum As ForumController
+                        cntForum = New ForumController()
+                        Dim objForum As ForumInfo = cntForum.GetForumItemCache(ForumID)
+                        'Add in forum (where thread belongs)
+                        wr.Write(String.Format("&nbsp;{0}&nbsp;", ForumControl.LocalizedText("in")))
+                        url = Utilities.Links.ContainerViewForumLink(PortalID, TabID, objThread.ForumID, False, objForum.Name)
+                        RenderLinkButton(wr, url, objThread.ContainingForum.Name, "Forum_NormalSmall")
 
 						' correct logic to handle posts per page per user
 						Dim userPostsPerPage As Integer

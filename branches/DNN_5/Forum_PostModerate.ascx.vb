@@ -94,7 +94,7 @@ Namespace DotNetNuke.Modules.Forum
                     cmdBack.NavigateUrl = Utilities.Links.MCPControlLink(TabId, ModuleId, ModeratorAjaxControl.ModQueue)
 
                     hlForum.Text = mForumInfo.Name
-                    hlForum.NavigateUrl = Utilities.Links.ContainerViewForumLink(TabId, mForumID, False)
+                    hlForum.NavigateUrl = Utilities.Links.ContainerViewForumLink(PortalId, TabId, mForumID, False, mForumInfo.Name)
 
                     BindList()
                 End If

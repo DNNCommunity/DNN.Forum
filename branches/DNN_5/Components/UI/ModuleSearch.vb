@@ -710,12 +710,14 @@ Namespace DotNetNuke.Modules.Forum
                     RenderImage(wr, objConfig.GetThemeImageURL("s_new.") & objConfig.ImageExtension, ForumControl.LocalizedText("UnreadPost"), "")
                 End If
                 RenderCellEnd(wr) ' </td> 
-
+                Dim cntForum As ForumController
+                cntForum = New ForumController()
+                Dim objForum As ForumInfo = cntForum.GetForumItemCache(objPost.ForumID)
                 'Forum Link
                 RenderCellBegin(wr, "Forum_Header", "", "", "", "middle", "", "")    '<td>
                 RenderDivBegin(wr, "", "Forum_HeaderText") ' <span>
                 wr.Write("&nbsp;" & Localization.GetString("Forum", objConfig.SharedResourceFile) & ": ")
-                url = Utilities.Links.ContainerViewForumLink(TabID, objPost.ForumID, False)
+                url = Utilities.Links.ContainerViewForumLink(PortalID, TabID, objPost.ForumID, False, objForum.Name)
                 RenderLinkButton(wr, url, objPost.ParentThread.ContainingForum.Name, "Forum_HeaderText", "")
                 RenderDivEnd(wr) ' </span>
                 RenderCellEnd(wr) ' </td>
@@ -1081,9 +1083,12 @@ Namespace DotNetNuke.Modules.Forum
                     wr.Write(")")
                     RenderDivEnd(wr) ' </div>
                 End If
+                Dim cntForum As ForumController
+                cntForum = New ForumController()
+                Dim objForum As ForumInfo = cntForum.GetForumItemCache(objThread.ForumID)
 
                 RenderDivBegin(wr, "", "Forum_NormalSmall")
-                url = Utilities.Links.ContainerViewForumLink(TabID, objThread.ForumID, False)
+                url = Utilities.Links.ContainerViewForumLink(PortalID, TabID, objThread.ForumID, False, objForum.Name)
                 wr.Write(ForumControl.LocalizedText("in") + "&nbsp;")
                 RenderLinkButton(wr, url, objThread.ContainingForum.Name, "Forum_NormalSmall")
                 RenderDivEnd(wr) ' </span>

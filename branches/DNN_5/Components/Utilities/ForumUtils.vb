@@ -787,7 +787,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
                         sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), Localization.GetString("Home", objConfig.SharedResourceFile), imageURL))
                         If objForumInfo.ForumID = -1 And objConfig.AggregatedForums Then
                             ' Render Group Name
-                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(TabID, -1, False), Localization.GetString("Aggregate", objConfig.SharedResourceFile), imageURL))
+                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(objConfig.CurrentPortalSettings.PortalId, TabID, -1, False, Localization.GetString("Aggregate", objConfig.SharedResourceFile)), Localization.GetString("Aggregate", objConfig.SharedResourceFile), imageURL))
                         Else
                             ' Render Group Name
                             sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objConfig.CurrentPortalSettings.PortalId, objForumInfo.GroupID, objForumInfo.Name), TrimString(objForumInfo.ParentGroup.Name, 15), imageURL))
@@ -797,7 +797,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
                                 sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerParentForumLink(TabID, objForumInfo.GroupID, objForumInfo.ParentID), objForumInfo.ParentForum.Name, imageURL))
                             End If
                             ' Render Forum Name
-                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(TabID, objForumInfo.ForumID, False), objForumInfo.Name, imageURL))
+                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(objConfig.CurrentPortalSettings.PortalId, TabID, objForumInfo.ForumID, False, objForumInfo.Name), objForumInfo.Name, imageURL))
                         End If
 
                     Case ForumScope.Unread
@@ -820,7 +820,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
                             sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerParentForumLink(TabID, objThreadInfo.ContainingForum.GroupID, objThreadInfo.ContainingForum.ParentID), objThreadInfo.ContainingForum.ParentForum.Name, imageURL))
                         End If
 
-                        sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(TabID, objThreadInfo.ForumID, False), TrimString(objThreadInfo.ContainingForum.Name, 15), imageURL))
+                        sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(objConfig.CurrentPortalSettings.PortalId, TabID, objThreadInfo.ForumID, False, objThreadInfo.ContainingForum.Name), TrimString(objThreadInfo.ContainingForum.Name, 15), imageURL))
                         ' Render Thread Name
                         If objConfig.FilterSubject Then
                             Dim strFilteredSubject As String = objThreadInfo.Subject
@@ -834,7 +834,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
                             'Forum Home
                             sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), Localization.GetString("Home", objConfig.SharedResourceFile), imageURL))
                             ' Render Aggregated Group Name
-                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(TabID, -1, False), Localization.GetString("Aggregate", objConfig.SharedResourceFile), imageURL))
+                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(objConfig.CurrentPortalSettings.PortalId, TabID, -1, False, Localization.GetString("Aggregate", objConfig.SharedResourceFile)), Localization.GetString("Aggregate", objConfig.SharedResourceFile), imageURL))
                         Else
                             'Forum Home
                             sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), Localization.GetString("Home", objConfig.SharedResourceFile), imageURL))
