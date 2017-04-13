@@ -76,7 +76,7 @@ Namespace DotNetNuke.Modules.Forum
         Dim _TrackingDuration As Integer = 1000
         Dim _EnableProfileWeb As Boolean = True
         Dim _EnableDefaultPostNotify As Boolean = True
-        Dim _EnableSelfNotifications As Boolean = True
+        Dim _EnableSelfNotifications As Boolean = False
         Dim _TotalRecords As Integer
         Dim _IsDeleted As Boolean = False
         Dim _StartBanDate As Date

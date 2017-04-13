@@ -379,16 +379,17 @@ Namespace DotNetNuke.Modules.Forum
                         'log.Debug("TabPath: " + tinfo.TabPath)
                         sitem.Title = HttpUtility.HtmlDecode(thread.Subject)
                         sitem.UniqueKey = thread.PostID.ToString
-                        Dim pCont As PortalController = New PortalController()
-                        Dim urli As String = PortalUtilityClass.PrimaryPortalAlias(moduleInfo.PortalID).HTTPAlias & "/tabid/" & moduleInfo.TabID & "/forumid/" & thread.ForumID & "/threadid/" & thread.ThreadID & "/postid/" & thread.PostID & "/scope/posts/default.aspx"
-                        Dim psettings As PortalSettings = New PortalSettings(pCont.GetPortal(moduleInfo.PortalID))
+                        'Dim pCont As PortalController = New PortalController()
+                        'Dim urli As String = PortalUtilityClass.PrimaryPortalAlias(moduleInfo.PortalID).HTTPAlias & "/tabid/" & moduleInfo.TabID & "/forumid/" & thread.ForumID & "/threadid/" & thread.ThreadID & "/postid/" & thread.PostID & "/scope/posts/default.aspx"
+                        'Dim psettings As PortalSettings = New PortalSettings(pCont.GetPortal(moduleInfo.PortalID))
 
-                        If psettings.SSLEnabled Then
-                            sitem.Url = "https://" + urli
-                        Else
-                            sitem.Url = "http://" + urli
-                        End If
-                        'log.Error("Search Portal: " + sitem.Url)
+                        'If psettings.SSLEnabled Then
+                        '    sitem.Url = "https://" + urli
+                        'Else
+                        '    sitem.Url = "http://" + urli
+                        'End If
+                        ''log.Error("Search Portal: " + sitem.Url)
+                        sitem.Url = Links.ContainerViewPostLink(moduleInfo.PortalID, moduleInfo.TabID, thread.ForumID, thread.PostID, thread.Subject)
                         retval.Add(sitem)
                     Next
                 End If
