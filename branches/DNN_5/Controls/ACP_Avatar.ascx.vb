@@ -172,7 +172,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         ''' <param name="Enabled"></param>
         ''' <remarks></remarks>
         Private Sub EnableUserAvatar(ByVal Enabled As Boolean)
-            divProfileAvatarPropertyName.Visible = False
+            divProfileAvatarPropertyName.Visible = Enabled
 
         End Sub
 
