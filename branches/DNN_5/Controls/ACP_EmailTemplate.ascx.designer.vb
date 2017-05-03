@@ -75,7 +75,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rcbEmailTemplate As Global.DotNetNuke.Web.UI.WebControls.DnnComboBox
+        Protected WithEvents rcbEmailTemplate As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
         '''plEmailSubject control.

@@ -2,7 +2,6 @@
 <%@ Control language="vb" CodeBehind="ACP_EmailTemplate.ascx.vb" AutoEventWireup="false" Explicit="true" Inherits="DotNetNuke.Modules.Forum.ACP.EmailTemplate" %>
 <%@ Register TagPrefix="dnn" TagName="TextEditor" Src="~/controls/TextEditor.ascx"%>
 <%@ Register TagPrefix="forum" TagName="ACPmenu" src="~/DesktopModules/Forum/Controls/ACP_Menu.ascx" %>
-<%@ Register Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
 <div class="ACP-EmailTemplate">
 	<table cellpadding="0" cellspacing="0" width="100%" border="0" class="Forum_SearchContainer" >
 		<tr valign="top">
@@ -36,7 +35,7 @@
 									</span>
 								</td>
 								<td align="left">
-									<dnnweb:DnnComboBox ID="rcbEmailTemplate" runat="server" AutoPostBack="true" DataTextField="EmailTemplateName" DataValueField="EmailTemplateID" Width="250" />
+									<asp:DropDownList ID="rcbEmailTemplate" runat="server" AutoPostBack="true" DataTextField="EmailTemplateName" DataValueField="EmailTemplateID" Width="250" />
 								</td>
 							</tr>
 							<tr>
