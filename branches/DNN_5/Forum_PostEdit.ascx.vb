@@ -1310,10 +1310,10 @@ Namespace DotNetNuke.Modules.Forum
         Private Sub BindThreadStatus()
             dnncbThreadStatus.Items.Clear()
 
-            dnncbThreadStatus.Items.Insert(0, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("NoneSpecified", LocalResourceFile), "0"))
-            dnncbThreadStatus.Items.Insert(1, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Unanswered", LocalResourceFile), "1"))
-            dnncbThreadStatus.Items.Insert(2, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Answered", LocalResourceFile), "2"))
-            dnncbThreadStatus.Items.Insert(3, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Informative", LocalResourceFile), "3"))
+            dnncbThreadStatus.Items.Insert(0, New ListItem(Localization.GetString("NoneSpecified", LocalResourceFile), "0"))
+            dnncbThreadStatus.Items.Insert(1, New ListItem(Localization.GetString("Unanswered", LocalResourceFile), "1"))
+            dnncbThreadStatus.Items.Insert(2, New ListItem(Localization.GetString("Answered", LocalResourceFile), "2"))
+            dnncbThreadStatus.Items.Insert(3, New ListItem(Localization.GetString("Informative", LocalResourceFile), "3"))
 
             'polling changes
             Try
@@ -1321,7 +1321,7 @@ Namespace DotNetNuke.Modules.Forum
                 Dim objForum As ForumInfo = cntForum.GetForumItemCache(ForumID)
 
                 If objForum.AllowPolls Then
-                    Dim statusEntry As New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Poll", objConfig.SharedResourceFile), CInt(ThreadStatus.Poll).ToString())
+                    Dim statusEntry As New ListItem(Localization.GetString("Poll", objConfig.SharedResourceFile), CInt(ThreadStatus.Poll).ToString())
                     dnncbThreadStatus.Items.Add(statusEntry)
                 End If
             Catch ex As Exception

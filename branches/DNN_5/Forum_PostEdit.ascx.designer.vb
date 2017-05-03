@@ -201,7 +201,7 @@ Namespace DotNetNuke.Modules.Forum
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents dnncbThreadStatus As Global.DotNetNuke.Web.UI.WebControls.DnnComboBox
+        Protected WithEvents dnncbThreadStatus As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
         '''divTagging control.
