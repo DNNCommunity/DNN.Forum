@@ -42,7 +42,7 @@
 		</div>
 		<div class="dnnFormItem" id="divThreadStatus" runat="server">
 			<dnn:Label ID="plThreadStatus" runat="server" ControlName="ddlThreadStatus" Suffix=":" />
-			<dnnweb:DnnComboBox ID="dnncbThreadStatus" runat="server" AutoPostBack="true" CausesValidation="false" />
+			<asp:DropDownList ID="dnncbThreadStatus" runat="server" AutoPostBack="true" CausesValidation="false" />
 		</div>
 		<div class="dnnFormItem" id="divTagging" runat="server">
 			<dnn:Label ID="plTerms" runat="server" ControlName="tsTerms" Suffix=":" />

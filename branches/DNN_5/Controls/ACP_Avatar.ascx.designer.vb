@@ -11,9 +11,9 @@ Option Strict On
 Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.ACP
-
+    
     Partial Public Class Avatar
-
+        
         '''<summary>
         '''lblTitle control.
         '''</summary>
@@ -22,7 +22,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblTitle As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''plEnableUserAvatar control.
         '''</summary>
@@ -31,7 +31,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents plEnableUserAvatar As Global.System.Web.UI.UserControl
-
+        
         '''<summary>
         '''chkEnableUserAvatar control.
         '''</summary>
@@ -40,7 +40,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents chkEnableUserAvatar As Global.System.Web.UI.WebControls.CheckBox
-
+        
         '''<summary>
         '''divProfileAvatarPropertyName control.
         '''</summary>
@@ -49,7 +49,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents divProfileAvatarPropertyName As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-
+        
         '''<summary>
         '''plProfileAvatarPropertyName control.
         '''</summary>
@@ -58,7 +58,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents plProfileAvatarPropertyName As Global.System.Web.UI.UserControl
-
+        
         '''<summary>
         '''rcbProfileAvatarPropertyName control.
         '''</summary>
@@ -66,8 +66,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rcbProfileAvatarPropertyName As Global.DotNetNuke.Web.UI.WebControls.DnnComboBox
-
+        Protected WithEvents rcbProfileAvatarPropertyName As Global.System.Web.UI.WebControls.DropDownList
+        
         '''<summary>
         '''plEnableSystemAvatar control.
         '''</summary>
@@ -76,7 +76,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents plEnableSystemAvatar As Global.System.Web.UI.UserControl
-
+        
         '''<summary>
         '''chkEnableSystemAvatar control.
         '''</summary>
@@ -85,7 +85,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents chkEnableSystemAvatar As Global.System.Web.UI.WebControls.CheckBox
-
+        
         '''<summary>
         '''divSystemAvatarPath control.
         '''</summary>
@@ -94,7 +94,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents divSystemAvatarPath As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-
+        
         '''<summary>
         '''plSystemAvatarPath control.
         '''</summary>
@@ -103,7 +103,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents plSystemAvatarPath As Global.System.Web.UI.UserControl
-
+        
         '''<summary>
         '''txtSystemAvatarPath control.
         '''</summary>
@@ -112,7 +112,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents txtSystemAvatarPath As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''valSysPath control.
         '''</summary>
@@ -121,7 +121,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents valSysPath As Global.System.Web.UI.WebControls.RequiredFieldValidator
-
+        
         '''<summary>
         '''plEnableRoleAvatar control.
         '''</summary>
@@ -130,7 +130,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents plEnableRoleAvatar As Global.System.Web.UI.UserControl
-
+        
         '''<summary>
         '''chkEnableRoleAvatar control.
         '''</summary>
@@ -139,7 +139,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents chkEnableRoleAvatar As Global.System.Web.UI.WebControls.CheckBox
-
+        
         '''<summary>
         '''divRoleAvatarPath control.
         '''</summary>
@@ -148,7 +148,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents divRoleAvatarPath As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-
+        
         '''<summary>
         '''plRoleAvatarPath control.
         '''</summary>
@@ -157,7 +157,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents plRoleAvatarPath As Global.System.Web.UI.UserControl
-
+        
         '''<summary>
         '''txtRoleAvatarPath control.
         '''</summary>
@@ -166,7 +166,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents txtRoleAvatarPath As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''valRoleAvatarPath control.
         '''</summary>
@@ -175,7 +175,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents valRoleAvatarPath As Global.System.Web.UI.WebControls.RequiredFieldValidator
-
+        
         '''<summary>
         '''cmdUpdate control.
         '''</summary>

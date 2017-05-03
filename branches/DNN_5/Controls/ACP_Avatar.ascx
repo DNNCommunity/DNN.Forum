@@ -1,6 +1,5 @@
 <%@ Control Language="vb" Codebehind="ACP_Avatar.ascx.vb" AutoEventWireup="false" Inherits="DotNetNuke.Modules.Forum.ACP.Avatar" Explicit="true" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
-<%@ Register Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
 <div class="dnnForm acpAvatar dnnClear">
 	<h2 class="dnnFormSectionHead"><asp:Label id="lblTitle" runat="server" resourcekey="lblTitle" EnableViewState="false" /></h2>
 	<div class="dnnFormItem dnnFormHelp dnnClear"><p class="dnnFormRequired"><span><%=LocalizeString("RequiredFields")%></span></p></div>
@@ -11,7 +10,7 @@
 		</div>
 		<div class="dnnFormItem" id="divProfileAvatarPropertyName" runat="server">
 			<dnn:label id="plProfileAvatarPropertyName" runat="server" controlname="ddlProfileAvatarPropertyName" Suffix=":" />
-			<dnnweb:DnnComboBox ID="rcbProfileAvatarPropertyName" runat="server" DataTextField="PropertyName" DataValueField="PropertyName" />
+			<asp:DropDownList ID="rcbProfileAvatarPropertyName" runat="server" DataTextField="PropertyName" DataValueField="PropertyName" />
 		</div>
 		<div class="dnnFormItem">
 			<dnn:label id="plEnableSystemAvatar" runat="server" controlname="chkEnableSystemAvatar" Suffix=":" />
