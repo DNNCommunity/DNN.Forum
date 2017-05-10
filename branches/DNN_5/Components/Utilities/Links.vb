@@ -259,6 +259,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 
             pagename = Regex.Replace(pagename, "[^a-z0-9_-ĂăĀāÀÁÂÃÄÅàáâãäåąæÆßÇĆćĈĉĊċČčçĎďĐđĒēĔĕĖėĘęĚěÉêëĘÈÉÊËèéĜĝĞğĠġĢģĢģĤĥĦħÌÍÎÏĨĩĪīĬĭĮįİÌíîïìĲĴĵĶķÑÑÒÓÔÕÖŐØòóôõőöøñŒœŔřŘŗŖŕŔšŠşŞŝŜśŚťŤţŢųŲűŰůŮŭŬūŪũŨÙÚÛÜÙúûüùŵŴŸŷŶÝÿýžŽżŻźŹ]+", "-", options) & ".aspx"
             'For titles with ' - ', we replace --- with -
+            pagename = pagename.Replace("|", "-")
             pagename = pagename.Replace("---", "-")
 
             'Remove trailing dash if one exists.
