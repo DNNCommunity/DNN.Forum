@@ -72,7 +72,6 @@ Namespace DotNetNuke.Modules.Forum
                     If (Me.ScheduleHistoryItem.GetSetting("ForumEmailDeleteDays").Trim() <> "") Then
                         DaysToDelete = CInt(Me.ScheduleHistoryItem.GetSetting("ForumEmailDeleteDays"))
                     End If
-                    DaysToDelete = CInt(Me.ScheduleHistoryItem.GetSetting("ForumEmailDeleteDays"))
                     emailsDeleteDate = Date.Now.AddDays(-DaysToDelete)
                 End If
 
