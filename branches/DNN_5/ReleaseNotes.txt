@@ -15,6 +15,7 @@
 	<ul>					
 		<li>Support for Journal with general setting to enable/disable journal entries from being created</li>		
 		<li>Issue #8 fixed</li>
+		<li>Issue #12 fixed</li>
 		<li>Marked one of the SubmitExternalPost as Obsole and this will be removed totally in next release (Issue #9)</li>		
 		<li>Added another SubmitExternalPost to allow IsPinned (Issue #11)</li>
 		<li>Returning SubmitPostResult from post to database which includes postid and result (Issue #11)</li>
