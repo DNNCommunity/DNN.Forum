@@ -1,5 +1,5 @@
 # DotNetNuke-Forum
-DotNetNuke Forum
+DotNetNuke Forum -module
 
 # Maintainers
 This repository is currently maintained by Ilpo Juvander (@juvander), please ask him as a reviewer on any pull request that would affect the direction of this module and coordinate with him when planning releases.
