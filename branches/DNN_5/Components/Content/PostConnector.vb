@@ -68,6 +68,7 @@ Namespace DotNetNuke.Modules.Forum
         ''' <returns>An enumerator PostMessage that tells what happend (post moderated, post approved, reason rejected, etc.).</returns>
         ''' <remarks>This is available for all outside modules/applications to post to the forum module.</remarks>
         <Obsolete("Use the other SubmitExternalPost method instead")>
+        <CLSCompliant(False)>
         Public Function SubmitExternalPost(
                                           ByVal TabID As Integer,
                                           ByVal ModuleID As Integer,
@@ -98,6 +99,7 @@ Namespace DotNetNuke.Modules.Forum
         ''' <param name="ParentThreadID">Thread id if replying to existing thread. For new messages this should equal to -1</param>
         ''' <returns>An enumerator PostMessage that tells what happend (post moderated, post approved, reason rejected, etc.).</returns>
         ''' <remarks>This is available for all outside modules/applications to post to the forum module.</remarks>
+        <CLSCompliant(False)>
         Public Function SubmitExternalPost(
                                           ByVal TabID As Integer,
                                           ByVal ModuleID As Integer,
@@ -131,6 +133,7 @@ Namespace DotNetNuke.Modules.Forum
         ''' <param name="IsPinned">IsPinned to control posts IsPinned property when posting new post</param>
         ''' <returns>An enumerator PostMessage that tells what happend (post moderated, post approved, reason rejected, etc.).</returns>
         ''' <remarks>This is available for all outside modules/applications to post to the forum module.</remarks>
+        <CLSCompliant(False)>
         Public Function SubmitExternalPost(ByVal TabID As Integer,
                                            ByVal ModuleID As Integer,
                                            ByVal PortalID As Integer,
