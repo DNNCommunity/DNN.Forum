@@ -1,5 +1,5 @@
 '
-' DotNetNuke® - http://www.dotnetnuke.com
+' DotNetNukeÂ® - http://www.dotnetnuke.com
 ' Copyright (c) 2002-2011
 ' by DotNetNuke Corporation
 '
@@ -198,7 +198,7 @@ Namespace DotNetNuke.Modules.Forum
             End If
 
             If Convert.ToString(HostController.Instance.GetSettingsDictionary("SMTPPassword")) <> String.Empty Then
-                SMTPPassword = Convert.ToString(HostController.Instance.GetSettingsDictionary("SMTPPassword"))
+				SMTPPassword = HostController.Instance.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey())
             End If
 
             If Convert.ToString(HostController.Instance.GetSettingsDictionary("SMTPEnableSSL")) <> String.Empty Then
