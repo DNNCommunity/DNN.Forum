@@ -16,6 +16,8 @@ build/
 [Bb]in/
 [Oo]bj/
 install/
+Package/
+DNN_Forum_*.zip
 Resources.zip
 
 # Enable "build/" folder in the NuGet Packages folder since NuGet packages use it for MSBuild targets
