@@ -19,6 +19,9 @@ install/
 Package/
 DNN_Forum_*.zip
 Resources.zip
+!/bin/
+/bin/DotNetNuke.Forum.Library.dll
+/bin/DotNetNuke.Modules.Forum.*
 
 # Enable "build/" folder in the NuGet Packages folder since NuGet packages use it for MSBuild targets
 !packages/*/build/
