@@ -170,7 +170,6 @@ Namespace DotNetNuke.Modules.Forum
         End Sub
 
         ''' <summary>
-        ''' Assigns basic SMTP settings exposed by DNN core (Host Settings)
         ''' Then loops through each email, sends it and marks in db as each is sent (or failed send)
         ''' At the end of this function we mark the task as completed.
         ''' </summary>
@@ -178,61 +177,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' <param name="colEmailsToSend">A collection of emails to send.</param>
         ''' <remarks>Uses copy of core send method, slightly enhanced.</remarks>
         Private Function SendQueuedEmails(ByVal objTaskInfo As EmailQueueTaskInfo, ByVal colEmailsToSend As List(Of EmailQueueTaskEmailsInfo)) As Integer
-            ' SMTP server configuration
-            Dim SMTPServer As String = String.Empty
-            Dim SMTPAuthentication As String = String.Empty
-            Dim SMTPUsername As String = String.Empty
-            Dim SMTPPassword As String = String.Empty
-            Dim SMTPEnableSSL As Boolean = False
-
-            If Convert.ToString(HostController.Instance.GetSettingsDictionary("SMTPServer")) <> String.Empty Then
-                SMTPServer = Convert.ToString(HostController.Instance.GetSettingsDictionary("SMTPServer"))
-            End If
-
-            If Convert.ToString(HostController.Instance.GetSettingsDictionary("SMTPAuthentication")) <> String.Empty Then
-                SMTPAuthentication = Convert.ToString(HostController.Instance.GetSettingsDictionary("SMTPAuthentication"))
-            End If
-
-            If Convert.ToString(HostController.Instance.GetSettingsDictionary("SMTPUsername")) <> String.Empty Then
-                SMTPUsername = Convert.ToString(HostController.Instance.GetSettingsDictionary("SMTPUsername"))
-            End If
-
-            If Convert.ToString(HostController.Instance.GetSettingsDictionary("SMTPPassword")) <> String.Empty Then
-                SMTPPassword = Convert.ToString(HostController.Instance.GetSettingsDictionary("SMTPPassword"))
-            End If
-
-            If Convert.ToString(HostController.Instance.GetSettingsDictionary("SMTPEnableSSL")) <> String.Empty Then
-                If Convert.ToString(HostController.Instance.GetSettingsDictionary("SMTPEnableSSL")) = "Y" Then
-                    SMTPEnableSSL = True
-                End If
-            End If
-
-            ' external SMTP server alternate port
-            Dim SmtpPort As Integer = Null.NullInteger
-            Dim portPos As Integer = SMTPServer.IndexOf(":")
-            If portPos > -1 Then
-                SmtpPort = Int32.Parse(SMTPServer.Substring(portPos + 1, SMTPServer.Length - portPos - 1))
-                SMTPServer = SMTPServer.Substring(0, portPos)
-            End If
-
-            Dim Client As New Net.Mail.SmtpClient()
-            If SMTPServer <> String.Empty Then
-                Client.Host = SMTPServer
-                If SmtpPort > Null.NullInteger Then
-                    Client.Port = SmtpPort
-                End If
-                Select Case SMTPAuthentication
-                    Case "", "0" ' anonymous
-                    Case "1" ' basic
-                        If SMTPUsername <> String.Empty And SMTPPassword <> String.Empty Then
-                            Client.UseDefaultCredentials = False
-                            Client.Credentials = New System.Net.NetworkCredential(SMTPUsername, SMTPPassword)
-                        End If
-                    Case "2" ' NTLM
-                        Client.UseDefaultCredentials = True
-                End Select
-            End If
-            Client.EnableSsl = SMTPEnableSSL
 
             ' Set the standard task items (non user specific)
             Dim Sender As Net.Mail.MailAddress
@@ -249,39 +193,33 @@ Namespace DotNetNuke.Modules.Forum
             ' loop through each entry in the arraylist and send the mail
             For Each objEmailToSend As EmailQueueTaskEmailsInfo In colEmailsToSend
                 ' user specific
-                Dim endDelimit As String
-                'Use either vbCrLF or <br><br> depending on BodyFormat.
-                Dim Body As String
-                If objEmailToSend.IsHTML Then
-                    Body = objTaskInfo.EmailHTMLBody
-                    endDelimit = "<br />"
-                Else
-                    Body = objTaskInfo.EmailTextBody
-                    endDelimit = vbCrLf
-                End If
-
                 Dim MailTo As Net.Mail.MailAddress
                 If objTaskInfo.EnableFriendlyToName Then
                     MailTo = New Net.Mail.MailAddress(objEmailToSend.EmailAddress, objEmailToSend.DisplayName)
                 Else
                     MailTo = New Net.Mail.MailAddress(objEmailToSend.EmailAddress)
                 End If
-                'End user specific
 
-                Dim mailMessage As New System.Net.Mail.MailMessage(Sender, MailTo)
-                mailMessage.Priority = CType(objTaskInfo.EmailPriority, Net.Mail.MailPriority)
-                mailMessage.Subject = HtmlUtils.StripWhiteSpace(objTaskInfo.EmailSubject, True)
-                mailMessage.Body = Body
-                mailMessage.IsBodyHtml = objEmailToSend.IsHTML
-                mailMessage.BodyEncoding = System.Text.Encoding.UTF8
-                mailMessage.Sender = Sender
-                mailMessage.From = Sender
-                'mailMessage.ReplyTo = 
+                Dim mailFormat As DotNetNuke.Services.Mail.MailFormat
+                If objEmailToSend.IsHTML Then
+                    mailFormat = Services.Mail.MailFormat.Html
+                Else
+                    mailFormat = Services.Mail.MailFormat.Text
+                End If
+                'End user specific
 
                 Try
                     ' Send the mail message
-                    Client.Send(mailMessage)
-                    'SendMail = String.Empty
+                    DotNetNuke.Services.Mail.Mail.SendMail(Sender.Address,
+                                                            MailTo.Address,
+                                                            String.Empty,
+                                                            String.Empty,
+                                                            DotNetNuke.Services.Mail.MailPriority.Normal,
+                                                            HtmlUtils.StripWhiteSpace(objTaskInfo.EmailSubject, True),
+                                                            mailFormat,
+                                                            System.Text.Encoding.UTF8,
+                                                            objTaskInfo.EmailHTMLBody,
+                                                            String.Empty, String.Empty, String.Empty, String.Empty, String.Empty)
 
                     ' if we are here, the mail sent (mark message as sent successfull)
                     TotalSuccessCount += 1
@@ -298,12 +236,6 @@ Namespace DotNetNuke.Modules.Forum
                     TotalFailedCount += 1
                     objTaskEmailsCnt.TaskEmailsSendStatusUpdate(objEmailToSend.EmailQueueId, objEmailToSend.EmailAddress, True)
                 End Try
-
-                ' '' Add Base Href for any images inserted in to the email.
-                ''mailMessage.Body = "<Base Href='" & portalAlias & "'>"
-
-                ' kill the message
-                mailMessage.Dispose()
 
             Next
             ' Mark task complete in tasks table (assign current date in sproc as complete time, also use sproc to set failedcount, successcount, totalsentcount and if task failed)
