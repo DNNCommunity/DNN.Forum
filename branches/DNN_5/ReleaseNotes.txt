@@ -21,6 +21,7 @@
 		<li>Returning SubmitPostResult from post to database which includes postid and result (Issue #11)</li>
 		<li>Changed behaviour what happens after new post: If post was approved, user is taken directly to created post.</li>
 		<li>Links using friendlyurl's</li>
+		<li>Changed how e-mail is sent instead of pull request #16</li>
 	</ul>
 	<br />
 	<p class="Owner">
