@@ -21,7 +21,6 @@ Option Strict On
 Option Explicit On
 
 Imports DotNetNuke.Modules.Forum.Utilities
-Imports DotNetNuke.Wrapper.UI.WebControls
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
@@ -247,7 +246,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         ''' <remarks></remarks>
         Private Sub BindTemplateList(ByVal arrTemplates As ArrayList)
             For Each objEmailTemplate As EmailTemplateInfo In arrTemplates
-                Dim HostTemplates As New Telerik.Web.UI.RadComboBoxItem(Localization.GetString(objEmailTemplate.EmailTemplateName, objConfig.SharedResourceFile), objEmailTemplate.EmailTemplateID.ToString)
+                Dim HostTemplates As New ListItem(Localization.GetString(objEmailTemplate.EmailTemplateName, objConfig.SharedResourceFile), objEmailTemplate.EmailTemplateID.ToString)
                 rcbEmailTemplate.Items.Add(HostTemplates)
             Next
         End Sub

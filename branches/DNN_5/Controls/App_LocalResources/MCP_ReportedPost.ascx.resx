@@ -129,8 +129,8 @@
   <data name="Post.Header" xml:space="preserve">
     <value>Post</value>
   </data>
-  <data name="PostReported.Header" xml:space="preserve">
-    <value>Reported</value>
+  <data name="ReportedPost.Header" xml:space="preserve">
+    <value>Moderator's Control Panel: Reported Posts</value>
   </data>
   <data name="ReportedDate.Header" xml:space="preserve">
     <value>Last Reported</value>

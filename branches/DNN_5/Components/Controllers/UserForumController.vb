@@ -118,7 +118,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks>
 		''' </remarks>
 		Private Function GetUserForumRead(ByVal UserID As Integer, ByVal ForumID As Integer) As UserForumsInfo
-			Return CType(CBO.FillObject(DataProvider.Instance().GetUserForums(UserID, ForumID), GetType(UserForumsInfo)), UserForumsInfo)
+            Return CBO.FillObject(Of UserForumsInfo)(DataProvider.Instance().GetUserForums(UserID, ForumID))
 		End Function
 
 #End Region

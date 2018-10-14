@@ -450,52 +450,57 @@ Namespace DotNetNuke.Modules.Forum
 				.ClearSelection()
 			End With
 
-			txtForumSearch = New TextBox
-			With txtForumSearch
-				.CssClass = "Forum_NormalTextBox"
-				.ID = "txtForumSearch"
-			End With
+            txtForumSearch = New TextBox
+            With txtForumSearch
+                .CssClass = "Forum_NormalTextBox"
+                .ID = "txtForumSearch"
+            End With
 
-			Me.cmdForumSearch = New ImageButton
-			With cmdForumSearch
-				.CssClass = "Forum_Profile"
-				.ID = "cmdForumSearch"
-				.AlternateText = ForumControl.LocalizedText("Search")
-				.ToolTip = ForumControl.LocalizedText("Search")
-				.ImageUrl = objConfig.GetThemeImageURL("s_lookup.") & objConfig.ImageExtension
-			End With
+            Me.cmdForumSearch = New ImageButton
+            With cmdForumSearch
+                .CssClass = "Forum_Profile"
+                .ID = "cmdForumSearch"
+                .AlternateText = ForumControl.LocalizedText("Search")
+                .ToolTip = ForumControl.LocalizedText("Search")
+                .ImageUrl = objConfig.GetThemeImageURL("s_lookup.") & objConfig.ImageExtension
+            End With
 
-			Me.cmdForumSubscribers = New LinkButton
-			With cmdForumSubscribers
-				.CssClass = "Forum_Profile"
-				.ID = "cmdForumSubscribers"
-				.Text = ForumControl.LocalizedText("cmdForumSubscribers")
-			End With
+            If objConfig.HideSearchButton = True Then
+                txtForumSearch.Visible = False
+                cmdForumSearch.Visible = False
+            End If
 
-			BindControls()
-			AddControlHandlers()
-			AddControlsToTree()
+            Me.cmdForumSubscribers = New LinkButton
+            With cmdForumSubscribers
+                .CssClass = "Forum_Profile"
+                .ID = "cmdForumSubscribers"
+                .Text = ForumControl.LocalizedText("cmdForumSubscribers")
+            End With
 
-			For Each objThread As ThreadInfo In ThreadCollection
+            BindControls()
+            AddControlHandlers()
+            AddControlsToTree()
+
+            For Each objThread As ThreadInfo In ThreadCollection
                 Me.trcRating = New Telerik.Web.UI.RadRating
-				With trcRating
-					.Enabled = False
-					.Skin = "Office2007"
-					.Width = Unit.Parse("200")
-					.SelectionMode = Telerik.Web.UI.RatingSelectionMode.Continuous
-					.IsDirectionReversed = False
-					.Orientation = Orientation.Horizontal
-					.Precision = Telerik.Web.UI.RatingPrecision.Half
-					.ItemCount = objConfig.RatingScale
+                With trcRating
+                    .Enabled = False
+                    .Skin = "Office2007"
+                    .Width = Unit.Parse("200")
+                    .SelectionMode = Telerik.Web.UI.RatingSelectionMode.Continuous
+                    .IsDirectionReversed = False
+                    .Orientation = Orientation.Horizontal
+                    .Precision = Telerik.Web.UI.RatingPrecision.Half
+                    .ItemCount = objConfig.RatingScale
 
-					.ID = "trcRating" + objThread.ThreadID.ToString()
-					.Value = CDec(objThread.Rating)
-					'AddHandler trcRating.Command, AddressOf trcRating_Rate
-				End With
-				ThreadRatings.Add(objThread.ThreadID, trcRating)
-				Controls.Add(trcRating)
-			Next
-		End Sub
+                    .ID = "trcRating" + objThread.ThreadID.ToString()
+                    .Value = CDec(objThread.Rating)
+                    'AddHandler trcRating.Command, AddressOf trcRating_Rate
+                End With
+                ThreadRatings.Add(objThread.ThreadID, trcRating)
+                Controls.Add(trcRating)
+            Next
+        End Sub
 
 		''' <summary>
 		''' Builds the control view seen on the page * This is the final step in 
@@ -563,13 +568,15 @@ Namespace DotNetNuke.Modules.Forum
 					AddHandler chkEmail.CheckedChanged, AddressOf chkEmail_CheckedChanged
 				End If
 
-				AddHandler ddlDateFilter.SelectedIndexChanged, AddressOf ddlDateFilter_SelectedIndexChanged
-				AddHandler cmdForumSearch.Click, AddressOf cmdForumSearch_Click
-				AddHandler cmdForumSubscribers.Click, AddressOf cmdForumSubscribers_Click
-				' would add rating control handler here if we permit rating in thread view in future. (may move to per post rating, in which case this would always be no). 
-			Catch exc As Exception
-				LogException(exc)
-			End Try
+                AddHandler ddlDateFilter.SelectedIndexChanged, AddressOf ddlDateFilter_SelectedIndexChanged
+                If objConfig.HideSearchButton = False Then
+                    AddHandler cmdForumSearch.Click, AddressOf cmdForumSearch_Click
+                End If
+                AddHandler cmdForumSubscribers.Click, AddressOf cmdForumSubscribers_Click
+                ' would add rating control handler here if we permit rating in thread view in future. (may move to per post rating, in which case this would always be no). 
+            Catch exc As Exception
+                LogException(exc)
+            End Try
 		End Sub
 
 		''' <summary>
@@ -584,9 +591,11 @@ Namespace DotNetNuke.Modules.Forum
 					Controls.Add(chkEmail)
 					Controls.Add(cmdForumSubscribers)
 				End If
-				Controls.Add(ddlDateFilter)
-				Controls.Add(txtForumSearch)
-				Controls.Add(cmdForumSearch)
+                Controls.Add(ddlDateFilter)
+                If objConfig.HideSearchButton = False Then
+                    Controls.Add(txtForumSearch)
+                    Controls.Add(cmdForumSearch)
+                End If
 			Catch exc As Exception
 				LogException(exc)
 			End Try
@@ -691,30 +700,32 @@ Namespace DotNetNuke.Modules.Forum
 			RenderRowEnd(wr) ' </tr>
 			RenderTableEnd(wr) ' </table>
 
-			RenderCellEnd(wr) ' </td>
-			RenderCellBegin(wr, "", "", "", "right", "middle", "", "") ' <td>
+            RenderCellEnd(wr) ' </td>
+            If objConfig.HideSearchButton = False Then
+                RenderCellBegin(wr, "", "", "", "right", "middle", "", "") ' <td>
 
-			RenderTableBegin(wr, 0, 0, "InnerTable") '<table>
-			RenderRowBegin(wr) ' <tr>
-			RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td>
-			txtForumSearch.RenderControl(wr)
-			RenderCellEnd(wr) ' </td>
+                RenderTableBegin(wr, 0, 0, "InnerTable") '<table>
+                RenderRowBegin(wr) ' <tr>
+                RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td>
+                txtForumSearch.RenderControl(wr)
+                RenderCellEnd(wr) ' </td>
 
-			RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td>
-			cmdForumSearch.RenderControl(wr)
-			RenderCellEnd(wr) ' </td>
-			RenderRowEnd(wr) ' </tr>
-			RenderTableEnd(wr) ' </table>
+                RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td>
+                cmdForumSearch.RenderControl(wr)
+                RenderCellEnd(wr) ' </td>
+                RenderRowEnd(wr) ' </tr>
+                RenderTableEnd(wr) ' </table>
 
-			RenderCellEnd(wr) ' </td>
-			RenderRowEnd(wr) ' </tr>
-			RenderTableEnd(wr) ' </table>
-			RenderCellEnd(wr) ' </td>
+                RenderCellEnd(wr) ' </td>
+            End If
+            RenderRowEnd(wr) ' </tr>
+            RenderTableEnd(wr) ' </table>
+            RenderCellEnd(wr) ' </td>
 
-			' right cap
-			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
-			wr.RenderEndTag() ' </Tr>
-		End Sub
+            ' right cap
+            RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
+            wr.RenderEndTag() ' </Tr>
+        End Sub
 
 		''' <summary>
 		''' breadcrumb
@@ -746,13 +757,13 @@ Namespace DotNetNuke.Modules.Forum
 			RenderCellEnd(wr) ' </td>
 			RenderCellBegin(wr, "", "", "20%", "right", "", "", "") ' <td>
 
-			If NoReply Then
-				' show link to show all threads
-				RenderLinkButton(wr, Utilities.Links.ContainerViewForumLink(TabID, ForumID, False), Localization.GetString("ShowAll", objConfig.SharedResourceFile), "Forum_BreadCrumb")
-			Else
-				' show link to show no reply threads
-				RenderLinkButton(wr, Utilities.Links.ContainerViewForumLink(TabID, ForumID, True), Localization.GetString("ShowNoReplies", objConfig.SharedResourceFile), "Forum_BreadCrumb")
-			End If
+            If NoReply Then
+                ' show link to show all threads
+                RenderLinkButton(wr, Utilities.Links.ContainerViewForumLink(PortalID, TabID, ForumID, False, objForum.Name), Localization.GetString("ShowAll", objConfig.SharedResourceFile), "Forum_BreadCrumb")
+            Else
+                ' show link to show no reply threads
+                RenderLinkButton(wr, Utilities.Links.ContainerViewForumLink(PortalID, TabID, ForumID, True, objForum.Name), Localization.GetString("ShowNoReplies", objConfig.SharedResourceFile), "Forum_BreadCrumb")
+            End If
 
 			RenderCellEnd(wr) ' </td>
 			RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
@@ -941,11 +952,11 @@ Namespace DotNetNuke.Modules.Forum
 						RenderRowBegin(wr) ' <tr>
 
 						' cell within table for thread status icon
-						RenderCellBegin(wr, "", "100%", "", "", "top", "", "")	' <td>
-						url = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, objThread.ThreadID)
+                        RenderCellBegin(wr, "", "100%", "10%", "", "top", "", "")   ' <td>
+                        url = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, ForumID, objThread.ThreadID, objThread.Subject)
 
-						'link so icon is clickable (also used below for subject)
-						wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
+                        'link so icon is clickable (also used below for subject)
+                        wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 						wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
 
 						' see if post is pinned, priority over other icons
@@ -1011,8 +1022,12 @@ Namespace DotNetNuke.Modules.Forum
 						RenderImage(wr, objConfig.GetThemeImageURL("row_spacer.gif"), "", "")	' <img/>
 						RenderCellEnd(wr) ' </td>
 
-						' cell for thread subject
-						RenderCellBegin(wr, "", "", "100%", "left", "", "", "") ' <td>
+                        ' cell for thread subject
+                        Dim subjectCellSize As String = "85%"
+                        If HasRatings(objThread) Then
+                            subjectCellSize = "55%"
+                        End If
+                        RenderCellBegin(wr, "", "", subjectCellSize, "left", "", "", "") ' <td>
 
 						wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 
@@ -1116,18 +1131,23 @@ Namespace DotNetNuke.Modules.Forum
 						RenderDivEnd(wr) ' </div>
 						RenderCellEnd(wr) ' </td>
 
-						If objConfig.EnableRatings And objThread.ContainingForum.EnableForumsRating Then
-							RenderCellBegin(wr, "", "", "30%", "right", "", "", "") ' <td>
+                        If HasRatings(objThread) Then
+                            RenderCellBegin(wr, "", "", "30%", "right", "", "", "") ' <td>
+                            trcRating.RenderControl(wr)
+                            RenderCellEnd(wr) ' </td>
+                        End If
+                        'If objConfig.EnableRatings And objThread.ContainingForum.EnableForumsRating Then
+                        '	RenderCellBegin(wr, "", "", "30%", "right", "", "", "") ' <td>
 
-							If ThreadRatings.ContainsKey(objThread.ThreadID) Then
-                                trcRating = CType(ThreadRatings(objThread.ThreadID), Telerik.Web.UI.RadRating)
-								' CP - we alter statement below if we want to enable 0 rating still showing image.
-								If objThread.Rating > 0 Then
-									trcRating.RenderControl(wr)
-								End If
-							End If
-							RenderCellEnd(wr) ' </td>
-						End If
+                        '	If ThreadRatings.ContainsKey(objThread.ThreadID) Then
+                        '                          trcRating = CType(ThreadRatings(objThread.ThreadID), Telerik.Web.UI.RadRating)
+                        '		' CP - we alter statement below if we want to enable 0 rating still showing image.
+                        '		If objThread.Rating > 0 Then
+                        '			trcRating.RenderControl(wr)
+                        '		End If
+                        '	End If
+                        '	RenderCellEnd(wr) ' </td>
+                        'End If
 
 						'CP - Add for thread status
 						RenderCellBegin(wr, "", "", "5%", "right", "", "", "")	 ' <td>
@@ -1200,11 +1220,11 @@ Namespace DotNetNuke.Modules.Forum
 								RenderImage(wr, objConfig.GetThemeImageURL("thread_newest.") & objConfig.ImageExtension, ForumControl.LocalizedText("imgThreadNewest"), "")
 								wr.RenderEndTag() ' </a>
 							Else
-								url = Utilities.Links.ContainerViewPostLink(TabID, ForumID, objThread.LastApprovedPost.PostID)
-							End If
+                                url = Utilities.Links.ContainerViewPostLink(PortalID, TabID, ForumID, objThread.LastApprovedPost.PostID, objThread.LastApprovedPost.Subject)
+                            End If
 						Else
-							url = Utilities.Links.ContainerViewPostLink(TabID, ForumID, objThread.LastApprovedPost.PostID)
-						End If
+                            url = Utilities.Links.ContainerViewPostLink(PortalID, TabID, ForumID, objThread.LastApprovedPost.PostID, objThread.LastApprovedPost.Subject)
+                        End If
 						' End Skeel
 
 						RenderTitleLinkButton(wr, url, Utilities.ForumUtils.GetCreatedDateInfo(objThread.LastApprovedPost.CreatedDate, objConfig, ""), "Forum_LastPostText", objThread.LastPostShortBody) ' <a/>
@@ -1243,423 +1263,438 @@ Namespace DotNetNuke.Modules.Forum
 			End Try
 		End Sub
 
-		''' <summary>
-		''' Footer w/ paging 
-		''' </summary>
-		''' <param name="wr"></param>
-		''' <remarks>
-		''' </remarks>
-		Private Sub RenderFooterRow(ByVal wr As HtmlTextWriter)
-			RenderRowBegin(wr) ' <tr>
-			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
+        Private Function HasRatings(ByVal objThread As ThreadInfo) As Boolean
+            Dim retval As Boolean = False
+            If objConfig.EnableRatings And objThread.ContainingForum.EnableForumsRating Then
 
-			'Middle Column
-			RenderCellBegin(wr, "", "", "100%", "", "", "", "") ' <td>
+                If ThreadRatings.ContainsKey(objThread.ThreadID) Then
+                    trcRating = CType(ThreadRatings(objThread.ThreadID), Telerik.Web.UI.RadRating)
+                    ' CP - we alter statement below if we want to enable 0 rating still showing image.
+                    If objThread.Rating > 0 Then
+                        retval = True
+                    End If
+                End If
+            End If
+            Return retval
+        End Function
 
-			RenderTableBegin(wr, "tblFooterContents", "", "", "100%", "0", "0", "", "", "0")	  ' <table>
-			RenderRowBegin(wr) ' <tr>
-			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "Forum_FooterCapLeft", "") ' <td><img/></td>
+        ''' <summary>
+        ''' Footer w/ paging 
+        ''' </summary>
+        ''' <param name="wr"></param>
+        ''' <remarks>
+        ''' </remarks>
+        Private Sub RenderFooterRow(ByVal wr As HtmlTextWriter)
+            RenderRowBegin(wr) ' <tr>
+            RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
 
-			RenderCellBegin(wr, "Forum_Footer", "", "100%", "left", "", "", "") ' <td>
+            'Middle Column
+            RenderCellBegin(wr, "", "", "100%", "", "", "", "") ' <td>
 
-			RenderTableBegin(wr, 0, 0, "") ' <table>
-			RenderRowBegin(wr) ' <tr>
+            RenderTableBegin(wr, "tblFooterContents", "", "", "100%", "0", "0", "", "", "0")      ' <table>
+            RenderRowBegin(wr) ' <tr>
+            RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "Forum_FooterCapLeft", "") ' <td><img/></td>
 
-			' xml link (for single forum syndication)
-			If (ForumControl.objConfig.EnableRSS And objForum.EnableRSS) AndAlso (objForum.PublicView) Then
-				RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
+            RenderCellBegin(wr, "Forum_Footer", "", "100%", "left", "", "", "") ' <td>
 
-				wr.AddAttribute(HtmlTextWriterAttribute.Href, objConfig.SourceDirectory & "/Forum_Rss.aspx?forumid=" & Me.ForumID.ToString & "&tabid=" & TabID & "&mid=" & ModuleID)
-				wr.AddAttribute(HtmlTextWriterAttribute.Target, "_blank")
-				wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
+            RenderTableBegin(wr, 0, 0, "") ' <table>
+            RenderRowBegin(wr) ' <tr>
 
-				RenderImage(wr, objConfig.GetThemeImageURL("s_rss.") & objConfig.ImageExtension, ForumControl.LocalizedText("imgRSS"), "")
-				wr.RenderEndTag() ' </A>
-				RenderCellEnd(wr) ' </td>
-			End If
+            ' xml link (for single forum syndication)
+            If (ForumControl.objConfig.EnableRSS And objForum.EnableRSS) AndAlso (objForum.PublicView) Then
+                RenderCellBegin(wr, "", "", "", "left", "middle", "", "") ' <td>
 
-			RenderCellBegin(wr, "", "", "", "", "top", "", "") ' <td>
-			RenderImage(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "")	' <img/>
-			RenderCellEnd(wr) ' </td>
+                wr.AddAttribute(HtmlTextWriterAttribute.Href, objConfig.SourceDirectory & "/Forum_Rss.aspx?forumid=" & Me.ForumID.ToString & "&tabid=" & TabID & "&mid=" & ModuleID)
+                wr.AddAttribute(HtmlTextWriterAttribute.Target, "_blank")
+                wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
 
-			RenderCellBegin(wr, "", "", "100%", "", "middle", "", "") ' <td>
-			RenderThreadsPaging(wr)
-			RenderCellEnd(wr) ' </td>
+                RenderImage(wr, objConfig.GetThemeImageURL("s_rss.") & objConfig.ImageExtension, ForumControl.LocalizedText("imgRSS"), "")
+                wr.RenderEndTag() ' </A>
+                RenderCellEnd(wr) ' </td>
+            End If
 
-			RenderRowEnd(wr) ' </tr>
-			RenderTableEnd(wr) ' </table>
-			RenderCellEnd(wr) ' </td>
-			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "Forum_FooterCapRight", "")	   ' <td><img/></td>
+            RenderCellBegin(wr, "", "", "", "", "top", "", "") ' <td>
+            RenderImage(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "")  ' <img/>
+            RenderCellEnd(wr) ' </td>
 
-			'End middle column
-			RenderRowEnd(wr) ' </tr>
-			RenderTableEnd(wr) ' </table>
-			RenderCellEnd(wr) ' </td>
+            RenderCellBegin(wr, "", "", "100%", "", "middle", "", "") ' <td>
+            RenderThreadsPaging(wr)
+            RenderCellEnd(wr) ' </td>
 
-			RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
-			RenderRowEnd(wr) ' </tr>
-		End Sub
+            RenderRowEnd(wr) ' </tr>
+            RenderTableEnd(wr) ' </table>
+            RenderCellEnd(wr) ' </td>
+            RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "Forum_FooterCapRight", "")       ' <td><img/></td>
 
-		''' <summary>
-		''' bottom Breadcrumb and ddl's, along w/ subscribe chkbx (last row)
-		''' </summary>
-		''' <param name="wr"></param>
-		''' <remarks>
-		''' </remarks>
-		Private Sub RenderBottomBreadCrumbRow(ByVal wr As HtmlTextWriter)
-			RenderRowBegin(wr) '<tr>
-			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
-			RenderCellBegin(wr, "", "", "100%", "left", "", "", "") ' top
+            'End middle column
+            RenderRowEnd(wr) ' </tr>
+            RenderTableEnd(wr) ' </table>
+            RenderCellEnd(wr) ' </td>
 
-			Dim url As String
+            RenderCapCell(wr, objConfig.GetThemeImageURL("headfoot_height.gif"), "", "") ' <td><img/></td>
+            RenderRowEnd(wr) ' </tr>
+        End Sub
 
-			' start middle column table
-			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0")
-			RenderRowBegin(wr) '<tr>
-			RenderCellBegin(wr, "", "", "", "left", "", "", "") ' <td>
-			'Remove LoggedOnUserID limitation if wishing to implement Anonymous Posting
-			If (CurrentForumUser.UserID > 0) And (Not ForumID = -1) Then
-				If Not objForum.PublicPosting Then
-					If objSecurity.IsAllowedToStartRestrictedThread Then
-						RenderTableBegin(wr, "", "", "", "", "4", "0", "", "", "0")	'<Table>     
-						RenderRowBegin(wr) '<tr>
-						RenderCellBegin(wr, "", "", "", "", "middle", "", "")	'<td>   
-						RenderImage(wr, objConfig.GetThemeImageURL("height_spacer.gif"), "", "")
-						RenderCellEnd(wr) ' </td>
-						RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td> 
-						RenderCellEnd(wr) ' </Td>
-						RenderRowEnd(wr) ' </tr>
+        ''' <summary>
+        ''' bottom Breadcrumb and ddl's, along w/ subscribe chkbx (last row)
+        ''' </summary>
+        ''' <param name="wr"></param>
+        ''' <remarks>
+        ''' </remarks>
+        Private Sub RenderBottomBreadCrumbRow(ByVal wr As HtmlTextWriter)
+            RenderRowBegin(wr) '<tr>
+            RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
+            RenderCellBegin(wr, "", "", "100%", "left", "", "", "") ' top
 
-						RenderRowBegin(wr) '<tr>
-						url = Utilities.Links.NewThreadLink(TabID, ForumID, ModuleID)
-						RenderCellBegin(wr, "Forum_NavBarButton", "", "", "", "middle", "", "") ' <td> 
+            Dim url As String
 
-						If CurrentForumUser.IsBanned Then
-							RenderLinkButton(wr, url, ForumControl.LocalizedText("NewThread"), "Forum_Link", False)
-						Else
-							RenderLinkButton(wr, url, ForumControl.LocalizedText("NewThread"), "Forum_Link")
-						End If
+            ' start middle column table
+            RenderTableBegin(wr, "", "", "", "100%", "0", "0", "", "", "0")
+            RenderRowBegin(wr) '<tr>
+            RenderCellBegin(wr, "", "", "", "left", "", "", "") ' <td>
+            'Remove LoggedOnUserID limitation if wishing to implement Anonymous Posting
+            If (CurrentForumUser.UserID > 0) And (Not ForumID = -1) Then
+                If Not objForum.PublicPosting Then
+                    If objSecurity.IsAllowedToStartRestrictedThread Then
+                        RenderTableBegin(wr, "", "", "", "", "4", "0", "", "", "0") '<Table>     
+                        RenderRowBegin(wr) '<tr>
+                        RenderCellBegin(wr, "", "", "", "", "middle", "", "")   '<td>   
+                        RenderImage(wr, objConfig.GetThemeImageURL("height_spacer.gif"), "", "")
+                        RenderCellEnd(wr) ' </td>
+                        RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td> 
+                        RenderCellEnd(wr) ' </Td>
+                        RenderRowEnd(wr) ' </tr>
 
-						RenderCellEnd(wr) ' </Td>
-						RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td> 
-						RenderCellEnd(wr) ' </Td>
-						RenderRowEnd(wr) ' </tr>
-						RenderTableEnd(wr) ' </table>
-					Else
-						wr.Write("&nbsp;")
-					End If
-				Else
-					RenderTableBegin(wr, "", "", "", "", "4", "0", "", "", "0")	'<Table>   
-					RenderRowBegin(wr) '<tr>
-					RenderCellBegin(wr, "", "", "", "", "middle", "", "")	'<td>   
-					RenderImage(wr, objConfig.GetThemeImageURL("height_spacer.gif"), "", "")
-					RenderCellEnd(wr) ' </td>
-					RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td> 
-					RenderCellEnd(wr) ' </Td>
-					RenderRowEnd(wr) ' </tr>
+                        RenderRowBegin(wr) '<tr>
+                        url = Utilities.Links.NewThreadLink(TabID, ForumID, ModuleID)
+                        RenderCellBegin(wr, "Forum_NavBarButton", "", "", "", "middle", "", "") ' <td> 
 
-					RenderRowBegin(wr) '<tr>
-					url = Utilities.Links.NewThreadLink(TabID, ForumID, ModuleID)
-					RenderCellBegin(wr, "Forum_NavBarButton", "", "", "", "middle", "", "") ' <td> 
+                        If CurrentForumUser.IsBanned Then
+                            RenderLinkButton(wr, url, ForumControl.LocalizedText("NewThread"), "Forum_Link", False)
+                        Else
+                            RenderLinkButton(wr, url, ForumControl.LocalizedText("NewThread"), "Forum_Link")
+                        End If
 
-					If CurrentForumUser.IsBanned Then
-						RenderLinkButton(wr, url, ForumControl.LocalizedText("NewThread"), "Forum_Link", False)
-					Else
-						RenderLinkButton(wr, url, ForumControl.LocalizedText("NewThread"), "Forum_Link")
-					End If
+                        RenderCellEnd(wr) ' </Td>
+                        RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td> 
+                        RenderCellEnd(wr) ' </Td>
+                        RenderRowEnd(wr) ' </tr>
+                        RenderTableEnd(wr) ' </table>
+                    Else
+                        wr.Write("&nbsp;")
+                    End If
+                Else
+                    RenderTableBegin(wr, "", "", "", "", "4", "0", "", "", "0") '<Table>   
+                    RenderRowBegin(wr) '<tr>
+                    RenderCellBegin(wr, "", "", "", "", "middle", "", "")   '<td>   
+                    RenderImage(wr, objConfig.GetThemeImageURL("height_spacer.gif"), "", "")
+                    RenderCellEnd(wr) ' </td>
+                    RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td> 
+                    RenderCellEnd(wr) ' </Td>
+                    RenderRowEnd(wr) ' </tr>
 
-					RenderCellEnd(wr) ' </Td>
-					RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td> 
-					RenderCellEnd(wr) ' </Td>
-					RenderRowEnd(wr) ' </tr>
-					RenderTableEnd(wr) ' </table>
-				End If
-			End If
-			RenderCellEnd(wr) ' </td>
-			RenderRowEnd(wr) ' </tr>
+                    RenderRowBegin(wr) '<tr>
+                    url = Utilities.Links.NewThreadLink(TabID, ForumID, ModuleID)
+                    RenderCellBegin(wr, "Forum_NavBarButton", "", "", "", "middle", "", "") ' <td> 
 
-			'breadcrumb row
-			RenderRowBegin(wr) '<Tr>
-			RenderCellBegin(wr, "", "", "100%", "left", "top", "", "")
-			Dim ChildGroupView As Boolean = False
-			If CType(ForumControl.TabModuleSettings("groupid"), String) <> String.Empty Then
-				ChildGroupView = True
-			End If
-			wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.Threads, objForum, objConfig, ChildGroupView))
-			RenderCellEnd(wr) ' </td>
-			RenderRowEnd(wr) ' </tr>
+                    If CurrentForumUser.IsBanned Then
+                        RenderLinkButton(wr, url, ForumControl.LocalizedText("NewThread"), "Forum_Link", False)
+                    Else
+                        RenderLinkButton(wr, url, ForumControl.LocalizedText("NewThread"), "Forum_Link")
+                    End If
 
-			RenderRowBegin(wr) '<tr>
-			RenderCellBegin(wr, "", "", "100%", "right", "top", "", "")	' <td>
-			RenderDivBegin(wr, "", "Forum_NormalTextBox") ' <span>
-			wr.Write(ForumControl.LocalizedText("LatestThreads"))
-			RenderDivEnd(wr) ' </span>
+                    RenderCellEnd(wr) ' </Td>
+                    RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td> 
+                    RenderCellEnd(wr) ' </Td>
+                    RenderRowEnd(wr) ' </tr>
+                    RenderTableEnd(wr) ' </table>
+                End If
+            End If
+            RenderCellEnd(wr) ' </td>
+            RenderRowEnd(wr) ' </tr>
 
-			RenderImage(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
+            'breadcrumb row
+            RenderRowBegin(wr) '<Tr>
+            RenderCellBegin(wr, "", "", "100%", "left", "top", "", "")
+            Dim ChildGroupView As Boolean = False
+            If CType(ForumControl.TabModuleSettings("groupid"), String) <> String.Empty Then
+                ChildGroupView = True
+            End If
+            wr.Write(Utilities.ForumUtils.BreadCrumbs(TabID, ModuleID, ForumScope.Threads, objForum, objConfig, ChildGroupView))
+            RenderCellEnd(wr) ' </td>
+            RenderRowEnd(wr) ' </tr>
 
-			ddlDateFilter.CssClass = "Forum_NormalTextBox"
-			ddlDateFilter.RenderControl(wr)
-			RenderCellEnd(wr) ' </td>
-			RenderRowEnd(wr) ' </tr>
+            'RenderRowBegin(wr) '<tr>
+            'RenderCellBegin(wr, "", "", "100%", "right", "top", "", "") ' <td>
+            'RenderDivBegin(wr, "", "Forum_NormalTextBox") ' <span>
+            'wr.Write(ForumControl.LocalizedText("LatestThreads"))
+            'RenderDivEnd(wr) ' </span>
 
-			' Display tracking option if user is authenticated 
-			If (CurrentForumUser.UserID > 0) And (objConfig.MailNotification) And (ForumID <> -1) Then
-				' check email
-				RenderRowBegin(wr) ' <tr>
-				RenderCellBegin(wr, "", "", "", "right", "", "", "")
+            'RenderImage(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
 
-				If objSecurity.IsForumAdmin Then
-					cmdForumSubscribers.RenderControl(wr)
-					wr.Write("<br />")
-				End If
+            'ddlDateFilter.CssClass = "Forum_NormalTextBox"
+            'ddlDateFilter.RenderControl(wr)
+            'RenderCellEnd(wr) ' </td>
+            'RenderRowEnd(wr) ' </tr>
 
-				chkEmail.RenderControl(wr)
+            ' Display tracking option if user is authenticated 
+            If (CurrentForumUser.UserID > 0) And (objConfig.MailNotification) And (ForumID <> -1) Then
+                ' check email
+                RenderRowBegin(wr) ' <tr>
+                RenderCellBegin(wr, "", "", "", "right", "", "", "")
 
-				RenderCellEnd(wr) ' </td>
-				RenderRowEnd(wr) ' </tr>
+                If objSecurity.IsForumAdmin Then
+                    cmdForumSubscribers.RenderControl(wr)
+                    wr.Write("<br />")
+                End If
 
-				RenderRowBegin(wr) ' <tr>
-				RenderCellBegin(wr, "", "", "", "right", "", "", "")
-				RenderCellEnd(wr) ' </td>
-				RenderRowEnd(wr) ' </tr>
+                chkEmail.RenderControl(wr)
 
-				' Mark As Read linkbutton
-				RenderRowBegin(wr) ' <tr>
-				RenderCellBegin(wr, "", "", "", "", "", "", "")	' <td>
+                RenderCellEnd(wr) ' </td>
+                RenderRowEnd(wr) ' </tr>
 
-				' need a new table
-				RenderTableBegin(wr, 0, 0, "tblReadButton") ' <table>
-				RenderRowBegin(wr) '<tr>
+                RenderRowBegin(wr) ' <tr>
+                RenderCellBegin(wr, "", "", "", "right", "", "", "")
+                RenderCellEnd(wr) ' </td>
+                RenderRowEnd(wr) ' </tr>
 
-				RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
-				wr.Write("&nbsp;")
-				RenderCellEnd(wr) ' </td>
+                ' Mark As Read linkbutton
+                RenderRowBegin(wr) ' <tr>
+                RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
 
-				RenderCellBegin(wr, "Forum_ReplyCell", "", "85px", "right", "", "", "") ' <td>
-				If objConfig.EnableUserReadManagement AndAlso CurrentForumUser.UserID > 0 Then
-					cmdRead.RenderControl(wr)
-				End If
-				RenderCellEnd(wr) ' </td>
+                ' need a new table
+                RenderTableBegin(wr, 0, 0, "tblReadButton") ' <table>
+                RenderRowBegin(wr) '<tr>
 
-				RenderRowEnd(wr) ' </tr>
-				RenderTableEnd(wr) ' </table>
+                RenderCellBegin(wr, "", "", "", "", "", "", "") ' <td>
+                wr.Write("&nbsp;")
+                RenderCellEnd(wr) ' </td>
 
-				RenderCellEnd(wr) ' </td>
-				RenderRowEnd(wr) ' </tr>
-			Else
-				' user is not logged on (or notification is not enabled)
-			End If
+                RenderCellBegin(wr, "Forum_ReplyCell", "", "85px", "right", "", "", "") ' <td>
+                If objConfig.EnableUserReadManagement AndAlso CurrentForumUser.UserID > 0 Then
+                    cmdRead.RenderControl(wr)
+                End If
+                RenderCellEnd(wr) ' </td>
 
-			RenderRowBegin(wr) ' <tr>
-			RenderCellBegin(wr, "", "", "", "right", "", "", "")
-			wr.Write("<br />")
-			RenderCellEnd(wr) ' </td>
-			RenderRowEnd(wr) ' </tr>
+                RenderRowEnd(wr) ' </tr>
+                RenderTableEnd(wr) ' </table>
+
+                RenderCellEnd(wr) ' </td>
+                RenderRowEnd(wr) ' </tr>
+            Else
+                ' user is not logged on (or notification is not enabled)
+            End If
+
+            RenderRowBegin(wr) ' <tr>
+            RenderCellBegin(wr, "", "", "", "right", "", "", "")
+            wr.Write("<br />")
+            RenderCellEnd(wr) ' </td>
+            RenderRowEnd(wr) ' </tr>
 
 
-			RenderTableEnd(wr) ' </table>
-			RenderCellEnd(wr) ' </td>
+            RenderTableEnd(wr) ' </table>
+            RenderCellEnd(wr) ' </td>
 
-			' right cap
-			RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
+            ' right cap
+            RenderCapCell(wr, objConfig.GetThemeImageURL("spacer.gif"), "", "")
 
-			RenderRowEnd(wr) ' </tr>
-		End Sub
+            RenderRowEnd(wr) ' </tr>
+        End Sub
 
-		''' <summary>
-		''' Renders the paging shown in the footer (based on threads/page)
-		''' </summary>
-		''' <param name="wr"></param>
-		''' <remarks>
-		''' </remarks>
-		Private Sub RenderThreadsPaging(ByVal wr As HtmlTextWriter)
-			' First, previous, next, last thread hyperlinks
-			Dim ctlPagingControl As New DotNetNuke.Modules.Forum.WebControls.PagingControl
-			ctlPagingControl.CssClass = "Forum_FooterText"
-			ctlPagingControl.TotalRecords = TotalRecords
-			ctlPagingControl.PageSize = CurrentForumUser.ThreadsPerPage
-			ctlPagingControl.CurrentPage = CurrentPage + 1
+        ''' <summary>
+        ''' Renders the paging shown in the footer (based on threads/page)
+        ''' </summary>
+        ''' <param name="wr"></param>
+        ''' <remarks>
+        ''' </remarks>
+        Private Sub RenderThreadsPaging(ByVal wr As HtmlTextWriter)
+            ' First, previous, next, last thread hyperlinks
+            Dim ctlPagingControl As New DotNetNuke.Modules.Forum.WebControls.PagingControl
+            ctlPagingControl.CssClass = "Forum_FooterText"
+            ctlPagingControl.TotalRecords = TotalRecords
+            ctlPagingControl.PageSize = CurrentForumUser.ThreadsPerPage
+            ctlPagingControl.CurrentPage = CurrentPage + 1
 
-			Dim Params As String = "forumid=" & ForumID.ToString & "&scope=threads"
-			If NoReply Then
-				Params = Params & "&noreply=1"
-			End If
+            Dim Params As String = "forumid=" & ForumID.ToString & "&scope=threads"
+            If NoReply Then
+                Params = Params & "&noreply=1"
+            End If
 
-			ctlPagingControl.QuerystringParams = Params
-			ctlPagingControl.TabID = TabID
-			ctlPagingControl.RenderControl(wr)
-		End Sub
+            ctlPagingControl.QuerystringParams = Params
+            ctlPagingControl.TabID = TabID
+            ctlPagingControl.RenderControl(wr)
+        End Sub
 
-		''' <summary>
-		''' Determins if thread is even or odd numbered row
-		''' </summary>
-		''' <param name="Count"></param>
-		''' <returns></returns>
-		''' <remarks>
-		''' </remarks>
-		Private Function ThreadIsEven(ByVal Count As Integer) As Boolean
-			If Count Mod 2 = 0 Then
-				'even
-				Return True
-			Else
-				'odd
-				Return False
-			End If
-		End Function
+        ''' <summary>
+        ''' Determins if thread is even or odd numbered row
+        ''' </summary>
+        ''' <param name="Count"></param>
+        ''' <returns></returns>
+        ''' <remarks>
+        ''' </remarks>
+        Private Function ThreadIsEven(ByVal Count As Integer) As Boolean
+            If Count Mod 2 = 0 Then
+                'even
+                Return True
+            Else
+                'odd
+                Return False
+            End If
+        End Function
 
-		''' <summary>
-		''' Determines thread icon for each thread based on its status 
-		''' (Non Pinned)
-		''' </summary>
-		''' <param name="Thread"></param>
-		''' <returns></returns>
-		''' <remarks>
-		''' </remarks>
-		Private Function GetMediaURL(ByVal Thread As ThreadInfo) As String
-			If Thread.IsClosed Then
-				' thread IS locked
-				If (Thread.IsPopular) Then
-					' thread IS locked, popular
-					If HasNewPosts(CurrentForumUser.UserID, Thread) Then
-						'new
-						Return objConfig.GetThemeImageURL("s_postlockedunreadplus.") & objConfig.ImageExtension
-					Else
-						'read
-						Return objConfig.GetThemeImageURL("s_postlockedreadplus.") & objConfig.ImageExtension
-					End If
-				Else
-					' thread IS locked NOT popular
-					If HasNewPosts(CurrentForumUser.UserID, Thread) Then
-						'new
-						Return objConfig.GetThemeImageURL("s_postlockedunread.") & objConfig.ImageExtension
-					Else
-						'read
-						Return objConfig.GetThemeImageURL("s_postlockedread.") & objConfig.ImageExtension
-					End If
-				End If
+        ''' <summary>
+        ''' Determines thread icon for each thread based on its status 
+        ''' (Non Pinned)
+        ''' </summary>
+        ''' <param name="Thread"></param>
+        ''' <returns></returns>
+        ''' <remarks>
+        ''' </remarks>
+        Private Function GetMediaURL(ByVal Thread As ThreadInfo) As String
+            If Thread.IsClosed Then
+                ' thread IS locked
+                If (Thread.IsPopular) Then
+                    ' thread IS locked, popular
+                    If HasNewPosts(CurrentForumUser.UserID, Thread) Then
+                        'new
+                        Return objConfig.GetThemeImageURL("s_postlockedunreadplus.") & objConfig.ImageExtension
+                    Else
+                        'read
+                        Return objConfig.GetThemeImageURL("s_postlockedreadplus.") & objConfig.ImageExtension
+                    End If
+                Else
+                    ' thread IS locked NOT popular
+                    If HasNewPosts(CurrentForumUser.UserID, Thread) Then
+                        'new
+                        Return objConfig.GetThemeImageURL("s_postlockedunread.") & objConfig.ImageExtension
+                    Else
+                        'read
+                        Return objConfig.GetThemeImageURL("s_postlockedread.") & objConfig.ImageExtension
+                    End If
+                End If
 
-			Else
-				' thread NOT locked
-				If (Thread.IsPopular) Then
-					If HasNewPosts(CurrentForumUser.UserID, Thread) Then
-						Return objConfig.GetThemeImageURL("s_postunreadplus.") & objConfig.ImageExtension
-					Else
-						Return objConfig.GetThemeImageURL("s_postreadplus.") & objConfig.ImageExtension
-					End If
-				Else
-					If HasNewPosts(CurrentForumUser.UserID, Thread) Then
-						Return objConfig.GetThemeImageURL("s_postunread.") & objConfig.ImageExtension
-					Else
-						Return objConfig.GetThemeImageURL("s_postread.") & objConfig.ImageExtension
-					End If
-				End If
-			End If
+            Else
+                ' thread NOT locked
+                If (Thread.IsPopular) Then
+                    If HasNewPosts(CurrentForumUser.UserID, Thread) Then
+                        Return objConfig.GetThemeImageURL("s_postunreadplus.") & objConfig.ImageExtension
+                    Else
+                        Return objConfig.GetThemeImageURL("s_postreadplus.") & objConfig.ImageExtension
+                    End If
+                Else
+                    If HasNewPosts(CurrentForumUser.UserID, Thread) Then
+                        Return objConfig.GetThemeImageURL("s_postunread.") & objConfig.ImageExtension
+                    Else
+                        Return objConfig.GetThemeImageURL("s_postread.") & objConfig.ImageExtension
+                    End If
+                End If
+            End If
 
-		End Function
+        End Function
 
-		''' <summary>
-		''' Determines the tooltip for each thread icon based on its status for
-		''' the current users (Non Pinned)
-		''' </summary>
-		''' <param name="Thread"></param>
-		''' <returns></returns>
-		''' <remarks>
-		''' </remarks>
-		Private Function GetMediaText(ByVal Thread As ThreadInfo) As String
-			If Thread.IsClosed Then
-				' thread IS locked
-				If (Thread.IsPopular) Then
-					' thread IS locked, popular
-					If HasNewPosts(CurrentForumUser.UserID, Thread) Then
-						' new
-						Return ForumControl.LocalizedText("imgNewPopLockedThread")
-					Else
-						' read
-						Return ForumControl.LocalizedText("imgPopLockedThread")
-					End If
-				Else
-					' thread IS locked NOT popular
-					If HasNewPosts(CurrentForumUser.UserID, Thread) Then
-						' new
-						Return ForumControl.LocalizedText("imgNewLockedThread")
-					Else
-						' read
-						Return ForumControl.LocalizedText("imgLockedThread")
-					End If
-				End If
-			Else
-				' thread NOT locked
-				If (Thread.IsPopular) Then
-					' thread NOT locked IS popular
-					If HasNewPosts(CurrentForumUser.UserID, Thread) Then
-						' new
-						Return ForumControl.LocalizedText("imgNewPopThread")
-					Else
-						' read
-						Return ForumControl.LocalizedText("imgPopThread")
-					End If
-				Else
-					' thread NOT locked, popular
-					If HasNewPosts(CurrentForumUser.UserID, Thread) Then
-						' new
-						Return ForumControl.LocalizedText("imgNewThread")
-					Else
-						' read
-						Return ForumControl.LocalizedText("imgThread")
-					End If
-				End If
-			End If
+        ''' <summary>
+        ''' Determines the tooltip for each thread icon based on its status for
+        ''' the current users (Non Pinned)
+        ''' </summary>
+        ''' <param name="Thread"></param>
+        ''' <returns></returns>
+        ''' <remarks>
+        ''' </remarks>
+        Private Function GetMediaText(ByVal Thread As ThreadInfo) As String
+            If Thread.IsClosed Then
+                ' thread IS locked
+                If (Thread.IsPopular) Then
+                    ' thread IS locked, popular
+                    If HasNewPosts(CurrentForumUser.UserID, Thread) Then
+                        ' new
+                        Return ForumControl.LocalizedText("imgNewPopLockedThread")
+                    Else
+                        ' read
+                        Return ForumControl.LocalizedText("imgPopLockedThread")
+                    End If
+                Else
+                    ' thread IS locked NOT popular
+                    If HasNewPosts(CurrentForumUser.UserID, Thread) Then
+                        ' new
+                        Return ForumControl.LocalizedText("imgNewLockedThread")
+                    Else
+                        ' read
+                        Return ForumControl.LocalizedText("imgLockedThread")
+                    End If
+                End If
+            Else
+                ' thread NOT locked
+                If (Thread.IsPopular) Then
+                    ' thread NOT locked IS popular
+                    If HasNewPosts(CurrentForumUser.UserID, Thread) Then
+                        ' new
+                        Return ForumControl.LocalizedText("imgNewPopThread")
+                    Else
+                        ' read
+                        Return ForumControl.LocalizedText("imgPopThread")
+                    End If
+                Else
+                    ' thread NOT locked, popular
+                    If HasNewPosts(CurrentForumUser.UserID, Thread) Then
+                        ' new
+                        Return ForumControl.LocalizedText("imgNewThread")
+                    Else
+                        ' read
+                        Return ForumControl.LocalizedText("imgThread")
+                    End If
+                End If
+            End If
 
-		End Function
+        End Function
 
-		''' <summary>
-		''' Returns a URL to the first unread post in the specific Thread
-		''' </summary>
-		''' <param name="Thread"></param>
-		''' <returns>URL</returns>
-		''' <remarks>
-		''' </remarks>
-		Private Function FirstUnreadLink(ByVal Thread As ThreadInfo) As String
-			Dim cltUserThread As New UserThreadsController
-			Dim usrThread As New UserThreadsInfo
-			Dim ReadLink As String
+        ''' <summary>
+        ''' Returns a URL to the first unread post in the specific Thread
+        ''' </summary>
+        ''' <param name="Thread"></param>
+        ''' <returns>URL</returns>
+        ''' <remarks>
+        ''' </remarks>
+        Private Function FirstUnreadLink(ByVal Thread As ThreadInfo) As String
+            Dim cltUserThread As New UserThreadsController
+            Dim usrThread As New UserThreadsInfo
+            Dim ReadLink As String
 
-			ReadLink = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, Thread.ThreadID) & "#unread"
-			usrThread = cltUserThread.GetThreadReadsByUser(CurrentForumUser.UserID, Thread.ThreadID)
+            ReadLink = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, ForumID, Thread.ThreadID, Thread.Subject) & "#unread"
+            usrThread = cltUserThread.GetThreadReadsByUser(CurrentForumUser.UserID, Thread.ThreadID)
 
-			If usrThread Is Nothing Then
-				'All new
-				If CurrentForumUser.ViewDescending = True Then
-					Dim PageCount As Decimal = CDec(Thread.TotalPosts / CurrentForumUser.PostsPerPage)
-					PageCount = Math.Ceiling(PageCount)
-					ReadLink = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumID, Thread.ThreadID, CInt(PageCount)) & "#unread"
-				Else
-					ReadLink = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, Thread.ThreadID) & "#unread"
-				End If
-			Else
-				'Get the Index
-				Dim PostIndex As Integer = cltUserThread.GetPostIndexFirstUnread(Thread.ThreadID, usrThread.LastVisitDate, CurrentForumUser.ViewDescending)
-				Dim PageCount As Integer = CInt(Math.Ceiling(CDec(Thread.TotalPosts / CurrentForumUser.PostsPerPage)))
-				Dim PageNumber As Integer = 1
+            If usrThread Is Nothing Then
+                'All new
+                If CurrentForumUser.ViewDescending = True Then
+                    Dim PageCount As Decimal = CDec(Thread.TotalPosts / CurrentForumUser.PostsPerPage)
+                    PageCount = Math.Ceiling(PageCount)
+                    ReadLink = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumID, Thread.ThreadID, CInt(PageCount)) & "#unread"
+                Else
+                    ReadLink = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, ForumID, Thread.ThreadID, Thread.Subject) & "#unread"
+                End If
+            Else
+                'Get the Index
+                Dim PostIndex As Integer = cltUserThread.GetPostIndexFirstUnread(Thread.ThreadID, usrThread.LastVisitDate, CurrentForumUser.ViewDescending)
+                Dim PageCount As Integer = CInt(Math.Ceiling(CDec(Thread.TotalPosts / CurrentForumUser.PostsPerPage)))
+                Dim PageNumber As Integer = 1
 
-				Do While PageNumber <= PageCount
-					If (CurrentForumUser.PostsPerPage * PageNumber) >= PostIndex Then
-						If PageNumber = 1 Then
-							ReadLink = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, Thread.ThreadID) & "#unread"
-						Else
-							ReadLink = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumID, Thread.ThreadID, PageNumber) & "#unread"
-						End If
-						Exit Do
-					End If
-					PageNumber += 1
-				Loop
-			End If
+                Do While PageNumber <= PageCount
+                    If (CurrentForumUser.PostsPerPage * PageNumber) >= PostIndex Then
+                        If PageNumber = 1 Then
+                            ReadLink = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, ForumID, Thread.ThreadID, Thread.Subject) & "#unread"
+                        Else
+                            ReadLink = Utilities.Links.ContainerViewThreadPagedLink(TabID, ForumID, Thread.ThreadID, PageNumber) & "#unread"
+                        End If
+                        Exit Do
+                    End If
+                    PageNumber += 1
+                Loop
+            End If
 
-			Return ReadLink
-		End Function
+            Return ReadLink
+        End Function
 
 #End Region
 
-	End Class
+    End Class
 
 End Namespace

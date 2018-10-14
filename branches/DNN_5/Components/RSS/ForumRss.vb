@@ -128,167 +128,167 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Public Methods"
 
-		''' <summary>
-		''' Constructor instantiates a new instance of the class.
-		''' </summary>
-		''' <param name="ForumID"></param>
-		''' <param name="ThreadsPage"></param>
-		''' <param name="TabId"></param>
-		''' <param name="ModuleId"></param>
-		''' <remarks></remarks>
-		Sub New(ByVal ForumID As Integer, ByVal ThreadsPage As Integer, ByVal TabId As Integer, ByVal ModuleId As Integer)
-			MyBase.New()
+        ''' <summary>
+        ''' Constructor instantiates a new instance of the class.
+        ''' </summary>
+        ''' <param name="ForumID"></param>
+        ''' <param name="ThreadsPage"></param>
+        ''' <param name="TabId"></param>
+        ''' <param name="ModuleId"></param>
+        ''' <remarks></remarks>
+        Sub New(ByVal ForumID As Integer, ByVal ThreadsPage As Integer, ByVal TabId As Integer, ByVal ModuleId As Integer)
+            MyBase.New()
 
-			Dim forum As New ForumInfo
-			mForumConfig = Configuration.GetForumConfig(ModuleId)
+            Dim forum As New ForumInfo
+            mForumConfig = Configuration.GetForumConfig(ModuleId)
 
-			If ForumID <> -1 Then
-				Dim cntForum As New ForumController
-				forum = cntForum.GetForumItemCache(ForumID)
-			Else
-				forum.Name = Localization.GetString("AggregatedForumName", mForumConfig.SharedResourceFile)
-				forum.Description = Localization.GetString("AggregatedForumDescription", mForumConfig.SharedResourceFile)
-			End If
+            If ForumID <> -1 Then
+                Dim cntForum As New ForumController
+                forum = cntForum.GetForumItemCache(ForumID)
+            Else
+                forum.Name = Localization.GetString("AggregatedForumName", mForumConfig.SharedResourceFile)
+                forum.Description = Localization.GetString("AggregatedForumDescription", mForumConfig.SharedResourceFile)
+            End If
 
-			mThreadsPage = ThreadsPage
-			mCreationTime = DateTime.Now.ToUniversalTime
+            mThreadsPage = ThreadsPage
+            mCreationTime = DateTime.Now.ToUniversalTime
 
-			Dim declaration As System.Xml.XmlDeclaration = CreateXmlDeclaration("1.0", Nothing, Nothing)
-			InsertBefore(declaration, DocumentElement)
+            Dim declaration As System.Xml.XmlDeclaration = CreateXmlDeclaration("1.0", Nothing, Nothing)
+            InsertBefore(declaration, DocumentElement)
 
-			Dim rssElement As System.Xml.XmlElement = CreateElement("rss")
-			Dim rssVersion As System.Xml.XmlAttribute = CreateAttribute("version")
+            Dim rssElement As System.Xml.XmlElement = CreateElement("rss")
+            Dim rssVersion As System.Xml.XmlAttribute = CreateAttribute("version")
 
-			rssVersion.InnerText = "2.0"
-			rssElement.Attributes.Append(rssVersion)
+            rssVersion.InnerText = "2.0"
+            rssElement.Attributes.Append(rssVersion)
 
-			Dim wellformedweb As System.Xml.XmlAttribute = CreateAttribute("xmlns:wfw")
-			wellformedweb.InnerText = wellformedwebUri
-			rssElement.Attributes.Append(wellformedweb)
+            Dim wellformedweb As System.Xml.XmlAttribute = CreateAttribute("xmlns:wfw")
+            wellformedweb.InnerText = wellformedwebUri
+            rssElement.Attributes.Append(wellformedweb)
 
-			Dim slash As System.Xml.XmlAttribute = CreateAttribute("xmlns:slash")
-			slash.InnerText = slashUri
-			rssElement.Attributes.Append(slash)
+            Dim slash As System.Xml.XmlAttribute = CreateAttribute("xmlns:slash")
+            slash.InnerText = slashUri
+            rssElement.Attributes.Append(slash)
 
-			Dim dublin As System.Xml.XmlAttribute = CreateAttribute("xmlns:dc")
-			dublin.InnerText = dublinCoreUri
-			rssElement.Attributes.Append(dublin)
+            Dim dublin As System.Xml.XmlAttribute = CreateAttribute("xmlns:dc")
+            dublin.InnerText = dublinCoreUri
+            rssElement.Attributes.Append(dublin)
 
-			'Dim rel As System.Xml.XmlAttribute = CreateAttribute("rel")
-			Dim atom As System.Xml.XmlAttribute = CreateAttribute("xmlns:atom")
-			atom.InnerText = atomUri
-			rssElement.Attributes.Append(atom)
+            'Dim rel As System.Xml.XmlAttribute = CreateAttribute("rel")
+            Dim atom As System.Xml.XmlAttribute = CreateAttribute("xmlns:atom")
+            atom.InnerText = atomUri
+            rssElement.Attributes.Append(atom)
 
-			'xmlns:trackback
-			AppendChild(rssElement)
+            'xmlns:trackback
+            AppendChild(rssElement)
 
-			Dim channel As New RssChannel
-			With channel
-				.Title = forum.Name
-				.Description = forum.Description
-				.PubDate = System.Xml.XmlConvert.ToString(mCreationTime, "r")
+            Dim channel As New RssChannel
+            With channel
+                .Title = forum.Name
+                .Description = forum.Description
+                .PubDate = System.Xml.XmlConvert.ToString(mCreationTime, "r")
 
-				If forum.MostRecentPost IsNot Nothing Then
-					.LastBuildDate = System.Xml.XmlConvert.ToString(forum.MostRecentPost.CreatedDate.ToUniversalTime(), "r")
-				Else
-					.LastBuildDate = .PubDate
-				End If
+                If forum.MostRecentPost IsNot Nothing Then
+                    .LastBuildDate = System.Xml.XmlConvert.ToString(forum.MostRecentPost.CreatedDate.ToUniversalTime(), "r")
+                Else
+                    .LastBuildDate = .PubDate
+                End If
 
-				.TimeToLive = mForumConfig.RSSUpdateInterval.ToString
+                .TimeToLive = mForumConfig.RSSUpdateInterval.ToString
 
-				If ThreadsPage > 1 Then
-					If ForumID = -1 Then
-						.Link = Utilities.Links.ContainerAggregatedLink(TabId, False)
-					Else
-						.Link = Utilities.Links.ContainerViewForumLink(TabId, ForumID, False)
-					End If
-				Else
-					If ForumID = -1 Then
-						.Link = Utilities.Links.ContainerAggregatedLink(TabId, False)
-					Else
-						.Link = Utilities.Links.ContainerViewForumLink(TabId, ForumID, False)
-					End If
-				End If
-			End With
+                If ThreadsPage > 1 Then
+                    If ForumID = -1 Then
+                        .Link = Utilities.Links.ContainerAggregatedLink(TabId, False)
+                    Else
+                        .Link = Utilities.Links.ContainerViewForumLink(mForumConfig.CurrentPortalSettings.PortalId, TabId, ForumID, False, forum.Name)
+                    End If
+                Else
+                    If ForumID = -1 Then
+                        .Link = Utilities.Links.ContainerAggregatedLink(TabId, False)
+                    Else
+                        .Link = Utilities.Links.ContainerViewForumLink(mForumConfig.CurrentPortalSettings.PortalId, TabId, ForumID, False, forum.Name)
+                    End If
+                End If
+            End With
 
-			AddChannel(channel)
+            AddChannel(channel)
 
-			' For rss threads to be obtained w/ anonymous perms
-			Dim server As HttpServerUtility = HttpContext.Current.Server
-			Dim cleanBody As String
-			Dim threadItem As New RssItem
+            ' For rss threads to be obtained w/ anonymous perms
+            Dim server As HttpServerUtility = HttpContext.Current.Server
+            Dim cleanBody As String
+            Dim threadItem As New RssItem
 
-			If ForumID <> -1 Then
-				Dim cntThread As New ThreadController
-				Dim arrThread As List(Of ThreadInfo)
-				Dim objThread As ThreadInfo
+            If ForumID <> -1 Then
+                Dim cntThread As New ThreadController
+                Dim arrThread As List(Of ThreadInfo)
+                Dim objThread As ThreadInfo
 
-				arrThread = cntThread.GetRSSFeed(ModuleId, ForumID, mForumConfig.RSSThreadsPerFeed, (ThreadsPage - 1), "", mForumConfig.CurrentPortalSettings.PortalId, 0)
+                arrThread = cntThread.GetRSSFeed(ModuleId, ForumID, mForumConfig.RSSThreadsPerFeed, (ThreadsPage - 1), "", mForumConfig.CurrentPortalSettings.PortalId, 0)
 
-				For Each objThread In arrThread
-					Dim bodyForumText As New Utilities.PostContent(server.HtmlDecode(objThread.Body), mForumConfig)
+                For Each objThread In arrThread
+                    Dim bodyForumText As New Utilities.PostContent(server.HtmlDecode(objThread.Body), mForumConfig)
 
-					If mForumConfig.EnableBadWordFilter Then
-						cleanBody = Utilities.ForumUtils.FormatProhibitedWord(bodyForumText.ProcessHtml(), objThread.CreatedDate, mForumConfig.CurrentPortalSettings.PortalId)
-					Else
-						cleanBody = bodyForumText.ProcessHtml()
-					End If
+                    If mForumConfig.EnableBadWordFilter Then
+                        cleanBody = Utilities.ForumUtils.FormatProhibitedWord(bodyForumText.ProcessHtml(), objThread.CreatedDate, mForumConfig.CurrentPortalSettings.PortalId)
+                    Else
+                        cleanBody = bodyForumText.ProcessHtml()
+                    End If
 
-					With threadItem
-						.Title = objThread.Subject
-						.Author = objThread.LastApprovedUser.SiteAlias
-						.Description = cleanBody
-						' Date format r is RFC 1123, same as RFC 822 necessary for RSS
-						.PostedDate = System.Xml.XmlConvert.ToString(objThread.CreatedDate.ToUniversalTime, "r")
-						.Link = Utilities.Links.ContainerViewThreadLink(TabId, ForumID, objThread.ThreadID)
-						.CommentCount = objThread.Replies
-					End With
-					AddItem(threadItem)
-				Next
-			Else
-				Dim cntSearch As New SearchController
-				Dim colThreads As List(Of ThreadInfo)
-				Dim objSearch As ThreadInfo
+                    With threadItem
+                        .Title = objThread.Subject
+                        .Author = objThread.LastApprovedUser.SiteAlias
+                        .Description = cleanBody
+                        ' Date format r is RFC 1123, same as RFC 822 necessary for RSS
+                        .PostedDate = System.Xml.XmlConvert.ToString(objThread.CreatedDate.ToUniversalTime, "r")
+                        .Link = Utilities.Links.ContainerViewPostLink(mForumConfig.CurrentPortalSettings.PortalId, TabId, ForumID, objThread.LastApprovedPostID, objThread.LastApprovedPost.Subject)
+                        .CommentCount = objThread.Replies
+                    End With
+                    AddItem(threadItem)
+                Next
+            Else
+                Dim cntSearch As New SearchController
+                Dim colThreads As List(Of ThreadInfo)
+                Dim objSearch As ThreadInfo
 
-				'Temp variables
-				Dim StartDate As DateTime = DateAdd(DateInterval.Year, -1, DateTime.Today)
-				Dim EndDate As DateTime = DateAdd(DateInterval.Day, 1, DateTime.Today)
+                'Temp variables
+                Dim StartDate As DateTime = DateAdd(DateInterval.Year, -1, DateTime.Today)
+                Dim EndDate As DateTime = DateAdd(DateInterval.Day, 1, DateTime.Today)
 
-				colThreads = cntSearch.SearchGetResults(" ", ThreadsPage - 1, mForumConfig.RSSThreadsPerFeed, -1, ModuleId, StartDate, EndDate, -1)
+                colThreads = cntSearch.SearchGetResults(" ", ThreadsPage - 1, mForumConfig.RSSThreadsPerFeed, -1, ModuleId, StartDate, EndDate, -1)
 
-				For Each objSearch In colThreads
-					Dim bodyForumText As New Utilities.PostContent(server.HtmlDecode(objSearch.LastApprovedPost.Body), mForumConfig)
+                For Each objSearch In colThreads
+                    Dim bodyForumText As New Utilities.PostContent(server.HtmlDecode(objSearch.LastApprovedPost.Body), mForumConfig)
 
-					If mForumConfig.EnableBadWordFilter Then
-						cleanBody = Utilities.ForumUtils.FormatProhibitedWord(bodyForumText.ProcessHtml(), objSearch.CreatedDate, mForumConfig.CurrentPortalSettings.PortalId)
-					Else
-						cleanBody = bodyForumText.ProcessHtml()
-					End If
+                    If mForumConfig.EnableBadWordFilter Then
+                        cleanBody = Utilities.ForumUtils.FormatProhibitedWord(bodyForumText.ProcessHtml(), objSearch.CreatedDate, mForumConfig.CurrentPortalSettings.PortalId)
+                    Else
+                        cleanBody = bodyForumText.ProcessHtml()
+                    End If
 
-					With threadItem
-						.Title = objSearch.Subject
-						.Author = objSearch.LastApprovedUser.SiteAlias
-						.Description = cleanBody
-						' Date format r is RFC 1123, same as RFC 822 necessary for RSS
-						.PostedDate = System.Xml.XmlConvert.ToString(objSearch.CreatedDate.ToUniversalTime, "r")
-						.Link = Utilities.Links.ContainerViewThreadLink(TabId, objSearch.ForumID, objSearch.ThreadID)
-						.CommentCount = objSearch.Replies
-					End With
-					AddItem(threadItem)
-				Next
-			End If
+                    With threadItem
+                        .Title = objSearch.Subject
+                        .Author = objSearch.LastApprovedUser.SiteAlias
+                        .Description = cleanBody
+                        ' Date format r is RFC 1123, same as RFC 822 necessary for RSS
+                        .PostedDate = System.Xml.XmlConvert.ToString(objSearch.CreatedDate.ToUniversalTime, "r")
+                        .Link = Utilities.Links.ContainerViewPostLink(mForumConfig.CurrentPortalSettings.PortalId, TabId, objSearch.ForumID, objSearch.LastApprovedPostID, objSearch.LastApprovedPost.Subject)
+                        .CommentCount = objSearch.Replies
+                    End With
+                    AddItem(threadItem)
+                Next
+            End If
 
-			If forum.TotalThreads > mForumConfig.ThreadsPerPage * ThreadsPage Then
-				AddEndItem()
-			End If
-		End Sub
+            If forum.TotalThreads > mForumConfig.ThreadsPerPage * ThreadsPage Then
+                AddEndItem()
+            End If
+        End Sub
 
-		''' <summary>
-		''' Creates a new forum for RSS consumption.
-		''' </summary>
-		''' <param name="ForumChannel"></param>
-		''' <remarks></remarks>
-		Private Sub AddChannel(ByVal ForumChannel As RssChannel)
+        ''' <summary>
+        ''' Creates a new forum for RSS consumption.
+        ''' </summary>
+        ''' <param name="ForumChannel"></param>
+        ''' <remarks></remarks>
+        Private Sub AddChannel(ByVal ForumChannel As RssChannel)
 			Dim channel As System.Xml.XmlElement = CreateElement("channel")
 			Dim rssElement As System.Xml.XmlNode = SelectSingleNode("rss")
 

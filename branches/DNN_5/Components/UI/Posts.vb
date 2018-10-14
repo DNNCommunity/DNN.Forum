@@ -22,6 +22,8 @@ Option Explicit On
 
 Imports DotNetNuke.Entities.Users
 Imports DotNetNuke.Services.FileSystem
+Imports DotNetNuke.Forum.Library
+Imports DotNetNuke.Forum.Library.Data
 
 Namespace DotNetNuke.Modules.Forum
 
@@ -35,6 +37,7 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Private Members"
 
+        Shared log As Instrumentation.DnnLogger = Instrumentation.DnnLogger.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString())
         Private _ThreadID As Integer
         Private _PostCollection As List(Of PostInfo)
         Private _objThread As ThreadInfo
@@ -346,7 +349,7 @@ Namespace DotNetNuke.Modules.Forum
                 End If
 
                 Dim cntPostConnect As New PostConnector
-                Dim PostMessage As PostMessage
+                Dim PostMessage As SubmitPostResult
 
                 Dim textReply As String = txtQuickReply.Text
 
@@ -358,8 +361,11 @@ Namespace DotNetNuke.Modules.Forum
 
                 PostMessage = cntPostConnect.SubmitInternalPost(TabID, ModuleID, PortalID, CurrentForumUser.UserID, strSubject, textReply, ForumID, objThread.ThreadID, -1, objThread.IsPinned, False, False, objThread.ThreadStatus, "", RemoteAddress, objThread.PollID, False, objThread.ThreadID, objThread.Terms)
 
-                Select Case PostMessage
-                    Case PostMessage.PostApproved
+                Dim ctlPost As New PostController
+                PostCollection = ctlPost.PostGetAll(ThreadID, PostPage, CurrentForumUser.PostsPerPage, ForumControl.Descending, PortalID)
+                txtQuickReply.Text = ""
+                Select Case PostMessage.Result
+                    Case DotNetNuke.Forum.Library.Data.PostMessage.PostApproved
                         '	Dim ReturnURL As String = NavigateURL()
 
                         '	If objModSecurity.IsModerator Then
@@ -373,7 +379,8 @@ Namespace DotNetNuke.Modules.Forum
                         '	End If
 
                         '	Response.Redirect(ReturnURL, False)
-                    Case PostMessage.PostModerated
+                        MyBase.BasePage.Response.Redirect(Utilities.Links.ContainerViewPostLink(PortalID, TabID, ForumID, PostMessage.PostId, strSubject), False)
+                    Case DotNetNuke.Forum.Library.Data.PostMessage.PostModerated
                         'tblNewPost.Visible = False
                         'tblOldPost.Visible = False
                         'tblPreview.Visible = False
@@ -388,12 +395,7 @@ Namespace DotNetNuke.Modules.Forum
                         'lblInfo.Visible = True
                         'lblInfo.Text = Localization.GetString(PostMessage.ToString() + ".Text", LocalResourceFile)
                 End Select
-                txtQuickReply.Text = ""
                 'Forum.ThreadInfo.ResetThreadInfo(ThreadId)
-
-                Dim ctlPost As New PostController
-                PostCollection = ctlPost.PostGetAll(ThreadID, PostPage, CurrentForumUser.PostsPerPage, ForumControl.Descending, PortalID)
-                ' we need to redirect the user here to make sure the page is redrawn.
             Else
                 ' there is no quick reply message entered, yet they clicked submit. Show end user. 
             End If
@@ -442,10 +444,13 @@ Namespace DotNetNuke.Modules.Forum
             MyBase.New(forum)
 
             Dim user As ForumUserInfo = CurrentForumUser
-
+            Dim objPost As PostInfo = Nothing
             If PostID > 0 Then
                 Dim objPostCnt As New PostController
-                Dim objPost As PostInfo = objPostCnt.GetPostInfo(PostID, PortalID)
+                objPost = objPostCnt.GetPostInfo(PostID, PortalID)
+            End If
+
+            If Not objPost Is Nothing Then
                 ThreadID = objPost.ThreadID
 
                 ' we need to determine which page to return based on number of posts in this thread, the users posts per page count, and their asc/desc view, where this post is
@@ -479,37 +484,38 @@ Namespace DotNetNuke.Modules.Forum
                 If ThreadID > 0 Then
                     Dim cntThread As New ThreadController()
                     objThread = cntThread.GetThread(ThreadID)
+                    If Not objThread Is Nothing Then
+                        ' we need to see if there is a content item for the thread, if not create one.
+                        If objThread.ContentItemId < 1 Then
+                            Dim cntContent As New Content
+                            objThread.ModuleID = ModuleID
+                            objThread.TabID = TabID
+                            objThread.SitemapInclude = objThread.ContainingForum.EnableSitemap
 
-                    ' we need to see if there is a content item for the thread, if not create one.
-                    If objThread.ContentItemId < 1 Then
-                        Dim cntContent As New Content
-                        objThread.ModuleID = ModuleID
-                        objThread.TabID = TabID
-                        objThread.SitemapInclude = objThread.ContainingForum.EnableSitemap
+                            cntContent.CreateContentItem(objThread, TabID)
 
-                        cntContent.CreateContentItem(objThread, TabID)
-
-                        DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateThreadCache(objThread.ThreadID)
-                        objThread = cntThread.GetThread(ThreadID)
-                    End If
-
-                    ' We need to make sure the user's thread pagesize can handle this 
-                    '(problem is, a link can be posted by one user w/ page size of 5 pointing to page 2, if logged in user has pagesize set to 15, there is no page 2)
-                    If Not HttpContext.Current.Request.QueryString("threadpage") Is Nothing Then
-                        Dim urlThreadPage As Integer = Int32.Parse(HttpContext.Current.Request.QueryString("threadpage"))
-                        Dim TotalPosts As Integer = objThread.Replies + 1
-
-                        Dim TotalPages As Integer = CInt(Math.Ceiling(TotalPosts / CurrentForumUser.PostsPerPage))
-                        Dim ThreadPageToShow As Integer
-
-                        ' We need to check if it is possible for a pagesize in the URL for the user browsing (happens when coming from posted link by other user)
-                        If TotalPages >= urlThreadPage Then
-                            ThreadPageToShow = urlThreadPage
-                        Else
-                            ' We know for this user, total pages > user posts per page. Because of this, we know its not user using page change so show thread as normal
-                            ThreadPageToShow = 0
+                            DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateThreadCache(objThread.ThreadID)
+                            objThread = cntThread.GetThread(ThreadID)
                         End If
-                        PostPage = ThreadPageToShow
+
+                        ' We need to make sure the user's thread pagesize can handle this 
+                        '(problem is, a link can be posted by one user w/ page size of 5 pointing to page 2, if logged in user has pagesize set to 15, there is no page 2)
+                        If Not HttpContext.Current.Request.QueryString("threadpage") Is Nothing Then
+                            Dim urlThreadPage As Integer = Int32.Parse(HttpContext.Current.Request.QueryString("threadpage"))
+                            Dim TotalPosts As Integer = objThread.Replies + 1
+
+                            Dim TotalPages As Integer = CInt(Math.Ceiling(TotalPosts / CurrentForumUser.PostsPerPage))
+                            Dim ThreadPageToShow As Integer
+
+                            ' We need to check if it is possible for a pagesize in the URL for the user browsing (happens when coming from posted link by other user)
+                            If TotalPages >= urlThreadPage Then
+                                ThreadPageToShow = urlThreadPage
+                            Else
+                                ' We know for this user, total pages > user posts per page. Because of this, we know its not user using page change so show thread as normal
+                                ThreadPageToShow = 0
+                            End If
+                            PostPage = ThreadPageToShow
+                        End If
                     End If
                 End If
             End If
@@ -691,6 +697,11 @@ Namespace DotNetNuke.Modules.Forum
                 .ImageUrl = objConfig.GetThemeImageURL("s_lookup.") & objConfig.ImageExtension
             End With
 
+            If objConfig.HideSearchButton = True Then
+                txtForumSearch.Visible = False
+                cmdForumSearch.Visible = False
+            End If
+
             'Polls
             Me.rblstPoll = New RadioButtonList
             With rblstPoll
@@ -731,23 +742,24 @@ Namespace DotNetNuke.Modules.Forum
                 ddlViewDescending.Visible = False
             End If
 
-            ' Tags
-            Me.tagsControl = New DotNetNuke.Web.UI.WebControls.Tags
-            With tagsControl
-                .ID = "tagsControl"
-                ' if we come up w/ our own tagging window, this needs to be changed to false.
-                .AllowTagging = HttpContext.Current.Request.IsAuthenticated
-                .NavigateUrlFormatString = DotNetNuke.Common.Globals.NavigateURL(objConfig.SearchTabID, "", "Tag={0}")
-                .RepeatDirection = "Horizontal"
-                .Separator = ","
-                ' TODO: We may want to show this in future, for now we are leaving categories out of the mix.
-                .ShowCategories = False
-                .ShowTags = True
-                .AddImageUrl = "~/images/add.gif"
-                .CancelImageUrl = "~/images/lt.gif"
-                .SaveImageUrl = "~/images/save.gif"
-                .CssClass = "SkinObject"
-            End With
+            If objConfig.EnableTagging Then
+                Me.tagsControl = New DotNetNuke.Web.UI.WebControls.Tags
+                With tagsControl
+                    .ID = "tagsControl"
+                    ' if we come up w/ our own tagging window, this needs to be changed to false.
+                    .AllowTagging = HttpContext.Current.Request.IsAuthenticated
+                    .NavigateUrlFormatString = DotNetNuke.Common.Globals.NavigateURL(objConfig.SearchTabID, "", "Tag={0}")
+                    .RepeatDirection = "Horizontal"
+                    .Separator = ","
+                    ' TODO: We may want to show this in future, for now we are leaving categories out of the mix.
+                    .ShowCategories = False
+                    .ShowTags = True
+                    .AddImageUrl = "~/images/add.gif"
+                    .CancelImageUrl = "~/images/lt.gif"
+                    .SaveImageUrl = "~/images/save.gif"
+                    .CssClass = "SkinObject"
+                End With
+            End If
 
             ' Quick Reply
             Me.txtQuickReply = New TextBox
@@ -765,6 +777,7 @@ Namespace DotNetNuke.Modules.Forum
                 .CssClass = "Forum_Link"
                 .ID = "cmdSubmit"
                 .Text = ForumControl.LocalizedText("cmdSubmit")
+                .OnClientClick = "if (!Page_ClientValidate()){ return false; } this.disabled = true; this.value = '';"
             End With
 
             Me.cmdThreadSubscribers = New LinkButton
@@ -880,7 +893,9 @@ Namespace DotNetNuke.Modules.Forum
                 End If
 
                 AddHandler ddlViewDescending.SelectedIndexChanged, AddressOf ddlViewDescending_SelectedIndexChanged
-                AddHandler cmdForumSearch.Click, AddressOf cmdForumSearch_Click
+                If objConfig.HideSearchButton = False Then
+                    AddHandler cmdForumSearch.Click, AddressOf cmdForumSearch_Click
+                End If
             Catch exc As Exception
                 LogException(exc)
             End Try
@@ -916,11 +931,15 @@ Namespace DotNetNuke.Modules.Forum
                     Controls.Add(cmdSubmit)
                     Controls.Add(cmdVote)
                 End If
+                If objConfig.EnableTagging Then
+                    Controls.Add(tagsControl)
+                End If
 
-                Controls.Add(tagsControl)
                 Controls.Add(ddlViewDescending)
-                Controls.Add(txtForumSearch)
-                Controls.Add(cmdForumSearch)
+                If objConfig.HideSearchButton = False Then
+                    Controls.Add(txtForumSearch)
+                    Controls.Add(cmdForumSearch)
+                End If
             Catch exc As Exception
                 LogException(exc)
             End Try
@@ -1021,7 +1040,9 @@ Namespace DotNetNuke.Modules.Forum
                     trcRating.Enabled = False
                 End If
 
-                tagsControl.ContentItem = DotNetNuke.Entities.Content.Common.Util.GetContentController().GetContentItem(objThread.ContentItemId)
+                If objConfig.EnableTagging Then
+                    tagsControl.ContentItem = DotNetNuke.Entities.Content.Common.Util.GetContentController().GetContentItem(objThread.ContentItemId)
+                End If
 
                 PostCollection = ctlPost.PostGetAll(ThreadID, PostPage, CurrentForumUser.PostsPerPage, ForumControl.Descending, PortalID)
             Catch exc As Exception
@@ -1092,21 +1113,24 @@ Namespace DotNetNuke.Modules.Forum
             RenderRowEnd(wr) ' </tr>
             RenderTableEnd(wr) ' </table>
             RenderCellEnd(wr) ' </td>
+            If objConfig.HideSearchButton = False Then
+                RenderCellBegin(wr, "", "", "100%", "right", "middle", "", "")
+                RenderTableBegin(wr, 0, 0, "InnerTable") '<table>
+                RenderRowBegin(wr) ' <tr>
+                RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td>
 
-            RenderCellBegin(wr, "", "", "100%", "right", "middle", "", "")
-            RenderTableBegin(wr, 0, 0, "InnerTable") '<table>
-            RenderRowBegin(wr) ' <tr>
-            RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td>
-            txtForumSearch.RenderControl(wr)
-            RenderCellEnd(wr) ' </td>
+                txtForumSearch.RenderControl(wr)
+                RenderCellEnd(wr) ' </td>
 
-            RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td>
-            cmdForumSearch.RenderControl(wr)
-            RenderCellEnd(wr) ' </td>
-            RenderRowEnd(wr) ' </tr>
-            RenderTableEnd(wr) ' </table>
+                RenderCellBegin(wr, "", "", "", "", "middle", "", "") ' <td>
+                cmdForumSearch.RenderControl(wr)
+                RenderCellEnd(wr) ' </td>
+                RenderRowEnd(wr) ' </tr>
+                RenderTableEnd(wr) ' </table>
 
-            RenderCellEnd(wr) ' </td>
+                RenderCellEnd(wr) ' </td>
+
+            End If
             RenderRowEnd(wr) ' </tr>
             RenderTableEnd(wr) ' </table>
             RenderCellEnd(wr) ' </td>
@@ -1342,10 +1366,13 @@ Namespace DotNetNuke.Modules.Forum
             RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0") '<Table>            
             RenderRowBegin(wr) '<tr>
 
-            url = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, objThread.PreviousThreadID)
-
+            Dim threadCont As ThreadController
+            threadCont = New ThreadController()
             RenderCellBegin(wr, "", "", "", "", "", "", "")  ' <td> ' 
             If PreviousEnabled Then
+                Dim prevThread As ThreadInfo
+                prevThread = threadCont.GetThread(objThread.PreviousThreadID)
+                url = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, ForumID, objThread.PreviousThreadID, prevThread.Subject)
                 RenderLinkButton(wr, url, ForumControl.LocalizedText("Previous"), "Forum_Link")
             Else
                 RenderDivBegin(wr, "", "Forum_NormalBold")
@@ -1381,7 +1408,9 @@ Namespace DotNetNuke.Modules.Forum
             RenderCellBegin(wr, "", "", "", "", "", "", "")  ' <td> ' 
 
             If NextEnabled Then
-                url = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, objThread.NextThreadID)
+                Dim nextThread As ThreadInfo
+                nextThread = threadCont.GetThread(objThread.NextThreadID)
+                url = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, ForumID, objThread.NextThreadID, nextThread.Subject)
                 RenderLinkButton(wr, url, ForumControl.LocalizedText("Next"), "Forum_Link")
             Else
                 RenderDivBegin(wr, "", "Forum_NormalBold")
@@ -1610,11 +1639,6 @@ Namespace DotNetNuke.Modules.Forum
                 End If
                 intPostCount += 1
 
-                ' inject Advertisment into forum post list
-                If (objConfig.AdsAfterFirstPost AndAlso intPostCount = 2) OrElse ((objConfig.AddAdverAfterPostNo <> 0) AndAlso ((intPostCount - 1) Mod objConfig.AddAdverAfterPostNo = 0)) Then
-                    Me.RenderAdvertisementPost(wr)
-                    RenderSpacerRow(wr)
-                End If
             Next
             RenderTableEnd(wr) ' </table>
             RenderCellEnd(wr) ' </td> 
@@ -1674,7 +1698,7 @@ Namespace DotNetNuke.Modules.Forum
 
 
             ' start post status image
-            RenderCellBegin(wr, "Forum_Header", "", "1%", "left", "", "", "") '<td>
+            RenderCellBegin(wr, "Forum_Header_PostStatus", "", "", "left", "", "", "") '<td>
             ' display "new" image if this post is new since last time user visited the thread
             If HttpContext.Current.Request IsNot Nothing Then
                 If HttpContext.Current.Request.IsAuthenticated Then
@@ -1691,13 +1715,15 @@ Namespace DotNetNuke.Modules.Forum
             End If
             RenderCellEnd(wr) ' </td> 
 
-            RenderCellBegin(wr, "Forum_Header", "", "89%", "left", "", "", "")      '<td>
+            RenderCellBegin(wr, "Forum_Header", "", "", "left", "", "", "")      '<td>
+
             RenderDivBegin(wr, "", "Forum_HeaderText") ' <span>
+            'RenderDivBegin(wr, "", "Forum_HeaderText", "data-date", Post.CreatedDate.ToUniversalTime().Subtract(New DateTime(1970, 1, 1)).TotalMilliseconds.ToString()) ' <span>
             wr.Write(strPostedDate)
             RenderDivEnd(wr) ' </span>
             RenderCellEnd(wr) ' </td> 
 
-            RenderCellBegin(wr, "Forum_Header", "", "", "right", "", "", "")       '<td>
+            RenderCellBegin(wr, "Forum_Header_ThreadStatus", "", "", "right", "", "", "")       '<td>
 
             ' if the user is the original author or a moderator AND this is the original post
             If ((CurrentForumUser.UserID = Post.ParentThread.StartedByUserID) Or (objSecurity.IsForumModerator)) And Post.ParentPostID = 0 Then
@@ -1863,24 +1889,22 @@ Namespace DotNetNuke.Modules.Forum
                     RenderRowBegin(wr) ' <tr> (start avatar row)
                     RenderCellBegin(wr, "Forum_UserAvatar", "", "", "", "top", "", "") ' <td>
                     wr.Write("<br />")
-                    If objConfig.EnableProfileAvatar And author.UserID > 0 Then
-                        If Not author.IsSuperUser Then
-                            Dim WebVisibility As UserVisibilityMode
-                            WebVisibility = author.Profile.ProfileProperties(objConfig.AvatarProfilePropName).Visibility
+                    If objConfig.EnableUserAvatar And author.UserID > 0 Then
+                        Dim WebVisibility As UserVisibilityMode
+                        WebVisibility = author.Profile.ProfileProperties(objConfig.AvatarProfilePropName).ProfileVisibility.VisibilityMode
 
-                            Select Case WebVisibility
-                                Case UserVisibilityMode.AdminOnly
-                                    If objSecurity.IsForumAdmin Then
-                                        RenderProfileAvatar(author, wr)
-                                    End If
-                                Case UserVisibilityMode.AllUsers
+                        Select Case WebVisibility
+                            Case UserVisibilityMode.AdminOnly
+                                If objSecurity.IsForumAdmin Then
                                     RenderProfileAvatar(author, wr)
-                                Case UserVisibilityMode.MembersOnly
-                                    If CurrentForumUser.UserID > 0 Then
-                                        RenderProfileAvatar(author, wr)
-                                    End If
-                            End Select
-                        End If
+                                End If
+                            Case UserVisibilityMode.AllUsers
+                                RenderProfileAvatar(author, wr)
+                            Case UserVisibilityMode.MembersOnly
+                                If CurrentForumUser.UserID > 0 Then
+                                    RenderProfileAvatar(author, wr)
+                                End If
+                        End Select
                     Else
                         If author.UserID > 0 Then
                             RenderImage(wr, author.AvatarComplete, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "")
@@ -1931,7 +1955,7 @@ Namespace DotNetNuke.Modules.Forum
                 'Homepage
                 If author.UserID > 0 Then
                     Dim WebSiteVisibility As UserVisibilityMode
-                    WebSiteVisibility = author.Profile.ProfileProperties("Website").Visibility
+                    WebSiteVisibility = author.Profile.ProfileProperties("Website").ProfileVisibility.VisibilityMode
 
                     Select Case WebSiteVisibility
                         Case UserVisibilityMode.AdminOnly
@@ -1948,7 +1972,7 @@ Namespace DotNetNuke.Modules.Forum
 
                     'Region
                     Dim CountryVisibility As UserVisibilityMode
-                    CountryVisibility = author.Profile.ProfileProperties("Country").Visibility
+                    CountryVisibility = author.Profile.ProfileProperties("Country").ProfileVisibility.VisibilityMode
 
                     Select Case CountryVisibility
                         Case UserVisibilityMode.AdminOnly
@@ -1990,32 +2014,14 @@ Namespace DotNetNuke.Modules.Forum
         ''' <remarks></remarks>
         Private Sub RenderProfileAvatar(ByVal author As ForumUserInfo, ByVal wr As HtmlTextWriter)
             ' This needs to be rendered w/ specified size
-            If objConfig.EnableProfileUserFolders Then
-                ' The link click below (duplicated from core profile page) presents some serious issues under volume. 
-                'imgUserProfileAvatar.ImageUrl = DotNetNuke.Common.Globals.LinkClick("fileid=" & author.AvatarFile.FileId.ToString(), PortalSettings.ActiveTab.TabID, Null.NullInteger)
-                If author.AvatarCoreFile IsNot Nothing Then
+            If objConfig.EnableUserAvatar Then
+                If author.ProfileAvatar <> String.Empty Then
                     Dim imgUserProfileAvatar As New Image
-
                     imgUserProfileAvatar.ImageUrl = author.AvatarComplete
-                    DotNetNuke.Web.UI.Utilities.CreateThumbnail(author.AvatarCoreFile, imgUserProfileAvatar, objConfig.UserAvatarWidth, objConfig.UserAvatarHeight)
-
                     imgUserProfileAvatar.RenderControl(wr)
                     imgUserProfileAvatar.Visible = True
                 End If
-            Else
-                ' If we are here, file stored as name and not id (in UserProfile table).
-                'CP: NOTE: Telerik conversion
-                Dim rbiProfileAvatar As New Telerik.Web.UI.RadBinaryImage
-                'Dim rbiProfileAvatar As New DotNetNuke.Wrapper.UI.WebControls.DnnBinaryImage
-                rbiProfileAvatar.Width = objConfig.UserAvatarWidth
-                rbiProfileAvatar.Height = objConfig.UserAvatarHeight
-                rbiProfileAvatar.ImageUrl = author.AvatarComplete
-
-                rbiProfileAvatar.RenderControl(wr)
             End If
-
-            ' Below is for use when no Telerik integration is going on. (Uncomment line below, comment out lines above)
-            'RenderImage(wr, author.AvatarComplete, author.SiteAlias & "'s " & ForumControl.LocalizedText("Avatar"), "", objConfig.UserAvatarWidth.ToString(), objConfig.UserAvatarHeight.ToString())
         End Sub
 
         ''' <summary>
@@ -2102,7 +2108,7 @@ Namespace DotNetNuke.Modules.Forum
 
             '[skeel] Subject now works as a direct link to a specific post!
             RenderDivBegin(wr, "spCreatedDate", "Forum_Normal") ' <span>
-            Me.RenderLinkButton(wr, Utilities.Links.ContainerViewPostLink(TabID, Post.ForumID, Post.PostID), strSubject, "Forum_NormalBold")
+            Me.RenderLinkButton(wr, Utilities.Links.ContainerViewPostLink(PortalID, TabID, Post.ForumID, Post.PostID, strSubject), strSubject, "Forum_NormalBold")
             wr.Write("&nbsp;")
             wr.Write(strAuthorLocation)
 
@@ -2644,11 +2650,13 @@ Namespace DotNetNuke.Modules.Forum
             RenderTableBegin(wr, "", "", "", "", "0", "0", "", "", "0") '<Table>            
             RenderRowBegin(wr) '<tr>
 
-            url = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, objThread.PreviousThreadID)
-
             RenderCellBegin(wr, "", "", "", "", "", "", "")  ' <td> ' 
-
+            Dim threadCont As ThreadController
+            threadCont = New ThreadController()
+            Dim tinfo As ThreadInfo
             If PreviousEnabled Then
+                tinfo = threadCont.GetThread(objThread.PreviousThreadID)
+                url = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, ForumID, objThread.PreviousThreadID, tinfo.Subject)
                 RenderLinkButton(wr, url, ForumControl.LocalizedText("Previous"), "Forum_Link")
             Else
                 RenderDivBegin(wr, "", "Forum_NormalBold")
@@ -2686,7 +2694,8 @@ Namespace DotNetNuke.Modules.Forum
             RenderCellBegin(wr, "", "", "", "", "", "", "")  ' <td> 
 
             If NextEnabled Then
-                url = Utilities.Links.ContainerViewThreadLink(TabID, ForumID, objThread.NextThreadID)
+                tinfo = threadCont.GetThread(objThread.NextThreadID)
+                url = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, ForumID, objThread.NextThreadID, tinfo.Subject)
                 RenderLinkButton(wr, url, ForumControl.LocalizedText("Next"), "Forum_Link")
             Else
                 RenderDivBegin(wr, "", "Forum_NormalBold")
@@ -3206,49 +3215,6 @@ Namespace DotNetNuke.Modules.Forum
             RenderTableEnd(wr) ' </table>
             RenderCellEnd(wr) ' </td> 
             RenderRowEnd(wr) ' </tr>  
-        End Sub
-
-        ''' <summary>
-        ''' Renders structure of Advertisement content
-        ''' </summary>
-        ''' <history>
-        ''' 	[b.waluszko]	21/10/2010	Created
-        ''' </history>
-        Private Sub RenderAdvertisementPost(ByVal wr As HtmlTextWriter)
-            RenderRowBegin(wr) ' <tr>
-            wr.Write("<td class=""AdvertisementPost"" colspan=""2"">")
-            wr.Write(objConfig.AdvertisementText)
-
-            'check if there are some banners to render
-            Dim advertController As New AdvertController
-            Dim bannerController As New Vendors.BannerController
-
-            Dim adverts As IEnumerable(Of AdvertInfo)
-            adverts = advertController.VendorsGet(Me.ModuleID).Where(Function(ad) ad.IsEnabled = True)
-
-            'first check vendors
-            If (adverts IsNot Nothing) AndAlso adverts.Count > 0 Then
-                wr.Write("<br/>")
-                For Each advert As AdvertInfo In adverts
-                    Dim banners As List(Of Vendors.BannerInfo)
-
-                    'second check banners connected to vendors
-                    banners = advertController.BannersGet(advert.VendorId)
-                    If (banners IsNot Nothing) AndAlso banners.Count > 0 Then
-                        For Each b As Vendors.BannerInfo In banners
-                            advertController.BannerViewIncrement(b.BannerId)
-                            Dim fileController As New FileController
-                            Dim fileInfo As DotNetNuke.Services.FileSystem.FileInfo = fileController.GetFileById(Integer.Parse(b.ImageFile.Split(Char.Parse("="))(1)), PortalID)
-                            wr.Write(bannerController.FormatBanner(advert.VendorId, b.BannerId, b.BannerTypeId, b.BannerName, fileInfo.RelativePath, b.Description, b.URL, b.Width, b.Height, "L", objConfig.CurrentPortalSettings.HomeDirectory) & "&nbsp;")
-                        Next
-
-                    End If
-
-                Next
-            End If
-
-            wr.Write("</td>")
-            RenderRowEnd(wr) ' </tr>
         End Sub
 
 #End Region

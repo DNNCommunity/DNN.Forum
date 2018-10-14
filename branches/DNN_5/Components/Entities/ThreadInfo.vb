@@ -142,7 +142,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public ReadOnly Property PortalID() As Integer
 			Get
-				Dim _portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings
+                Dim _portalSettings As DotNetNuke.Entities.Portals.PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings()
 				Return _portalSettings.PortalId
 			End Get
 		End Property
@@ -266,8 +266,8 @@ Namespace DotNetNuke.Modules.Forum
 		Public ReadOnly Property LastPostShortBody() As String
 			Get
 				Dim strBody As String = LastApprovedPost.Body
-				Dim strTrimedBody As String = String.Empty
-				strTrimedBody = Utilities.ForumUtils.FormatToolTip(Utilities.ForumUtils.TrimString(strBody, 100))
+                Dim strTrimedBody As String = String.Empty
+                strTrimedBody = Utilities.ForumUtils.FormatToolTip(Utilities.ForumUtils.TrimString(HtmlUtils.Clean(strBody, True), 100))
 				If objConfig.EnableBadWordFilter Then
 					strTrimedBody = Utilities.ForumUtils.FormatProhibitedWord(strTrimedBody, LastApprovedPost.CreatedDate, PortalID)
 				End If

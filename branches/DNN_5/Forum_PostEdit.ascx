@@ -3,7 +3,7 @@
 <%@ Register TagPrefix="forum" TagName="Attachment" Src="~/DesktopModules/Forum/controls/AttachmentControl.ascx" %>
 <%@ Control language="vb" CodeBehind="Forum_PostEdit.ascx.vb" AutoEventWireup="True" Inherits="DotNetNuke.Modules.Forum.PostEdit" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.UI.WebControls" Assembly="DotNetNuke" %>
-<%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <div class="dnnForm Post-Edit dnnClear">
 	<div class="dnnFormItem dnnFormHelp dnnClear"><p class="dnnFormRequired"><span><%=LocalizeString("RequiredFields")%></span></p></div>
 	<div id="divNewPost" runat="server">
@@ -19,7 +19,7 @@
 		<div class="dnnFormItem">
 			<dnn:label id="plBody" runat="server" Suffix=":" controlname="teContent" />
 			<div class="dnnLeft">
-				<dnn:texteditor id="teContent" runat="server" width="450" height="350px" />
+				<dnn:texteditor id="teContent" runat="server" />
 			</div>
 		</div>
 		<div class="dnnFormItem" id="divAttachments" runat="server">
@@ -42,7 +42,7 @@
 		</div>
 		<div class="dnnFormItem" id="divThreadStatus" runat="server">
 			<dnn:Label ID="plThreadStatus" runat="server" ControlName="ddlThreadStatus" Suffix=":" />
-			<dnnweb:DnnComboBox ID="dnncbThreadStatus" runat="server" AutoPostBack="true" CausesValidation="false" />
+			<asp:DropDownList ID="dnncbThreadStatus" runat="server" AutoPostBack="true" CausesValidation="false" />
 		</div>
 		<div class="dnnFormItem" id="divTagging" runat="server">
 			<dnn:Label ID="plTerms" runat="server" ControlName="tsTerms" Suffix=":" />

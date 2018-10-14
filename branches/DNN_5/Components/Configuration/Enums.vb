@@ -627,11 +627,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		System = 0
 		''' <summary>
-		''' Users assign their own avatars.
-		''' </summary>
-		''' <remarks></remarks>
-		User = 1
-		''' <summary>
 		''' Avatars assigned by role, only accessible to module admin.
 		''' </summary>
 		''' <remarks></remarks>
@@ -733,7 +728,7 @@ Namespace DotNetNuke.Modules.Forum
 		EmailQueue = 20
 		EmailQueueTaskDetail = 21
         EmailSubscribers = 22
-        Advertisement = 23
+        'Advertisement = 23
 	End Enum
 
 	''' <summary>
@@ -778,29 +773,6 @@ Namespace DotNetNuke.Modules.Forum
 		''' </summary>
 		''' <remarks></remarks>
 		Inline = 8
-	End Enum
-
-	''' <summary>
-	''' Provides the status of an attempted post.
-	''' </summary>
-	''' <remarks></remarks>
-	Public Enum PostMessage
-		ForumClosed = 0
-		ForumDoesntExist = 1
-		ForumIsParent = 2
-		ForumNoAttachments = 3
-		PostApproved = 4
-		PostEditExpired = 5
-		PostInvalidBody = 6
-		PostInvalidSubject = 7
-		PostModerated = 8
-		ThreadLocked = 9
-		UserAttachmentPerms = 10
-		UserBanned = 11
-		UserCannotEditPost = 12
-		UserCannotPostReply = 13
-		UserCannotStartThread = 14
-		UserCannotViewForum = 15
 	End Enum
 
 End Namespace

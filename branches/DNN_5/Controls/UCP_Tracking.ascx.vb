@@ -66,15 +66,19 @@ Namespace DotNetNuke.Modules.Forum.UCP
                 imgDelete.Attributes.Add("onClick", "javascript:return confirm('" + Localization.GetString("DeleteItem") + "');")
                 imgDelete.CommandArgument = keyForumID.ToString()
 
+                Dim cntForum As ForumController
+                cntForum = New ForumController()
+                Dim objForum As ForumInfo = cntForum.GetForumItemCache(keyForumID)
+
                 Dim hlForum As HyperLink = CType((item)("hlName").Controls(0), HyperLink)
-                hlForum.NavigateUrl = Utilities.Links.ContainerViewForumLink(TabId, keyForumID, False)
+                hlForum.NavigateUrl = Utilities.Links.ContainerViewForumLink(PortalId, TabId, keyForumID, False, objForum.Name)
 
                 Dim hlLastPost As HyperLink = CType((item)("hlLastPost").Controls(0), HyperLink)
                 Dim cntPost As New PostController
                 If keyMostRecentPostID > 0 Then
                     Dim objPost As PostInfo = cntPost.GetPostInfo(keyMostRecentPostID, PortalId)
                     hlLastPost.Text = Utilities.ForumUtils.GetCreatedDateInfo(objPost.CreatedDate, objConfig, "")
-                    hlLastPost.NavigateUrl = Utilities.Links.ContainerViewPostLink(TabId, keyForumID, objPost.PostID)
+                    hlLastPost.NavigateUrl = Utilities.Links.ContainerViewPostLink(PortalId, TabId, keyForumID, objPost.PostID, objPost.Subject)
                 Else
                     hlLastPost.Text = "-"
                 End If
@@ -127,15 +131,19 @@ Namespace DotNetNuke.Modules.Forum.UCP
                 imgDelete.Attributes.Add("onClick", "javascript:return confirm('" + Localization.GetString("DeleteItem") + "');")
                 imgDelete.CommandArgument = keyThreadID.ToString()
 
+                Dim tCont As ThreadController
+                tCont = New ThreadController()
+                Dim tInfo As ThreadInfo
+                tInfo = tCont.GetThread(keyThreadID)
                 Dim hlForum As HyperLink = CType((item)("hlSubject").Controls(0), HyperLink)
-                hlForum.NavigateUrl = Utilities.Links.ContainerViewThreadLink(TabId, keyForumID, keyThreadID)
+                hlForum.NavigateUrl = Utilities.Links.ContainerViewThreadLink(PortalId, TabId, keyForumID, keyThreadID, tInfo.Subject)
 
                 Dim hlLastPost As HyperLink = CType((item)("hlLastPost").Controls(0), HyperLink)
                 Dim cntPost As New PostController
                 If keyMostRecentPostID > 0 Then
                     Dim objPost As PostInfo = cntPost.GetPostInfo(keyMostRecentPostID, PortalId)
                     hlLastPost.Text = Utilities.ForumUtils.GetCreatedDateInfo(objPost.CreatedDate, objConfig, "")
-                    hlLastPost.NavigateUrl = Utilities.Links.ContainerViewPostLink(TabId, keyThreadID, objPost.PostID)
+                    hlLastPost.NavigateUrl = Utilities.Links.ContainerViewPostLink(PortalId, TabId, keyThreadID, objPost.PostID, objPost.Subject)
                 Else
                     hlLastPost.Text = "-"
                 End If

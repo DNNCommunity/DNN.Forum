@@ -434,11 +434,11 @@ Namespace DotNetNuke.Modules.Forum
 						RenderRowBegin(wr) ' <tr>
 
 						' cell within table for thread status icon
-						RenderCellBegin(wr, "", "100%", "", "", "top", "", "")	 ' <td>
-						url = Utilities.Links.ContainerViewThreadLink(TabID, objThread.ForumID, objThread.ThreadID)
+						RenderCellBegin(wr, "", "100%", "", "", "top", "", "")   ' <td>
+                        url = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, objThread.ForumID, objThread.ThreadID, objThread.Subject)
 
-						'link so icon is clickable (also used below for subject)
-						wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
+                        'link so icon is clickable (also used below for subject)
+                        wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
 						wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
 
 						' see if post is pinned, priority over other icons
@@ -512,10 +512,13 @@ Namespace DotNetNuke.Modules.Forum
 
 						RenderLinkButton(wr, url, objThread.StartedByUser.SiteAlias, "Forum_NormalSmall") ' <a/>
 
-						'Add in forum (where thread belongs)
-						wr.Write(String.Format("&nbsp;{0}&nbsp;", ForumControl.LocalizedText("in")))
-						url = Utilities.Links.ContainerViewForumLink(TabID, objThread.ForumID, False)
-						RenderLinkButton(wr, url, objThread.ContainingForum.Name, "Forum_NormalSmall")
+                        Dim cntForum As ForumController
+                        cntForum = New ForumController()
+                        Dim objForum As ForumInfo = cntForum.GetForumItemCache(ForumID)
+                        'Add in forum (where thread belongs)
+                        wr.Write(String.Format("&nbsp;{0}&nbsp;", ForumControl.LocalizedText("in")))
+                        url = Utilities.Links.ContainerViewForumLink(PortalID, TabID, objThread.ForumID, False, objForum.Name)
+                        RenderLinkButton(wr, url, objThread.ContainingForum.Name, "Forum_NormalSmall")
 
 						' correct logic to handle posts per page per user
 						Dim userPostsPerPage As Integer
@@ -649,10 +652,10 @@ Namespace DotNetNuke.Modules.Forum
 						RenderCellEnd(wr) ' </td>
 
 						RenderCellBegin(wr, "", "", "", "right", "", "", "") ' <td>
-						url = Utilities.Links.ContainerViewPostLink(TabID, objThread.ForumID, objThread.LastApprovedPost.PostID)
+                        url = Utilities.Links.ContainerViewPostLink(PortalID, TabID, objThread.ForumID, objThread.LastApprovedPost.PostID, objThread.LastApprovedPost.Subject)
 
-						' Skeel - This is for showing link to first unread post for logged in users. 
-						If CurrentForumUser.PostsPerPage < objThread.TotalPosts Then
+                        ' Skeel - This is for showing link to first unread post for logged in users. 
+                        If CurrentForumUser.PostsPerPage < objThread.TotalPosts Then
 							'Find the page on which the first unread post is located
 							wr.AddAttribute(HtmlTextWriterAttribute.Href, FirstUnreadLink(objThread))
 						Else
@@ -914,8 +917,8 @@ Namespace DotNetNuke.Modules.Forum
 			Dim usrThread As New UserThreadsInfo
 			Dim ReadLink As String
 
-			ReadLink = Utilities.Links.ContainerViewThreadLink(TabID, Thread.ForumID, Thread.ThreadID) & "#unread"
-			usrThread = cltUserThread.GetThreadReadsByUser(CurrentForumUser.UserID, Thread.ThreadID)
+            ReadLink = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, Thread.ForumID, Thread.ThreadID, Thread.Subject) & "#unread"
+            usrThread = cltUserThread.GetThreadReadsByUser(CurrentForumUser.UserID, Thread.ThreadID)
 
 			If usrThread Is Nothing Then
 				'All new
@@ -924,8 +927,8 @@ Namespace DotNetNuke.Modules.Forum
 					PageCount = Math.Ceiling(PageCount)
 					ReadLink = Utilities.Links.ContainerViewThreadPagedLink(TabID, Thread.ForumID, Thread.ThreadID, CInt(PageCount)) & "#unread"
 				Else
-					ReadLink = Utilities.Links.ContainerViewThreadLink(TabID, Thread.ForumID, Thread.ThreadID) & "#unread"
-				End If
+                    ReadLink = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, Thread.ForumID, Thread.ThreadID, Thread.Subject) & "#unread"
+                End If
 			Else
 				'Get the Index
 				Dim PostIndex As Integer = cltUserThread.GetPostIndexFirstUnread(Thread.ThreadID, usrThread.LastVisitDate, CurrentForumUser.ViewDescending)
@@ -935,8 +938,8 @@ Namespace DotNetNuke.Modules.Forum
 				Do While PageNumber <= PageCount
 					If (CurrentForumUser.PostsPerPage * PageNumber) >= PostIndex Then
 						If PageNumber = 1 Then
-							ReadLink = Utilities.Links.ContainerViewThreadLink(TabID, Thread.ForumID, Thread.ThreadID) & "#unread"
-						Else
+                            ReadLink = Utilities.Links.ContainerViewThreadLink(PortalID, TabID, Thread.ForumID, Thread.ThreadID, Thread.Subject) & "#unread"
+                        Else
 							ReadLink = Utilities.Links.ContainerViewThreadPagedLink(TabID, Thread.ForumID, Thread.ThreadID, PageNumber) & "#unread"
 						End If
 						Exit Do

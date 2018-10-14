@@ -18,7 +18,7 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 Option Strict On
-Option Explicit On 
+Option Explicit On
 
 Namespace DotNetNuke.Modules.Forum.UCP
 

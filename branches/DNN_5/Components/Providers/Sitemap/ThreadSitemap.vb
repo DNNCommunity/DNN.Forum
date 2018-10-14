@@ -62,8 +62,8 @@ Namespace DotNetNuke.Modules.Forum.Components.Providers
 		''' <remarks></remarks>
 		Private Function GetThreadUrl(ByVal objThread As ThreadInfo) As SitemapUrl
 			Dim pageUrl As New SitemapUrl
-			pageUrl.Url = Forum.Utilities.Links.ContainerViewThreadLink(objThread.TabID, objThread.ForumID, objThread.ThreadID)
-			pageUrl.Priority = objThread.ContainingForum.SitemapPriority
+            pageUrl.Url = Forum.Utilities.Links.ContainerViewThreadLink(objThread.PortalID, objThread.TabID, objThread.ForumID, objThread.ThreadID, objThread.Subject)
+            pageUrl.Priority = objThread.ContainingForum.SitemapPriority
 			pageUrl.LastModified = objThread.LastApprovedPost.CreatedDate
 
 			If objThread.LastApprovedPost.CreatedDate > DateAdd(DateInterval.Month, 18, DateTime.Now()) Then

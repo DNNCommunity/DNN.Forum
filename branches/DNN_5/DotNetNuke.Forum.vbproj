@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -9,16 +10,25 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <OptionExplicit>On</OptionExplicit>
-    <OptionStrict>On</OptionStrict>
+    <OptionStrict>Off</OptionStrict>
     <RootNamespace>
     </RootNamespace>
     <AssemblyName>DotNetNuke.Modules.Forum</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
+    <OldToolsVersion>4.0</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">.\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -27,12 +37,13 @@
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\bin\</OutputPath>
     <DocumentationFile>DotNetNuke.Modules.Forum.xml</DocumentationFile>
-    <NoWarn>
-    </NoWarn>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42353,42354,42355</NoWarn>
     <CodeAnalysisRules>
     </CodeAnalysisRules>
-    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -41,59 +52,70 @@
     <Optimize>true</Optimize>
     <OutputPath>..\..\bin\</OutputPath>
     <DocumentationFile>DotNetNuke.Modules.Forum.xml</DocumentationFile>
-    <NoWarn>
-    </NoWarn>
-    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42353,42354,42355</NoWarn>
+    <WarningsAsErrors>
+    </WarningsAsErrors>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CountryListBox, Version=1.0.2182.32461, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Library\Controls\CountryListBox\bin\CountryListBox.dll</HintPath>
+    <Reference Include="CountryListBox">
+      <HintPath>..\..\www.juvander.fi.SRC\bin\CountryListBox.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke, Version=6.0.0.2982, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="DotNetNuke.Web, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke, Version=6.1.5.142, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\DotNetNuke.Web\bin\DotNetNuke.Web.dll</HintPath>
+      <HintPath>..\..\www.juvander.fi.SRC\bin\DotNetNuke.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.WebControls, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Instrumentation, Version=7.3.4.45, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Library\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll</HintPath>
+      <HintPath>..\..\www.juvander.fi.SRC\bin\DotNetNuke.Instrumentation.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.WebUtility, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DotNetNuke.Log4Net, Version=3.0.0.0, Culture=neutral, PublicKeyToken=53eb1fac7b60111f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Library\Controls\DotNetNuke.WebUtility\bin\DotNetNuke.WebUtility.dll</HintPath>
+      <HintPath>..\..\www.juvander.fi.SRC\bin\DotNetNuke.Log4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web">
+      <HintPath>..\..\www.juvander.fi.SRC\bin\DotNetNuke.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Client, Version=7.3.4.45, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\www.juvander.fi.SRC\bin\DotNetNuke.Web.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.Web.Deprecated, Version=8.0.0.809, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\DotNetNuke.Web.Deprecated.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.WebControls">
+      <HintPath>..\..\www.juvander.fi.SRC\bin\DotNetNuke.WebControls.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetNuke.WebUtility">
+      <HintPath>..\..\www.juvander.fi.SRC\bin\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Library\Components\DataAccessBlock\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\www.juvander.fi.SRC\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Web.Extensions.Design, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Extensions.Design" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
-    <Reference Include="System.Xml.Linq, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Telerik.Web.UI, Version=2011.3.1115.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\www.juvander.fi.SRC\bin\Telerik.Web.UI.dll</HintPath>
     </Reference>
-    <Reference Include="Telerik.Web.UI, Version=2011.1.519.35, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Import Include="DotNetNuke" />
@@ -101,14 +123,26 @@
     <Import Include="DotNetNuke.Common.Utilities" />
     <Import Include="DotNetNuke.Data" />
     <Import Include="DotNetNuke.Entities" />
+    <Import Include="DotNetNuke.Entities.Modules" />
+    <Import Include="DotNetNuke.Entities.Modules.Actions" />
+    <Import Include="DotNetNuke.Entities.Modules.Communications" />
+    <Import Include="DotNetNuke.Entities.Modules.Definitions" />
+    <Import Include="DotNetNuke.Entities.Modules.Internal" />
     <Import Include="DotNetNuke.Entities.Tabs" />
     <Import Include="DotNetNuke.Framework" />
     <Import Include="DotNetNuke.Modules" />
+    <Import Include="DotNetNuke.Modules.Forum" />
+    <Import Include="DotNetNuke.Modules.Forum.Utilities" />
     <Import Include="DotNetNuke.Security" />
     <Import Include="DotNetNuke.Services" />
     <Import Include="DotNetNuke.Services.Exceptions" />
     <Import Include="DotNetNuke.Services.Localization" />
     <Import Include="DotNetNuke.UI" />
+    <Import Include="DotNetNuke.Web" />
+    <Import Include="DotNetNuke.Web.UI" />
+    <Import Include="DotNetNuke.Web.UI.WebControls" />
+    <Import Include="Microsoft.ApplicationBlocks" />
+    <Import Include="Microsoft.ApplicationBlocks.Data" />
     <Import Include="Microsoft.VisualBasic" />
     <Import Include="System" />
     <Import Include="System.Collections" />
@@ -148,7 +182,6 @@
     <Compile Include="Components\Configuration\ForumPreConfig.vb" />
     <Compile Include="Components\Content\PostConnector.vb" />
     <Compile Include="Components\Content\Terms.vb" />
-    <Compile Include="Components\Controllers\AdvertController.vb" />
     <Compile Include="Components\Controllers\AnswerController.vb" />
     <Compile Include="Components\Controllers\AttachmentController.vb" />
     <Compile Include="Components\Controllers\EmailTemplateController.vb" />
@@ -178,7 +211,6 @@
     <Compile Include="Components\Email\Queue\EmailQueueTask.vb" />
     <Compile Include="Components\Email\Queue\IEmailQueueable.vb" />
     <Compile Include="Components\Email\Queue\IEmailQueueableCleanupTask.vb" />
-    <Compile Include="Components\Entities\AdvertInfo.vb" />
     <Compile Include="Components\Entities\AnswerInfo.vb" />
     <Compile Include="Components\Entities\AttachmentInfo.vb" />
     <Compile Include="Components\Entities\EmailTemplateInfo.vb" />
@@ -223,13 +255,6 @@
     <Compile Include="Components\Utilities\Links.vb" />
     <Compile Include="Components\Utilities\SearchHelper.vb" />
     <Compile Include="Components\WordFilter\ForumFilterWordCollection.vb" />
-    <Compile Include="Controls\ACP_Advertisement.ascx.designer.vb">
-      <DependentUpon>ACP_Advertisement.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ACP_Advertisement.ascx.vb">
-      <DependentUpon>ACP_Advertisement.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Controls\ACP_ForumEdit.ascx.designer.vb">
       <DependentUpon>ACP_ForumEdit.ascx</DependentUpon>
     </Compile>
@@ -625,12 +650,21 @@
     <Compile Include="Providers\DataProviders\SqlDataProvider\SqlDataProvider.vb" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Forum.dnn">
+    <Content Include="05.01.00.txt" />
+    <Content Include="BuildScripts\ModulePackage.targets">
       <SubType>Designer</SubType>
-    </None>
+    </Content>
+    <Content Include="BuildScripts\MSBuild.Community.Tasks.Targets">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="DNN_Forum.dnn">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="My Project\ForumClassDiagram.cd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="js\Posts.js" />
+    <Content Include="packages.config" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.00.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.10.05.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\04.03.00.SqlDataProvider" />
@@ -644,13 +678,21 @@
     <None Include="Providers\DataProviders\SqlDataProvider\04.09.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\04.09.01.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.00.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\05.00.07.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\05.01.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
+    <Content Include="web.config" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\ACP.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Controls\ACP_Advertisement.ascx" />
     <Content Include="Controls\App_LocalResources\ACP_Filter.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
@@ -704,7 +746,7 @@
     </Content>
     <Content Include="Forum_PostReport.ascx" />
     <Content Include="Forum_ThreadSplit.ascx" />
-    <Content Include="Documentation\License.txt" />
+    <Content Include="License.txt" />
     <Content Include="ACP.ascx" />
     <Content Include="Controls\ACP_Filter.ascx" />
     <Content Include="Forum_Container.ascx" />
@@ -776,7 +818,7 @@
     <Content Include="Controls\UCP_Bookmark.ascx" />
     <Content Include="Controls\UCP_Signature.ascx" />
     <Content Include="Controls\UCP_Tracking.ascx" />
-    <Content Include="Documentation\ReleaseNotes.txt" />
+    <Content Include="ReleaseNotes.txt" />
     <Content Include="MCP.ascx" />
     <Content Include="PublicProfile.ascx" />
     <Content Include="Themes\Blue\Blue.css" />
@@ -992,13 +1034,26 @@
     <Content Include="Controls\App_LocalResources\ACP_EmailSubscribers.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Controls\App_LocalResources\ACP_Advertisement.ascx.resx" />
     <EmbeddedResource Include="js\forum.js" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\DotNetNuke.Forum.Library\DotNetNuke.Forum.Library.csproj">
+      <Project>{fe6fca5d-5339-4732-91b3-74d906427e24}</Project>
+      <Name>DotNetNuke.Forum.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Documentation\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="'$(Solutions.VSVersion)' == '8.0'" />
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" Condition="'$(Solutions.VSVersion)' == '9.0'" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
@@ -1012,4 +1067,22 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <PropertyGroup>
+    <Extension>zip</Extension>
+    <DNNFileName>DNN_Forum</DNNFileName>
+    <PackageName>DNN_Forum</PackageName>
+    <MSBuildCommunityTasksPath>$(SolutionDir)\packages\MSBuildTasks.1.5.0.235\tools</MSBuildCommunityTasksPath>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets'))" />
+  </Target>
+  <Import Project="BuildScripts\ModulePackage.targets" />
+  <Target Name="AfterBuild" DependsOnTargets="PackageModule">
+  </Target>
+  <Import Project="packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets" Condition="Exists('packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" />
 </Project>

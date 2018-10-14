@@ -208,50 +208,108 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 
 			Return url
 		End Function
+        Public Shared Function CreateFriendlySlug(ByVal pagename As String) As String
 
-		''' <summary>
-		''' Navigates user to a single group view.  
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="GroupID"></param>
-		''' <returns></returns>
-		''' <remarks>Uses ForumContainer Dispatch control.</remarks>
-		Shared Function ContainerSingleGroupLink(ByVal TabId As Integer, ByVal GroupID As Integer) As String
-			Dim url As String
-			Dim params As String()
+            'Set the PageName
+            Dim options As RegexOptions = RegexOptions.IgnoreCase
+            pagename = pagename.Replace("'", String.Empty)
+            'Handle international characters
+            pagename = Regex.Replace(pagename, "Ă|Ā|À|Á|Â|Ã|Ä|Å", "A")
+            pagename = Regex.Replace(pagename, "ă|ā|à|á|â|ã|ä|å|ą", "a")
+            pagename = Regex.Replace(pagename, "Æ", "AE")
+            pagename = Regex.Replace(pagename, "æ", "ae")
+            pagename = Regex.Replace(pagename, "ß", "ss")
+            pagename = Regex.Replace(pagename, "Ç|Ć|Ĉ|Ċ|Č", "C")
+            pagename = Regex.Replace(pagename, "ć|ĉ|ċ|č|ç", "c")
+            pagename = Regex.Replace(pagename, "Ď|Đ", "D")
+            pagename = Regex.Replace(pagename, "ď|đ", "d")
+            pagename = Regex.Replace(pagename, "Ē|Ĕ|Ė|Ę|Ě|É|Ę|È|É|Ê|Ë", "E")
+            pagename = Regex.Replace(pagename, "ē|ĕ|ė|ę|ě|ê|ë|è|é", "e")
+            pagename = Regex.Replace(pagename, "Ĝ|Ğ|Ġ|Ģ|Ģ", "G")
+            pagename = Regex.Replace(pagename, "ĝ|ğ|ġ|ģ|ģ", "g")
+            pagename = Regex.Replace(pagename, "Ĥ|Ħ", "H")
+            pagename = Regex.Replace(pagename, "ĥ|ħ", "h")
+            pagename = Regex.Replace(pagename, "Ì|Í|Î|Ï|Ĩ|Ī|Ĭ|Į|İ|İ", "I")
+            pagename = Regex.Replace(pagename, "ì|í|î|ï|ĩ|ī|ĭ|į", "i")
+            pagename = Regex.Replace(pagename, "Ĳ", "IJ")
+            pagename = Regex.Replace(pagename, "Ĵ", "J")
+            pagename = Regex.Replace(pagename, "ĵ", "j")
+            pagename = Regex.Replace(pagename, "Ķ", "K")
+            pagename = Regex.Replace(pagename, "ķ", "k")
+            pagename = Regex.Replace(pagename, "Ñ|Ñ", "N")
+            pagename = Regex.Replace(pagename, "ñ", "n")
+            pagename = Regex.Replace(pagename, "Ò|Ó|Ô|Õ|Ö|Ø|Ő", "O")
+            pagename = Regex.Replace(pagename, "ò|ó|ô|õ|ö|ø|ő", "o")
+            pagename = Regex.Replace(pagename, "Œ", "OE")
+            pagename = Regex.Replace(pagename, "œ", "oe")
+            pagename = Regex.Replace(pagename, "Ŕ|Ř|Ŗ|Ŕ", "R")
+            pagename = Regex.Replace(pagename, "ř|ŗ|ŕ", "r")
+            pagename = Regex.Replace(pagename, "Š|Ş|Ŝ|Ś", "S")
+            pagename = Regex.Replace(pagename, "š|ş|ŝ|ś", "s")
+            pagename = Regex.Replace(pagename, "Ť|Ţ", "T")
+            pagename = Regex.Replace(pagename, "ť|ţ", "t")
+            pagename = Regex.Replace(pagename, "Ų|Ű|Ů|Ŭ|Ū|Ũ|Ù|Ú|Û|Ü", "U")
+            pagename = Regex.Replace(pagename, "ų|ű|ů|ŭ|ū|ũ|ú|û|ü|ù", "u")
+            pagename = Regex.Replace(pagename, "Ŵ", "W")
+            pagename = Regex.Replace(pagename, "ŵ", "w")
+            pagename = Regex.Replace(pagename, "Ÿ|Ŷ|Ý", "Y")
+            pagename = Regex.Replace(pagename, "ŷ|ÿ|ý", "y")
+            pagename = Regex.Replace(pagename, "Ž|Ż|Ź", "Z")
+            pagename = Regex.Replace(pagename, "ž|ż|ź", "z")
 
-			params = New String(0) {"GroupID=" & GroupID}
-			url = NavigateURL(TabId, "", params)
+            pagename = Regex.Replace(pagename, "[^a-z0-9_-ĂăĀāÀÁÂÃÄÅàáâãäåąæÆßÇĆćĈĉĊċČčçĎďĐđĒēĔĕĖėĘęĚěÉêëĘÈÉÊËèéĜĝĞğĠġĢģĢģĤĥĦħÌÍÎÏĨĩĪīĬĭĮįİÌíîïìĲĴĵĶķÑÑÒÓÔÕÖŐØòóôõőöøñŒœŔřŘŗŖŕŔšŠşŞŝŜśŚťŤţŢųŲűŰůŮŭŬūŪũŨÙÚÛÜÙúûüùŵŴŸŷŶÝÿýžŽżŻźŹ]+", "-", options) & ".aspx"
+            'For titles with ' - ', we replace --- with -
+            pagename = pagename.Replace("|", "-")
+            pagename = pagename.Replace("---", "-")
 
-			Return url
-		End Function
+            'Remove trailing dash if one exists.
+            If (pagename.EndsWith("-.aspx")) Then
+                pagename = pagename.Replace("-.aspx", ".aspx")
+            End If
 
-		''' <summary>
-		''' Navigates user to a single group view.  
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="GroupID"></param>
-		''' <returns></returns>
-		''' <remarks>Uses ForumContainer Dispatch control.</remarks>
-		Shared Function ContainerParentForumLink(ByVal TabId As Integer, ByVal GroupID As Integer, ByVal ForumID As Integer) _
-		 As String
-			Dim url As String
-			Dim params As String()
+            Return pagename
 
-			params = New String(1) {"GroupID=" & GroupID, "ForumID=" & ForumID}
-			url = NavigateURL(TabId, "", params)
+        End Function
+        ''' <summary>
+        ''' Navigates user to a single group view.  
+        ''' </summary>
+        ''' <param name="TabId"></param>
+        ''' <param name="GroupID"></param>
+        ''' <returns></returns>
+        ''' <remarks>Uses ForumContainer Dispatch control.</remarks>
+        Shared Function ContainerSingleGroupLink(ByVal TabId As Integer, ByVal PortalId As Integer, ByVal GroupID As Integer, ByVal GroupName As String) As String
+            Dim Path As String
+            Dim TabInfo As DotNetNuke.Entities.Tabs.TabInfo = TabController.Instance.GetTab(TabId, PortalId, False)
+            Path = "~/default.aspx?tabid=" & TabId & "&GroupID=" & GroupID
+            Return DotNetNuke.Common.Globals.FriendlyUrl(TabInfo, Path, CreateFriendlySlug(GroupName))
+        End Function
 
-			Return url
-		End Function
+        ''' <summary>
+        ''' Navigates user to a single group view.  
+        ''' </summary>
+        ''' <param name="TabId"></param>
+        ''' <param name="GroupID"></param>
+        ''' <returns></returns>
+        ''' <remarks>Uses ForumContainer Dispatch control.</remarks>
+        Shared Function ContainerParentForumLink(ByVal TabId As Integer, ByVal GroupID As Integer, ByVal ForumID As Integer) _
+         As String
+            Dim url As String
+            Dim params As String()
 
-		''' <summary>
-		''' Navigates user to a single group view filtered by date.
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="dFilter"></param>
-		''' <returns></returns>
-		''' <remarks>Users ForumContainer dispatch control.</remarks>
-		Shared Function ContainerGroupDateFilterLink(ByVal TabId As Integer, ByVal dFilter As String) As String
+            params = New String(1) {"GroupID=" & GroupID, "ForumID=" & ForumID}
+            url = NavigateURL(TabId, "", params)
+
+            Return url
+        End Function
+
+        ''' <summary>
+        ''' Navigates user to a single group view filtered by date.
+        ''' </summary>
+        ''' <param name="TabId"></param>
+        ''' <param name="dFilter"></param>
+        ''' <returns></returns>
+        ''' <remarks>Users ForumContainer dispatch control.</remarks>
+        Shared Function ContainerGroupDateFilterLink(ByVal TabId As Integer, ByVal dFilter As String) As String
 			Dim url As String
 			Dim params As String()
 
@@ -285,53 +343,46 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 			Return url
 		End Function
 
-		''' <summary>
-		''' Navigates user to thread view for a single forum.
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="ForumId"></param>
-		''' <returns></returns>
-		''' <remarks>Users ForumContainer dispatch control.</remarks>
-		Public Shared Function ContainerViewForumLink(ByVal TabId As Integer, ByVal ForumId As Integer, ByVal NoReply As Boolean) As String
-			Dim url As String
-			Dim params As String()
+        ''' <summary>
+        ''' Navigates user to thread view for a single forum.
+        ''' </summary>
+        ''' <param name="TabId"></param>
+        ''' <param name="ForumId"></param>
+        ''' <returns></returns>
+        ''' <remarks>Users ForumContainer dispatch control.</remarks>
+        Public Shared Function ContainerViewForumLink(ByVal PortalId As Integer, ByVal TabId As Integer, ByVal ForumId As Integer, ByVal NoReply As Boolean, ByVal ForumName As String) As String
+            Dim Path As String
+            Dim TabInfo As DotNetNuke.Entities.Tabs.TabInfo = TabController.Instance.GetTab(TabId, PortalId, False)
+            Path = "~/default.aspx?tabid=" & TabId & "&forumid=" & ForumId & "&scope=threads"
+            If NoReply Then
+                Path = Path & "&noreply=1"
+            End If
+            Return DotNetNuke.Common.Globals.FriendlyUrl(TabInfo, Path, CreateFriendlySlug(ForumName))
+        End Function
 
-			If NoReply Then
-				params = New String(2) {"forumid=" & ForumId, "scope=threads", "noreply=1"}
-				url = NavigateURL(TabId, "", params)
-			Else
-				params = New String(1) {"forumid=" & ForumId, "scope=threads"}
-				url = NavigateURL(TabId, "", params)
-			End If
+        ''' <summary>
+        ''' Navigates user to posts view for a specific threadID.
+        ''' </summary>
+        ''' <param name="TabId"></param>
+        ''' <param name="ForumId"></param>
+        ''' <param name="ThreadId"></param>
+        ''' <returns></returns>
+        ''' <remarks>Usere ForumContainer dispatch control.</remarks>
+        Public Shared Function ContainerViewThreadLink(ByVal PortalId As Integer, ByVal TabId As Integer, ByVal ForumId As Integer, ByVal ThreadId As Integer, ByVal ThreadTitle As String) As String
+            Dim Path As String
+            Dim TabInfo As DotNetNuke.Entities.Tabs.TabInfo = TabController.Instance.GetTab(TabId, PortalId, False)
+            Path = "~/default.aspx?tabid=" & TabId & "&forumid=" & ForumId & "&threadid=" & ThreadId & "&scope=posts"
 
-			Return url
-		End Function
+            Return DotNetNuke.Common.Globals.FriendlyUrl(TabInfo, Path, CreateFriendlySlug(ThreadTitle))
+        End Function
 
-		''' <summary>
-		''' Navigates user to posts view for a specific threadID.
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="ForumId"></param>
-		''' <param name="ThreadId"></param>
-		''' <returns></returns>
-		''' <remarks>Usere ForumContainer dispatch control.</remarks>
-		Public Shared Function ContainerViewThreadLink(ByVal TabId As Integer, ByVal ForumId As Integer, ByVal ThreadId As Integer) As String
-			Dim url As String
-			Dim params As String()
-
-			params = New String(2) {"forumid=" & ForumId, "threadid=" & ThreadId, "scope=posts"}
-			url = NavigateURL(TabId, "", params)
-
-			Return url
-		End Function
-
-		''' <summary>
-		''' Navigates user to list of unread posts.
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <returns></returns>
-		''' <remarks>Added by Skeel</remarks>
-		Public Shared Function ContainerViewUnreadThreadsLink(ByVal TabId As Integer) As String
+        ''' <summary>
+        ''' Navigates user to list of unread posts.
+        ''' </summary>
+        ''' <param name="TabId"></param>
+        ''' <returns></returns>
+        ''' <remarks>Added by Skeel</remarks>
+        Public Shared Function ContainerViewUnreadThreadsLink(ByVal TabId As Integer) As String
 			Dim url As String
 			Dim params As String()
 
@@ -377,37 +428,34 @@ Namespace DotNetNuke.Modules.Forum.Utilities
 			Return url
 		End Function
 
-		''' <summary>
-		''' Navigates user directly to a post regardless of their posts/page, ascending/descending view options.
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="ForumId"></param>
-		''' <param name="PostId"></param>
-		''' <returns></returns>
-		''' <remarks>Uses ForumContainer dispatch control.</remarks>
-		Public Shared Function ContainerViewPostLink(ByVal TabId As Integer, ByVal ForumId As Integer, _
-				ByVal PostId As Integer) As String
-			Dim url As String
-			Dim params As String()
+        ''' <summary>
+        ''' Navigates user directly to a post regardless of their posts/page, ascending/descending view options.
+        ''' </summary>
+        ''' <param name="TabId"></param>
+        ''' <param name="ForumId"></param>
+        ''' <param name="PostId"></param>
+        ''' <returns></returns>
+        ''' <remarks>Uses ForumContainer dispatch control.</remarks>
+        Public Shared Function ContainerViewPostLink(ByVal PortalId As Integer, ByVal TabId As Integer, ByVal ForumId As Integer, ByVal PostId As Integer, ByVal PostTitle As String) As String
+            Dim Path As String
+            Dim TabInfo As DotNetNuke.Entities.Tabs.TabInfo = TabController.Instance.GetTab(TabId, PortalId, False)
+            Path = "~/default.aspx?tabid=" & TabId & "&forumid=" & ForumId & "&postid=" & PostId & "&scope=posts"
 
-			params = New String(2) {"forumid=" & ForumId, "postid=" & PostId, "scope=posts"}
-			url = NavigateURL(TabId, "", params)
-			url = url + "#" + PostId.ToString()
+            Return DotNetNuke.Common.Globals.FriendlyUrl(TabInfo, Path, CreateFriendlySlug(PostTitle)) & "#" & PostId
 
-			Return url
-		End Function
+        End Function
 
-		''' <summary>
-		''' Navigates user to specific page of results for a thread view.
-		''' </summary>
-		''' <param name="TabId"></param>
-		''' <param name="ForumId"></param>
-		''' <param name="ThreadId"></param>
-		''' <param name="PostId"></param>
-		''' <param name="Page"></param>
-		''' <returns></returns>
-		''' <remarks>Uses ForumContainer dispatch control.</remarks>
-		Public Shared Function ContainerViewPostPagedLink(ByVal TabId As Integer, ByVal ForumId As Integer, _
+        ''' <summary>
+        ''' Navigates user to specific page of results for a thread view.
+        ''' </summary>
+        ''' <param name="TabId"></param>
+        ''' <param name="ForumId"></param>
+        ''' <param name="ThreadId"></param>
+        ''' <param name="PostId"></param>
+        ''' <param name="Page"></param>
+        ''' <returns></returns>
+        ''' <remarks>Uses ForumContainer dispatch control.</remarks>
+        Public Shared Function ContainerViewPostPagedLink(ByVal TabId As Integer, ByVal ForumId As Integer, _
 				 ByVal ThreadId As Integer, ByVal PostId As Integer, _
 				 ByVal Page As Integer) As String
 			Dim url As String

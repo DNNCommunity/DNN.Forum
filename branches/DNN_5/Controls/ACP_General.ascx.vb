@@ -18,7 +18,9 @@
 ' DEALINGS IN THE SOFTWARE.
 '
 Option Strict On
-Option Explicit On 
+Option Explicit On
+
+Imports DotNetNuke.Entities.Portals
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
@@ -45,6 +47,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
             chkEnablePostAbuse.Checked = objConfig.EnablePostAbuse
             chkDisableHTMLPosting.Checked = objConfig.DisableHTMLPosting
             ddlPrimaryAlias.SelectedValue = objConfig.PrimaryAlias
+            chkHideHomeButton.Checked = objConfig.HideHomeButton
+            chkHideSearchButton.Checked = objConfig.HideSearchButton
+            chkEnableJournal.Checked = objConfig.EnableJournal
         End Sub
 
 #End Region
@@ -85,6 +90,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
                 ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_THREAD_STATUS, chkEnableThreadStatus.Checked.ToString)
                 ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_POST_ABUSE, chkEnablePostAbuse.Checked.ToString)
                 ctlModule.UpdateModuleSetting(ModuleId, Constants.DISABLE_HTML_POSTING, chkDisableHTMLPosting.Checked.ToString)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.HIDE_HOME_BUTTON, chkHideHomeButton.Checked.ToString)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_JOURNAL, chkEnableJournal.Checked.ToString)
+                ctlModule.UpdateModuleSetting(ModuleId, Constants.HIDE_SEARCH_BUTTON, chkHideSearchButton.Checked.ToString)
                 ctlModule.UpdateModuleSetting(ModuleId, Constants.PRIMARY_SITE_ALIAS, ddlPrimaryAlias.SelectedValue.ToString())
 
                 Configuration.ResetForumConfig(ModuleId)
@@ -120,11 +128,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub BindAliases()
-            Dim cnt As New Portals.PortalAliasController
-            Dim arrAliases As ArrayList
-
-            arrAliases = cnt.GetPortalAliasArrayByPortalID(PortalId)
-            ddlPrimaryAlias.DataSource = arrAliases
+            ddlPrimaryAlias.DataSource = PortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId)
             ddlPrimaryAlias.DataTextField = "HTTPAlias"
             ddlPrimaryAlias.DataValueField = "HTTPAlias"
             ddlPrimaryAlias.DataBind()

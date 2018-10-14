@@ -23,6 +23,18 @@
 		<asp:CheckBox ID="chkDisableHTMLPosting" runat="server" />
 	</div>
 	<div class="dnnFormItem">
+		<dnn:Label ID="plHideSearchButton" runat="server" ControlName="chkHideSearchButton" Suffix=":" />
+		<asp:CheckBox ID="chkHideSearchButton" runat="server" />
+	</div>
+	<div class="dnnFormItem">
+		<dnn:Label ID="plEnableJournal" runat="server" ControlName="chkEnableJournal" Suffix=":" />
+		<asp:CheckBox ID="chkEnableJournal" runat="server" />
+	</div>
+	<div class="dnnFormItem">
+		<dnn:Label ID="plHideHomeButton" runat="server" ControlName="chkHideHomeButton" Suffix=":" />
+		<asp:CheckBox ID="chkHideHomeButton" runat="server" />
+	</div>
+	<div class="dnnFormItem">
 		<dnn:label id="plSearchIndexDate" runat="server" Suffix=":" controlname="chkShowNavigator" />
 		<asp:Label id="lblDateIndexed" runat="server" />&nbsp;
 		<asp:linkbutton id="cmdResetDate" runat="server" resourcekey="cmdResetDate" EnableViewState="false" CausesValidation="false" />

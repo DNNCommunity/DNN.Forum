@@ -46,7 +46,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns>The ForumEmailTemplateInfo object containing specific details about a specific email template.</returns>
 		''' <remarks></remarks>
 		Public Function GetEmailTemplate(ByVal EmailTemplateID As Integer) As EmailTemplateInfo
-			Return CType(CBO.FillObject(DataProvider.Instance().GetEmailTemplate(EmailTemplateID), GetType(EmailTemplateInfo)), EmailTemplateInfo)
+            Return CBO.FillObject(Of EmailTemplateInfo)(DataProvider.Instance().GetEmailTemplate(EmailTemplateID))
 		End Function
 
 		''' <summary>
@@ -57,7 +57,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Public Function GetEmailTemplateForMail(ByVal ModuleID As Integer, ByVal ForumTemplateTypeID As Integer) As EmailTemplateInfo
-			Return CType(CBO.FillObject(DataProvider.Instance().GetEmailTemplateForMail(ModuleID, ForumTemplateTypeID), GetType(EmailTemplateInfo)), EmailTemplateInfo)
+            Return CBO.FillObject(Of EmailTemplateInfo)(DataProvider.Instance().GetEmailTemplateForMail(ModuleID, ForumTemplateTypeID))
 		End Function
 
 		''' <summary>

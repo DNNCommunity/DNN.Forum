@@ -94,7 +94,7 @@ Namespace DotNetNuke.Modules.Forum
                     cmdBack.NavigateUrl = Utilities.Links.MCPControlLink(TabId, ModuleId, ModeratorAjaxControl.ModQueue)
 
                     hlForum.Text = mForumInfo.Name
-                    hlForum.NavigateUrl = Utilities.Links.ContainerViewForumLink(TabId, mForumID, False)
+                    hlForum.NavigateUrl = Utilities.Links.ContainerViewForumLink(PortalId, TabId, mForumID, False, mForumInfo.Name)
 
                     BindList()
                 End If
@@ -125,7 +125,7 @@ Namespace DotNetNuke.Modules.Forum
                 Select Case cmdButton.CommandName.ToLower
                     Case "approve"
                         Dim _notes As String = "Approved"
-                        Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(TabId, objPost.ForumID, objPost.PostID)
+                        Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(PortalId, TabId, objPost.ForumID, objPost.PostID, objPost.Subject)
 
                         ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, objPost.ForumID, objPost.ThreadID)
 
@@ -166,7 +166,7 @@ Namespace DotNetNuke.Modules.Forum
                         Response.Redirect(_nextURL, False)
                     Case "edit"
                         Dim _notes As String = "Approved with edit"
-                        Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(TabId, objPost.ForumID, objPost.PostID)
+                        Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(PortalId, TabId, objPost.ForumID, objPost.PostID, objPost.Subject)
 
                         ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, objPost.ForumID, objPost.ThreadID)
                         DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(objPost.Author.UserID, PortalId)
@@ -178,7 +178,7 @@ Namespace DotNetNuke.Modules.Forum
                         Response.Redirect(url, False)
                     Case "approverespond"
                         Dim _notes As String = "Approved and respond"
-                        Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(TabId, objPost.ForumID, objPost.PostID)
+                        Dim _mailURL As String = Utilities.Links.ContainerViewPostLink(PortalId, TabId, objPost.ForumID, objPost.PostID, objPost.Subject)
 
                         ApprovePost(postID, CurrentForumUser.UserID, _notes, _mailURL, ProfileUrl, objPost.ForumID, objPost.ThreadID)
                         DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateUserCache(objPost.Author.UserID, PortalId)
@@ -487,7 +487,11 @@ Namespace DotNetNuke.Modules.Forum
         ''' </remarks>
         Protected Function ThreadLink(ByVal ThreadId As Integer, ByVal ForumID As Integer, ByVal ParentPostId As Integer) As String
             If ParentPostId > 0 Then
-                Return Utilities.Links.ContainerViewThreadLink(TabId, ForumID, ThreadId)
+                Dim tCont As ThreadController
+                tCont = New ThreadController()
+                Dim tInfo As ThreadInfo
+                tInfo = tCont.GetThread(ThreadId)
+                Return Utilities.Links.ContainerViewThreadLink(PortalId, TabId, ForumID, ThreadId, tInfo.Subject)
             Else : Return String.Empty
             End If
         End Function

@@ -100,7 +100,7 @@ Namespace DotNetNuke.Modules.Forum
 
                 If Request.IsAuthenticated Then
                     Dim LoggedOnUserID As Integer
-                    LoggedOnUserID = Users.UserController.GetCurrentUserInfo.UserID
+                    LoggedOnUserID = Users.UserController.Instance.GetCurrentUserInfo.UserID()
 
                     ' Do a check here to make sure the person trying to report this hasn't reported it before
                     Dim cntPostReport As New PostReportedController
@@ -118,12 +118,6 @@ Namespace DotNetNuke.Modules.Forum
                 ForumUtils.LoadCssFile(DefaultPage, objConfig)
 
                 If Page.IsPostBack = False Then
-                    If Not Request.UrlReferrer Is Nothing Then
-                        cmdCancel.NavigateUrl = Request.UrlReferrer.ToString()
-                    Else
-                        cmdCancel.NavigateUrl = NavigateURL()
-                    End If
-
                     PopulatePost(_PostInfo)
                     PopulateTemplateDDL()
 
@@ -137,6 +131,14 @@ Namespace DotNetNuke.Modules.Forum
             Catch exc As Exception
                 ProcessModuleLoadException(Me, exc)
             End Try
+        End Sub
+
+        Protected Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
+            If Not ViewState("UrlReferrer") Is Nothing Then
+                Response.Redirect(CType(ViewState("UrlReferrer"), String), False)
+            Else
+                Response.Redirect(NavigateURL())
+            End If
         End Sub
 
         ''' <summary>
@@ -165,10 +167,10 @@ Namespace DotNetNuke.Modules.Forum
                     Notes = txtReason.Text
 
                     ' send the report notice to the db (increments number of reports by 1 each time
-                    cntPostReport.AddPostReport(_PostInfo.PostID, Users.UserController.GetCurrentUserInfo.UserID, Notes)
+                    cntPostReport.AddPostReport(_PostInfo.PostID, Users.UserController.Instance.GetCurrentUserInfo.UserID, Notes)
 
                     Dim url As String
-                    url = Utilities.Links.ContainerViewPostLink(TabId, _ForumID, _PostID)
+                    url = Utilities.Links.ContainerViewPostLink(PortalId, TabId, _ForumID, _PostID, _PostInfo.Subject)
 
                     'Notes
                     If objConfig.MailNotification Then

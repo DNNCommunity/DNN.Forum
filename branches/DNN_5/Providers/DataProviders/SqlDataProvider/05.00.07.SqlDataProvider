@@ -1,0 +1,237 @@
+﻿
+if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_Attachment_{objectQualifier}Forum_Posts'))
+ALTER TABLE {databaseOwner}{objectQualifier}Forum_Attachments WITH NOCHECK ADD 
+	CONSTRAINT FK_{objectQualifier}Forum_Attachment_{objectQualifier}Forum_Posts FOREIGN KEY 
+	(
+		[PostID]
+	) REFERENCES {databaseOwner}{objectQualifier}Forum_Posts (
+		[PostID]
+	) ON DELETE CASCADE  
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_FilterWords_{objectQualifier}Portals'))
+ALTER TABLE {databaseOwner}{objectQualifier}Forum_FilterWords ADD 
+	CONSTRAINT FK_{objectQualifier}Forum_FilterWords_{objectQualifier}Portals FOREIGN KEY 
+	(
+		[PortalID]
+	) REFERENCES {databaseOwner}{objectQualifier}Portals (
+		[PortalID]
+	) ON DELETE CASCADE  ON UPDATE CASCADE  
+GO
+
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_Forums_{objectQualifier}Forum_Groups'))
+ALTER TABLE {databaseOwner}{objectQualifier}Forum_Forums ADD 
+	CONSTRAINT FK_{objectQualifier}Forum_Forums_{objectQualifier}Forum_Groups FOREIGN KEY 
+	(
+		[GroupID]
+	) REFERENCES {databaseOwner}{objectQualifier}Forum_Groups (
+		[GroupID]
+	) ON DELETE CASCADE  
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_Posts_{objectQualifier}Forum_Threads'))
+ALTER TABLE {databaseOwner}{objectQualifier}Forum_Posts ADD 
+	CONSTRAINT FK_{objectQualifier}Forum_Posts_{objectQualifier}Forum_Threads FOREIGN KEY 
+	(
+		[ThreadID]
+	) REFERENCES {databaseOwner}{objectQualifier}Forum_Threads (
+		[ThreadID]
+	) ON DELETE CASCADE  ,
+	CONSTRAINT FK_{objectQualifier}Forum_Posts_{objectQualifier}Forum_Users FOREIGN KEY 
+	(
+		[UserID]
+	) REFERENCES {databaseOwner}{objectQualifier}Forum_Users (
+		[UserID]
+	) ON DELETE CASCADE  
+GO
+
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_ThreadRating_Forum_Threads'))
+ALTER TABLE {databaseOwner}{objectQualifier}Forum_ThreadRating ADD 
+	CONSTRAINT FK_{objectQualifier}Forum_ThreadRating_Forum_Threads FOREIGN KEY 
+	(
+		[ThreadID]
+	) REFERENCES {databaseOwner}{objectQualifier}Forum_Threads (
+		[ThreadID]
+	) ON DELETE CASCADE  ,
+	CONSTRAINT FK_{objectQualifier}Forum_ThreadRating_Forum_Users FOREIGN KEY 
+	(
+		[UserID]
+	) REFERENCES {databaseOwner}{objectQualifier}Forum_Users (
+		[UserID]
+	)
+GO
+
+
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_Threads_Forum_Forums'))
+ALTER TABLE {databaseOwner}{objectQualifier}Forum_Threads ADD 
+	CONSTRAINT FK_{objectQualifier}Forum_Threads_Forum_Forums FOREIGN KEY 
+	(
+		[ForumID]
+	) REFERENCES {databaseOwner}{objectQualifier}Forum_Forums (
+		[ForumID]
+	) ON DELETE CASCADE  
+GO
+
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_ThreadsRead_{objectQualifier}Forum_Forums'))
+ALTER TABLE {databaseOwner}{objectQualifier}Forum_ThreadsRead ADD 
+	CONSTRAINT FK_{objectQualifier}Forum_ThreadsRead_{objectQualifier}Forum_Forums FOREIGN KEY 
+	(
+		[ForumID]
+	) REFERENCES {databaseOwner}{objectQualifier}Forum_Forums (
+		[ForumID]
+	) ON DELETE CASCADE  ,
+	CONSTRAINT FK_{objectQualifier}Forum_ThreadsRead_{objectQualifier}Forum_Users FOREIGN KEY 
+	(
+		[UserID]
+	) REFERENCES {databaseOwner}{objectQualifier}Forum_Users (
+		[UserID]
+	)
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_TrackedForums_{objectQualifier}Forum_Forums'))
+ALTER TABLE {databaseOwner}{objectQualifier}Forum_TrackedForums ADD 
+	CONSTRAINT FK_{objectQualifier}Forum_TrackedForums_{objectQualifier}Forum_Forums FOREIGN KEY 
+	(
+		[ForumID]
+	) REFERENCES {databaseOwner}{objectQualifier}Forum_Forums (
+		[ForumID]
+	) ON DELETE CASCADE  ,
+	CONSTRAINT FK_{objectQualifier}Forum_TrackedForums_{objectQualifier}Forum_Users FOREIGN KEY 
+	(
+		[UserID]
+	) REFERENCES {databaseOwner}{objectQualifier}Forum_Users (
+		[UserID]
+	)
+GO
+
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_TrackedThreads_{objectQualifier}Forum_Threads'))
+ALTER TABLE {databaseOwner}{objectQualifier}Forum_TrackedThreads ADD 
+	CONSTRAINT FK_{objectQualifier}Forum_TrackedThreads_{objectQualifier}Forum_Threads FOREIGN KEY 
+	(
+		[ThreadID]
+	) REFERENCES {databaseOwner}{objectQualifier}Forum_Threads (
+		[ThreadID]
+	) ON DELETE CASCADE  ,
+	CONSTRAINT FK_{objectQualifier}Forum_TrackedThreads_{objectQualifier}Forum_Users FOREIGN KEY 
+	(
+		[UserID]
+	) REFERENCES {databaseOwner}{objectQualifier}Forum_Users (
+		[UserID]
+	) 
+GO
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_Moderate_History_{objectQualifier}Portals'))
+ALTER TABLE {databaseOwner}[{objectQualifier}Forum_Moderate_History] ADD 
+	CONSTRAINT [FK_{objectQualifier}Forum_Moderate_History_{objectQualifier}Portals] FOREIGN KEY 
+	(
+		[PortalID]
+	) REFERENCES {databaseOwner}{objectQualifier}Portals (
+		[PortalID]
+	) ON DELETE CASCADE  
+GO
+
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_Avatar_Role_{objectQualifier}Roles'))
+ALTER TABLE {databaseOwner}[{objectQualifier}Forum_Avatar_Role] WITH NOCHECK ADD 
+	CONSTRAINT [FK_{objectQualifier}Forum_Avatar_Role_{objectQualifier}Roles] FOREIGN KEY 
+	(
+		[RoleID]
+	) REFERENCES {databaseOwner}{objectQualifier}Roles (
+		[RoleID]
+	) ON DELETE CASCADE  
+GO
+
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_Attachments_{objectQualifier}Files'))
+ALTER TABLE {databaseOwner}[{objectQualifier}Forum_Attachments] WITH NOCHECK ADD 
+	CONSTRAINT [FK_{objectQualifier}Forum_Attachments_{objectQualifier}Files] FOREIGN KEY 
+	(
+		[FileID]
+	) REFERENCES {databaseOwner}{objectQualifier}Files (
+		[FileID]
+	) ON DELETE CASCADE  
+GO
+
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_Post_Reported_{objectQualifier}Forum_Posts'))
+ALTER TABLE {databaseOwner}[{objectQualifier}Forum_Post_Reported] ADD 
+	CONSTRAINT [FK_{objectQualifier}Forum_Post_Reported_{objectQualifier}Forum_Posts] FOREIGN KEY 
+	(
+		[PostID]
+	) REFERENCES {databaseOwner}{objectQualifier}Forum_Posts (
+		[PostID]
+	) ON DELETE CASCADE  
+GO
+
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_Post_Reported_{objectQualifier}Users'))
+ALTER TABLE {databaseOwner}[{objectQualifier}Forum_Post_Reported] ADD 
+	CONSTRAINT [FK_{objectQualifier}Forum_Post_Reported_{objectQualifier}Users] FOREIGN KEY 
+	(
+		[UserID]
+	) REFERENCES {databaseOwner}{objectQualifier}Users (
+		[UserID]
+	) ON DELETE CASCADE  
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_Members_GetByDisplayName') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Forum_Members_GetByDisplayName
+GO
+
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_Members_GetAll') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure {databaseOwner}{objectQualifier}Forum_Members_GetAll
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_Members_GetByEmail') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}Forum_Members_GetByEmail
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_Members_GetOnline') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}Forum_Members_GetOnline
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_Members_GetByProfileProp') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}Forum_Members_GetByProfileProp
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_UsersGetByDisplayName') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}Forum_UsersGetByDisplayName
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_vw_ForumUsers') and OBJECTPROPERTY(id, N'IsView') = 1)
+	drop view {databaseOwner}{objectQualifier}Forum_vw_ForumUsers
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_Members_GetByUsername') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}Forum_Members_GetByUsername
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_Ad_Vendors_Get') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}Forum_Ad_Vendors_Get
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_Ad_Vendors_Update') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}Forum_Ad_Vendors_Update
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_Ad_Vendors_BannersGet') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}Forum_Ad_Vendors_BannersGet
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}Forum_Ad_Vendors_BannerViewIncrement') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+	drop procedure {databaseOwner}{objectQualifier}Forum_Ad_Vendors_BannerViewIncrement
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'FK_{objectQualifier}Forum_Ad_Vendors_{objectQualifier}Vendors') and OBJECTPROPERTY(id, N'IsForeignKey') = 1)
+	ALTER TABLE {databaseOwner}{objectQualifier}Forum_Ad_Vendors DROP CONSTRAINT FK_{objectQualifier}Forum_Ad_Vendors_{objectQualifier}Vendors
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{objectQualifier}Forum_Ad_Vendors') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+	drop table {databaseOwner}{objectQualifier}Forum_Ad_Vendors
+GO

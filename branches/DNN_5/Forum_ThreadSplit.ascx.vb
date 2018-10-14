@@ -221,8 +221,6 @@ Namespace DotNetNuke.Modules.Forum
                     Dim cntForum As New ForumController()
                     Dim objForum As ForumInfo = cntForum.GetForumItemCache(ForumID)
 
-                    ' return to new forum page
-                    Dim strURL As String = Utilities.Links.ContainerViewThreadLink(TabId, newForumID, PostID)
                     Dim ctlThread As New ThreadController
                     'Dim MyProfileUrl As String = Utils.MySettingsLink(TabId, ModuleId)
                     Dim MyProfileUrl As String = Utilities.Links.UCP_UserLinks(TabId, ModuleId, UserAjaxControl.Tracking, PortalSettings)
@@ -266,6 +264,17 @@ Namespace DotNetNuke.Modules.Forum
 
                     ' Handle sending emails 
                     If chkEmailUsers.Checked And objConfig.MailNotification Then
+                        Dim pCont As PostController
+                        pCont = New PostController()
+                        Dim pInfo As PostInfo
+                        pInfo = pCont.GetPostInfo(PostID, PortalId)
+                        Dim tCont As ThreadController
+                        tCont = New ThreadController()
+                        Dim tInfo As ThreadInfo
+                        tInfo = tCont.GetThread(pInfo.ThreadID)
+
+                        ' return to new forum page
+                        Dim strURL As String = Utilities.Links.ContainerViewThreadLink(PortalId, TabId, newForumID, pInfo.ThreadID, tInfo.Subject)
                         Utilities.ForumUtils.SendForumMail(PostID, strURL, ForumEmailType.UserThreadSplit, Notes, objConfig, MyProfileUrl, PortalId)
                         ' we have several scenarios: post approved - send mod emails of split and users email of split
                         ' Post Not Approved - send mods email of split, user email of approved
@@ -282,7 +291,7 @@ Namespace DotNetNuke.Modules.Forum
                 LogException(ex)
             End Try
         End Sub
-        
+
 #End Region
 
 #Region "Private Methods"
@@ -326,11 +335,11 @@ Namespace DotNetNuke.Modules.Forum
                     url = (CType(ViewState("UrlReferrer"), String))
                 Else
                     ' behave as before (normal usage)
-                    url = Utilities.Links.ContainerViewPostLink(TabId, Post.ForumID, Post.PostID)
+                    url = Utilities.Links.ContainerViewPostLink(PortalId, TabId, Post.ForumID, Post.PostID, Post.Subject)
                 End If
             Else
                 ' behave as before (normal usage)
-                url = Utilities.Links.ContainerViewPostLink(TabId, Post.ForumID, Post.PostID)
+                url = Utilities.Links.ContainerViewPostLink(PortalId, TabId, Post.ForumID, Post.PostID, Post.Subject)
             End If
 
             Return url
@@ -467,7 +476,7 @@ Namespace DotNetNuke.Modules.Forum
                         bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(objPost.Body), objConfig, objPost.ParseInfo)
                     Else
                         'At lease Inline to Parse
-                        If Users.UserController.GetCurrentUserInfo.UserID > 0 Then
+                        If Users.UserController.Instance.GetCurrentUserInfo.UserID > 0 Then
                             bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(objPost.Body), objConfig, objPost.ParseInfo, objPost.AttachmentCollection(objConfig.EnableAttachment), True)
                         Else
                             bodyForumText = New Utilities.PostContent(System.Web.HttpUtility.HtmlDecode(objPost.Body), objConfig, objPost.ParseInfo, objPost.AttachmentCollection(objConfig.EnableAttachment), False)

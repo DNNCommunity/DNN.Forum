@@ -1,0 +1,81 @@
+<h3>Forum 5.1.0</h3>
+<p class="Contributor">
+	Ilpo Juvander<br />
+	<a href="mailto:ilpo.juvander@hotmail.com">ilpo.juvander@hotmail.com</a><br />
+	<a href=http://www.juvander.fi>http://www.juvander.fi</a><br /><br />
+</p>
+<hr/>
+<div class="License">
+	<h3>About the Core Forum</h3>
+	<p class="Owner">
+		<b>Version 5.1.0</b><br /><br />
+		This version of the module requires DotNetNuke Core 8.0.0 or greater. 
+		FYI: Developers should be aware that the module uses Visual Studio 2015 and above. 
+	</p>	
+	<ul>					
+		<li>Support for Journal with general setting to enable/disable journal entries from being created</li>		
+		<li>Issue #8 fixed</li>
+		<li>Issue #12 fixed</li>
+		<li>Marked one of the SubmitExternalPost as Obsole and this will be removed totally in next release (Issue #9)</li>		
+		<li>Added another SubmitExternalPost to allow IsPinned (Issue #11)</li>
+		<li>Returning SubmitPostResult from post to database which includes postid and result (Issue #11)</li>
+		<li>Changed behaviour what happens after new post: If post was approved, user is taken directly to created post.</li>
+		<li>Links using friendlyurl's</li>
+		<li>Changed how e-mail is sent instead of pull request #16</li>
+	</ul>
+	<br />
+	<p class="Owner">
+		<b>Version 5.0.7</b><br /><br />
+		This version of the module requires DotNetNuke Core 8.0.0 or greater. 
+		FYI: Developers should be aware that the module uses Visual Studio 2013 and above. 
+	</p>	
+	<ul>		
+		<li>Azure Compatibility</li>		
+		<li>Sql cleanup</li>				
+		<li>SuperUser avatar issue #5 fixed</li>		
+		<li>Issue #6 fixed</li>		
+		<li>Issue #8 fixed</li>		
+	</ul>
+	<br />
+	<p class="Owner">
+		<b>Version 5.0.6</b><br /><br />
+	</p>
+	<ul>		
+		<li>Upgrade to DNN8</li>
+		<li>Removed advertisement</li>
+		<li>Cleaning deprecated methods</li>
+		<li>Fixed thread last post popup text from html to text</li>
+	</ul>
+	<br />
+	<p class="Owner">
+		<b>Version 5.0.5</b><br /><br />
+	</p>
+	<ul>		
+		<li>Merged changes from CodePlex which were not included as part of 5.0.3 release</li>
+		<li>Fixed forum thread header</li>
+		<li>Cleaning forum avatars to support only avatar specified in user settings</li>
+		<li>Fixing Quick Reply causing duplicates when user pressing submit more than once</li>
+		<li>Added Forum last post to include Title attribute, not just the shortened post title</li>
+	</ul>
+	<br />
+	<p class="Owner">
+		<b>Version 5.0.4</b><br /><br />
+	</p>
+	<ul>
+		<li>Upgrade to VS2013
+		<li>DNN7 required</li>
+		<li>Setting to hide forum home and search buttons</li>
+		<li>New search from DNN7 implemented</li>
+		<li>Tag cloud working</li>
+		<li>Fixed forum icons: http://dnnforum.codeplex.com/workitem/25728</li>
+		<li>Display threads button removed as it does not render properly</li>
+		<li>Fixed rendering issue on search bar</li>
+		<li>Changed email link to go directlly to the post instead of thread when new post in forum</li>
+		<li>Changing how urls in forum posts are shortened</li>
+		<li>Fixing urls on search</li>
+		<li>Fixed logged in user dattime issue: http://www.dotnetnuke.com/Resources/Forums/forumid/199/threadid/463290/scope/posts.aspx</li>
+		<li>Performance optimizations</li>
+		<li>Allowing hiding 'by author': https://dnnforum.codeplex.com/workitem/25916</li>
+		<li>Fixed issue https://github.com/juvander/DotNetNuke-Forum/issues/1</li>
+	</ul>
+</div>

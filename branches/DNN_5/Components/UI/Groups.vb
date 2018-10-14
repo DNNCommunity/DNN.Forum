@@ -291,64 +291,64 @@ Namespace DotNetNuke.Modules.Forum
 			RenderCellBegin(wr, "Forum_AltHeader", "", "100%", "left", "middle", "", "") '<td>
 			Dim GroupLinkURL As String
 			wr.Write("&nbsp;")
-			GroupLinkURL = Utilities.Links.ContainerSingleGroupLink(TabID, Group.GroupID)
+            GroupLinkURL = Utilities.Links.ContainerSingleGroupLink(TabID, PortalID, Group.GroupID, Group.Name)
 
-			RenderLinkButton(wr, GroupLinkURL, Group.Name, "Forum_AltHeaderText")
+            RenderLinkButton(wr, GroupLinkURL, Group.Name, "Forum_AltHeaderText")
 
-			'wr.Write(Group.Name)
-			RenderCellEnd(wr) ' </td>
+            'wr.Write(Group.Name)
+            RenderCellEnd(wr) ' </td>
 
-			wr.AddAttribute(HtmlTextWriterAttribute.Width, "1px")
-			wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_AltHeaderCapRight")
-			wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
-			RenderImage(wr, objConfig.GetThemeImageURL("alt_headfoot_height.gif"), "", "")
+            wr.AddAttribute(HtmlTextWriterAttribute.Width, "1px")
+            wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_AltHeaderCapRight")
+            wr.RenderBeginTag(HtmlTextWriterTag.Td) ' <td>
+            RenderImage(wr, objConfig.GetThemeImageURL("alt_headfoot_height.gif"), "", "")
 
-			RenderCellEnd(wr) ' </td>
+            RenderCellEnd(wr) ' </td>
 
-			' Finish middle table
-			RenderRowEnd(wr) ' </Tr>
-			RenderTableEnd(wr) ' </table>
+            ' Finish middle table
+            RenderRowEnd(wr) ' </Tr>
+            RenderTableEnd(wr) ' </table>
 
-			'end middle column
-			RenderCellEnd(wr) ' </td>
+            'end middle column
+            RenderCellEnd(wr) ' </td>
 
-			' End row
-			RenderRowEnd(wr) ' </Tr>
-		End Sub
+            ' End row
+            RenderRowEnd(wr) ' </Tr>
+        End Sub
 
-		''' <summary>
-		''' Area which has the +/- similar to section head.  This displays group name + Parent Forum name
-		''' </summary>
-		''' <param name="wr"></param>
-		''' <param name="Group"></param>
-		''' <remarks>
-		''' </remarks>
-		Private Sub RenderGroupForumInfo(ByVal wr As HtmlTextWriter, ByVal Group As GroupInfo)
-			' Start row
-			RenderRowBegin(wr) '<tr>
+        ''' <summary>
+        ''' Area which has the +/- similar to section head.  This displays group name + Parent Forum name
+        ''' </summary>
+        ''' <param name="wr"></param>
+        ''' <param name="Group"></param>
+        ''' <remarks>
+        ''' </remarks>
+        Private Sub RenderGroupForumInfo(ByVal wr As HtmlTextWriter, ByVal Group As GroupInfo)
+            ' Start row
+            RenderRowBegin(wr) '<tr>
 
-			' This is middle column start - set padding for 4, had Forum_AltHeader as class
-			RenderCellBegin(wr, "", "", "", "left", "middle", "4", "")	'<td>
+            ' This is middle column start - set padding for 4, had Forum_AltHeader as class
+            RenderCellBegin(wr, "", "", "", "left", "middle", "4", "")  '<td>
 
-			' Start table
-			RenderTableBegin(wr, "", "", "", "100%", "0", "0", "left", "", "0") '<Table>            
-			RenderRowBegin(wr) '<tr>
+            ' Start table
+            RenderTableBegin(wr, "", "", "", "100%", "0", "0", "left", "", "0") '<Table>            
+            RenderRowBegin(wr) '<tr>
 
-			' space to keep subject from being too close and still allow it to be evenly spaced if it wraps to a new row because it is long
-			wr.AddAttribute(HtmlTextWriterAttribute.Width, "1px")
-			wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_AltHeaderCapLeft")
-			wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
-			RenderImage(wr, objConfig.GetThemeImageURL("alt_headfoot_height.gif"), "", "")
-			RenderCellEnd(wr) ' </td>
+            ' space to keep subject from being too close and still allow it to be evenly spaced if it wraps to a new row because it is long
+            wr.AddAttribute(HtmlTextWriterAttribute.Width, "1px")
+            wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_AltHeaderCapLeft")
+            wr.RenderBeginTag(HtmlTextWriterTag.Td) ' <td>
+            RenderImage(wr, objConfig.GetThemeImageURL("alt_headfoot_height.gif"), "", "")
+            RenderCellEnd(wr) ' </td>
 
-			' group name with link
-			RenderCellBegin(wr, "Forum_AltHeader", "", "100%", "left", "middle", "", "") '<td>
-			Dim GroupLinkURL As String
-			wr.Write("&nbsp;")
-			GroupLinkURL = Utilities.Links.ContainerSingleGroupLink(TabID, Group.GroupID)
+            ' group name with link
+            RenderCellBegin(wr, "Forum_AltHeader", "", "100%", "left", "middle", "", "") '<td>
+            Dim GroupLinkURL As String
+            wr.Write("&nbsp;")
+            GroupLinkURL = Utilities.Links.ContainerSingleGroupLink(TabID, PortalID, Group.GroupID, Group.Name)
 
-			Dim forum As ForumInfo
-			Dim cntForum As New ForumController
+            Dim forum As ForumInfo
+            Dim cntForum As New ForumController
 			forum = cntForum.GetForumItemCache(SelectedForumID)
 
 
@@ -619,12 +619,12 @@ Namespace DotNetNuke.Modules.Forum
 						Else
 							'[Skeel] Check if this is a parent forum
 							If objForum.ContainsChildForums = True Then
-								'Parent forum, link to group view
-								url = Utilities.Links.ContainerParentForumLink(TabID, objForum.GroupID, objForum.ForumID)
-							Else
-								'Normal Forum, link goes to Thread view
-								url = Utilities.Links.ContainerViewForumLink(TabID, objForum.ForumID, False)
-							End If
+                                'Parent forum, link to group view
+                                url = Utilities.Links.ContainerParentForumLink(TabID, objForum.GroupID, objForum.ForumID)
+                            Else
+                                'Normal Forum, link goes to Thread view
+                                url = Utilities.Links.ContainerViewForumLink(PortalID, TabID, objForum.ForumID, False, objForum.Name)
+                            End If
 						End If
 					End If
 
@@ -738,7 +738,7 @@ Namespace DotNetNuke.Modules.Forum
 					' subject/# currently viewing column
 					wr.AddAttribute(HtmlTextWriterAttribute.Valign, "top")
 					wr.AddAttribute(HtmlTextWriterAttribute.Align, "left")
-					wr.AddAttribute(HtmlTextWriterAttribute.Width, "100%")
+                    wr.AddAttribute(HtmlTextWriterAttribute.Width, "90%")
 					wr.RenderBeginTag(HtmlTextWriterTag.Td)	'<td>
 
 					' table to hold theard subject & reserved area for number of users currently viewing            
@@ -885,13 +885,12 @@ Namespace DotNetNuke.Modules.Forum
 
 					wr.RenderEndTag() '  </td>
 
-					If even Then
-						wr.AddAttribute(HtmlTextWriterAttribute.Class, "")
-					Else
-						wr.AddAttribute(HtmlTextWriterAttribute.Class, "")
-					End If
+                    If even Then
+                        wr.AddAttribute(HtmlTextWriterAttribute.Class, "")
+                    Else
+                        wr.AddAttribute(HtmlTextWriterAttribute.Class, "")
+                    End If
 
-					wr.AddAttribute(HtmlTextWriterAttribute.Align, "right")
 					wr.RenderBeginTag(HtmlTextWriterTag.Td)	' <td>
 
 					If objForum.ForumType = 2 Then
@@ -917,9 +916,10 @@ Namespace DotNetNuke.Modules.Forum
 							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText")
 							wr.RenderBeginTag(HtmlTextWriterTag.Div) ' <div>
 
-							url = Utilities.Links.ContainerViewPostLink(TabID, objForum.ForumID, objForum.MostRecentPostID)
-							wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
-							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText")
+                            url = Utilities.Links.ContainerViewPostLink(PortalID, TabID, objForum.ForumID, objForum.MostRecentPostID, objForum.MostRecentPost.Subject)
+                            wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
+                            wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText")
+                            wr.AddAttribute(HtmlTextWriterAttribute.Title, System.Web.HttpUtility.HtmlDecode(lastPostInfo.Subject))
 							wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
 							wr.Write(truncatedTitle)
 							wr.RenderEndTag() '  </A>
@@ -936,10 +936,9 @@ Namespace DotNetNuke.Modules.Forum
 
 							wr.RenderEndTag() ' </div>
 
-							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText")
-							wr.RenderBeginTag(HtmlTextWriterTag.Span) ' <span>
+                            wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostTextBy")
+                            wr.RenderBeginTag(HtmlTextWriterTag.Div) ' <div>
 							wr.Write(Me.BaseControl.LocalizedText("by") & " ")
-							wr.RenderEndTag() ' </span>
 
 							url = String.Empty
 
@@ -956,7 +955,7 @@ Namespace DotNetNuke.Modules.Forum
 							End If
 
 							wr.AddAttribute(HtmlTextWriterAttribute.Href, url)
-							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText") 'Forum_AliasLink
+                            wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostTextBy") 'Forum_AliasLink
 							wr.RenderBeginTag(HtmlTextWriterTag.A) ' <a>
 							If objForum.MostRecentPost IsNot Nothing Then
 								If objForum.MostRecentPost.Author IsNot Nothing Then
@@ -964,7 +963,8 @@ Namespace DotNetNuke.Modules.Forum
 								End If
 							End If
 
-							wr.RenderEndTag() '  </A>
+                            wr.RenderEndTag() '  </A>
+                            wr.RenderEndTag() ' </div>
 						Else
 							wr.AddAttribute(HtmlTextWriterAttribute.Class, "Forum_LastPostText")
 							wr.RenderBeginTag(HtmlTextWriterTag.Span) '<span>
@@ -1035,8 +1035,8 @@ Namespace DotNetNuke.Modules.Forum
 							' aggregated
 							Url = Utilities.Links.ContainerAggregatedLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, False)
 						Else
-							Url = Utilities.Links.ContainerViewForumLink(objConfig.CurrentPortalSettings.ActiveTab.TabID, SubForum.ForumID, False)
-						End If
+                            Url = Utilities.Links.ContainerViewForumLink(PortalID, objConfig.CurrentPortalSettings.ActiveTab.TabID, SubForum.ForumID, False, SubForum.Name)
+                        End If
 					End If
 
 					wr.AddAttribute(HtmlTextWriterAttribute.Href, Url.Replace("~/", ""))

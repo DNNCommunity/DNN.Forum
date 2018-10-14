@@ -20,6 +20,8 @@
 Option Strict On
 Option Explicit On
 
+Imports DotNetNuke.Entities.Controllers
+
 Namespace DotNetNuke.Modules.Forum.ACP
 
     ''' <summary>
@@ -40,13 +42,15 @@ Namespace DotNetNuke.Modules.Forum.ACP
         Protected Sub LoadInitialView() Implements Utilities.AjaxLoader.IPageLoad.LoadInitialView
             BindTabs()
 
-            If Not Entities.Controllers.HostController.Instance.GetSettingsDictionary() Is Nothing Then
-                If Not Entities.Controllers.HostController.Instance.GetString("DisableUsersOnline") Is Nothing Then
-                    If Not Entities.Controllers.HostController.Instance.GetString("DisableUsersOnline").ToString = "Y" Then
-                        divUserOnline.Visible = True
-                        chkUserOnline.Checked = objConfig.EnableUsersOnline
-                    End If
+            If HostController.Instance.GetSettingsDictionary.ContainsKey("DisableUsersOnline") And (Not HostController.Instance.GetSettingsDictionary("DisableUsersOnline") Is Nothing) Then
+                If HostController.Instance.GetSettingsDictionary("DisableUsersOnline").ToString = "Y" Then
+                    divUserOnline.Visible = False
+                Else
+                    divUserOnline.Visible = True
+                    chkUserOnline.Checked = objConfig.EnableUsersOnline
                 End If
+            Else
+                divUserOnline.Visible = False
             End If
 
             chkEnableExtProfilePage.Checked = objConfig.EnableExternalProfile

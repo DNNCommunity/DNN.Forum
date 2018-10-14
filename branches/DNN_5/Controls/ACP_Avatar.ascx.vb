@@ -42,28 +42,13 @@ Namespace DotNetNuke.Modules.Forum.ACP
             BindProfileProperties()
 
             chkEnableUserAvatar.Checked = objConfig.EnableUserAvatar
-            chkEnableProfileAvatar.Checked = objConfig.EnableProfileAvatar
-            chkEnableProfileUserFolders.Checked = objConfig.EnableProfileUserFolders
             rcbProfileAvatarPropertyName.SelectedValue = objConfig.AvatarProfilePropName.ToString()
-            txtUserAvatarPath.Text = objConfig.UserAvatarPath
-            txtUserAvatarWidth.Text = objConfig.UserAvatarWidth.ToString()
-            txtUserAvatarHeight.Text = objConfig.UserAvatarHeight.ToString()
-            txtUserAvatarSizeLimit.Text = objConfig.UserAvatarMaxSize.ToString()
-            chkEnableUserAvatarPool.Checked = objConfig.EnableUserAvatarPool
-            txtUserAvatarPoolPath.Text = objConfig.UserAvatarPoolPath
             chkEnableSystemAvatar.Checked = objConfig.EnableSystemAvatar
             txtSystemAvatarPath.Text = objConfig.SystemAvatarPath
             chkEnableRoleAvatar.Checked = objConfig.EnableRoleAvatar
             txtRoleAvatarPath.Text = objConfig.RoleAvatarPath
 
             EnableUserAvatar(chkEnableUserAvatar.Checked)
-            EnableProfileAvatar(chkEnableProfileAvatar.Checked)
-
-            If chkEnableUserAvatarPool.Checked Then
-                divUserAvatarPoolPath.Visible = True
-            Else
-                divUserAvatarPoolPath.Visible = False
-            End If
 
             divSystemAvatarPath.Visible = chkEnableSystemAvatar.Checked
 
@@ -98,29 +83,15 @@ Namespace DotNetNuke.Modules.Forum.ACP
                 ' Update settings in the database
                 Dim ctlModule As New Entities.Modules.ModuleController
                 txtSystemAvatarPath.Text = txtSystemAvatarPath.Text.Replace("\", "/")
-                txtUserAvatarPath.Text = txtUserAvatarPath.Text.Replace("\", "/")
-                txtUserAvatarPoolPath.Text = txtUserAvatarPoolPath.Text.Replace("\", "/")
                 txtRoleAvatarPath.Text = txtRoleAvatarPath.Text.Replace("\", "/")
                 If txtSystemAvatarPath.Text.EndsWith("/") = False Then txtSystemAvatarPath.Text += "/"
-                If txtUserAvatarPath.Text.EndsWith("/") = False Then txtUserAvatarPath.Text += "/"
-                If txtUserAvatarPoolPath.Text.EndsWith("/") = False Then txtUserAvatarPoolPath.Text += "/"
                 If txtRoleAvatarPath.Text.EndsWith("/") = False Then txtRoleAvatarPath.Text += "/"
 
-                Utilities.ForumUtils.CheckFolder(txtUserAvatarPath.Text)
                 Utilities.ForumUtils.CheckFolder(txtSystemAvatarPath.Text)
-                Utilities.ForumUtils.CheckFolder(txtUserAvatarPoolPath.Text)
                 Utilities.ForumUtils.CheckFolder(txtRoleAvatarPath.Text)
 
                 ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_USER_AVATARS, chkEnableUserAvatar.Checked.ToString())
-                ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_PROFILE_AVATAR, chkEnableProfileAvatar.Checked.ToString())
-                ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_PROFILE_USER_FOLDERS, chkEnableProfileUserFolders.Checked.ToString())
                 ctlModule.UpdateModuleSetting(ModuleId, Constants.AVATAR_PROFILE_PROP_NAME, rcbProfileAvatarPropertyName.SelectedValue)
-                ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_USER_AVATAR_POOL, chkEnableUserAvatarPool.Checked.ToString())
-                ctlModule.UpdateModuleSetting(ModuleId, Constants.USER_AVATAR_PATH, txtUserAvatarPath.Text)
-                ctlModule.UpdateModuleSetting(ModuleId, Constants.USER_AVATAR_POOL_PATH, txtUserAvatarPoolPath.Text)
-                ctlModule.UpdateModuleSetting(ModuleId, Constants.USER_AVATAR_WIDTH, txtUserAvatarWidth.Text)
-                ctlModule.UpdateModuleSetting(ModuleId, Constants.USER_AVATAR_HEIGHT, txtUserAvatarHeight.Text)
-                ctlModule.UpdateModuleSetting(ModuleId, Constants.USER_AVATAR_MAX_SIZE, txtUserAvatarSizeLimit.Text)
                 ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_SYSTEM_AVATARS, chkEnableSystemAvatar.Checked.ToString())
                 ctlModule.UpdateModuleSetting(ModuleId, Constants.SYSTEM_AVATAR_PATH, txtSystemAvatarPath.Text)
                 ctlModule.UpdateModuleSetting(ModuleId, Constants.ENABLE_ROLE_AVATARS, chkEnableRoleAvatar.Checked.ToString())
@@ -165,22 +136,6 @@ Namespace DotNetNuke.Modules.Forum.ACP
         End Sub
 
         ''' <summary>
-        ''' Enables/Disables anon download checkbox depending on if
-        ''' attachments are permitted or not.
-        ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks>Changes viewable/editable items when checked/unchecked.
-        ''' </remarks>
-        Protected Sub chkEnableUserAvatarPool_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnableUserAvatarPool.CheckedChanged
-            If chkEnableUserAvatarPool.Checked Then
-                divUserAvatarPoolPath.Visible = True
-            Else
-                divUserAvatarPoolPath.Visible = False
-            End If
-        End Sub
-
-        ''' <summary>
         ''' Enables/Disabled role avatar support and fields.
         ''' </summary>
         ''' <param name="sender"></param>
@@ -194,56 +149,9 @@ Namespace DotNetNuke.Modules.Forum.ACP
             End If
         End Sub
 
-        ''' <summary>
-        ''' Enables/Disables profile avatar support and fields.
-        ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
-        Protected Sub chkEnableProfileAvatar_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkEnableProfileAvatar.CheckedChanged
-            EnableProfileAvatar(chkEnableProfileAvatar.Checked)
-        End Sub
-
-        ''' <summary>
-        ''' Enables/Disableds core user folder support and fields.
-        ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' <remarks></remarks>
-        Protected Sub chkEnableProfileUserFolders_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkEnableProfileUserFolders.CheckedChanged
-            divUserAvatarPath.Visible = Not chkEnableProfileUserFolders.Checked
-        End Sub
-
 #End Region
 
 #Region "Private Methods"
-
-        ''' <summary>
-        ''' Sets the control up for scenarios where profile avatars are enabled. 
-        ''' </summary>
-        ''' <param name="Enabled"></param>
-        ''' <remarks></remarks>
-        Private Sub EnableProfileAvatar(ByVal Enabled As Boolean)
-            divProfileAvatarPropertyName.Visible = Enabled
-            divUserAvatarDimensions.Visible = Not Enabled
-            divUserAvatarSizeLimit.Visible = Not Enabled
-            divUserAvatarPath.Visible = Not Enabled
-
-            If Enabled Then
-                divUserAvatarPoolPath.Visible = False
-                chkEnableUserAvatarPool.Checked = False
-                divUserAvatarPoolEnable.Visible = False
-
-                divEnableProfileUserFolders.Visible = Enabled
-                divUserAvatarPath.Visible = Not chkEnableProfileUserFolders.Checked
-
-                chkEnableUserAvatarPool.Checked = False
-            Else
-                divUserAvatarPoolEnable.Visible = True
-
-                divEnableProfileUserFolders.Visible = False
-            End If
-        End Sub
 
         ''' <summary>
         ''' Binds a list of profile properties avaialble to the portal. 
@@ -264,15 +172,8 @@ Namespace DotNetNuke.Modules.Forum.ACP
         ''' <param name="Enabled"></param>
         ''' <remarks></remarks>
         Private Sub EnableUserAvatar(ByVal Enabled As Boolean)
-            divUserAvatarDimensions.Visible = Enabled
-            divUserAvatarPath.Visible = Enabled
-            divEnableProfileAvatar.Visible = Enabled
-            divEnableProfileUserFolders.Visible = Enabled
-            divProfileAvatarPropertyName.Visible = False
+            divProfileAvatarPropertyName.Visible = Enabled
 
-            If Not Enabled Then
-                chkEnableUserAvatarPool.Checked = False
-            End If
         End Sub
 
 #End Region

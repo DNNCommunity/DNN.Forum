@@ -21,6 +21,7 @@ Option Strict On
 Option Explicit On
 
 Imports Telerik.Web.UI
+Imports DotNetNuke.Security.Roles
 
 Namespace DotNetNuke.Modules.Forum.ACP
 
@@ -37,6 +38,7 @@ Namespace DotNetNuke.Modules.Forum.ACP
 
         Private _Users As ArrayList = New ArrayList
         Protected TotalRecords As Integer
+        Shared log As Instrumentation.DnnLogger = Instrumentation.DnnLogger.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString())
 
 #End Region
 
@@ -236,15 +238,15 @@ Namespace DotNetNuke.Modules.Forum.ACP
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub BindRoles()
-            Dim cntRoles As New DotNetNuke.Security.Roles.RoleController
-            Dim arrRoles As ArrayList
-            arrRoles = cntRoles.GetPortalRoles(PortalId)
+            Dim arrRolesAs As IList(Of RoleInfo) = RoleController.Instance.GetRoles(
+                   PortalId,
+                   Function(role As RoleInfo) ((role.SecurityMode <> SecurityMode.SocialGroup) AndAlso (role.Status = RoleStatus.Approved)))
             ddlRoles.Items.Clear()
 
-            If arrRoles.Count > 0 Then
+            If arrRolesAs.Count > 0 Then
                 ddlRoles.DataTextField = "RoleName"
                 ddlRoles.DataValueField = "RoleID"
-                ddlRoles.DataSource = arrRoles
+                ddlRoles.DataSource = arrRolesAs
                 ddlRoles.DataBind()
             End If
 

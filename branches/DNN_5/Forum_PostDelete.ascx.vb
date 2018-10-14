@@ -187,9 +187,13 @@ Namespace DotNetNuke.Modules.Forum
                             Exit Sub
                         End If
 
+                        Dim cntForum As ForumController
+                        cntForum = New ForumController()
+                        Dim objForum As ForumInfo = cntForum.GetForumItemCache(ForumID)
+
                         Dim Notes As String = txtReason.Text
                         Dim ProfileUrl As String = Utilities.Links.UCP_UserLinks(TabId, ModuleId, UserAjaxControl.Tracking, PortalSettings)
-                        Dim url As String = Utilities.Links.ContainerViewForumLink(TabId, ForumID, False)
+                        Dim url As String = Utilities.Links.ContainerViewForumLink(PortalId, TabId, ForumID, False, objForum.Name)
 
                         If objConfig.MailNotification Then
                             If chkEmailUsers.Checked Then
@@ -229,11 +233,14 @@ Namespace DotNetNuke.Modules.Forum
                             Exit Sub
                         End If
 
+                        Dim cntForum As ForumController
+                        cntForum = New ForumController()
+                        Dim objForum As ForumInfo = cntForum.GetForumItemCache(ForumID)
                         objThread = cntThread.GetThread(ThreadID)
 
                         Dim Notes As String = txtReason.Text
                         Dim ProfileUrl As String = Utilities.Links.UCP_UserLinks(TabId, ModuleId, UserAjaxControl.Tracking, PortalSettings)
-                        Dim url As String = Utilities.Links.ContainerViewForumLink(TabId, ForumID, False)
+                        Dim url As String = Utilities.Links.ContainerViewForumLink(PortalId, TabId, ForumID, False, objForum.Name)
                         Dim NewThreadID As Integer = ThreadID
 
                         If objConfig.MailNotification Then
@@ -248,7 +255,7 @@ Namespace DotNetNuke.Modules.Forum
                         If objPost.PostID = objPost.ThreadID Then
                             If objThread IsNot Nothing Then
                                 ' Delete post (SEND MAIL BEFORE DELETE, we need the post still in the db)
-                                NewThreadID = cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objPost.Author.UserID)
+                                NewThreadID = cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objThread.ForumID, objThread.ModuleID, objThread.ThreadID, objPost.Author.UserID)
                                 Dim objContent As ContentItem
                                 objContent = DotNetNuke.Entities.Content.Common.Util.GetContentController().GetContentItem(objThread.ContentItemId)
                                 objContent.ContentKey = "forumid=" + objThread.ForumID.ToString() + "&threadid=" + NewThreadID.ToString() + "&scope=posts"
@@ -256,7 +263,7 @@ Namespace DotNetNuke.Modules.Forum
                             End If
                         Else
                             ' Delete post (SEND MAIL BEFORE DELETE, we need the post still in the db)
-                            cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objPost.Author.UserID)
+                            cntPost.PostDelete(objPost.PostID, UserId, Notes, PortalId, objThread.ForumID, objThread.ModuleID, objThread.ThreadID, objPost.Author.UserID)
                         End If
 
                         Forum.Components.Utilities.Caching.UpdatePostCache(objPost.PostID, ThreadID, ForumID, objThread.ContainingForum.GroupID, ModuleId, objThread.ContainingForum.ParentID)
@@ -388,24 +395,32 @@ Namespace DotNetNuke.Modules.Forum
                     End If
                 End If
             End If
+            Dim cntThread As ThreadController
+            cntThread = New ThreadController()
+            Dim tInfo As ThreadInfo
 
+            Dim cntForum As ForumController
+            cntForum = New ForumController()
+            Dim objForum As ForumInfo = cntForum.GetForumItemCache(ForumID)
             If _ModeratorReturn Then
                 If Not ViewState("UrlReferrer") Is Nothing Then
                     url = (CType(ViewState("UrlReferrer"), String))
                 Else
                     If _IsThreadDelete Then
-                        url = Utilities.Links.ContainerViewForumLink(TabId, ForumID, False)
+                        url = Utilities.Links.ContainerViewForumLink(PortalId, TabId, ForumID, False, objForum.Name)
                     Else
+                        tInfo = cntThread.GetThread(ThreadID)
                         ' behave as before (normal usage)
-                        url = Utilities.Links.ContainerViewThreadLink(TabId, ForumID, ThreadID)
+                        url = Utilities.Links.ContainerViewThreadLink(PortalId, TabId, ForumID, ThreadID, tInfo.Subject)
                     End If
                 End If
             Else
                 If _IsThreadDelete Or ThreadID = -1 Then
-                    url = Utilities.Links.ContainerViewForumLink(TabId, ForumID, False)
+                    url = Utilities.Links.ContainerViewForumLink(PortalId, TabId, ForumID, False, objForum.Name)
                 Else
+                    tInfo = cntThread.GetThread(ThreadID)
                     ' behave as before (normal usage)
-                    url = Utilities.Links.ContainerViewThreadLink(TabId, ForumID, ThreadID)
+                    url = Utilities.Links.ContainerViewThreadLink(PortalId, TabId, ForumID, ThreadID, tInfo.Subject)
                 End If
             End If
 

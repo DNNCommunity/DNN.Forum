@@ -1,5 +1,5 @@
 <%@ Control Inherits="DotNetNuke.Modules.Forum.ACP.User" CodeBehind="ACP_User.ascx.vb" language="vb" AutoEventWireup="false" Explicit="true" %>
-<%@ Register Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
+<%@ Register Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls" TagPrefix="dnnweb" %>
 <%@ Register TagPrefix="dnn" TagName="label" Src="~/controls/LabelControl.ascx" %>
 <div class="dnnForm acpUser dnnClear">
 	<h2 class="dnnFormSectionHead"><asp:Label id="lblTitle" runat="server" resourcekey="lblTitle" EnableViewState="false" /></h2>
@@ -13,7 +13,7 @@
 		<div>
 			<dnnweb:DnnGrid runat="server" ID="dnngridUsers" AllowPaging="true" AllowSorting="false" AutoGenerateColumns="false" AllowCustomPaging="true" Skin="Sitefinity" PageSize="25" >
 				<ClientSettings AllowColumnsReorder="false" EnableRowHoverStyle="true" />
-				<MasterTableView>
+				<MasterTableView DataKeyNames="UserID" >
 					<NoRecordsTemplate>
 						<div class="dnnFormMessage dnnFormWarning">
 							<asp:Label ID="lblNoRecords" runat="server" resourcekey="lblNoRecords" />

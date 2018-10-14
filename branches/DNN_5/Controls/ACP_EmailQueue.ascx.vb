@@ -43,38 +43,38 @@ Namespace DotNetNuke.Modules.Forum.ACP
             rntxtbxEmailDeleteDays.Enabled = False
 			cmdUpdate.Visible = False
 
-			If Users.UserController.GetCurrentUserInfo.IsSuperUser Then
-				' Add a check here to see if task is installed and enabled, if so enable control
-				' we need to 'hack' a way to get the ScheduleID of the forum email queue item
-				Dim ScheduleItemID As Integer = DataProvider.Instance().EmailQueueTaskScheduleItemIDGet(True)
-				txtScheduleItemID.Text = ScheduleItemID.ToString()
+            If Users.UserController.Instance.GetCurrentUserInfo.IsSuperUser Then
+                ' Add a check here to see if task is installed and enabled, if so enable control
+                ' we need to 'hack' a way to get the ScheduleID of the forum email queue item
+                Dim ScheduleItemID As Integer = DataProvider.Instance().EmailQueueTaskScheduleItemIDGet(True)
+                txtScheduleItemID.Text = ScheduleItemID.ToString()
 
-				Dim objScheduleItem As New Scheduling.ScheduleItem
-				objScheduleItem = DotNetNuke.Services.Scheduling.SchedulingProvider.Instance.GetSchedule(ScheduleItemID)
+                Dim objScheduleItem As New Scheduling.ScheduleItem
+                objScheduleItem = DotNetNuke.Services.Scheduling.SchedulingProvider.Instance.GetSchedule(ScheduleItemID)
 
-				If Not objScheduleItem Is Nothing Then
-					If objScheduleItem.Enabled Then
+                If Not objScheduleItem Is Nothing Then
+                    If objScheduleItem.Enabled Then
                         rntxtbxTaskDeleteDays.Enabled = True
                         rntxtbxEmailDeleteDays.Enabled = True
-						cmdUpdate.Visible = True
-					End If
-				End If
+                        cmdUpdate.Visible = True
+                    End If
+                End If
 
-				' Need to check for cleanup queue schedule settings
-				If objScheduleItem.GetSetting("ForumTaskDeleteDays") <> String.Empty Then
+                ' Need to check for cleanup queue schedule settings
+                If objScheduleItem.GetSetting("ForumTaskDeleteDays") <> String.Empty Then
                     rntxtbxTaskDeleteDays.Text = objScheduleItem.GetSetting("ForumTaskDeleteDays")
-				Else
+                Else
                     rntxtbxTaskDeleteDays.Text = "30"
-				End If
+                End If
 
-				If objScheduleItem.GetSetting("ForumEmailDeleteDays") <> String.Empty Then
+                If objScheduleItem.GetSetting("ForumEmailDeleteDays") <> String.Empty Then
                     rntxtbxEmailDeleteDays.Text = objScheduleItem.GetSetting("ForumEmailDeleteDays")
-				Else
+                Else
                     rntxtbxEmailDeleteDays.Text = "30"
-				End If
-			Else
-				cmdUpdate.Visible = False
-			End If
+                End If
+            Else
+                cmdUpdate.Visible = False
+            End If
 		End Sub
 
 #End Region

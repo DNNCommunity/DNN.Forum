@@ -57,6 +57,7 @@ Namespace DotNetNuke.Modules.Forum
 
 #Region "Event Handlers"
 
+
         ''' <summary>
         ''' Page Load of the control.
         ''' </summary>

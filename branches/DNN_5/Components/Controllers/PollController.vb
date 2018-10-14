@@ -35,7 +35,7 @@ Namespace DotNetNuke.Modules.Forum
         ''' <returns>A row of data representing a specific Poll.</returns>
         ''' <remarks></remarks>
         Public Function GetPoll(ByVal PollID As Integer) As PollInfo
-            Return CType(CBO.FillObject(DataProvider.Instance().GetPoll(PollID), GetType(PollInfo)), PollInfo)
+            Return CBO.FillObject(Of PollInfo)(DataProvider.Instance().GetPoll(PollID))
         End Function
 
         ''' <summary>

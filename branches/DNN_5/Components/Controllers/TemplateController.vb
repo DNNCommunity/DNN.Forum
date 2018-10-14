@@ -81,7 +81,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns></returns>
 		''' <remarks></remarks>
 		Public Function TemplatesGetSingle(ByVal TemplateID As Integer) As TemplateInfo
-			Return CType(CBO.FillObject(DataProvider.Instance().TemplatesGetSingle(TemplateID), GetType(TemplateInfo)), TemplateInfo)
+            Return CBO.FillObject(Of TemplateInfo)(DataProvider.Instance().TemplatesGetSingle(TemplateID))
 		End Function
 
     End Class

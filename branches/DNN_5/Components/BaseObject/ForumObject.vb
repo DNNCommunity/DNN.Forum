@@ -128,7 +128,7 @@ Namespace DotNetNuke.Modules.Forum
         Public ReadOnly Property CurrentForumUser() As ForumUserInfo
             Get
                 Dim cntForumUser As New ForumUserController
-                Return cntForumUser.GetForumUser(Users.UserController.GetCurrentUserInfo.UserID, False, ForumControl.ModuleID, PortalID)
+                Return cntForumUser.GetForumUser(Users.UserController.Instance.GetCurrentUserInfo.UserID, False, ForumControl.ModuleID, PortalID)
             End Get
         End Property
 

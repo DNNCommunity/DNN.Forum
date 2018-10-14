@@ -69,9 +69,12 @@ Namespace DotNetNuke.Modules.Forum.MCP
 			cmd.CommandArgument = dataItem.PostID.ToString()
 			cmd.Text = dataItem.Subject
 
-			hl = CType(e.Item.FindControl("hlForumName"), HyperLink)
-			hl.NavigateUrl = Utilities.Links.ContainerViewForumLink(TabId, dataItem.ForumID, False)
-			hl.Text = dataItem.ParentThread.ContainingForum.Name
+            Dim cntForum As ForumController
+            cntForum = New ForumController()
+            Dim objForum As ForumInfo = cntForum.GetForumItemCache(dataItem.ForumID)
+            hl = CType(e.Item.FindControl("hlForumName"), HyperLink)
+            hl.NavigateUrl = Utilities.Links.ContainerViewForumLink(PortalId, TabId, dataItem.ForumID, False, objForum.Name)
+            hl.Text = dataItem.ParentThread.ContainingForum.Name
 
 			hl = CType(e.Item.FindControl("hlPostAuthor"), HyperLink)
 			If Not objConfig.EnableExternalProfile Then
@@ -83,8 +86,8 @@ Namespace DotNetNuke.Modules.Forum.MCP
 			hl.Text = dataItem.Author.SiteAlias
 
 			hl = CType(e.Item.FindControl("lblReportedDate"), HyperLink)
-			hl.NavigateUrl = Utilities.Links.ContainerViewPostLink(TabId, dataItem.ForumID, dataItem.PostID)
-			hl.Text = FormatDate(dataItem.CreatedDate)
+            hl.NavigateUrl = Utilities.Links.ContainerViewPostLink(PortalId, TabId, dataItem.ForumID, dataItem.PostID, dataItem.Subject)
+            hl.Text = FormatDate(dataItem.CreatedDate)
 		End Sub
 
 		''' <summary>
@@ -157,10 +160,13 @@ Namespace DotNetNuke.Modules.Forum.MCP
 			End If
 
 			hl.Text = dataItem.Author(ModuleId, PortalId).SiteAlias
+            Dim pCont As New PostController
+            Dim pInfo As PostInfo
+            pInfo = pCont.GetPostInfo(dataItem.PostID, PortalId)
 
-			hl = CType(e.Item.FindControl("lblReportedDate"), HyperLink)
-			hl.NavigateUrl = Utilities.Links.ContainerViewPostLink(TabId, dataItem.Post(PortalId).ForumID, dataItem.PostID)
-			hl.Text = FormatDate(dataItem.CreatedDate)
+            hl = CType(e.Item.FindControl("lblReportedDate"), HyperLink)
+            hl.NavigateUrl = Utilities.Links.ContainerViewPostLink(PortalId, TabId, dataItem.Post(PortalId).ForumID, dataItem.PostID, pInfo.Subject)
+            hl.Text = FormatDate(dataItem.CreatedDate)
 		End Sub
 
 		''' <summary>

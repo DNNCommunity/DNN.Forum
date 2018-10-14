@@ -574,7 +574,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns>The populated info object w/ one row of data.</returns>
 		''' <remarks>Only called from the email queue task.</remarks>
 		Public Function EmailQueueTaskGet(ByVal EmailQueueID As Integer) As EmailQueueTaskInfo
-			Return CType(CBO.FillObject(DotNetNuke.Modules.Forum.DataProvider.Instance().EmailQueueTaskGet(EmailQueueID), GetType(EmailQueueTaskInfo)), EmailQueueTaskInfo)
+            Return CBO.FillObject(Of EmailQueueTaskInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().EmailQueueTaskGet(EmailQueueID))
 		End Function
 
 		''' <summary>
@@ -583,7 +583,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' <returns>The info object of the next email queued task to send.</returns>
 		''' <remarks>Only called from the email queue task.</remarks>
 		Public Function EmailQueueTaskGetNext() As EmailQueueTaskInfo
-			Return CType(CBO.FillObject(DotNetNuke.Modules.Forum.DataProvider.Instance().EmailQueueTaskGetNext(), GetType(EmailQueueTaskInfo)), EmailQueueTaskInfo)
+            Return CBO.FillObject(Of EmailQueueTaskInfo)(DotNetNuke.Modules.Forum.DataProvider.Instance().EmailQueueTaskGetNext())
 		End Function
 
 		''' <summary>

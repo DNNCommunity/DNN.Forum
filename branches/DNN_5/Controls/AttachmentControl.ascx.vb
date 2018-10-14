@@ -21,6 +21,10 @@ Option Strict On
 Option Explicit On
 
 Imports DotNetNuke.Entities.Modules
+Imports DotNetNuke.Services.FileSystem
+Imports System.IO
+Imports DotNetNuke.Entities.Controllers
+Imports DotNetNuke.Forum.Library
 
 Namespace DotNetNuke.Modules.Forum.WebControls
 
@@ -148,7 +152,7 @@ Namespace DotNetNuke.Modules.Forum.WebControls
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Overloads Property ModuleID() As Integer
+        Public Overloads Property ModuleId() As Integer
             Get
                 If ViewState("ModuleID") IsNot Nothing Then
                     Return CType(ViewState("ModuleID").ToString(), Integer)
@@ -208,7 +212,7 @@ Namespace DotNetNuke.Modules.Forum.WebControls
         Private ReadOnly Property CurrentForumUser() As ForumUserInfo
             Get
                 Dim cntForumUser As New ForumUserController
-                Return cntForumUser.GetForumUser(Users.UserController.GetCurrentUserInfo.UserID, False, ModuleId, objConfig.CurrentPortalSettings.PortalId)
+                Return cntForumUser.GetForumUser(Users.UserController.Instance.GetCurrentUserInfo.UserID, False, ModuleId, objConfig.CurrentPortalSettings.PortalId)
             End Get
         End Property
 
@@ -299,10 +303,11 @@ Namespace DotNetNuke.Modules.Forum.WebControls
 
                     For Each item As String In Array
                         If item <> String.Empty Then
-                            DotNetNuke.Common.Utilities.FileSystemUtils.DeleteFile(ParentFolderName & item, PortalSettings, True)
-                            ' Remove the filename from DeleteItems.
-                            ' If it was not deleted, it will be picked up next time
-                            DeleteItems = DeleteItems.Replace(item & ";", "")
+                            If FileUtilityClass.DeleteFile(ParentFolderName, item, PortalId) = True Then
+                                        ' Remove the filename from DeleteItems.
+                                        ' If it was not deleted, it will be picked up next time
+                                        DeleteItems = DeleteItems.Replace(item & ";", "")
+                            End If
                         End If
                     Next
                 End If
@@ -328,13 +333,13 @@ Namespace DotNetNuke.Modules.Forum.WebControls
                 End If
 
                 Dim FileName As String = System.IO.Path.GetFileName(fuFile.PostedFile.FileName)
-
+                'DotNetNuke.Instrumentation.DnnLogger.GetLogger(Me.GetType.Name.ToString).Debug("FileName: " + FileName)
                 'Get destination folder as mappath
                 Dim ParentFolderName As String = PortalSettings.HomeDirectoryMapPath
                 ParentFolderName += BaseFolder
                 ParentFolderName = ParentFolderName.Replace("/", "\")
                 If ParentFolderName.EndsWith("\") = False Then ParentFolderName += "\"
-
+                'DotNetNuke.Instrumentation.DnnLogger.GetLogger(Me.GetType.Name.ToString).Debug("ParentFolderName: " + ParentFolderName)
                 Dim strExtension As String = Replace(IO.Path.GetExtension(fuFile.PostedFile.FileName), ".", "")
                 If _fileFilter <> String.Empty And InStr("," & _fileFilter.ToLower, "," & strExtension.ToLower) = 0 Then
                     ' trying to upload a file not allowed for current filter
@@ -343,21 +348,19 @@ Namespace DotNetNuke.Modules.Forum.WebControls
 
                 If lblMessage.Text = String.Empty Then
                     Dim destFileName As String = Guid.NewGuid().ToString().Replace("-", "") + "." + strExtension
-                    lblMessage.Text = FileSystemUtils.UploadFile(ParentFolderName, fuFile.PostedFile, False)
+
+                    Dim file As IFileInfo = FileManager.Instance.AddFile(
+                        FileUtilityClass.GetFolder(ParentFolderName, PortalId),
+                        destFileName,
+                        fuFile.PostedFile.InputStream)
+                    If file Is Nothing Then
+                        lblMessage.Text = String.Format(Localization.GetString("UploadError", Me.LocalResourceFile))
+                    End If
 
                     If lblMessage.Text <> String.Empty Then Exit Sub
 
-                    'Rename the file using the GUID model
-                    FileSystemUtils.MoveFile(ParentFolderName + FileName, ParentFolderName + destFileName, PortalSettings)
-
                     'Now get the FileID from DNN Filesystem
-                    Dim myFileID As Integer = 0
-                    Dim fileList As ArrayList = Common.Globals.GetFileList(PortalId, strExtension, False, BaseFolder, False)
-                    For Each objFile As FileItem In fileList
-                        If objFile.Text = destFileName Then
-                            myFileID = CInt(objFile.Value)
-                        End If
-                    Next
+                    Dim myFileID As Integer = file.FileId
 
                     If myFileID > 0 Then
                         'Now save the Attachment info
@@ -400,7 +403,9 @@ Namespace DotNetNuke.Modules.Forum.WebControls
                     ParentFolderName += BaseFolder
                     ParentFolderName = ParentFolderName.Replace("/", "\")
                     If ParentFolderName.EndsWith("\") = False Then ParentFolderName += "\"
-                    DotNetNuke.Common.Utilities.FileSystemUtils.DeleteFile(ParentFolderName & lstAttachments.SelectedItem.Value, PortalSettings, True)
+
+                    Dim File As IFileInfo = FileManager.Instance.GetFile(FileUtilityClass.GetFolder(ParentFolderName, PortalId),
+                                                                         lstAttachments.SelectedItem.Value)
                     BindFileList()
 
                 End If
@@ -421,7 +426,7 @@ Namespace DotNetNuke.Modules.Forum.WebControls
         ''' <remarks></remarks>
         Public Sub LoadInitialView()
             'Not get the host filefilter
-            _fileFilter = Entities.Host.Host.GetHostSettingsDictionary("FileExtensions").ToString()
+            _fileFilter = HostController.Instance.GetSettingsDictionary("FileExtensions").ToString()
             'Bind the lists
             BindFileList()
         End Sub

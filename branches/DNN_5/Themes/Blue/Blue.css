@@ -32,6 +32,9 @@ a.Forum_HeaderText:hover{color:#ff0000;}
 .Forum_HeaderCapLeft{width:9px;height:46px;background: url('images/header_cap_left.jpg') top left repeat-x;}
 /* These cap classes handle the left and rigt of colums (only in forum admin header area)*/
 .Forum_HeaderCapRight{width:9px;height:46px;background: url('images/header_cap_right.jpg') top left repeat-x;}
+.Forum_Header_PostStatus{background: url('images/header_bg.jpg') top left repeat-x; width: 24px;}
+.Forum_Header_PostStatus img {width:24px;height:24px;}
+.Forum_Header_ThreadStatus{background: url('images/header_bg.jpg') top left repeat-x; width: 100px;}
 /* Handles initial view, groups, left area next to +/- and stats headers (left) */
 .Forum_AltHeaderCapLeft{width:1px;background: url('images/alt_header_bg.jpg') top left repeat-x;border-top:solid 1px #fff;}
 /* Handles initial view, groups, left area next to +/- and stats headers (right) */
@@ -86,8 +89,10 @@ a.Forum_SubForumLink:link, a.Forum_SubForumLink:visited, a.Forum_SubForumLink:ac
 /* Last Post Column */
 .Forum_RowHighlight3, .Forum_RowHighlight3_Alt{border:solid 1px #B8D7F3;border-bottom:none;background-color:#E8E8E8;}
 .Forum_RowHighlight3 table, .Forum_RowHighlight3_Alt table{padding:5px 10px;}
+.Forum_RowHighlight3 td{text-align:right}
 /* Last Post Column - Alternate (odd)*/
 .Forum_RowHighlight3_Alt{background-color:#fff;}
+.Forum_RowHighlight3_Alt td{text-align:right}
 div.Forum_AnswerText, a.Forum_AnswerText{font-size:10px;color:#eee;line-height:10px;font-weight:bold;}
 a.Forum_AnswerText{color:#fff;}
 /*/////////////////////////// = THREAD VIEW = \\\\\\\\\\\\\\\\\\\\\\\\\\\*/
@@ -105,7 +110,7 @@ a.Forum_AnswerText{color:#fff;}
 	.Forum_Avatar td.Forum_NormalSmall a{display:block;}
 .Forum_Avatar img{margin-bottom:4px;}
 td.Forum_UserAvatar, td.Forum_NormalSmall{text-align:center;}
-td.Forum_UserAvatar img{border:1px #ccc solid;-moz-border-radius:5px;-webkit-border-radius:5px;padding:4px;background:#fff;}
+td.Forum_UserAvatar img{border:1px #ccc solid;-moz-border-radius:5px;-webkit-border-radius:5px;padding:4px;background:#fff;height:auto;width:60%}
 /* Post content area (this is post details, post buttons, post body, attachments containing cell) */
 .Forum_PostBody_Container{border-left:#B8D7F3 1px solid;border-right:1px solid #B8D7F3}
 .Forum_PostBody_Container_Alt{border-right:#B8D7F3 1px solid;}
@@ -115,7 +120,7 @@ td.Forum_UserAvatar img{border:1px #ccc solid;-moz-border-radius:5px;-webkit-bor
 .Forum_PostButtons{border-bottom: 1px solid #B8D7F3;background:#eee;}
 /* Post content area POST VIEW (EVEN numbered rows) */
 .Forum_PostBody{padding:15px;}
-.Forum_PostBody .Forum_Normal, .Forum_PostBody_Alt .Forum_Normal{font-weight:normal;}
+.Forum_PostBody .Forum_Normal, .Forum_PostBody_Alt .Forum_Normal{font-weight:normal; word-break:normal !important;}
 /* Seperator row. Also uses spacer-height.gif to determin sapce in between each post in thread View*/
 .Forum_SpacerRow{border-top: #B8D7F3 1px solid;}
 /*/////////////////////////// = SPLIT-THREAD VIEW = \\\\\\\\\\\\\\\\\\\\\\\\\\\*/
@@ -170,7 +175,7 @@ a.Forum_NormalSmall:hover{text-decoration:underline;color:#006396;}
 	.Forum_GroupDetails a, .Forum_GroupDetails a:link, .Forum_GroupDetails a:active, .Forum_GroupDetails a:visited{font-size:11px;font-family:Helvetica, Arial, San-Serif;color:#0088ce;text-decoration:none;}
 	.Forum_GroupDetails a:hover, .Forum_GroupDetails a:visited:hover{text-decoration:underline;color:#006396;}
 .Forum_Posts, .Forum_Threads{color:#000;font-family:"Lucida Grande",  Helvetica, Arial, sans-serif;}
-.Forum_LastPostText{font-family:Helvetica, Arial, San-Serif;color:#403F3F;font-size:11px;}
+.Forum_LastPostText, .Forum_LastPostTextBy{font-family:Helvetica, Arial, San-Serif;color:#403F3F;font-size:11px;}
 /* Links used in style above areas */
 A.Forum_LastPostText, A.Forum_LastPostText:Link, A.Forum_LastPostText:Visited{font-weight:normal;color:#0088ce;text-decoration:none;font-size:11px;}
 A.Forum_LastPostText:Hover{color:#006396;text-decoration:underline;}
@@ -293,3 +298,19 @@ A.Forum_ib_aggregate:link, A.Forum_ib_aggregate:visited, A.Forum_ib_aggregate:ac
 .Forum_Container .tags li a{font-size: 11px;font-family: Helvetica, Arial, San-Serif;color:#0088CE; font-weight: bold;}
 .Forum_Container .tags li a:hover{color:#006396;}
 .AdvertisementPost {border: thin solid #BDBDBD;padding: 10px;}
+
+
+
+.dnnForm .dnnLeft {    
+    float: left;
+    width: 100%;
+}
+
+.dnnFormItem textarea {
+    width: 100%;
+    max-width: 100%;
+}
+
+.dnnFormItem > .dnnLabel {	
+    width: 12%;
+}

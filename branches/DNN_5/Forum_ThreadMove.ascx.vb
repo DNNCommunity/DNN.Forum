@@ -175,8 +175,12 @@ Namespace DotNetNuke.Modules.Forum
                         ' build notes (old forum, new forum, say post was moved in body (basically email body text)
                         Dim Notes As String = "Thread Move"
 
+                        Dim tCont As ThreadController
+                        tCont = New ThreadController()
+                        Dim tInfo As ThreadInfo
+                        tInfo = tCont.GetThread(ThreadID)
                         ' return to new forum page
-                        Dim strURL As String = Utilities.Links.ContainerViewThreadLink(TabId, newForumID, ThreadID)
+                        Dim strURL As String = Utilities.Links.ContainerViewThreadLink(PortalId, TabId, newForumID, ThreadID, tInfo.Subject)
                         Dim ctlThread As New ThreadController
                         ' lets get existing info on thread
                         Dim objThread As ThreadInfo
@@ -258,11 +262,11 @@ Namespace DotNetNuke.Modules.Forum
                     url = (CType(ViewState("UrlReferrer"), String))
                 Else
                     ' behave as before (normal usage)
-                    url = Utilities.Links.ContainerViewPostLink(TabId, Post.ForumID, Post.PostID)
+                    url = Utilities.Links.ContainerViewPostLink(PortalId, TabId, Post.ForumID, Post.PostID, Post.Subject)
                 End If
             Else
                 ' behave as before (normal usage)
-                url = Utilities.Links.ContainerViewPostLink(TabId, Post.ForumID, Post.PostID)
+                url = Utilities.Links.ContainerViewPostLink(PortalId, TabId, Post.ForumID, Post.PostID, Post.Subject)
             End If
 
             Return url

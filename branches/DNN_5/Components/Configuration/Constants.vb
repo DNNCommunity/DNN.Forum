@@ -40,7 +40,19 @@ Namespace DotNetNuke.Modules.Forum
 		''' A String used to identify a module setting.
 		''' </summary>
 		''' <remarks></remarks>
-		Public Const ENABLE_THREAD_STATUS As String = "EnableThreadStatus"
+        Public Const ENABLE_THREAD_STATUS As String = "EnableThreadStatus"
+
+        ''' <summary>
+        ''' A String used to identify a module setting.
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public Const HIDE_SEARCH_BUTTON As String = "HideSearchButton"
+
+        ''' <summary>
+        ''' A String used to identify a module setting.
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public Const HIDE_HOME_BUTTON As String = "HideHomeButton"
 
 		''' <summary>
 		''' A String used to identify a module setting.
@@ -210,17 +222,22 @@ Namespace DotNetNuke.Modules.Forum
 		''' <remarks></remarks>
 		Public Const RANKING_0_TITLE As String = "Rank_0_Title"
 
-		''' <summary>
-		''' A String used to identify a module setting.
-		''' </summary>
-		''' <remarks></remarks>
-		Public Const ENABLE_RSS_FEEDS As String = "EnableRSS"
+        ''' <summary>
+        ''' A String used to identify a module setting.
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public Const ENABLE_RSS_FEEDS As String = "EnableRSS"
 
-		''' <summary>
-		''' A String used to identify a module setting.
-		''' </summary>
-		''' <remarks></remarks>
-		Public Const RSS_FEEDS_PER_PAGE As String = "RSSThreadsPerFeed"
+        ''' <summary>
+        ''' A string used to identify a module setting.
+        ''' </summary>
+        Public Const ENABLE_JOURNAL As String = "EnableJournal"
+
+        ''' <summary>
+        ''' A String used to identify a module setting.
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public Const RSS_FEEDS_PER_PAGE As String = "RSSThreadsPerFeed"
 
 		''' <summary>
 		''' A String used to identify a module setting.
@@ -388,55 +405,7 @@ Namespace DotNetNuke.Modules.Forum
 		''' A String used to identify a module setting.
 		''' </summary>
 		''' <remarks></remarks>
-		Public Const ENABLE_PROFILE_USER_FOLDERS As String = "EnableProfileUserFolders"
-
-		''' <summary>
-		''' A String used to identify a module setting.
-		''' </summary>
-		''' <remarks></remarks>
-		Public Const ENABLE_PROFILE_AVATAR As String = "EnableProfileAvatar"
-
-		''' <summary>
-		''' A String used to identify a module setting.
-		''' </summary>
-		''' <remarks></remarks>
 		Public Const AVATAR_PROFILE_PROP_NAME As String = "AvatarProfilePropName"
-
-		''' <summary>
-		''' A String used to identify a module setting.
-		''' </summary>
-		''' <remarks></remarks>
-		Public Const ENABLE_USER_AVATAR_POOL As String = "EnableUserAvatarPool"
-
-		''' <summary>
-		''' A String used to identify a module setting.
-		''' </summary>
-		''' <remarks></remarks>
-		Public Const USER_AVATAR_PATH As String = "UserAvatarPath"
-
-		''' <summary>
-		''' A String used to identify a module setting.
-		''' </summary>
-		''' <remarks></remarks>
-		Public Const USER_AVATAR_POOL_PATH As String = "UserAvatarPoolPath"
-
-		''' <summary>
-		''' A String used to identify a module setting.
-		''' </summary>
-		''' <remarks></remarks>
-		Public Const USER_AVATAR_WIDTH As String = "UserAvatarWidth"
-
-		''' <summary>
-		''' A String used to identify a module setting.
-		''' </summary>
-		''' <remarks></remarks>
-		Public Const USER_AVATAR_HEIGHT As String = "UserAvatarHeight"
-
-		''' <summary>
-		''' A String used to identify a module setting.
-		''' </summary>
-		''' <remarks></remarks>
-		Public Const USER_AVATAR_MAX_SIZE As String = "UserAvatarMaxSize"
 
 		''' <summary>
 		''' A String used to identify a module setting.
@@ -618,17 +587,6 @@ Namespace DotNetNuke.Modules.Forum
         ''' <remarks></remarks>
         Public Const ADS_AFTER_FIRST_POST As String = "AdsAfterFirstPost"
 
-        ''' <summary>
-        ''' A String used to identify a module setting.
-        ''' </summary>
-        ''' <remarks></remarks>
-        Public Const ADD_ADVER_AFTER_POST_NO As String = "AdsAfterPostNo"
-
-        ''' <summary>
-        ''' A String used to identify a module setting.
-        ''' </summary>
-        ''' <remarks></remarks>
-        Public Const ADVERTISEMENT_TEXT As String = "AdvertisementText"
 
 #End Region
 
@@ -652,7 +610,6 @@ Namespace DotNetNuke.Modules.Forum
 		Public Const ctlRanking As String = "ACP_Ranking.ascx"
 		Public Const ctlRating As String = "ACP_Rating.ascx"
         Public Const ctlPopStatus As String = "ACP_PopStatus.ascx"
-        Public Const ctlAdvertisement As String = "ACP_Advertisement.ascx"
 		Public Const ctlEmailSettings As String = "ACP_Email.ascx"
 		Public Const ctlEmailTemplate As String = "ACP_EmailTemplate.ascx"
 		Public Const ctlEmailQueue As String = "ACP_EmailQueue.ascx"

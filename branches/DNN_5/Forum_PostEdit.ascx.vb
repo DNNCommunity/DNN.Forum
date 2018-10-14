@@ -1,3 +1,5 @@
+Option Strict On
+Option Explicit On
 '
 ' DotNetNuke® - http://www.dotnetnuke.com
 ' Copyright (c) 2002-2011
@@ -17,9 +19,7 @@
 ' CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 ' DEALINGS IN THE SOFTWARE.
 '
-Option Strict On
-Option Explicit On
-
+Imports DotNetNuke.Forum.Library.Data
 Imports DotNetNuke.Modules.Forum.Utilities
 
 Namespace DotNetNuke.Modules.Forum
@@ -450,7 +450,7 @@ Namespace DotNetNuke.Modules.Forum
                     If ViewState("PostContent") IsNot Nothing Then
                         teContent.Text = ViewState("PostContent").ToString()
                     Else
-                        DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString(Forum.PostMessage.PostInvalidBody.ToString() + ".Text", LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.RedError)
+                        DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString(DotNetNuke.Forum.Library.Data.PostMessage.PostInvalidBody.ToString() + ".Text", LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.RedError)
                         Exit Sub
                     End If
                 End If
@@ -475,15 +475,15 @@ Namespace DotNetNuke.Modules.Forum
 
                 ' Validation (from UI)
                 If Len(teContent.Text) = 0 Then
-                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString(Forum.PostMessage.PostInvalidBody.ToString() + ".Text", LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.RedError)
+                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString(DotNetNuke.Forum.Library.Data.PostMessage.PostInvalidBody.ToString() + ".Text", LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.RedError)
                     Exit Sub
                 End If
                 If Len(txtSubject.Text) = 0 Then
-                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString(Forum.PostMessage.PostInvalidSubject.ToString() + ".Text", LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.RedError)
+                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString(DotNetNuke.Forum.Library.Data.PostMessage.PostInvalidSubject.ToString() + ".Text", LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.RedError)
                     Exit Sub
                 End If
                 If ddlForum.SelectedItem Is Nothing Or ddlForum.SelectedItem.Value = "-1" Then
-                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString(Forum.PostMessage.ForumDoesntExist.ToString() + ".Text", LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.RedError)
+                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString(DotNetNuke.Forum.Library.Data.PostMessage.ForumDoesntExist.ToString() + ".Text", LocalResourceFile), Skins.Controls.ModuleMessage.ModuleMessageType.RedError)
                     Exit Sub
                 End If
 
@@ -578,30 +578,18 @@ Namespace DotNetNuke.Modules.Forum
                 End If
 
                 Dim cntPostConnect As New PostConnector
-                Dim PostMessage As PostMessage
+                Dim PostMessage As SubmitPostResult
 
                 PostMessage = cntPostConnect.SubmitInternalPost(TabId, ModuleId, PortalId, CurrentForumUser.UserID, txtSubject.Text, teContent.Text, objForum.ForumID, ParentPostID, PostID, chkIsPinned.Checked, chkIsClosed.Checked, chkNotify.Checked, ThreadStatus, ctlAttachment.lstAttachmentIDs, RemoteAddress, PollID, IsQuote, ThreadID, Terms)
 
-                Select Case PostMessage
-                    Case PostMessage.PostApproved
+                Select Case PostMessage.Result
+                    Case DotNetNuke.Forum.Library.Data.PostMessage.PostApproved
                         Dim ReturnURL As String = NavigateURL()
 
-                        If objModSecurity.IsModerator Then
-                            If Not ViewState("UrlReferrer") Is Nothing Then
-                                ReturnURL = (CType(ViewState("UrlReferrer"), String))
-                            Else
-                                ReturnURL = Utilities.Links.ContainerViewForumLink(TabId, objForum.ForumID, False)
-                            End If
-                        Else
-                            If Not objAction = PostAction.New Then
-                                ReturnURL = Utilities.Links.ContainerViewPostLink(TabId, objForum.ForumID, URLPostID)
-                            Else
-                                ReturnURL = Utilities.Links.ContainerViewForumLink(TabId, objForum.ForumID, False)
-                            End If
-                        End If
+                        ReturnURL = Utilities.Links.ContainerViewPostLink(PortalId, TabId, objForum.ForumID, PostMessage.PostId, txtSubject.Text)
 
                         Response.Redirect(ReturnURL, False)
-                    Case PostMessage.PostModerated
+                    Case DotNetNuke.Forum.Library.Data.PostMessage.PostModerated
                         divNewPost.Visible = False
                         tblOldPost.Visible = False
                         tblPreview.Visible = False
@@ -1146,9 +1134,10 @@ Namespace DotNetNuke.Modules.Forum
                 End If
 
                 'AJAX
-                ctlAttachment.ModuleID = ModuleId
+                ctlAttachment.ModuleId = ModuleId
                 ctlAttachment.LoadInitialView()
             Else
+                ctlAttachment.ModuleId = ModuleId
                 ctlAttachment.Visible = False
                 divAttachments.Visible = False
             End If
@@ -1321,10 +1310,10 @@ Namespace DotNetNuke.Modules.Forum
         Private Sub BindThreadStatus()
             dnncbThreadStatus.Items.Clear()
 
-            dnncbThreadStatus.Items.Insert(0, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("NoneSpecified", LocalResourceFile), "0"))
-            dnncbThreadStatus.Items.Insert(1, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Unanswered", LocalResourceFile), "1"))
-            dnncbThreadStatus.Items.Insert(2, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Answered", LocalResourceFile), "2"))
-            dnncbThreadStatus.Items.Insert(3, New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Informative", LocalResourceFile), "3"))
+            dnncbThreadStatus.Items.Insert(0, New ListItem(Localization.GetString("NoneSpecified", LocalResourceFile), "0"))
+            dnncbThreadStatus.Items.Insert(1, New ListItem(Localization.GetString("Unanswered", LocalResourceFile), "1"))
+            dnncbThreadStatus.Items.Insert(2, New ListItem(Localization.GetString("Answered", LocalResourceFile), "2"))
+            dnncbThreadStatus.Items.Insert(3, New ListItem(Localization.GetString("Informative", LocalResourceFile), "3"))
 
             'polling changes
             Try
@@ -1332,7 +1321,7 @@ Namespace DotNetNuke.Modules.Forum
                 Dim objForum As ForumInfo = cntForum.GetForumItemCache(ForumID)
 
                 If objForum.AllowPolls Then
-                    Dim statusEntry As New Telerik.Web.UI.RadComboBoxItem(Localization.GetString("Poll", objConfig.SharedResourceFile), CInt(ThreadStatus.Poll).ToString())
+                    Dim statusEntry As New ListItem(Localization.GetString("Poll", objConfig.SharedResourceFile), CInt(ThreadStatus.Poll).ToString())
                     dnncbThreadStatus.Items.Add(statusEntry)
                 End If
             Catch ex As Exception

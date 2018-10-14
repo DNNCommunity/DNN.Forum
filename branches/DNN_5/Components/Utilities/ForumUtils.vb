@@ -22,6 +22,10 @@ Option Explicit On
 
 Imports DotNetNuke.UI.Utilities
 Imports DotNetNuke.UI.UserControls
+Imports DotNetNuke.Web.Client.ClientResourceManagement
+Imports DotNetNuke.Services.FileSystem
+Imports DotNetNuke.Forum.Library
+Imports DotNetNuke.Framework.JavaScriptLibraries
 
 Namespace DotNetNuke.Modules.Forum.Utilities
 
@@ -30,6 +34,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
     ''' </summary>
     ''' <remarks></remarks>
     Public Class ForumUtils
+        Shared log As Instrumentation.DnnLogger = Instrumentation.DnnLogger.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.ToString())
 
 #Region "General Methods"
 
@@ -41,7 +46,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
         Public Shared Sub RegisterClientDependencies(ByVal Page As CDefault)
             ClientAPI.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn)
             Page.ClientScript.RegisterClientScriptInclude("hoverintent", ResolveUrl("~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js"))
-            jQuery.RequestDnnPluginsRegistration()
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins)
             Page.ClientScript.RegisterClientScriptBlock(GetType(LabelControl), "dnnTooltip", "jQuery(document).ready(function($){ $('.dnnTooltip').dnnTooltip();Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function(){$('.dnnTooltip').dnnTooltip();}); });", True)
         End Sub
 
@@ -253,7 +258,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
                 blnUpdateCache = True
             End If
             If objCSSCache(ID).ToString <> "" Then
-                DefaultPage.AddStyleSheet(ID, objCSSCache(ID).ToString)
+                ClientResourceManager.RegisterStyleSheet(DefaultPage, objCSSCache(ID).ToString)
             End If
 
             If DotNetNuke.Entities.Host.Host.PerformanceSetting <> Common.Globals.PerformanceSettings.NoCaching Then
@@ -273,20 +278,21 @@ Namespace DotNetNuke.Modules.Forum.Utilities
         ''' <param name="Path">The folder to check for.</param>
         ''' <remarks>This is based on the root of the current portal. Requires context.</remarks>
         Public Shared Sub CheckFolder(ByVal Path As String)
-            Dim _portalSettings As Portals.PortalSettings = Portals.PortalController.GetCurrentPortalSettings
-            Dim folderNames() As String = Path.Trim("/"c).Split("/"c)
-            Dim completeFolderPath As String = String.Empty
-            Dim parentPath As String = _portalSettings.HomeDirectoryMapPath
+            If Path <> String.Empty Then
+                Dim _portalSettings As Portals.PortalSettings = Portals.PortalController.Instance.GetCurrentPortalSettings()
+                Dim folderNames() As String = Path.Trim("/"c).Split("/"c)
+                Dim completeFolderPath As String = _portalSettings.HomeDirectoryMapPath
 
-            For Each folderName As String In folderNames
-                If folderName <> String.Empty Then
-                    completeFolderPath += folderName + "/"
-                    If DotNetNuke.Common.Utilities.FileSystemUtils.GetFolder(_portalSettings.PortalId, completeFolderPath) Is Nothing Then
-                        DotNetNuke.Common.Utilities.FileSystemUtils.AddFolder(_portalSettings, parentPath, folderName)
+                For Each folderName As String In folderNames
+                    If folderName <> String.Empty Then
+                        completeFolderPath = System.IO.Path.Combine(completeFolderPath, folderName)
+                        'DotNetNuke.Instrumentation.DnnLogger.GetLogger("ForumUtils").Debug("completeFolderPath: " + completeFolderPath)
+                        If FileUtilityClass.GetFolder(completeFolderPath, _portalSettings.PortalId) Is Nothing Then
+                            FileUtilityClass.AddFolder(completeFolderPath, _portalSettings.PortalId)
+                        End If
                     End If
-                    parentPath += folderName + "/"
-                End If
-            Next
+                Next
+            End If
         End Sub
 
 #End Region
@@ -398,7 +404,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
             'this may be possible if FURL's are off
             If mailURL.StartsWith("http") = False Then
                 'Removing virtual directory from portal alias.
-                Dim _portalSettings As Portals.PortalSettings = Portals.PortalController.GetCurrentPortalSettings
+                Dim _portalSettings As Portals.PortalSettings = Portals.PortalController.Instance.GetCurrentPortalSettings
                 Dim domain As String = _portalSettings.PortalAlias.HTTPAlias.Replace(HttpContext.Current.Request.ApplicationPath, "")
 
                 If domain.EndsWith("/") Then
@@ -700,19 +706,6 @@ Namespace DotNetNuke.Modules.Forum.Utilities
         End Function
 
         ''' <summary>
-        ''' Strips HTML from text passed into function using regex. 
-        ''' </summary>
-        ''' <param name="strHTMLToStrip">The text to remove HTML from.</param>
-        ''' <returns>A string of HTML w/ the majority of HTML removed.</returns>
-        ''' <remarks>All HTML Should be filtered prior to being passed here.</remarks>
-        Shared Function StripHTML(ByVal strHTMLToStrip As String) As String
-            Dim cleanText As String = strHTMLToStrip
-            Dim cleanPattern As String = "<(.|\n)*?>" ' "(\<link[^\>]+\>)"  
-            cleanText = Regex.Replace(cleanText, cleanPattern, String.Empty)
-            Return cleanText
-        End Function
-
-        ''' <summary>
         ''' Replaces inline attachments with the filename.
         ''' Used when quoting a post that contains inline attachments 
         ''' </summary>
@@ -765,7 +758,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
                             objGroupInfo = CType(InfoObject, GroupInfo)
                             If Not objGroupInfo Is Nothing Then
                                 ' Render Group Name
-                                sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objGroupInfo.GroupID), objGroupInfo.Name, imageURL))
+                                sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objConfig.CurrentPortalSettings.PortalId, objGroupInfo.GroupID, objGroupInfo.Name), objGroupInfo.Name, imageURL))
                             End If
                             Completed = True
                         Catch ex As Exception
@@ -778,7 +771,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
                                 objForumInfo = CType(InfoObject, ForumInfo)
                                 If Not objForumInfo Is Nothing Then
                                     ' Render Group Name
-                                    sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objForumInfo.GroupID), objForumInfo.ParentGroup.Name, imageURL))
+                                    sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objConfig.CurrentPortalSettings.PortalId, objForumInfo.GroupID, objForumInfo.ParentGroup.Name), objForumInfo.ParentGroup.Name, imageURL))
                                     ' Render ParentForum Name
                                     sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerParentForumLink(TabID, objForumInfo.GroupID, objForumInfo.ForumID), objForumInfo.Name, imageURL))
                                     Utilities.Links.ContainerParentForumLink(TabID, objForumInfo.GroupID, objForumInfo.ForumID)
@@ -794,17 +787,17 @@ Namespace DotNetNuke.Modules.Forum.Utilities
                         sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), Localization.GetString("Home", objConfig.SharedResourceFile), imageURL))
                         If objForumInfo.ForumID = -1 And objConfig.AggregatedForums Then
                             ' Render Group Name
-                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(TabID, -1, False), Localization.GetString("Aggregate", objConfig.SharedResourceFile), imageURL))
+                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(objConfig.CurrentPortalSettings.PortalId, TabID, -1, False, Localization.GetString("Aggregate", objConfig.SharedResourceFile)), Localization.GetString("Aggregate", objConfig.SharedResourceFile), imageURL))
                         Else
                             ' Render Group Name
-                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objForumInfo.GroupID), TrimString(objForumInfo.ParentGroup.Name, 15), imageURL))
+                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objConfig.CurrentPortalSettings.PortalId, objForumInfo.GroupID, objForumInfo.ParentGroup.Name), TrimString(objForumInfo.ParentGroup.Name, 15), imageURL))
                             '[skeel] check for subforum
                             If objForumInfo.ParentID > 0 Then
                                 'Render Parent Forum Name
                                 sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerParentForumLink(TabID, objForumInfo.GroupID, objForumInfo.ParentID), objForumInfo.ParentForum.Name, imageURL))
                             End If
                             ' Render Forum Name
-                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(TabID, objForumInfo.ForumID, False), objForumInfo.Name, imageURL))
+                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(objConfig.CurrentPortalSettings.PortalId, TabID, objForumInfo.ForumID, False, objForumInfo.Name), objForumInfo.Name, imageURL))
                         End If
 
                     Case ForumScope.Unread
@@ -819,7 +812,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
                         'Forum Home
                         sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), Localization.GetString("Home", objConfig.SharedResourceFile), imageURL))
                         ' Render Group Name
-                        sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objThreadInfo.ContainingForum.GroupID), TrimString(objThreadInfo.ContainingForum.ParentGroup.Name, 15), imageURL))
+                        sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerSingleGroupLink(TabID, objConfig.CurrentPortalSettings.PortalId, objThreadInfo.ContainingForum.GroupID, objThreadInfo.ContainingForum.Name), TrimString(objThreadInfo.ContainingForum.ParentGroup.Name, 15), imageURL))
 
                         'Check if this is a sub forum
                         If objThreadInfo.ContainingForum.ParentID > 0 Then
@@ -827,21 +820,21 @@ Namespace DotNetNuke.Modules.Forum.Utilities
                             sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerParentForumLink(TabID, objThreadInfo.ContainingForum.GroupID, objThreadInfo.ContainingForum.ParentID), objThreadInfo.ContainingForum.ParentForum.Name, imageURL))
                         End If
 
-                        sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(TabID, objThreadInfo.ForumID, False), TrimString(objThreadInfo.ContainingForum.Name, 15), imageURL))
+                        sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(objConfig.CurrentPortalSettings.PortalId, TabID, objThreadInfo.ForumID, False, objThreadInfo.ContainingForum.Name), TrimString(objThreadInfo.ContainingForum.Name, 15), imageURL))
                         ' Render Thread Name
                         If objConfig.FilterSubject Then
                             Dim strFilteredSubject As String = objThreadInfo.Subject
                             strFilteredSubject = FormatProhibitedWord(strFilteredSubject, objConfig.CurrentPortalSettings.PortalId)
-                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewThreadLink(TabID, objThreadInfo.ForumID, objThreadInfo.ThreadID), strFilteredSubject, imageURL))
+                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewThreadLink(objThreadInfo.PortalID, TabID, objThreadInfo.ForumID, objThreadInfo.ThreadID, objThreadInfo.Subject), strFilteredSubject, imageURL))
                         Else
-                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewThreadLink(TabID, objThreadInfo.ForumID, objThreadInfo.ThreadID), objThreadInfo.Subject, imageURL))
+                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewThreadLink(objThreadInfo.PortalID, TabID, objThreadInfo.ForumID, objThreadInfo.ThreadID, objThreadInfo.Subject), objThreadInfo.Subject, imageURL))
                         End If
                     Case ForumScope.ThreadSearch
                         If (Not InfoObject Is Nothing) And objConfig.AggregatedForums Then
                             'Forum Home
                             sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), Localization.GetString("Home", objConfig.SharedResourceFile), imageURL))
                             ' Render Aggregated Group Name
-                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(TabID, -1, False), Localization.GetString("Aggregate", objConfig.SharedResourceFile), imageURL))
+                            sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerViewForumLink(objConfig.CurrentPortalSettings.PortalId, TabID, -1, False, Localization.GetString("Aggregate", objConfig.SharedResourceFile)), Localization.GetString("Aggregate", objConfig.SharedResourceFile), imageURL))
                         Else
                             'Forum Home
                             sb = sb.Append(GetBreadCrumb(Utilities.Links.ContainerForumHome(TabID), Localization.GetString("Home", objConfig.SharedResourceFile), imageURL))
@@ -953,41 +946,12 @@ Namespace DotNetNuke.Modules.Forum.Utilities
             Dim displayCreatedDate As DateTime = value
 
             Try
-                Dim _portalSettings As Portals.PortalSettings = Portals.PortalController.GetCurrentPortalSettings
-
-                'Post Time is entered into the database using getdate so if your SQL Server
-                Dim Posttime As DateTime = value
-                'We need to know the servers timezone, we will use this information to convert the post time to a GMT time & date
-                Dim tz As System.TimeZone = System.TimeZone.CurrentTimeZone
-                Dim LocalTimeZone As Double = tz.GetUtcOffset(DateTime.Parse("00:00")).TotalMinutes
-
-                'we also want to take into account Daylight savings time, since this will affect the calculation as well. we will calculate daylight savings time based on when the post was made and
-                'not based on what the current date and time is. i.e was the post made when  daylight savings time was in affect or not.
-                If tz.IsDaylightSavingTime(Posttime) Then
-                    LocalTimeZone -= tz.GetDaylightChanges(Posttime.Year).Delta.TotalMinutes
-                End If
-
-                'we need to invert the timezone, when the timezone is GMT-8 for example we need to add 8 hours
-                'to get GMT and if the timezone is GMT+2 for Example we need to deduct 2 hours to get GMT
-                Dim InvertedTimeZone As Double = 0 - LocalTimeZone
-                'Calculate the GMT time that the post was made, all calculations will be based on this
-                Dim GMTTime As DateTime = Posttime.AddMinutes(InvertedTimeZone)
-                'the portal time zone will be a our fallback timezone, this will allow you to use the portals configured timezone if all else fails
-                Dim PortalTimeZone As Double = _portalSettings.TimeZoneOffset
-                'calculate the portal time that the post was made at
-                Dim PortalTime As DateTime = GMTTime.AddMinutes(PortalTimeZone)
-                ''we need to get the forums configured timezone, if the forum is not configured to allow us to use the users timezone this is what we will use
-                'Dim ForumTimeZone As Double = objConfig.TimeZone
-                'calculate the forum time that the post was made, using the forums timezone.
-                'Dim ForumTime As DateTime = GMTTime.AddMinutes(ForumTimeZone)
-                ' Set the time and reset later if per user is enabled
-                displayCreatedDate = PortalTime
-
                 If HttpContext.Current.Request.IsAuthenticated Then
-                    Dim objUser As Users.UserInfo = Users.UserController.GetCurrentUserInfo
-                    Dim UserTimeZone As Double = objUser.Profile.TimeZone
-                    Dim UserTime As DateTime = GMTTime.AddMinutes(UserTimeZone)
-                    displayCreatedDate = UserTime
+                    Dim GMTTime As DateTime = displayCreatedDate.ToUniversalTime()
+                    Dim objUser As Users.UserInfo = Users.UserController.Instance.GetCurrentUserInfo
+                    displayCreatedDate = objUser.LocalTime(GMTTime)
+                Else
+                    displayCreatedDate = TimeZoneInfo.ConvertTime(displayCreatedDate.ToUniversalTime(), TimeZoneInfo.Utc, GetPortalSettings().TimeZone)
                 End If
             Catch
                 ' The added or subtracted value results in an un-representable DateTime. Possibly a problem with TimeZone values.
@@ -1063,7 +1027,7 @@ Namespace DotNetNuke.Modules.Forum.Utilities
         ''' <remarks></remarks>
         Shared Function PerUserModuleActions(ByVal objConfig As Forum.Configuration, ByVal ModBase As DotNetNuke.Entities.Modules.PortalModuleBase) As DotNetNuke.Entities.Modules.Actions.ModuleActionCollection
             Dim mLoggedOnUserID As Integer = -1
-            mLoggedOnUserID = Users.UserController.GetCurrentUserInfo.UserID
+            mLoggedOnUserID = Users.UserController.Instance.GetCurrentUserInfo.UserID
             Dim Security As New Forum.ModuleSecurity(ModBase.ModuleId, ModBase.TabId, -1, mLoggedOnUserID)
             Dim Actions As New DotNetNuke.Entities.Modules.Actions.ModuleActionCollection
 
@@ -1081,9 +1045,13 @@ Namespace DotNetNuke.Modules.Forum.Utilities
                 Actions.Add(ModBase.GetNextActionID, Services.Localization.Localization.GetString("MyThreads.Text", ModBase.LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", Utilities.Links.ContainerMyThreadsLink(ModBase.TabId, mLoggedOnUserID), False, SecurityAccessLevel.View, True, False)
             End If
 
-            Actions.Add(ModBase.GetNextActionID, Services.Localization.Localization.GetString("Search.Text", ModBase.LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", Utilities.Links.SearchPageLink(ModBase.TabId, ModBase.ModuleId), False, SecurityAccessLevel.View, True, False)
+            If objConfig.HideSearchButton = False Then
+                Actions.Add(ModBase.GetNextActionID, Services.Localization.Localization.GetString("Search.Text", ModBase.LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", Utilities.Links.SearchPageLink(ModBase.TabId, ModBase.ModuleId), False, SecurityAccessLevel.View, True, False)
+            End If
 
-            Actions.Add(ModBase.GetNextActionID, Services.Localization.Localization.GetString("ForumHome.Text", ModBase.LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", Utilities.Links.ContainerForumHome(ModBase.TabId), False, SecurityAccessLevel.View, True, False)
+            If objConfig.HideHomeButton = False Then
+                Actions.Add(ModBase.GetNextActionID, Services.Localization.Localization.GetString("ForumHome.Text", ModBase.LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", Utilities.Links.ContainerForumHome(ModBase.TabId), False, SecurityAccessLevel.View, True, False)
+            End If
 
             If objConfig.AggregatedForums Then
                 Actions.Add(ModBase.GetNextActionID, Services.Localization.Localization.GetString("Aggregate.Text", ModBase.LocalResourceFile), Entities.Modules.Actions.ModuleActionType.ContentOptions, "", "", Utilities.Links.ContainerAggregatedLink(ModBase.TabId, False), False, SecurityAccessLevel.View, True, False)

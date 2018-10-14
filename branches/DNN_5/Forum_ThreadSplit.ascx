@@ -1,30 +1,26 @@
 <%@ Control language="vb" CodeBehind="Forum_ThreadSplit.ascx.vb" AutoEventWireup="false" Explicit="True" Inherits="DotNetNuke.Modules.Forum.ThreadSplit" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
-<%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
+<%@ Register TagPrefix="dnnweb" Assembly="DotNetNuke.Web.Deprecated" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <script type="text/javascript" language="javascript">
-	var oldNode;
-	function clientNodeChecked(sender, eventArgs)
-	{
-	   var node = eventArgs.get_node();
-   
-	   if(oldNode != null)
-	   {
-		  oldNode.set_checked(false);
-	   }
-   
-	   node.set_checked(true);
-	   oldNode = node;
-	}
+    var oldNode;
+    function clientNodeChecked(sender, eventArgs) {
+        var node = eventArgs.get_node();
 
-	function pageLoad()
-	{
-		var tree = $find("<%= rtvForums.ClientID  %>");
-	   var checkedNodes = tree.get_checkedNodes();
-	   if (checkedNodes)
-	   {
-	//this will ensure the correct behavior even if a node is checked server-side
-		  oldNode = checkedNodes[0];
-	   }
+        if (oldNode != null) {
+            oldNode.set_checked(false);
+        }
+
+        node.set_checked(true);
+        oldNode = node;
+    }
+
+    function pageLoad() {
+        var tree = $find("<%= rtvForums.ClientID  %>");
+	    var checkedNodes = tree.get_checkedNodes();
+	    if (checkedNodes) {
+	        //this will ensure the correct behavior even if a node is checked server-side
+	        oldNode = checkedNodes[0];
+	    }
 	}
 </script>
 <div class="dnnForm forumThreadSplit dnnClear">
