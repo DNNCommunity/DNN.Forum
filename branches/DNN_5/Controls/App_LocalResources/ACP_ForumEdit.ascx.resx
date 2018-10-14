@@ -322,7 +322,7 @@
     <value>Parent Forum</value>
   </data>
   <data name="EditForum.Text" xml:space="preserve">
-    <value>Admin's Control Panel: Edit Forum</value>
+    <value>Edit Forum</value>
   </data>
   <data name="TabEmail.Text" xml:space="preserve">
     <value>Email</value>
@@ -397,7 +397,7 @@
     <value>Email Port</value>
   </data>
   <data name="cmdHome.Text" xml:space="preserve">
-    <value>Return</value>
+    <value>Home</value>
   </data>
   <data name="plEnableSitemap.Help" xml:space="preserve">
     <value>If checked (and the forum is public), the threads created within this forum will be exposed to the SEO sitemap provider.</value>

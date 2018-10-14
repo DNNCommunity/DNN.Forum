@@ -159,7 +159,4 @@
   <data name="plEmailUsers.Help" xml:space="preserve">
     <value>If checked, all users participating in this thread will receive an email notiying them the thread has been moved.</value>
   </data>
-  <data name="lblSubjectTitle.Text" xml:space="preserve">
-    <value>Subject: </value>
-  </data>
 </root>

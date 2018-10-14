@@ -177,22 +177,4 @@
   <data name="plEmailUser.Text" xml:space="preserve">
     <value>Email User</value>
   </data>
-  <data name="lblTitleSubject.Text" xml:space="preserve">
-    <value>Subject: </value>
-  </data>
-  <data name="plAuthor.Help" xml:space="preserve">
-    <value>The user who posted the post you are replying to as well as the time they posted it.</value>
-  </data>
-  <data name="plAuthor.Text" xml:space="preserve">
-    <value>Author &amp; Date:</value>
-  </data>
-  <data name="plBody.Help" xml:space="preserve">
-    <value>The body of the post (ie. main content). </value>
-  </data>
-  <data name="plBody.Text" xml:space="preserve">
-    <value>Body</value>
-  </data>
-  <data name="plDeleteTemplate.Help" xml:space="preserve">
-    <value>This pre-populates the emailed response as well as provides a quick reason why the post was being deleted.</value>
-  </data>
 </root>
