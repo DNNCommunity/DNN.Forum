@@ -162,7 +162,9 @@ Namespace DotNetNuke.Modules.Forum
                 HttpContext.Current = New HttpContext(workerRequest)
             End If
             'stash the portalSettings in the Context Items, where the rest of the DNN Code expects it to be
-            HttpContext.Current.Items.Add("PortalSettings", ps)
+            If (HttpContext.Current.Items.Contains("PortalSettings") = False) Then
+                HttpContext.Current.Items.Add("PortalSettings", ps)
+            End If
 
             Return ps
         End Function
