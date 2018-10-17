@@ -440,9 +440,15 @@ Namespace DotNetNuke.Modules.Forum.Utilities
             Dim Path As String
             Dim TabInfo As DotNetNuke.Entities.Tabs.TabInfo = TabController.Instance.GetTab(TabId, PortalId, False)
             Path = "~/default.aspx?tabid=" & TabId & "&forumid=" & ForumId & "&postid=" & PostId & "&scope=posts"
-
             Return DotNetNuke.Common.Globals.FriendlyUrl(TabInfo, Path, CreateFriendlySlug(PostTitle)) & "#" & PostId
 
+        End Function
+        Public Shared Function ContainerViewQueryLink(ByVal PortalId As Integer, ByVal TabId As Integer, ByVal ForumId As Integer, ByVal PostId As Integer, ByVal PostTitle As String) As String
+            Dim pSettings As PortalSettings = ForumPortalSettings.CreateNewPortalSettings(PortalId)
+            Dim Path As String
+            Dim TabInfo As DotNetNuke.Entities.Tabs.TabInfo = TabController.Instance.GetTab(TabId, PortalId, False)
+            Path = "~/default.aspx?tabid=" & TabId & "&forumid=" & ForumId & "&postid=" & PostId & "&scope=posts"
+            Return DotNetNuke.Common.Globals.FriendlyUrl(TabInfo, Path, CreateFriendlySlug(PostTitle), pSettings) & "#" & PostId
         End Function
 
         ''' <summary>

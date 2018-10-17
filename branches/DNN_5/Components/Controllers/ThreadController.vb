@@ -349,9 +349,9 @@ Namespace DotNetNuke.Modules.Forum
                     For Each thread In ThreadSearchCollection
                         'log.Debug("Search found: " + thread.Subject)
                         Dim sitem As Search.Entities.SearchDocument = New Search.Entities.SearchDocument()
-                        sitem.Body = HttpUtility.HtmlDecode(thread.Body)
+                        sitem.Description = HtmlUtils.ConvertToText(HttpUtility.HtmlDecode(thread.Body))
                         sitem.AuthorUserId = thread.CreatedByUser
-                        sitem.Description = HtmlUtils.Shorten(thread.Body, 100, "...")
+                        sitem.Body = HtmlUtils.Shorten(HtmlUtils.ConvertToText(HttpUtility.HtmlDecode(thread.Body)), 100, "...")
                         sitem.IsActive = True
                         'sitem.Keywords = Nothing
                         'log.Debug("UpdateDate: " + thread.UpdatedDate.ToString)
@@ -361,7 +361,7 @@ Namespace DotNetNuke.Modules.Forum
                         'sitem.NumericKeys
                         'sitem.Permissions 
                         sitem.PortalId = moduleInfo.PortalID
-                        'sitem.QueryString 
+                        'sitem.QueryString = 
                         'sitem.RoleId 
                         'sitem.SearchTypeId 
                         sitem.TabId = moduleInfo.TabID
@@ -375,11 +375,11 @@ Namespace DotNetNuke.Modules.Forum
                         Next
 
                         sitem.Tags = ters
-
                         'log.Debug("TabPath: " + tinfo.TabPath)
                         sitem.Title = HttpUtility.HtmlDecode(thread.Subject)
                         sitem.UniqueKey = thread.PostID.ToString
-                        sitem.Url = New Uri(Links.ContainerViewPostLink(moduleInfo.PortalID, moduleInfo.TabID, thread.ForumID, thread.PostID, thread.Subject), UriKind.Relative).ToString()
+
+                        sitem.Url = New Uri(Links.ContainerViewQueryLink(moduleInfo.PortalID, moduleInfo.TabID, thread.ForumID, thread.PostID, thread.Subject)).PathAndQuery
                         retval.Add(sitem)
                     Next
                 End If
