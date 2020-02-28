@@ -440,7 +440,6 @@ Namespace DotNetNuke.Modules.Forum.Utilities
             Dim Path As String
             Dim TabInfo As DotNetNuke.Entities.Tabs.TabInfo = TabController.Instance.GetTab(TabId, PortalId, False)
             Path = "~/default.aspx?tabid=" & TabId & "&forumid=" & ForumId & "&postid=" & PostId & "&scope=posts"
-
             Return DotNetNuke.Common.Globals.FriendlyUrl(TabInfo, Path, CreateFriendlySlug(PostTitle)) & "#" & PostId
 
         End Function
