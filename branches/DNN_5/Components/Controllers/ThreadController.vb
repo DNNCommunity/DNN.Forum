@@ -367,6 +367,20 @@ Namespace DotNetNuke.Modules.Forum
                         sitem.TabId = moduleInfo.TabID
                         Dim cntThread As New ThreadController()
                         Dim objThread As ThreadInfo = cntThread.GetThread(thread.ThreadID)
+
+                        'This is to make sure all items have ContentItem created (upgrade issue)
+                        If objThread.ContentItemId < 1 Then
+                            Dim cntContent As New Content
+                            objThread.ModuleID = moduleInfo.ModuleID
+                            objThread.TabID = moduleInfo.TabID
+                            objThread.SitemapInclude = objThread.ContainingForum.EnableSitemap
+
+                            cntContent.CreateContentItem(objThread, moduleInfo.TabID)
+
+                            DotNetNuke.Modules.Forum.Components.Utilities.Caching.UpdateThreadCache(objThread.ThreadID)
+                            objThread = cntThread.GetThread(thread.ThreadID)
+                        End If
+
                         Dim ters As List(Of String) = GetTags(moduleInfo.Terms)
 
                         For Each Term As Entities.Content.Taxonomy.Term In objThread.Terms
@@ -386,6 +400,8 @@ Namespace DotNetNuke.Modules.Forum
             Catch ex As System.InvalidCastException
                 'There are cases when isearch does not return correctly so just catch & log
                 log.Error("Search Portal: " + moduleInfo.PortalID.ToString, ex)
+            Catch ex2 As SystemException
+                log.Error("Search Portal: " + moduleInfo.PortalID.ToString, ex2)
             End Try
             Return retval
         End Function
