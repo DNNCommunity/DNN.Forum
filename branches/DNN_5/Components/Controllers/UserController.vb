@@ -820,7 +820,7 @@ Namespace DotNetNuke.Modules.Forum
             Dim timeOut As Int32 = ForumUserInfoCacheTimeout * Convert.ToInt32(Entities.Host.Host.PerformanceSetting)
 
             Dim cntForumUser As New ForumUserController
-            Dim fUser As New ForumUserInfo(ModuleID)
+            Dim fUser As ForumUserInfo
             fUser = cntForumUser.UserGet(PortalID, UserID, ModuleID)
 
             '' we could not find this forum user 
